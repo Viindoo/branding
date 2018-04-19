@@ -4,8 +4,10 @@
 
 from odoo import models, fields
 
+
 class ResCompany(models.Model):
 
     _inherit = 'res.company'
 
     dashboard_background = fields.Binary(attachment=True)
+    sidebar_visible = fields.Boolean(string="Show App Sidebar", default=False, help="Changing this will affect new users only.")
