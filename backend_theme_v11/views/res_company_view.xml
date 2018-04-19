@@ -11,6 +11,11 @@
                         <field name="dashboard_background" widget="image" class="oe_avatar"/>
                     </group>
                 </page>
+                <page name="theme_settings" string="Theme Settings">
+                    <group name="sidebar_visible">
+                        <field name="sidebar_visible" />
+                    </group>
+                </page>
             </xpath>
         </field>
     </record>
