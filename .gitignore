@@ -4,6 +4,8 @@
 *.pyo
 nbproject
 .settings
+.project
+.pydevproject
 
 # eclipse #
 ###########
@@ -58,7 +60,6 @@ install/win32/meta.py
 /src/
 
 # OS generated files #
-######################
 .DS_Store
 .DS_Store?
 ._*
