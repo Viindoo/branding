@@ -18,13 +18,14 @@
     "license": "LGPL-3",
     "installable": True,
     "depends": [
-	'web_responsive',
+        'web_responsive',
     ],
     "data": [
         'views/assets.xml',
         'views/res_company_view.xml',
         'views/users.xml',
         'views/sidebar.xml',
+        'views/web.xml',
     ],
 }
 
