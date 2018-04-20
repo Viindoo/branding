@@ -16,7 +16,7 @@
 	],
     "author": "Openworx",
     "license": "LGPL-3",
-    "installable": True,
+    "installable": False,
     "depends": [
         'web_responsive',
     ],
