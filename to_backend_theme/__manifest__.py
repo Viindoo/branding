@@ -4,17 +4,17 @@
 
 {
     "name": "Material/United Backend Theme",
-    "summary": "Odoo 10.0 community backend theme",
+    "summary": "Odoo community backend theme",
     "version": "10.0.1.0.23",
     "category": "Themes/Backend",
-    "website": "http://www.openworx.nl",
+    "website": "https://www.erponline.vn",
 	"description": """
-		Backend theme for Odoo 10.0 community edition.
+		Backend theme for Odoo community edition, based on the Material/United Backend Theme by Openworx
     """,
 	'images':[
         'images/screen.png'
 	],
-    "author": "Openworx",
+    "author": "Openworx, TVTMA",
     "license": "LGPL-3",
     "installable": True,
     "depends": [
