@@ -268,66 +268,54 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
     color: darken(@navbar-default-bg, 15%);
 }
 
-// Button header
-.o_form_view > header {
-    background-color: @odoo-view-background-color;
-    background-image: none;
-    border-bottom: 1px solid #cacaca;
-}
+// Sidechatter like EE
 
-.o_form_view > header {
-    padding-left: 14px;
-    padding-top: 2px;
-	padding-bottom: 2px;
-}
+@o-chatter-width: 510px;
 
-// Status bar
+@media screen and (min-width: 1600px) {
 
-.o_form_view ul.oe_form_status li, .o_form_view ul.oe_form_status_clickable li {
-    background-image: linear-gradient(to bottom, @odoo-view-background-color, @odoo-view-background-color) !important;
-}
+    .o_form_sheet_bg {
+        width: ~"calc(100% - 510px)";
+        float: left;
+        height: 100vh;
+        overflow: auto;
+    }
 
-.o_form_view ul.oe_form_status li > .arrow, .o_form_view ul.oe_form_status_clickable li > .arrow {
-    margin-left: 5px !important;
-}
+    .o_form_view .o_form_sheet_bg .o_form_sheet {
+        max-width: 97%;
+    }
+    .o_form_view .o_form_sheet_bg {
+        border-bottom: none;
+    }
+    
+    .oe_chatter {
+        width: @o-chatter-width;
+        background-color: #ffffff;
+        float:right;
+        border-left: 1px solid @gray-lighter;
+        overflow: auto;
+        padding: 0 !important;
+	height: 100vh !important;
+    }
+    
+    .o_chatter {
+        height: 100vh;
+    }
+    
+    .o_chatter_topbar {
+        margin: 0 !important;   
+    }
+    
+    .o_thread_date.btn {
+        color: inherit;
+    }
+    
+    // Fix Modal Dialog size = Scheduled Action button
+    .modal .modal-dialog .o_form_view .o_form_sheet_bg, .modal .modal-dialog .o_form_view .o_form_sheet {
+        width: 100%;
+        height: 100%;
+    }
 
-.o_form_view ul.oe_form_status li > .arrow span, .o_form_view ul.oe_form_status_clickable li > .arrow span {
-    margin-left: -20px !important;
-    box-shadow: 2px 0px 1px rgba(255, 255, 255, 0.2), inset -3px 3px 0px rgba(0, 0, 0, 0.2) !important;
-    background-color: @odoo-view-background-color !important;
-    background: -moz-linear-gradient(135deg, @odoo-view-background-color, @odoo-view-background-color) !important;
-    background: -o-linear-gradient(135deg, @odoo-view-background-color, @odoo-view-background-color) !important;
-    background: -webkit-gradient(linear, left top, right bottom, from(@odoo-view-background-color), to(@odoo-view-background-color)) !important;
-    background: -ms-linear-gradient(top, @odoo-view-background-color, @odoo-view-background-color) !important;
-    -moz-border-radius: 0px !important;
-    -webkit-border-radius: 0px !important;
-    border-radius: 0px !important;
-
-}
-
-.o_form_view ul.oe_form_status li.oe_active > .arrow span, .o_form_view ul.oe_form_status_clickable li.oe_active > .arrow span {
-    box-shadow: 2px 0px 1px rgba(255, 255, 255, 0.2), inset -3px 3px 0px @brand-info !important;
-    background-color: @odoo-view-background-color !important;
-    background: -moz-linear-gradient(135deg, @odoo-view-background-color, @odoo-view-background-color) !important;
-    background: -o-linear-gradient(135deg, @odoo-view-background-color, @odoo-view-background-color) !important;
-    background: -webkit-gradient(linear, left top, right bottom, from(@odoo-view-background-color), to(@odoo-view-background-color)) !important;
-    background: -ms-linear-gradient(top, @odoo-view-background-color, @odoo-view-background-color) !important;
-}
-
-
-.o_form_view ul.oe_form_status li.oe_active > .label, .o_form_view ul.oe_form_status_clickable li.oe_active > .label {
-    color: @brand-info !important;
-    font-weight: bold;
-    text-shadow: none !important;
-}
-
-.o_form_view ul.oe_form_status li > .label, .o_form_view ul.oe_form_status_clickable li > .label {
-    text-shadow: none !important;
-    color: @gray-light;
-}
-
-.o_form_view ul.oe_form_status li:first-child > .label, .o_form_view ul.oe_form_status_clickable li:first-child > .label {
-    border-left: 0px solid @odoo-view-background-color !important;
 }
 
 
