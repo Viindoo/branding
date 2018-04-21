@@ -3,8 +3,8 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 {
-    "name": "Material/United Backend Theme",
-    "summary": "Odoo community backend theme",
+    "name": "ERPOnline Backend Theme",
+    "summary": "Mobile backend theme for Odoo community",
     "version": "10.0.1.0.23",
     "category": "Themes/Backend",
     "website": "https://www.erponline.vn",
@@ -12,7 +12,7 @@
 		Backend theme for Odoo community edition, based on the Material/United Backend Theme by Openworx
     """,
 	'images':[
-        'images/screen.png'
+        'images/erponline_theme_screen.png'
 	],
     "author": "Openworx, TVTMA",
     "license": "LGPL-3",
