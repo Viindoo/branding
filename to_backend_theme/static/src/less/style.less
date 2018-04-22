@@ -66,8 +66,11 @@ body a {
 //    background-color: transparent;
 //}
 
+.btn-default.disabled:hover, .btn-default[disabled]:hover,
 .btn-default.disabled, .btn-default[disabled]{
-	color: #ffffff;
+	color: #875A7B;
+    border: none;
+    background: transparent;
 }
 
 .btn-default {
@@ -120,6 +123,19 @@ body a {
     border: none !important;
 }
 
+.o_mail_chat_content > .o_chat_composer > .o_composer_subject > .o_composer_buttons > .btn-icon,
+.o_mail_chat_content > .o_chat_composer > .o_composer > .o_composer_buttons > .btn-icon{
+	color: #fff !important;
+}
+
+.o_mail_chat_content > .o_chat_composer > .o_composer_subject > .o_composer_buttons > .btn-icon:hover,
+.o_mail_chat_content > .o_chat_composer > .o_composer > .o_composer_buttons > .btn-icon:hover{
+	background-color: #68465f !important;
+    border-color: #62425a !important;
+}
+.o_chatter_topbar > .btn-link:hover, .btn-link:focus{
+	text-decoration: none;
+}
 .oe_highlight {
     color: #ffffff !important;
     background-color: @brand-primary !important;
@@ -340,7 +356,6 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
     }
 
 }
-
 
 
 // navbar ==========================================
