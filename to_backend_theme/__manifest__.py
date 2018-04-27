@@ -17,6 +17,7 @@
     "author": "Openworx, TVTMA",
     "license": "LGPL-3",
     "installable": True,
+    "auto_install": True,
     "depends": [
         'web_responsive',
     ],
