@@ -336,20 +336,15 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
     }
     
     .oe_chatter {
-        width: @o-chatter-width;
+        width: @o-chatter-width !important;
         background-color: #ffffff;
         float:right;
         border-left: 1px solid @gray-lighter;
         overflow: auto;
         padding: 0 !important;
-	height: 100vh !important;
+		height: 100vh !important;
     }
-    
-    .o_chatter {
-    	width: 510px !important;
-        height: 100vh;
-    }
-    
+       
     .o_chatter_topbar {
         margin: 0 !important;   
     }
@@ -391,6 +386,7 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
 .modal-dialog > .modal-content > .modal-body > .o_planner_menu > li.active > a{
 	color: @brand-primary !important;
 }
+
 .o_planner_dialog > .modal-dialog > .modal-content > .modal-header {
 	background-color: @brand-primary;
 }
