@@ -5,7 +5,7 @@
 {
     "name": "ERPOnline Backend Theme",
     "summary": "Mobile backend theme for Odoo community",
-    "version": "10.0.1.0.23",
+    "version": "11.0.1.0.23",
     "category": "Themes/Backend",
     "website": "https://www.erponline.vn",
 	"description": """
