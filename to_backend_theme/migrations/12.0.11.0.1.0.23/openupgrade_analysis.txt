@@ -1,0 +1,6 @@
+---Fields in module 'to_backend_theme'---
+to_backend_theme / res.company              / sidebar_visible (boolean)     : DEL 
+to_backend_theme / res.users                / sidebar_visible (boolean)     : not a function anymore
+---XML records in module 'to_backend_theme'---
+DEL ir.ui.view: to_backend_theme.menu
+DEL ir.ui.view: to_backend_theme.webclient_bootstrap
