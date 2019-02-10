@@ -1,37 +1,43 @@
-/* Copyright 2016, 2017 Openworx.
+/* Copyright 2016, 2018 Openworx.
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
 /* App Sidebar Panel */
 
-@odoo-sidebar-width: 180px;
+$odoo-sidebar-width: 180px;
 
 .app-sidebar-panel {
-    .o-flex(0, 0, @odoo-sidebar-width);
-    background-color: @gray-base;
+	flex: 0 0 $odoo-sidebar-width;	
+    background-color: $gray-base;
     height: 100% !important;
     overflow-y: auto;
-    @media (max-width: @screen-sm-min) {
+    @media (max-width: 768px) {
       display: none;
     }
 }
 
+/* @media (min-width: 768px) {
+	.o_menu_apps {
+		display: none !important;
+	}
+} */
+
 //.app-sidebar-panel:hover {
-//    .o-flex(0, 0, @odoo-sidebar-width);
+//    @include o-flex(0, 0, $odoo-sidebar-width);
 //}
 
 .app-sidebar {
     white-space: nowrap;
     padding: 0;
     .app-sidebar-menu {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	>li {
-	    display: block;
-	    margin: 0;
-	    padding: 0;
-	    border: 0px;
-	    >a {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    >li {
+        display: block;
+        margin: 0;
+        padding: 0;
+        border: 0px;
+        >a {
             display: block;
             position: relative;
             margin: 0;
@@ -40,14 +46,14 @@
             text-decoration: none;
             font-size: 13px;
             font-weight: 300;
-            color: @gray-lighter;
+            color: $gray-lighter;
             overflow: hidden;
             text-overflow: ellipsis;
-	    }
-	}
+        }
+    }
         > li:hover > a{
-    	    background: darken(@odoo-brand-primary, 15%);
-    	    color: #fff;
+	    background: darken(#0099ff, 15%);
+	    color: #fff;
         }
     }
 }
@@ -59,5 +65,5 @@
 }
 
 .toggle-sidebar {
-    margin-left: 0px - @odoo-sidebar-width;
+    margin-left: 0px - $odoo-sidebar-width;
 }

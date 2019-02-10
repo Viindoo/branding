@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  Copyright 2016, 2017 Openworx.
-  License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
+    Copyright 2016, 2019 Openworx.
+    @author Mario Gielissen <mario@openworx.nl>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 -->
 
 <odoo>
     <template id="app_sidebar" inherit_id="web.webclient_bootstrap" name="Apps Sidebar">
-        <xpath expr="//div[hasclass('o_main')]//div[hasclass('o_main_content')]" position="before">
+        <xpath expr="//div[hasclass('o_main')]//main[hasclass('o_main_content')]" position="before">
             <div id="app-sidebar" class="app-sidebar-panel">
-                <div class="app-sidebar navbar-collapse collapse">
+<!--                <div class="app-sidebar navbar-collapse collapse"> -->
+		    <div class="app-sidebar">
                     <ul id="sidebar" class="app-sidebar-menu">
                         <li class="nav-item"  t-as="menu" t-foreach="menu_data['children']" >
                             <t t-set="debug_param" t-value="''"/>

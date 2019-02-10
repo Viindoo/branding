@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <template id="menu" inherit_id="web_responsive.menu">
-        <xpath expr="//div[hasclass('panel-heading')]"
-            position="replace" />
+    <template id="menu" inherit_id="web_responsive.apps">
+    <!--    <xpath expr="//div[hasclass('panel-heading')]"
+            position="replace" /> -->
         
-        <xpath expr="//div[@id='appDrawerAppPanelBody']" position="after">
+        <xpath expr="//div[hasclass('dropdown-menu')]" position="after">
                 <div class="panel-footer" id="appDrawerAppPanelFooter">
                     <div class="oe_logo">
                         <img src="/web/binary/company_logo" />
@@ -13,12 +13,12 @@
         </xpath>
     </template>
 
-    <template id="webclient_bootstrap"
+    <!-- <template id="webclient_bootstrap"
         inherit_id="web_responsive.webclient_bootstrap">
         <xpath expr="//i[hasclass('fa-th')]" position="after">
             <i class="fa fa-lg fa-chevron-left app-drawer-icon-close"
                 t-translation="off" aria-hidden="true" />
         </xpath>
-    </template>
+    </template> -->
 
 </odoo>
