@@ -8,7 +8,7 @@
     "version": "10.0.1.0.23",
     "category": "Theme/Backend",
     'author' : 'Openworx, T.V.T Marine Automation (aka TVTMA)',
-    'website': 'https://www.tvtmarine.com',
+    'website': 'https://www.erponline.vn',
     'live_test_url': 'https://v10demo-int.erponline.vn',
     'support': 'support@ma.tvtmarine.com',
 	"description": """
