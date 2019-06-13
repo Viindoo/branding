@@ -294,6 +294,9 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
     background-color: #eef0f0;
 }
 
+.o_form_view .o_field_widget .o_list_view > tfoot > tr > td {
+	color: #ffffff;
+}
 .o_list_view tfoot {
     background-color: $brand-primary;
     color: #ffffff;
