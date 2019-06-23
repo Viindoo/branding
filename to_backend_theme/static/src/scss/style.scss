@@ -56,6 +56,15 @@ body {
 
 }
 
+.o_main_navbar {
+    .o_user_menu {
+        .oe_topbar_avatar {
+            height: 36px;
+            transform: initial;
+        }
+    }
+}
+
 // Fix color Add file button
 .o_control_panel .o_cp_sidebar .o_hidden_input_file .o_form_binary_form span {
     color: $gray-dark !important;
@@ -110,6 +119,14 @@ body {
 .o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button:not(.disabled):hover {
     color: $brand-primary;
 }
+
+.o_form_view .o_form_uri {
+	color: $brand-secondary;
+}
+.o_form_view .o_form_uri:hover {
+	color: $brand-secondary-dark;
+}
+
 
 .o_dropdown_toggler_btn, .o_dropdown_toggler_btn:hover, .o_dropdown_toggler_btn:focus, .o_dropdown_toggler_btn:hover, .o_dropdown_toggler_btn:focus, .btn-icon, .o_graph_button {
     text-transform: none !important;
