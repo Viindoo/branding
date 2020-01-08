@@ -142,6 +142,10 @@ body {
     border-radius: 0px;
 }
 
+.o_composer_mention_dropdown .dropdown-menu.show {
+	position: inherit;
+}
+
 oe_highlight {
     color: #ffffff !important;
     background-color: $brand-primary !important;
