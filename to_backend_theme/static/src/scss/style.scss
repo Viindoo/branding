@@ -19,8 +19,8 @@ $gray-lighter: lighten($gray-base, 93.5%);
 // Change colors here
 
 // Odoo EE colors
-$brand-primary: $o-enterprise-color;
-$brand-secondary: $o-enterprise-primary-color;
+$brand-primary: #875a7b;
+$brand-secondary: #00A09D;
 
 $brand-primary-dark: darken($brand-primary, 10%);
 $brand-secondary-dark: darken($brand-secondary, 10%);
@@ -60,7 +60,6 @@ body {
     .o_user_menu {
         .oe_topbar_avatar {
             height: 36px;
-            width: 36px;
             transform: initial;
         }
     }
@@ -121,11 +120,9 @@ body {
     color: $brand-primary;
 }
 
-.o_form_view .o_form_uri > span:first-child,
 .o_form_view .o_form_uri {
 	color: $brand-secondary;
 }
-.o_form_view .o_form_uri > span:first-child:hover,
 .o_form_view .o_form_uri:hover {
 	color: $brand-secondary-dark;
 }
@@ -150,16 +147,6 @@ oe_highlight {
 .o_external_button {
     color: $brand-primary !important;
     background: #ffffff;
-}
-
-.o_button_icon {
-    color: $brand-primary !important;
-}
-
-// Badges
-
-.badge {
-    border: 1px solid $brand-secondary;
 }
 
 // Calendar
@@ -323,8 +310,7 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
 .o_form_view .o_field_widget .o_list_view > tfoot > tr > td {
 	color: #ffffff;
 }
-
-.o_list_view .table-responsive .o_list_table tfoot tr:nth-child(1) td,
+.table-responsive .o_list_view tfoot tr:nth-child(1) td,
 .o_list_view tfoot {
     background-color: $brand-primary;
     color: #ffffff;
@@ -332,16 +318,15 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
     font-weight: normal;
 }
 
-.ui-autocomplete .ui-menu-item {
-    > a.ui-state-active {
-        background-color: #dee2e6;
-        color: #666666;
-    }
-    &.o_m2o_dropdown_option > a {
-        &.ui-state-active {
-            color: #666666;
-        }
-    }
+.ui-autocomplete .ui-menu-item.ui-state-focus {
+    background-color: #dee2e6;
+}
+
+.ui-menu-item a:hover,.ui-menu-item a:focus {
+    color: #666666 !important;
+}
+.ui-autocomplete .ui-menu-item.ui-state-focus a{
+    color: #666666 !important;
 }
 
 .o_form_view .oe_button_box .oe_stat_button .o_stat_info .o_stat_value {
