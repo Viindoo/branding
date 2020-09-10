@@ -3,6 +3,5 @@
 
  <menuitem
         id="crm.crm_menu_root"
-        name="CRM"
         web_icon="viin_brand_crm,static/description/icon.png"/>
 </odoo>
