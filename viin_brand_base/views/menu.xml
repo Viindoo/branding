@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+ <menuitem
+        id="base.menu_administration"
+        name="Settings"
+        web_icon="viin_brand_base,static/description/settings.png"/>
+ <menuitem
+        id="base.menu_management"
+        name="Apps"
+        web_icon="viin_brand_base,static/description/modules.png"/>
+</odoo>
