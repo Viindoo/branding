@@ -7,5 +7,5 @@ def update_module_icon(cr, registry):
     
 def uninstall_brand_icon(cr, registry):
     env = api.Environment(cr, SUPERUSER_ID, {})
-    env['viin.brand.base'].restore_icon('crm.crm_menu_root')
+    env['viin.brand.base'].restore_icon('crm', 'crm.crm_menu_root')
     
