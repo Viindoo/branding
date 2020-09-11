@@ -37,13 +37,11 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'category': 'Hidden',
     'version': '0.1',
     'depends': ['base'],
-    'data': [
-        'views/menu.xml'
-    ],
     'images' : [
     	'static/description/icon.png'
 	],
     'installable': True,
+    'post_init_hook': 'update_module_icon',
     'uninstall_hook': 'uninstall_brand_icon',
     'application': False,
     'auto_install': True,

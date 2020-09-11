@@ -37,9 +37,6 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'category': 'Sales/CRM',
     'version': '0.1',
     'depends': ['crm', 'viin_brand_base'],
-    'data': [
-        'views/menu.xml'
-    ],
     'images' : [
     	'static/description/icon.png'
 	],
