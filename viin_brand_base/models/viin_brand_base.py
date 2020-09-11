@@ -1,50 +1,33 @@
 from odoo import models
+from pip._internal import self_outdated_check
 
 class ViinBrandBase(models.AbstractModel):
     _name = 'viin.brand.base'
     _description = 'Viindoo Brand Base model'
     
-    
-    def update_module_icon(self, module_name, module_branding, icon_path = 'static/description/icon.png'):
-        '''
-        Update new icon for module
         
-        @param module_name: module name want to change icon
-        @param module_branding: module name contains icon file and handle
-        @param icon_path: file icon, default: static/description/icon.png
+    def modify_module_icon(self, module_name, module_brand = '', icon_path = 'static/description/icon.png'):
+        '''
+        Change module icon
+        
+        @param module_name: module name want to restore icon
+        @param module_brand: module name contains icon file and handle,
+        @param icon_path: file icon default, default: static/description/icon.png
         '''
         
         module = self.env['ir.module.module'].search([('name', '=', module_name)], limit=1)
-        module.write({'icon' : '/' + module_branding + '/' + icon_path})
+        module.write({'icon' : '/' + (module_brand or module_name) + '/' + icon_path})
         module._get_icon_image()
         
-    def update_menu_icon(self, module_branding, menu_xml_id, icon_path = 'static/description/icon.png'):
+    def modify_menu_icon(self, module_name, menu_xml_id, icon_path = 'static/description/icon.png'):
         '''
-        Update new icon for menu
-        
-        @param module_branding: module name contains icon file and handle
-        @param menu_xml_id: xml id of menuitem, example: crm.crm_menu_root
-        @param icon_path: file icon, default: static/description/icon.png
-        '''
-        
-        menu = self.env['ir.ui.menu'].search([('id', '=', self.env.ref(menu_xml_id).id)], limit=1)
-        menu.write({'web_icon' :  module_branding + ',' + icon_path})
-    
-    def restore_icon(self, module_name, menu_xml_id, icon_path = 'static/description/icon.png'):
-        '''
-        Restore original icon of module
+        Change menu icon
         
         @param module_name: module name want to restore icon
         @param menu_xml_id: full xml id of menuitem web_icon, example: crm.crm_menu_root
         @param icon_path: file icon default, default: static/description/icon.png
         '''
-        module_icon = self.env['ir.module.module'].search([('name', '=', module_name)], limit=1)
-        module_icon.write({'icon' : '/' + module_name + '/' + icon_path})
-        module_icon._get_icon_image()
         
         module_icon_menu = self.env['ir.ui.menu'].search([('id', '=', self.env.ref(menu_xml_id).id)], limit=1)
         module_icon_menu.write({'web_icon' : module_name + ',' + icon_path})
-        
-
-        
     
