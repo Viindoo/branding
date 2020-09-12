@@ -6,7 +6,7 @@ class ViinBrandBase(models.AbstractModel):
     
         
     def update_module_icon(self, origin_module_name, brand_module_name = '', icon_path = 'static/description/icon.png'):
-        '''
+        """
         This method used to set origin module's icon by brand module's icon and restore after brand module uninstalled
         
         @param origin_module_name: module name needed to replace icon
