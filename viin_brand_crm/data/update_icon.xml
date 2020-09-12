@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-	<function model="viin.brand.base" name="modify_module_icon">
+	<function model="viin.brand.base" name="update_module_icon">
 		<value>self</value>
 		<value>crm</value>
 		<value>viin_brand_crm</value>
 	</function>
-	<function model="viin.brand.base" name="modify_menu_icon">
+	<function model="viin.brand.base" name="update_menu_icon">
 		<value>self</value>
 		<value>viin_brand_crm</value>
 		<value>crm.crm_menu_root</value>

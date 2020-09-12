@@ -40,8 +40,10 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'images' : [
         'static/description/icon.png'
     ],
+    'data' : [
+        'data/update_icon.xml'
+    ],
     'installable': True,
-    'post_init_hook': 'update_module_icon',
     'uninstall_hook': 'uninstall_brand_icon',
     'application': False,
     'auto_install': True,

@@ -41,7 +41,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     	'static/description/icon.png'
 	],
     'data' : [
-        'views/update_icon.xml'
+        'data/update_icon.xml'
     ],
     'installable': True,
     'uninstall_hook': 'uninstall_brand_icon',
