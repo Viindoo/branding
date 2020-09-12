@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-	<!-- viin_brand_ -->
-	<menuitem name="eLearning" id="website_slides.website_slides_menu_root"
-		web_icon="viin_brand_website_slides,static/description/icon.png"/>
-
-
-</odoo>

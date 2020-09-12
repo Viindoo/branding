@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-	<!-- viin_brand_ -->
-    <menuitem name="Email Marketing" id="mass_mailing.mass_mailing_menu_root" web_icon="viin_brand_mass_mailing,static/description/icon.png"/>
-
-
-</odoo>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-
-	<menuitem id="mass_mailing_sms.mass_mailing_sms_menu_root" name="SMS Marketing"
-		web_icon="viin_brand_mass_mailing_sms,static/description/icon.png" />
-
-</odoo>

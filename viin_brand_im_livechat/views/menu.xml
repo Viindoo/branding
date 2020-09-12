@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-	<!-- viin_brand_ -->
-	<menuitem id="im_livechat.menu_livechat_root" name="Live Chat"
-		web_icon="viin_brand_im_livechat,static/description/icon.png" />
-
-
-</odoo>

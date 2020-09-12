@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
- 	<!--  viin_brand_ -->
- <menuitem
-        id="maintenance.menu_maintenance_title"
-        name="Maintenance"
-        web_icon="viin_brand_maintenance,static/description/icon.png"/>
-
-</odoo>

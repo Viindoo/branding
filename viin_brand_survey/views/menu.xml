@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-
-     <menuitem name="Surveys"
-    	id="survey.menu_surveys"
-    	web_icon="viin_brand_survey,static/description/icon.png"/>
-           
-</odoo>

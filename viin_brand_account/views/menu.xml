@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
- 	<!--  viin_brand_ -->
-	<menuitem name="Invoicing"
-            id="account.menu_finance" web_icon="viin_brand_account,static/description/icon.png"/>
-
-</odoo>

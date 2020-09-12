@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-
- <menuitem name="Websites"
-            id="website.menu_website_configuration"
-            web_icon="viin_brand_website,static/description/icon.png"/>
-            
-</odoo>

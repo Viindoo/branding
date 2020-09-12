@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-	<!-- viin_brand_ -->
-	    <menuitem name="Contacts"
-        id="contacts.menu_contacts"
-        web_icon="viin_brand_contacts,static/description/icon.png"/>
-
-</odoo>

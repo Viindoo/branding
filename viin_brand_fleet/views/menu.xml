@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-	<!-- viin_brand_ -->
-    <menuitem name="Fleet" id="fleet.menu_root" web_icon="viin_brand_fleet,static/description/icon.png"/>
-
-</odoo>

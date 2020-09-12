@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-
- <menuitem id="hr_timesheet.timesheet_menu_root"
-            name="Timesheets"
-            web_icon="viin_brand_hr_timesheet,static/description/icon.png"/>
-           
-</odoo>
