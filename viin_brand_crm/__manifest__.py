@@ -44,7 +44,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'data/update_icon.xml'
     ],
     'installable': True,
-    'uninstall_hook': 'uninstall_brand_icon',
+    'uninstall_hook': '_uninstall_brand_icon',
     'application': False,
     'auto_install': True,
     'price': 99.9,
