@@ -14,7 +14,7 @@ class ViinBrandBase(models.AbstractModel):
         @param icon_path: default: static/description/icon.png
         
         If it is not passed then it means the method is used to restore module icon to origin
-        '''
+        """
         
         module = self.env['ir.module.module'].search([('name', '=', origin_module_name)], limit=1)
         module.write({'icon' : '/' + (brand_module_name or origin_module_name) + '/' + icon_path})
