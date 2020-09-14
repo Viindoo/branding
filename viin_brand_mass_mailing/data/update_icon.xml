@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<function model="viin.brand.base" name="update_module_icon">
+		<value>self</value>
+		<value>mass_mailing</value>
+		<value>viin_brand_mass_mailing</value>
+	</function>
+	
+	<function model="viin.brand.base" name="update_menu_icon">
+		<value>self</value>
+		<value>viin_brand_mass_mailing</value>
+		<value>mass_mailing.mass_mailing_menu_root</value>
+	</function>
+</odoo>

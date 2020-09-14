@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<function model="viin.brand.base" name="update_module_icon">
+		<value>self</value>
+		<value>im_livechat</value>
+		<value>viin_brand_im_livechat</value>
+	</function>
+	
+	<function model="viin.brand.base" name="update_menu_icon">
+		<value>self</value>
+		<value>viin_brand_im_livechat</value>
+		<value>im_livechat.menu_livechat_root</value>
+	</function>
+</odoo>
