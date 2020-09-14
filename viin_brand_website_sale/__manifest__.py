@@ -1,13 +1,13 @@
 {
-    'name': "Viindoo Branding Sales",
-    'name_vi_VN': "Ứng dụng Bán Hàng với thương hiệu Viindoo",
+    'name': "Viindoo Branding eCommerce",
+    'name_vi_VN': "Ứng dụng Thương Mại Điện Tử với thương hiệu Viindoo",
 
     'summary': """
-Set Viindoo Brandings for Sales app.
+Set Viindoo Brandings for eCommerce app.
 """,
 
     'summary_vi_VN': """
-Thiết lập thương hiệu Viindoo cho ứng dụng Bán Hàng
+Thiết lập thương hiệu Viindoo cho ứng dụng Thương Mại Điện Tử
     	""",
 
     'description': """
@@ -34,9 +34,9 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'website': "https://www.tvtmarine.com",
     'live_test_url': "https://v13demo-int.erponline.vn",
     'support': "support@ma.tvtmarine.com",
-    'category': 'Sales/Sales',
+    'category': 'Website/Website',
     'version': '0.1',
-    'depends': ['sale_management', 'viin_brand_base'],
+    'depends': ['website_sale', 'viin_brand_base'],
     'images' : [
     	'static/description/icon.png'
 	],

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<function model="viin.brand.base" name="update_module_icon">
+		<value>self</value>
+		<value>website_blog</value>
+		<value>viin_brand_website_blog</value>
+	</function>
+</odoo>

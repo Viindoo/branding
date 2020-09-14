@@ -36,13 +36,15 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'support': "support@ma.tvtmarine.com",
     'category': 'Sales/Point Of Sale',
     'version': '0.1',
-    'depends': ['point_of_sale', 'viin_brand_to_base'],
+    'depends': ['point_of_sale', 'viin_brand_base'],
     'images' : [
     	'static/description/icon.png'
 	],
+    'data' : [
+        'data/update_icon.xml'
+    ],
     'installable': True,
-    'post_init_hook': 'update_module_icon',
-    'uninstall_hook': 'uninstall_brand_icon',
+    'uninstall_hook': '_uninstall_brand_icon',
     'application': False,
     'auto_install': True,
     'price': 99.9,
