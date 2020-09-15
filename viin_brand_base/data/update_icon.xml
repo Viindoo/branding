@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-	<function model="viin.brand.base" name="update_module_icon">
+	<function model="viin.brand.base" name="update_menu_icon">
 		<value>self</value>
 		<value>viin_brand_base</value>
 		<value>base.menu_administration</value>
