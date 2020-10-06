@@ -430,3 +430,12 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
 .o_thread_window .o_thread_window_header {
 	background-color: $brand-primary;
 }
+
+.o_chatter_position_sided {
+	.o_modal_fullscreen .o_viewer_content {
+		padding-top: 46px;
+		.o_viewer-header {
+			top: 46px;
+		}
+	}
+}
