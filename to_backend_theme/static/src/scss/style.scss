@@ -413,6 +413,10 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
     transform: translateY(-1px);
 }
 
+.o_chatter_header_container .o_composer_mention_dropdown .dropdown-menu.show{
+	top: 3rem;
+}
+
 .dropdown-item.o_app {
     background: transparent;
 }
