@@ -442,4 +442,11 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
 			top: 46px;
 		}
 	}
+	.o_content {
+		.o_form_view:not(.o_form_nosheet) {
+			.o_chatter {
+				overflow: auto;
+			}
+		}
+	}
 }
