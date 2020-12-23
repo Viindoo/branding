@@ -17,6 +17,8 @@ $gray-lighter: lighten($gray-base, 93.5%);
 
 
 // Change colors here
+$o-enterprise-color: #00bbce;
+$o-enterprise-primary-color: #7f4282;
 
 // Odoo EE colors
 $brand-primary: #875a7b;
@@ -422,10 +424,10 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
 }
 
 .o-menu-search-result {
-	color: #00A09D;
+	color: $o-enterprise-primary-color;
 }
 .o-menu-search-result .dropdown-item:hover {
-	color: #00A09D;
+	color: $o-enterprise-primary-color;
 	font-weight: bold;
 }
 
@@ -448,5 +450,11 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
 				overflow: auto;
 			}
 		}
+	}
+}
+
+.o_mail_systray_item {
+	.o_notification_counter {
+		background: $brand-secondary;
 	}
 }
