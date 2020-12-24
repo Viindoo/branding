@@ -25,6 +25,7 @@ $brand-primary: #875a7b;
 $brand-secondary: #00A09D;
 
 $brand-primary-dark: darken($brand-primary, 10%);
+$brand-primary-darker: darken($brand-primary, 20%);
 $brand-primary-light: lighten($brand-primary, 10%);
 $brand-primary-lighter: lighten($brand-primary, 20%);
 $brand-secondary-dark: darken($brand-secondary, 10%);
@@ -57,8 +58,8 @@ body {
 }
 
 .o_main_navbar {
-    background-color : $brand-primary;
-    border-bottom: 1px solid $brand-primary-dark;
+    background-color : $brand-primary-dark;
+    border-bottom: 1px solid $brand-primary-darker;
 }
 
 .o_main_navbar > a:hover, .o_main_navbar > a:focus, .o_main_navbar > button:hover, .o_main_navbar > button:focus {
