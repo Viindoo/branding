@@ -143,16 +143,16 @@ body {
 
 oe_highlight {
     color: #ffffff !important;
-    background-color: $brand-primary !important;
+    background-color: $brand-secondary !important;
 }
 
 .o_external_button {
-    color: $brand-primary !important;
+    color: $brand-secondary !important;
     background: #ffffff;
 }
 
 .o_form_view .oe_button_box .oe_stat_button .o_button_icon {
-    color: $brand-primary !important;
+    color: $brand-secondary !important;
 }
 
 // Calendar

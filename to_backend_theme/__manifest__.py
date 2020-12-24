@@ -4,11 +4,11 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 {
-    "name": "ERPOnline Backend Theme",
+    "name": "Viindoo Backend Theme",
     "summary": "Mobile backend theme for Odoo community",
     "version": "13.0.1.0.23",
     "category": "Website/Theme/Backend",
-    'author' : 'Openworx, T.V.T Marine Automation (aka TVTMA)',
+    'author' : 'Openworx, Viindoo',
     'website': 'https://www.erponline.vn',
     'live_test_url': 'https://v13demo-int.erponline.vn',
     'support': 'support@ma.tvtmarine.com',
@@ -16,7 +16,7 @@
 		Backend theme for Odoo community edition, based on the Openworx Backend Theme
     """,
 	'images':[
-        'images/erponline_theme_screen.png'
+        'images/screen.png'
 	],
     "license": "LGPL-3",
     "installable": True,
