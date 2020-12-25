@@ -7,7 +7,6 @@
     src: url(/to_backend_theme/static/src/font/Roboto-Regular.ttf)
 }
 
-
 $gray-base:              #000;
 $gray-darker:            lighten($gray-base, 13.5%);
 $gray-dark:              #666;
@@ -17,21 +16,28 @@ $gray-lighter: lighten($gray-base, 93.5%);
 
 
 // Change colors here
+$o-community-color: #00bbce;
 $o-enterprise-color: #00bbce;
 $o-enterprise-primary-color: #7f4282;
 
-// Odoo EE colors
-$brand-primary: #875a7b;
-$brand-secondary: #00A09D;
+$o-brand-odoo: $o-community-color;
+$o-brand-primary: $o-enterprise-primary-color;
+$brand-primary: $o-enterprise-color;
+$brand-secondary: $o-enterprise-primary-color;
+$o-tip-color: $brand-primary;
+$o-tip-border-width: 2px;
 
 $brand-primary-dark: darken($brand-primary, 10%);
 $brand-primary-darker: darken($brand-primary, 20%);
 $brand-primary-light: lighten($brand-primary, 10%);
 $brand-primary-lighter: lighten($brand-primary, 20%);
+$brand-primary-super-light: lighten($brand-primary, 50%);
 $brand-secondary-dark: darken($brand-secondary, 10%);
+$brand-secondary-darker: darken($brand-secondary, 20%);
 $brand-secondary-light: lighten($brand-secondary, 10%);
 $brand-secondary-lighter: lighten($brand-secondary, 20%);
-
+$brand-secondary-super-light: lighten($brand-secondary, 50%);
+$brand-secondary-super-lighter: lighten($brand-secondary, 55%);
 // onboarding
 $o-onboarding-blue-bg-1: $brand-primary-light;
 $o-onboarding-blue-bg-2: $brand-primary-dark;
@@ -49,31 +55,17 @@ $o-onboarding-violet-ui-1: $brand-secondary-dark;
 $o-onboarding-violet-ui-2: $brand-secondary-light;
 
 body {
-
-    font-family: "Roboto";
+	font-family: "Roboto";
 }
 
 .o_loading {
-    background-color: $brand-primary;
+	background-color: $brand-primary;
 }
 
 .o_main_navbar {
-    background-color : $brand-primary-dark;
-    border-bottom: 1px solid $brand-primary-darker;
-}
+	background-color : $brand-primary-dark;
+	border-bottom: 1px solid $brand-primary-darker;
 
-.o_main_navbar > a:hover, .o_main_navbar > a:focus, .o_main_navbar > button:hover, .o_main_navbar > button:focus {
-
-    background-color: $brand-primary-dark;
-    color: inherit;
-
-}
-
-.o_main_navbar > ul > li > a:hover, .o_main_navbar > ul > li > label:hover {
-    background-color: $brand-primary-dark;
-}
-
-.o_main_navbar {
 	.show {
 		.dropdown-toggle {
 			background-color: $brand-primary-dark !important;
@@ -82,194 +74,222 @@ body {
 			font-size: inherit;
 		}
 	}
+
+	.o_user_menu {
+		.oe_topbar_avatar {
+			height: 36px;
+			width: 36px;
+			transform: initial;
+		}
+	}
+	> a,
+	> button {
+		&:hover,
+		&:focus {
+			background-color: $brand-primary-dark;
+			color: inherit;
+		}
+	}
+
+	> ul {
+		background-color: $brand-primary-dark;
+		> li {
+			> label,
+			> a {
+				&:hover,
+				&:focus{
+					background-color: $brand-primary-darker;
+				}
+			}
+		}
+		&.o_menu_systray {
+			float: right;
+			position: relative;
+		}
+	}
 }
 
-.o_main_navbar {
-    .o_user_menu {
-        .oe_topbar_avatar {
-            height: 36px;
-            transform: initial;
-        }
-    }
-}
-
-// Fix color Add file button
-.o_control_panel .o_cp_sidebar .o_hidden_input_file .o_form_binary_form span {
-    color: $gray-dark !important;
+.o_control_panel {
+	background-color: #ffffff;
+	// Fix color Add file button
+	.o_cp_sidebar {
+		.o_hidden_input_file {
+			.o_form_binary_form {
+				span {
+					color: $gray-dark !important;
+				}
+			}
+		}
+	}
 }
 
 // Buttons
 
 .btn {
-    border-radius: 0px;
+	border-radius: 0px;
 }
 
 .btn-primary {
-
-    color: #fff;
-    background-color: $brand-secondary;
-    border-color: $brand-secondary;
-
+	color: #fff;
+	background-color: $brand-secondary;
+	border-color: $brand-secondary;
 }
 
 .btn-primary:hover {
-
-    color: #fff;
-    background-color: $brand-secondary-dark;
-    border-color: $brand-secondary-dark;
+	color: #fff;
+	background-color: $brand-secondary-dark;
+	border-color: $brand-secondary-dark;
 }
 
 .btn-secondary {
-    border: none;
+	border: none;
 }
 
 .btn:active, .btn.active {
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    background-color: #eee !important;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	background-color: #eee !important;
 }
 
 .btn-group.open .dropdown-toggle {
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    background-color: #eee !important;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	background-color: #eee !important;
 }
-
 
 .btn-link {
-    color: $brand-secondary;
-}
-
-.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button.btn-primary.disabled {
-    color: $brand-primary;
-}
-
-.o_form_view .o_form_statusbar > .o_statusbar_status > .o_arrow_button:not(.disabled):hover {
-    color: $brand-primary;
-}
-
-.o_form_view .o_form_uri {
 	color: $brand-secondary;
 }
-.o_form_view .o_form_uri:hover {
-	color: $brand-secondary-dark;
+
+.text-primary {
+	color: $brand-primary !important;
 }
 
-
-.o_dropdown_toggler_btn, .o_dropdown_toggler_btn:hover, .o_dropdown_toggler_btn:focus, .o_dropdown_toggler_btn:hover, .o_dropdown_toggler_btn:focus, .btn-icon, .o_graph_button {
-    text-transform: none !important;
-    color: $gray-dark !important;
-    background-color: transparent !important;
-    border: none !important;
+.o_dropdown_toggler_btn,
+.o_dropdown_toggler_btn:hover,
+.o_dropdown_toggler_btn:focus,
+.o_dropdown_toggler_btn:hover,
+.o_dropdown_toggler_btn:focus,
+.btn-icon,
+.o_graph_button {
+	text-transform: none !important;
+	color: $gray-dark !important;
+	background-color: transparent !important;
+	border: none !important;
 }
 
 .dropdown-menu {
-    border-radius: 0px;
+	border-radius: 0px;
 }
 
-oe_highlight {
-    color: #ffffff !important;
-    background-color: $brand-secondary !important;
+.oe_highlight {
+	color: #ffffff !important;
+	background-color: $brand-secondary !important;
 }
 
-.o_external_button {
-    color: $brand-primary !important;
-    background: #ffffff;
-}
+// Badges
 
-.o_form_view .oe_button_box .oe_stat_button .o_button_icon {
-    color: $brand-primary !important;
+.badge-primary{
+	background-color: $brand-primary;
 }
 
 // Calendar
 
-.o_calendar_container .o_calendar_sidebar_container .ui-datepicker table .ui-state-active {
-    background: none;
-    background-color: $brand-primary !important;
-    color: #ffffff !important;
-}
-.o_calendar_container .o_calendar_sidebar_container .ui-datepicker table .ui-state-default {
-    color: $brand-primary;
+.o_calendar_container {
+	.o_calendar_sidebar_container {
+		.ui-datepicker {
+			table {
+				.ui-state-active {
+					background: none;
+					background-color: $brand-primary !important;
+					color: #ffffff !important;
+				}
+				.ui-state-default {
+					color: $brand-secondary;
+				}
+			}
+		}
+		
+	}
 }
 
 .datepicker {
-    .table-sm {
-        > thead {
-            color: white;
-            background-color: $brand-primary;
+	.table-sm {
+		> thead {
+			color: white;
+			background-color: $brand-primary;
 
-            > tr {
-                &:first-child {
-                    th:hover {
-                        color: white;
-                        background-color: darken($brand-primary, 10%);
-                    }
-                }
+			> tr {
+				&:first-child {
+					th:hover {
+						color: white;
+						background-color: darken($brand-primary, 10%);
+					}
+				}
 
-                &:last-child {
-                    color: $o-datepicker-week-color;
-                    background-color: $o-datepicker-week-bg-color;
-                }
-                > th {
-                    border-radius: 0;
-                }
-            }
-        }
+				&:last-child {
+					color: $o-datepicker-week-color;
+					background-color: $o-datepicker-week-bg-color;
+				}
+				> th {
+					border-radius: 0;
+				}
+			}
+		}
 
-        > tbody {
-            > tr {
-                > td {
-                    &.active, .active {
-                        background-color: $o-brand-primary;
-                        border-radius: 100px;
-                    }
-
-                    &.today:before {
-                        border-bottom-color: $o-brand-primary;
-                    }
-                }
-            }
-        }
+		> tbody {
+			> tr {
+				> td {
+					&.active, .active {
+						background-color: $brand-primary;
+						border-radius: 0;
+					}
+					
+					&.today:before {
+						border-bottom-color: $brand-primary;
+					}
+				}
+			}
+		}
     }
 }
 
-.datepicker .table-sm > tbody > tr > td.active, .datepicker .table-sm > tbody > tr > td .active {
-    background-color: $brand-primary;
-	border-radius: 0;
+.o_calendar_sidebar_container {
+	.ui-datepicker {
+		td {
+			&.ui-datepicker-today {
+				a {
+					background: $brand-primary-darker;
+					color: #FFFFFF !important;
+				}
+			}
+		}
+	}
 }
+
 
 // Filter search label
 
 .o_searchview {
-    .o_searchview_facet {
+	.o_searchview_facet {
 
-         background-color: #ffffff;
+		 background-color: #ffffff;
 
-        .o_searchview_facet_label {
-            background-color: $brand-primary;
-        }
+		.o_searchview_facet_label {
+			background-color: $brand-primary-dark;
+		}
     }
 }
 
 a {
-
-    color: $brand-secondary;
-    text-decoration: none;
-    background-color: transparent;
-    -webkit-text-decoration-skip: objects;
-
-}
-
-a:hover {
-
-    color: $brand-secondary-dark;
-    text-decoration: none;
-
-}
-
-
-.o_control_panel {
-    background-color: #ffffff;
+	color: $brand-secondary;
+	text-decoration: none;
+	background-color: transparent;
+	-webkit-text-decoration-skip: objects;
+	&:hover {
+		color: $brand-secondary-darker;
+		text-decoration: none;
+	}
 }
 
 .breadcrumb {
@@ -278,31 +298,65 @@ a:hover {
 
 // Input
 
-input[type="text"], input[type="password"], input[type="number"],
-textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
+input[type="text"],
+input[type="password"],
+input[type="number"],
+textarea,
 .o_searchview
 {
-    border: 0;
-    border-radius: 0;
-    border-bottom: 1px solid #ccc;
+	border: 0;
+	border-radius: 0;
+	border-bottom: 1px solid $gray-lighter;
 }
 
-.o_web_client input:focus, .o_web_client textarea:focus, .o_web_client select:focus {
-    outline: none;
-    border-bottom: 2px solid $brand-primary;
+select {
+	border-top: 0 !important;
+	border-left: 0 !important;
+	border-right: 0 !important;
+	border-bottom: 1px solid $gray-lighter;
+	border-radius: 0 !important;
+}
+
+.o_web_client {
+	input:focus,
+	textarea:focus,
+	select:focus {
+		outline: none;
+		border-bottom: 2px solid $brand-primary;
+	}
 }
 
 .o_input {
-    border: 1px solid #ccc;
-    border-top-style: none;
-    border-right-style: none;
-    border-left-style: none;
+	border: 1px solid $gray-lighter;
+	border-top-style: none;
+	border-right-style: none;
+	border-left-style: none;
+}
+
+.o_required_modifier {
+	&.o_input,
+	.o_input{
+		background-color: $brand-secondary-super-lighter !important;
+		border-bottom: 1px solid $brand-secondary;
+		&:focus{
+			border-bottom: 2px solid $brand-secondary !important;
+		}
+	}
+	textarea,
+	select {
+		border-bottom: 1px solid $brand-secondary;
+		&:focus{
+			border-bottom: 2px solid $brand-secondary !important;
+		}
+	}
 }
 
 .o_field_widget {
-    &.o_field_many2one .o_external_button {
-        color: $brand-secondary
-    }
+	&.o_field_many2one {
+		.o_external_button {
+			color: $brand-secondary
+		}
+	}
 }
 
 .input-group-text {
@@ -313,91 +367,198 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
 
 // Listview
 
-.o_list_view.table {
-    border: none;
+.o_list_view {
+	&table {
+		border: none;
+		thead{
+			border: none;
+			background-color: #e2e2e0;
+			> tr {
+				> th {
+					&.o_column_sortable {
+						&:hover {
+							background-color: #D6D6D3;
+						}
+					}
+				}
+			}
+		}
+		tbody {
+			tr {
+				&.o_group_header{
+					background-color: #dfdfdf;
+					background-image: none;
+					border-top: 1px solid #e2e2e0;
+				}
+			}
+		}
+		tfoot,
+		td,
+		th {
+			border: none;
+		}
+	}
+	.o_list_table {
+		.text-primary {
+			color: $brand-primary !important;
+		}
+	}
+	.table-responsive {
+		.o_list_table {
+			tfoot {
+				tr {
+					&:nth-child(1) {
+						td {
+							background-color: $brand-primary;
+							color: #ffffff;
+							cursor: default;
+							font-weight: normal;
+						}
+					}
+				}
+			}
+		}
+	}
+	tfoot {
+		background-color: $brand-primary;
+		color: #ffffff;
+		cursor: default;
+		font-weight: normal;
+	}
 }
-.o_list_view.table thead, .o_list_view.table tfoot, .o_list_view.table td,.o_list_view.table th {
-    border: none;
-}
- 
-.o_list_view.table thead {
-    background-color: #e2e2e0;
-}
- 
-.table-responsive .o_list_view thead tr:nth-child(1) th,
-.o_list_view.table thead > tr > th.o_column_sortable:hover {
-    background-color: #D6D6D3;
-}
- 
-.o_list_view.table tbody tr.o_group_header {
-    background-color: #dfdfdf;
-    background-image: none;
-    border-top: 1px solid #e2e2e0;
+
+.table-responsive {
+	.o_list_view {
+		thead {
+			tr:nth-child(1) {
+				th {
+					background-color: #D6D6D3;
+				}
+			}
+		}
+	}
 }
 
 .table-striped > tbody > tr:nth-of-type(2n+1) {
-    background-color: #eef0f0;
+	background-color: #eef0f0;
 }
 
-.o_form_view .o_field_widget .o_list_view > tfoot > tr > td {
-	color: #ffffff;
-}
-.table-responsive .o_list_view tfoot tr:nth-child(1) td,
-.o_list_view tfoot {
-    background-color: $brand-primary;
-    color: #ffffff;
-    cursor: default;
-    font-weight: normal;
-}
 
-.ui-autocomplete .ui-menu-item.ui-state-focus {
-    background-color: #dee2e6;
-}
 
-.ui-menu-item a:hover,.ui-menu-item a:focus {
-    color: #666666 !important;
-}
-.ui-autocomplete .ui-menu-item.ui-state-focus a{
-    color: #666666 !important;
-}
-
-.o_form_view .oe_button_box .oe_stat_button .o_stat_info .o_stat_value {
-    color: $brand-primary;
-}
-
-.o_form_view .o_horizontal_separator {
-    color: #666666;
-    font-weight: bold;
+.ui-autocomplete .ui-menu-item {
+	> a.ui-state-active {
+		background-color: #dee2e6;
+		color: #666666;
+	}
+	&.o_m2o_dropdown_option > a {
+		color: $brand-secondary; 
+		&.ui-state-active {
+			color: #666666;
+		}
+	}
 }
 
 // Forms
 
 .o_form_view {
+	&.o_form_editable {
+		.o_form_field_many2manytags {
+			border: 0;
+			border-radius: 0;
+			border-bottom: 1px solid #ccc;
+		}
+	}
+	
+	.o_form_sheet_bg {
+		background: none !important;
+		background-color: #F9F9F9 !important;
+		padding: 0px;
+		.o_form_sheet {
+			border: 1px solid #d9d7d7;
+			box-shadow: 0 5px 20px -15px black;
+		}
+	} 
 
-     .o_form_sheet_bg {
-        background: none !important;
-        background-color: #F9F9F9 !important;
-        padding: 0px;
-        .o_form_sheet {
-            border: 1px solid #d9d7d7;
-            box-shadow: 0 5px 20px -15px black;
-        }
-    } 
+	.o_form_statusbar {
+		//margin: -16px;
+		.o_statusbar_status {
+			> .o_arrow_button {
+				background: #ffffff;
+				&.btn-primary{
+					&.disabled {
+						color: $brand-secondary;
+					}
+				}
+				&:not(.disabled):hover{
+					color: $brand-secondary-dark;
+				}
+			}
+		}
+	}
 
-    .o_form_statusbar {
-        //margin: -16px;
-  
-        .o_statusbar_status {
-            > .o_arrow_button {
-                background: #ffffff;
-            }
-        }
-    }
+	.o_horizontal_separator {
+		color: #666666;
+		font-weight: bold;
+	}
+	
+	.oe_button_box {
+		.oe_stat_button {
+			.o_button_icon {
+				color: $brand-secondary !important;
+			}
+			.o_stat_info {
+				.o_stat_value {
+					color: $brand-secondary !important;
+				}
+			}
+		}
+	}
+	
+	.o_form_uri {
+		color: $brand-secondary;
+		> span:first-child {
+			color: $brand-secondary;
+			&:hover {
+				color: $brand-secondary-dark;
+			}
+		}
+		&:hover {
+			color: $brand-secondary-dark;
+		}
+	}
+	
+	.o_field_widget {
+		.o_list_view {
+			> tfoot {
+				> tr {
+					> td {
+						color: #ffffff;
+					}
+				}
+			}
+		}
+		&.o_field_image{
+			.o_form_image_controls {
+				background-color: $brand-primary-dark;
+				> button {
+					&.fa {
+						color: #FFFFFF;
+					}
+				}
+			}
+		}
+	}
 }
 
 // App Dashboard
 
 .o_menu_apps {
+	.full {
+		width: 46px;
+		font-size: 18px;
+		text-align: center;
+	}
+
 	.dropdown-menu.show {
 		background: url(/dashboard);
 		background-origin: border-box;
@@ -417,58 +578,55 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
 	}
 } 
 
-.o_main_navbar > ul.o_menu_systray {
-    float: right;
-    position: relative;
-    z-index: 200;
-}
-
 .fa-th-large::before {
-    content: "\f00a";
+	content: "\f00a";
 }
 
-.o_menu_apps .full {
-    width: 46px;
-    font-size: 18px;
-    text-align: center;
-}
 
 .o-app-name {
 	color: #fff;
-    font-size: 15px;
-    font-weight: 400;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+	font-size: 15px;
+	font-weight: 400;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
 }
 
-.o_chatter_header_container .o_composer_mention_dropdown .dropdown-menu.show{
-	top: 3rem;
+.o_chatter_header_container {
+	.o_composer_mention_dropdown {
+		.dropdown-menu.show{
+			top: 3rem;
+		}
+	}
 }
 
 .dropdown-item.o_app {
-    background: transparent;
+	background: transparent;
 }
 
 .o-menu-search-result {
 	color: $o-enterprise-primary-color;
-}
-.o-menu-search-result .dropdown-item:hover {
-	color: $o-enterprise-primary-color;
-	font-weight: bold;
+	.dropdown-item:hover {
+		color: $o-enterprise-primary-color;
+		font-weight: bold;
+	}
+
 }
 
 // Chat window
-
-.o_thread_window .o_thread_window_header {
-	background-color: $brand-primary;
+.o_thread_window {
+	.o_thread_window_header {
+		background-color: $brand-primary;
+	}
 }
 
 .o_chatter_position_sided {
-	.o_modal_fullscreen .o_viewer_content {
-		padding-top: 46px;
-		.o_viewer-header {
-			top: 46px;
+	.o_modal_fullscreen {
+		.o_viewer_content {
+			padding-top: 46px;
+			.o_viewer-header {
+				top: 46px;
+			}
 		}
 	}
 	.o_content {
@@ -488,49 +646,79 @@ textarea, select, .o_form_view.o_form_editable .o_form_field_many2manytags,
 
 .o_onboarding {
 	@mixin o-onboarding-variation($bg1, $bg2, $ui1, $ui2) {
-        &, .o_onboarding_step_title, .o_onboarding_step_action, a.o_onboarding_all_done, .o_onboarding_all_done > .fa, .o_onboarding_btn_close {
-            color: white !important;
-        }
+		&, .o_onboarding_step_title, .o_onboarding_step_action, a.o_onboarding_all_done, .o_onboarding_all_done > .fa, .o_onboarding_btn_close {
+			color: white !important;
+		}
 
-        .o_onboarding_wrap {
-            @include o-onboarding-vertical-gradient(fade-out($bg1, 0.5), $bg2);
-            box-shadow: inset 0 -7px 20px -5px fade-out(black, 0.7);
-        }
+		.o_onboarding_wrap {
+			@include o-onboarding-vertical-gradient(fade-out($bg1, 0.5), $bg2);
+			box-shadow: inset 0 -7px 20px -5px fade-out(black, 0.7);
+		}
 
-        .o_onboarding_dot, .o_onboarding_progress {
-            background-color: fade-out(white, 0.5);
-        }
+		.o_onboarding_dot, .o_onboarding_progress {
+			background-color: fade-out(white, 0.5);
+		}
 
-        .o_onboarding_step_action {
-            border-color: fade-out(white, 0.5);
-        }
+		.o_onboarding_step_action {
+			border-color: fade-out(white, 0.5);
+			&.btn {
+				&:active {
+					background-color: $brand-primary-darker !important;
+				}
+			}
+		}
 
-        .progress-bar {
-            background-image: linear-gradient(90deg, $ui1, $ui2);
-        }
+		.progress-bar {
+			background-image: linear-gradient(90deg, $ui1, $ui2);
+		}
 
-        .o_onboarding_step {
-            &.o_onboarding_done, .o_onboarding_done + .o_onboarding_done {
-                .o_onboarding_dot, .o_onboarding_progress {
-                    background: $ui1;
-                }
-            }
+		.o_onboarding_step {
+			&.o_onboarding_done, .o_onboarding_done + .o_onboarding_done {
+				.o_onboarding_dot, .o_onboarding_progress {
+					background: $ui1;
+				}
+			}
 
-            &.o_onboarding_current .o_onboarding_dot {
-                background: $ui2;
-            }
-        }
-    }
+			&.o_onboarding_current .o_onboarding_dot {
+				background: $ui2;
+			}
+		}
+	}
 	// =========  Variation Templates  ==========
-    &.o_onboarding_blue {
-        @include o-onboarding-variation($o-onboarding-blue-bg-1, $o-onboarding-blue-bg-2, $o-onboarding-blue-ui-1, $o-onboarding-blue-ui-2);
-    }
+	&.o_onboarding_blue {
+		@include o-onboarding-variation($o-onboarding-blue-bg-1, $o-onboarding-blue-bg-2, $o-onboarding-blue-ui-1, $o-onboarding-blue-ui-2);
+	}
 
-    &.o_onboarding_orange {
-        @include o-onboarding-variation($o-onboarding-orange-bg-1, $o-onboarding-orange-bg-2, $o-onboarding-orange-ui-1, $o-onboarding-orange-ui-2);
-    }
+	&.o_onboarding_orange {
+		@include o-onboarding-variation($o-onboarding-orange-bg-1, $o-onboarding-orange-bg-2, $o-onboarding-orange-ui-1, $o-onboarding-orange-ui-2);
+	}
 
-    &.o_onboarding_violet {
-        @include o-onboarding-variation($o-onboarding-violet-bg-1, $o-onboarding-violet-bg-2, $o-onboarding-violet-ui-1, $o-onboarding-violet-ui-2);
-    }
+	&.o_onboarding_violet {
+		@include o-onboarding-variation($o-onboarding-violet-bg-1, $o-onboarding-violet-bg-2, $o-onboarding-violet-ui-1, $o-onboarding-violet-ui-2);
+	}
+}
+
+.o_tooltip {
+	border: $o-tip-border-width solid $o-tip-color;
+	
+	&::before {
+		border: 0 solid rgba(0, 0, 0, 0);
+	}
+	&.right::before {
+		border-right-color: $o-tip-color !important;
+	}
+	&.top::before {
+		border-top-color: $o-tip-color;
+	}
+	&.left::before {
+		border-left-color: $o-tip-color !important;
+	}
+	&.bottom::before {
+		border-bottom-color: $o-tip-color !important;
+	}
+	
+	&::after {
+		border-color: $o-tip-color;
+		background: radial-gradient(lighten($o-tip-color, 7%), $o-tip-color);
+	}
 }
