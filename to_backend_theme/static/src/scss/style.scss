@@ -759,11 +759,15 @@ select {
 .o_mail_thread,
 .o_mail_activity {
 	.o_thread_message {
+		&.o_mail_discussion {
+			background-color: #ffffff;
+		}
 		&.o_mail_not_discussion{
 			background-color: $gray-super-lighter;
 		}
 	}
 }
+
 .o_mail_discuss {
 	.o_mail_discuss_sidebar {
 		.o_mail_discuss_item {
