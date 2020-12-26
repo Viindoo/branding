@@ -766,8 +766,19 @@ select {
 			background-color: $gray-super-lighter;
 		}
 	}
+	.o_mail_thread_content {
+		background-color: #ffffff;
+	}
 }
-
+.o_thread_window {
+	.o_mail_thread {
+		.o_thread_date_separator {
+			.o_thread_date {
+				background-color: #ffffff;
+			}
+		}
+	}
+}
 .o_mail_discuss {
 	.o_mail_discuss_sidebar {
 		.o_mail_discuss_item {
