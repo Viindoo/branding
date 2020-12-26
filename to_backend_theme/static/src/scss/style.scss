@@ -131,6 +131,15 @@ body {
 
 .btn {
 	border-radius: 0px;
+	&:hover {
+		color: $brand-secondary-darker;
+	}
+}
+
+.btn-link {
+	&:hover {
+		color: $brand-secondary-darker;
+	}
 }
 
 .btn-primary {
@@ -641,9 +650,29 @@ select {
 }
 
 // Chat window
+
 .o_thread_window {
 	.o_thread_window_header {
 		background-color: $brand-primary;
+	}
+	.o_mail_thread {
+		.o_thread_date_separator {
+			.o_thread_date {
+				background-color: #ffffff;
+			}
+		}
+	}
+}
+
+.o_chatter {
+	&.o_chatter_composer_active {
+		.o_chatter_topbar {
+			.btn {
+				&.o_active {
+					color: $brand-secondary;
+				}
+			}
+		}
 	}
 }
 
@@ -660,6 +689,38 @@ select {
 		.o_form_view:not(.o_form_nosheet) {
 			.o_chatter {
 				overflow: auto;
+			}
+		}
+	}
+}
+
+.o_mail_preview {
+	background-color: $gray-super-lighter;
+}
+
+.o_mail_thread,
+.o_mail_activity {
+	.o_thread_message {
+		&.o_mail_discussion {
+			background-color: #ffffff;
+		}
+		&.o_mail_not_discussion{
+			background-color: $gray-super-lighter;
+		}
+	}
+	.o_mail_thread_content {
+		background-color: #ffffff;
+	}
+}
+
+.o_mail_discuss {
+	.o_mail_discuss_sidebar {
+		.o_mail_discuss_item {
+			> .badge {
+				background-color: $brand-secondary;
+			}
+			&.o_active {
+				    box-shadow: inset 3px 0 0 $brand-secondary;
 			}
 		}
 	}
@@ -747,48 +808,6 @@ select {
 	&::after {
 		border-color: $o-tip-color;
 		background: radial-gradient(lighten($o-tip-color, 7%), $o-tip-color);
-	}
-}
-
-// mail
-
-.o_mail_preview {
-	background-color: $gray-super-lighter;
-}
-
-.o_mail_thread,
-.o_mail_activity {
-	.o_thread_message {
-		&.o_mail_discussion {
-			background-color: #ffffff;
-		}
-		&.o_mail_not_discussion{
-			background-color: $gray-super-lighter;
-		}
-	}
-	.o_mail_thread_content {
-		background-color: #ffffff;
-	}
-}
-.o_thread_window {
-	.o_mail_thread {
-		.o_thread_date_separator {
-			.o_thread_date {
-				background-color: #ffffff;
-			}
-		}
-	}
-}
-.o_mail_discuss {
-	.o_mail_discuss_sidebar {
-		.o_mail_discuss_item {
-			> .badge {
-				background-color: $brand-secondary;
-			}
-			&.o_active {
-				    box-shadow: inset 3px 0 0 $brand-secondary;
-			}
-		}
 	}
 }
 
