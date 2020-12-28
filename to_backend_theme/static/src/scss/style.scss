@@ -496,14 +496,6 @@ select {
 			border-bottom: 1px solid #ccc;
 		}
 	}
-	
-	.o_form_sheet {
-		button {
-			&.btn-secondary{
-				border: 1px solid $gray-lighter;
-			}
-		}
-	}
 
 	.o_form_sheet_bg {
 		background: none !important;
