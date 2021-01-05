@@ -30,7 +30,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
 
     """,
 
-    'author': "T.V.T Marine Automation (aka TVTMA)",
+    'author': "Viindoo",
     'website': "https://www.tvtmarine.com",
     'live_test_url': "https://v13demo-int.erponline.vn",
     'support': "support@ma.tvtmarine.com",
@@ -41,10 +41,9 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     	'static/description/icon.png'
 	],
     'data' : [
-        'data/update_icon.xml'
+        'views/assets.xml'
     ],
     'installable': True,
-    'uninstall_hook': '_uninstall_brand_icon',
     'application': False,
     'auto_install': True,
     'price': 99.9,

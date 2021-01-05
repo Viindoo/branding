@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<odoo>
-	<function model="viin.brand.base" name="update_module_icon">
-		<value>self</value>
-		<value>hr_skills</value>
-		<value>viin_brand_hr_skills</value>
-	</function>
-</odoo>

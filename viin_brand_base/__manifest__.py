@@ -40,11 +40,9 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'images' : [
         'static/description/icon.png'
     ],
-    'data' : [
-        'data/update_icon.xml'
-    ],
     'installable': True,
-    'uninstall_hook': '_uninstall_brand_icon',
+    'post_init_hook': 'post_init_hook',
+    'uninstall_hook': 'uninstall_hook',
     'application': False,
     'auto_install': True,
     'price': 99.9,
