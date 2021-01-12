@@ -702,6 +702,15 @@ select {
 
 .o_mail_preview {
 	background-color: $gray-super-lighter;
+	&.o_preview_unread {
+		.o_preview_info {
+			.o_preview_title {
+				.o_last_message_date {
+					color: $brand-secondary;
+				}
+			}
+		}
+	}
 }
 
 .o_mail_thread,
@@ -726,7 +735,7 @@ select {
 				background-color: $brand-secondary;
 			}
 			&.o_active {
-				    box-shadow: inset 3px 0 0 $brand-secondary;
+				box-shadow: inset 3px 0 0 $brand-secondary;
 			}
 		}
 	}
@@ -824,6 +833,28 @@ select {
 	&::after {
 		border-color: $o-tip-color;
 		background: radial-gradient(lighten($o-tip-color, 7%), $o-tip-color);
+	}
+}
+
+.o_attachment {
+	.o_attachment_delete {
+		&:hover {
+			background: $brand-secondary;
+		}
+	}
+	.o_attachment_wrap {
+		a {
+			&.o_attachment_download {
+				&:hover {
+					color: $brand-secondary;
+				}
+			}
+		}
+		.o_attachment_delete_cross {
+			&:hover {
+				color: $brand-secondary;
+			}
+		}
 	}
 }
 
