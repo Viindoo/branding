@@ -4,22 +4,24 @@ odoo.define('viin_brand.settings', function(require) {
     var BaseSettingRenderer = require('base.settings').Renderer;
 
     BaseSettingRenderer.include({
-        _getAppIconUrl: function(module) {
-			function checkFileExists(url){
-				var http = new XMLHttpRequest();
-				http.open('HEAD', url, false);
-				http.send();
-				return http.status != 404;
-				}
+		_renderTabs: function () {
+			var self = this;
+			self._super.apply(self, arguments);
 			
-			var module_icon = "/viin_brand/static/img/" + module + ".png";
-			
-			if (module == 'general_settings') {
-	    		return "/viin_brand/static/img/settings.png";
-			} else if (checkFileExists(module_icon)){
-                return module_icon;
-            }
-			return this._super.apply(this, arguments);
-		}
+			_.each(self.modules, function(module){
+				var module_icon = module.key == 'general_settings' ? '/viin_brand/static/img/settings.png' : '/viin_brand/static/img/' + module.key + '.png';
+				self._rpc({
+					model: 'res.config.settings',
+					method: 'check_file_exists',
+					args: [module_icon],
+				})
+				.then(function(result){
+					if (result){
+						module.imgurl = module_icon;
+						self.$('.tab[data-key="' + module.key + '"] > div').attr('style', `background : url("${module.imgurl}") no-repeat center;background-size:contain;`);
+					}
+				});
+			});
+    	},
 	});
 });
