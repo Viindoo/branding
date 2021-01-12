@@ -810,7 +810,13 @@ select {
 		@include o-onboarding-variation($o-onboarding-violet-bg-1, $o-onboarding-violet-bg-2, $o-onboarding-violet-ui-1, $o-onboarding-violet-ui-2);
 	}
 }
-
+.tooltip {
+	.tooltip-inner {
+		.oe_tooltip_string {
+			background-color: $brand-primary-dark;
+		}
+	}
+}
 .o_tooltip {
 	border: $o-tip-border-width solid $o-tip-color;
 	
@@ -863,6 +869,15 @@ select {
 		.o_mail_mobile_tab {
 			&.active {
 				> span {
+					color: $brand-secondary;
+				}
+			}
+		}
+	}
+	.o_thread_composer {
+		&:not(.o_chat_mini_composer){
+			.o_composer {
+				.o_composer_button_send {
 					color: $brand-secondary;
 				}
 			}
