@@ -10,11 +10,20 @@ get_module_icon = module.get_module_icon
 
 
 def get_viin_brand_module_icon(module):
-    module_icon = '/viin_brand/static/img/%s.png' % module
+    module_icon = '/viin_brand/static/img/apps/%s.png' % module
+    origin_module_icon = '/%s/static/description/icon.png' % module
+    
+    has_icon = False
     for adp in odoo.addons.__path__:
         if os.path.exists(adp + module_icon): 
             return module_icon
-    return '/viin_brand/static/img/%s.png' % 'base'
+        elif os.path.exists(adp + origin_module_icon):
+            has_icon = True
+    
+    if has_icon:
+        return origin_module_icon
+    
+    return '/viin_brand/static/img/apps/%s.png' % 'base'
 
 
 def post_load():
@@ -32,11 +41,11 @@ def _update_viin_brand_web_icon(env):
             if module == 'settings' or module == 'modules':
                 paths[0] = module
             
-            module_icon = '/viin_brand/static/img/%s.png' % paths[0]
+            module_icon = '/viin_brand/static/img/apps/%s.png' % paths[0]
             for adp in odoo.addons.__path__:
                 if os.path.exists(adp + module_icon): 
                     m.write({
-                        'web_icon': 'viin_brand,static/img/%s.png' % paths[0],
+                        'web_icon': 'viin_brand,static/img/apps/%s.png' % paths[0],
                         })
                     break
 

@@ -9,7 +9,7 @@ odoo.define('viin_brand.settings', function(require) {
 			self._super.apply(self, arguments);
 			
 			_.each(self.modules, function(module){
-				var module_icon = module.key == 'general_settings' ? '/viin_brand/static/img/settings.png' : '/viin_brand/static/img/' + module.key + '.png';
+				var module_icon = module.key == 'general_settings' ? '/viin_brand/static/img/apps/settings.png' : '/viin_brand/static/img/apps/' + module.key + '.png';
 				self._rpc({
 					model: 'res.config.settings',
 					method: 'check_file_exists',
