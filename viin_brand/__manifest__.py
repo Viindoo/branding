@@ -36,19 +36,15 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'support': "support@ma.tvtmarine.com",
     'category': 'Hidden',
     'version': '0.1',
-    'depends': ['base'],
+    'depends': ['to_base'],
     'images' : [
         'static/description/icon.png'
     ],
     'data' : [
-        'views/assets.xml'
     ],
-    'post_load': 'post_load',
-    'pre_init_hook': 'pre_init_hook',
-    'uninstall_hook': 'uninstall_hook',
-    'installable': True,
+    'installable': False,
     'application': False,
-    'auto_install': True,
+    'auto_install': False,
     'price': 99.9,
     'currency': 'EUR',
     'license': 'OPL-1',
