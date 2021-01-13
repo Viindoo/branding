@@ -524,8 +524,12 @@ select {
 						color: $brand-secondary;
 					}
 				}
-				&:not(.disabled):hover{
-					color: $brand-secondary-dark;
+				&:not(.disabled) {
+					&:hover,
+					&:active,
+					&:focus {
+						color: $brand-secondary-dark;
+					}
 				}
 			}
 		}
