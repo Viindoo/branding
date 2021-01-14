@@ -56,6 +56,11 @@ $o-onboarding-violet-bg-2: $brand-primary-dark;
 $o-onboarding-violet-ui-1: $brand-secondary-dark;
 $o-onboarding-violet-ui-2: $brand-secondary-light;
 
+:root {
+  --primary: #00bbce;
+  --secondary: #7f4282;
+}
+
 body {
 	font-family: "Roboto";
 }
@@ -899,6 +904,15 @@ select {
 			}
 		}
 	}
+	.o_control_panel {
+		.breadcrumb-item {
+			&:nth-last-of-type(2) {
+				&::before {
+					color: $brand-secondary;
+				}
+			}
+		}
+	}
 }
 
 @media (max-width: 575.98px){
@@ -910,6 +924,19 @@ select {
 						.modal-header {
 							background: $brand-primary-darker;
 						}
+					}
+				}
+			}
+		}
+	}
+}
+@media (max-width: 474.98px) {
+	.o_field_widget {
+		&.o_field_image {
+			.o_form_image_controls {
+				> .fa {
+					&.o_select_file_button {
+						background: $brand-secondary;
 					}
 				}
 			}
