@@ -345,11 +345,23 @@ select {
 }
 
 .o_web_client {
-	input:focus,
-	textarea:focus,
-	select:focus {
-		outline: none;
-		border-bottom: 2px solid $brand-primary;
+	input,
+	textarea,
+	select {
+		&:focus {
+			outline: none;
+			border-bottom: 2px solid $brand-primary;
+		}
+	}
+	.o_mobile_search {
+		.o_mobile_search_header {
+			background-color: $brand-primary-dark;
+			span {
+				&:active {
+					background-color: $brand-primary-darker;
+				}
+			}
+		}
 	}
 }
 
