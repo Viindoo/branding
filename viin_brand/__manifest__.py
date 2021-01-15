@@ -36,7 +36,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'support': "support@ma.tvtmarine.com",
     'category': 'Hidden',
     'version': '0.1',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'data' : [
     ],
     'installable': True,
