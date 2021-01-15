@@ -885,6 +885,24 @@ select {
 	}
 }
 
+.o_dashboards {
+	.o_website_dashboard {
+		.o_dashboard_common {
+			.o_inner_box {
+				background-color: $brand-secondary;
+			}
+		}
+		div {
+			&.o_box {
+				h2,
+				h4 {
+					color: $brand-primary;
+				}
+			}
+		}
+	}
+}
+
 @media (max-width: 767.98px) {
 	.o_mail_mobile_tabs {
 		.o_mail_mobile_tab {
