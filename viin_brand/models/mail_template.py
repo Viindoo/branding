@@ -7,16 +7,15 @@ class MailTemplate(models.Model):
     def _prepare_word_replace(self):
         return [
             ('Odoo', 'Viindoo EOS'),
-            ('www.odoo.com', 'www.viindoo.com'),
-            ('www.openerp.com', 'www.viindoo.com')
+            ('odoo.com', 'viindoo.com'),
+            ('openerp.com', 'viindoo.com')
         ]
     
     def replace_brand(self):
         word = self._prepare_word_replace()  
         for word_origin, word_new in word:
-            for r in self.filtered(lambda m: m.body_html):
-                if r.body_html != r.body_html.replace(word_origin, word_new):
-                    r.body_html = r.body_html.replace(word_origin, word_new)
+            for r in self.filtered(lambda m: m.body_html and m.body_html != m.body_html.replace(word_origin, word_new)):
+                r.body_html = r.body_html.replace(word_origin, word_new)
     
     @api.model
     def create(self, vals):

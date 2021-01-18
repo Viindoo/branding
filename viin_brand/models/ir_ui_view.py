@@ -1,4 +1,4 @@
-from odoo.addons.viin_brand_eos.models.mail_template import MailTemplate
+from odoo.addons.viin_brand.models.mail_template import MailTemplate
 from odoo import models, api
 
 
