@@ -903,6 +903,14 @@ select {
 	}
 }
 
+.o_progressbar {
+	.o_progress {
+		.o_progressbar_complete {
+			background-color: $brand-secondary;
+		}
+	}
+}
+
 @media (max-width: 767.98px) {
 	.o_mail_mobile_tabs {
 		.o_mail_mobile_tab {
