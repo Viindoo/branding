@@ -1,13 +1,14 @@
-from odoo.addons.viin_brand.models.mail_template import MailTemplate
 from odoo import models, api
+
+from ..__init__ import _get_debranding_words_map
 
 
 class View(models.Model):
     _inherit = 'ir.ui.view'
 
-    def replace_brand(self):
-        word = MailTemplate._prepare_word_replace(self)  
-        for word_origin, word_new in word:
+    def _viindoo_debrand(self):
+        words_map = _get_debranding_words_map()
+        for word_origin, word_new in words_map:
             for r in self.filtered_domain([('type', '=', 'qweb')]):
                 if r.arch != r.arch.replace(word_origin, word_new):
                     r.arch = r.arch.replace(word_origin, word_new)
@@ -15,10 +16,10 @@ class View(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         res = super(View, self).create(vals_list)
-        res.replace_brand()
+        res._viindoo_debrand()
         return res
     
     def write(self, vals):
         res = super(View, self).write(vals)
-        self.replace_brand()
+        self._viindoo_debrand()
         return res

@@ -35,10 +35,11 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'live_test_url': "https://v13demo-int.erponline.vn",
     'support': "support@ma.tvtmarine.com",
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
     'depends': ['base', 'mail'],
     'data' : [
     ],
+    'post_init_hook': 'post_init_hook',
     'installable': True,
     'application': False,
     'auto_install': True,
