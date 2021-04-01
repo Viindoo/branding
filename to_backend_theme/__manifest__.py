@@ -23,6 +23,7 @@
     "auto_install": True,
     "depends": [
         'web_responsive',
+        'viin_brand_common',
     ],
     "data": [
         'views/assets.xml',
