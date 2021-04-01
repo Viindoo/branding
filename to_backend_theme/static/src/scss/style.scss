@@ -15,54 +15,7 @@ $gray-light:             #AEA79F;
 $gray-lighter: lighten($gray-base, 93.5%);
 $gray-super-lighter: lighten($gray-base, 95%);
 
-
-// Change colors here
-$o-community-color: #00bbce;
-$o-enterprise-color: #00bbce;
-$o-enterprise-primary-color: #7f4282;
-
-$o-brand-odoo: $o-community-color;
-$o-brand-primary: $o-enterprise-primary-color;
-$brand-primary: $o-enterprise-color;
-$brand-secondary: $o-enterprise-primary-color;
-$o-tip-color: $brand-primary;
-$o-tip-border-width: 2px;
-
-$brand-primary-dark: darken($brand-primary, 10%);
-$brand-primary-darker: darken($brand-primary, 20%);
-$brand-primary-light: lighten($brand-primary, 10%);
-$brand-primary-lighter: lighten($brand-primary, 20%);
-$brand-primary-super-light: lighten($brand-primary, 50%);
-
-$brand-secondary-dark: darken($brand-secondary, 10%);
-$brand-secondary-darker: darken($brand-secondary, 20%);
-$brand-secondary-light: lighten($brand-secondary, 10%);
-$brand-secondary-lighter: lighten($brand-secondary, 20%);
-$brand-secondary-super-light: lighten($brand-secondary, 50%);
-$brand-secondary-super-lighter: lighten($brand-secondary, 55%);
-// onboarding
-$o-onboarding-blue-bg-1: $brand-primary-light;
-$o-onboarding-blue-bg-2: $brand-primary-dark;
-$o-onboarding-blue-ui-1: $brand-secondary-dark;
-$o-onboarding-blue-ui-2: $brand-secondary-light;
-
-$o-onboarding-orange-bg-1: $brand-primary-light;
-$o-onboarding-orange-bg-2: $brand-primary-dark;
-$o-onboarding-orange-ui-1: $brand-secondary-dark;
-$o-onboarding-orange-ui-2: $brand-secondary-light;
-
-$o-onboarding-violet-bg-1: $brand-primary-light;
-$o-onboarding-violet-bg-2: $brand-primary-dark;
-$o-onboarding-violet-ui-1: $brand-secondary-dark;
-$o-onboarding-violet-ui-2: $brand-secondary-light;
-
-$link-color: $brand-secondary;
 $link-hover-color: $brand-secondary-darker;
-
-:root {
-  --primary: #00bbce;
-  --secondary: #7f4282;
-}
 
 body {
 	font-family: "Roboto";
@@ -73,9 +26,6 @@ body {
 }
 
 .o_main_navbar {
-	background-color : $brand-primary-dark;
-	border-bottom: 1px solid $brand-primary-darker;
-
 	.show {
 		.dropdown-toggle {
 			background-color: $brand-primary-darker !important;
@@ -92,31 +42,6 @@ body {
 			height: 36px;
 			width: 36px;
 			transform: initial;
-		}
-	}
-	> a,
-	> button {
-		&:hover,
-		&:focus {
-			background-color: $brand-primary-dark;
-			color: inherit;
-		}
-	}
-
-	> ul {
-		background-color: $brand-primary-dark;
-		> li {
-			> label,
-			> a {
-				&:hover,
-				&:focus{
-					background-color: $brand-primary-darker;
-				}
-			}
-		}
-		&.o_menu_systray {
-			float: right;
-			position: relative;
 		}
 	}
 }
@@ -390,35 +315,12 @@ select {
 	}
 }
 
-.o_input {
-	border: 1px solid $gray-lighter;
-	border-top-style: none;
-	border-right-style: none;
-	border-left-style: none;
-}
-
 .o_required_modifier {
-	&.o_input,
-	.o_input{
-		background-color: $brand-secondary-super-lighter !important;
-		border-bottom: 1px solid $brand-secondary;
-		&:focus{
-			border-bottom: 2px solid $brand-secondary !important;
-		}
-	}
 	textarea,
 	select {
 		border-bottom: 1px solid $brand-secondary;
 		&:focus{
 			border-bottom: 2px solid $brand-secondary !important;
-		}
-	}
-}
-
-.o_field_widget {
-	&.o_field_many2one {
-		.o_external_button {
-			color: $brand-secondary
 		}
 	}
 }
@@ -560,27 +462,6 @@ select {
 		}
 	} 
 
-	.o_form_statusbar {
-		//margin: -16px;
-		.o_statusbar_status {
-			> .o_arrow_button {
-				background: #ffffff;
-				&.btn-primary{
-					&.disabled {
-						color: $brand-secondary;
-					}
-				}
-				&:not(.disabled) {
-					&:hover,
-					&:active,
-					&:focus {
-						color: $brand-secondary-dark;
-					}
-				}
-			}
-		}
-	}
-
 	.o_horizontal_separator {
 		color: #666666;
 		font-weight: bold;
@@ -588,9 +469,6 @@ select {
 	
 	.oe_button_box {
 		.oe_stat_button {
-			.o_button_icon {
-				color: $brand-secondary !important;
-			}
 			.o_stat_info {
 				.o_stat_value {
 					color: $brand-secondary !important;
@@ -801,75 +679,6 @@ select {
 	}
 }
 
-.o_mail_systray_item {
-	.o_notification_counter {
-		background: $brand-secondary;
-	}
-	.o_mail_systray_dropdown {
-		.o_mail_systray_dropdown_top {
-			.o_filter_button {
-				&.active,
-				&:hover {
-					color: $brand-secondary;
-				}
-			}
-		}
-	}
-}
-
-.o_onboarding {
-	@mixin o-onboarding-variation($bg1, $bg2, $ui1, $ui2) {
-		&, .o_onboarding_step_title, .o_onboarding_step_action, a.o_onboarding_all_done, .o_onboarding_all_done > .fa, .o_onboarding_btn_close {
-			color: white !important;
-		}
-
-		.o_onboarding_wrap {
-			@include o-onboarding-vertical-gradient(fade-out($bg1, 0.5), $bg2);
-			box-shadow: inset 0 -7px 20px -5px fade-out(black, 0.7);
-		}
-
-		.o_onboarding_dot, .o_onboarding_progress {
-			background-color: fade-out(white, 0.5);
-		}
-
-		.o_onboarding_step_action {
-			border-color: fade-out(white, 0.5);
-			&.btn {
-				&:active {
-					background-color: $brand-primary-darker !important;
-				}
-			}
-		}
-
-		.progress-bar {
-			background-image: linear-gradient(90deg, $ui1, $ui2);
-		}
-
-		.o_onboarding_step {
-			&.o_onboarding_done, .o_onboarding_done + .o_onboarding_done {
-				.o_onboarding_dot, .o_onboarding_progress {
-					background: $ui1;
-				}
-			}
-
-			&.o_onboarding_current .o_onboarding_dot {
-				background: $ui2;
-			}
-		}
-	}
-	// =========  Variation Templates  ==========
-	&.o_onboarding_blue {
-		@include o-onboarding-variation($o-onboarding-blue-bg-1, $o-onboarding-blue-bg-2, $o-onboarding-blue-ui-1, $o-onboarding-blue-ui-2);
-	}
-
-	&.o_onboarding_orange {
-		@include o-onboarding-variation($o-onboarding-orange-bg-1, $o-onboarding-orange-bg-2, $o-onboarding-orange-ui-1, $o-onboarding-orange-ui-2);
-	}
-
-	&.o_onboarding_violet {
-		@include o-onboarding-variation($o-onboarding-violet-bg-1, $o-onboarding-violet-bg-2, $o-onboarding-violet-ui-1, $o-onboarding-violet-ui-2);
-	}
-}
 .tooltip {
 	.tooltip-inner {
 		.oe_tooltip_string {
