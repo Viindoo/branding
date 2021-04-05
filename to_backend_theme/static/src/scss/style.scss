@@ -22,20 +22,13 @@ body {
 
 .o_mail_user_status {
 	&.o_user_online {
-		color: $brand-primary-dark;
+		color: $brand-primary;
 	}
 }
 
 .o_thread_window {
 	.o_thread_window_header {
 		background-color: $brand-primary-dark;
-		.o_thread_window_title {
-			.o_mail_user_status {
-				&.o_user_online {
-					color: $brand-primary;
-				}
-			}
-		}
 	}
 	.o_mail_thread {
 		.o_thread_date_separator {
@@ -43,12 +36,6 @@ body {
 				background-color: $white;
 			}
 		}
-	}
-}
-
-.o_mail_thread_message_seen_icon {
-	&.o_all_seen {
-		color: $brand-primary-darker;
 	}
 }
 
