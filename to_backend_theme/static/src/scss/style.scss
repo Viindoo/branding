@@ -40,17 +40,20 @@ body {
 }
 
 // Form view
-.o_thread_composer {
-	.o_composer_mention_dropdown {
-		position: absolute;
-		top: 100%;
-		// force mention drop to show below composer
-		> .dropdown-menu {
+.o_chatter_header_container {
+	.o_thread_composer {
+		.o_composer_mention_dropdown {
+			position: absolute;
 			top: 100%;
-			bottom: auto;
-			}
+			// force mention drop to show below composer
+			> .dropdown-menu {
+				top: 100%;
+				bottom: auto;
+				}
+		}
 	}
 }
+
 
 // Filter search label
 
