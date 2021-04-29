@@ -73,6 +73,10 @@
 				<link rel="stylesheet" type="text/scss"
 					href="/viin_brand_common/static/src/scss/base_settings.scss" />
 			</xpath>
+			<xpath expr=".">
+				<link rel="stylesheet" type="text/scss"
+					href="/viin_brand_common/static/src/scss/web_responsive.scss" />
+			</xpath>
 		</template>
 	</data>
 </odoo>

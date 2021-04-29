@@ -1,0 +1,7 @@
+// Document Viewer
+.o_web_client.o_chatter_position_sided {
+    .o_modal_fullscreen.o_document_viewer {
+        // On-top of navbar
+        z-index: 1052!important;
+    }
+}
