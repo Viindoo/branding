@@ -31,9 +31,9 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     """,
 
     'author': "Viindoo",
-    'website': "https://www.tvtmarine.com",
+    'website': "https://viindoo.com",
     'live_test_url': "https://v13demo-int.erponline.vn",
-    'support': "support@ma.tvtmarine.com",
+    'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1.1',
     'depends': ['base', 'mail'],

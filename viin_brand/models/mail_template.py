@@ -11,9 +11,9 @@ class MailTemplate(models.Model):
             for r in self.filtered(lambda m: m.body_html and m.body_html != m.body_html.replace(word_origin, word_new)):
                 r.body_html = r.body_html.replace(word_origin, word_new)
     
-    @api.model
-    def create(self, vals):
-        res = super(MailTemplate, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super(MailTemplate, self).create(vals_list)
         res._viindoo_debrand()
         return res
     
