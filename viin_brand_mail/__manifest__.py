@@ -40,6 +40,7 @@ Editions Supported
     # always loaded
     'data': [
         'views/mail_data.xml',
+        'views/res_config_settings_views.xml',
     ],
     'installable': True,
     'application': False,
