@@ -16,7 +16,21 @@
 		color: $brand-primary;
 	}
 }
+
 .o_thread_window {
+
+	font-size: 1.1em;
+
+	.o_thread_composer {
+		.o_composer {
+			.o_composer_input {
+				> textarea {
+					font-size: 1.1em;
+				}
+			}
+		}
+	}
+
 	.o_thread_window_header {
 		background-color: $brand-primary-dark;
 	}
