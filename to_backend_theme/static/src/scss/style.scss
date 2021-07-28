@@ -30,7 +30,13 @@
 			}
 		}
 	}
-
+	.o_mail_thread {
+		.o_thread_message {
+			.o_thread_message_sidebar {
+				font-size: 12px;
+			}
+		}
+	}
 	.o_thread_window_header {
 		background-color: $brand-primary-dark;
 	}
