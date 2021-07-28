@@ -30,6 +30,13 @@
 			</xpath>
 		</template>
 
+		<template id="_assets_helpers" inherit_id="web._assets_helpers">
+			<xpath expr="//link[last()]" position="before">
+				<link rel="stylesheet" type="text/scss"
+					  href="/viin_brand_common/static/src/scss/bootstrap_overridden_common.scss"/>
+			</xpath>
+		</template>
+
 		<template id="assets_common"
 			name="Viindoo Common Assets (to be used in both backend and website)"
 			inherit_id="web.assets_common">
