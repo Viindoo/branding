@@ -1,12 +1,3 @@
-@font-face {
-    font-family: Roboto;
-    src: url(/to_backend_theme/static/src/font/Roboto-Regular.ttf)
-}
-
-body {
-	font-family: "Roboto";
-}
-
 // App Dashboard
 
 .o_menu_apps {	
@@ -25,8 +16,17 @@ body {
 		color: $brand-primary;
 	}
 }
-
 .o_thread_window {
+	font-size: 1.1em;
+	.o_thread_composer {
+		.o_composer {
+			.o_composer_input {
+				> textarea {
+					font-size: 1.1em;
+				}
+			}
+		}
+	}
 	.o_thread_window_header {
 		background-color: $brand-primary-dark;
 	}
