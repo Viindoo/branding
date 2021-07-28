@@ -17,25 +17,8 @@
 	}
 }
 .o_thread_window {
-	font-size: 1.1em;
-	.o_thread_composer {
-		.o_composer {
-			.o_composer_input {
-				> textarea {
-					font-size: 1.1em;
-				}
-			}
-		}
-	}
 	.o_thread_window_header {
 		background-color: $brand-primary-dark;
-	}
-	.o_mail_thread {
-		.o_thread_date_separator {
-			.o_thread_date {
-				background-color: $white;
-			}
-		}
 	}
 }
 
