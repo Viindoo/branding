@@ -49,9 +49,9 @@ Editions Supported
     'images': [
     	# 'static/description/main_screenshot.png'
     	],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False,  # mark this as True after upgrade for Odoo 14
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

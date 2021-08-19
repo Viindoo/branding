@@ -44,9 +44,9 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'views/assets.xml',
         'views/webclient_template.xml'
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # mark this as ['web'] after upgrade for Odoo 14
+    'auto_install': ['web'], # mark this as ['web'] after upgrade for Odoo 14
     'price': 99.9,
     'currency': 'EUR',
     'license': 'OPL-1',

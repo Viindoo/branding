@@ -37,12 +37,12 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'category': 'Hidden',
     'version': '0.1',
     'depends': ['base'],
-    'images' : [
+    'images': [
         'static/description/icon.png'
     ],
-    'data' : [
+    'data': [
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
     'auto_install': True,
     'price': 99.9,

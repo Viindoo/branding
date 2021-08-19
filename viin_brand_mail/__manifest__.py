@@ -42,9 +42,9 @@ Editions Supported
         'views/mail_data.xml',
         'views/res_config_settings_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # mark this as True after upgrade for Odoo 14
+    'auto_install': True,
     'price': 99.9,
     'currency': 'EUR',
     'license': 'OPL-1',
