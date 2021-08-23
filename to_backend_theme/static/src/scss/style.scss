@@ -97,27 +97,12 @@ body {
 			border-radius: 0 0 0 0;
 		}
 	}
-	.o_thread_message.o_mail_discussion {
-		@include media-breakpoint-down(sm) {
-			padding-right: 0;
-			padding-left: 0;
-		}
-	}
 }
 
 .o_control_panel {
 	.o_cp_right {
 		.btn-secondary {
 			border-color: $white;
-		}
-	}
-}
-
-//mail thread
-.o_thread_message.o_mail_discussion {
-	.o_thread_message_core {
-		.o_thread_message_content {
-			overflow-x: scroll;
 		}
 	}
 }
