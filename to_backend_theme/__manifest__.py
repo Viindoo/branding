@@ -20,7 +20,7 @@
 	],
     "license": "LGPL-3",
     "installable": True,
-    "auto_install": True,
+    "auto_install": ['viin_brand_common'],
     "depends": [
         'web_responsive',
         'viin_brand_common',
