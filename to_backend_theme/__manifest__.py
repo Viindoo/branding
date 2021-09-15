@@ -8,7 +8,7 @@
     "summary": "Mobile backend theme for Odoo community",
     "version": "13.0.1.0.23",
     "category": "Website/Theme/Backend",
-    'author' : 'Openworx, Viindoo',
+    'author': 'Openworx, Viindoo',
     'website': 'https://www.erponline.vn',
     'live_test_url': 'https://v13demo-int.erponline.vn',
     'support': 'support@ma.tvtmarine.com',
@@ -20,18 +20,20 @@
 	],
     "license": "LGPL-3",
     "installable": True,
-    "auto_install": ['viin_brand_common'],
+    "auto_install": ['web'],
     "depends": [
+        'web',
+        'web_editor',
         'web_responsive',
         'viin_brand_common',
     ],
     "data": [
         'views/assets.xml',
 		'views/res_company_view.xml',
-		#'views/users.xml',
-        #'views/sidebar.xml',
+		# 'views/users.xml',
+        # 'views/sidebar.xml',
     ],
-    #'live_test_url': 'https://youtu.be/JX-ntw2ORl8'
+    # 'live_test_url': 'https://youtu.be/JX-ntw2ORl8'
 
 }
 
