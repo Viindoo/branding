@@ -11,10 +11,8 @@
     'author': 'Openworx, Viindoo',
     'website': 'https://www.erponline.vn',
     'live_test_url': 'https://v13demo-int.erponline.vn',
-    'support': 'support@ma.tvtmarine.com',
-	"description": """
-		Backend theme for Odoo community edition, based on the Openworx Backend Theme
-    """,
+    'support': 'apps.support@viindoo.com',
+	"description": """Backend theme for Viindoo, based on the Openworx Backend Theme""",
 	'images':[
         'images/screen.png'
 	],
@@ -33,7 +31,5 @@
 		# 'views/users.xml',
         # 'views/sidebar.xml',
     ],
-    # 'live_test_url': 'https://youtu.be/JX-ntw2ORl8'
-
 }
 
