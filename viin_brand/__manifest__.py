@@ -37,9 +37,6 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'category': 'Hidden',
     'version': '0.1',
     'depends': ['base'],
-    'images' : [
-        'static/description/icon.png'
-    ],
     'data' : [
     ],
     'installable': True,
