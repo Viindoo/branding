@@ -1,2 +1,1 @@
-https://github.com/tvtma/web.git#13.0
-https://github.com/Viindoo/branding.git#13.0
+https://github.com/Viindoo/branding.git#14.0
