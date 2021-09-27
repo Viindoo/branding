@@ -35,9 +35,9 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'live_test_url': "https://v13demo-int.erponline.vn",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1.1',
-    'depends': ['base', 'mail'],
-    'data' : [
+    'version': '0.1',
+    'depends': ['base'],
+    'data': [
     ],
     'post_init_hook': 'post_init_hook',
     'installable': True,

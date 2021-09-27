@@ -32,7 +32,7 @@ Editions Supported
     'live_test_url': "https://v13demo-int.erponline.vn",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1.0',
+    'version': '0.1.1',
 
     # any module necessary for this one to work correctly
     'depends': ['mail', 'viin_brand_common'],
