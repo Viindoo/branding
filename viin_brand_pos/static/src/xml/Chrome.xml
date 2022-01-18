@@ -1,0 +1,7 @@
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.Chrome" t-inherit-mode="extension" >
+        <xpath expr="//img[hasclass('pos-logo')]" position="attributes">
+            <attribute name="src">/viin_brand_pos/static/src/img/viindoo-logo.png</attribute>
+        </xpath>
+    </t>
+</templates>

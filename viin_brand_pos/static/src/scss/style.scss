@@ -1,0 +1,78 @@
+.pos-logo{
+    filter: brightness(0) invert(1);
+}
+
+.pos .oe_status .oe_green, .pos .oe_icon.oe_green{
+     color: rgb(94, 255, 55);
+}
+
+.pos .pos-topheader{
+    background: $brand-primary-dark;
+}
+
+.pos .pos-rightheader > * ,
+.pos .pos-rightheader .header-button{
+    border-right: 1px solid $brand-primary-dark;
+}
+
+.pos .pos-rightheader .header-button:last-child{
+    border-left: 1px solid $brand-primary-dark;
+}
+
+.pos .pos-rightheader .header-button{
+    border-left: 1px solid $brand-primary-dark;
+}
+
+.pos .mode-button.selected-mode,
+.ticket-button.highlight,
+.ticket-button:hover,
+.pos .mode-button.selected-mode:hover{
+    background: $brand-primary-darker;
+}
+
+.pos .product .price-tag{
+    background: lighten($o-enterprise-primary-color,20%);
+}
+
+.pos .clientlist-screen .client-list tr.highlight,
+.pos .button.highlight{
+    background: $primary !important;
+}
+
+.pos .control-button.highlight,
+.ticket-screen .controls button.highlight,
+.order-row.highlight,
+.ticket-screen .order-row:hover{
+    background: $primary;
+}
+
+.receipt-screen .default-view .actions .send-email button.send.highlight{
+    background-color: $primary;
+    opacity: 0.6;
+}
+
+
+.pos .pos-rightheader .header-button.confirm{
+    background: $danger;
+}
+
+.pos .oe_status .oe_red,
+.pos .oe_icon.oe_red{
+    color: $danger;
+}
+
+.pos .green-border-bottom{
+    border-bottom: solid 3px $brand-primary;
+}
+
+.pos .leftpane .pads{
+    border-top: solid 3px $brand-primary;
+}
+
+.pos .clientlist-screen .client-details{
+    border-bottom: solid 5px $brand-primary;
+}
+
+.payment-screen .paymentlines-empty .total{
+    color: $success;
+}
