@@ -76,3 +76,7 @@
 .payment-screen .paymentlines-empty .total{
     color: $success;
 }
+
+[badge]:after{
+    background: $primary;
+}
