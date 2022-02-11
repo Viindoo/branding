@@ -39,9 +39,9 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
         'images/screen.png'
     ],
 
-    'installable': True,
+    'installable': False,
     'application': False,
-    'auto_install': ['web'],
+    'auto_install': False, # Set this as ['web'] after upgrading for v15
     'price': 99.9,
     'currency': 'EUR',
     'license': 'LGPL-3',
