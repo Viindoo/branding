@@ -51,8 +51,17 @@ body {
 	}
 }
 
-.o_ComposerTextInput_textareaStyle {
-	border-radius: inherit;
+.o_web_client {
+    .o_Composer {
+        textarea {
+            border-bottom: initial;
+        }
+    }
+    
+}
+
+.o_ComposerSuggestion_part1 {
+    font-weight: 500;
 }
 
 // Filter search label
