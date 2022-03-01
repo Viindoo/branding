@@ -15,5 +15,65 @@
                 </t>
             </xpath>
         </template>
+        
+        <!--Show Website Info 
+            override template to adding some id tags
+        -->
+        <template id="show_website_info"
+            inherit_id="website.show_website_info">
+            <xpath expr="//section[hasclass('container')]" position="replace">
+                <section class="container">
+	                <t t-if="not version">
+	                    <meta http-equiv="refresh" content="0;URL='/website/info'" />
+	                </t>
+	                <t t-if="version">
+	                    <h1><t t-esc="res_company.name"/>
+	                        <small>Odoo Version <t t-raw="version.get('server_version')"/></small>
+	                    </h1>
+	                    <p>
+	                        Information about the <t t-esc="res_company.name"/> instance of <a target="_blank" href="https://www.viindoo.com">Viindoo</a>.
+	                    </p>
+	
+	                    <div class="alert alert-warning alert-dismissable mt16" groups="website.group_website_publisher" role="status">
+	                       <button type="button" class="close" data-dismiss="alert" aria-label="Close">×</button>
+	                       <p>
+	                         Note: To hide this page, uncheck it from the top Customize menu.
+	                       </p>
+	                    </div>
+	                    <h2>Installed Applications</h2>
+	                    <dl class="dl-horizontal" t-foreach="apps" t-as="app" id="non_l10n_app">
+	                        <dt id="url_non_l10n_app">
+	                            <a t-attf-href="https://www.viindoo.com/intro/#{app.make_url()}"
+	                               >
+	                               <t t-raw="app.shortdesc"/></a>
+<!-- 	                            <a href="https://www.viindoo.com" t-if="not app.website"><t t-raw="app.shortdesc"/></a> -->
+	                        </dt>
+	                        <dd>
+	                            <span t-raw="app.summary"/>
+	                        </dd><dd class="text-muted" groups='base.group_no_one'>
+	                            Technical name: <span t-field="app.name"/>, author: <span t-field="app.author"/>
+	                        </dd>
+	                    </dl>
+	
+	                    <div t-if="l10n">
+	                        <h2 class='mt32'>Installed Localizations / Account Charts</h2>
+	                        <dl class="dl-horizontal" t-foreach="l10n" t-as="app" id="l10n_app">
+	                            <dt id="url_l10n_app">
+	                                <a t-attf-href="https://www.viindoo.com/intro/accounting">
+	                                    <t t-raw="app.shortdesc"/>
+	                                </a>
+	                            </dt>
+	                            <dd>
+	                                <span t-raw="app.summary"/>
+	                            </dd>
+	                            <dd class="text-muted" groups='base.group_no_one'>
+	                                Technical name: <span t-field="app.name"/>, author: <span t-field="app.author"/>
+	                            </dd>
+	                        </dl>
+	                    </div>
+	                </t>
+                </section>
+            </xpath>
+        </template>
     </data>
 </odoo>
