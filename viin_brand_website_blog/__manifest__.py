@@ -1,5 +1,5 @@
 {
-    'name': "Website Blog - Heading blog post name for Viindoo",
+    'name': "Website Blog Debranding for Viindoo",
     'name_vi_VN': "",
 
     'summary': """
