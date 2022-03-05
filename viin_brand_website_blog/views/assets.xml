@@ -1,0 +1,8 @@
+<odoo>
+    <template id="assets_frontend" inherit_id="website_blog.assets_frontend">
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/scss"
+                href="/viin_brand_website_blog/static/src/scss/website_blog.scss" />
+      </xpath>
+    </template>
+</odoo>
