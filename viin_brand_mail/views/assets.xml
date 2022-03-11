@@ -15,10 +15,28 @@
                     href="/viin_brand_mail/static/src/scss/chat_window_header.scss" />
             </xpath>
             <xpath
+                expr="//link[@href='/mail/static/src/components/discuss_sidebar_item/discuss_sidebar_item.scss']"
+                position="after">
+                <link rel="stylesheet" type="text/scss"
+                    href="/viin_brand_mail/static/src/scss/discuss_sidebar_item.scss" />
+            </xpath>
+            <xpath
                 expr="//link[@href='/mail/static/src/components/message/message.scss']"
                 position="after">
                 <link rel="stylesheet" type="text/scss"
                     href="/viin_brand_mail/static/src/scss/message.scss" />
+            </xpath>
+            <xpath
+                expr="//link[@href='/mail/static/src/components/partner_im_status_icon/partner_im_status_icon.scss']"
+                position="after">
+                <link rel="stylesheet" type="text/scss"
+                    href="/viin_brand_mail/static/src/scss/partner_im_status_icon.scss" />
+            </xpath>
+            <xpath
+                expr="//link[@href='/mail/static/src/components/thread_icon/thread_icon.scss']"
+                position="after">
+                <link rel="stylesheet" type="text/scss"
+                    href="/viin_brand_mail/static/src/scss/thread_icon.scss" />
             </xpath>
 		</template>
 	</data>

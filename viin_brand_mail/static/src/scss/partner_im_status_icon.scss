@@ -1,0 +1,13 @@
+.o_PartnerImStatusIcon_icon {
+    &.o-bot {
+        color: $brand-primary;
+    }
+
+    &.o-offline {
+        color: gray('500');
+    }
+
+    &.o-online {
+        color: $brand-primary; 
+    }
+}

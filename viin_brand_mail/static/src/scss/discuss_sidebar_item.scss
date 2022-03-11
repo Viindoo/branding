@@ -1,0 +1,8 @@
+.o-unread {
+    color: $white;
+}
+.o_DiscussSidebarItem_activeIndicator {
+    &.o-item-active {
+        background-color: $brand-primary;
+    }
+}
