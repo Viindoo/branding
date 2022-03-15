@@ -78,7 +78,7 @@ msgstr ""
 #. module: web_responsive
 #: model:ir.model.fields,field_description:web_responsive.field_res_users____last_update
 msgid "Last Modified on"
-msgstr "Sửa lần cuối vào"
+msgstr "Sửa lần cuối"
 
 #. module: web_responsive
 #. openerp-web
