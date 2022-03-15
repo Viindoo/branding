@@ -44,9 +44,9 @@ Editions Supported
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set False after upgrading for v14
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
