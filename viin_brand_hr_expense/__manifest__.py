@@ -1,17 +1,17 @@
 {
-    'name': "Unsplash Image Library Branding For Viindoo",
-    'name_vi_VN': "Giao diện Viindoo cho module Unsplash Image Library ",
+    'name': "HR Expense Branding For Viindoo",
+    'name_vi_VN': "Giao diện Viindoo cho module Hr Expense ",
 
     'summary': """
-Theme branding Viindoo for module Unsplash Image Library""",
+Theme branding Viindoo for module Hr Expense""",
     'summary_vi_VN': """
-Giao diện brand Viindoo cho module Unsplash Image Library
+Giao diện brand Viindoo cho module Hr Expense
 """,
 
     'description': """
 What it does
 ============
-This module will change color in navigate bar, button and logo,v.v following Viindoo's brand
+This module will change color navigate bar, button and logo,v.v in module Hr Expense following Viindoo's brand
 
 
 Editions Supported
@@ -24,7 +24,7 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ===================
-Module này sẽ thay đổi giao diện cuả Unsplash Image Library theo thương hiệu Viindoo
+Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu Viindoo
 
 
 Ấn bản được Hỗ trợ
@@ -47,11 +47,12 @@ Module này sẽ thay đổi giao diện cuả Unsplash Image Library theo thư�
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['web_unsplash'],
+    'depends': ['hr_expense'],
 
     # always loaded
     'data': [
-        'views/res_config_settings_view.xml',
+        'views/assets.xml',
+        'views/hr_expense_views.xml',
     ],
     'installable': True,
     'application': False,
