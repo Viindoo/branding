@@ -93,7 +93,7 @@ msgstr ""
 #. module: web_responsive
 #: model:ir.model.fields.selection,name:web_responsive.selection__res_users__chatter_position__normal
 msgid "Normal"
-msgstr ""
+msgstr "Thông thường"
 
 #. module: web_responsive
 #. openerp-web
@@ -137,7 +137,7 @@ msgstr "Tìm kiếm..."
 #. module: web_responsive
 #: model:ir.model.fields.selection,name:web_responsive.selection__res_users__chatter_position__sided
 msgid "Sided"
-msgstr ""
+msgstr "Bên cạnh"
 
 #. module: web_responsive
 #. openerp-web
