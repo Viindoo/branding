@@ -45,8 +45,11 @@ Editions Supported
     'data': [
         # 'security/ir.model.access.csv',
         'views/templates.xml',
+        'views/res_config_settings_views.xml'
     ],
-
+    'qweb': [
+        'static/src/xml/website_backend.xml',
+        ],
     'images': [
     	# 'static/description/main_screenshot.png'
     	],
