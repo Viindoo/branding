@@ -21,7 +21,7 @@
 	        inherit_id="digest.digest_section_mobile">
 	        <xpath expr="//div[hasclass('global_layout')]/div/img" position="replace">
 				<img src="/viin_brand_digest/static/img/phone1.png" alt="Viindoo Mobile"
-				style="width:50%; display: block; margin-left: auto; margin-right: auto;"/>
+				style="width:25%; display: block; margin-left: auto; margin-right: auto;"/>
 	        </xpath>
 	        
 	        <xpath expr="//div[hasclass('global_layout')]/div/p/b[text()='Odoo Mobile']" position="replace">
