@@ -6,11 +6,11 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@id='web_unsplash_settings']/a[hasclass('o_doc_link')]" 
                     position="attributes">
-		        <attribute name="href">https://viindoo.com/documentation/14.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-libruary-at-unsplash.html</attribute>
+		        <attribute name="href">https://viindoo.com/documentation/14.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html</attribute>
             </xpath>
             <xpath expr="//div[@id='web_unsplash_settings']/div/div/a[hasclass('oe_link')]" 
                     position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-libruary-at-unsplash.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html</attribute>
             </xpath>
         </field>
     </record>
