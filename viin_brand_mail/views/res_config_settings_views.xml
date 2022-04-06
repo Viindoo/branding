@@ -11,6 +11,9 @@
 			<xpath expr="//field[@name='alias_domain']" position="attributes">
 				<attribute name="placeholder">mycompany.viindoo.com</attribute>
 			</xpath>
+			<xpath expr="//div[@id='email_servers_setting']/div/a" position="attributes">
+				<attribute name="href">https://viindoo.com/documentation/14.0/applications/productivity/discuss/advanced/how-to-set-mail-server-for-sending-receiving-emails-in-viindoo.html</attribute>
+			</xpath>
 		</field>
 	</record>
 </odoo>
