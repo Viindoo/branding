@@ -1,0 +1,13 @@
+<odoo>
+	<record id="acquirer_form_paypal" model="ir.ui.view">
+	    <field name="name">acquirer.form.paypal</field>
+	    <field name="model">payment.acquirer</field>
+	    <field name="inherit_id" ref="payment_paypal.acquirer_form_paypal"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//group[@name='acquirer']/group/a[@href='https://www.odoo.com/documentation/14.0/applications/general/payment_acquirers/paypal.html']" 
+	        position='attributes'>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/finance/accounting-and-invoicing/account-receivables/customer-payments/how-to-make-a-payment-with-paypal.html#pay-with-paypal</attribute>
+	        </xpath>
+	    </field>
+	</record>
+</odoo>
