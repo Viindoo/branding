@@ -1,0 +1,22 @@
+<odoo>
+	<record id="res_config_settings_view_form" model="ir.ui.view">
+	    <field name="name">res.config.settings.view.form.inherit.mrp</field>
+	    <field name="model">res.config.settings</field>
+	    <field name="inherit_id" ref="mrp.res_config_settings_view_form"/>
+	    <field name="arch" type="xml">
+	        <xpath expr="//div[@id='work_order']/div/a" position='attributes'>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/manufacturing/operations/how-to-manage-work-orders-in-viindoo.html</attribute>
+	        </xpath>
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/14.0/applications/inventory_and_mrp/manufacturing/management/subcontracting.html']"
+            position='attributes'>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/manufacturing/operations/manage-subcontracts-in-your-manufacturing-proccess.html</attribute>
+            </xpath>
+            <xpath expr="//div[@id='mrp_mps']/div/a" position='attributes'>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/manufacturing/planning/how-to-use-the-master-production-schedule-in-viindoo.html</attribute>
+            </xpath>
+            <xpath expr="//div[@id='security_lead_time']/div/a" position='attributes'>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory/warehouse-management/planning/understand-the-scheduled-delivery-date-computed-rule.html</attribute>
+            </xpath>
+	    </field>
+	</record>
+</odoo>
