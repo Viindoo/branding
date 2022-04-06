@@ -1,17 +1,17 @@
 {
-    'name': "Point Of Sale Branding For Viindoo",
-    'name_vi_VN': "Giao diện Viindoo cho module Điểm Bán Lẻ",
+    'name': "Vantiv Payment Services Branding For Viindoo",
+    'name_vi_VN': "Giao diện Viindoo cho module Vantiv Payment Services",
 
     'summary': """
-Theme branding Viindoo for module Point Of Sale """,
+Theme branding Viindoo for module Vantiv Payment Services""",
     'summary_vi_VN': """
-Giao diện brand Viindoo cho module Point Of Sale
+Giao diện brand Viindoo cho module Vantiv Payment Services
 """,
 
     'description': """
 What it does
 ============
-This module will change color in navigate bar, button and logo following Viindoo's brand
+This module will change color navigate bar, button and logo,v.v in Vantiv Payment Services following Viindoo's brand
 
 
 Editions Supported
@@ -24,7 +24,7 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ===================
-Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), các nút(button) và logo theo thương hiệu Viindoo
+Module này sẽ thay đổi giao diện các module Vantiv Payment Services theo thương hiệu Viindoo
 
 
 Ấn bản được Hỗ trợ
@@ -47,17 +47,12 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['viin_brand_common','point_of_sale'],
+    'depends': ['pos_mercury'],
 
     # always loaded
     'data': [
-        'views/pos_assets.xml',
-        'views/pos_config_view.xml',
-        'views/res_config_settings_views.xml',
+        'views/pos_config_settings_views.xml',
     ],
-    'qweb': [
-        'static/src/xml/Chrome.xml',
-        ],
     'installable': True,
     'application': False,
     'auto_install': True,
