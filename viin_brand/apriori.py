@@ -36,3 +36,10 @@ modules_website = {
     'website_sale': 'https://viindoo.com/intro/ecommerce',
     'website_slides': 'https://viindoo.com/intro/e-learning',
 }
+
+
+# mail_template_terms is a mapping from old term to new term in email template by to_base
+mail_template_terms = [
+    ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=portalinvite" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=portalinvite" style="color: #875A7B;">Viindoo</a>'),
+    ('Odoo', 'Viindoo'),
+]
