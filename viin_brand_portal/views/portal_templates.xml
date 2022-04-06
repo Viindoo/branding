@@ -1,0 +1,10 @@
+<odoo>
+    <template id="portal_record_sidebar" inherit_id="portal.portal_record_sidebar">
+        <xpath expr="//a[@href='http://www.odoo.com?utm_source=db&amp;utm_medium=portal']/img" position="attributes">
+            <attribute name="src">/viin_brand/static/src/img/viindoo_logo_tiny.png</attribute>
+        </xpath>
+        <xpath expr="//a[@href='http://www.odoo.com?utm_source=db&amp;utm_medium=portal']" position="attributes">
+            <attribute name="href">http://viindoo.com?utm_source=db&amp;utm_medium=portal</attribute>
+        </xpath>
+    </template>
+</odoo>
