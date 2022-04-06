@@ -1,0 +1,21 @@
+<odoo>
+	<record id="res_config_settings_view_form_purchase" model="ir.ui.view">
+	    <field name="name">res.config.settings.view.form.stock</field>
+	    <field name="model">res.config.settings</field>
+	    <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+	    <field name="arch" type="xml">
+            <xpath expr="//div[@id='manage_purchase_agreements']/div/a" position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/purchase/manage-deals/purchase-agreement-blaket-orders.html</attribute>
+            </xpath>
+            <xpath expr="//div[@id='quantities_billed_vendor']/div/a" position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/purchase/manage-deals/alert-the-payment-deadline-in-vendor-bills.html</attribute>
+            </xpath>
+            <xpath expr="//div[@id='three_way_matching']/div/a" position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/purchase/manage-deals/alert-the-payment-deadline-in-vendor-bills.html</attribute>
+            </xpath>
+            <xpath expr="//div[@id='variant_options']/div/a" position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales/products-prices/using-product-variants-in-viindoo.html</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
