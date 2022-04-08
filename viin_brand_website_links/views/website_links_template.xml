@@ -1,0 +1,7 @@
+<odoo>
+    <template id="create_shorten_url" inherit_id="website_links.create_shorten_url">
+        <xpath expr="//div[hasclass('row')]/div/form/div/div/input[@id='url']" position="attributes">
+            <attribute name="placeholder">e.g. https://viindoo.com</attribute>
+        </xpath>
+    </template>
+</odoo>
