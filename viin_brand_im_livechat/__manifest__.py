@@ -33,7 +33,7 @@ Editions Supported
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/tvtma/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
+    # Check https://github.com/Viindoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
     'version': '0.1',
@@ -45,6 +45,7 @@ Editions Supported
     'data': [
         # 'security/ir.model.access.csv',
         'views/im_livechat_channel_templates.xml',
+        'views/im_livechat_channel_views.xml'
     ],
 
     'images': [
