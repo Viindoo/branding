@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_totp_field" model="ir.ui.view">
+        <field name="name">users preference: totp</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="auth_totp.view_totp_field" />
+        <field name="arch" type="xml">
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/14.0/applications/general/auth/2fa.html']"
+            position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
