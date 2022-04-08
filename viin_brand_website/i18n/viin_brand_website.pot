@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-15 02:06+0000\n"
-"PO-Revision-Date: 2022-02-15 02:06+0000\n"
+"POT-Creation-Date: 2022-04-07 06:07+0000\n"
+"PO-Revision-Date: 2022-04-07 06:07+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,41 @@ msgid "Create a"
 msgstr ""
 
 #. module: viin_brand_website
+#. openerp-web
+#: code:addons/viin_brand_website/static/src/js/dialog.js:0
+#, python-format
+msgid "Viindoo"
+msgstr ""
+
+#. module: viin_brand_website
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.show_website_info
+msgid "Viindoo Version"
+msgstr ""
+
+#. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.brand_promotion
 msgid "free website"
+msgstr ""
+
+#. module: viin_brand_website
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.res_config_settings_view_form
+msgid "https://viindoo.com"
+msgstr ""
+
+#. module: viin_brand_website
+#. openerp-web
+#: code:addons/viin_brand_website/static/src/xml/website_backend.xml:0
+#, python-format
+msgid ""
+"https://viindoo.com/documentation/14.0/vi/applications/websites/website/optimize/how-"
+"to-track-your-website-s-traffic-in-google-analytics.html"
+msgstr ""
+
+#. module: viin_brand_website
+#. openerp-web
+#: code:addons/viin_brand_website/static/src/xml/website_backend.xml:0
+#, python-format
+msgid ""
+"https://viindoo.com/documentation/14.0/vi/applications/websites/website/optimize/how-"
+"to-track-your-website-s-traffic-in-viindoo-dashboard.html"
 msgstr ""
