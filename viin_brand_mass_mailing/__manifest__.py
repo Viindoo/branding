@@ -51,8 +51,10 @@ Module này sẽ thay đổi giao diện các module Email Marketing theo thươ
 
     # always loaded
     'data': [
-        'data/mass_mailing_demo.xml',
         'views/mass_mailing_templates_portal.xml',
+    ],
+    'demo' : [
+        'data/mass_mailing_demo.xml',
     ],
     'installable': True,
     'application': False,

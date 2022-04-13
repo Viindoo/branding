@@ -50,7 +50,7 @@ Module này sẽ thay đổi giao diện các module Mass Mailing On Sale Orders
     'depends': ['mass_mailing_sale'],
 
     # always loaded
-    'data': [
+    'demo': [
         'data/mass_mailing_demo.xml',
     ],
     'installable': True,
