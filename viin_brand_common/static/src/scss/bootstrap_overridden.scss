@@ -70,6 +70,7 @@ $border-radius: 0 !default;
 $component-active-color: $o-brand-primary !default;
 $component-active-bg: $gray-200 !default;
 
+$caret-width: 4px !default; 
 // Fonts
 //
 // Font, line-height, and color for body text, headings, and more.
@@ -159,3 +160,7 @@ $breadcrumb-margin-bottom: 0 !default;
 
 $breadcrumb-bg: $o-control-panel-background-color !default;
 $breadcrumb-active-color: #777777 !default;
+
+// Code
+
+$code-color: $o-main-code-color!default; 

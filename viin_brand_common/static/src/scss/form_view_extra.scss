@@ -38,6 +38,10 @@
 				&.btn-primary{
 					&.disabled {
 						color: $brand-secondary;
+                        background-color: $gray-200;
+                        &:after, &:before {
+                            border-left-color: $gray-200;
+                        }
 					}
 				}
 				&:not(.disabled) {
