@@ -100,12 +100,12 @@ body {
 	}
 }
 
-@media (min-width: 768px) {
+@media (min-width: 717px) {
 	// Normal checkboxes
 	.o_list_view {
 		.custom-checkbox:not(.o_boolean_toggle) {
 			margin-right: auto;
-			
+			top: -0.125rem;
 			.custom-control-label {
 				top: auto;
 
@@ -123,4 +123,3 @@ body {
 		}
 	}
 }
-

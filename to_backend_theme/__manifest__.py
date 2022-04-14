@@ -30,7 +30,6 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
         'viin_brand_common',
     ],
     "data": [
-        'views/assets.xml',
 		'views/res_company_view.xml',
 		# 'views/users.xml',
         # 'views/sidebar.xml',
@@ -38,10 +37,16 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
     'images':[
         'images/screen.png'
     ],
-
-    'installable': False,
+    'assets' :{
+        'web.assets_backend' : [
+            ('after','web_editor/static/src/scss/web_editor.backend.scss','to_backend_theme/static/src/scss/web_editor.backend.scss'),
+            'to_backend_theme/static/src/scss/style.scss',
+            'to_backend_theme/static/src/scss/discuss.scss',
+            ],
+        },
+    'installable': True,
     'application': False,
-    'auto_install': False, # Set this as ['web'] after upgrading for v15
+    'auto_install': ['web'],
     'price': 99.9,
     'currency': 'EUR',
     'license': 'LGPL-3',
