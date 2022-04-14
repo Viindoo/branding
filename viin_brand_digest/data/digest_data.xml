@@ -12,7 +12,7 @@
 	           <attribute name="href">https://viindoo.com</attribute>
 	       </xpath>
 	       <xpath expr="//div[@id='footer']/p[@id='powered']/a//span[text()='Odoo']" position="replace">
-               <span class="odoo_link_text">Viindoo</span>
+               <span class="odoo_link_text" style="color: #7f4282;">Viindoo</span>
            </xpath>
 	    </template>
 	
@@ -25,7 +25,7 @@
 	        </xpath>
 	        
 	        <xpath expr="//div[hasclass('global_layout')]/div/p/b[text()='Odoo Mobile']" position="replace">
-	           <b>Viindoo Mobile</b>
+	           <b style="color: #7f4282;">Viindoo Mobile</b>
 	        </xpath>
 	        
             <xpath expr="//div[hasclass('global_layout')]/div/div/a[@href='https://play.google.com/store/apps/details?id=com.odoo.mobile']" 
