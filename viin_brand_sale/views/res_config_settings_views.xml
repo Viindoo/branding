@@ -1,6 +1,4 @@
 <odoo>
-    <!-- TODO: will replace https://viindoo.com/documentation/14.0/
-    by corresponding article when project Viindoo Documentation completed -->
 	<record id="res_config_settings_view_form" model="ir.ui.view">
 	    <field name="name">res.config.settings.view.form.stock</field>
 	    <field name="model">res.config.settings</field>
@@ -28,7 +26,7 @@
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales/invoicing-method/payment-before-making-sale-invoice.html</attribute>
             </xpath>
             <xpath expr="//div[@id='amazon_connector']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales.html</attribute>
             </xpath>
         </field>
     </record>

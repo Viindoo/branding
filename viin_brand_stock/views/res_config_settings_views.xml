@@ -1,6 +1,4 @@
 <odoo>
-    <!-- TODO: will replace https://viindoo.com/documentation/14.0/
-    by corresponding article when project Viindoo Documentation completed -->
 	<record id="res_config_settings_view_form" model="ir.ui.view">
 	    <field name="name">res.config.settings.view.form</field>
 	    <field name="model">res.config.settings</field>
@@ -13,25 +11,25 @@
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory/barcode.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_ups']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory.html/</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_dhl']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_fedex']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_usps']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_bpost']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_easypost']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory.html</attribute>
             </xpath>
             <xpath expr="//div[@id='product_attributes']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales/products-prices/using-product-variants-in-viindoo.html</attribute>
             </xpath>
             <xpath expr="//div[@id='sell_purchase_uom']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory/warehouse-management/products/activate-different-units-of-measure.html</attribute>

@@ -1,6 +1,4 @@
 <odoo>
-    <!-- TODO change https://viindoo.com/documentation/14.0 
-    to corresponding article after Viindoo's Documentation completed -->
     <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit.point_of_sale</field>
         <field name="model">res.config.settings</field>
@@ -12,11 +10,11 @@
             </xpath>
             <xpath expr="//div[@id='vantiv_payment_terminal_setting']/div/a" 
             position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/point-of-sale.html</attribute>
             </xpath>
             <xpath expr="//a[@href='https://www.odoo.com/documentation/14.0/applications/sales/point_of_sale/payment/six.html']" 
             position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/point-of-sale.html</attribute>
             </xpath>
         </field>
     </record>

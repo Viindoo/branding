@@ -1,6 +1,4 @@
 <odoo>
-    <!-- TODO: will replace https://viindoo.com/documentation/14.0/
-    by corresponding article when project Viindoo Documentation completed -->
     <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.form</field>
         <field name="model">res.config.settings</field>
@@ -8,11 +6,11 @@
         <field name="arch" type="xml">
             <xpath expr="//a[@href='https://www.odoo.com/documentation/14.0/applications/general/in_app_purchase/in_app_purchase.html']"
             position="attributes"> 
-                <attribute name="href">https://viindoo.com/documentation/14.0</attribute>
+                <attribute name="href">https://viindoo.com/pricing</attribute>
             </xpath>
             <xpath expr="//a[@href='https://www.odoo.com/documentation/14.0/developer/webservices/iap.html']"
             position="attributes"> 
-                <attribute name="href">https://viindoo.com/documentation/14.0</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/getting-started/steps-to-create-viindoo-instance.html</attribute>
             </xpath>
         </field>
     </record>
