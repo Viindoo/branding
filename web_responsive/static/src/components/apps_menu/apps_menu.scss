@@ -29,7 +29,6 @@
 
 // Iconized full screen apps menu
 .o_navbar_apps_menu {
-    margin-right: 2rem;
     .fade-enter-active,
     .fade-leave-active {
         transition: opacity 100ms ease;
@@ -44,8 +43,8 @@
         background: url("../../img/home-menu-bg-overlay.svg"),
             linear-gradient(
                 to bottom,
-                $brand-primary-dark,
-                desaturate(lighten($brand-primary-dark, 20%), 15)
+                $o-brand-odoo,
+                desaturate(lighten($o-brand-odoo, 20%), 15)
             );
         background-size: cover;
         border-radius: 0;
