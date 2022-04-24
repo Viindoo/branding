@@ -40,13 +40,24 @@ Editions Supported
 
     # always loaded
     'data': [
-        'views/assets.xml',
         'views/mail_data.xml',
         'views/res_config_settings_views.xml',
     ],
-    'installable': False,
+    'assets': {
+        'web.assets_backend': [
+            # mail branding
+            ('after', 'mail/static/src/components/chat_window/chat_window.scss', 'viin_brand_mail/static/src/scss/chat_window.scss'),
+            ('after', 'mail/static/src/components/chat_window_header/chat_window_header.scss', 'viin_brand_mail/static/src/scss/chat_window_header.scss'),
+            ('after', 'mail/static/src/components/discuss_sidebar_mailbox/discuss_sidebar_mailbox.scss', 'viin_brand_mail/static/src/scss/discuss_sidebar_mailbox.scss'),
+            ('after', 'mail/static/src/components/discuss_sidebar_category_item/discuss_sidebar_category_item.scss', 'viin_brand_mail/static/src/scss/discuss_sidebar_category_item.scss'),
+            ('after', 'mail/static/src/components/message/message.scss', 'viin_brand_mail/static/src/scss/message.scss'),
+            ('after', 'mail/static/src/components/partner_im_status_icon/partner_im_status_icon.scss', 'viin_brand_mail/static/src/scss/partner_im_status_icon.scss'),
+            ('after', 'mail/static/src/components/thread_icon/thread_icon.scss', 'viin_brand_mail/static/src/scss/thread_icon.scss'),
+        ],
+    },
+    'installable': True,
     'application': False,
-    'auto_install': False, # Set this as True after upgrading for v15
+    'auto_install': True,
     'price': 99.9,
     'currency': 'EUR',
     'license': 'OPL-1',

@@ -1,0 +1,9 @@
+.o_DiscussSidebarMailbox {
+    &.o-starred-box {
+        .o_DiscussSidebarMailbox_counter {
+            border-color: gray('600');
+            background-color: gray('600');
+            color: $white;
+        }
+    }
+}
