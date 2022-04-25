@@ -46,13 +46,13 @@ Editions Supported
     'assets': {
         'web.assets_backend': [
             # mail branding
-            ('after', 'mail/static/src/components/chat_window/chat_window.scss', 'viin_brand_mail/static/src/scss/chat_window.scss'),
-            ('after', 'mail/static/src/components/chat_window_header/chat_window_header.scss', 'viin_brand_mail/static/src/scss/chat_window_header.scss'),
-            ('after', 'mail/static/src/components/discuss_sidebar_mailbox/discuss_sidebar_mailbox.scss', 'viin_brand_mail/static/src/scss/discuss_sidebar_mailbox.scss'),
-            ('after', 'mail/static/src/components/discuss_sidebar_category_item/discuss_sidebar_category_item.scss', 'viin_brand_mail/static/src/scss/discuss_sidebar_category_item.scss'),
-            ('after', 'mail/static/src/components/message/message.scss', 'viin_brand_mail/static/src/scss/message.scss'),
-            ('after', 'mail/static/src/components/partner_im_status_icon/partner_im_status_icon.scss', 'viin_brand_mail/static/src/scss/partner_im_status_icon.scss'),
-            ('after', 'mail/static/src/components/thread_icon/thread_icon.scss', 'viin_brand_mail/static/src/scss/thread_icon.scss'),
+            ('after', 'mail/static/src/components/chat_window/chat_window.scss', 'viin_brand_mail/static/src/components/chat_window/chat_window.scss'),
+            ('after', 'mail/static/src/components/chat_window_header/chat_window_header.scss', 'viin_brand_mail/static/src/components/chat_window_header/chat_window_header.scss'),
+            ('after', 'mail/static/src/components/discuss_sidebar_mailbox/discuss_sidebar_mailbox.scss', 'viin_brand_mail/static/src/components/discuss_sidebar_mailbox/discuss_sidebar_mailbox.scss'),
+            ('after', 'mail/static/src/components/discuss_sidebar_category_item/discuss_sidebar_category_item.scss', 'viin_brand_mail/static/src/components/discuss_sidebar_category_item/discuss_sidebar_category_item.scss'),
+            ('after', 'mail/static/src/components/message/message.scss', 'viin_brand_mail/static/src/components/message/message.scss'),
+            ('after', 'mail/static/src/components/partner_im_status_icon/partner_im_status_icon.scss', 'viin_brand_mail/static/src/components/partner_im_status_icon/partner_im_status_icon.scss'),
+            ('after', 'mail/static/src/components/thread_icon/thread_icon.scss', 'viin_brand_mail/static/src/components/thread_icon/thread_icon.scss'),
         ],
     },
     'installable': True,
