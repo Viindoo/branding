@@ -49,7 +49,7 @@ Editions Supported
     ],
     'assets':{
         'web.assets_backend' : [
-            'viin_brand_website/static/src/js/dialog.js',
+            'viin_brand_website/static/src/core/dialog/dialog.js',
         ],
         'web.assets_qweb': [
             'viin_brand_website/static/src/xml/website_backend.xml',
