@@ -1,4 +1,5 @@
 <odoo>
+<!-- TODO: Change Documentation link to version 15-->
 	<record id="pos_config_view_form" model="ir.ui.view">
 	   <field name="name">pos.config.form.view</field>
 	   <field name="model">pos.config</field>

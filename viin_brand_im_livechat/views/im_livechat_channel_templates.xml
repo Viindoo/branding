@@ -19,15 +19,5 @@
         	</xpath>
 
         </template>
-        
-        <template id="external_lib" inherit_id="im_livechat.external_lib">
-        	<xpath
-				expr="//link[@href='/im_livechat/static/src/legacy/public_livechat.scss']"
-				position="after">
-				<link rel="stylesheet" type="text/scss"
-					href="/viin_brand_im_livechat/static/src/legacy/public_livechat.scss" />
-			</xpath>
-        </template>
-
     </data>
 </odoo>

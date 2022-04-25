@@ -41,7 +41,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
+    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
     'version': '0.1',
@@ -51,16 +51,22 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
 
     # always loaded
     'data': [
-        'views/pos_assets.xml',
         'views/pos_config_view.xml',
         'views/res_config_settings_views.xml',
     ],
-    'qweb': [
-        'static/src/xml/Chrome.xml',
+    'assets' :{
+        'point_of_sale.assets': [
+            ('prepend','viin_brand_common/static/src/legacy/scss/primary_variables.scss'),
+            ('prepend','viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss'),
+            ('after','point_of_sale/static/src/css/pos.css','viin_brand_pos/static/src/scss/style.scss')
         ],
-    'installable': False,
+        'web.assets_qweb': [
+            'viin_brand_pos/static/src/xml/Chrome.xml',
+        ],
+    },
+    'installable': True,
     'application': False,
-    'auto_install': False, # Set this as True after upgrading for v15
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

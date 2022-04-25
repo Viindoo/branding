@@ -26,12 +26,19 @@
 .pos .mode-button.selected-mode,
 .ticket-button.highlight,
 .ticket-button:hover,
-.pos .mode-button.selected-mode:hover{
+.pos .mode-button.selected-mode:hover,
+.pos .pos-topheader .status-buttons > div:hover,
+.cash-move-button:hover{
     background: $brand-primary-darker;
 }
 
-.pos .product .price-tag{
+.pos .product .price-tag,
+.pos .product .product-info-button{
     background: lighten($o-enterprise-primary-color,20%);
+}
+
+.pos .product .product-info-button:hover{
+    background: lighten($o-enterprise-primary-color,5%);
 }
 
 .pos .clientlist-screen .client-list tr.highlight,
@@ -62,7 +69,7 @@
 }
 
 .pos .green-border-bottom{
-    border-bottom: solid 3px $brand-primary;
+    border-bottom: solid$brand-primary 3px $brand-primary;
 }
 
 .pos .leftpane .pads{
@@ -79,4 +86,9 @@
 
 [badge]:after{
     background: $primary;
+}
+
+.pos .searchbox-client input:focus {
+    box-shadow: 0px 0px 0px 2px $brand-primary inset;
+    color: $brand-primary;
 }

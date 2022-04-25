@@ -33,7 +33,7 @@ Editions Supported
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/tvtma/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
+    # Check https://github.com/Viindoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
     'version': '0.1',
@@ -44,15 +44,19 @@ Editions Supported
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/website_livechat.xml',
     ],
 
+    'assets' : {
+        'web.assets_frontend' : [
+            '/viin_brand_im_livechat/static/src/legacy/public_livechat.scss'
+        ],
+    },
     'images': [
     	# 'static/description/main_screenshot.png'
     	],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # Set this as True after upgrading for v15
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
