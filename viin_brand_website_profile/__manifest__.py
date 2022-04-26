@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "eLearning Debranding for Viindoo",
+    'name': "Website profile Debranding for Viindoo",
     'name_vi_VN': "",
 
     'summary': """
-Debranding eLearning for Viindoo""",
+Debranding Website profile for Viindoo""",
 
     'summary_vi_VN': """
-Làm lại màu sắc Phần mềm eLearning theo thương hiệu Viindoo
+Làm lại màu sắc Phần mềm Website profile theo thương hiệu Viindoo
     	""",
 
     'description': """
@@ -39,17 +39,16 @@ Editions Supported
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['website_slides'],
+    'depends': ['website_profile'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/slide_slide_views.xml',
-        'views/website_slides_templates_homepage.xml'
+        'views/website_profile.xml',
     ],
     'assets' : {
         'web.assets_frontend' : [
-            ('after','website_slides/static/src/scss/website_slides.scss','viin_brand_website_slides/static/src/scss/website_slides.scss')
+            ('after','website_profile/static/src/scss/website_profile.scss','viin_brand_website_profile/static/src/scss/website_profile.scss')
         ],
     },
     'images': [
@@ -57,7 +56,7 @@ Editions Supported
     	],
     'installable': True,
     'application': False,
-    'auto_install': ['website_slides'],
+    'auto_install': ['website_profile'],
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
