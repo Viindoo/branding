@@ -44,7 +44,6 @@ Editions Supported
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/website_profile.xml',
     ],
     'assets' : {
         'web.assets_frontend' : [

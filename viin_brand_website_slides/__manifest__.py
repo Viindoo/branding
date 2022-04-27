@@ -45,7 +45,6 @@ Editions Supported
     'data': [
         # 'security/ir.model.access.csv',
         'views/slide_slide_views.xml',
-        'views/website_slides_templates_homepage.xml'
     ],
     'assets' : {
         'web.assets_frontend' : [
