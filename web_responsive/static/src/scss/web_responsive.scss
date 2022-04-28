@@ -582,6 +582,7 @@ html .o_web_client .o_action_manager .o_action {
     .o_form_view {
         .o_form_sheet {
             max-width: calc(100% - 32px);
+            overflow-x: auto;
         }
 
         .o_FormRenderer_chatterContainer {
@@ -782,6 +783,7 @@ html .o_web_client .o_action_manager .o_action {
                     flex: 0 0 $chatter_zone_width;
                     max-width: initial;
                     min-width: initial;
+                    overflow: auto;
 
                     .o_chatter_header_container {
                         padding-top: $grid-gutter-width * 0.5;
