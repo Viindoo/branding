@@ -54,9 +54,9 @@ Module này sẽ thay đổi giao diện module CRM theo thương hiệu Viindoo
         'views/crm_lead_views.xml',
         'views/res_config_settings_views.xml',
     ],
-    'installable': True,
+    'installable': False,
     'application': False,
-    'auto_install': True,
+    'auto_install': False, # Set True after upgrading for v15
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
