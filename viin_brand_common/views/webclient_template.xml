@@ -4,7 +4,7 @@
 	<template id="web_layout" inherit_id="web.layout"
 		name="Viindoo Web layout">
 		<xpath expr="//link[@type='image/x-icon']" position="attributes">
-			<attribute name="t-att-href">x_icon or '/viin_brand/static/src/img/favicon.ico'</attribute>
+			<attribute name="t-att-href">x_icon or '/viin_brand/static/img/favicon.ico'</attribute>
 		</xpath>
 	</template>
 	
@@ -14,7 +14,7 @@
 		</xpath>
 		<xpath expr="//t[@t-set='odoo_logo']/a/img[@src='/web/static/img/odoo_logo_tiny.png']" position="attributes">
 			<attribute name="alt">Viindoo</attribute>
-			<attribute name="src">/viin_brand/static/src/img/viindoo_logo_tiny.png</attribute>
+			<attribute name="src">/viin_brand/static/img/viindoo_logo_tiny.png</attribute>
 		</xpath>
     </template>
     
