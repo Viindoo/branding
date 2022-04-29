@@ -10,11 +10,11 @@
             </xpath>
             <xpath expr="//div[@id='vantiv_payment_terminal_setting']/div/a" 
             position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/point-of-sale.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/point-of-sale/pricing-features/payment-with-vantiv-payment-terminal-in-pos.html</attribute>
             </xpath>
             <xpath expr="//a[@href='https://www.odoo.com/documentation/14.0/applications/sales/point_of_sale/payment/six.html']" 
             position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/point-of-sale.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/point-of-sale/pricing-features/payment-with-six-payment-terminal-in-pos.html</attribute>
             </xpath>
         </field>
     </record>

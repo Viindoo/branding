@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_form" model="ir.ui.view">
+        <field name="name">ir.module.module.form</field>
+        <field name="model">ir.module.module</field>
+        <field name="inherit_id" ref="base.module_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_title')]/div/a" position="attributes">
+                <attribute name="href">https://viindoo.com/pricing?utm_source=db&amp;utm_medium=module#hosting=on_premise</attribute>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id="module_view_kanban" model="ir.ui.view">
+        <field name="name">Apps Kanban</field>
+        <field name="model">ir.module.module</field>
+        <field name="inherit_id" ref="base.module_view_kanban" />
+        <field name="arch" type="xml">
+            <xpath expr="//a[@href='https://odoo.com/pricing?utm_source=db&amp;utm_medium=module#hosting=on_premise']" position="attributes">
+                <attribute name="href">https://viindoo.com/pricing?utm_source=db&amp;utm_medium=module#hosting=on_premise</attribute>
+            </xpath>
+        </field>
+    </record>
+    
+    <record id='base.action_third_party' model='ir.actions.act_url' >
+	    <field name='url'>https://viindoo.com/apps</field>
+	</record>
+	
+	<record id='base.action_theme_store' model='ir.actions.act_url' >
+	    <field name='url'>https://viindoo.com/apps/themes</field>
+	</record>
+</odoo>

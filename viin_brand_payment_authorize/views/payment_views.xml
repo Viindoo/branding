@@ -6,7 +6,7 @@
 	    <field name="arch" type="xml">
 	        <xpath expr="//group[@name='acquirer']/group/a[@href='https://www.odoo.com/documentation/14.0/applications/general/payment_acquirers/authorize.html']" 
 	        position='attributes'>
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/finance/accounting-and-invoicing/account-receivables/customer-payments/set-up-payment-service-providers-in-viindoo.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/finance/accounting-and-invoicing/account-receivables/customer-payments/how-to-make-a-payment-with-authorize-net.html</attribute>
 	        </xpath>
 	    </field>
 	</record>
