@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <xpath expr="//a[@href='https://www.odoo.com/documentation/14.0/applications/sales/point_of_sale/shop/cash_rounding.html']" 
             position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/finance/accounting-and-invoicing/account-receivables/customer-invoices/configure-cash-rounding-method.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/finance/accounting-and-invoicing/account-receivables/customer-invoices/settings/configure-cash-rounding-method.html</attribute>
             </xpath>
             <xpath expr="//div[@id='vantiv_payment_terminal_setting']/div/a" 
             position="attributes">
