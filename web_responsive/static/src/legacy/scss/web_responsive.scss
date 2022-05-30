@@ -459,3 +459,15 @@ html .o_web_client .o_action_manager .o_action {
         padding-right: 0;
     }
 }
+
+@media (min-width: 768px){
+	.o_form_view .oe_button_box > .btn.oe_stat_button, .o_form_view .oe_button_box > .o_dropdown_more {
+		width: 30%;
+	}
+}
+
+@media (min-width: 1440px){
+	.o_form_view .oe_button_box > .btn.oe_stat_button, .o_form_view .oe_button_box > .o_dropdown_more {
+	    width: 20%;
+	}	
+}
