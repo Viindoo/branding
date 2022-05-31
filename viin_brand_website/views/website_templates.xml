@@ -8,5 +8,9 @@
         <xpath expr="//t[@t-if='version']/p" position="replace">
             <p>Information about the <a target="_blank" href="https://about.viindoo.com">Viindoo JSC Company.</a></p>
         </xpath>
+        <!-- Chart of account and l10n app -->
+        <xpath expr="//div[@t-if='l10n']/dl/dt/a" position="attributes">
+            <attribute name="t-attf-href">https://viindoo.com/intro/accounting</attribute>
+        </xpath>
     </template>
 </odoo>
