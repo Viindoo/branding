@@ -8,7 +8,7 @@ odoo.define('viin_brand_website.Dialog', function(require) {
 
 		init: function (parent, options) {
 			this._super(...arguments);
-			this.title = _t('Viindoo');
+			this.title = this.title == _t('Odoo') ? _t('Viindoo') : this.title;
 	    }
 	});
 	return Dialog;
