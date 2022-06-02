@@ -2,4 +2,4 @@
 
 import { Dialog } from "@web/core/dialog/dialog";
 
-Dialog.title = "Viindoo";
+Dialog.title = Dialog.title == "Odoo" ? "Viindoo" : Dialog.title
