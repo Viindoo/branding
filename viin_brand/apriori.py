@@ -31,7 +31,7 @@ modules_website = {
     'survey': 'https://viindoo.com/intro/survey',
     'website': 'https://viindoo.com/intro/website',
     'website_blog': 'https://viindoo.com/intro/blogs',
-    # 'website_event': '',
+    'website_event': 'https://viindoo.com/intro/event',
     'website_forum': 'https://viindoo.com/intro/app-forum',
     # 'website_hr_recruitment': '',
     'website_sale': 'https://viindoo.com/intro/ecommerce',
