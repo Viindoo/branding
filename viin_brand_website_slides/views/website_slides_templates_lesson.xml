@@ -1,0 +1,7 @@
+<odoo>
+	<template id="slide_content_detailed" inherit_id="website_slides.slide_content_detailed">
+		<xpath expr="//a[@t-if='is_training_channel']" position="attributes">
+			<attribute name="rel">nofollow</attribute>
+		</xpath>
+	</template>
+</odoo>
