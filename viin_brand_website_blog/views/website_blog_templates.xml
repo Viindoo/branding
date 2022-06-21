@@ -6,4 +6,15 @@
 				data-oe-expression="blog_post.name" t-att-data-blog-id="blog_post.id" placeholder="Blog Post Title" />
 		</xpath>
 	</template>
+	<template id="opt_blog_cover_post_fullwidth_design" inherit_id="website_blog.opt_blog_cover_post_fullwidth_design">
+		<xpath expr="//a/div[@id='o_wblog_post_name']" position="replace">
+			<!-- Blog post name in Odoo core uses div tag which is not good for SEO. This replaces div with h1 -->
+			<h1 t-field="first_post.name" id="o_wblog_post_name"
+				t-att-data-blog-id="first_post.id" placeholder="Blog Post Title" />
+		</xpath>
+		<xpath expr="//span/div[@id='o_wblog_post_name']" position="replace">
+			<!-- Blog post name in Odoo core uses div tag which is not good for SEO. This replaces div with h1 -->
+			<h1 t-field="blog.name" id="o_wblog_post_name" placeholder="Blog Title"/>
+		</xpath>
+	</template>
 </odoo>
