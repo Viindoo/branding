@@ -2,10 +2,10 @@
 	<data noupdate="1">
 	    <template id="digest_mail_main"
 	        inherit_id="digest.digest_mail_main">
-	       <xpath expr="//div[@t-if='preferences']/div/div/div[hasclass('by_odoo')]/a" position="attributes">      
+	       <xpath expr="//div[hasclass('by_odoo')]/a" position="attributes">      
 	           <attribute name="href">https://viindoo.com</attribute>
 	       </xpath>
-	       <xpath expr="//div[@t-if='preferences']/div/div/div[hasclass('by_odoo')]/a/span[text()='Odoo']" position="replace">      
+	       <xpath expr="//div[hasclass('by_odoo')]/a/span[text()='Odoo']" position="replace">      
                <span class="odoo_link_text">Viindoo</span>
            </xpath>   
 	       <xpath expr="//div[@id='footer']/p[@id='powered']/a" position="attributes">

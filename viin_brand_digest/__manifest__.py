@@ -53,9 +53,9 @@ Module này sẽ thay đổi giao diện module Digest theo thương hiệu Viin
     'data': [
         'data/digest_data.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # Set True after upgrading for v15
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
