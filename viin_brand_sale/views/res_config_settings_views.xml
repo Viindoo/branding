@@ -8,7 +8,7 @@
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales/products-prices/using-product-variants-in-viindoo.html</attribute>
             </xpath>
             <xpath expr="//div[@id='pricelist_configuration']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/vi/applications/sales/sales/manage-your-pricing/preparing-price-lists-and-specific-discount-policies.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales/manage-your-pricing/manage-advances-price-rules.html</attribute>
             </xpath>
             <xpath expr="//div[@id='sale_config_online_confirmation_sign']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales/send-quotations/activate-e-sign-feature-to-confirm-order.html</attribute>

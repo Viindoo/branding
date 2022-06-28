@@ -12,7 +12,7 @@ modules_website = {
     'hr_expense': 'https://viindoo.com/intro/expense',
     'hr_holidays': 'https://viindoo.com/intro/time-off',
     'hr_recruitment': 'https://viindoo.com/intro/recruitment',
-    'hr_contract': 'https://viindoo.com/en/apps/app/14.0/hr_contract',
+    'hr_contract': 'https://viindoo.com/apps/app/15.0/viin_hr_contract',
     # 'hr_skills': '',
     'im_livechat': 'https://viindoo.com/intro/live-chat',
     # 'lunch': '',
