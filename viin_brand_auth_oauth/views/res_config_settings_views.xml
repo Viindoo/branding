@@ -5,8 +5,11 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="auth_oauth.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//div/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-viindoo-dashboard.html</attribute>
+            <xpath expr="//div[@id='signin_google_setting']/div/a" position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-viindoo-dashboard.html</attribute>
+            </xpath>
+            <xpath expr="//div[@id='signin_google_setting']/div/div/a" position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-viindoo-dashboard.html</attribute>
             </xpath>
         </field>
     </record>
