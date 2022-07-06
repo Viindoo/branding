@@ -53,9 +53,9 @@ Module này sẽ thay đổi giao diện module Initial Setup Tools theo thươn
     'data': [
         'views/res_config_settings_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set True after upgrading for v15
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

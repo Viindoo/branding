@@ -7,19 +7,19 @@
         <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//div[@id='active_user_setting']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/getting-started/user-account-setting-and-management.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/manage-users/user-account-setting-and-management.html</attribute>
             </xpath>
             <xpath expr="//div[@id='allow_import']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/getting-started/guiding-to-import-and-export-data.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/guiding-to-import-and-export-data.html</attribute>
             </xpath>
             <xpath expr="//a[@href='https://www.odoo.com/documentation/15.0/applications/general/calendars/google/google_calendar_credentials.html']" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/productivity/calendar/sychronization-with-google-s-calendar.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/productivity/calendar/sychronization-with-google-s-calendar.html</attribute>
             </xpath>
             <xpath expr="//div[@name='auth_ldap_right_pane']/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/getting-started/external-apps-integration/ldap.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/external-apps-integration/ldap.html</attribute>
             </xpath>
             <xpath expr="//div[@id='unsplash']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html</attribute>
             </xpath>
             <xpath expr="//a[@href='https://play.google.com/store/apps/details?id=com.odoo.mobile']" position="attributes">
                 <attribute name="href">https://play.google.com/store/apps/details?id=com.viindoo</attribute>
