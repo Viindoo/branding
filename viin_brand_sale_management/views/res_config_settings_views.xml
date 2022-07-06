@@ -1,4 +1,5 @@
 <odoo>
+<!-- TODO: replace link document v15 -->
 	<record id="res_config_settings_view_form" model="ir.ui.view">
 	    <field name="name">res.config.settings.view.form.stock</field>
 	    <field name="model">res.config.settings</field>
