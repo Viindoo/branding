@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
 	        <xpath expr="//div[@name='right-column']/div/p/a" 
 	        position='attributes'>
+	        <!-- TODO: replace document v15 link -->
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/finance/accounting-and-invoicing/account-receivables/customer-payments/how-to-make-a-payment-with-paypal.html#pay-with-paypal</attribute>
 	        </xpath>
 	    </field>
