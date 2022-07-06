@@ -2,7 +2,7 @@
     <t t-name="ImportView" t-inherit="base_import.ImportView"
     t-inherit-mode="extension">
         <xpath expr="//div[hasclass('o_nocontent_help')]/a" position="attributes">
-            <attribute name="href">https://viindoo.com/documentation/14.0/applications/getting-started/guiding-to-import-and-export-data.html</attribute>
+            <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/guiding-to-import-and-export-data.html</attribute>
         </xpath>
     </t>
 </template>

@@ -50,12 +50,14 @@ Module này sẽ thay đổi giao diện module Base import theo thương hiệu
     'depends': ['base_import'],
 
     # always loaded
-    'qweb': [
-        'static/src/xml/base_import.xml',
-    ],
-    'installable': False,
+    'assets':{
+        'web.assets_qweb': [
+            'viin_brand_base_import/static/src/xml/base_import.xml',
+            ]
+    },
+    'installable': True,
     'application': False,
-    'auto_install': False, # Set True after upgrading for v15
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
