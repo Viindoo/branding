@@ -4,6 +4,7 @@
 	    <field name="model">res.config.settings</field>
 	    <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
 	    <field name="arch" type="xml">
+	    <!-- TODO: replace link document v15 -->
             <xpath expr="//div[@id='manage_purchase_agreements']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/purchase/manage-deals/purchase-agreement-blaket-orders.html</attribute>
             </xpath>
