@@ -1,5 +1,4 @@
 <odoo>
-<!-- TODO: replace documentation link to version 15 -->
 	<record id="res_config_settings_view_form" model="ir.ui.view">
 	    <field name="name">res.config.settings.view.form</field>
 	    <field name="model">res.config.settings</field>
@@ -9,8 +8,8 @@
 <!-- 			<xpath expr="//div[@id='crm_iap_lead_settings']/a" position="attributes">
 			   <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/crm.html</attribute>
 			</xpath>-->
-            <xpath expr="//div[@id='mail_client_extension']/a" position="attributes">
-               <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/crm/acquire-leads/generate-lead-opportunity-from-outlook-email.html</attribute>
+            <xpath expr="//div[@id='crm_iap_mine_settings']/a" position="attributes">
+               <attribute name="href">https://viindoo.com/documentation/15.0/applications/sales/crm/acquire-leads/generate-lead-opportunity-from-outlook-email.html</attribute>
             </xpath>
 	    </field>
 	</record>
