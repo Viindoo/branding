@@ -53,9 +53,9 @@ Module này sẽ thay đổi giao diện các module Mass Mailing On Sale Orders
     'demo': [
         'data/mass_mailing_demo.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # Set True after upgrading for v15
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
