@@ -53,9 +53,9 @@ Module này sẽ thay đổi giao diện module Two-Factor Authentication theo t
     'data': [
         'views/user_perferences.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False,# set True after upgrading for v15
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
