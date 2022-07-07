@@ -53,9 +53,9 @@ Module này sẽ thay đổi giao diện module In-App Purchases theo thương h
     'data': [
         'views/res_config_settings.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # Set True after upgrading for v15
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
