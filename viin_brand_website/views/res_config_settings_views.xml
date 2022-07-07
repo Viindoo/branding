@@ -11,11 +11,11 @@
             </xpath>
             <xpath expr="//div[@id='seo_settings']/div/div/div/a[hasclass('oe_link')]"
             position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-google-analytics.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-google-analytics.html</attribute>
             </xpath>
             <xpath expr="//div[@id='google_analytics_dashboard_setting']/div/div/a[hasclass('oe_link')]"
             position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-viindoo-dashboard.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-viindoo-dashboard.html</attribute>
             </xpath>
         </field>
     </record>
