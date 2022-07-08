@@ -70,6 +70,14 @@ body {
 	}
 }
 
+.o_Follower{
+    a{
+        .o_Follower_avatar{
+            object-fit: cover;
+        }
+    }
+}
+
 .o_control_panel {
 	.o_cp_right {
 		.btn-secondary {
