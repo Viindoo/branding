@@ -8,10 +8,10 @@
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/purchase/manage-deals/purchase-agreement-blaket-orders.html</attribute>
             </xpath>
             <xpath expr="//div[@id='quantities_billed_vendor']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/purchase/manage-deals/alert-the-payment-deadline-in-vendor-bills.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/purchase/manage-deals/vendor-bills-control.html</attribute>
             </xpath>
             <xpath expr="//div[@id='three_way_matching']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/purchase/manage-deals/alert-the-payment-deadline-in-vendor-bills.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/purchase/manage-deals/vendor-bills-control.html</attribute>
             </xpath>
             <xpath expr="//div[@id='variant_options']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/getting-started/products/using-product-variants-in-viindoo.html</attribute>

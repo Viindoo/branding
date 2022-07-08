@@ -8,7 +8,7 @@
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory/warehouse-management/products/how-to-use-different-units-of-measure-packages-or-packaging.html</attribute>
             </xpath>
             <xpath expr="//div[@id='process_operations_barcodes']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory/barcode.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory/warehouse-management/products/how-to-use-different-units-of-measure-packages-or-packaging.html#product-packagings</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_ups']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory.html/</attribute>
@@ -49,10 +49,10 @@
                 </attribute>
             </xpath>
             <xpath expr="//div[@id='use_own_routes']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory/advanced-routes/understand-pull-push-rules-in-supply-routes.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory/advanced-routes/understanding-pull-push-rules-in-supply-routes.html</attribute>
             </xpath>
             <xpath expr="//div[@id='use_own_routes']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory/advanced-routes/understand-pull-push-rules-in-supply-routes.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/supply-chain/inventory/advanced-routes/understanding-pull-push-rules-in-supply-routes.html</attribute>
             </xpath>
         </field>
     </record>

@@ -10,7 +10,7 @@
             </xpath>
             <xpath expr="//a[@href='https://www.odoo.com/documentation/14.0/developer/webservices/iap.html']"
             position="attributes"> 
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/getting-started/steps-to-create-viindoo-instance.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/getting-started/system-settings/steps-to-create-viindoo-instance.html</attribute>
             </xpath>
         </field>
     </record>

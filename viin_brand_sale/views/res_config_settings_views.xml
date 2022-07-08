@@ -23,7 +23,7 @@
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales/invoicing-method/issuing-invoices-based-on-order-quantity-or-delivery-quantity.html</attribute>
             </xpath>
             <xpath expr="//div[@id='down_payments']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales/invoicing-method/down-payment-in-viindoo-sales</attribute>
+                <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales/invoicing-method/down-payment-in-viindoo-sales.html</attribute>
             </xpath>
             <xpath expr="//div[@id='amazon_connector']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/14.0/applications/sales/sales.html</attribute>
