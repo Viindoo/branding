@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-31 01:50+0000\n"
-"PO-Revision-Date: 2022-04-24 09:40+0000\n"
+"POT-Creation-Date: 2022-07-19 09:47+0000\n"
+"PO-Revision-Date: 2022-07-19 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -24,6 +24,7 @@ msgstr "Tên bí danh"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__display_name
 msgid "Display Name"
 msgstr "Tên hiển thị"
 
@@ -33,14 +34,37 @@ msgid "Email Aliases"
 msgstr "Bí danh Email"
 
 #. module: viin_brand_mail
+#: model:ir.model.fields.selection,name:viin_brand_mail.selection__res_users__notification_type__inbox
+msgid "Handle in Viindoo"
+msgstr "Xử lí trong hệ thống"
+
+#. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__id
 msgid "ID"
 msgstr ""
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias____last_update
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_users____last_update
 msgid "Last Modified on"
 msgstr "Sửa lần cuối"
+
+#. module: viin_brand_mail
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__notification_type
+msgid "Notification"
+msgstr "Thông báo"
+
+#. module: viin_brand_mail
+#: model:ir.model.fields,help:viin_brand_mail.field_res_users__notification_type
+msgid ""
+"Policy on how to handle Chatter notifications:\n"
+"- Handle by Emails: notifications are sent to your email address\n"
+"- Handle in Odoo: notifications appear in your Odoo Inbox"
+msgstr ""
+"Chính sách cho cách thức xử lý các thông báo Chatter:\n"
+"- Xử lý bằng email: các thông báo được gửi đến địa chỉ email của bạn\n"
+"- Xử lý trong hệ thống: các thông báo xuất hiện trong Hộp thư đến trong hệ thống"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_alias__alias_name
@@ -52,6 +76,11 @@ msgid ""
 msgstr ""
 "Tên của bí danh email, vd 'vieclam' nếu bạn muốn bắt thông điệp gửi đến địa "
 "chỉ email <vieclam@vidu.viindoo.com>"
+
+#. module: viin_brand_mail
+#: model:ir.model,name:viin_brand_mail.model_res_users
+msgid "Users"
+msgstr "Người dùng"
 
 #. module: viin_brand_mail
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail.res_config_settings_view_form
