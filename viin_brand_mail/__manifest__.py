@@ -1,6 +1,7 @@
 {
     'name': "Discuss Debranding for Viindoo",
     'name_vi_VN': "Thảo luận với Nhận diện Thương hiệu Viindoo",
+    'sequence': 145,
 
     'summary': """
 Debranding Mail Discuss for Viindoo
