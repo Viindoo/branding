@@ -12,4 +12,9 @@
            </xpath>
 	    </field>
 	</record>
+
+	<menuitem id="crm.crm_menu_root"
+        name="CRM"
+        sequence="35"
+        groups="sales_team.group_sale_salesman,sales_team.group_sale_manager"/>
 </odoo>

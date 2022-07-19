@@ -60,4 +60,6 @@
             </div>
         </field>
     </record>
+
+	<menuitem id="hr_expense.menu_hr_expense_root" name="Expenses" sequence="200"/>
 </odoo>

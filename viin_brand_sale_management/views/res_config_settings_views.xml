@@ -10,4 +10,9 @@
             </xpath>
         </field>
     </record>
+
+	<menuitem id="sale.sale_menu_root"
+        name="Sales"
+        active="False"
+        sequence="40"/>
 </odoo>

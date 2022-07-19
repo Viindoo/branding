@@ -18,4 +18,10 @@
             </xpath>
 	    </field>
 	</record>
+
+	<menuitem id="mrp.menu_mrp_root"
+        name="Manufacturing"
+        groups="mrp.group_mrp_user,mrp.group_mrp_manager"
+        web_icon="mrp,static/description/icon.png"
+        sequence="125"/>
 </odoo>

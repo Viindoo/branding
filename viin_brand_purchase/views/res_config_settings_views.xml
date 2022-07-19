@@ -19,4 +19,9 @@
             </xpath>
         </field>
     </record>
+
+	<menuitem name="Purchase"
+        id="purchase.menu_purchase_root"
+        sequence="105"
+        groups="purchase.group_purchase_manager,purchase.group_purchase_user"/>
 </odoo>

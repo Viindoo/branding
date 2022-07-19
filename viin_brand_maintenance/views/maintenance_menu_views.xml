@@ -1,0 +1,3 @@
+<odoo>
+    <menuitem id="maintenance.menu_maintenance_title" name="Maintenance" sequence="120"/>
+</odoo>

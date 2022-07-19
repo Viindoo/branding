@@ -1,0 +1,6 @@
+<odoo>
+    <menuitem name="Recruitment"
+    	id="hr_recruitment.menu_hr_recruitment_root"
+    	sequence="170"
+    	groups="hr_recruitment.group_hr_recruitment_user"/>
+</odoo>

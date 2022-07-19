@@ -9,4 +9,9 @@
 		  </xpath>
 		</field>
 	</record>
+
+	<menuitem name="eLearning"
+        id="website_slides.website_slides_menu_root"
+        sequence="85"
+        groups="website_slides.group_website_slides_officer"/>
 </odoo>

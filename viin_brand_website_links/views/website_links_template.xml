@@ -4,4 +4,9 @@
             <attribute name="placeholder">e.g. https://viindoo.com</attribute>
         </xpath>
     </template>
+
+	<menuitem id="utm.menu_link_tracker_root"
+    	name="Link Tracker"
+    	sequence="320"
+    	groups="base.group_no_one"/>
 </odoo>

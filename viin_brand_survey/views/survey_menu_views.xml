@@ -1,0 +1,6 @@
+<odoo>
+	<menuitem name="Surveys"
+		id="survey.menu_surveys"
+		sequence="100"
+		groups="survey.group_survey_user"/>
+</odoo>

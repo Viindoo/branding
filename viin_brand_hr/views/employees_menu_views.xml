@@ -1,0 +1,6 @@
+<odoo>
+	<menuitem id="hr.menu_hr_root"
+		name="Employees"
+		sequence="130"
+		groups="hr.group_hr_manager,hr.group_hr_user,base.group_user"/>
+</odoo>

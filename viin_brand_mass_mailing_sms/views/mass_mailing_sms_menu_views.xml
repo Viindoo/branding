@@ -1,0 +1,6 @@
+<odoo>
+	<menuitem id="mass_mailing_sms.mass_mailing_sms_menu_root"
+        name="SMS Marketing"
+        sequence="97"
+        groups="mass_mailing.group_mass_mailing_user"/>
+</odoo>

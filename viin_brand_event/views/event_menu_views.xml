@@ -1,0 +1,7 @@
+<odoo>
+	<menuitem name="Events"
+        id="event.event_main_menu"
+        sequence="87"
+        groups="event.group_event_registration_desk"
+        web_icon="event,static/description/icon.png"/>
+</odoo>

@@ -1,0 +1,6 @@
+<odoo>
+	<menuitem id="hr_attendance.menu_hr_attendance_root"
+		name="Attendances"
+		sequence="150"
+		groups="hr_attendance.group_hr_attendance,hr_attendance.group_hr_attendance_kiosk"/>
+</odoo>

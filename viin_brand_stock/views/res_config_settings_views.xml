@@ -56,4 +56,9 @@
             </xpath>
         </field>
     </record>
+
+    <menuitem name="Inventory"
+    	id="stock.menu_stock_root"
+    	sequence="110"
+    	groups="stock.group_stock_manager,stock.group_stock_user"/>
 </odoo>

@@ -7,4 +7,6 @@
             </div>
         </xpath>
     </template>
+
+	<menuitem name="Email Marketing" id="mass_mailing.mass_mailing_menu_root" sequence="90"/>
 </odoo>

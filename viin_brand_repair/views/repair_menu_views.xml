@@ -1,0 +1,7 @@
+<odoo>
+	<menuitem action="repair.action_repair_order_tree"
+		id="repair.menu_repair_order"
+		sequence="115"
+		groups="stock.group_stock_user"
+		name="Repairs"/>
+</odoo>

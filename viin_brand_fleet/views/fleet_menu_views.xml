@@ -1,0 +1,6 @@
+<odoo>
+	<menuitem name="Fleet"
+		id="fleet.menu_root"
+		sequence="180"
+		groups="fleet.fleet_group_user"/>
+</odoo>

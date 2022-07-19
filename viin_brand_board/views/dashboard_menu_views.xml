@@ -1,0 +1,6 @@
+<odoo>
+	<menuitem  id="board.menu_board_my_dash"
+		parent="base.menu_board_root"
+		sequence="310"
+		action="board.open_board_my_dash_action"/>
+</odoo>
