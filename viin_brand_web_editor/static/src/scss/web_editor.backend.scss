@@ -1,7 +1,7 @@
-.oe_form_field_html {
-	a {
-		// Ensure the link is visible enough in the editor.
-		$oe-link-color: o-color('o-cc3-link');
-		color: if($oe-link-color, $oe-link-color, $white);
-	}
+.oe_form_field_html.oe_memo{
+    .btn.btn-primary.flat{
+        // Ensure the link is visible enough in the editor.
+        $oe-link-color: o-color('o-cc3-link');
+        color: if($oe-link-color, $oe-link-color, $white);
+    }
 }
