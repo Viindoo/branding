@@ -50,6 +50,9 @@ Module này sẽ thay đổi giao diện module CRM theo thương hiệu Viindoo
     'depends': ['crm'],
 
     # always loaded
+    'demo': [
+        'data/digest_data.xml',
+    ],
     'data': [
         'views/crm_lead_views.xml',
         'views/res_config_settings_views.xml',

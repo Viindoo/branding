@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr.hr_employee_public_action" model="ir.actions.act_window">
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new employee
+              </p><p>
+                With just a quick glance on the Viindoo employee screen, you
+                can easily find all the information you need for each person;
+                contact data, job position, availability, etc.
+              </p>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -52,6 +52,7 @@ Module này sẽ thay đổi giao diện các module Sale theo thương hiệu V
     # always loaded
     'data': [
         'views/res_config_settings_views.xml',
+        'views/sale_views.xml',
     ],
     'installable': True,
     'application': False,

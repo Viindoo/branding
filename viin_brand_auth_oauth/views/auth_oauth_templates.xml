@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Hide button login with Odoo -->
+	<template id="login" inherit_id="auth_oauth.login" name="OAuth Login buttons">
+	    <xpath expr="//t[@t-call='auth_oauth.providers']" position="replace"/>
+	</template>
+	
+	<template id="signup" inherit_id="auth_oauth.signup" name="OAuth Signup buttons">
+	    <xpath expr="//t[@t-call='auth_oauth.providers']" position="replace"/>
+	</template>
+	
+	<template id="reset_password" inherit_id="auth_oauth.reset_password" name="OAuth Reset Password buttons">
+	    <xpath expr="//t[@t-call='auth_oauth.providers']" position="replace"/>
+	</template>
+</odoo>

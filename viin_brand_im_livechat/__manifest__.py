@@ -42,6 +42,9 @@ Editions Supported
     'depends': ['im_livechat', 'viin_brand_common'],
 
     # always loaded
+    'demo': [
+        'data/im_livechat_channel_demo.xml'
+    ],
     'data': [
         # 'security/ir.model.access.csv',
         'views/im_livechat_channel_templates.xml',

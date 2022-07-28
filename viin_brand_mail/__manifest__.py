@@ -40,6 +40,10 @@ Editions Supported
     'depends': ['mail', 'viin_brand_common'],
 
     # always loaded
+    'demo': [
+        'data/res_partner_data.xml',
+        'data/mail_channel_data.xml',
+    ],
     'data': [
         'views/mail_data.xml',
         'views/res_config_settings_views.xml',

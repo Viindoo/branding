@@ -50,8 +50,12 @@ Module này sẽ thay đổi giao diện các module Purchase theo thương hi�
     'depends': ['purchase'],
 
     # always loaded
+    'demo': [
+        'data/digest_data.xml',
+    ],
     'data': [
         'views/res_config_settings_views.xml',
+        'views/res_partner_views.xml',
     ],
     'installable': True,
     'application': False,

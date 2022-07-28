@@ -4,9 +4,12 @@
 	    <field name="model">im_livechat.channel</field>
 	    <field name="inherit_id" ref="im_livechat.im_livechat_channel_view_form"/>
 	    <field name="arch" type="xml">
-	       <xpath expr="//page[@name='configuration_widget']/group/div/p[last()]" position="replace">
-	           <p>For websites built with the Viindoo CMS, go to Website > Configuration > Settings and select the Website Live Chat Channel you want to add to your website.</p>
-	       </xpath>
+			<xpath expr="//page[@name='operators']/group/p[last()]" position="replace">
+				<p>Operators that do not show any activity In Viindoo for more than 30 minutes will be considered as disconnected.</p>
+			</xpath>
+			<xpath expr="//page[@name='configuration_widget']/group/div/p[last()]" position="replace">
+			    <p>For websites built with the Viindoo CMS, go to Website > Configuration > Settings and select the Website Live Chat Channel you want to add to your website.</p>
+			</xpath>
 	    </field>
 	</record>
 </odoo>

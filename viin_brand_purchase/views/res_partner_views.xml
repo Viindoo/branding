@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase.act_res_partner_2_supplier_invoices" model="ir.actions.act_window">
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Record a new vendor bill
+                </p><p>
+                    Vendors bills can be pre-generated based on purchase
+                    orders or receipts. This allows you to control bills
+                    you receive from your vendor according to the draft
+                    document in Viindoo.
+                </p>
+            </field>
+        </record>
+</odoo>

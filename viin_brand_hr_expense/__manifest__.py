@@ -50,6 +50,9 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
     'depends': ['hr_expense'],
 
     # always loaded
+    'demo': [
+        'data/digest_data.xml',
+    ],
     'data': [
         'views/hr_expense_views.xml',
     ],

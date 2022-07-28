@@ -52,6 +52,8 @@ Module này sẽ thay đổi giao diện module Digest theo thương hiệu Viin
     # always loaded
     'data': [
         'data/digest_data.xml',
+        'data/digest_tips_data.xml',
+        'views/digest_views.xml',
     ],
     'installable': True,
     'application': False,

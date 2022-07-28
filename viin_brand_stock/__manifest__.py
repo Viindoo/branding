@@ -50,8 +50,13 @@ Module này sẽ thay đổi giao diện các module Stock theo thương hiệu 
     'depends': ['stock'],
 
     # always loaded
+    'demo': [
+        'data/digest_data.xml',
+    ],
     'data': [
         'views/res_config_settings_views.xml',
+        'views/stock_orderpoint_views.xml',
+        'views/stock_location_views.xml',
     ],
     'installable': True,
     'application': False,

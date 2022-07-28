@@ -42,6 +42,9 @@ Editions Supported
     'depends': ['website'],
 
     # always loaded
+    'demo': [
+        'data/digest_data.xml',
+    ],
     'data': [
         # 'security/ir.model.access.csv',
         'views/templates.xml',
@@ -54,7 +57,7 @@ Editions Supported
         ],
         'web.assets_qweb': [
             'viin_brand_website/static/src/xml/website_backend.xml',
-            ],
+        ],
     },
     'images': [
     	# 'static/description/main_screenshot.png'

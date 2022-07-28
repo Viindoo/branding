@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="google_drive.view_google_drive_config_form" model="ir.ui.view">
+	    <field name="arch" type="xml">
+	        <form string="Google Drive Configuration">
+	            <field name="model" invisible="1" />
+	            <group>
+	                <field name="name" />
+	                <field name="active" widget="boolean_toggle"/>
+	                <field name="model_id"/>
+	                <label for='filter_id' />
+	                <div>
+	                    <field name='filter_id' />
+	                    <p class="oe_grey">
+	                        <b>To create a new filter:</b><br/>
+	                        - Go to the Viindoo document you want to filter. For instance, go to Opportunities and search on Sales Department.<br/>
+	                        - In this "Search" view, select the option "Save Current Filter", enter the name (Ex: Sales Department)<br/>
+	                        - If you select "Share with all users", link of google document in "More" options will appear for all users in opportunities of Sales Department.<br/>
+	                        - If you don't select "Share with all users", link of google document in "More" options will not appear for other users in opportunities of Sales Department.<br/>
+	                        - If filter is not specified, link of google document will appear in "More" option for all users for all opportunities.
+	                    </p>
+	                </div>
+	                <field name='google_drive_template_url' placeholder="https://viindoo.com/documentation/15.0/applications/getting-started/external-apps-integration/google-drive-intergration.html#steps-to-use-the-google-drive-integration-feature-in-viindoo" required="1" />
+	                <field name='google_drive_resource_id' invisible="1" />
+	                <label for='name_template' />
+	                <div>
+	                    <field name='name_template' />
+	                    <p class="oe_grey">
+	                        The name of the attached document can use fixed or variable data. To distinguish between documents in
+	                        Google Drive, use fixed words and fields. For instance, in the example above, if you wrote Deco_Addict_%%(name)s_Sales
+	                        in the Google Drive name field, the document in your Google Drive and in Viindoo attachment will be named
+	                        'Deco_Addict_SO0001_Sales'.
+	                    </p>
+	                </div>
+	            </group>
+	        </form>
+	    </field>
+	</record>
+
+	<record id='google_drive.action_google_drive_users_config' model='ir.actions.act_window'>
+	    <field name="help" type="html">
+	        <p class="o_view_nocontent_smiling_face">
+	            Add a new template
+	        </p>
+	        <p>
+	            Link your own google drive templates to any record of Viindoo. If you have really specific documents you want your collaborator fill in, e.g. Use a spreadsheet to control the quality of your product or review the delivery checklist for each order in a foreign country, ... Its very easy to manage them, link them to Viindoo and use them to collaborate with your employees.
+	        </p>
+	    </field>
+	</record>
+
+</odoo>

@@ -50,6 +50,9 @@ Module này sẽ thay đổi giao diện các module Sales theo thương hiệu 
     'depends': ['sale_management'],
 
     # always loaded
+    'demo': [
+        'data/digest_data.xml',
+    ],
     'data': [
         'views/res_config_settings_views.xml',
     ],
