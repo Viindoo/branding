@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="account.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//div[@name='l10n_eu_oss_right_pane']/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/finance/accounting-and-invoicing.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/finance/accounting-and-invoicing/taxation/distance-selling-for-eu-intra-community.html</attribute>
             </xpath>
         </field>
     </record>

@@ -1,5 +1,4 @@
 <odoo>
-<!-- TODO: Change Documentation link to version 15-->
     <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.form</field>
         <field name="model">res.config.settings</field>
@@ -11,7 +10,7 @@
             </xpath>
             <xpath expr="//div[@id='web_unsplash_settings']/div/div/a[hasclass('oe_link')]" 
                     position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html#create-access-key-and-application-id</attribute>
             </xpath>
         </field>
     </record>

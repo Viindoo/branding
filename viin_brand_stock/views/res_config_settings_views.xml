@@ -5,28 +5,28 @@
 	    <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
 	    <field name="arch" type="xml">
             <xpath expr="//div[@id='product_packs_tracking']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/warehouse-management/products/how-to-use-different-units-of-measure-packages-or-packaging.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/warehouse-management/products/how-to-use-different-units-of-measure-packages-or-packaging.html#packages</attribute>
             </xpath>
             <xpath expr="//div[@id='process_operations_barcodes']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/warehouse-management/products/how-to-use-different-units-of-measure-packages-or-packaging.html#product-packagings</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/barcode/barcode-scanner-integration.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_ups']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/shipping/configure-delivery-methods.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_dhl']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/shipping/configure-delivery-methods.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_fedex']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/shipping/configure-delivery-methods.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_usps']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/shipping/configure-delivery-methods.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_bpost']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/shipping/configure-delivery-methods.html</attribute>
             </xpath>
             <xpath expr="//div[@id='compute_shipping_costs_easypost']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/shipping/configure-delivery-methods.html</attribute>
             </xpath>
             <xpath expr="//div[@id='product_attributes']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/products/using-product-variants-in-viindoo.html</attribute>
@@ -35,7 +35,7 @@
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/warehouse-management/products/activate-different-units-of-measure.html</attribute>
             </xpath>
             <xpath expr="//div[@id='manage_product_packaging']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/warehouse-management/products/how-to-use-different-units-of-measure-packages-or-packaging.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/warehouse-management/products/how-to-use-different-units-of-measure-packages-or-packaging.html#product-packagings</attribute>
             </xpath>
             <xpath expr="//div[@id='full_traceability']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/warehouse-management/lots-serial-numbers/difference-between-lots-and-serial-numbers.html</attribute>
