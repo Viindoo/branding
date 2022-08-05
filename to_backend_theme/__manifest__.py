@@ -16,7 +16,8 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
 
     'author': 'Openworx,T.V.T Marine Automation,Viindoo',
     'website': 'https://viindoo.com',
-    'live_test_url': 'https://v13demo-int.erponline.vn',
+    'live_test_url': "https://v15demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v15demo-vn.viindoo.com",
     'support': 'apps.support@viindoo.com',
 
     # Categories can be used to filter modules in modules listing
