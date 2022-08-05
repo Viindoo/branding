@@ -27,7 +27,8 @@ Editions Supported
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v13demo-int.erponline.vn",
+    'live_test_url': "https://v15emo-int.viindoo.vn",
+    'live_test_url_vi_VN': "https://v15demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1',
