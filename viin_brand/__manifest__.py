@@ -33,6 +33,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'author': "Viindoo",
     'website': "https://www.tvtmarine.com",
     'live_test_url': "https://v13demo-int.erponline.vn",
+    'live_test_url_vi_VN': "https://v13demo-vn.erponline.vn",
     'support': "support@ma.tvtmarine.com",
     'category': 'Hidden',
     'version': '0.1',
