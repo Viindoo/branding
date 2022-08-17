@@ -92,6 +92,12 @@
 				<link rel="stylesheet" type="text/scss"
 					href="/viin_brand_common/static/src/scss/progress_bar.scss" />
 			</xpath>
+			<xpath
+				expr="//script[@src='/web/static/src/js/chrome/action_mixin.js']"
+				position="after">
+				<script type="text/javascript"
+					src="/viin_brand_common/static/src/js/chrome/abstract_web_client.js" />
+			</xpath>
 		</template>
 	</data>
 </odoo>
