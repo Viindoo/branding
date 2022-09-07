@@ -12,10 +12,10 @@
 	</template>
 	
 	<template id="brand_promotion_message" inherit_id="web.brand_promotion_message" name="Viindoo Brand Promotion Message">
-		<xpath expr="//t[@t-set='odoo_logo']/a[./img[@src='/web/static/img/odoo_logo_tiny.png']]" position="attributes">
+		<xpath expr="//t[@t-set='odoo_logo']/a" position="attributes">
 			<attribute name="t-attf-href">https://viindoo.com?utm_source=db&amp;utm_medium=#{_utm_medium}</attribute>
 		</xpath>
-		<xpath expr="//t[@t-set='odoo_logo']/a/img[@src='/web/static/img/odoo_logo_tiny.png']" position="attributes">
+		<xpath expr="//t[@t-set='odoo_logo']/a/img" position="attributes">
 			<attribute name="alt">Viindoo</attribute>
 			<attribute name="src">/viin_brand/static/img/viindoo_logo_tiny.png</attribute>
 		</xpath>
