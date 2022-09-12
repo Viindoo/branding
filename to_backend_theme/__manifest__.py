@@ -31,6 +31,7 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
         'viin_brand_common',
     ],
     "data": [
+        'views/web.xml'
     ],
     'images':[
         'images/screen.png'
