@@ -52,6 +52,7 @@ Module này sẽ thay đổi giao diện module OAuth2 Authentication theo thư�
     # always loaded
     'data': [
         'views/res_config_settings_views.xml',
+        'views/auth_oauth_templates.xml',
     ],
     'installable': True,
     'application': False,
