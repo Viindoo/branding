@@ -9,5 +9,22 @@
 		<xpath expr="//div[hasclass('oe_import_with_file')]/a"  position="attributes">
 			<attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/guiding-to-import-and-export-data.html#import-data-into-viindoo-software</attribute>
 		</xpath>
+	</t>
+    
+    <t t-name="ImportView.preview" t-inherit="base_import.ImportView.preview"
+    t-inherit-mode="extension">   
+       	<xpath expr="//tr/td/span[text()[contains(., 'Odoo')]]" position="replace">
+       		<span class="o_single_line_text" title="File Column">System Field</span>
+       	</xpath>
+    </t>
+
+    <t t-name="ImportView.data_matching" t-inherit="base_import.ImportView.data_matching"
+    t-inherit-mode="extension">
+    	<xpath expr="//p[text()[contains(., 'Odoo')]]" position="replace">
+    		<p class="alert alert-info">If the file contains
+                the column names, the system can try auto-detecting the
+                field corresponding to the column. This makes imports
+                simpler especially when the file has many columns.</p>
+    	</xpath>
     </t>
 </template>
