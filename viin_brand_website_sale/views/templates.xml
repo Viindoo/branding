@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <template id="brand_promotion"
-            inherit_id="viin_brand_website.brand_promotion">
+            inherit_id="website_sale.brand_promotion">
             <xpath
                 expr="//t[@t-call='web.brand_promotion_message']"
                 position="replace">
