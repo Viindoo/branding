@@ -35,6 +35,16 @@
             <xpath expr="//a[@href='https://itunes.apple.com/us/app/odoo/id1272543640']" position="attributes">
                 <attribute name="href">https://itunes.apple.com/vn/app/viindoo-mobile/id1562267579</attribute>
             </xpath>
+            <xpath expr="//div[@id='external_pads_setting']/div[hasclass('o_setting_right_pane')]/div[hasclass('text-muted')]" position="replace">
+				<div class="text-muted">
+				    Use external pads in Viindoo Notes
+				</div>
+            </xpath>
+            <xpath expr="//div[@id='google_spreadsheet_setting']/div[hasclass('o_setting_right_pane')]/div[hasclass('text-muted')]" position="replace">
+	            <div class="text-muted">
+	                Extract and analyze Viindoo data from Google Spreadsheet
+	            </div>
+            </xpath>
         </field>
     </record>
 </odoo>
