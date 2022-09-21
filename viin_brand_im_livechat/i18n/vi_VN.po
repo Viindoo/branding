@@ -30,3 +30,12 @@ msgstr ""
 "Đối với website sử dụng Viindoo CMS, hãy đi đến Website &gt; Cấu hình &gt; "
 "Thiết lập và chọn Kênh chat trực tuyến ở website mà bạn muốn thêm vào "
 "website của bạn "
+
+#. module: viin_brand_im_livechat
+#: model_terms:ir.ui.view,arch_db:viin_brand_im_livechat.im_livechat_channel_view_form
+msgid ""
+"Operators that do not show any activity In Viindoo for more than 30 minutes "
+"will be considered as disconnected."
+msgstr ""
+"Những người vận hành mà không có bất cứ hoạt động nào trong Viindoo nhiều hơn "
+"30 phút được coi là không kết nối."

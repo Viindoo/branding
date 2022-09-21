@@ -27,3 +27,10 @@ msgid ""
 "&gt; Settings and select the Website Live Chat Channel you want to add to "
 "your website."
 msgstr ""
+
+#. module: viin_brand_im_livechat
+#: model_terms:ir.ui.view,arch_db:viin_brand_im_livechat.im_livechat_channel_view_form
+msgid ""
+"Operators that do not show any activity In Viindoo for more than 30 minutes "
+"will be considered as disconnected."
+msgstr ""
