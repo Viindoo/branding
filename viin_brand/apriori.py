@@ -48,5 +48,8 @@ mail_template_terms = [
     ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=website" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=website" style="color: #7f4282;">Viindoo</a>'),
     ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=mail" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=mail" style="color: #7f4282;">Viindoo</a>'),
     ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=forum" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=forum" style="color: #7f4282;">Viindoo</a>'),
+    ('<a href="https://www.odoo.com/page/tour?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo Tour</a>', '<a href="https://viindoo.com/page/viindoo-solution?utm_source=db&amp;utm_medium=auth" style="color: #7f4282;">Viindoo Tour</a>'),
+    ('<a target="_blank" href="https://www.odoo.com">Odoo</a>', '<a target="_blank" href="https://www.viindoo.com">Viindoo</a>'),
+    ('<a target="_blank" href="https://www.odoo.com" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://www.viindoo.com" style="color: #7f4282;">Viindoo</a>'),
     ('Odoo', 'Viindoo'),
 ]
