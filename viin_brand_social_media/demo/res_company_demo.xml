@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="base.main_company" model="res.company">
+    	<field name="social_twitter">https://twitter.com/OfficialViindoo</field>
+        <field name="social_facebook">https://www.facebook.com/Viindoo</field>
+        <field name="social_linkedin">https://www.linkedin.com/company/viindoo</field>
+        <field name="social_youtube">https://www.youtube.com/channel/UCOqIasQbpYcLdV09BrjBwqw</field>
+        <field name="social_github">https://github.com/viindoo</field>
+        <field name="social_instagram">https://www.instagram.com/OfficialViindoo/</field>
+    </record>
+</odoo>
