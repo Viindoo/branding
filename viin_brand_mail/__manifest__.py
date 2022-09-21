@@ -41,6 +41,8 @@ Editions Supported
 
     # always loaded
     'data': [
+        'data/res_partner_data.xml',
+        'data/mail_channel_data.xml',
         'views/mail_data.xml',
         'views/res_config_settings_views.xml',
     ],
