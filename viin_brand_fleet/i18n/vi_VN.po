@@ -1,0 +1,31 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-23 08:46+0000\n"
+"PO-Revision-Date: 2022-09-23 08:46+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: fleet
+#: model_terms:ir.actions.act_window,help:fleet.fleet_costs_reporting_action
+msgid "Manage efficiently your different effective vehicles Costs with Viindoo."
+msgstr "Quản lý hiệu quả chi phí các phương tiện khác nhau với Viindoo."
+
+#. module: fleet
+#: model_terms:ir.actions.act_window,help:fleet.fleet_vehicle_log_contract_action
+msgid ""
+"Manage all your contracts (leasing, insurances, etc.) with\n"
+"            their related services, costs. The system will automatically warn\n"
+"            you when some contracts have to be renewed."
+msgstr ""
+"Quản lý tất cả các hợp đồng của bạn (cho thuê, bảo hiểm, v.v.) với \n"
+"các dịch vụ liên quan, chi phí của họ. Hệ thống sẽ tự động cảnh báo \n"
+"bạn khi một số hợp đồng phải được gia hạn."
