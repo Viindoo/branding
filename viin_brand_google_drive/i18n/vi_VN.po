@@ -1,0 +1,41 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_google_drive
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-26 01:29+0000\n"
+"PO-Revision-Date: 2022-09-26 01:29+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_google_drive
+#: model_terms:ir.ui.view,arch_db:viin_brand_google_drive.view_google_drive_config_form
+msgid ""
+"<b>To create a new filter:</b><br/>\n"
+"                                - Go to the Viindoo document you want to filter. For instance, go to Opportunities and search on Sales Department.<br/>\n"
+"                                - In this \"Search\" view, select the option \"Save Current Filter\", enter the name (Ex: Sales Department)<br/>\n"
+"                                - If you select \"Share with all users\", link of google document in \"More\" options will appear for all users in opportunities of Sales Department.<br/>\n"
+"                                - If you don't select \"Share with all users\", link of google document in \"More\" options will not appear for other users in opportunities of Sales Department.<br/>\n"
+"                                - If filter is not specified, link of google document will appear in \"More\" option for all users for all opportunities."
+msgstr ""
+"<b>Để tạo một bộ lọc mới:</b><br/>\n"
+"                                - Đi đến tài liệu mà bạn muốn lọc. Ví dụ, đi đến Cơ hội và tìm theo đội bán hàng (Vd: Đội bán hàng Hải Phòng).<br/>\n"
+"                                - Ở thanh \"Tìm kiếm\", chọn tùy chon \"Lưu bộ lọc hiện tại\", nhập tên (Vd: Đội bán hàng Hải Phòng)<br/>\n"
+"                                - Nếu bạn chọn \"Chia sẻ với tất cả người dùng\", link của tài liệu google ở tùy chọn \"Hành động\" sẽ xuất hiện đối với tất cả người dùng ở cơ hội đội bán hàng được lọc (Vd: Đội bán hàng Hải Phòng).<br/>\n"
+"                                - Nếu bạn không chọn\"Chia sẻ với tất cả người dùng\", link của tài liệu google ở tùy chọn \"Hành động\" sẽ không xuất hiện đối với người dùng khác ở đội bán hàng được lọc (Vd: Đội bán hàng Hải Phòng).<br/>\n"
+"                                - Nếu bộ lọc không được thiết lập, link của tài liệu google ở tùy chọn \"Hành động\" sẽ được hiển thị cho mọi người dùng của mọi cơ hội."
+
+#. module: viin_brand_google_drive
+#: model_terms:ir.ui.view,arch_db:viin_brand_google_drive.view_google_drive_config_form
+msgid ""
+"https://viindoo.com/documentation/15.0/applications/getting-"
+"started/external-apps-integration/google-drive-intergration.html#steps-to-"
+"use-the-google-drive-integration-feature-in-viindoo"
+msgstr ""
