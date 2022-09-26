@@ -41,7 +41,7 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
+    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
     'version': '0.1',
@@ -50,6 +50,9 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
     'depends': ['hr_expense'],
 
     # always loaded
+    'demo': [
+        'data/digest_data.xml',
+    ],
     'data': [
         'views/hr_expense_views.xml',
     ],
