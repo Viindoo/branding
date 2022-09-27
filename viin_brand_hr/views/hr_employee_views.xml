@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr.open_view_employee_list_my" model="ir.actions.act_window">
+            <field name="help" type="html">
+             <p class="o_view_nocontent_smiling_face">
+               Add a new employee
+             </p><p>
+               With just a quick glance on the software employee screen, you
+               can easily find all the information you need for each person;
+               contact data, job position, availability, etc.
+             </p>
+            </field>
+        </record>
+
+        <record id="hr.act_employee_from_department" model="ir.actions.act_window">
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new employee
+              </p><p>
+                With just a quick glance on the software employee screen, you
+                can easily find all the information you need for each person;
+                contact data, job position, availability, etc.
+              </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,60 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-27 09:58+0000\n"
+"PO-Revision-Date: 2022-09-27 09:58+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hr
+#: model_terms:ir.actions.act_window,help:hr.hr_department_tree_action
+msgid ""
+"Viindoo's department structure is used to manage all documents\n"
+"                    related to employees by departments: expenses, timesheets,\n"
+"                    leaves, recruitments, etc."
+msgstr ""
+"Cấu trúc phòng ban của phần mềm được sử dụng để quản lý tất cả các tài liệu\n"
+"                    liên quan đến nhân viên theo phòng ban: chi tiêu, chấm công,\n"
+"                    nghỉ, tuyển dụng, v.v."
+
+#. module: hr
+#: model_terms:ir.actions.act_window,help:hr.hr_department_kanban_action
+msgid ""
+"Viindoo's department structure is used to manage all documents\n"
+"                related to employees by departments: expenses, timesheets,\n"
+"                time off, recruitments, etc."
+msgstr ""
+"Cấu trúc phòng ban của phần mềm được sử dụng để quản lý tất cả các tài liệu\n"
+"                liên quan đến nhân viên theo phòng ban: chi tiêu, chấm công,\n"
+"                nghỉ, tuyển dụng, v.v."
+
+#. module: hr
+#: model_terms:ir.actions.act_window,help:hr.act_employee_from_department
+#: model_terms:ir.actions.act_window,help:hr.hr_employee_public_action
+msgid ""
+"With just a quick glance on the software employee screen, you\n"
+"                can easily find all the information you need for each person;\n"
+"                contact data, job position, availability, etc."
+msgstr ""
+"Chỉ cần liếc nhanh trên màn hình nhân viên của phần mềm, bạn\n"
+"có thể dễ dàng tìm thấy tất cả thông tin bạn cần cho mỗi người;\n"
+"dữ liệu liên lạc, chức vụ, tính sẵn sàng, v.v..."
+
+#. module: hr
+#: model_terms:ir.actions.act_window,help:hr.open_view_employee_list_my
+msgid ""
+"With just a quick glance on the software employee screen, you\n"
+"               can easily find all the information you need for each person;\n"
+"               contact data, job position, availability, etc."
+msgstr ""
+"Chỉ cần liếc nhanh trên màn hình nhân viên của phần mềm, bạn\n"
+"có thể dễ dàng tìm thấy tất cả thông tin bạn cần cho mỗi người;\n"
+"dữ liệu liên lạc, chức vụ, tính sẵn sàng, v.v..."
