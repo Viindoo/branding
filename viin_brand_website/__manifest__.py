@@ -44,6 +44,7 @@ Editions Supported
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
+        'data/digest_data.xml',
         'views/templates.xml',
         'views/website_templates.xml',
         'views/res_config_settings_views.xml'
@@ -54,7 +55,7 @@ Editions Supported
         ],
         'web.assets_qweb': [
             'viin_brand_website/static/src/xml/website_backend.xml',
-            ],
+        ],
     },
     'images': [
     	# 'static/description/main_screenshot.png'
