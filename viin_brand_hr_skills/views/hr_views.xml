@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="hr_skills.resume_line_view_form" />
         <field name="arch" type="xml">
         	<xpath expr="//field[@name='name']" position="attributes">
-        		<attribute name="placeholder">e.g. Viindoo Jsc.</attribute>
+        		<attribute name="placeholder">e.g. Viindoo Technology JSC</attribute>
         	</xpath>
         </field>
     </record>
