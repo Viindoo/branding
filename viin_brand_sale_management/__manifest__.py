@@ -51,6 +51,7 @@ Module này sẽ thay đổi giao diện các module Sales theo thương hiệu 
 
     # always loaded
     'data': [
+        'data/digest_data.xml',
         'views/res_config_settings_views.xml',
     ],
     'installable': True,
