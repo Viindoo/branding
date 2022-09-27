@@ -33,9 +33,9 @@ msgid ""
 "                simpler especially when the file has many columns."
 msgstr ""
 "Nếu tệp có chứa\n"
-"                    tên cột, hệ thống có thể thử tự động phát hiện\n"
-"                    trường tương ứng với cột. Việc này giúp nhập\n"
-"                    dễ dàng hơn đặc biệt khi tệp có nhiều cột."
+"                    tên cột, hệ thống có thể tự động nhận diện\n"
+"                    trường tương ứng với cột. Việc này giúp nhập liệu\n"
+"                    dễ dàng hơn khi tệp có nhiều cột."
 
 #. module: viin_brand_base_import
 #. openerp-web
