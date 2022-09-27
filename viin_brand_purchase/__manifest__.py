@@ -51,7 +51,9 @@ Module này sẽ thay đổi giao diện các module Purchase theo thương hi�
 
     # always loaded
     'data': [
+        'data/digest_data.xml',
         'views/res_config_settings_views.xml',
+        'views/res_partner_views.xml',
     ],
     'installable': True,
     'application': False,
