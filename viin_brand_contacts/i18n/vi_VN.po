@@ -17,4 +17,4 @@ msgstr ""
 #. module: contacts
 #: model_terms:ir.actions.act_window,help:contacts.action_contacts
 msgid "Viindoo helps you track all activities related to your contacts."
-msgstr "Viindoo giúp bạn theo dõi tất cả hoạt động liên quan tới liên hệ. "
+msgstr "Viindoo giúp bạn theo dõi tất cả hoạt động liên quan tới liên hệ."
