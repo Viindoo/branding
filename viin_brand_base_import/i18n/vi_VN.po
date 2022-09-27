@@ -20,7 +20,7 @@ msgstr ""
 #: code:addons/viin_brand_base_import/static/src/xml/base_import.xml:0
 #, python-format
 msgid "File Column"
-msgstr ""
+msgstr "Cột Tệp"
 
 #. module: viin_brand_base_import
 #. openerp-web
