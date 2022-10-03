@@ -34,6 +34,6 @@
     *:not(li):not(li div) {
         // Avoid vertical scroll caused by the following code in Odoo 14:
         // https://github.com/odoo/odoo/blob/3e598a8014966e1a07a08d53bf85050b458e05a6/addons/mail/static/src/components/message/message.scss#L56
-        overflow-x: inherit;
+        overflow-x: clip;
     }
 }
