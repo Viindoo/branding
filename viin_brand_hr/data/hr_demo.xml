@@ -46,6 +46,6 @@ If you have development competencies, we can propose you specific traineeships</
       </record>
 
       <record id="hr.employee_jod" model="hr.employee">
-          <field name="work_email">jod@viindoo.com</field>
+          <field name="work_email">jod@example.viindoo.com</field>
       </record>
 </odoo>
