@@ -37,3 +37,20 @@
         overflow-x: inherit;
     }
 }
+
+// #TODO Remove this code if we don't get the same error in 16+ 
+// Fix error when tagging name ,
+// Error overflow in status tag when zooming the screen web
+// Details PR: https://github.com/Viindoo/branding/pull/210
+// ID ticket: 7301
+span.o_ComposerSuggestion_part2, text-truncate {
+	overflow: hidden;
+} 
+.o_PartnerImStatusIcon {
+	overflow: hidden;
+}
+// Fix: Error display of missing user name on dropdown-menu
+.dropup .dropdown-menu {
+    bottom: auto !important;
+    margin-top: 40px !important;
+}
