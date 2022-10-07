@@ -24,8 +24,8 @@ msgid ""
 msgstr ""
 "Với bảng điều khiển trung tâm, công nhân có thể bắt đầu lệnh sản xuất "
 "tại xưởng và làm theo hướng dẫn của bảng công việc. Việc kiểm thử chất lượng "
-"đã được tích hợp hoàn hảo vào quá trình này. Công nhân có thể kích hoạt vòng lặp "
-"phản hồi, cảnh báo bảo trì, phế bỏ sản phẩm, v.v... "
+"đã được tích hợp hoàn hảo vào quá trình này. Công nhân có thể kích hoạt chu trình "
+"phản hồi, cảnh báo bảo trì, phế phẩm, v.v... "
 
 #. module: mrp
 #: model:digest.tip,name:mrp.digest_tip_mrp_0
