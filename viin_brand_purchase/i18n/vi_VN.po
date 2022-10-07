@@ -39,10 +39,10 @@ msgid ""
 "clicking on a button in the email, the information is added on the purchase "
 "order. Use filters to track orders that have not been acknowledged."
 msgstr ""
-"Khi gửi đơn đặt hàng qua email, hệ thống yêu cầu nhà cung cấp xác nhận đã"
-" nhận đơn đặt hàng. Khi nhà cung cấp xác nhận đơn đặt hàng bằng cách nhấp vào"
-" nút Đồng ý trong email, thông tin xác nhận sẽ được thêm vào đơn đặt hàng."
-" Sử dụng bộ lọc để theo dõi các đơn đặt hàng chưa được xác nhận."
+"Khi gửi đơn hàng qua email, hệ thống yêu cầu nhà cung cấp xác nhận đã"
+" nhận đơn hàng. Khi nhà cung cấp xác nhận đơn hàng bằng cách nhấn vào"
+" nút Đồng ý trong email, thông tin xác nhận sẽ được thêm vào đơn hàng."
+" Sử dụng bộ lọc để theo dõi các đơn hàng chưa được xác nhận."
 
 #. module: purchase
 #: model_terms:ir.actions.act_window,help:purchase.act_res_partner_2_supplier_invoices
