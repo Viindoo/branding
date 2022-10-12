@@ -56,6 +56,9 @@ Editions Supported
         'web.assets_qweb': [
             'viin_brand_website/static/src/xml/website_backend.xml',
         ],
+        'website.website_configurator_assets_scss': [
+            'viin_brand_website/static/src/components/configurator/configurator.scss'
+        ],
     },
     'images': [
     	# 'static/description/main_screenshot.png'

@@ -1,0 +1,7 @@
+//Replace Odoo logo by branding Logo
+.container-fluid {
+	img.ml-lg-5 {
+		width: auto !important;
+		content: url('/viin_brand/static/img/Viindoo-logo.svg');
+	}
+}
