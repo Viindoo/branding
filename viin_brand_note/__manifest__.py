@@ -44,7 +44,7 @@ Module này sẽ thay đổi giao diện module Notes theo thương hiệu Viind
     'depends': ['note'],
 
     # always loaded
-    'data': [
+    'demo': [
         'data/note_demo.xml',
     ],
     'installable': True,
