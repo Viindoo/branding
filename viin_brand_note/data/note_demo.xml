@@ -9,11 +9,8 @@
       <field name="user_id" ref="base.user_demo"/>
     </record>
 
-    <record id="note.note_12" model="note.note">
-      <field name="memo"><![CDATA[<p><b>Read some documentation about Viindoo before diving into the code</b></p>
-      <p><br/></p>
-      <p>* Viindoo: a modern approach to integrated business management</p>
-      <p>* Viindoo for Retail and Industrial Management</p>]]>
-      </field>
-    </record>
+    <function name="write" model="note.note">
+	        <value eval="[ref('note.note_12')]" />
+	        <value eval="{'active': False}" />
+    </function>
 </odoo>
