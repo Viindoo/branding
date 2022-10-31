@@ -41,7 +41,7 @@ Module này sẽ thay đổi giao diện cuả Unsplash Image Library theo thư�
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
+    # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
     'version': '0.1',
@@ -53,9 +53,9 @@ Module này sẽ thay đổi giao diện cuả Unsplash Image Library theo thư�
     'data': [
         'views/res_config_settings_view.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set True after upgrade 16.0
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
