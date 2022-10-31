@@ -50,7 +50,7 @@ Editions Supported
     'images': [
     	# 'static/description/main_screenshot.png'
     	],
-    'installable': False,
+    'installable': True,
     'application': False,
     'auto_install': ['website_sale'],
     'price': 0.0,
