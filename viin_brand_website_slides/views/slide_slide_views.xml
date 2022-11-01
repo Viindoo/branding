@@ -5,8 +5,10 @@
 		<field name="inherit_id" ref="website_slides.view_slide_slide_form"/>
 		<field name="arch" type="xml">
 		  <xpath expr="//page[@name='external_links']/group/field/tree/field[@name='link']" position="attributes">
+		      <attribute name="widget">url</attribute>
 		      <attribute name="placeholder">e.g. https://www.viindoo.com</attribute>
 		  </xpath>
 		</field>
 	</record>
 </odoo>
+
