@@ -28,6 +28,9 @@
             <xpath expr="//div[@id='compute_shipping_costs_easypost']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/shipping/configure-delivery-methods.html</attribute>
             </xpath>
+            <xpath expr="//div[@id='compute_shipping_costs_sendcloud']/div/a" position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/inventory/shipping/configure-delivery-methods.html</attribute>
+            </xpath>            
             <xpath expr="//div[@id='product_attributes']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/products/using-product-variants-in-viindoo.html</attribute>
             </xpath>
