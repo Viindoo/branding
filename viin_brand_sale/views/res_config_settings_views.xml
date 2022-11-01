@@ -16,9 +16,6 @@
             <xpath expr="//div[@id='sale_config_online_confirmation_pay']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/sales/sales/send-quotations/activate-online-payment-for-viindoo-website.html</attribute>
             </xpath>
-            <xpath expr="//div[@id='invoice_delivery_addresses']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/sales/sales/send-quotations/manage-invoicing-address-and-delivery-address-in-sales.html</attribute>
-            </xpath>
             <xpath expr="//div[@id='sales_settings_invoicing_policy']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/sales/sales/invoicing-method/issuing-invoices-based-on-order-quantity-or-delivery-quantity.html</attribute>
             </xpath>
