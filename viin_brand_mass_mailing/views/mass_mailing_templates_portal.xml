@@ -1,7 +1,7 @@
 <odoo>
     <template id="layout" inherit_id="mass_mailing.layout">
-        <xpath expr="//div[hasclass('pull-right')]" position="replace">
-            <div class="pull-right" t-ignore="true" t-if="not editable">
+        <xpath expr="//div[hasclass('float-end')]" position="replace">
+            <div class="float-end" t-ignore="true" t-if="not editable">
                 Create a <a target="_blank" href="https://viindoo.com/intro/website">free website</a> with
                 <a target="_blank" class="label label-danger" href="https://viindoo.com/intro/website">Viindoo</a>
             </div>
