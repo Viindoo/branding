@@ -5,45 +5,20 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='active_user_setting']/div/a" position="attributes">
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/productivity/mail_plugins.html']" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started.html</attribute>
             </xpath>
-            <xpath expr="//div[@id='sms_settings']/div/a" position="attributes">
-                <attribute name="attrs">{'invisible': 1}</attribute>
-            </xpath>
-            <xpath expr="//div[@id='allow_import']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/guiding-to-import-and-export-data.html</attribute>
-            </xpath>
-            <xpath expr="//div[@id='mail_pluggin_setting']/div/a" position="attributes">
-                <attribute name="attrs">{'invisible': 1}</attribute>
-            </xpath>
-            <xpath expr="//div[@id='sync_outlook_calendar_setting']/div/a" position="attributes">
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/general/auth/ldap.html']" position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/external-apps-integration/ldap.html?highlight=ldap</attribute>
+            </xpath>            
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/general/calendars/outlook/outlook_calendar.html']" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/productivity/calendar/sychronization-with-outlook-s-calendar.html</attribute>
             </xpath>
-            <xpath expr="//div[@id='sync_google_calendar_setting']/div/a" position="attributes">
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/general/calendars/google/google_calendar_credentials.html']" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/productivity/calendar/sychronization-with-google-s-calendar.html</attribute>
             </xpath>
-            <xpath expr="//div[@name='auth_ldap_right_pane']/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/external-apps-integration/ldap.html</attribute>
-            </xpath>
-            <xpath expr="//div[@id='unsplash']/div/a" position="attributes">
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/websites/website/optimize/unsplash.html']" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html</attribute>
-            </xpath>
-            <xpath expr="//a[@href='https://play.google.com/store/apps/details?id=com.odoo.mobile']" position="attributes">
-                <attribute name="href">https://play.google.com/store/apps/details?id=com.viindoo</attribute>
-            </xpath>
-            <xpath expr="//a[@href='https://itunes.apple.com/us/app/odoo/id1272543640']" position="attributes">
-                <attribute name="href">https://itunes.apple.com/vn/app/viindoo-mobile/id1562267579</attribute>
-            </xpath>
-            <xpath expr="//div[@id='external_pads_setting']/div[hasclass('o_setting_right_pane')]/div[hasclass('text-muted')]" position="replace">
-				<div class="text-muted">
-				    Use external pads in Viindoo Notes
-				</div>
-            </xpath>
-            <xpath expr="//div[@id='google_spreadsheet_setting']/div[hasclass('o_setting_right_pane')]/div[hasclass('text-muted')]" position="replace">
-	            <div class="text-muted">
-	                Extract and analyze Viindoo data from Google Spreadsheet
-	            </div>
             </xpath>
         </field>
     </record>
