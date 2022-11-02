@@ -43,9 +43,9 @@ Module này sẽ thay đổi giao diện module Skills Management theo thương 
     'data': [
         'views/hr_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set True after upgrade 16.0
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
