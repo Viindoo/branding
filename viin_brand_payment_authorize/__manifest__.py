@@ -53,10 +53,9 @@ Module này sẽ thay đổi giao diện các module Authorize.Net Payment Acqui
     'data': [
         'views/payment_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set True after upgrade 16.0
-    'price': 0.0,
+    'auto_install': True,
     'currency': 'EUR',
     'license': 'OPL-1',
 }
