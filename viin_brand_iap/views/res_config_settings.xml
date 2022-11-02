@@ -5,13 +5,13 @@
         <field name="inherit_id" ref="iap.res_config_settings_view_form"/>
         <field name="arch" type="xml">
         	<!-- hide it because Viindoo doesn't have this feature yet -->
-            <xpath expr="//a[@href='https://www.odoo.com/documentation/15.0/applications/general/in_app_purchase.html']"
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/general/in_app_purchase.html']"
             position="attributes"> 
-                <attribute name="attrs">{'invisible': 1}</attribute>
+                <!-- <attribute name="attrs">{'invisible': 1}</attribute> -->
             </xpath>
-            <xpath expr="//a[@href='https://www.odoo.com/documentation/15.0/developer/misc/api/iap.html']"
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/16.0/developer/misc/api/iap.html']"
             position="attributes"> 
-                <attribute name="attrs">{'invisible': 1}</attribute>
+                <!-- <attribute name="attrs">{'invisible': 1}</attribute> -->
             </xpath>
         </field>
     </record>
