@@ -1,17 +1,17 @@
 {
-    'name': "Payment Acquirer Branding For Viindoo",
-    'name_vi_VN': "Giao diện Viindoo cho module Payment Acquirer",
+    'name': "Payment Provider Branding For Viindoo",
+    'name_vi_VN': "Giao diện Viindoo cho module Payment Provider",
 
     'summary': """
-Theme branding Viindoo for module Payment Acquirer""",
+Theme branding Viindoo for module Payment Provider""",
     'summary_vi_VN': """
-Giao diện brand Viindoo cho module Payment Acquirer
+Giao diện brand Viindoo cho module Payment Provider
 """,
 
     'description': """
 What it does
 ============
-This module will change color navigate bar, button and logo,v.v in Payment Acquirer following Viindoo's brand
+This module will change color navigate bar, button and logo,v.v in Payment Provider following Viindoo's brand
 
 
 Editions Supported
@@ -24,7 +24,7 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ===================
-Module này sẽ thay đổi giao diện các module Payment Acquirer theo thương hiệu Viindoo
+Module này sẽ thay đổi giao diện các module Payment Provider theo thương hiệu Viindoo
 
 
 Ấn bản được Hỗ trợ
@@ -51,12 +51,12 @@ Module này sẽ thay đổi giao diện các module Payment Acquirer theo thư�
 
     # always loaded
     'data': [
-        'views/payment_acquirer_views.xml',
-        'wizards/payment_acquirer_onboarding_templates.xml'
+        'views/payment_provider_views.xml',
+        'wizards/payment_provider_onboarding_templates.xml'
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set True after upgrade 16.0
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
