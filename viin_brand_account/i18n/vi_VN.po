@@ -18,7 +18,7 @@ msgstr ""
 #. module: viin_brand_account
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
 msgid ""
-". The journal entries need to be computed by Viindoo before being posted in "
+". The journal entries need to be computed by the system before being posted in "
 "your company's currency."
 msgstr ""
 ". Bút toán cần được tính bởi hệ thống trước khi thực hiện việc vào sổ theo "
@@ -27,4 +27,9 @@ msgstr ""
 #. module: viin_brand_account
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
 msgid "activate the currency of the bill"
+msgstr "kích hoạt đơn vị tiền tệ của hóa đơn"
+
+#. module: viin_brand_account
+#: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
+msgid "activate the currency of the invoice"
 msgstr "kích hoạt đơn vị tiền tệ của hóa đơn"

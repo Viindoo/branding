@@ -5,8 +5,11 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form" />
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_activate_currency']" position="replace">
-                <button class="oe_link" type="object" name="action_activate_currency" style="padding: 0; vertical-align: baseline;">activate the currency of the bill</button>. The journal entries need to be computed by Viindoo before being posted in your company's currency.
+            <xpath expr="//button[@name='action_activate_currency'][text()[contains(., 'bill')]]" position="replace">
+                <button class="oe_link" type="object" name="action_activate_currency" style="padding: 0; vertical-align: baseline;">activate the currency of the bill</button>. The journal entries need to be computed by the system before being posted in your company's currency.
+            </xpath>
+            <xpath expr="//button[@name='action_activate_currency'][text()[contains(., 'invoice')]]" position="replace">
+                <button class="oe_link" type="object" name="action_activate_currency" style="padding: 0; vertical-align: baseline;">activate the currency of the invoice</button>. The journal entries need to be computed by the system before being posted in your company's currency.
             </xpath>
         </field>
     </record>
