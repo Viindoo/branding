@@ -9,9 +9,11 @@ Giao diện brand Viindoo cho module Employees
 """,
 
     'description': """
+    
 What it does
 ============
 This module will change color navigate bar, button and logo,v.v in module Employees following Viindoo's brand
+
 Editions Supported
 ==================
 1. Community Edition
@@ -19,9 +21,11 @@ Editions Supported
     """,
 
     'description_vi_VN': """
+    
 Ứng dụng này làm gì
 ===================
 Module này sẽ thay đổi giao diện module Employees theo thương hiệu Viindoo
+
 Ấn bản được Hỗ trợ
 ==================
 1. Ấn bản Community
@@ -52,9 +56,9 @@ Module này sẽ thay đổi giao diện module Employees theo thương hiệu V
         'views/hr_employee_public_views.xml',
         'views/hr_employee_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set True after upgrade 16.0
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
