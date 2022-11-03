@@ -53,7 +53,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             ('prepend','viin_brand_common/static/src/legacy/scss/secondary_variables.scss'),
         ],
         'web._assets_backend_helpers' : [
-            ('replace','web/static/src/legacy/scss/bootstrap_overridden.scss','viin_brand_common/static/src/legacy/scss/bootstrap_overridden.scss'),
+            ('replace','web/static/src/scss/bootstrap_overridden.scss','viin_brand_common/static/src/scss/bootstrap_overridden.scss'),
         ],
         'web._assets_helpers' : [
             'viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss'
@@ -68,16 +68,16 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             ('after','web/static/src/legacy/scss/fields_extra.scss','viin_brand_common/static/src/legacy/scss/fields_extra.scss'),
             ('after','web/static/src/legacy/scss/form_view_extra.scss','viin_brand_common/static/src/legacy/scss/form_view_extra.scss'),
             ('after','web/static/src/legacy/scss/kanban_view.scss','viin_brand_common/static/src/legacy/scss/kanban_view.scss'),
-            ('after','web/static/src/search/search_panel/search_view_extra.scss','viin_brand_common/static/src/search/search_panel/search_view.scss'),
+            ('after','web/static/src/search/search_panel/search_view.scss','viin_brand_common/static/src/search/search_panel/search_view.scss'),
             ('after','base/static/src/scss/onboarding.scss','viin_brand_common/static/src/scss/onboarding.scss'),
-            ('after','web/static/src/legacy/scss/base_settings.scss','viin_brand_common/static/src/legacy/scss/base_settings.scss'),
+            ('after','web/static/src/webclient/settings_form_view/settings_form_view.scss','viin_brand_common/static/src/webclient/settings_form_view/settings_form_view.scss'),
             ('after','web/static/src/legacy/scss/progress_bar.scss','viin_brand_common/static/src/legacy/scss/progress_bar.scss'),
             ('after','web/static/src/webclient/webclient.js','viin_brand_common/static/src/webclient/webclient.js'),
         ],
     },
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set auto_instal: ['web'] after upgrade to 16.0
+    'auto_install': ['web'],
     'price': 99.9,
     'currency': 'EUR',
     'license': 'OPL-1',

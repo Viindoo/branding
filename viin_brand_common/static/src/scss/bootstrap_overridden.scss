@@ -34,6 +34,26 @@ $black:    #000 !default;
 
 $secondary: $white !default;
 
+// The contrast ratio to reach against white, to determine if color changes from "light" to "dark". Acceptable values for WCAG 2.0 are 3, 4.5 and 7.
+// See https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
+$min-contrast-ratio: 3 !default;
+
+// Options
+//
+// Quickly modify global styling by enabling or disabling optional features.
+$enable-smooth-scroll: false !default;
+
+// Prefix for :root CSS variables
+$variable-prefix: '' !default;
+
+// Restore negative margins disabled in BS5 by default
+$enable-negative-margins: true !default;
+
+// Enable CSS Grid classes
+$enable-cssgrid: true !default;
+
+// Spacing
+$spacer: 1rem !default;
 
 // Body
 //
@@ -148,6 +168,7 @@ $badge-font-weight: normal !default;
 
 // Padding applied to the modal body
 $modal-inner-padding: $o-horizontal-padding !default;
+$modal-footer-margin-between: 1px !default;
 
 $modal-lg: $o-modal-lg !default;
 $modal-md: $o-modal-md !default;
@@ -164,3 +185,34 @@ $breadcrumb-active-color: #777777 !default;
 // Code
 
 $code-color: $o-main-code-color!default; 
+
+// User input typically entered via keyboard
+
+$kbd-color: $o-gray-700 !default;
+$kbd-bg: $o-gray-100 !default;
+$kbd-box-shadow: 0px 1px 1px rgba($o-black, 0.2), inset 0px -1px 1px 1px rgba($o-gray-200, 0.8), inset 0px 2px 0px 0px rgba($o-white, 0.8) !default;
+
+// Input
+$input-bg: $o-view-background-color !default;
+$input-focus-border-color: $o-brand-primary !default;
+$form-check-input-checked-color: $o-brand-lightsecondary !default;
+$form-check-input-checked-border-color: $o-brand-primary !default;
+$form-check-input-checked-bg-color: $o-brand-primary !default;
+$form-switch-checked-color: $input-bg !default;
+$form-switch-circle-bg-color: $input-bg !default;
+
+$form-range-thumb-bg: $primary !default;
+
+// Badge
+$badge-color: inherit !default;
+$badge-padding-y: 0.25em !default;
+$badge-padding-x: 0.4em !default;
+
+// Placeholder color 
+$input-placeholder-color: $gray-300 !default;
+
+// Card
+
+$card-spacer-y: $spacer !default; // BS Default
+$card-cap-padding-y: $card-spacer-y !default;
+
