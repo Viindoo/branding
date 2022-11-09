@@ -2,10 +2,10 @@
     <template id="show_website_info"
         inherit_id="website.show_website_info">
         <xpath
-	        expr="//t[@t-if='version']/h1/small" position="replace">
+	        expr="//div[hasclass('oe_structure')]/section/h1/small" position="replace">
 	        <small>Viindoo Version <t t-out="version.get('server_version')"/></small>
         </xpath>
-        <xpath expr="//t[@t-if='version']/p" position="replace">
+        <xpath expr="//div[@hasclass('oe_structure')]/section/p" position="replace">
             <p>Information about the <a target="_blank" href="https://about.viindoo.com">Viindoo JSC Company.</a></p>
         </xpath>
         <!-- Chart of account and l10n app -->
