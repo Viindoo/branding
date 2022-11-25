@@ -52,7 +52,7 @@ Editions Supported
     	],
     'installable': False,
     'application': False,
-    'auto_install': ['website_sale'],
+    'auto_install': False, # set ['website_sale'] after upgrade 16.0
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

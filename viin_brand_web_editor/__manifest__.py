@@ -45,7 +45,7 @@ Editions Supported
     },
     'installable': False,
     'application': False,
-    'auto_install': ['web_editor'],
+    'auto_install': False, # set ['web_editor'] after upgrade 16.0
     'price': 9.9,
     'currency': 'EUR',
     'license': 'OPL-1',
