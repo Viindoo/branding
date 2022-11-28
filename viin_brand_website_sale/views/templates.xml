@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <template id="brand_promotion"
+            inherit_id="website_sale.brand_promotion">
+            <xpath
+                expr="//t[@t-call='web.brand_promotion_message']"
+                position="replace">
+                <t t-call="web.brand_promotion_message">
+                    <t t-set="_message">
+                        The
+                        <a target="_blank"
+                            href="https://viindoo.com/intro/ecommerce?utm_source=db&amp;utm_medium=website">#1 Open Source eCommerce Software</a>
+                    </t>
+                    <t t-set="_utm_medium" t-valuef="website" />
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>
