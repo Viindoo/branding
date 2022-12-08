@@ -1,13 +1,9 @@
 <templates id="template" xml:space="preserve">
-   <t t-name="ga_dialog_content" t-inherit="website.ga_dialog_content"
+   <t t-name="plausible_content" t-inherit="website.plausible_content"
         t-inherit-mode="extension">
-		<xpath expr="//a[@href='https://support.google.com/analytics/answer/9304153']"
+		<xpath expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/websites/website/optimize/plausible.html']"
 		position="attributes">
 		    <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-google-analytics.html</attribute>
-		</xpath>
-		<xpath expr="//a[@href='https://www.odoo.com/documentation/15.0/applications/websites/website/optimize/google_analytics_dashboard.html']"
-		position="attributes">
-		    <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-viindoo-dashboard.html</attribute>
 		</xpath>
 	</t>
 </templates>

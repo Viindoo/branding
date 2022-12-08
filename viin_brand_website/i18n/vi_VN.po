@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-24 05:00+0000\n"
-"PO-Revision-Date: 2022-05-24 05:00+0000\n"
+"POT-Creation-Date: 2022-11-10 06:42+0000\n"
+"PO-Revision-Date: 2022-11-10 06:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Sitemap.xml: Giúp trình thu thập của công cụ tìm kiếm tìm ra những trang "
 "hiện có và những trang mới thay đổi và dựa vào đó để duyệt các trang. Tệp "
-"này được tự động tạo bởi hệ thống. "
+"này được tự động tạo bởi hệ thống."
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.show_website_info
@@ -55,62 +55,3 @@ msgstr "website miễn phí"
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.res_config_settings_view_form
 msgid "https://viindoo.com"
 msgstr ""
-
-#. module: viin_brand_website
-#. openerp-web
-#: code:addons/viin_brand_website/static/src/xml/website_backend.xml:0
-#, python-format
-msgid ""
-"https://viindoo.com/documentation/14.0/vi/applications/websites/website/optimize/how-"
-"to-track-your-website-s-traffic-in-google-analytics.html"
-msgstr ""
-
-#. module: viin_brand_website
-#. openerp-web
-#: code:addons/viin_brand_website/static/src/xml/website_backend.xml:0
-#, python-format
-msgid ""
-"https://viindoo.com/documentation/14.0/vi/applications/websites/website/optimize/how-"
-"to-track-your-website-s-traffic-in-viindoo-dashboard.html"
-msgstr ""
-
-#. module: website
-#: model_terms:digest.tip,tip_description:website.digest_tip_website_0
-msgid ""
-"Monitor your visitors while they are browsing your website with the Viindoo "
-"Social app. Engage with them in just a click using a live chat request or a "
-"push notification. If they have completed one of your forms, you can send "
-"them an SMS, or call them right away while they are browsing your website."
-msgstr ""
-"Theo dõi khách truy cập của bạn khi họ đang duyệt trang web của bạn bằng ứng"
-" dụng Viindoo Social. Tương tác với họ chỉ với một cú nhấp chuột bằng cách sử "
-"dụng yêu cầu trò chuyện trực tiếp hoặc thông báo đẩy. Nếu họ đã hoàn thành "
-"một trong các biểu mẫu của bạn, bạn có thể gửi SMS cho họ hoặc gọi cho họ "
-"ngay trong khi họ đang duyệt trang web của bạn."
-
-#. module: website
-#: model_terms:digest.tip,tip_description:website.digest_tip_website_1
-msgid ""
-"Search in the media dialogue when you need photos to illustrate your "
-"website. Viindoo's integration with Unsplash, featuring millions of royalty "
-"free and high quality photos, makes it possible for you to get the perfect "
-"picture, in just a few clicks."
-msgstr ""
-"Tìm kiếm trong đối thoại truyền thông khi bạn cần ảnh để minh họa trang web "
-"của mình. Sự tích hợp của Viindoo với Unsplash, bao gồm hàng triệu bức ảnh chất"
-" lượng cao và miễn phí bản quyền, giúp bạn có thể có được bức ảnh hoàn hảo "
-"chỉ trong vài cú nhấp chuột."
-
-#. module: website
-#: model_terms:digest.tip,tip_description:website.digest_tip_website_2
-msgid ""
-"To get more visitors, you should target keywords that are often searched in "
-"Google. With the built-in SEO tool, once you define a few keywords, the system "
-"will recommend you the best keywords to target. Then adapt your title and "
-"description accordingly to boost your traffic."
-msgstr ""
-"Để có nhiều khách truy cập, bạn nên nhắm mục tiêu các từ khóa thường được "
-"tìm kiếm trên Google. Với công cụ SEO tích hợp sẵn, khi bạn xác định một vài"
-" từ khóa, hệ thống sẽ giới thiệu cho bạn những từ khóa tốt nhất để nhắm mục "
-"tiêu. Sau đó, điều chỉnh tiêu đề và mô tả của bạn cho phù hợp để tăng lưu "
-"lượng truy cập."
