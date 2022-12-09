@@ -47,9 +47,6 @@ Module này sẽ thay đổi giao diện module Notes theo thương hiệu Viind
     'demo': [
         'data/note_demo.xml',
     ],
-    'data' : [
-        'views/note_demo_views.xml',
-    ],
     'installable': True,
     'application': False,
     'auto_install': True,

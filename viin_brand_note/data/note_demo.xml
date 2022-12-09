@@ -9,8 +9,7 @@
       <field name="user_id" ref="base.user_demo"/>
     </record>
 
-    <function name="write" model="note.note">
+    <function name="unlink" model="note.note">
 	        <value eval="[ref('note.note_12')]" />
-	        <value eval="{'active': False}" />
     </function>
 </odoo>
