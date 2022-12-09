@@ -3,7 +3,7 @@
         <xpath expr="//form[@id='o_website_links_link_tracker_form']/div/div/input[@id='url']" position="attributes">
             <attribute name="placeholder">e.g. https://viindoo.com</attribute>
         </xpath>
-        <xpath expr="//div[hasclass('o_website_links_create_tracked_url')]/div/div[hasclass('row')]/div/p[text()[contains(., 'Odoo')]]" position="replace">
+        <xpath expr="//div[hasclass('o_website_links_create_tracked_url')]/div/div[hasclass('row')]/div/p[last()]" position="replace">
             <p class="text-muted text-justify">Those trackers can be used in Google Analytics to track clicks and visitors, or in Viindoo reports to track opportunities and related revenues.</p>
         </xpath>
     </template>

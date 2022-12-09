@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock.action_location_form" model="ir.actions.act_window">
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Add a new location
+          </p><p>
+            Define your locations to reflect your warehouse structure and
+            organization. The system is able to manage physical locations
+            (warehouses, shelves, bin, etc), partner locations (customers,
+            vendors) and virtual locations which are the counterpart of
+            the stock operations like the manufacturing orders
+            consumptions, inventories, etc.
+          </p><p>
+            Every stock operation in Viindoo moves the products from one
+            location to another one.  For instance, if you receive products
+            from a vendor, the system will move products from the Vendor
+            location to the Stock location. Each report can be performed on
+            physical, partner or virtual locations.
+          </p>
+        </field>
+    </record>
+</odoo>

@@ -1,20 +1,3 @@
 <odoo>
-	<template id="blog_post_complete" inherit_id="website_blog.blog_post_complete">
-		<xpath expr="//section[@id='o_wblog_post_top']/div/t/div/div/h1[@id='o_wblog_post_name']" position="replace">
-			<!-- Blog post name in Odoo core uses div tag which is not good for SEO. This replaces div with h1 -->
-			<h1 t-field="blog_post.name" id="o_wblog_post_name" class="o_editable_no_shadow" 
-				data-oe-expression="blog_post.name" t-att-data-blog-id="blog_post.id" placeholder="Blog Post Title" />
-		</xpath>
-	</template>
-	<template id="opt_blog_cover_post_fullwidth_design" inherit_id="website_blog.opt_blog_cover_post_fullwidth_design">
-		<xpath expr="//a/div[@id='o_wblog_post_name']" position="replace">
-			<!-- Blog post name in Odoo core uses div tag which is not good for SEO. This replaces div with h1 -->
-			<h1 t-field="first_post.name" id="o_wblog_post_name"
-				t-att-data-blog-id="first_post.id" placeholder="Blog Post Title" />
-		</xpath>
-		<xpath expr="//span/div[@id='o_wblog_post_name']" position="replace">
-			<!-- Blog post name in Odoo core uses div tag which is not good for SEO. This replaces div with h1 -->
-			<h1 t-field="blog.name" id="o_wblog_post_name" placeholder="Blog Title"/>
-		</xpath>
-	</template>
+    <!--TODO: remove this module on 16.0?-->
 </odoo>
