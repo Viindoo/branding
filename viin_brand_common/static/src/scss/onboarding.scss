@@ -14,7 +14,17 @@ $o-onboarding-violet-bg-2: $brand-primary-dark;
 $o-onboarding-violet-ui-1: $brand-secondary-dark;
 $o-onboarding-violet-ui-2: $brand-secondary-light;
 
-.o_onboarding {
+@mixin o-onboarding-vertical-gradient($startColor: #555, $endColor: #333) {
+    background-color: mix($startColor, $endColor);
+    background-image: -webkit-gradient(linear, left top, left bottom, from($startColor), to($endColor));
+    background-image: -webkit-linear-gradient(top, $startColor, $endColor);
+    background-image: -moz-linear-gradient(top, $startColor, $endColor);
+    background-image: -ms-linear-gradient(top, $startColor, $endColor);
+    background-image: -o-linear-gradient(top, $startColor, $endColor);
+    background-image: linear-gradient(to bottom, $startColor, $endColor);
+}
+
+.o_onboarding_main {
 	@mixin o-onboarding-variation($bg1, $bg2, $ui1, $ui2) {
 		&, .o_onboarding_step_title, .o_onboarding_step_action, a.o_onboarding_all_done, .o_onboarding_all_done > .fa, .o_onboarding_btn_close {
 			color: white !important;
