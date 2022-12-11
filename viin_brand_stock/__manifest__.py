@@ -51,7 +51,10 @@ Module này sẽ thay đổi giao diện các module Stock theo thương hiệu 
 
     # always loaded
     'data': [
+        'data/digest_data.xml',
         'views/res_config_settings_views.xml',
+        'views/stock_orderpoint_views.xml',
+        'views/stock_location_views.xml',
     ],
     'installable': True,
     'application': False,
