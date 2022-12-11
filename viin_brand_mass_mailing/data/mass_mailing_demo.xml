@@ -22,7 +22,7 @@
 	    <field name="mailing_domain" eval="[('parent_id', '=', ref('base.res_partner_4'))]"/>
 	    <field name="reply_to_mode">new</field>
 	    <field name="reply_to">Info &lt;info@yourcompany.example.com&gt;</field>
-	    <field name="body_html" type="html">
+	    <field name="body_arch" type="html">
 <div class="o_layout o_default_theme">
     <table class="o_mail_wrapper" style="border-collapse:collapse;">
         <tbody>
@@ -36,7 +36,7 @@
                                     <tr>
                                         <td valign="center" width="30%" class="text-center o_mail_v_padding pb0" style="padding:20px 0 0px 0;vertical-align:middle;text-align:center;">
                                             <a href="http://www.example.com" style="text-decoration:none;font-weight:bold;background-color:transparent;color:rgb(100, 89, 116);">
-                                                <img border="0" src="/mass_mailing/static/src/img/theme_default/s_default_image_logo.png" style="border-style:none;height:auto;vertical-align:middle;max-width:400px;width:auto"/> ​
+                                                <img border="0" src="/mass_mailing/static/src/img/theme_default/s_default_image_header_logo.png" style="border-style:none;height:auto;vertical-align:middle;max-width:400px;width:auto"/> ​
                                             </a>
                                         </td>
                                     </tr>
