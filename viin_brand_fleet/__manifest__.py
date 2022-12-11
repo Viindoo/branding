@@ -30,12 +30,12 @@ Module này sẽ thay đổi giao diện module Fleet theo thương hiệu Viind
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v15demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v15demo-vn.viindoo.com",
+    'live_test_url': "https://v16demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v16demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
+    # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
     'version': '0.1',
@@ -48,9 +48,9 @@ Module này sẽ thay đổi giao diện module Fleet theo thương hiệu Viind
         'views/fleet_board_view.xml',
         'views/fleet_vehicle_cost_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set True after upgrade 16.0
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
