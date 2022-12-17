@@ -11,8 +11,8 @@
             padding-bottom: 20px;
         }
         .o_AttachmentViewer {
-            // On-top of navbar
-            z-index: 10;
+            // On-top of navbar and others in kanban
+            z-index: 101;
             position: absolute;
             right: 0;
             top: 0;
