@@ -46,6 +46,9 @@ Editions Supported
         'views/mail_data.xml',
         'views/res_config_settings_views.xml',
     ],
+    'demo': [
+        'data/mail_channel_demo.xml',
+    ],
     'assets': {
         'web.assets_backend': [
             # mail branding
