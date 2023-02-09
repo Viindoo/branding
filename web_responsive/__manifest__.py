@@ -14,7 +14,7 @@
     'live_test_url_vi_VN': "https://v15demo-vn.viindoo.com",
     "author": "LasLabs, Tecnativa, ITerra, " "Odoo Community Association (OCA)",
     "license": "LGPL-3",
-    "installable": True,
+    "installable": False, #Set True when upgrading to 16.0
     "depends": ["web", "mail"],
     "development_status": "Production/Stable",
     "maintainers": ["Yajo", "Tardo", "SplashS"],

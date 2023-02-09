@@ -44,7 +44,7 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
             'to_backend_theme/static/src/scss/discuss.scss',
             ],
         },
-    'installable': True,
+    'installable': False, #Set True when upgrading to 16.0
     'application': False,
     'auto_install': ['web'],
     'price': 99.9,
