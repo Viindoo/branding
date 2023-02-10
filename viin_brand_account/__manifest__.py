@@ -56,9 +56,9 @@ Module này sẽ thay đổi giao diện module Invoicing theo thương hiệu V
         'views/account_bank_statement_views.xml',
         'views/partner_view.xml'
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set True after upgrade to 16.0
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
