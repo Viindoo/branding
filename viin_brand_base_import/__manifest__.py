@@ -51,13 +51,13 @@ Module này sẽ thay đổi giao diện module Base import theo thương hiệu
 
     # always loaded
     'assets':{
-        'web.assets_qweb': [
-            'viin_brand_base_import/static/src/xml/base_import.xml',
+        'web.assets_backend': [
+            'viin_brand_base_import/static/src/legacy/xml/base_import.xml',
             ]
     },
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False,  # set True after upgrade to 16.0
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
