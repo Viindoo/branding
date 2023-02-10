@@ -53,9 +53,9 @@ Module này sẽ thay đổi giao diện module Two-Factor Authentication By Mai
     'data': [
         'views/templates.xml',
     ],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False,  # set True after upgrade to 16.0
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
