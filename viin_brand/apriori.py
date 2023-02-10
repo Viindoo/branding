@@ -1,4 +1,5 @@
 # modules_website is a mapping from old module website to new module website by to_base
+from markupsafe import Markup
 modules_website = {
     # odoo
     'account': 'https://viindoo.com/intro/invoicing',
@@ -41,15 +42,16 @@ modules_website = {
 
 # mail_template_terms is a mapping from old term to new term in email template by to_base
 mail_template_terms = [
-    ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=portalinvite" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=portalinvite" style="color: #7f4282;">Viindoo</a>'),
-    ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=gamification" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=gamification" style="color: #7f4282;">Viindoo</a>'),
-    ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=email" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=email" style="color: #7f4282;">Viindoo</a>'),
-    ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=auth" style="color: #7f4282;">Viindoo</a>'),
-    ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=website" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=website" style="color: #7f4282;">Viindoo</a>'),
-    ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=mail" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=mail" style="color: #7f4282;">Viindoo</a>'),
-    ('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=forum" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=forum" style="color: #7f4282;">Viindoo</a>'),
-    ('<a href="https://www.odoo.com/page/tour?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo Tour</a>', '<a href="https://viindoo.com/page/viindoo-solution?utm_source=db&amp;utm_medium=auth" style="color: #7f4282;">Viindoo Tour</a>'),
-    ('<a target="_blank" href="https://www.odoo.com">Odoo</a>', '<a target="_blank" href="https://www.viindoo.com">Viindoo</a>'),
-    ('<a target="_blank" href="https://www.odoo.com" style="color: #875A7B;">Odoo</a>', '<a target="_blank" href="https://www.viindoo.com" style="color: #7f4282;">Viindoo</a>'),
+    (Markup('https://www.odoo.com?utm_source=db&amp;utm_medium=portalinvite" style="color: #875A7B;">Odoo</a>'), Markup('<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=portalinvite" style="color: #7f4282;">Viindoo</a>')),
+    (Markup('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=gamification" style="color: #875A7B;">Odoo</a>'), Markup('<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=gamification" style="color: #7f4282;">Viindoo</a>')),
+    (Markup('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=email" style="color: #875A7B;">Odoo</a>'), Markup('<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=email" style="color: #7f4282;">Viindoo</a>')),
+    (Markup('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo</a>'), Markup('<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=auth" style="color: #7f4282;">Viindoo</a>')),
+    (Markup('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=website" style="color: #875A7B;">Odoo</a>'), Markup('<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=website" style="color: #7f4282;">Viindoo</a>')),
+    (Markup('<a target="_blank" href="https://www.odoo.com?utm_source=db&amp;utm_medium=forum" style="color: #875A7B;">Odoo</a>'), Markup('<a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=forum" style="color: #7f4282;">Viindoo</a>')),
+    (Markup('<a href="https://www.odoo.com/page/tour?utm_source=db&amp;utm_medium=auth" style="color: #875A7B;">Odoo Tour</a>'), Markup('<a href="https://viindoo.com/page/viindoo-solution?utm_source=db&amp;utm_medium=auth" style="color: #7f4282;">Viindoo Tour</a>')),
+    (Markup('<a target="_blank" href="https://www.odoo.com">Odoo</a>'), Markup('<a target="_blank" href="https://www.viindoo.com">Viindoo</a>')),
+    (Markup('<a target="_blank" href="https://www.odoo.com" style="color: #875A7B;">Odoo</a>'), Markup('<a target="_blank" href="https://www.viindoo.com" style="color: #7f4282;">Viindoo</a>')),
+    (Markup('<a target="_blank" href="https://www.odoo.com" style="text-decoration:none;background-color:transparent;color:#875A7B;">Odoo</a>'), Markup('<a target="_blank" href="https://www.viindoo.com" style="text-decoration:none;background-color:transparent;color:#875A7B;">Viindoo</a>')),
+    (Markup('<a href="https://www.odoo.com?utm_source=db&amp;utm_medium=auth" target="_blank">Powered by <span>Odoo</span></a>'), Markup('<a href="https://viindoo.com?utm_source=db&amp;utm_medium=auth" target="_blank">Powered by <span>Viindoo</span></a>')),
     ('Odoo', 'Viindoo'),
 ]
