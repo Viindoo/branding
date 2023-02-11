@@ -8,6 +8,10 @@
 		}
 	}
 
+	a.dropdown-toggle{
+			    text-decoration: none;
+		}
+
 	> a,
 	> button {
 		&:hover,
@@ -47,4 +51,23 @@ body.o_is_superuser .o_menu_systray {
   &:before {
     background-color: inherit;
   }
+}
+
+.o_main_navbar {
+	.o_menu_systray > * {
+		 > a, > .dropdown > a, > button, > label {
+			.badge {
+                background-color: var(--o-navbar-badge-bg, #{$o-enterprise-primary-color});
+            }
+		}
+	}
+}
+
+.btn-fill-odoo, .btn-odoo {
+	color: $white;
+    background-color: $brand-primary-dark;
+    border-color: $brand-primary-dark;
+    &:hover{
+		color: $white;
+	}
 }

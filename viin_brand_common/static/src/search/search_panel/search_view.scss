@@ -12,26 +12,22 @@
 }
 
 .o_web_client {
-	input,
-	textarea,
-	select {
-        border: 0;
-        border-radius: 0;
-        border-bottom: 1px solid $gray-200;
-		&:focus {
+	.o_searchview_input {
+		border: 0;
+		border-radius: 0;
+		border-bottom: 1px solid $white;
+		&:focus, &:hover {
 			outline: none;
 			border: 0;
-			border-bottom: 1px solid $brand-primary;
+			border-bottom: 1px solid $brand-primary !important;
 		}
 	}
-	.o_mobile_search {
-		.o_mobile_search_header {
-			background-color: $brand-primary-dark;
-			span {
-				&:active {
-					background-color: $brand-primary-darker;
-				}
-			}
-		}
-	}
+}
+
+.dropdown-item:focus{
+	background-color: transparent;
+}
+
+.btn-link {
+	text-decoration: none;
 }

@@ -1,16 +1,8 @@
-.o_input {
-	border: 1px solid $gray-200;
-	border-top-style: none;
-	border-right-style: none;
-	border-left-style: none;
-}
-
 // Required
-.o_required_modifier {
+.o_required_modifier.o_field_widget{
 	&.o_input,
 	.o_input{
-		background-color: $brand-secondary-super-lighter !important;
-        border-bottom: 1px solid $gray-300;
+		background-color: $brand-secondary-super-lighter;
 		&:focus{
 			border-bottom: 1px solid $brand-secondary;
 		}
@@ -20,25 +12,9 @@
 //------------------------------------------------------------------------------
 // Fields
 //------------------------------------------------------------------------------
-
-.o_field_widget {
-
-	// Many2one
-	&.o_field_many2one {
-		.o_external_button {
-			color: $o-brand-primary;
-		}
-	}
-}
-
-.o_field_widget {
-	&.o_field_image {
-		.o_form_image_controls {
-			> button {
-				&.fa {
-					color: $white;
-				}
-			}
-		}
+.o_field_widget:focus-within{
+	&.o_input,
+	.o_input{
+		border-bottom: 1px solid $brand-primary;
 	}
 }

@@ -18,29 +18,22 @@
 			}
         }
     }
+}
 
-	.o_form_statusbar {
+.o_field_statusbar {
+    > .o_statusbar_status {
+        > .o_arrow_button {
+		 &.o_arrow_button_current.disabled {
+                background-color: $brand-primary-dark;
 
-		.o_statusbar_status {
-			> .o_arrow_button {
-				&.btn-primary{
-					&.disabled {
-						color: $brand-secondary;
-						background-color: $gray-200;
-						font-weight: $font-weight-bold;
-						&:after, &:before {
-                            border-left-color: $gray-200;
-                        }
-					}
-				}
-				&:not(.disabled) {
-					&:hover,
-					&:active,
-					&:focus {
-						color: $brand-secondary-dark;
-					}
-				}
-			}
-		}
+                &:after, &:before {
+                    border-left-color: $brand-primary-dark;
+                }
+            }
+        }
 	}
+}
+
+btn-link, a{
+	text-decoration: none;
 }

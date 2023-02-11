@@ -1,10 +1,11 @@
-$o-root-font-size: 0.8125em;
+$o-root-font-size: 13px !default;
 // Change colors here
 $o-community-color: #00bbce;
 $o-enterprise-color: #00bbce;
 $o-enterprise-primary-color: #7f4282;
 
-$o-brand-odoo: $o-community-color;
+$o-brand-primary: $o-community-color !default;
+$o-brand-odoo: $o-community-color !default;
 $o-brand-primary: $o-enterprise-primary-color;
 $brand-primary: $o-enterprise-color;
 $brand-secondary: $o-enterprise-primary-color;
@@ -23,4 +24,3 @@ $brand-secondary-light: lighten($brand-secondary, 10%);
 $brand-secondary-lighter: lighten($brand-secondary, 20%);
 $brand-secondary-super-light: lighten($brand-secondary, 50%);
 $brand-secondary-super-lighter: lighten($brand-secondary, 55%);
-
