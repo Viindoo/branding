@@ -7,7 +7,7 @@
 	        <xpath expr="//div[@id='work_order']/div/a" position='attributes'>
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/manufacturing/products/how-to-create-bills-of-materials.html</attribute>
 	        </xpath>
-            <xpath expr="//a[@href='https://www.odoo.com/documentation/15.0/applications/inventory_and_mrp/manufacturing/management/subcontracting.html']" position='attributes'>
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/inventory_and_mrp/manufacturing/management/subcontracting.html']" position='attributes'>
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/supply-chain/manufacturing/operations/manage-subcontracts-in-your-manufacturing-proccess.html</attribute>
             </xpath>
             <xpath expr="//div[@id='mrp_mps']/div/a" position='attributes'>
