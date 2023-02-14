@@ -4,17 +4,18 @@
 	    <field name="model">res.config.settings</field>
 	    <field name="inherit_id" ref="website.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='domain_settings']/div/div/field[@name='website_domain']"
+            <xpath expr="//div[@id='website_info_settings']/div/div/div/div/field[@name='website_domain']"
             position="attributes">
                 <attribute name="placeholder">https://viindoo.com</attribute>            
             </xpath>
-            <xpath expr="//div[@id='seo_settings']/div/div/div/a[hasclass('oe_link')]"
+            <xpath expr="//div[@id='google_analytics_setting']/div/div/a[hasclass('oe_link')]"
             position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-google-analytics.html</attribute>
             </xpath>
-            <xpath expr="//div[@id='google_analytics_dashboard_setting']/div/div/a[hasclass('oe_link')]"
+            <!-- Plausible Shared Link: Features not available -->
+            <xpath expr="//div[@id='plausbile_setting']/div[hasclass('o_setting_right_pane')]/div/a[hasclass('oe_link')]"
             position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-viindoo-dashboard.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/15.0/applications.html</attribute>
             </xpath>
             <xpath expr="//div[@id='robots_setting'][2]/div[hasclass('o_setting_right_pane')]/div[hasclass('text-muted')]"
             position="replace">

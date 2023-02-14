@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-24 05:00+0000\n"
-"PO-Revision-Date: 2022-05-24 05:00+0000\n"
+"POT-Creation-Date: 2023-02-14 03:58+0000\n"
+"PO-Revision-Date: 2023-02-14 03:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "Sitemap.xml: Giúp trình thu thập của công cụ tìm kiếm tìm ra những trang "
 "hiện có và những trang mới thay đổi và dựa vào đó để duyệt các trang. Tệp "
-"này được tự động tạo bởi hệ thống. "
+"này được tự động tạo bởi hệ thống."
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.show_website_info
@@ -54,24 +54,6 @@ msgstr "website miễn phí"
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.res_config_settings_view_form
 msgid "https://viindoo.com"
-msgstr ""
-
-#. module: viin_brand_website
-#. openerp-web
-#: code:addons/viin_brand_website/static/src/xml/website_backend.xml:0
-#, python-format
-msgid ""
-"https://viindoo.com/documentation/14.0/vi/applications/websites/website/optimize/how-"
-"to-track-your-website-s-traffic-in-google-analytics.html"
-msgstr ""
-
-#. module: viin_brand_website
-#. openerp-web
-#: code:addons/viin_brand_website/static/src/xml/website_backend.xml:0
-#, python-format
-msgid ""
-"https://viindoo.com/documentation/14.0/vi/applications/websites/website/optimize/how-"
-"to-track-your-website-s-traffic-in-viindoo-dashboard.html"
 msgstr ""
 
 #. module: website

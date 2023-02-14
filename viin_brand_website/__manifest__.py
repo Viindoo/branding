@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Website Debranding for Viindoo",
     'name_vi_VN': "",
@@ -52,20 +51,16 @@ Editions Supported
     'assets':{
         'web.assets_backend' : [
             'viin_brand_website/static/src/core/dialog/dialog.js',
-        ],
-        'web.assets_qweb': [
+            'viin_brand_website/static/src/components/configurator/configurator.scss',
             'viin_brand_website/static/src/xml/website_backend.xml',
-        ],
-        'website.website_configurator_assets_scss': [
-            'viin_brand_website/static/src/components/configurator/configurator.scss'
         ],
     },
     'images': [
     	# 'static/description/main_screenshot.png'
     	],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set True after upgrade 16.0
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
