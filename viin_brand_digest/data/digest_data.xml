@@ -15,8 +15,7 @@
                <span class="odoo_link_text" style="color: #7f4282;">Viindoo</span>
            </xpath>
 	    </template>
-	
-	    
+
 	    <template id="digest_section_mobile"
 	        inherit_id="digest.digest_section_mobile">
 	        <xpath expr="//div[hasclass('global_layout')]/div/img" position="replace">
@@ -48,5 +47,10 @@
                 <attribute name="src">/viin_brand_digest/static/img/app_store.png</attribute>
             </xpath>
 	    </template>
+
+	    <record id="digest.digest_digest_default" model="digest.digest">
+            <field name="name">Your Viindoo Periodic Digest</field>
+	    </record>
+	    
 	</data>
 </odoo>
