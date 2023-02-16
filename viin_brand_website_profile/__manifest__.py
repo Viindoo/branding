@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Website profile Debranding for Viindoo",
     'name_vi_VN': "",
@@ -53,9 +52,9 @@ Editions Supported
     'images': [
     	# 'static/description/main_screenshot.png'
     	],
-    'installable': False,
+    'installable': True,
     'application': False,
-    'auto_install': False, # set ['website_profile'] after upgrade 16.0
+    'auto_install': ['website_profile'],
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
