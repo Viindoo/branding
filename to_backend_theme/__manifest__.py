@@ -46,7 +46,7 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
         },
     'installable': False, #Set True when upgrading to 16.0
     'application': False,
-    'auto_install': ['web'],
+    'auto_install': False, # Set this as ['web'] after upgrading for v16
     'price': 99.9,
     'currency': 'EUR',
     'license': 'LGPL-3',
