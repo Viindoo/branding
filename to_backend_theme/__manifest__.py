@@ -7,7 +7,6 @@
 {
     "name": "Viindoo Backend Theme",
     "summary": "Mobile backend theme for Odoo community",
-    "version": "1.0.23",
 
 	"description": """
 Backend theme for Viindoo, based on the Openworx Backend Theme
@@ -22,7 +21,7 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
 
     # Categories can be used to filter modules in modules listing
     'category': 'Website/Theme/Backend',
-    'version': '0.1.0',
+    'version': '1.0.23',
 
     "depends": [
         'web',
