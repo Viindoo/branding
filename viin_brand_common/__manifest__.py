@@ -71,7 +71,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             ('after','web/static/src/search/search_panel/search_view.scss','viin_brand_common/static/src/search/search_panel/search_view.scss'),
             ('after','base/static/src/scss/onboarding.scss','viin_brand_common/static/src/scss/onboarding.scss'),
             ('after','web/static/src/webclient/settings_form_view/settings_form_view.scss','viin_brand_common/static/src/webclient/settings_form_view/settings_form_view.scss'),
-            ('after','web/static/src/legacy/scss/progress_bar.scss','viin_brand_common/static/src/legacy/scss/progress_bar.scss'),
+            ('after','web/static/src/views/fields/progress_bar/progress_bar_field.scss','viin_brand_common/static/src/legacy/scss/progress_bar.scss'),
             ('after','web/static/src/webclient/webclient.js','viin_brand_common/static/src/webclient/webclient.js'),
         ],
     },
