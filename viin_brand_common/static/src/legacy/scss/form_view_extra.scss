@@ -20,17 +20,29 @@
     }
 }
 
+// Header Status Button
 .o_field_statusbar {
     > .o_statusbar_status {
         > .o_arrow_button {
 		 &.o_arrow_button_current.disabled {
                 background-color: $brand-primary-dark;
+                color: $light;
 
                 &:after, &:before {
                     border-left-color: $brand-primary-dark;
                 }
             }
         }
+	}
+}
+
+// Log note/ Send message Button
+.btn-fill-odoo, .btn-odoo {
+	color: $white;
+    background-color: $brand-primary-dark;
+    border-color: $brand-primary-dark;
+    &:hover{
+		color: $white;
 	}
 }
 

@@ -62,12 +62,3 @@ body.o_is_superuser .o_menu_systray {
 		}
 	}
 }
-
-.btn-fill-odoo, .btn-odoo {
-	color: $white;
-    background-color: $brand-primary-dark;
-    border-color: $brand-primary-dark;
-    &:hover{
-		color: $white;
-	}
-}
