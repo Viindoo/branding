@@ -54,3 +54,53 @@ msgstr "Gửi bởi"
 #: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_section_mobile
 msgid "Viindoo Mobile"
 msgstr ""
+
+#. module: digest
+#: model_terms:digest.tip,tip_description:digest.digest_tip_digest_2
+msgid "Tip: A calculator in Viindoo"
+msgstr "Mẹo: Máy tính trong Viindoo"
+
+#. module: digest
+#: model:digest.tip,name:digest.digest_tip_digest_2
+msgid "Tip: A calculator in Viindoo"
+msgstr "Mẹo: Máy tính trong Viindoo"
+
+#. module: viin_brand_digest
+#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_digest_view_form
+msgid "You may want to add new computed fields with Viindoo Studio:"
+msgstr ""
+"Bạn có thể muốn thêm các trường kiểu tính toán (compute) bằng Viindoo "
+"Studio:"
+
+#. module: viin_brand_digest
+#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_digest_view_form
+msgid ""
+"first create a boolean field called\n"
+"\t                        <code>kpi_myfield</code>\n"
+"\t                        and display it in the KPI's tab;"
+msgstr ""
+"đầu tiên tạo ra một trường boolean được gọi là \n"
+"                                          <code>kpi_myfield\n"
+"                                           và hiển thị nó trong tab của KPI;"
+
+#. module: viin_brand_digest
+#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_digest_view_form
+msgid ""
+"then create a computed field called\n"
+"\t                        <code>kpi_myfield_value</code>\n"
+"\t                        that will compute your customized KPI."
+msgstr ""
+"sau đó tạo một trường kiểu tính toán (compute) gọi là\n"
+"                                                  <code>kpi_myfield_value</code>\n"
+"                                                   Điều đó sẽ tính KPI tùy chỉnh của bạn."
+
+#. module: viin_brand_digest
+#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_digest_view_form
+msgid ""
+"you must create 2 fields on the\n"
+"\t                        <code>digest</code>\n"
+"\t                        object:"
+msgstr ""
+"bạn phải tạo 2 trường trên\n"
+"                                              đối tượng\n"
+"                                             <code>digest:</code>                                                  "

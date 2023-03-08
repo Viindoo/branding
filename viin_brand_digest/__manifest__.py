@@ -41,7 +41,7 @@ Module này sẽ thay đổi giao diện module Digest theo thương hiệu Viin
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
+    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
     'version': '0.1',
@@ -52,6 +52,7 @@ Module này sẽ thay đổi giao diện module Digest theo thương hiệu Viin
     # always loaded
     'data': [
         'data/digest_data.xml',
+        'data/digest_tips_data.xml',
         'views/digest_views.xml',
         'views/res_config_settings_views.xml',
     ],
