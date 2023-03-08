@@ -1,7 +1,4 @@
 .o_wslides_body {
-    .o_wslides_gradient {
-        background-image: linear-gradient(90deg, $brand-primary, $brand-secondary) !important;
-    }
     .oe_search_button {
         @extend .btn-primary;
         @extend .border-0;
