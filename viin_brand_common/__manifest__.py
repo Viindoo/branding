@@ -45,7 +45,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'installable': True,
     'application': False,
     'auto_install': ['web'],
-    'price': 99.9,
+    'price': 9.9,
     'currency': 'EUR',
     'license': 'OPL-1',
 }
