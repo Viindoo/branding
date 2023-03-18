@@ -7,13 +7,6 @@ body {
 	font-family: "Roboto";
 }
 
-
-.o_mail_user_status {
-	&.o_user_online {
-		color: $brand-primary;
-	}
-}
-
 .o_thread_window {
 
 	font-size: 1.1em;
@@ -100,21 +93,12 @@ body {
 	// Normal checkboxes
 	.o_list_view,
 	.o_settings_container .o_setting_box {
-		.custom-checkbox:not(.o_boolean_toggle) {
+		.o-checkbox:not(.o_boolean_toggle) {
 			top: auto;
-			.custom-control-label {
-				top: auto;
-
-				&::after {
-					width: 1rem;
-					height: 1rem;
-					cursor: pointer;
-				}
-				&::before {
-					width: 1rem;
-					height: 1rem;
-					cursor: pointer;
-				}
+			.form-check-input {
+				margin-top: 0.75rem;
+				width: 1rem;
+				height: 1rem;
 			}
 		}
 	}

@@ -1,12 +1,16 @@
 // Iconized full screen apps menu
 .o_navbar_apps_menu {
-    .dropdown-menu {
+    .dropdown-menu-custom {
         background: url("/web_responsive/static/src/img/home-menu-bg-overlay.svg"),
             linear-gradient(
                 to bottom,
                 $brand-primary-dark,
                 desaturate(lighten($brand-primary-dark, 20%), 15)
             );
-        
+        .o_app {
+        	&:hover {
+				background-color: inherit;
+			}
+		}
     }
 }

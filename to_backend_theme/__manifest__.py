@@ -37,15 +37,13 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
     ],
     'assets':{
         'web.assets_backend': [
-            ('after', '/web_responsive/static/src/legacy/scss/web_responsive.scss', '/to_backend_theme/static/src/legacy/scss/web_responsive.scss'),
             ('after', '/web_responsive/static/src/components/apps_menu/apps_menu.scss', 'to_backend_theme/static/src/scss/apps_menu.scss'),
             'to_backend_theme/static/src/scss/style.scss',
-            'to_backend_theme/static/src/scss/discuss.scss',
             ],
         },
-    'installable': False, #Set True when upgrading to 16.0
+    'installable': True,
     'application': False,
-    'auto_install': False, # Set this as ['web'] after upgrading for v16
+    'auto_install': ['web'],
     'price': 99.9,
     'currency': 'EUR',
     'license': 'LGPL-3',
