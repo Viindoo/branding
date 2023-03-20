@@ -9,6 +9,20 @@
 	}
 }
 
+.o_required_modifier.o_field_widget.o_field_selection:not(:hover):not(:focus-within) select:not(:hover) {
+	background-color: $brand-secondary-super-lighter !important;
+}
+
+.o_required_modifier.o_field_widget:focus-within{
+	&.o_input,
+	.o_input{
+		border-bottom: 1px solid $brand-secondary;
+		&:focus{
+			border-bottom: none;
+		}
+	}
+}
+
 //------------------------------------------------------------------------------
 // Fields
 //------------------------------------------------------------------------------

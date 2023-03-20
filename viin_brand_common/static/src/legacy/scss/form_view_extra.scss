@@ -46,6 +46,11 @@
 	}
 }
 
+.o_ChatterTopbar_button.o-active
+{
+	background-color: $brand-primary-dark !important;
+}
+
 btn-link, a{
 	text-decoration: none;
 }
