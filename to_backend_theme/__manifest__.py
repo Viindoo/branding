@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016, 2019 Openworx - Mario Gielissen
 # Copyright 2012, 2019 Openworx - T.V.T Marine Automation
 # Copyright 2019,2021 Viindoo
