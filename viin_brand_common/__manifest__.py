@@ -64,6 +64,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         ],
         'web.assets_backend' : [
             # common branding
+            'viin_brand_common/static/src/views/graph/colors.js',
             ('after','web/static/src/webclient/webclient.scss','viin_brand_common/static/src/webclient/webclient.scss'),
             ('after','web/static/src/legacy/scss/fields_extra.scss','viin_brand_common/static/src/legacy/scss/fields_extra.scss'),
             ('after','web/static/src/legacy/scss/form_view_extra.scss','viin_brand_common/static/src/legacy/scss/form_view_extra.scss'),
