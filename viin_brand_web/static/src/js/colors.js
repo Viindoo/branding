@@ -7,6 +7,6 @@ var GRAPH_COLORS = ["#00bbce", "#7f4282", "#dd3baf", "#00B365", "#0099E6",
     "#66f0ff", "#c796ca", "#ee9dd6", "#59ffb6", "#73d0ff",
     "#ffe598", "#e5a8a8", "#ffd07f", "#ca95ca", "929ca6"];
 
-for (let i=0;i<=GRAPH_COLORS.length;i++){
+for (let i=0;i<GRAPH_COLORS.length;i++){
     COLORS[i] = GRAPH_COLORS[i]
 }
