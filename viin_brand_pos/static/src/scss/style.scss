@@ -32,11 +32,6 @@
     background: $brand-primary-darker;
 }
 
-.pos .product .price-tag,
-.pos .product .product-info-button{
-    background: lighten($o-enterprise-primary-color,20%);
-}
-
 .pos .product .product-info-button:hover{
     background: lighten($o-enterprise-primary-color,5%);
 }
