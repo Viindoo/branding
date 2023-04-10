@@ -57,7 +57,9 @@ body.o_is_superuser .o_menu_systray {
 	.o_menu_systray > * {
 		 > a, > .dropdown > a, > button, > label {
 			.badge {
-                background-color: var(--o-navbar-badge-bg, #{$o-enterprise-primary-color});
+				height: auto;
+				border-radius: 0.25rem;
+				background-color: var(--o-navbar-badge-bg, #{$o-enterprise-primary-color});
             }
 		}
 	}
