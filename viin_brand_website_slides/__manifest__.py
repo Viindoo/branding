@@ -7,7 +7,7 @@ Debranding eLearning for Viindoo""",
 
     'summary_vi_VN': """
 Làm lại màu sắc Phần mềm eLearning theo thương hiệu Viindoo
-    	""",
+        """,
 
     'description': """
 
@@ -45,14 +45,14 @@ Editions Supported
         # 'security/ir.model.access.csv',
         'views/slide_slide_views.xml',
     ],
-    'assets' : {
-        'web.assets_frontend' : [
-            ('after','website_slides/static/src/scss/website_slides.scss','viin_brand_website_slides/static/src/scss/website_slides.scss')
+    'assets': {
+        'web.assets_frontend': [
+            ('after', 'website_slides/static/src/scss/website_slides.scss', 'viin_brand_website_slides/static/src/scss/website_slides.scss')
         ],
     },
     'images': [
-    	# 'static/description/main_screenshot.png'
-    	],
+        # 'static/description/main_screenshot.png'
+        ],
     'installable': True,
     'application': False,
     'auto_install': ['website_slides'],

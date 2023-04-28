@@ -24,7 +24,7 @@ modules_website = {
     'mrp': 'https://viindoo.com/intro/mrp',
     'note': 'https://viindoo.com/intro/notes',
     'point_of_sale': 'https://viindoo.com/intro/pos',
-    'purchase' : 'https://viindoo.com/intro/purchase',
+    'purchase': 'https://viindoo.com/intro/purchase',
     'project': 'https://viindoo.com/intro/project',
     'repair': 'https://viindoo.com/intro/repair',
     'sale_management': 'https://viindoo.com/intro/sales',

@@ -12,7 +12,7 @@ Chủ đề giao diện cho thương hiệu Viindoo
 
     'description': """
 This module change some information for Viindoo branding
- 
+
 Editions Supported
 ==================
 1. Community Edition
@@ -45,35 +45,35 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'views/res_users_views.xml',
         'views/webclient_template.xml'
     ],
-    'assets' : {
-        'web._assets_primary_variables' : [
+    'assets': {
+        'web._assets_primary_variables': [
             'viin_brand_common/static/src/legacy/scss/primary_variables.scss',
         ],
-        'web._assets_secondary_variables' : [
-            ('prepend','viin_brand_common/static/src/legacy/scss/secondary_variables.scss'),
+        'web._assets_secondary_variables': [
+            ('prepend', 'viin_brand_common/static/src/legacy/scss/secondary_variables.scss'),
         ],
-        'web._assets_backend_helpers' : [
-            ('replace','web/static/src/scss/bootstrap_overridden.scss','viin_brand_common/static/src/scss/bootstrap_overridden.scss'),
+        'web._assets_backend_helpers': [
+            ('replace', 'web/static/src/scss/bootstrap_overridden.scss', 'viin_brand_common/static/src/scss/bootstrap_overridden.scss'),
         ],
-        'web._assets_helpers' : [
+        'web._assets_helpers': [
             'viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss'
         ],
-        'web.assets_common' : [
+        'web.assets_common': [
             'viin_brand_common/static/src/legacy/scss/navbar.scss',
             'viin_brand_common/static/src/legacy/scss/systray.scss'
         ],
-        'web.assets_backend' : [
+        'web.assets_backend': [
             # common branding
             'viin_brand_common/static/src/views/graph/colors.js',
-            ('after','web/static/src/webclient/webclient.scss','viin_brand_common/static/src/webclient/webclient.scss'),
-            ('after','web/static/src/legacy/scss/fields_extra.scss','viin_brand_common/static/src/legacy/scss/fields_extra.scss'),
-            ('after','web/static/src/legacy/scss/form_view_extra.scss','viin_brand_common/static/src/legacy/scss/form_view_extra.scss'),
-            ('after','web/static/src/legacy/scss/kanban_view.scss','viin_brand_common/static/src/legacy/scss/kanban_view.scss'),
-            ('after','web/static/src/search/search_panel/search_view.scss','viin_brand_common/static/src/search/search_panel/search_view.scss'),
-            ('after','base/static/src/scss/onboarding.scss','viin_brand_common/static/src/scss/onboarding.scss'),
-            ('after','web/static/src/webclient/settings_form_view/settings_form_view.scss','viin_brand_common/static/src/webclient/settings_form_view/settings_form_view.scss'),
-            ('after','web/static/src/views/fields/progress_bar/progress_bar_field.scss','viin_brand_common/static/src/legacy/scss/progress_bar.scss'),
-            ('after','web/static/src/webclient/webclient.js','viin_brand_common/static/src/webclient/webclient.js'),
+            ('after', 'web/static/src/webclient/webclient.scss', 'viin_brand_common/static/src/webclient/webclient.scss'),
+            ('after', 'web/static/src/legacy/scss/fields_extra.scss', 'viin_brand_common/static/src/legacy/scss/fields_extra.scss'),
+            ('after', 'web/static/src/legacy/scss/form_view_extra.scss', 'viin_brand_common/static/src/legacy/scss/form_view_extra.scss'),
+            ('after', 'web/static/src/legacy/scss/kanban_view.scss', 'viin_brand_common/static/src/legacy/scss/kanban_view.scss'),
+            ('after', 'web/static/src/search/search_panel/search_view.scss', 'viin_brand_common/static/src/search/search_panel/search_view.scss'),
+            ('after', 'base/static/src/scss/onboarding.scss', 'viin_brand_common/static/src/scss/onboarding.scss'),
+            ('after', 'web/static/src/webclient/settings_form_view/settings_form_view.scss', 'viin_brand_common/static/src/webclient/settings_form_view/settings_form_view.scss'),
+            ('after', 'web/static/src/views/fields/progress_bar/progress_bar_field.scss', 'viin_brand_common/static/src/legacy/scss/progress_bar.scss'),
+            ('after', 'web/static/src/webclient/webclient.js', 'viin_brand_common/static/src/webclient/webclient.js'),
         ],
     },
     'installable': True,

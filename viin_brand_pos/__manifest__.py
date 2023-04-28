@@ -47,17 +47,17 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['viin_brand_common','point_of_sale'],
+    'depends': ['viin_brand_common', 'point_of_sale'],
 
     # always loaded
     'data': [
         'views/res_config_settings_views.xml',
     ],
-    'assets' :{
+    'assets': {
         'point_of_sale.assets': [
-            ('prepend','viin_brand_common/static/src/legacy/scss/primary_variables.scss'),
-            ('prepend','viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss'),
-            ('after','point_of_sale/static/src/scss/pos.scss','viin_brand_pos/static/src/scss/style.scss'),
+            ('prepend', 'viin_brand_common/static/src/legacy/scss/primary_variables.scss'),
+            ('prepend', 'viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss'),
+            ('after', 'point_of_sale/static/src/scss/pos.scss', 'viin_brand_pos/static/src/scss/style.scss'),
             'viin_brand_pos/static/src/xml/Chrome.xml',
         ],
     },

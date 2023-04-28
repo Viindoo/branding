@@ -7,7 +7,7 @@ Debranding Quotation Builder for Viindoo""",
 
     'summary_vi_VN': """
 Làm lại màu sắc Quotation Builder theo thương hiệu Viindoo
-    	""",
+        """,
 
     'description': """
 
@@ -47,8 +47,8 @@ Editions Supported
     ],
 
     'images': [
-    	# 'static/description/main_screenshot.png'
-    	],
+        # 'static/description/main_screenshot.png'
+        ],
     'installable': True,
     'application': False,
     'auto_install': True,

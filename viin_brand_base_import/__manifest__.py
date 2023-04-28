@@ -50,7 +50,7 @@ Module này sẽ thay đổi giao diện module Base import theo thương hiệu
     'depends': ['base_import'],
 
     # always loaded
-    'assets':{
+    'assets': {
         'web.assets_backend': [
             'viin_brand_base_import/static/src/legacy/xml/base_import.xml',
             ]

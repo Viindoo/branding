@@ -9,7 +9,7 @@ Giao diện brand Viindoo cho module Employees
 """,
 
     'description': """
-    
+
 What it does
 ============
 This module will change color navigate bar, button and logo,v.v in module Employees following Viindoo's brand
@@ -21,7 +21,7 @@ Editions Supported
     """,
 
     'description_vi_VN': """
-    
+
 Ứng dụng này làm gì
 ===================
 Module này sẽ thay đổi giao diện module Employees theo thương hiệu Viindoo

@@ -5,7 +5,7 @@
     'summary': """
 Theme branding Viindoo for module Skills Management """,
     'summary_vi_VN': """
-Giao diện brand Viindoo cho module Skills Management 
+Giao diện brand Viindoo cho module Skills Management
 """,
 
     'description': """

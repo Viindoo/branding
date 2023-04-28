@@ -8,11 +8,11 @@ Set Viindoo Brandings for Odoo app.
 
     'summary_vi_VN': """
 Thiết lập thương hiệu Viindoo cho ứng dụng Odoo
-    	""",
+        """,
 
     'description': """
 This module change some information for Viindoo branding
- 
+
 Editions Supported
 ==================
 1. Community Edition
@@ -38,7 +38,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'category': 'Hidden',
     'version': '0.1',
     'depends': ['base'],
-    'data' : [
+    'data': [
     ],
     'installable': True,
     'application': False,

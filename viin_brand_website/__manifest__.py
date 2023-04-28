@@ -7,7 +7,7 @@ Debranding Website Builder for Viindoo""",
 
     'summary_vi_VN': """
 Làm lại màu sắc Bộ công cụ dựng website theo thương hiệu Viindoo
-    	""",
+        """,
 
     'description': """
 
@@ -48,16 +48,16 @@ Editions Supported
         'views/website_templates.xml',
         'views/res_config_settings_views.xml'
     ],
-    'assets':{
-        'web.assets_backend' : [
+    'assets': {
+        'web.assets_backend': [
             'viin_brand_website/static/src/core/dialog/dialog.js',
             'viin_brand_website/static/src/components/configurator/configurator.scss',
             'viin_brand_website/static/src/xml/website_backend.xml',
         ],
     },
     'images': [
-    	# 'static/description/main_screenshot.png'
-    	],
+        # 'static/description/main_screenshot.png'
+        ],
     'installable': True,
     'application': False,
     'auto_install': True,

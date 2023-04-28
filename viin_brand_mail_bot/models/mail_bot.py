@@ -2,12 +2,13 @@ import threading
 
 from odoo import models, _
 
+
 class MailBot(models.AbstractModel):
     _inherit = 'mail.bot'
-    
+
     def _get_answer(self, record, body, values, command=False):
         test_mode = getattr(threading.current_thread(), 'testing', False) or self.env.registry.in_test_mode()
-        res = super(MailBot,self)._get_answer(record, body, values, command)
+        res = super(MailBot, self)._get_answer(record, body, values, command)
         if test_mode:
             return res
         else:

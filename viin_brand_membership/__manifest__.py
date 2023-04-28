@@ -5,7 +5,7 @@
     'summary': """
 Theme branding Viindoo for module Members """,
     'summary_vi_VN': """
-Giao diện brand Viindoo cho module Members 
+Giao diện brand Viindoo cho module Members
 """,
 
     'description': """

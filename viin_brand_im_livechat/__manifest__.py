@@ -7,7 +7,7 @@ Debranding Live Chat for Viindoo""",
 
     'summary_vi_VN': """
 Làm lại màu sắc Live Chat theo thương hiệu Viindoo
-    	""",
+        """,
 
     'description': """
 
@@ -50,8 +50,8 @@ Editions Supported
         'views/im_livechat_channel_views.xml'
     ],
     'images': [
-    	# 'static/description/main_screenshot.png'
-    	],
+        # 'static/description/main_screenshot.png'
+        ],
     'installable': True,
     'application': False,
     'auto_install': True,

@@ -7,7 +7,7 @@ Debranding Website eCommerce for Viindoo""",
 
     'summary_vi_VN': """
 Làm lại màu sắc Phần mềm thương mại điện tử theo thương hiệu Viindoo
-    	""",
+        """,
 
     'description': """
 
@@ -47,8 +47,8 @@ Editions Supported
     ],
 
     'images': [
-    	# 'static/description/main_screenshot.png'
-    	],
+        # 'static/description/main_screenshot.png'
+        ],
     'installable': True,
     'application': False,
     'auto_install': ['website_sale'],

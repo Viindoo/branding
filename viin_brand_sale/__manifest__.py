@@ -56,7 +56,7 @@ Module này sẽ thay đổi giao diện các module Sale theo thương hiệu V
     ],
     'installable': True,
     'application': False,
-    'auto_install': True, 
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

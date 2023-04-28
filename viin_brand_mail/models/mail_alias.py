@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class Alias(models.Model):
     _inherit = 'mail.alias'
 

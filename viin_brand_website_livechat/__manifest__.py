@@ -7,7 +7,7 @@ Debranding Website Live Chat for Viindoo""",
 
     'summary_vi_VN': """
 Làm lại màu sắc Website Live Chat theo thương hiệu Viindoo
-    	""",
+        """,
 
     'description': """
 
@@ -45,18 +45,18 @@ Editions Supported
         # 'security/ir.model.access.csv',
     ],
 
-    'assets' : {
+    'assets': {
         'web.assets_backend': [
             # mail branding
             ('after', '/website_livechat/static/src/components/visitor_banner/visitor_banner.scss', '/viin_brand_website_livechat/static/src/components/visitor_banner/visitor_banner.scss'),
         ],
-        'web.assets_frontend' : [
+        'web.assets_frontend': [
             '/viin_brand_im_livechat/static/src/legacy/public_livechat.scss'
         ],
     },
     'images': [
-    	# 'static/description/main_screenshot.png'
-    	],
+        # 'static/description/main_screenshot.png'
+        ],
     'installable': True,
     'application': False,
     'auto_install': True,

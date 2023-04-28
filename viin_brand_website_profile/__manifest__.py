@@ -7,7 +7,7 @@ Debranding Website profile for Viindoo""",
 
     'summary_vi_VN': """
 Làm lại màu sắc Phần mềm Website profile theo thương hiệu Viindoo
-    	""",
+        """,
 
     'description': """
 
@@ -44,14 +44,14 @@ Editions Supported
     'data': [
         # 'security/ir.model.access.csv',
     ],
-    'assets' : {
-        'web.assets_frontend' : [
-            ('after','website_profile/static/src/scss/website_profile.scss','viin_brand_website_profile/static/src/scss/website_profile.scss')
+    'assets': {
+        'web.assets_frontend': [
+            ('after', 'website_profile/static/src/scss/website_profile.scss', 'viin_brand_website_profile/static/src/scss/website_profile.scss')
         ],
     },
     'images': [
-    	# 'static/description/main_screenshot.png'
-    	],
+        # 'static/description/main_screenshot.png'
+        ],
     'installable': True,
     'application': False,
     'auto_install': ['website_profile'],
