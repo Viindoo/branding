@@ -31,10 +31,10 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
     "data": [
         'views/web.xml'
     ],
-    'images':[
+    'images': [
         'images/screen.png'
     ],
-    'assets':{
+    'assets': {
         'web.assets_backend': [
             ('after', '/web_responsive/static/src/components/apps_menu/apps_menu.scss', 'to_backend_theme/static/src/scss/apps_menu.scss'),
             'to_backend_theme/static/src/scss/style.scss',
@@ -47,4 +47,3 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
     'currency': 'EUR',
     'license': 'LGPL-3',
 }
-
