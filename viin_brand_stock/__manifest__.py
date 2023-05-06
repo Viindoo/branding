@@ -47,7 +47,7 @@ Module này sẽ thay đổi giao diện các module Stock theo thương hiệu 
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['stock'],
+    'depends': ['stock', 'viin_brand_digest'],
 
     # always loaded
     'data': [
