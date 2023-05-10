@@ -5,25 +5,37 @@
 	       <xpath expr="//div[hasclass('by_odoo')]/a" position="attributes">      
 	           <attribute name="href">https://viindoo.com</attribute>
 	       </xpath>
-	       <xpath expr="//div[hasclass('by_odoo')]/a/span[text()='Odoo']" position="replace">      
+	       <xpath expr="//div[hasclass('by_odoo')]/a/span[text()='Odoo']" position="attributes">      
+               <attribute name="style">display:none</attribute>
+           </xpath>
+	       <xpath expr="//div[hasclass('by_odoo')]/a/span[text()='Odoo']" position="after">      
                <span class="odoo_link_text">Viindoo</span>
            </xpath>   
 	       <xpath expr="//div[@id='footer']/p[@id='powered']/a" position="attributes">
 	           <attribute name="href">https://viindoo.com</attribute>
 	       </xpath>
-	       <xpath expr="//div[@id='footer']/p[@id='powered']/a//span[text()='Odoo']" position="replace">
+	       <xpath expr="//div[@id='footer']/p[@id='powered']/a//span[text()='Odoo']" position="attributes">
+               <attribute name="style">display:none</attribute>
+           </xpath>
+	       <xpath expr="//div[@id='footer']/p[@id='powered']/a//span[text()='Odoo']" position="after">
                <span class="odoo_link_text" style="color: #7f4282;">Viindoo</span>
            </xpath>
 	    </template>
 
 	    <template id="digest_section_mobile"
 	        inherit_id="digest.digest_section_mobile">
-	        <xpath expr="//div[hasclass('global_layout')]/div/img" position="replace">
+	        <xpath expr="//div[hasclass('global_layout')]/div/img" position="attributes">
+				<attribute name="style">display:none</attribute>
+	        </xpath>
+	        <xpath expr="//div[hasclass('global_layout')]/div/img" position="after">
 				<img src="/viin_brand_digest/static/img/phone1.png" alt="Viindoo Mobile"
 				style="width:25%; display: block; margin-left: auto; margin-right: auto;"/>
 	        </xpath>
 	        
-	        <xpath expr="//div[hasclass('global_layout')]/div/p/b[text()='Odoo Mobile']" position="replace">
+	        <xpath expr="//div[hasclass('global_layout')]/div/p/b[text()='Odoo Mobile']" position="attributes">
+	           <attribute name="style">display:none</attribute>
+	        </xpath>
+	        <xpath expr="//div[hasclass('global_layout')]/div/p/b[text()='Odoo Mobile']" position="after">
 	           <b style="color: #7f4282;">Viindoo Mobile</b>
 	        </xpath>
 	        

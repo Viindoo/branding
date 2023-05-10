@@ -5,7 +5,7 @@
 	    <field name="inherit_id" ref="crm.res_config_settings_view_form"/>
 	    <field name="arch" type="xml">
 			<!-- hide it because Viindoo doesn't have this feature yet -->
-			<xpath expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/sales/crm/track_leads/lead_scoring.html#assign-leads']" position="attributes">
+			<xpath expr="//div[./label[@for='crm_use_auto_assignment']]/a" position="attributes">
 			   <attribute name="invisible">1</attribute>
 			</xpath>
             <xpath expr="//div[@id='crm_iap_mine_settings']/a" position="attributes">

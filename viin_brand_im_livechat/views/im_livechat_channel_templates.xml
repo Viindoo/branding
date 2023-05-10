@@ -14,7 +14,10 @@
                         }
                     </style>
         	</xpath>
-        	<xpath expr="//body/div[hasclass('main')]/div/strong[text()='Odoo']" position="replace">
+        	<xpath expr="//body/div[hasclass('main')]/div/strong[text()='Odoo']" position="attributes">
+        		<attribute name="style">display:none</attribute>
+        	</xpath>
+        	<xpath expr="//body/div[hasclass('main')]/div/strong[text()='Odoo']" position="after">
         		<strong>Viindoo</strong>
         	</xpath>
 
