@@ -52,6 +52,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     # always loaded
     'data': [
         'views/res_config_settings_views.xml',
+        'views/pos_assets_index.xml',
     ],
     'assets': {
         'point_of_sale.assets': [
