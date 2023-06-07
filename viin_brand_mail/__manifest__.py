@@ -45,6 +45,7 @@ Editions Supported
         'data/mail_channel_data.xml',
         'views/mail_data.xml',
         'views/res_config_settings_views.xml',
+        'views/discuss_public_templates.xml',
     ],
     'demo': [
         'data/mail_channel_demo.xml',
