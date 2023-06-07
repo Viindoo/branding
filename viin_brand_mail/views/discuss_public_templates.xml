@@ -1,0 +1,10 @@
+<odoo>
+    <template id="discuss_public_layout" inherit_id="mail.discuss_public_layout">
+        <xpath expr="//title" position="attributes">
+            <attribute name="t-esc">title or 'Viindoo'</attribute>
+        </xpath>
+        <xpath expr="//link[@type='image/x-icon']" position="attributes">
+            <attribute name="t-att-href">x_icon or '/viin_brand/static/img/favicon.ico'</attribute>
+        </xpath>
+    </template>
+</odoo>
