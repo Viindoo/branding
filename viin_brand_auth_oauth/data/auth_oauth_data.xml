@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<function name="write" model="auth.oauth.provider">
+	        <value eval="[ref('auth_oauth.provider_openerp')]" />
+	        <value eval="{'enabled': False}" />
+    	</function>
+    </data>
+</odoo>
