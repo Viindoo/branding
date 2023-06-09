@@ -53,6 +53,11 @@ Module này sẽ thay đổi giao diện module Initial Setup Tools theo thươn
     'data': [
         'views/res_config_settings_views.xml',
     ],
+    'assets': {
+        'web.assets_qweb': [
+            'viin_brand_base_setup/static/src/xml/res_config_edition.xml',
+        ],
+    },
     'installable': True,
     'application': False,
     'auto_install': True,
