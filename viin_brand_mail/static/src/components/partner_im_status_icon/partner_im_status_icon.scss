@@ -11,7 +11,9 @@
         color: $brand-primary; 
     }
 }
-
+.o_ThreadIcon_offline {
+	color: gray('500');
+}
 .text-primary {
 	color: $brand-primary !important;
 }
