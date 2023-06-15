@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_picture" inherit_id="mass_mailing.s_picture">
+    <xpath expr="//p[text()[contains(., 'Odoo')]]" position="replace">
+        <p style="text-align: center;">With strong technical foundations, Viindoo's framework is unique. It provides <span style="font-weight: bolder;">top notch usability that scales across all apps</span>.</p>
+    </xpath>
+</template>
+
+</odoo>

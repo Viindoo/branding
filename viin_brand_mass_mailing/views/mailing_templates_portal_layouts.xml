@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template t-inherit="mass_mailing.layout">
+        <xpath expr="//title[text()[contains(., 'Odoo')]]" position="repalce">
+            <title>Viindoo</title>
+        </xpath>
+     </template>
+</odoo>

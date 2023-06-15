@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="s_call_to_action" inherit_id="mass_mailing.s_call_to_action">
+        <xpath expr="//h3[text()[contains(., 'Odoo')]]" position="replace">
+            <h3><span style="font-weight: bolder;">50,000+ companies</span> run Viindoo.</h3>
+        </xpath>
+    </template>
+
+</odoo>
