@@ -28,3 +28,11 @@ msgstr ""
 #: model_terms:digest.tip,tip_description:mrp.digest_tip_mrp_0
 msgid "Tip: Use tablets in the shop to control manufacturing"
 msgstr ""
+
+#. module: mrp
+#: model_terms:ir.ui.view,arch_db:mrp.view_immediate_production
+msgid ""
+"You have not recorded <i>produced</i> quantities yet, by clicking on "
+"<i>apply</i> Viindoo will produce all the finished products and consume all "
+"components."
+msgstr ""

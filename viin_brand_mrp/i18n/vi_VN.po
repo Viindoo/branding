@@ -32,3 +32,14 @@ msgstr ""
 #: model_terms:digest.tip,tip_description:mrp.digest_tip_mrp_0
 msgid "Tip: Use tablets in the shop to control manufacturing"
 msgstr "Mẹo: Sử dụng máy tính bảng trong cửa hàng để kiểm soát quá trình sản xuất"
+
+#. module: mrp
+#: model_terms:ir.ui.view,arch_db:mrp.view_immediate_production
+msgid ""
+"You have not recorded <i>produced</i> quantities yet, by clicking on "
+"<i>apply</i> Viindoo will produce all the finished products and consume all "
+"components."
+msgstr ""
+"Bạn chưa ghi lại số lượng <i>đã sản xuất</i>, bằng cách nhấp vào "
+"<i>áp dụng</i> Viindoo sẽ sản xuất hết thành phẩm và tiêu thụ hết "
+"các thành phần."

@@ -53,6 +53,7 @@ Module này sẽ thay đổi giao diện các module Manufacturing theo thương
     'data': [
         'data/digest_data.xml',
         'views/res_config_settings_views.xml',
+        'wizard/mrp_immediate_production_views.xml',
     ],
     'installable': True,
     'application': False,
