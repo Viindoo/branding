@@ -55,3 +55,12 @@ msgstr ""
 "Định nghĩa một quy tắc tồn kho tối thiểu để hệ thống tự động tạo các yêu "
 "cầu báo giá hoặc các lệnh sản xuất được xác nhận để tái cung ứng cho "
 "kho của bạn."
+
+#. module: stock
+#: model_terms:ir.ui.view,arch_db:stock.view_immediate_transfer
+msgid ""
+"You have not recorded <i>done</i> quantities yet, by clicking on "
+"<i>apply</i> Viindoo will process all the quantities."
+msgstr ""
+"Bạn chưa ghi số lượng <i>thực hiện</i>, bằng cách nhấp vào "
+"<i>áp dụng</i> Viindoo sẽ xử lý tất cả số lượng."
