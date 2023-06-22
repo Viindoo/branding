@@ -47,7 +47,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     ],
     'assets': {
         'web._assets_primary_variables': [
-            ('after', 'web/static/src/scss/primary_variables.scss','viin_brand_common/static/src/scss/primary_variables.scss'),
+            ('after', 'web/static/src/scss/primary_variables.scss', 'viin_brand_common/static/src/scss/primary_variables.scss'),
         ],
         'web._assets_secondary_variables': [
             ('prepend', 'viin_brand_common/static/src/legacy/scss/secondary_variables.scss'),
