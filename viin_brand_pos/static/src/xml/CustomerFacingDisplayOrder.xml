@@ -1,0 +1,9 @@
+<templates id="template" xml:space="preserve">
+    <t t-name="CustomerFacingDisplayHead" t-inherit="point_of_sale.CustomerFacingDisplayHead"
+       t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('resources')]" position="inside">
+            <link rel="stylesheet" type="text/css"
+                  href="/viin_brand_pos/static/src/css/customer_facing_display.css"/>
+        </xpath>
+    </t>
+</templates>
