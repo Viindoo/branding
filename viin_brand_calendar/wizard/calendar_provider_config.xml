@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="calendar_provider_config_view_form" model="ir.ui.view">
+        <field name="name">calendar.provider.config.view.form</field>
+        <field name="model">calendar.provider.config</field>
+        <field name="inherit_id" ref="calendar.calendar_provider_config_view_form" />
+        <field name="arch" type="xml">
+            <!--Todo: replace with viindoo's link when available -->
+            <xpath
+                expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/productivity/calendar/google.html']"
+                position="attributes">
+                <attribute name="href">https://www.odoo.com/documentation/16.0/applications/productivity/calendar/google.html</attribute>
+            </xpath>
+            <xpath
+                expr="//a[@href='https://www.odoo.com/documentation/16.0/applications/productivity/calendar/outlook.html']"
+                position="attributes">
+                <attribute name="href">https://www.odoo.com/documentation/16.0/applications/productivity/calendar/google.html</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
