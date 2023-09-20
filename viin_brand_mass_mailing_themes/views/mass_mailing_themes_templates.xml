@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<!-- <template id="email_designer_snippets" inherit_id="mass_mailing.email_designer_snippets">
+		<xpath expr="//div[contains(@data-name, 'newsletter')]" position="attributes">
+			<attribute name="data-img">/mass_mailing_themes/static/src/img/theme_imgs/tech_thumb</attribute>
+		</xpath>
+	</template> -->
+
+	<template id="theme_newsletter_template" inherit_id="mass_mailing_themes.theme_newsletter_template">
+		<xpath expr="//div[hasclass('col-lg-4')]/a/img" position="attributes">
+			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_header_logo.png</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
+			<attribute name="href">https://www.facebook.com/viindoo</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.linkedin.com/company/odoo']" position="attributes">
+			<attribute name="href">https://www.linkedin.com/company/viindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://twitter.com/Odoo']" position="attributes">
+			<attribute name="href">https://twitter.com/ViindooSolution</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
+			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
+		</xpath>
+		<xpath expr="//font[1]/span[1]" position="replace" mode="inner">
+			<span style="font-weight: bolder;">Viindoo</span>
+		</xpath>
+		<xpath expr="//div[contains(@data-name, 'Media item')]//div/p" position="replace" mode="inner">
+			<p>Learn through workshops, product demos, and inspiring talks from Viindoo Experts and Partners.</p>
+		</xpath>
+		<xpath expr="//div[contains(@data-name, 'Call to Action')]//div//div//div/p/font" position="replace" mode="inner">
+			<font style="color: rgb(255, 255, 255);">Zero, zilch, nada! Viindoo is free for everyone!</font>
+		</xpath>
+		<!-- <xpath expr="//div[contains(@class, 'col-lg-12 s_media_list_item pt0 pb0')]//img" position="attributes">
+			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_header_logo.png</attribute>
+		</xpath>
+		<xpath expr="//div[contains(@class, 'col-lg-12 s_media_list_item pt16 pb0')][1]//img" position="attributes">
+			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_header_logo.png</attribute>
+		</xpath>
+		<xpath expr="//div[contains(@class, 'col-lg-12 s_media_list_item pt16 pb0')][2]//img" position="attributes">
+			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_header_logo.png</attribute>
+		</xpath> -->
+	</template>
+</odoo>
