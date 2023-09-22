@@ -12,3 +12,9 @@
         color: $o-enterprise-primary-color !important;
     }
 }
+
+// restore default BS font-weight value for strong, b for compatibility with roboto font
+// See /web/static/src/webclient/webclient.scss
+b, strong {
+    font-weight: $font-weight-bolder;
+}
