@@ -1,34 +1,35 @@
-// Font sizes
-$o-root-font-size: 13px;
+//// Font sizes
+$o-root-font-size: 13px !default;
+$o-font-size-base: 14rem * (1px / $o-root-font-size) !default;
 
 // Change colors here
-$o-community-color: #00bbce;
-$o-enterprise-color: #00bbce;
-$o-enterprise-primary-color: #7f4282;
+$o-community-color: #00bbce !default;
+$o-enterprise-color: #00bbce !default;
+$o-enterprise-primary-color: #7f4282 !default;
 
-$o-brand-odoo: $o-community-color;
-$o-brand-primary: $o-enterprise-primary-color;
-$brand-primary: $o-enterprise-color;
-$brand-secondary: $o-enterprise-primary-color;
+$o-brand-odoo: $o-community-color !default;
+$o-brand-primary: $o-enterprise-primary-color !default;
+$brand-primary: $o-enterprise-color !default;
+$brand-secondary: $o-enterprise-primary-color !default;
 $o-tip-color: $brand-primary;
 $o-tip-border-width: 2px;
 
-$brand-primary-dark: darken($brand-primary, 10%);
-$brand-primary-darker: darken($brand-primary, 20%);
-$brand-primary-light: lighten($brand-primary, 10%);
-$brand-primary-lighter: lighten($brand-primary, 20%);
-$brand-primary-super-light: lighten($brand-primary, 50%);
+$brand-primary-dark: darken($brand-primary, 10%) !default;
+$brand-primary-darker: darken($brand-primary, 20%) !default;
+$brand-primary-light: lighten($brand-primary, 10%) !default;
+$brand-primary-lighter: lighten($brand-primary, 20%) !default;
+$brand-primary-super-light: lighten($brand-primary, 50%) !default;
 
-$brand-secondary-dark: darken($brand-secondary, 10%);
-$brand-secondary-darker: darken($brand-secondary, 20%);
-$brand-secondary-light: lighten($brand-secondary, 10%);
-$brand-secondary-lighter: lighten($brand-secondary, 20%);
-$brand-secondary-super-light: lighten($brand-secondary, 50%);
-$brand-secondary-super-lighter: lighten($brand-secondary, 55%);
+$brand-secondary-dark: darken($brand-secondary, 10%) !default;
+$brand-secondary-darker: darken($brand-secondary, 20%) !default;
+$brand-secondary-light: lighten($brand-secondary, 10%) !default;
+$brand-secondary-lighter: lighten($brand-secondary, 20%) !default;
+$brand-secondary-super-light: lighten($brand-secondary, 50%) !default;
+$brand-secondary-super-lighter: lighten($brand-secondary, 55%) !default;
 
-$o-success: #00B365;
-$o-info: #0099E6;
-$o-warning: #FFCC32;
-$o-danger: #CC5252;
+$o-success: #00B365 !default;
+$o-info: #0099E6 !default;
+$o-warning: #FFCC32 !default;
+$o-danger: #CC5252 !default;
 
-$o-input-border-required: $o-enterprise-color;
+$o-input-border-required: $o-enterprise-color !default;
