@@ -77,6 +77,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             ('after', 'web/static/src/views/form/button_box/button_box.scss', 'viin_brand_common/static/src/views/form/button_box/button_box.scss'),
             ('after', 'web/static/src/webclient/webclient.js', 'viin_brand_common/static/src/webclient/webclient.js'),
             ('after', 'web/static/src/legacy/scss/utils.scss', 'viin_brand_common/static/src/legacy/scss/utils.scss'),
+            ('after', 'web/static/src/legacy/js/apps.js', 'viin_brand_common/static/src/legacy/js/apps.js'),
         ],
     },
     'installable': True,
