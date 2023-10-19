@@ -1,0 +1,77 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_mass_mailing_themes
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-10-19 03:48+0000\n"
+"PO-Revision-Date: 2023-10-19 03:48+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid ""
+"<font style=\"color: rgb(255, 255, 255);\">Viindoo is free for "
+"everyone!</font>"
+msgstr ""
+"<font style=\"color: rgb(255, 255, 255);\">Viindoo miễn phí cho "
+"mọi người!</font>"
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid "<span style=\"font-weight: bolder;\">Viindoo</span>"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid ""
+"Learn through workshops, product demos, and inspiring talks from Viindoo "
+"Experts and Partners."
+msgstr ""
+"Tìm hiểu thông qua các buổi hội thảo, demo sản phẩm và các buổi nói chuyện đầy cảm hứng từ "
+"các Chuyên gia và Đối tác của Viindoo."
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid "https://twitter.com/ViindooSolution"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid "https://www.facebook.com/viindoo"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid "https://www.instagram.com/officialviindoo/"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid "https://www.linkedin.com/company/viindoo/"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid ""
+"viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_1.png"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid ""
+"viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_2.png"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid ""
+"viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_3.png"
+msgstr ""
