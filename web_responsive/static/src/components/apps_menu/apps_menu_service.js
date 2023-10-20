@@ -24,6 +24,7 @@ export class AppsMenuAction extends Component {
             this.env.bus.trigger('TOGGLE_HOME_MENU_BUTTON', this.env.config.breadcrumbs.length === 1);
             return () => {
                 document.body.classList.remove('o_apps_menu_opened');
+                this.env.bus.trigger('TOGGLE_HOME_MENU_BUTTON', false);
                 this.env.bus.trigger("APPS_MENU:TOGGLE", false);
                 this.env.bus.trigger("APPS_MENU:ACT:TOGGLE", false);
             }
