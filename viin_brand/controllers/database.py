@@ -1,4 +1,4 @@
-from odoo.addons.web.controllers.database import Database as DB
+from odoo.addons.web.controllers.main import Database as DB
 
 
 class Database(DB):
