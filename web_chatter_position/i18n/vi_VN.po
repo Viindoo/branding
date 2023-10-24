@@ -26,11 +26,6 @@ msgid "Chatter Position"
 msgstr "Vị trí Chatter"
 
 #. module: web_chatter_position
-#: model:ir.model.fields.selection,name:web_chatter_position.selection__res_users__chatter_position__auto
-msgid "Responsive"
-msgstr "Tự động"
-
-#. module: web_chatter_position
 #: model:ir.model.fields.selection,name:web_chatter_position.selection__res_users__chatter_position__sided
 msgid "Sided"
 msgstr "Bên cạnh"
