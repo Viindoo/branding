@@ -3,3 +3,16 @@
         font-weight: 900;
     }
 }
+.o_DiscussSidebarCategoryItem {
+	.o_DiscussSidebarCategoryItem_threadIcon {
+		width: 0.8rem;
+		height: 0.8rem;
+	}
+}
+.o_DiscussSidebarMailbox_counter {
+	&.o_DiscussSidebarMailbox_item {
+		&.bg-400 {
+			background-color: #6c757d !important;
+		}
+	}
+}

@@ -30,6 +30,14 @@
 .o_Message_authorName{
 	font-size: 1rem;
 }
+.o_Message_prettyBody {
+	a {
+		&.o_mail_redirect{
+			padding: inherit;
+			background: inherit;
+		}
+	}
+}
 .o_Message_content {
     *:not(li):not(li div) {
         // Avoid vertical scroll caused by the following code in Odoo 14:

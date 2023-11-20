@@ -1,10 +1,15 @@
+.o_PersonaImStatusIcon_icon {
+	&.o-offline {
+        color: $gray-500 !important;
+    }
+}
 .o_PartnerImStatusIcon_icon {
     &.o-bot {
         color: $brand-primary;
     }
 
     &.o-offline {
-        color: gray('500');
+        color: $gray-500;
     }
 
     &.o-online {
@@ -12,8 +17,5 @@
     }
 }
 .o_ThreadIcon_offline {
-	color: gray('500');
-}
-.text-primary {
-	color: $brand-primary !important;
+	color: $gray-500;
 }

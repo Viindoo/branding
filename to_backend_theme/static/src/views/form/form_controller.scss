@@ -1,0 +1,10 @@
+.o_form_view {
+	.o_input {
+		padding: 0px;
+	}
+	.o_form_statusbar {
+		> .o_field_widget {
+			margin-top: 1px;
+		}
+	}
+}

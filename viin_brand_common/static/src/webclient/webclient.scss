@@ -8,6 +8,8 @@
 }
 //== Badges
 .badge {
+	min-width: 3.6ch;
+	padding-top: 0.4em;
     &.text-bg-default, &.bg-light, &.text-bg-light, &.bg-default, &.text-primary{
         color: $o-enterprise-primary-color !important;
     }
