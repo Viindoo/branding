@@ -4,30 +4,62 @@
  * Copyright 2023 Onestein - Anjeel Haria
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
+import {NavBar} from "@web/webclient/navbar/navbar";
 import {useAutofocus, useBus, useService} from "@web/core/utils/hooks";
 import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
 import {scrollTo} from "@web/core/utils/scrolling";
 import {debounce} from "@web/core/utils/timing";
 import {fuzzyLookup} from "@web/core/utils/search";
+import {WebClient} from "@web/webclient/webclient";
+import {patch} from "web.utils";
 import {escapeRegExp} from "@web/core/utils/strings";
 
-const {Component, useState, useRef, onPatched, onWillPatch} = owl;
+const {Component, useState, onPatched, onWillPatch} = owl;
 
+// Patch WebClient to show AppsMenu instead of default app
+patch(WebClient.prototype, "web_responsive.DefaultAppsMenu", {
+    setup() {
+        this._super();
+        useBus(this.env.bus, "APPS_MENU:STATE_CHANGED", ({detail: state}) => {
+            document.body.classList.toggle("o_apps_menu_opened", state);
+        });
+    },
+});
 
+/**
+ * @extends Dropdown
+ */
 export class AppsMenu extends Component {
     setup() {
         super.setup();
         this.state = useState({open: false});
         this.menuService = useService("menu");
-        this.actionService = useService("action");
-        this.homeIcon = useRef("homeIcon");
-        useBus(this.env.bus, "APPS_MENU:TOGGLE", ({detail: open}) => {
-            this.setOpenState(open);
+        useBus(this.env.bus, "ACTION_MANAGER:UI-UPDATED", () => {
+            this.setOpenState(false, false);
         });
         this._setupKeyNavigation();
     }
-    setOpenState(open_state) {
+    setOpenState(open_state, from_home_menu_click) {
         this.state.open = open_state;
+        // Load home page with proper systray when opening it from website
+        if (from_home_menu_click) {
+            var currentapp = this.menuService.getCurrentApp();
+            if (currentapp && currentapp.name == "Website") {
+                if (window.location.pathname != "/web") {
+                    const icon = $(
+                        document.querySelector(".o_navbar_apps_menu button > i")
+                    );
+                    icon.removeClass("fa fa-th-large").append(
+                        $("<span/>", {class: "fa fa-spin fa-spinner"})
+                    );
+                }
+                window.location.href = "/web#home";
+            } else {
+                this.env.bus.trigger("APPS_MENU:STATE_CHANGED", open_state);
+            }
+        } else {
+            this.env.bus.trigger("APPS_MENU:STATE_CHANGED", open_state);
+        }
     }
 
     /**
@@ -283,5 +315,21 @@ export class AppsMenuSearchBar extends Component {
     }
 }
 
+// Patch Navbar to add proper icon for apps
+patch(NavBar.prototype, "web_responsive.navbar", {
+    getWebIconData(menu) {
+        var result = "/web_responsive/static/img/default_icon_app.png";
+        if (menu.webIconData) {
+            const prefix = menu.webIconData.startsWith("P")
+                ? "data:image/svg+xml;base64,"
+                : "data:image/png;base64,";
+            result = menu.webIconData.startsWith("data:image")
+                ? menu.webIconData
+                : prefix + menu.webIconData.replace(/\s/g, "");
+        }
+        return result;
+    },
+});
 AppsMenu.template = "web_responsive.AppsMenu";
 AppsMenuSearchBar.template = "web_responsive.AppsMenuSearchResults";
+Object.assign(NavBar.components, {AppsMenu, AppsMenuSearchBar});
