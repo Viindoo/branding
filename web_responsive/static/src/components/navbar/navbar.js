@@ -16,4 +16,16 @@ patch(NavBar.prototype, "web_responsive.navbar", {
             this.homeMenuButton.el.classList.toggle('d-none', toggle);
         });
     },
+    getWebIconData(menu) {
+        var result = "/web_responsive/static/img/default_icon_app.png";
+        if (menu.webIconData) {
+            const prefix = menu.webIconData.startsWith("P")
+                ? "data:image/svg+xml;base64,"
+                : "data:image/png;base64,";
+            result = menu.webIconData.startsWith("data:image")
+                ? menu.webIconData
+                : prefix + menu.webIconData.replace(/\s/g, "");
+        }
+        return result;
+    },
 });
