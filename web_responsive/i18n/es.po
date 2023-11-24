@@ -9,50 +9,50 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-10 10:49+0000\n"
-"PO-Revision-Date: 2023-09-20 17:50+0000\n"
-"Last-Translator: kikopeiro <francisco.peiro@factorlibre.com>\n"
+"PO-Revision-Date: 2021-02-17 14:45+0000\n"
+"Last-Translator: claudiagn <claudia.gargallo@qubiq.es>\n"
 "Language-Team: Spanish (https://www.transifex.com/oca/teams/23907/es/)\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
+"X-Generator: Weblate 4.3.2\n"
 
 #. module: web_responsive
 #. odoo-javascript
 #: code:addons/web_responsive/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #, python-format
 msgid "Activities"
-msgstr "Actividades"
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
 #: code:addons/web_responsive/static/src/components/search_panel/search_panel.xml:0
 #, python-format
 msgid "All"
-msgstr "Todos"
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
 #: code:addons/web_responsive/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #, python-format
 msgid "Attachment counter loading..."
-msgstr "Carga del contador de archivos adjuntos..."
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
 #: code:addons/web_responsive/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #, python-format
 msgid "Attachments"
-msgstr "Archivos adjuntos"
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
 #: code:addons/web_responsive/static/src/components/control_panel/control_panel.xml:0
 #, python-format
 msgid "CLEAR"
-msgstr "LIMPIAR"
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
@@ -67,21 +67,21 @@ msgstr "Descartar"
 #: code:addons/web_responsive/static/src/components/search_panel/search_panel.xml:0
 #, python-format
 msgid "FILTER"
-msgstr "FILTRAR"
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
 #: code:addons/web_responsive/static/src/components/apps_menu/apps_menu.xml:0
 #, python-format
 msgid "Home Menu"
-msgstr "Menú de Inicio"
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
 #: code:addons/web_responsive/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #, python-format
 msgid "Log note"
-msgstr "Nota de registro"
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
@@ -102,7 +102,7 @@ msgstr "Minimizar"
 #: code:addons/web_responsive/static/src/legacy/xml/form_buttons.xml:0
 #, python-format
 msgid "New"
-msgstr "Nuevo"
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
@@ -110,7 +110,7 @@ msgstr "Nuevo"
 #: code:addons/web_responsive/static/src/components/search_panel/search_panel.xml:0
 #, python-format
 msgid "SEE RESULT"
-msgstr "VER RESULTADO"
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
@@ -131,21 +131,21 @@ msgstr "Buscar menús..."
 #: code:addons/web_responsive/static/src/components/control_panel/control_panel.xml:0
 #, python-format
 msgid "Search..."
-msgstr "Búsqueda..."
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
 #: code:addons/web_responsive/static/src/components/chatter_topbar/chatter_topbar.xml:0
 #, python-format
 msgid "Send message"
-msgstr "Enviar mensaje"
+msgstr ""
 
 #. module: web_responsive
 #. odoo-javascript
 #: code:addons/web_responsive/static/src/components/control_panel/control_panel.xml:0
 #, python-format
 msgid "View switcher"
-msgstr "Vista del conmutador"
+msgstr ""
 
 #, python-format
 #~ msgid "Create"
