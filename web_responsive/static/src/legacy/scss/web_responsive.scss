@@ -100,7 +100,6 @@ html .o_web_client .o_action_manager .o_action {
     .o_form_editable {
         .o_form_sheet {
             max-width: calc(100% - 32px) !important;
-            overflow-x: auto;
         }
 
         .o_cell .o_form_label:not(.o_status):not(.o_calendar_invitation) {
