@@ -36,8 +36,8 @@ Module này sẽ thay đổi giao diện module Forum theo thương hiệu Viind
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v15demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v15demo-vn.viindoo.com",
+    'live_test_url': "https://v16demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v16demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
