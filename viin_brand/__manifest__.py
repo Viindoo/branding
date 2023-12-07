@@ -32,8 +32,8 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
 
     'author': "Viindoo",
     'website': "https://www.tvtmarine.com",
-    'live_test_url': "https://v15demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v15demo-vn.viindoo.com",
+    'live_test_url': "https://v16demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v16demo-vn.viindoo.com",
     'support': "support@ma.tvtmarine.com",
     'category': 'Hidden',
     'version': '0.1',
