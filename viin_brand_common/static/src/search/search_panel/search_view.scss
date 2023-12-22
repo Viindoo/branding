@@ -7,6 +7,11 @@
         .o_searchview_facet_label {
             background-color: $brand-primary-dark;
         }
+		// Because gantt view use legacy type so it's going to load legacy view, 
+		// in legacy we have class text-bg-odoo which is not respect our color
+		.o_searchview_facet_label.text-bg-odoo {
+			color: $o-white !important; // orignal is black
+		}
     }
 
 }
