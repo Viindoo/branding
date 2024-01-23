@@ -16,71 +16,57 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.layout
-msgid "Create a"
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_call_to_action
+msgid "<span style=\"font-weight: bolder;\">50,000+ companies</span> run Viindoo."
 msgstr ""
 
 #. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.layout
-msgid "Viindoo"
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
+msgid "That way, Viindoo evolves much faster than any other solution."
 msgstr ""
 
 #. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.layout
-msgid "free website"
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.layout
-msgid "with"
-msgstr ""
-
-#. module: mass_mailing
-#: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailing_lists
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_image
 msgid ""
-"No need to import mailing lists, you can send mailings to contacts saved in "
-"other Viindoo apps."
+"The open source model of Viindoo has allowed us to leverage\n"
+"                thousands of developers and business experts to build hundreds of apps in just a few\n"
+"                years."
 msgstr ""
 
 #. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.s_text_block
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
 msgid ""
-"The open source model of Viindoo has allowed us to leverage thousands of developers and\n"
+"The open source model of Viindoo has allowed us to leverage thousands of developers\n"
+"                    and\n"
 "                    business experts to build hundreds of apps in just a few years."
 msgstr ""
 
 #. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.s_text_image
-msgid ""
-"The open source model of Viindoo has allowed us to leverage thousands of "
-"developers and business experts to build hundreds of apps in just a few "
-"years."
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.s_text_block
-msgid ""
-"With strong technical foundations, Viindoo's framework is unique.\n"
-"                    It provides top notch usability that scales across all apps."
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.s_picture
-msgid ""
-"With strong technical foundations, Viindoo's framework is unique. It provides "
-"<span style=\"font-weight: bolder;\">top notch usability that scales across "
-"all apps</span>."
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.s_text_block
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
 msgid ""
 "Usability improvements made on Viindoo will automatically apply to all\n"
 "                    of our fully integrated apps."
 msgstr ""
 
 #. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:mass_mailing.s_text_block
-msgid "That way, Viindoo evolves much faster than any other solution."
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.res_config_settings_view_form
+msgid ""
+"Use a specific mail server in priority. Otherwise System\n"
+"                    relies on the first outgoing mail server available (based on their sequencing)\n"
+"                    as it does for normal mails."
 msgstr ""
 
+#. module: viin_brand_mass_mailing
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
+msgid ""
+"With strong technical foundations, Viindoo's framework is unique.\n"
+"                    It provides top notch usability that scales across all apps."
+msgstr ""
+
+#. module: viin_brand_mass_mailing
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_picture
+msgid ""
+"With strong technical foundations, Viindoo's framework is unique. It "
+"provides <span style=\"font-weight: bolder;\">top notch usability that "
+"scales across all apps</span>."
+msgstr ""

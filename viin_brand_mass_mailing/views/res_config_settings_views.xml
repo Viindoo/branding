@@ -5,10 +5,9 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="mass_mailing.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath
-                expr="//div[@title='Use a specific mail server in priority. Otherwise Odoo relies on the first outgoing mail server available (based on their sequencing) as it does for normal mails.']"
+            <xpath expr="//div[@name='dedicated_server_setting_container']/div[hasclass('o_setting_left_pane')]"
                 position="attributes">
-                <attribute name="title">Use a specific mail server in priority. Otherwise Odoo
+                <attribute name="title">Use a specific mail server in priority. Otherwise System
                     relies on the first outgoing mail server available (based on their sequencing)
                     as it does for normal mails.</attribute>
             </xpath>

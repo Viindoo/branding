@@ -55,6 +55,7 @@ Module này sẽ thay đổi giao diện các module Stock theo thương hiệu 
         'views/res_config_settings_views.xml',
         'views/stock_orderpoint_views.xml',
         'views/stock_location_views.xml',
+        'wizard/stock_immediate_transfer_views.xml'
     ],
     'installable': True,
     'application': False,

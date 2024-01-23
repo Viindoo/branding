@@ -1,0 +1,10 @@
+.o_searchview_facet {
+	// Because some views use legacy type so it's going to load legacy view, 
+	// in legacy we have class text-bg-odoo which is not respect our color
+	.o_searchview_facet_label{
+		&.text-bg-odoo {
+			background-color: $brand-primary-dark !important;
+			color: $o-white !important; // orignal is black
+		}
+	}
+}

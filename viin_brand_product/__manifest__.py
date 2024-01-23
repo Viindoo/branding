@@ -52,6 +52,7 @@ Module này sẽ thay đổi giao diện các module Product theo thương hiệ
     # always loaded
     'data': [
         'views/res_config_settings_views.xml',
+        'views/product_views.xml',
     ],
     'installable': True,
     'application': False,
