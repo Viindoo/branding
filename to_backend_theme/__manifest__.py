@@ -38,6 +38,7 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
             ('after', '/web_responsive/static/src/components/apps_menu_item/*', '/to_backend_theme/static/src/components/apps_menu_item/*'),
             ('after', '/web_responsive/static/src/components/menu_canonical_searchbar/*', '/to_backend_theme/static/src/components/menu_canonical_searchbar/*'),
             'to_backend_theme/static/src/scss/style.scss',
+            ('after', 'web/static/src/views/pivot/pivot_view.scss', 'to_backend_theme/static/src/views/pivot/pivot_view.scss'),
             ],
         },
     'post_init_hook': 'post_init_hook',
