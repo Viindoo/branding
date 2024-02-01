@@ -38,7 +38,7 @@ msgstr ""
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.show_website_info
-msgid "Viindoo JSC Company."
+msgid "Viindoo Technology JSC."
 msgstr "Công Ty Cổ phần Công Nghệ Viindoo."
 
 #. module: viin_brand_website
