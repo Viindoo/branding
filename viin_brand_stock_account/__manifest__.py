@@ -53,9 +53,7 @@ Module này sẽ thay đổi giao diện Stock-Account theo thương hiệu Viin
     'data': [
         'views/res_config_settings_views.xml',
     ],
-    'installable': False,
-    'application': False,
-    'auto_install': False, # set True after upgrading for v17
+    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

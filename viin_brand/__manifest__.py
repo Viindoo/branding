@@ -38,11 +38,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'category': 'Hidden',
     'version': '0.1',
     'depends': ['base'],
-    'data': [
-    ],
-    'installable': False,
-    'application': False,
-    'auto_install': False, # set True after upgrading for v17
+    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
     'price': 9.9,
     'currency': 'EUR',
     'license': 'OPL-1',
