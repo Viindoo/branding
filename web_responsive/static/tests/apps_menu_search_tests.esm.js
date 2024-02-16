@@ -21,8 +21,8 @@ const serviceRegistry = registry.category("services");
 class MySystrayItem extends Component {}
 
 MySystrayItem.template = xml`<li class="my-item">my item</li>`;
-let baseConfig;
-let target;
+let baseConfig = {};
+let target = "";
 
 QUnit.module("AppsMenu Search", {
     async beforeEach() {
