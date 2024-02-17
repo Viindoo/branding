@@ -5,25 +5,14 @@
  * Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import {Component, useState} from "@odoo/owl";
+import {Component, useState, useRef} from "@odoo/owl";
 import {session} from "@web/session";
 import {useBus, useService} from "@web/core/utils/hooks";
 import {AppMenuItem} from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
 import {AppsMenuSearchBar} from "@web_responsive/components/menu_searchbar/searchbar.esm";
 import {NavBar} from "@web/webclient/navbar/navbar";
-import {WebClient} from "@web/webclient/webclient";
-import {patch} from "@web/core/utils/patch";
 import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
 
-// Patch WebClient to show AppsMenu instead of default app
-patch(WebClient.prototype, {
-    setup() {
-        super.setup();
-        useBus(this.env.bus, "APPS_MENU:STATE_CHANGED", ({detail: state}) => {
-            document.body.classList.toggle("o_apps_menu_opened", state);
-        });
-    },
-});
 
 export class AppsMenu extends Component {
     setup() {
@@ -31,15 +20,16 @@ export class AppsMenu extends Component {
         this.state = useState({open: false});
         this.theme = session.apps_menu.theme || "milk";
         this.menuService = useService("menu");
-        useBus(this.env.bus, "ACTION_MANAGER:UI-UPDATED", () => {
-            this.setOpenState(false);
+        this.actionService = useService("action");
+        this.homeIcon = useRef("homeIcon");
+        useBus(this.env.bus, "APPS_MENU:TOGGLE", ({detail: open}) => {
+            this.setOpenState(open);
         });
         this._setupKeyNavigation();
     }
 
     setOpenState(open_state) {
         this.state.open = open_state;
-        this.env.bus.trigger("APPS_MENU:STATE_CHANGED", open_state);
     }
 
     /**
@@ -103,10 +93,6 @@ export class AppsMenu extends Component {
             }
             focusableInputElements[nextIndex].focus();
         }
-    }
-
-    onMenuClick() {
-        this.setOpenState(!this.state.open);
     }
 }
 

@@ -12,34 +12,19 @@
             <attribute name="hotkey" remove="'h'" add="'shift+h'" separator=" " />
         </xpath>
         <xpath expr="//Dropdown" position="after">
-            <AppsMenu>
-                <t t-set-slot="search_bar">
-                    <AppsMenuSearchBar />
-                </t>
-                <AppMenuItem
-                    t-foreach="apps"
-                    t-as="app"
-                    t-key="app.id"
-                    app="app"
-                    currentApp="currentApp"
-                    href="getMenuItemHref(app)"
-                    onClick="onNavBarDropdownItemSelection.bind(this)"
-                />
-            </AppsMenu>
+            <button class="o_grid_apps_menu__button"
+                    title="Home Menu"
+                    data-hotkey="h"
+                    t-on-click.stop="() => this.appsMenuService.toggleMenu()"
+                    t-ref="homeMenuButton">
+                <i class="fa fa-th-large fs-4"/>
+            </button>
         </xpath>
     </t>
 
     <!-- Apps menu -->
     <t t-name="web_responsive.AppsMenu">
         <div class="o_grid_apps_menu" t-att-data-theme="theme">
-            <button
-                class="o_grid_apps_menu__button"
-                title="Home Menu"
-                data-hotkey="h"
-                t-on-click.stop="onMenuClick"
-            >
-                <i class="oi oi-apps fs-4" />
-            </button>
             <div t-if="state.open" class="app-menu-container">
                 <t t-slot="search_bar" />
                 <div class="o-app-menu-list">
@@ -47,5 +32,23 @@
                 </div>
             </div>
         </div>
+    </t>
+
+    <!--Apps Menu Action-->
+    <t t-name="web_responsive.AppsMenuAction">
+        <AppsMenu>
+            <t t-set-slot="search_bar">
+                <AppsMenuSearchBar />
+            </t>
+            <AppMenuItem
+                t-foreach="apps"
+                t-as="app"
+                t-key="app.id"
+                app="app"
+                currentApp="currentApp"
+                href="getMenuItemHref(app)"
+                onClick="onNavBarDropdownItemSelection.bind(this)"
+            />
+        </AppsMenu>
     </t>
 </templates>
