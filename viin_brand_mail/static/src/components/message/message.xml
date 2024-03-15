@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <!-- TODO: Delete on version 17.0 because this xpath segment is to handle UI errors only encountered on version 16.0 -->
+    <t t-name='BrandMessage' t-inherit="mail.Message" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_Message_actionListContainer')]" position="attributes">
+            <attribute name="t-attf-class" separator=" " add="{{messaging.device.isSmall and 'position-absolute top-0 end-0 me-3' or ''}}"/>
+        </xpath>
+    </t>
+</templates>

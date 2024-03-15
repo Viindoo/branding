@@ -58,6 +58,7 @@ Editions Supported
             ('after', 'mail/static/src/components/discuss_sidebar/discuss_sidebar.scss', 'viin_brand_mail/static/src/components/discuss_sidebar/discuss_sidebar.scss'),
             ('after', 'mail/static/src/components/discuss_sidebar_category_item/discuss_sidebar_category_item.scss', 'viin_brand_mail/static/src/components/discuss_sidebar_category_item/discuss_sidebar_category_item.scss'),
             ('after', 'mail/static/src/components/message/message.scss', 'viin_brand_mail/static/src/components/message/message.scss'),
+            ('after', 'mail/static/src/components/message/message.xml', 'viin_brand_mail/static/src/components/message/message.xml'),
             ('after', 'mail/static/src/components/persona_im_status_icon/persona_im_status_icon.scss', 'viin_brand_mail/static/src/components/partner_im_status_icon/partner_im_status_icon.scss'),
             ('after', 'mail/static/src/components/thread_view/thread_view.scss', 'viin_brand_mail/static/src/components/thread_view/thread_view.scss'),
             ('after', 'mail/static/src/components/thread_icon/thread_icon.scss', 'viin_brand_mail/static/src/components/thread_icon/thread_icon.scss'),
