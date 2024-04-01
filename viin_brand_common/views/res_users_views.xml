@@ -5,7 +5,7 @@
 	    <field name="inherit_id" ref="base.view_users_form_simple_modif" />
 	    <field name="arch" type="xml">
 	       <xpath expr="//page/group/div/a" position="attributes">
-	           <attribute name="href">https://viindoo.com/documentation/15.0/developer/development/integrate-with-third-party-resources.html</attribute>
+	           <attribute name="href">https://viindoo.com/documentation/16.0/developer/development/integrate-with-third-party-resources.html</attribute>
 	       </xpath>
 	    </field>
 	</record>

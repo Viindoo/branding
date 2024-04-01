@@ -12,7 +12,7 @@
 				<attribute name="placeholder">mycompany.viindoo.com</attribute>
 			</xpath>
 			<xpath expr="//div[@id='email_servers_setting']/div/a" position="attributes">
-				<attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/system-settings/how-to-set-mail-server-for-sending-receiving-emails-in-viindoo.html</attribute>
+				<attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started/system-settings/how-to-set-mail-server-for-sending-receiving-emails-in-viindoo.html</attribute>
 			</xpath>
 		</field>
 	</record>

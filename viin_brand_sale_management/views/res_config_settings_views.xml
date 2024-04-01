@@ -5,7 +5,7 @@
 	    <field name="inherit_id" ref="sale_management.res_config_settings_view_form"/>
 	    <field name="arch" type="xml">
             <xpath expr="//div[@id='standardized_offers_setting']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/sales/sales/send-quotations/designing-quotation-template-for-fast-and-efficient-sales-process.html</attribute>
+                <attribute name="href">https://viindoo.com/documentation/16.0/applications/sales/sales/send-quotations/designing-quotation-template-for-fast-and-efficient-sales-process.html</attribute>
             </xpath>
         </field>
     </record>
