@@ -83,9 +83,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             ('after', 'web/static/src/legacy/scss/views.scss', 'viin_brand_common/static/src/legacy/scss/views.scss'),
         ],
     },
-    'installable': False,
-    'application': False,
-    'auto_install': False, # set ['web'] after upgrading to v17
+    'installable': False, # set ['web'] after upgrading to v17
     'price': 9.9,
     'currency': 'EUR',
     'license': 'OPL-1',
