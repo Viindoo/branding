@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates xml:space="preserve">
-    <t t-inherit="mail.Message" t-inherit-mode="extension" owl="1">
-            <xpath expr="//div[hasclass('o_Message')]" position="attributes">
-                <attribute name="t-attf-class" separator=" " add="{{!messaging.device.isSmall and 'overflow-auto' or ''}}"/>
-            </xpath>     
-    </t>
-</templates>
