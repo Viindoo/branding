@@ -53,7 +53,6 @@
             "/web_responsive/static/src/views/form/form_controller.scss",
             "/web_responsive/static/src/views/form/status_bar_buttons.xml",
             "/web_responsive/static/src/views/form/form_statusbar.scss",
-            "/web_responsive/static/src/components/message/message.xml",
         ],
         "web.assets_tests": [
             "/web_responsive/static/tests/test_patch.js",
