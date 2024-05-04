@@ -1,0 +1,11 @@
+// ------- Kanban renderer -------
+.o_kanban_renderer {
+
+    .o_kanban_record {
+
+        .o_kanban_record_title strong {
+            font-size: $o-root-font-size;
+            font-weight: $o-font-weight-bold;
+        }
+    }
+}
