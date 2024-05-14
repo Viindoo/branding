@@ -61,29 +61,25 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'web._assets_helpers': [
             'viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss',
         ],
-        'web.assets_common': [
-            'viin_brand_common/static/src/legacy/scss/navbar.scss',
-            'viin_brand_common/static/src/legacy/scss/systray.scss'
+        'web._assets_core': [
+            ('after', 'web/static/src/core/**/*', 'viin_brand_common/static/src/core/colors/colors.js'),
         ],
         'web.assets_backend': [
             # common branding
-            'viin_brand_common/static/src/views/graph/colors.js',
+            'viin_brand_common/static/src/legacy/scss/navbar.scss',
+            'viin_brand_common/static/src/legacy/scss/systray.scss',
             ('after', 'web/static/src/webclient/webclient.scss', 'viin_brand_common/static/src/webclient/webclient.scss'),
-            ('after', 'web/static/src/legacy/scss/fields_extra.scss', 'viin_brand_common/static/src/legacy/scss/fields_extra.scss'),
-            ('after', 'web/static/src/legacy/scss/form_view.scss', 'viin_brand_common/static/src/legacy/scss/form_view.scss'),
-            ('after', 'web/static/src/legacy/scss/form_view_extra.scss', 'viin_brand_common/static/src/legacy/scss/form_view_extra.scss'),
-            ('after', 'web/static/src/legacy/scss/kanban_view.scss', 'viin_brand_common/static/src/legacy/scss/kanban_view.scss'),
             ('after', 'web/static/src/search/search_panel/search_view.scss', 'viin_brand_common/static/src/search/search_panel/search_view.scss'),
             ('after', 'web/static/src/search/search_bar/search_bar.scss', 'viin_brand_common/static/src/search/search_bar/search_bar.scss'),
-            ('after', 'base/static/src/scss/onboarding.scss', 'viin_brand_common/static/src/scss/onboarding.scss'),
             ('after', 'web/static/src/webclient/settings_form_view/settings_form_view.scss', 'viin_brand_common/static/src/webclient/settings_form_view/settings_form_view.scss'),
             ('after', 'web/static/src/views/fields/progress_bar/progress_bar_field.scss', 'viin_brand_common/static/src/legacy/scss/progress_bar.scss'),
             ('after', 'web/static/src/views/form/button_box/button_box.scss', 'viin_brand_common/static/src/views/form/button_box/button_box.scss'),
             ('after', 'web/static/src/webclient/webclient.js', 'viin_brand_common/static/src/webclient/webclient.js'),
-            ('after', 'web/static/src/legacy/scss/views.scss', 'viin_brand_common/static/src/legacy/scss/views.scss'),
+            'viin_brand_common/static/src/webclient/navbar/navbar.scss',
         ],
     },
-    'installable': False, # set ['web'] after upgrading to v17
+    'installable': True,
+    'auto_install': ['web'],
     'price': 9.9,
     'currency': 'EUR',
     'license': 'OPL-1',

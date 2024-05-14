@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import * as colors from '@web/views/graph/colors';
+import * as colors from '@web/core/colors/colors';
 
 var GRAPH_COLORS = ["#00bbce", "#7f4282", "#dd3baf", "#00B365", "#0099E6",
     "#FFCC32", "#CC5252", "#ffa100", "#804080", "#343a40",

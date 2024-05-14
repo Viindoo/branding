@@ -1,0 +1,10 @@
+:root {
+    .o_grid_apps_menu[data-theme="viindoo"] {
+        --app-menu-background: url("/web_responsive/static/src/img/home-menu-bg-overlay.svg"),
+            linear-gradient(
+                to bottom,
+                #{$brand-primary-dark},
+                #{desaturate(lighten($brand-primary-dark, 20%), 15)}
+            );
+    }
+}

@@ -28,21 +28,21 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
         'web_responsive',
         'viin_brand_common',
     ],
-    "data": [
-        'views/web.xml'
-    ],
     'images': [
-        'images/screen.png'
+        'static/description/main_screenshot.png'
     ],
     'assets': {
         'web.assets_backend': [
             ('after', 'web/static/src/views/form/form_controller.scss', 'to_backend_theme/static/src/views/form/form_controller.scss'),
-            ('after', '/web_responsive/static/src/legacy/scss/web_responsive.scss', '/to_backend_theme/static/src/legacy/scss/web_responsive.scss'),
-            ('after', '/web_responsive/static/src/components/apps_menu/apps_menu.scss', 'to_backend_theme/static/src/scss/apps_menu.scss'),
+            ('after', '/web_responsive/static/src/components/apps_menu/*', '/to_backend_theme/static/src/components/apps_menu/*'),
+            ('after', '/web_responsive/static/src/components/apps_menu_item/*', '/to_backend_theme/static/src/components/apps_menu_item/*'),
+            ('after', '/web_responsive/static/src/components/menu_canonical_searchbar/*', '/to_backend_theme/static/src/components/menu_canonical_searchbar/*'),
             'to_backend_theme/static/src/scss/style.scss',
             ],
         },
-    'installable': False, # set auto_install to ['web'] after upgrading to v17
+    'post_init_hook': 'post_init_hook',
+    'installable': True,
+    'auto_install': ['web'],
     'price': 99.9,
     'currency': 'EUR',
     'license': 'LGPL-3',

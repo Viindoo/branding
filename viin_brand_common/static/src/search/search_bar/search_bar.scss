@@ -10,5 +10,10 @@
     }
     .o_searchview_facet_label {
         background: var(--SearchBar-facet-background, #{$brand-primary-dark});
+        --background-color: #{$brand-primary-dark};
+
+    }
+    div.o_searchview_facet_label.btn-primary {
+        border-color: transparent !important;
     }
 }

@@ -1,0 +1,7 @@
+:root {
+    .o_grid_apps_menu[data-theme="viindoo"] {
+        --app-menu-text-color: white;
+        --app-menu-text-shadow: 1px 1px 1px #{rgba(black, 0.4)};
+        --app-menu-hover-background: #{rgba(white, 0.2)};
+    }
+}

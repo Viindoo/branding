@@ -1,4 +1,4 @@
-$o-font-size-base: 16rem * (1px / $o-root-font-size);
+$o-font-size-base: o-to-rem(16px) !default;
 
 // Change colors here
 $o-community-color: #00bbce !default;

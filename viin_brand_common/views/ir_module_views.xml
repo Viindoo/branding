@@ -5,7 +5,7 @@
         <field name="model">ir.module.module</field>
         <field name="inherit_id" ref="base.module_form" />
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('oe_title')]/div/a" position="attributes">
+            <xpath expr="//div[hasclass('mb32')]/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/pricing?utm_source=db&amp;utm_medium=module#hosting=on_premise</attribute>
             </xpath>
         </field>
