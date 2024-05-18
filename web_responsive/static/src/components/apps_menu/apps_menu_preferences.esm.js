@@ -6,7 +6,10 @@ import {Component, xml} from "@odoo/owl";
 import {registry} from "@web/core/registry";
 import {useService} from "@web/core/utils/hooks";
 
+
 class AppsMenuPreferences extends Component {
+    static props = {};
+
     setup() {
         this.action = useService("action");
         this.user = useService("user");
