@@ -29,4 +29,20 @@
 	<record id='base.action_theme_store' model='ir.actions.act_url' >
 	    <field name='url'>https://viindoo.com/apps/themes</field>
 	</record>
+
+    <record model="ir.ui.view" id="view_module_filter">
+        <field name="name">ir.module.module.list.select</field>
+        <field name="model">ir.module.module</field>
+        <field name="inherit_id" ref="base.view_module_filter"/>
+        <field name="arch" type="xml">
+            <filter name="extra" position="after">
+                <separator/>
+                <filter name="tvtmaaddons"
+                        string="By Viindoo / TVTMA"
+                        domain="['|','|',('author', 'ilike', 'TVTMA'),('author','ilike','T.V.T'),('author','ilike','Viindoo')]"/>
+                <filter name="ftr_odoo" string="By Odoo"
+                        domain="['|','|',('author', '=', 'Odoo'),('author','ilike','Odoo SA'),('author','ilike','Odoo S.A.')]"/>
+            </filter>
+        </field>
+    </record>
 </odoo>

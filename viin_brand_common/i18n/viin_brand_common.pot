@@ -1,0 +1,64 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_common
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-05-21 02:37+0000\n"
+"PO-Revision-Date: 2024-05-21 02:37+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.login_layout
+msgid "<span>Viindoo</span>"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_module_filter
+msgid "By Odoo"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_module_filter
+msgid "By Viindoo / TVTMA"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
+#, python-format
+msgid "Documentation"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
+#, python-format
+msgid "My Viindoo.com account"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
+#, python-format
+msgid "Support"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.brand_promotion_message
+msgid "Viindoo"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_company_form
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_partner_form
+msgid "e.g. https://viindoo.com"
+msgstr ""
