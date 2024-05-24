@@ -1,0 +1,18 @@
+.o_field_statusbar {
+    > .o_statusbar_status {
+        > .o_arrow_button:not(.d-none) {
+            &.o_arrow_button_current:disabled, &:active:not(.o_first) {
+				background-color: $brand-primary-super-light;
+				border-color: $brand-primary-dark;
+                &:after {
+                    border-left-color: $brand-primary-super-light;
+                }
+                &, & + .btn {
+                    &:before {
+                        border-left-color: $brand-primary-dark;
+                    }
+                }
+            }
+        }
+    }
+}
