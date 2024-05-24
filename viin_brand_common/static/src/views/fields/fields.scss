@@ -1,0 +1,4 @@
+.o_field_widget:focus-within {
+    @include print-variable(o-input-border-color, $o-input-border-required);
+    @include print-variable(o-caret-color, $o-input-border-required);
+}
