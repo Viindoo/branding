@@ -53,7 +53,18 @@ Module này sẽ thay đổi giao diện cuả Unsplash Image Library theo thư�
     'data': [
         'views/res_config_settings_view.xml',
     ],
+<<<<<<< HEAD
     'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+=======
+    'assets': {
+        'web_editor.assets_media_dialog': [
+            'viin_brand_web_unsplash/static/src/components/media_dialog/*.xml',
+        ],
+    },
+    'installable': True,
+    'application': False,
+    'auto_install': True,
+>>>>>>> a562c89 ([IMP] viin_brand_web_unsplash: update branding for media_dialog)
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

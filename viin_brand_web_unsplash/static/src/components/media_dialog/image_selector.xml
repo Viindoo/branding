@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="web_unsplash.UnsplashCredentials" t-inherit-mode="extension" owl="1">
+        <xpath 
+            expr="//input[@t-model='state.key']/preceding::a[1]" 
+            position="attributes">
+            <attribute name="href">https://viindoo.com/documentation/16.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html</attribute>
+        </xpath>
+        <xpath 
+            expr="//input[@t-model='state.appId']/preceding::a[1]" 
+            position="attributes">
+            <attribute name="href">https://viindoo.com/documentation/16.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html</attribute>
+        </xpath>
+    </t>
+
+</templates>
