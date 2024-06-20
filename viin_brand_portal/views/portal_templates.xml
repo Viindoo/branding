@@ -2,7 +2,7 @@
 <odoo>
     <template id="portal_record_sidebar" name="My Portal Record Sidebar" inherit_id="portal.portal_record_sidebar">
     	<xpath expr="//a" position="attributes">
-    		<attribute name="href">http://www.viindoo.com?utm_source=db&amp;utm_medium=portal</attribute>
+    		<attribute name="href">https://www.viindoo.com?utm_source=db&amp;utm_medium=portal</attribute>
     		<attribute name="title">viindoo</attribute>
     	</xpath>
     	<xpath expr="//img" position="attributes">

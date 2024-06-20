@@ -41,6 +41,10 @@ If you have development competencies, we can propose you specific traineeships</
 
     <!--Employees-->
 
+      <record id="hr.work_contact_qdp" model="hr.employee">
+          <field name="email">m.demo@example.odoo.com</field>
+      </record>
+
       <record id="hr.employee_qdp" model="hr.employee">
           <field name="work_email">gilles@example.viindoo.com</field>
       </record>

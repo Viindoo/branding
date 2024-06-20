@@ -2,10 +2,10 @@
 <odoo>
 
     <template inherit_id="mass_mailing.s_text_image" id="s_text_image">
-        <xpath expr="//p" position="replace">
-            <p style="text-align: justify;">The open source model of Viindoo has allowed us to leverage
-                thousands of developers and business experts to build hundreds of apps in just a few
-                years.</p>
+        <xpath expr="//p" position="replace" mode="inner">
+            The open source model of Viindoo has allowed us to leverage
+            thousands of developers and business experts to build hundreds of apps in just a few
+            years.
         </xpath>
     </template>
 

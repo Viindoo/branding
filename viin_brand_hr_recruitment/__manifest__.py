@@ -54,7 +54,8 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
         'views/hr_recruitment_views.xml',
         'views/res_config_settings_views.xml',
     ],
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

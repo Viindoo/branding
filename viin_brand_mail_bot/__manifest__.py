@@ -43,7 +43,8 @@ Module này sẽ thay đổi giao diện module Mail Bot theo thương hiệu Vi
 
     # any module necessary for this one to work correctly
     'depends': ['mail_bot', 'viin_brand_common'],
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

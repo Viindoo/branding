@@ -1,0 +1,11 @@
+.o-mail-ImStatus{
+	&.-primary.text-success {
+		color: $brand-primary !important; 
+	}
+	&.o-offline {
+		color: $gray-500 !important;
+	}
+	&.o-bot {
+		color: $brand-primary !important;
+	}
+}

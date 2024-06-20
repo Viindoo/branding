@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record model="ir.ui.view" id="email_compose_message_wizard_form">
+		<field name="name">mail.compose.message.form</field>
+		<field name="model">mail.compose.message</field>
+		<field name="inherit_id" eval="mail.email_compose_message_wizard_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='reply_to']" position="attributes">
+				<attribute name="placeholder">e.g: "info@mycompany.viindoo.com"</attribute>
+			</xpath>
+		</field>
+	</record>
+</odoo>

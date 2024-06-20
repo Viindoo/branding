@@ -52,10 +52,11 @@ Module này sẽ thay đổi giao diện module Base import theo thương hiệu
     # always loaded
     'assets': {
         'web.assets_backend': [
-            'viin_brand_base_import/static/src/legacy/xml/base_import.xml',
-            ]
+            'viin_brand_base_import/static/src/**/*.xml',
+        ],
     },
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

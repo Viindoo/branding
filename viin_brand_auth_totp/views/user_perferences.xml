@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="auth_totp.view_totp_field" />
         <field name="arch" type="xml">
             <xpath expr="//div/span/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
-            </xpath>
+<!--                <attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
+-->            </xpath>
         </field>
     </record>
 </odoo>

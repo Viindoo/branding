@@ -53,7 +53,8 @@ Module này sẽ thay đổi giao diện các module SMS Marketing theo thương
     'data': [
         'views/mailing_list_views.xml',
     ],
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

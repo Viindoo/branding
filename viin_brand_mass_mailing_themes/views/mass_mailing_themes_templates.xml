@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-	<template id="email_designer_snippets" inherit_id="mass_mailing.email_designer_snippets">
+	<template id="email_designer_snippets" inherit_id="mass_mailing_themes.email_designer_snippets">
 		<xpath expr="//div[contains(@data-name, 'newsletter')]" position="attributes">
 			<attribute name="data-img">viin_brand_mass_mailing_themes/static/src/img/theme_imgs/viindoo_thumb</attribute>
 		</xpath>
 	</template>
 
+	<!-- Theme "Newsletter" default template -->
 	<template id="theme_newsletter_template" inherit_id="mass_mailing_themes.theme_newsletter_template">
+		<xpath expr="//h2" position="replace" mode="inner">
+			The story of Viindoo
+		</xpath>
+		<xpath expr="//h3[text()[contains(., 'Odoo')]]" position="replace" mode="inner">
+			The rise of Viindoo
+		</xpath>
+		<xpath expr="//div[hasclass('col-lg-4')]/a/img" position="attributes">
+			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_header_logo.png</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
+			<attribute name="href">https://www.facebook.com/viindoo</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.linkedin.com/company/odoo']" position="attributes">
+			<attribute name="href">https://www.linkedin.com/company/viindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://twitter.com/Odoo']" position="attributes">
+			<attribute name="href">https://twitter.com/ViindooSolution</attribute>
+		</xpath>
+	</template>
+
+	<!-- Theme "Event" default template -->
+	<template id="theme_event_template" inherit_id="mass_mailing_themes.theme_event_template">
 		<xpath expr="//div[hasclass('col-lg-4')]/a/img" position="attributes">
 			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_header_logo.png</attribute>
 		</xpath>
@@ -21,6 +44,9 @@
 		</xpath>
 		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
 			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.tiktok.com/@odoo']" position="attributes">
+			<attribute name="href">https://www.tiktok.com/@viindoo.software</attribute>
 		</xpath>
 		<xpath expr="//font[1]/span[1]" position="replace" mode="inner">
 			<span style="font-weight: bolder;">Viindoo</span>
@@ -39,6 +65,120 @@
 		</xpath>
 		<xpath expr="//div[contains(@data-name, 'Media item')][3]//img" position="attributes">
 			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_3.png</attribute>
+		</xpath>
+	</template>
+
+	<!-- Theme "Blogging" default template -->
+	<template id="theme_blogging_template" inherit_id="mass_mailing_themes.theme_blogging_template">
+		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
+			<attribute name="href">https://www.facebook.com/viindoo</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.linkedin.com/company/odoo']" position="attributes">
+			<attribute name="href">https://www.linkedin.com/company/viindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://twitter.com/Odoo']" position="attributes">
+			<attribute name="href">https://twitter.com/ViindooSolution</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
+			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.tiktok.com/@odoo']" position="attributes">
+			<attribute name="href">https://www.tiktok.com/@viindoo.software</attribute>
+		</xpath>
+	</template>
+
+	<!-- Theme "Coupon" default template -->
+	<template id="theme_coupon_template" inherit_id="mass_mailing_themes.theme_coupon_template">
+		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
+			<attribute name="href">https://www.facebook.com/viindoo</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.linkedin.com/company/odoo']" position="attributes">
+			<attribute name="href">https://www.linkedin.com/company/viindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://twitter.com/Odoo']" position="attributes">
+			<attribute name="href">https://twitter.com/ViindooSolution</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
+			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.tiktok.com/@odoo']" position="attributes">
+			<attribute name="href">https://www.tiktok.com/@viindoo.software</attribute>
+		</xpath>
+	</template>
+
+	<!-- Theme "Magazine" default template -->
+	<template id="theme_magazine_template" inherit_id="mass_mailing_themes.theme_magazine_template">
+		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
+			<attribute name="href">https://www.facebook.com/viindoo</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.linkedin.com/company/odoo']" position="attributes">
+			<attribute name="href">https://www.linkedin.com/company/viindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://twitter.com/Odoo']" position="attributes">
+			<attribute name="href">https://twitter.com/ViindooSolution</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
+			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.tiktok.com/@odoo']" position="attributes">
+			<attribute name="href">https://www.tiktok.com/@viindoo.software</attribute>
+		</xpath>
+	</template>
+
+	<!-- Theme "Big News" default template -->
+	<template id="theme_bignews_template" inherit_id="mass_mailing_themes.theme_bignews_template">
+		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
+			<attribute name="href">https://www.facebook.com/viindoo</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.linkedin.com/company/odoo']" position="attributes">
+			<attribute name="href">https://www.linkedin.com/company/viindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://twitter.com/Odoo']" position="attributes">
+			<attribute name="href">https://twitter.com/ViindooSolution</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
+			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.tiktok.com/@odoo']" position="attributes">
+			<attribute name="href">https://www.tiktok.com/@viindoo.software</attribute>
+		</xpath>
+	</template>
+
+	<!-- Theme "CoffeeBreak" default template -->
+	<template id="theme_coffeebreak_template" inherit_id="mass_mailing_themes.theme_coffeebreak_template">
+		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
+			<attribute name="href">https://www.facebook.com/viindoo</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://twitter.com/Odoo']" position="attributes">
+			<attribute name="href">https://twitter.com/ViindooSolution</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
+			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
+			<attribute name="href">https://www.facebook.com/viindoo</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://twitter.com/Odoo']" position="attributes">
+			<attribute name="href">https://twitter.com/ViindooSolution</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
+			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
+		</xpath>
+	</template>
+
+	<!-- Training -->
+	<template id="theme_training_template" inherit_id="mass_mailing_themes.theme_training_template">
+		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
+			<attribute name="href">https://www.facebook.com/viindoo</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.linkedin.com/company/odoo']" position="attributes">
+			<attribute name="href">https://www.linkedin.com/company/viindoo/</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://twitter.com/Odoo']" position="attributes">
+			<attribute name="href">https://twitter.com/ViindooSolution</attribute>
+		</xpath>
+		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
+			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
 		</xpath>
 	</template>
 </odoo>

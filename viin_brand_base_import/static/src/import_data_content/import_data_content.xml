@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+	<t t-name="ImportDataContent" t-inherit="base_import.ImportDataContent">
+		<xpath expr="//p[text()[contains(., 'Odoo')]]" position="replace" mode="inner">
+			If the file contains the column names, the system can try auto-detecting the
+			field corresponding to the column. This makes imports
+			simpler especially when the file has many columns.
+		</xpath>
+		<xpath expr="//tr/th[text()[contains(., 'Odoo')]]" position="replace" mode="inner">
+			System Field
+		</xpath>
+	</t>
+</templates>

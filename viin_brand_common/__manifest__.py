@@ -80,6 +80,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             ('after', 'web/static/src/views/fields/statusbar/statusbar_field.scss', 'viin_brand_common/static/src/views/fields/statusbar/statusbar_field.scss'),
             ('after', 'web/static/src/views/form/button_box/button_box.scss', 'viin_brand_common/static/src/views/form/button_box/button_box.scss'),
             ('after', 'web/static/src/webclient/webclient.js', 'viin_brand_common/static/src/webclient/webclient.js'),
+            'viin_brand_common/static/src/views/widgets/**/*',
             'viin_brand_common/static/src/webclient/navbar/navbar.scss',
             'viin_brand_common/static/src/webclient/user_menu_item.js',
         ],

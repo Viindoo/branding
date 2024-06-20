@@ -51,14 +51,15 @@ Module này sẽ thay đổi giao diện module Invoicing theo thương hiệu V
 
     # always loaded
     'data': [
-        'views/res_config_settings_views.xml',
         'views/account_move_views.xml',
         'views/account_bank_statement_views.xml',
         'views/partner_view.xml',
         'views/terms_template.xml',
+        'views/report_statement.xml',
         'wizard/account_tour_upload_bill.xml'
     ],
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

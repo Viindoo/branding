@@ -1,12 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <data>
-    <!-- Invisible this digest because it's contain a feature that have not development yet -->
-    	<function name="write" model="digest.tip">
-	        <value eval="[ref('crm.digest_tip_crm_1')]" />
-	        <value eval="{'active': False}" />
-    	</function>
-   
+
         <record id="crm.digest_tip_crm_2" model="digest.tip">
             <field name="tip_description" type="html">
 				<div>

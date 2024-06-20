@@ -56,7 +56,8 @@ Module này sẽ thay đổi giao diện module Digest theo thương hiệu Viin
         'views/res_config_settings_views.xml',
         'views/digest_views.xml',
     ],
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

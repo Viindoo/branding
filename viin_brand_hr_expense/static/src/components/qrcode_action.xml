@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<templates>
+	<t t-name="QRModalComponent" t-inherit="hr_expense.QRModalComponent">
+		<xpath expr="//h3" position="replace" mode="inner">
+			Scan this QR code to get the Viindoo app:
+		</xpath>
+	</t>
+</templates>

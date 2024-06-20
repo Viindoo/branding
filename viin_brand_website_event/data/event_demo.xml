@@ -24,7 +24,7 @@
 
     <p>For any additional information, please contact us at <a href="mailto:events@example.viindoo.com">events@example.viindoo.com</a></p>
 
-    <section class="s_we_speaker bg-200 p-3 mb-4" itemscope="itemscope" itemtype="http://schema.org/Person" itemprop="performer">
+    <section class="s_we_speaker bg-200 p-3 mb-4" itemscope="itemscope" itemtype="https://schema.org/Person" itemprop="performer">
         <span class="badge rounded-pill bg-secondary float-end">SPEAKER</span>
         <img src="/viin_brand/static/img/viindoobot.png" width="70" class="img-fluid rounded-circle float-start me-3" alt=""/>
         <div class="overflow-hidden">

@@ -1,7 +1,7 @@
 <odoo>
     <template id="auth_totp_form" inherit_id="auth_totp.auth_totp_form" name="Two-Factor Authentication">
     	<xpath expr="//div[hasclass('oe_login_form')]/form/div/a" position="attributes">
-    		<attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
-    	</xpath>
+<!--    		<attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
+-->    	</xpath>
     </template>
 </odoo>

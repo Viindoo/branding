@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+	<t t-name="ImportDataSidepanel" t-inherit="base_import.ImportDataSidepanel">
+		<xpath expr="//div[hasclass('pt-3') and hasclass('pb-4') and hasclass('border-top')]//a" position="attributes">
+			<!--<attribute name="href">https://viindoo.com/documentation/17.0/applications/getting-started/guiding-to-import-and-export-data.html#import-data-into-viindoo-software</attribute>-->
+		</xpath>
+	</t>
+</templates>
