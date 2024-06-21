@@ -9,7 +9,7 @@
                 <attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started.html</attribute>
             </xpath>
             <xpath expr="//div[./label[@for='module_auth_ldap']]/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/15.0/applications/getting-started/external-apps-integration/ldap.html?highlight=ldap</attribute>
+                <attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started/external-apps-integration/ldap.html?highlight=ldap</attribute>
             </xpath>
             <xpath expr="//div[./label[@for='module_microsoft_calendar']]/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/16.0/applications/productivity/calendar/sychronization-with-outlook-s-calendar.html</attribute>
@@ -22,6 +22,12 @@
             </xpath>
             <xpath expr="//div[@id='sms']" position="attributes">
                 <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//a[@href='https://play.google.com/store/apps/details?id=com.odoo.mobile']" position="attributes">
+                <attribute name="href">https://play.google.com/store/apps/details?id=com.viindoo</attribute>
+            </xpath>
+            <xpath expr="//a[@href='https://itunes.apple.com/us/app/odoo/id1272543640']" position="attributes">
+                <attribute name="href">https://apps.apple.com/vn/app/viindoo-mobile/id1562267579</attribute>
             </xpath>
         </field>
     </record>
