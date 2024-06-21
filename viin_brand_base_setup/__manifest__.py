@@ -44,7 +44,7 @@ Module này sẽ thay đổi giao diện module Initial Setup Tools theo thươn
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     # any module necessary for this one to work correctly
     'depends': ['base_setup'],
@@ -54,8 +54,8 @@ Module này sẽ thay đổi giao diện module Initial Setup Tools theo thươn
         'views/res_config_settings_views.xml',
     ],
     'assets': {
-        'web.assets_qweb': [
-            'viin_brand_base_setup/static/src/xml/res_config_edition.xml',
+        'web.assets_backend': [
+            'viin_brand_base_setup/static/src/webclient/**/*',
         ],
     },
     'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
