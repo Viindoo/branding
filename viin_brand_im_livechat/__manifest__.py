@@ -50,9 +50,18 @@ Editions Supported
         'views/im_livechat_channel_views.xml'
     ],
     'images': [
+<<<<<<< HEAD
         # 'static/description/main_screenshot.png'
         ],
     'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+=======
+    	# 'static/description/main_screenshot.png'
+    	],
+    'post_init_hook': 'post_init_hook',
+    'installable': True,
+    'application': False,
+    'auto_install': True,
+>>>>>>> 72299fe ([FIX] viin_brand_im_livechat: don't hard code livechat button and header)
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
