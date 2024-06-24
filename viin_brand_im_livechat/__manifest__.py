@@ -50,8 +50,14 @@ Editions Supported
         'views/im_livechat_channel_views.xml'
     ],
     'images': [
+<<<<<<< HEAD
         # 'static/description/main_screenshot.png'
         ],
+=======
+    	# 'static/description/main_screenshot.png'
+    	],
+    'post_init_hook': 'post_init_hook',
+>>>>>>> 72299fe ([FIX] viin_brand_im_livechat: don't hard code livechat button and header)
     'installable': True,
     'application': False,
     'auto_install': True,
