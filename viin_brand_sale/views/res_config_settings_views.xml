@@ -4,26 +4,11 @@
 	    <field name="model">res.config.settings</field>
 	    <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
 	    <field name="arch" type="xml">
-            <xpath expr="//div[@name='catalog_setting_container']/div[@id='variant_options']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started/products/using-product-variants-in-viindoo.html</attribute>
-            </xpath>
-            <xpath expr="//div[@id='pricelist_configuration']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/16.0/applications/sales/sales/manage-your-pricing/manage-advances-price-rules.html</attribute>
-            </xpath>
-            <xpath expr="//div[@id='sale_config_online_confirmation_sign']/div/a" position="attributes">
+            <xpath expr="//div[@id='order_default_values_div']/div/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/16.0/applications/sales/sales/send-quotations/activate-e-sign-feature-to-confirm-order.html</attribute>
             </xpath>
-            <xpath expr="//div[@id='sale_config_online_confirmation_pay']/div/a" position="attributes">
+            <xpath expr="//div[@id='order_default_values_div']/div[hasclass('mt16')]/a" position="attributes">
                 <attribute name="href">https://viindoo.com/documentation/16.0/applications/sales/sales/send-quotations/activate-online-payment-for-viindoo-website.html</attribute>
-            </xpath>
-            <xpath expr="//div[@id='sales_settings_invoicing_policy']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/16.0/applications/sales/sales/invoicing-method/issuing-invoices-based-on-order-quantity-or-delivery-quantity.html</attribute>
-            </xpath>
-            <xpath expr="//div[@id='down_payments']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/16.0/applications/sales/sales/invoicing-method/down-payment-in-viindoo-sales.html</attribute>
-            </xpath>
-            <xpath expr="//div[@id='amazon_connector']/div/a" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/16.0/applications/sales/sales.html</attribute>
             </xpath>
         </field>
     </record>

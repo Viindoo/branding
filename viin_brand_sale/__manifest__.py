@@ -54,7 +54,8 @@ Module này sẽ thay đổi giao diện các module Sale theo thương hiệu V
         'views/res_config_settings_views.xml',
         'views/sale_views.xml',
     ],
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
