@@ -7,11 +7,13 @@
         <field name="arch" type="xml">
             <xpath expr="//p[1]/a" position="attributes">
                 <!-- Todo: Wait for the consulting department to add the link -->
-                <attribute name="href">https://www.odoo.com/documentation/17.0/_downloads/5f0840ed187116c425fdac2ab4b592e1/pdfquotebuilderexamples.zip</attribute>
+                <attribute name="style">display: none;</attribute>"
+                <attribute name="href">https://viindoo.com/documentation/16.0/applications.html</attribute>
             </xpath>
             <xpath expr="//p[3]/a" position="attributes">
                 <!-- Todo: Wait for the consulting department to add the link -->
-                <attribute name="href">https://www.odoo.com/documentation/17.0/applications/sales/sales/send_quotations/pdf_quote_builder.html</attribute>
+                <attribute name="style">display: none;</attribute>"
+                <attribute name="href">https://viindoo.com/documentation/16.0/applications.html</attribute>
             </xpath>
         </field>
     </record>
