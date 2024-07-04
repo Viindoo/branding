@@ -16,6 +16,42 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_base_setup
+#. openerp-web
+#: code:addons/viin_brand_base_setup/static/src/xml/res_config_edition.xml:0
+#, python-format
+msgid "Copyright © 2019"
+msgstr ""
+
+#. module: viin_brand_base_setup
 #: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.res_config_settings_view_form
 msgid "Extract and analyze Viindoo data from Google Spreadsheet"
 msgstr ""
+<<<<<<< HEAD
+=======
+
+#. module: viin_brand_base_setup
+#. openerp-web
+#: code:addons/viin_brand_base_setup/static/src/xml/res_config_edition.xml:0
+#, python-format
+msgid "GNU LGPL Licensed"
+msgstr ""
+
+#. module: viin_brand_base_setup
+#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.res_config_settings_view_form
+msgid "Use external pads in Viindoo Notes"
+msgstr ""
+
+#. module: viin_brand_base_setup
+#. openerp-web
+#: code:addons/viin_brand_base_setup/static/src/xml/res_config_edition.xml:0
+#, python-format
+msgid "Viindoo"
+msgstr ""
+
+#. module: viin_brand_base_setup
+#. openerp-web
+#: code:addons/viin_brand_base_setup/static/src/xml/res_config_edition.xml:0
+#, python-format
+msgid "Viindoo."
+msgstr ""
+>>>>>>> cb32bb3 ([FIX] viin_brand_base_setup: fix branding edition in setting)
