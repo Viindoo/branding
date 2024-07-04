@@ -1,12 +1,12 @@
 {
-    'name': "Website Debranding for Viindoo",
+    'name': "Web Debranding for Viindoo",
     'name_vi_VN': "",
 
     'summary': """
-Debranding Website Builder for Viindoo""",
+Debranding Web Builder for Viindoo""",
 
     'summary_vi_VN': """
-Làm lại màu sắc Bộ công cụ dựng website theo thương hiệu Viindoo
+Làm lại màu sắc Bộ công cụ dựng web theo thương hiệu Viindoo
         """,
 
     'description': """
@@ -38,20 +38,13 @@ Editions Supported
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['website'],
+    'depends': ['web'],
 
     # always loaded
-    'data': [
-        # 'security/ir.model.access.csv',
-        'data/digest_data.xml',
-        'views/templates.xml',
-        'views/website_templates.xml',
-        'views/res_config_settings_views.xml'
-    ],
+    'data': [],
     'assets': {
         'web.assets_backend': [
-            'viin_brand_website/static/src/components/configurator/configurator.scss',
-            'viin_brand_website/static/src/xml/website_backend.xml',
+            'viin_brand_web/static/src/core/dialog/dialog.js',
         ],
     },
     'images': [
