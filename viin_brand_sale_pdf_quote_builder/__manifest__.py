@@ -38,18 +38,20 @@ Editions Supported
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['sale_quotation_builder'],
+    'depends': ['sale_pdf_quote_builder'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/sale_portal_templates.xml',
+        'views/sale_order_template_views.xml',
+        'views/res_config_setting_views.xml',
     ],
 
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True, # set auto_install True after upgrading for v17 after upgrading for v17
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
