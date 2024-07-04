@@ -6,7 +6,7 @@
 				<div>
 				    <p class="tip_title">Tip: Viindoo supports configurable products</p>
 				    <p class="tip_content">Struggling with a complex product catalog? Try out the Product Configurator to help sales configure a product with different options: colors, size, capacity, etc. Make sale orders encoding easier and error-proof.</p>
-				    <img src="/sale_management/static/src/img/Sales-configure-products.gif" class="illustration_border" />
+				    <img src="/sale_management/static/src/img/milk-Sales-configure-products.gif" class="illustration_border" />
 				</div>
             </field>
         </record>
