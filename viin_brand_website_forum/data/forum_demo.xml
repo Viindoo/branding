@@ -1,6 +1,6 @@
 <odoo>
     <!-- Questions -->
-    
+
     <record id="website_forum.question_1" model="forum.post">
 	    <field name="content"><![CDATA[<p>I use Wordpress as a CMS and eCommerce platform. The developing in Wordpress is quite easy and solid but it missing ERP feature (there is single plugin to integrate with Frontaccounting) so I wonder:
 
@@ -17,5 +17,5 @@ In simple words does Viindoo became CMS+ERP platform?</p>]]>
 <p>Viindoo provides a web module and an e-commerce module: <a href="https://viindoo.com/intro/website">https://viindoo.com/intro/website</a>. 
 The CMS editor in Viindoo Web is nice and easy to use. You should try this.
 </p>]]></field>
-    </record>    
+    </record>
 </odoo>
