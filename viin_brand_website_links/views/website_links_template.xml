@@ -1,6 +1,6 @@
 <odoo>
     <template id="create_shorten_url" inherit_id="website_links.create_shorten_url">
-        <xpath expr="//form[@id='o_website_links_link_tracker_form']/div/div/input[@id='url']" position="attributes">
+        <xpath expr="//form[@id='o_website_links_link_tracker_form']//input[@id='url']" position="attributes">
             <attribute name="placeholder">e.g. https://viindoo.com</attribute>
         </xpath>
         <xpath expr="//div[hasclass('o_website_links_create_tracked_url')]/div/div[hasclass('row')]/div/p[2]" position="attributes">
