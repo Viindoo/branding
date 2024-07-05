@@ -1,12 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
+# 	* purchase
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0\n"
+"Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-01 03:54+0000\n"
-"PO-Revision-Date: 2022-11-01 03:54+0000\n"
+"POT-Creation-Date: 2024-07-05 09:27+0000\n"
+"PO-Revision-Date: 2024-07-05 09:27+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,23 +16,35 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: purchase
+#: model:digest.tip,name:purchase.digest_tip_purchase_0
+#: model_terms:digest.tip,tip_description:purchase.digest_tip_purchase_0
+msgid "Tip: How to keep late receipts under control?"
+msgstr ""
+
+#. module: purchase
 #: model_terms:digest.tip,tip_description:purchase.digest_tip_purchase_0
 msgid ""
 "When creating a purchase order, have a look at the vendor's <i>On Time "
 "Delivery</i> rate: the percentage of products shipped on time. If it is too "
 "low, activate the <i>automated reminders</i>. A few days before the due "
-"shipment, the system will send the vendor an email to ask confirmation of shipment"
-" dates and keep you informed in case of any delays. To get the vendor's "
-"performance statistics, click on the OTD rate."
+"shipment, the system will send the vendor an email to ask confirmation of "
+"shipment dates and keep you informed in case of any delays. To get the "
+"vendor's performance statistics, click on the OTD rate."
+msgstr ""
+
+#. module: purchase
+#: model:digest.tip,name:purchase.digest_tip_purchase_1
+#: model_terms:digest.tip,tip_description:purchase.digest_tip_purchase_1
+msgid "Tip: Never miss a purchase order"
 msgstr ""
 
 #. module: purchase
 #: model_terms:digest.tip,tip_description:purchase.digest_tip_purchase_1
 msgid ""
-"When sending a purchase order by email, the system asks the vendor to acknowledge "
-"the reception of the order. When the vendor acknowledges the order by "
-"clicking on a button in the email, the information is added on the purchase "
-"order. Use filters to track orders that have not been acknowledged."
+"When sending a purchase order by email, the system asks the vendor to "
+"acknowledge the reception of the order. When the vendor acknowledges the "
+"order by clicking on a button in the email, the information is added on the "
+"purchase order. Use filters to track orders that have not been acknowledged."
 msgstr ""
 
 #. module: purchase

@@ -66,11 +66,11 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     /* product */
     "https://www.odoo.com/documentation/17.0/applications/sales/sales/products_prices/products/product_images.html": "",
     /* purchase */
-    "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/purchase/manage_deals/agreements.html": "",
-    "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/purchase/manage_deals/control_bills.html": "",
+    "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/purchase/manage_deals/agreements.html": "https://viindoo.com/documentation/16.0/applications/supply-chain/purchase/manage-deals/purchase-agreement-blaket-orders.html",
+    "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/purchase/manage_deals/control_bills.html": "https://viindoo.com/documentation/16.0/applications/supply-chain/purchase/manage-deals/vendor-bills-control.html",
     "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/inventory/management/products/uom.html": "",
     /* purchase_stock */
-    "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/inventory/shipping/operation/dropshipping.html": "",
+    "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/inventory/shipping/operation/dropshipping.html": "https://viindoo.com/documentation/16.0/applications/supply-chain/inventory/warehouse-management/delivery-orders/delivery-directly-from-suppliers-to-customers-drop-ship.html",
     /* sale */
     "https://www.odoo.com/documentation/17.0/applications/sales/sales/products_prices/products/variants.html": "https://viindoo.com/documentation/16.0/applications/getting-started/products/using-product-variants-in-viindoo.html",
     "https://www.odoo.com/documentation/17.0/applications/sales/sales/products_prices/prices/pricing.html": "",
