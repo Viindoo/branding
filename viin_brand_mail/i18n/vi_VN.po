@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-31 01:50+0000\n"
 "PO-Revision-Date: 2022-04-24 09:44+0000\n"
@@ -17,7 +17,6 @@ msgstr ""
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__alias_name
-#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_channel__alias_name
 msgid "Alias Name"
 msgstr "Tên bí danh"
 
@@ -27,9 +26,14 @@ msgid "Email Aliases"
 msgstr "Bí danh Email"
 
 #. module: viin_brand_mail
+#: model:ir.model,name:viin_brand_mail.model_ir_http
+msgid "HTTP Routing"
+msgstr "Định tuyến HTTP"
+
+#. module: viin_brand_mail
 #: model:ir.model.fields.selection,name:viin_brand_mail.selection__res_users__notification_type__inbox
 msgid "Handle in Viindoo"
-msgstr "Xử lí trong hệ thống"
+msgstr "Xử lý trong hệ thống"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__notification_type
@@ -40,16 +44,15 @@ msgstr "Thông báo"
 #: model:ir.model.fields,help:viin_brand_mail.field_res_users__notification_type
 msgid ""
 "Policy on how to handle Chatter notifications:\n"
-"- Handle by Emails: notifications are sent to your email address\n"
-"- Handle in Odoo: notifications appear in your Odoo Inbox"
+"- Handle by Emails: notifications appear in your Viindoo Inbox and are sent to your email at the same time\n"
+"- Handle in Viindoo: notifications appear in your Viindoo Inbox"
 msgstr ""
 "Chính sách cho cách thức xử lý các thông báo Chatter:\n"
-"- Xử lý bằng email: các thông báo được gửi đến địa chỉ email của bạn\n"
-"- Xử lý trong hệ thống: các thông báo xuất hiện trong Hộp thư đến trong hệ thống"
+"- Xử lý bằng Email: các thông báo sẽ xuất hiện trong hộp thư đến của hệ thống và đồng thời được gửi đến địa chỉ email của bạn\n"
+"- Xử lý trong Hệ thống: các thông báo xuất hiện trong Hộp thư đến trong hệ thống"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_alias__alias_name
-#: model:ir.model.fields,help:viin_brand_mail.field_mail_channel__alias_name
 msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.viindoo.com>"
@@ -59,7 +62,7 @@ msgstr ""
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_res_users
-msgid "Users"
+msgid "User"
 msgstr "Người dùng"
 
 #. module: viin_brand_mail
@@ -74,12 +77,21 @@ msgstr ""
 " từ máy chủ email sẵn sàng sử dụng (@tencongty.viindoo.com)."
 
 #. module: viin_brand_mail
-#: model_terms:ir.ui.view,arch_db:viin_brand_mail.mail_notification_borders
+#: model_terms:ir.ui.view,arch_db:viin_brand_mail.mail_notification_layout
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail.mail_notification_light
-#: model_terms:ir.ui.view,arch_db:viin_brand_mail.mail_notification_paynow
-#: model_terms:ir.ui.view,arch_db:viin_brand_mail.message_notification_email
 msgid "Viindoo"
+msgstr "Hệ thống Viindoo"
+
+#. module: viin_brand_mail
+#. odoo-javascript
+#: code:addons/viin_brand_mail/static/src/components/notification_alert/notification_alert.xml:0
+#, python-format
+msgid ""
+"Viindoo Push notifications have been blocked. Go to your browser settings to"
+" allow them."
 msgstr ""
+"Gửi thông báo trong Viindoo đã bị chặn. Vui lòng đến phẩn cài đặt của trình "
+"duyệt để kích hoạt."
 
 #. module: viin_brand_mail
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail.res_config_settings_view_form
