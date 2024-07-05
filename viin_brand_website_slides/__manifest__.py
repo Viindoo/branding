@@ -41,19 +41,11 @@ Editions Supported
     'depends': ['website_slides'],
 
     # always loaded
-    'data': [
-        # 'security/ir.model.access.csv',
-        'views/slide_slide_views.xml',
-    ],
-    'assets': {
-        'web.assets_frontend': [
-            ('after', 'website_slides/static/src/scss/website_slides.scss', 'viin_brand_website_slides/static/src/scss/website_slides.scss')
-        ],
-    },
+    'data': [],
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': False,  # set ['website_slides'] after upgrading to v17
+    'installable': 'website_slides',
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
