@@ -1,5 +1,5 @@
 <odoo>
-    <template id="discuss_public_layout" inherit_id="mail.discuss_public_layout">
+    <template id="discuss_public_channel_template" inherit_id="mail.discuss_public_channel_template">
         <xpath expr="//title" position="attributes">
             <attribute name="t-esc">title or 'Viindoo'</attribute>
         </xpath>

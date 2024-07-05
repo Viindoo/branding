@@ -1,0 +1,5 @@
+<odoo>
+    <record id="mail.module_install_notification" model="mail.message">
+        <field name="subject">Welcome to Viindoo!</field>
+    </record>
+</odoo>

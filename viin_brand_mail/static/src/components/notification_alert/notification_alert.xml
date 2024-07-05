@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates xml:space="preserve">
-    <t t-inherit="mail.NotificationAlert" owl="1">
-        <xpath expr="//div/text()" position="replace">
-            Viindoo Push notifications have been blocked. Go to your browser settings to allow them.
-        </xpath>
-    </t>
-</templates>
