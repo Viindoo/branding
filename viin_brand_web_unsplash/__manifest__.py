@@ -58,7 +58,8 @@ Module này sẽ thay đổi giao diện cuả Unsplash Image Library theo thư�
             'viin_brand_web_unsplash/static/src/components/media_dialog/*.xml',
         ],
     },
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
