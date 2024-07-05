@@ -52,7 +52,7 @@ Editions Supported
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': False, # set ['website_profile'] after upgrading to v17
+    'installable': 'website_profile',
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
