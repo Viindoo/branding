@@ -49,7 +49,7 @@ Editions Supported
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': False, # set ['website_sale'] after upgrading to v17
+    'installable': 'website_sale',
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
