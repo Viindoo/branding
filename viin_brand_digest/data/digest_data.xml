@@ -5,10 +5,10 @@
 			<xpath expr="//div[hasclass('by_odoo')]/a" position="attributes">
 				<attribute name="href">https://viindoo.com</attribute>
 			</xpath>
-			<xpath expr="//div[hasclass('by_odoo')]//span[hasclass('odoo_link_text')]" position="replace" mode="inner">
+			<xpath expr="//div[hasclass('by_odoo')]/a/span[hasclass('odoo_link_text')]" position="replace" mode="inner">
 				Viindoo
 			</xpath>
-			<xpath expr="//div[hasclass('by_odoo')]//span[hasclass('odoo_link_text')]" position="replace" mode="inner">
+			<xpath expr="//p[hasclass('by_odoo')]//span[hasclass('odoo_link_text')]" position="replace" mode="inner">
 				Viindoo
 			</xpath>
 			<xpath expr="//div[@id='footer']/p[@id='powered']/a" position="attributes">

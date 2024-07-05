@@ -4,8 +4,7 @@
         <field name="model">payment.provider.onboarding.wizard</field>
         <field name="inherit_id" ref="payment.payment_provider_onboarding_wizard_form"/>
         <field name="arch" type="xml">
-	        <xpath expr="//div[@name='right-column']/div/p/a" position='attributes'>
-	        	<!-- TODO: replace document v16 link -->
+	        <xpath expr="//div[@name='right-column']/div/a" position='attributes'>
                 <attribute name="href">https://viindoo.com/documentation/16.0/applications/finance/accounting-and-invoicing/account-receivables/customer-payments/how-to-make-a-payment-with-paypal.html#pay-with-paypal</attribute>
 	        </xpath>
 	    </field>
