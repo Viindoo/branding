@@ -222,7 +222,7 @@ msgstr ""
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_res_users
 msgid "User"
-msgstr ""
+msgstr "Người dùng"
 
 #. module: viin_brand_mail
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail.res_config_settings_view_form
