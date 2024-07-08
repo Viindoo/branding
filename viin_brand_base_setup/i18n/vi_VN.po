@@ -26,8 +26,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.res_config_settings_view_form
 msgid "Extract and analyze Viindoo data from Google Spreadsheet"
 msgstr "Xuất và phân tích Dữ liệu Viindoo ở Google Spreadsheet"
-<<<<<<< HEAD
-=======
 
 #. module: viin_brand_base_setup
 #. openerp-web
@@ -35,11 +33,6 @@ msgstr "Xuất và phân tích Dữ liệu Viindoo ở Google Spreadsheet"
 #, python-format
 msgid "GNU LGPL Licensed"
 msgstr "Chứng nhận GNU LGPL"
-
-#. module: viin_brand_base_setup
-#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.res_config_settings_view_form
-msgid "Use external pads in Viindoo Notes"
-msgstr "Sử dụng Pad bên ngoài cho Ghi chú trong Viindoo"
 
 #. module: viin_brand_base_setup
 #. openerp-web
@@ -54,4 +47,3 @@ msgstr "Hệ thống Viindoo"
 #, python-format
 msgid "Viindoo."
 msgstr ""
->>>>>>> cb32bb3 ([FIX] viin_brand_base_setup: fix branding edition in setting)
