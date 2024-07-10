@@ -1,0 +1,9 @@
+<odoo>
+    <template id="livechat_email_template" inherit_id="im_livechat.livechat_email_template">
+        <xpath expr="//table[1]/tr[2]/td[1]" position="replace" mode="inner">
+            <td align="center" style="min-width: 590px;">
+                    Powered by <a target="_blank" href="https://viindoo.com?utm_source=db&amp;utm_medium=email" style="color: #875A7B;">Viindoo</a>
+            </td>
+        </xpath>
+    </template>
+</odoo>

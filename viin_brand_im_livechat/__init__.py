@@ -1,4 +1,3 @@
-from odoo import api, SUPERUSER_ID
 from . import models
 
 
@@ -11,6 +10,5 @@ def _update_viindoo_livechat_color(env):
         })
 
 
-def post_init_hook(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+def post_init_hook(env):
     _update_viindoo_livechat_color(env)
