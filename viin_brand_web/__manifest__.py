@@ -41,7 +41,6 @@ Editions Supported
     'depends': ['web'],
 
     # always loaded
-    'data': [],
     'assets': {
         'web.assets_backend': [
             'viin_brand_web/static/src/core/dialog/dialog.js',

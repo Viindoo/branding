@@ -45,7 +45,6 @@ Module này sẽ thay đổi giao diện module Jitsi theo thương hiệu Viind
 
     'depends': ['website_jitsi'],
 
-    'demo': [],
     'installable': True,
     'auto_install': True,
     'price': 0.0,

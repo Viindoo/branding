@@ -40,10 +40,6 @@ Editions Supported
     # any module necessary for this one to work correctly
     'depends': ['website_profile'],
 
-    # always loaded
-    'data': [
-        # 'security/ir.model.access.csv',
-    ],
     'assets': {
         'web.assets_frontend': [
             ('after', 'website_profile/static/src/scss/website_profile.scss', 'viin_brand_website_profile/static/src/scss/website_profile.scss')

@@ -42,7 +42,6 @@ Editions Supported
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
         'views/sale_order_template_views.xml',
         'views/res_config_setting_views.xml',
     ],
@@ -51,7 +50,7 @@ Editions Supported
         # 'static/description/main_screenshot.png'
         ],
     'installable': True,
-    'auto_install': True, # set auto_install True after upgrading for v17 after upgrading for v17
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

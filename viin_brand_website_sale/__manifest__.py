@@ -49,7 +49,7 @@ Editions Supported
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': 'website_sale',
+    'installable': ['website_sale'],
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
