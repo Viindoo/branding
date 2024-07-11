@@ -10,6 +10,7 @@ def _update_viindoo_livechat_color(env):
             "button_background_color": "#7f4282",
         })
 
+
 def post_init_hook(cr, registry):
     env = api.Environment(cr, SUPERUSER_ID, {})
     _update_viindoo_livechat_color(env)
