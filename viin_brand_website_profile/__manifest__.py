@@ -48,7 +48,7 @@ Editions Supported
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': 'website_profile',
+    'installable': ['website_profile'],
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
