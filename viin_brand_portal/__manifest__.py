@@ -30,8 +30,8 @@ Module này sẽ thay đổi giao diện các module Portal theo thương hiệu
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v16demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v16demo-vn.viindoo.com",
+    'live_test_url': "https://v17demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v17demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
@@ -47,7 +47,8 @@ Module này sẽ thay đổi giao diện các module Portal theo thương hiệu
     'data': [
         'views/portal_templates.xml',
     ],
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
