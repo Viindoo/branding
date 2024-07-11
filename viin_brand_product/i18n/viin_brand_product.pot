@@ -1,12 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
+# 	* viin_brand_product
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0\n"
+"Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-19 10:14+0000\n"
-"PO-Revision-Date: 2023-06-19 10:14+0000\n"
+"POT-Creation-Date: 2024-07-11 06:06+0000\n"
+"PO-Revision-Date: 2024-07-11 06:06+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: product
-#: model_terms:ir.ui.view,arch_db:product.product_variant_easy_edit_view
+#. module: viin_brand_product
+#: model_terms:ir.ui.view,arch_db:viin_brand_product.product_variant_easy_edit_view
 msgid "e.g. Viindoo Subscription"
 msgstr ""

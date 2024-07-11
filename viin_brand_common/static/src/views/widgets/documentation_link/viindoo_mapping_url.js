@@ -64,7 +64,7 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     "https://www.odoo.com/documentation/17.0/applications/sales/point_of_sale/payment_methods/terminals/vantiv.html": "https://viindoo.com/documentation/16.0/applications/sales/point-of-sale/pricing-features/payment-with-vantiv-payment-terminal-in-pos.html",
     "https://www.odoo.com/documentation/17.0/applications/sales/point_of_sale/payment_methods/terminals/six.html": "https://viindoo.com/documentation/16.0/applications/sales/point-of-sale/pricing-features/payment-with-six-payment-terminal-in-pos.html",
     /* product */
-    "https://www.odoo.com/documentation/17.0/applications/sales/sales/products_prices/products/product_images.html": "",
+    "https://www.odoo.com/documentation/17.0/applications/sales/sales/products_prices/products/product_images.html": "https://viindoo.com/documentation/16.0/applications/getting-started/products/auto-upload-product-images-from-google.html",
     /* purchase */
     "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/purchase/manage_deals/agreements.html": "",
     "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/purchase/manage_deals/control_bills.html": "",
