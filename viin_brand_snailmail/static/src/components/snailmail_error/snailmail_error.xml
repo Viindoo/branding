@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-inherit="snailmail.SnailmailError" >
-       <xpath expr="//p[hasclass('o_SnailmailError_contentError')]/a" position="attributes">
+    <t t-inherit="snailmail.SnailmailError" t-inherit-mode="extension">
+       <xpath expr="//p/a" position="attributes">
         <attribute name="href">https://viindoo.com/contactus</attribute>
       </xpath>
     </t>
