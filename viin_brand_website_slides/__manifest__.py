@@ -43,7 +43,8 @@ Editions Supported
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': 'website_slides',
+    'installable': True,
+    'auto_install': ['website_slides'],
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
