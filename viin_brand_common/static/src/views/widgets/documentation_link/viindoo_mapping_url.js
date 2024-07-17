@@ -63,6 +63,7 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     "https://www.odoo.com/documentation/17.0/applications/sales/point_of_sale/pricing/cash_rounding.html": "https://viindoo.com/documentation/16.0/applications/finance/accounting-and-invoicing/account-receivables/customer-invoices/settings/configure-cash-rounding-method.html",
     "https://www.odoo.com/documentation/17.0/applications/sales/point_of_sale/payment_methods/terminals/vantiv.html": "https://viindoo.com/documentation/16.0/applications/sales/point-of-sale/pricing-features/payment-with-vantiv-payment-terminal-in-pos.html",
     "https://www.odoo.com/documentation/17.0/applications/sales/point_of_sale/payment_methods/terminals/six.html": "https://viindoo.com/documentation/16.0/applications/sales/point-of-sale/pricing-features/payment-with-six-payment-terminal-in-pos.html",
+    "https://www.odoo.com/documentation/17.0/applications/sales/point_of_sale/payment_methods/terminals/adyen.html": "",
     /* product */
     "https://www.odoo.com/documentation/17.0/applications/sales/sales/products_prices/products/product_images.html": "https://viindoo.com/documentation/16.0/applications/getting-started/products/auto-upload-product-images-from-google.html",
     /* purchase */
