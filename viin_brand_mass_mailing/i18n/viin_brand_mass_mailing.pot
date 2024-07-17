@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0\n"
+"Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-13 04:49+0000\n"
-"PO-Revision-Date: 2023-02-13 04:49+0000\n"
+"POT-Creation-Date: 2024-07-19 09:05+0000\n"
+"PO-Revision-Date: 2024-07-19 09:05+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -51,9 +51,9 @@ msgstr ""
 #. module: viin_brand_mass_mailing
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.res_config_settings_view_form
 msgid ""
-"Use a specific mail server in priority. Otherwise System\n"
-"                    relies on the first outgoing mail server available (based on their sequencing)\n"
-"                    as it does for normal mails."
+"Use a specific mail server in priority. Otherwise Viindoo relies on the "
+"first outgoing mail server available (based on their sequencing) as it does "
+"for normal mails."
 msgstr ""
 
 #. module: viin_brand_mass_mailing
