@@ -4,50 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-09 04:29+0000\n"
-"PO-Revision-Date: 2024-07-09 04:29+0000\n"
+"POT-Creation-Date: 2023-02-13 10:42+0000\n"
+"PO-Revision-Date: 2023-02-13 10:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-#, python-format
-msgid ""
-"Good, you can customize canned responses in the live chat "
-"application.<br/><br/><b>It's the end of this overview</b>, you can now "
-"<b>close this conversation</b> or start the tour again with typing <span "
-"class=\"o_odoobot_command\">start the tour</span>. Enjoy discovering "
-"Viindoo!"
-msgstr ""
-"Rất tốt, bạn có thể tùy chỉnh các câu trả lời mẫu trong ứng dụng trò chuyện "
-"trực tiếp.<br/><br/><b>Đây là cuối cùng của bản tổng quan này</b>, bạn có thể"
-" <b>đóng cuộc trò chuyện này</b> hoặc bắt đầu chuyến tham quan lại bằng cách "
-"nhập <span class=\"o_odoobot_command\">start the tour</span>. Hãy thưởng thức "
-"việc khám phá Viindoo!"
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-#, python-format
-msgid ""
-"I am a simple bot, but if that's a dog, he is the cutest 😊 "
-"<br/>Congratulations, you finished this tour. You can now <b>close this "
-"conversation</b> or start the tour again with typing <span "
-"class=\"o_odoobot_command\">start the tour</span>. Enjoy discovering "
-"Viindoo!"
-msgstr ""
-"Tôi chỉ là một robot đơn giản, nhưng nếu đó là một con chó, nó là con chó dễ"
-" thương nhất 😊 <br/>Chúc mừng bạn đã hoàn thành chuyến tham quan này. Bạn có"
-" thể <b>đóng cuộc trò chuyện này</b> hoặc bắt đầu chuyến tham quan lại bằng "
-"cách nhập <span class=\"o_odoobot_command\">start the tour</span>. Hãy "
-"thưởng thức việc khám phá Viindoo!"
 
 #. module: viin_brand_mail_bot
 #: model:ir.model,name:viin_brand_mail_bot.model_mail_bot
