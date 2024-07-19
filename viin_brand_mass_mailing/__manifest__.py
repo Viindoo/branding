@@ -62,6 +62,7 @@ Module này sẽ thay đổi giao diện các module Email Marketing theo thươ
     ],
     'demo': [
         'data/mass_mailing_demo.xml',
+        'demo/mailing_trace_demo.xml'
     ],
     'installable': True,
     'auto_install': True,
