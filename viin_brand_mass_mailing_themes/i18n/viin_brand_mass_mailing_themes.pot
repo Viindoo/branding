@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0\n"
+"Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-19 03:47+0000\n"
-"PO-Revision-Date: 2023-10-19 03:47+0000\n"
+"POT-Creation-Date: 2024-07-23 02:34+0000\n"
+"PO-Revision-Date: 2024-07-23 02:34+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,19 +16,55 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_event_template
 msgid ""
 "<font style=\"color: rgb(255, 255, 255);\">Viindoo is free for "
 "everyone!</font>"
 msgstr ""
 
 #. module: viin_brand_mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_event_template
 msgid "<span style=\"font-weight: bolder;\">Viindoo</span>"
 msgstr ""
 
 #. module: viin_brand_mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid "@jane_viindoo"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow1_template
+msgid ""
+"Discover Viindoo, the all-in-one management platform, and its apps designed "
+"to improve employees' daily tasks. From sales and deliveries, to logistics, "
+"marketing and accounting ; learn what are the best available options to "
+"digitize your company."
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow2_template
+msgid "Do you wish to use Viindoo?"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow2_template
+msgid ""
+"If you wish to evaluate Viindoo while taking into account your company's "
+"specific needs, you can book a free appointment with one of our"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+msgid "In May 2019, we renamed the company and product to Viindoo."
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow1_template
+msgid "Interactive Viindoo demo"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_event_template
 msgid ""
 "Learn through workshops, product demos, and inspiring talks from Viindoo "
 "Experts and Partners."
@@ -36,44 +72,51 @@ msgstr ""
 
 #. module: viin_brand_mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
-msgid "https://twitter.com/ViindooSolution"
+msgid "The Rise of Viindoo"
 msgstr ""
 
 #. module: viin_brand_mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
-msgid "https://www.facebook.com/viindoo"
+msgid "The story of Viindoo"
 msgstr ""
 
 #. module: viin_brand_mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
-msgid "https://www.instagram.com/officialviindoo/"
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow2_template
+msgid "Viindoo Experts"
 msgstr ""
 
 #. module: viin_brand_mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
-msgid "https://www.linkedin.com/company/viindoo/"
-msgstr ""
-
-#. module: viin_brand_mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow1_template
 msgid ""
-"viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_1.png"
+"Viindoo invites you on <span class=\"font-weight: bolder\">[date]</span> at "
+"<span class=\"font-weight: bolder\">[time]</span> for their infamous "
+"roadshow in <span class=\"font-weight: bolder\">[city]</span>: an event that"
+" combines learning and networking in a casual afterwork-like atmosphere."
 msgstr ""
 
 #. module: viin_brand_mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow2_template
 msgid ""
-"viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_2.png"
+"You had the chance to discover Viindoo during a full 3 hours, how great is that?\n"
+"            <br/>Now that you've seen Viindoo in action and asked some questions, you likely need more information to move forward in your project and to work with us. You'll find additional points just below."
 msgstr ""
 
 #. module: viin_brand_mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
-msgid ""
-"viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_3.png"
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow2_template
+msgid "You may test Viindoo for free by clicking"
 msgstr ""
 
 #. module: viin_brand_mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
-msgid ""
-"viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_header_logo.png"
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow2_template
+msgid "here"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow2_template
+msgid "or"
+msgstr ""
+
+#. module: viin_brand_mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow2_template
+msgid "read our books about the product"
 msgstr ""
