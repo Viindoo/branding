@@ -22,6 +22,9 @@
 		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
 			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
 		</xpath>
+        <xpath expr="//a[@href='https://www.tiktok.com/@odoo']" position="attributes">
+            <attribute name="href">https://www.tiktok.com/@viindoo.software/</attribute>
+        </xpath>
 		<xpath expr="//font[1]/span[1]" position="replace" mode="inner">
 			<span style="font-weight: bolder;">Viindoo</span>
 		</xpath>
