@@ -23,18 +23,8 @@ msgid "Copyright © 2019"
 msgstr ""
 
 #. module: viin_brand_base_setup
-<<<<<<< HEAD
-#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.res_config_settings_view_form
-msgid "Extract and analyze Viindoo data from Google Spreadsheet"
-msgstr ""
-
-#. module: viin_brand_base_setup
-#. openerp-web
-#: code:addons/viin_brand_base_setup/static/src/xml/res_config_edition.xml:0
-=======
 #. odoo-javascript
 #: code:addons/viin_brand_base_setup/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
->>>>>>> 38a61fc ([FIX] viin_brand_base_setup: fix viindoo edition and mobile app link)
 #, python-format
 msgid "GNU LGPL Licensed"
 msgstr ""
