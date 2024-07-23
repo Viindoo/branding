@@ -3,10 +3,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0\n"
+"Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-19 03:09+0000\n"
-"PO-Revision-Date: 2023-06-19 03:09+0000\n"
+"POT-Creation-Date: 2024-07-23 08:49+0000\n"
+"PO-Revision-Date: 2024-07-23 08:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,11 +14,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: viin_brand_mass_mailing_sms
+#. module: mass_mailing_sms
 #: model_terms:ir.actions.act_window,help:mass_mailing_sms.mailing_list_action_sms
 msgid ""
 "No need to import mailing lists, you can send SMS Text Messages to contacts "
-"saved in other Odoo apps."
+"saved in other Viindoo apps."
 msgstr ""
-"Không cần nhập danh sách gửi thư, bạn có thể gửi Tin nhắn Văn bản SMS tới các số liên lạc"
-"được lưu trong các ứng dụng Odoo khác."
+"Không cần nhập danh sách gửi thư, bạn có thể gửi Tin nhắn văn bản SMS đến "
+"các liên hệ được lưu trong những ứng dụng Viindoo khác."
