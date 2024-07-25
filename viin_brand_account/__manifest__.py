@@ -51,6 +51,7 @@ Module này sẽ thay đổi giao diện module Invoicing theo thương hiệu V
 
     # always loaded
     'data': [
+        'data/digest_data.xml',
         'views/account_move_views.xml',
         'views/account_bank_statement_views.xml',
         'views/partner_view.xml',
