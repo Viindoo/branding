@@ -2,11 +2,16 @@
     <record id="view_users_form_simple_modif" model="ir.ui.view">
 	    <field name="name">res.users.preferences.form</field>
 	    <field name="model">res.users</field>
+        <field name="priority">100</field>
 	    <field name="inherit_id" ref="base.view_users_form_simple_modif" />
 	    <field name="arch" type="xml">
-	       <xpath expr="//page/group/div/a" position="attributes">
-	           <attribute name="href">https://viindoo.com/documentation/16.0/developer/development/integrate-with-third-party-resources.html</attribute>
-	       </xpath>
+           <xpath expr="//page/group/div[./a]" position="replace" mode="inner">
+                API Keys are used to connect to Viindoo from external tools without the need for a password or Two-factor Authentication.
+                <a href="https://viindoo.com/documentation/16.0/developer/development/integrate-with-third-party-resources.html" target="_blank">
+                    <i title="Documentation" class="fa fa-fw o_button_icon fa-info-circle"></i>
+                    Learn more
+                </a>
+           </xpath>
 	    </field>
 	</record>
 </odoo>
