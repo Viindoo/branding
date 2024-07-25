@@ -45,6 +45,18 @@ msgid "By Viindoo / TVTMA"
 msgstr ""
 
 #. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
+msgid "Check again"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
+msgid ""
+"Check your network connection and come back here. Viindoo will load as soon "
+"as you're back online."
+msgstr ""
+
+#. module: viin_brand_common
 #. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
 #, python-format
@@ -59,6 +71,11 @@ msgid "My Viindoo.com account"
 msgstr ""
 
 #. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
+msgid "Offline"
+msgstr ""
+
+#. module: viin_brand_common
 #. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
 #, python-format
@@ -68,6 +85,16 @@ msgstr ""
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.brand_promotion_message
 msgid "Viindoo"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
+msgid "Viindoo logo"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
+msgid "You are offline"
 msgstr ""
 
 #. module: viin_brand_common

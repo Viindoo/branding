@@ -49,6 +49,18 @@ msgid "By Viindoo / TVTMA"
 msgstr "Bởi Viindoo / TVTMA"
 
 #. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
+msgid "Check again"
+msgstr "Kiểm tra lại"
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
+msgid ""
+"Kiểm tra kết nối mạng của bạn và quay lại đây. Viindoo sẽ tải ngay "
+"khi bạn trực tuyến trở lại."
+msgstr ""
+
+#. module: viin_brand_common
 #. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
 #, python-format
@@ -63,6 +75,11 @@ msgid "My Viindoo.com account"
 msgstr "Tài khoản Viindoo.com"
 
 #. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
+msgid "Offline"
+msgstr "Ngoại tuyến"
+
+#. module: viin_brand_common
 #. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
 #, python-format
@@ -73,6 +90,16 @@ msgstr "Hỗ trợ"
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.brand_promotion_message
 msgid "Viindoo"
 msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
+msgid "Viindoo logo"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
+msgid "You are offline"
+msgstr "Bạn đang Ngoại tuyến"
 
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.view_company_form

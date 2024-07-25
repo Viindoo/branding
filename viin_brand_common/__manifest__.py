@@ -86,6 +86,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         ],
     },
     'installable': True,
+    'post_load': 'post_load',
     'auto_install': ['web'],
     'price': 9.9,
     'currency': 'EUR',
