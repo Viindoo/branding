@@ -55,6 +55,8 @@ Module này sẽ thay đổi giao diện module Invoicing theo thương hiệu V
         'views/account_move_views.xml',
         'views/account_bank_statement_views.xml',
         'views/partner_view.xml',
+        'views/report_invoice.xml',
+        'views/report_statement.xml',
         'views/terms_template.xml',
         'wizard/account_tour_upload_bill.xml'
     ],

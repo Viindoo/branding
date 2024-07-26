@@ -1,0 +1,9 @@
+<odoo>
+
+    <template id="report_statement" inherit_id="account.report_statement">
+        <xpath expr="//span[@t-out='line.partner_bank_id.partner_id.name']" position="replace" mode="inner">
+            Bank of Viindoo
+        </xpath>
+    </template>
+
+</odoo>
