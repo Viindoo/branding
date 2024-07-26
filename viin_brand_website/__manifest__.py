@@ -51,7 +51,6 @@ Editions Supported
     'assets': {
         'web.assets_backend': [
             'viin_brand_website/static/src/components/configurator/configurator.scss',
-            'viin_brand_website/static/src/xml/website_backend.xml',
         ],
     },
     'images': [

@@ -41,10 +41,7 @@ Editions Supported
     'depends': ['sale_pdf_quote_builder'],
 
     # always loaded
-    'data': [
-        'views/sale_order_template_views.xml',
-        'views/res_config_setting_views.xml',
-    ],
+    'data': [],
 
     'images': [
         # 'static/description/main_screenshot.png'
