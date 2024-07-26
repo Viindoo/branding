@@ -40,9 +40,6 @@ Editions Supported
     # any module necessary for this one to work correctly
     'depends': ['sale_pdf_quote_builder'],
 
-    # always loaded
-    'data': [],
-
     'images': [
         # 'static/description/main_screenshot.png'
         ],
