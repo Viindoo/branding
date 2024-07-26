@@ -1,0 +1,32 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_pos
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-04 03:03+0000\n"
+"PO-Revision-Date: 2024-10-04 03:03+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_pos
+#. odoo-javascript
+#: code:addons/viin_brand_pos/static/src/app/popups/offline_error_popup.js:0
+#, python-format
+msgid ""
+"Meanwhile connection is back, Viindoo Point of Sale will operate limited "
+"operations. Check your connection or continue with limited functionalities"
+msgstr ""
+
+#. module: viin_brand_pos
+#. odoo-javascript
+#: code:addons/viin_brand_pos/static/src/app/screens/receipt/order_receipt.xml:0
+#, python-format
+msgid "Powered by Viindoo"
+msgstr ""

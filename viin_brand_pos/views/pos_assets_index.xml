@@ -2,7 +2,10 @@
     <!--Replace the title of POS-->
     <template id="index" inherit_id="point_of_sale.index" name="Viindoo Index">
         <xpath expr="//html/head/title" position="replace">
-            <title>Viindoo POS</title>
+            <title>Viindoo - Point of Sale</title>
+        </xpath>
+        <xpath expr="//link[@type='image/x-icon']" position="attributes">
+            <attribute name="href">/viin_brand_pos/static/src/img/viindoo-favicon.png</attribute>
         </xpath>
     </template>
 </odoo>

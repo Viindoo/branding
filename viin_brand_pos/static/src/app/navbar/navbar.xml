@@ -1,7 +1,10 @@
-<templates id="template" xml:space="preserve">
-    <t t-inherit="point_of_sale.Chrome" t-inherit-mode="extension" >
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="point_of_sale.Navbar" t-inherit-mode="extension">
         <xpath expr="//img[hasclass('pos-logo')]" position="attributes">
             <attribute name="src">/viin_brand_pos/static/src/img/viindoo-logo.svg</attribute>
         </xpath>
     </t>
+
 </templates>
