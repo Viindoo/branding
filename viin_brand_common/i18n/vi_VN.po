@@ -21,7 +21,7 @@ msgid ""
 "<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>\n"
 "                    Learn more"
 msgstr ""
-"<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>\n"
+"<i title=\"Tài liệu\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>\n"
 "                    Tìm hiểu thêm"
 
 #. module: viin_brand_common
