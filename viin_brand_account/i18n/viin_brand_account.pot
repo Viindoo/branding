@@ -28,6 +28,11 @@ msgid "Alias"
 msgstr ""
 
 #. module: viin_brand_account
+#: model_terms:ir.ui.view,arch_db:viin_brand_account.report_statement
+msgid "Bank of Viindoo"
+msgstr ""
+
+#. module: viin_brand_account
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.account_default_terms_and_conditions
 msgid ""
 "Below text serves as a suggestion and doesn’t engage Viindoo's "
@@ -166,7 +171,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
 msgid "activate the currency of the invoice"
 msgstr ""
-
 #. module: account
 #: model_terms:ir.actions.act_window,help:account.action_bank_statement_tree
 msgid ""
