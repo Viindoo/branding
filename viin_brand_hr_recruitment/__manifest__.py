@@ -11,7 +11,7 @@ Giao diện brand Viindoo cho module Recruitment
     'description': """
 What it does
 ============
-This module will change color navigate bar, button and logo,v.v in module Recruitment following Viindoo's brand
+This module will change the interface of the Recruitment module to the Viindoo brand
 
 
 Editions Supported
@@ -24,7 +24,7 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ===================
-Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu Viindoo
+Module này sẽ thay đổi giao diện module Recruitment theo thương hiệu Viindoo
 
 
 Ấn bản được Hỗ trợ
@@ -51,7 +51,6 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
 
     # always loaded
     'data': [
-        'views/hr_recruitment_views.xml',
         'views/res_config_settings_views.xml',
     ],
     'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
