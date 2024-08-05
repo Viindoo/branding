@@ -8,5 +8,5 @@ class Sponsor(models.Model):
     def _onchange_exhibitor_type(self):
         super()._onchange_exhibitor_type()
         for r in self:
-            if 'odoo-' in r.room_name:
+            if r.room_name and 'odoo-' in r.room_name:
                 r.room_name = r.room_name.replace('odoo-', 'viindoo-')
