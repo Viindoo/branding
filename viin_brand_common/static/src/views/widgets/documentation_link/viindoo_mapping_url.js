@@ -7,26 +7,26 @@ This approach help we manage nearly all odoo documentation to be replaced or not
 
 export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     /* account */
-    "https://www.odoo.com/documentation/17.0/applications/finance/fiscal_localizations.html": "",
-    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/taxation/taxes/default_taxes.html": "",
+    "https://www.odoo.com/documentation/17.0/applications/finance/fiscal_localizations.html": "https://viindoo.com/documentation/16.0/applications/finance/accounting-and-invoicing/fiscal-localizations/fiscal-localizations-packages.html",
+    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/taxation/taxes/default_taxes.html": "https://viindoo.com/documentation/16.0/applications/finance/accounting-and-invoicing/taxation/taxes-and-tax-rule-configuration.html",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/taxation/taxes/taxcloud.html": "",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/taxation/taxes/avatax.html": "",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/taxation/taxes/eu_distance_selling.html": "https://viindoo.com/documentation/16.0/applications/finance/accounting-and-invoicing/taxation/distance-selling-for-eu-intra-community.html",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/taxation/taxes/cash_basis_taxes.html": "",
-    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/others/multi_currency.html": "",
+    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/others/multi_currency.html": "https://viindoo.com/documentation/17.0/applications/finance/accounting-and-invoicing/multi-currencies/how-to-configure-a-multi-currencies-system.html",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/receivables/customer_invoices/snailmail.html": "",
     "https://www.odoo.com/documentation/17.0/applications/sales/sales/send_quotations/different_addresses.html": "https://viindoo.com/documentation/16.0/applications/sales/sales/send-quotations/manage-invoicing-address-and-delivery-address-in-sales.html",
-    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/receivables/customer_invoices/cash_rounding.html": "",
+    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/receivables/customer_invoices/cash_rounding.html": "https://viindoo.com/documentation/17.0/applications/finance/accounting-and-invoicing/account-receivables/customer-invoices/settings/configure-cash-rounding-method.html",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/reporting/declarations/intrastat.html": "",
-    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/receivables/customer_payments/online_payment.html": "",
+    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/receivables/customer_payments/online_payment.html": "https://viindoo.com/documentation/17.0/applications/finance/accounting-and-invoicing/account-receivables/customer-payments/online-payment-on-website.html",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/receivables/customer_payments/batch.html": "",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/receivables/customer_payments/batch_sdd.html": "",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/receivables/customer_invoices/epc_qr_code.html": "",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/payables/pay/check.html": "",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/payables/pay/sepa.html": "",
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/payables/supplier_bills/invoice_digitization.html": "",
-    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/others/analytic_accounting.html": "",
-    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/others/adviser/budget.html": "",
+    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/others/analytic_accounting.html": "https://viindoo.com/documentation/16.0/applications/finance/analytic/analytic-account-in-viindoo.html",
+    "https://www.odoo.com/documentation/17.0/applications/finance/accounting/others/adviser/budget.html": "https://viindoo.com/documentation/17.0/applications/finance/analytic/budget-management.html?highlight=ng%C3%A2n%20s%C3%A1ch",
     /* auth_oauth */
     "https://www.odoo.com/documentation/17.0/applications/general/auth/google.html": "https://viindoo.com/documentation/16.0/applications/getting-started/system-settings/sign-in-with-google-authentication.html",
     /* base_setup */
@@ -48,12 +48,12 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     /* event */
     /* hr_recruitment */
     /* hr_timesheet */
-    "https://www.odoo.com/documentation/17.0/applications/services/timesheets/overview/time_off.html": "",
+    "https://www.odoo.com/documentation/17.0/applications/services/timesheets/overview/time_off.html": "https://viindoo.com/documentation/17.0/applications/human-resources/time-off/how-to-create-time-off-types.html",
     /* iap */
     "https://www.odoo.com/documentation/17.0/applications/general/in_app_purchase.html": "",
     /* mail */
     "https://www.odoo.com/documentation/17.0/applications/general/email_communication/email_servers.html": "https://viindoo.com/documentation/16.0/applications/getting-started/system-settings/how-to-set-mail-server-for-sending-receiving-emails-in-viindoo.html",
-    "https://www.odoo.com/documentation/17.0/applications/general/email_communication/email_domain.html#be-spf-compliant": "",
+    "https://www.odoo.com/documentation/17.0/applications/general/email_communication/email_domain.html#be-spf-compliant": "https://viindoo.com/documentation/17.0/applications/getting-started/system-settings/how-to-set-mail-server-for-sending-receiving-emails-in-viindoo.html",
     /* mrp */
     "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/manufacturing/management/bill_configuration.html#adding-a-routing": "https://viindoo.com/documentation/16.0/applications/supply-chain/manufacturing/products/how-to-create-bills-of-materials.html",
     "https://www.odoo.com/documentation/17.0/applications/inventory_and_mrp/manufacturing/management/subcontracting.html": "https://viindoo.com/documentation/16.0/applications/supply-chain/manufacturing/operations/manage-subcontracts-in-your-manufacturing-proccess.html",
