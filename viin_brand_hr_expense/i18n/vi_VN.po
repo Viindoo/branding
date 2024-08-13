@@ -19,21 +19,23 @@ msgstr ""
 msgid ""
 "Snap pictures of your receipts and let <b>Viindoo</b><br> automatically "
 "create expenses for you."
-msgstr "Chụp ảnh hóa đơn và để <b>Viindoo</b><br> tự động tạo chi tiêu giúp bạn."
+msgstr "Chụp ảnh hóa đơn và để Viindoo<br> tự động tạo chi tiêu giúp bạn."
 
 #. module: hr_expense
 #: model_terms:ir.actions.act_window,help:hr_expense.hr_expense_actions_my_all
 msgid ""
 "Snap pictures of your receipts and let <span><b>Viindoo</b></span><br> "
 "automatically create expenses for you."
-msgstr "Chụp ảnh hóa đơn và để <span><b>Viindoo</b></span><br> tự động tạo chi tiêu giúp bạn."
+msgstr ""
+"Chụp ảnh hóa đơn và để <span><b>Viindoo</b></span><br> tự động tạo chi tiêu "
+"giúp bạn."
 
 #. module: hr_expense
 #: model_terms:digest.tip,tip_description:hr_expense.digest_tip_hr_expense_0
 msgid ""
 "Do not keep your expense tickets in your pockets any longer. Just snap a "
-"picture of your receipt and let the software digitalizes it for you. The OCR and "
-"Artificial Intelligence will fill the data automatically."
+"picture of your receipt and let the software digitalizes it for you. The OCR"
+" and Artificial Intelligence will fill the data automatically."
 msgstr ""
-"Đừng giữ hóa đơn chi phí trong túi áo. Chỉ cần chụp một bức ảnh và để phần mềm "
+"Đừng giữ hóa đơn chi tiêu trong túi áo. Chỉ cần chụp một bức ảnh và để phần mềm "
 "số hóa giúp bạn. OCR và trí tuệ nhân tạo sẽ tự động điền dữ liệu."

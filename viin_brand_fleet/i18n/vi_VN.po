@@ -16,7 +16,8 @@ msgstr ""
 
 #. module: fleet
 #: model_terms:ir.actions.act_window,help:fleet.fleet_costs_reporting_action
-msgid "Manage efficiently your different effective vehicles Costs with Viindoo."
+msgid ""
+"Manage efficiently your different effective vehicles Costs with Viindoo."
 msgstr "Quản lý hiệu quả chi phí các phương tiện khác nhau với Viindoo."
 
 #. module: fleet

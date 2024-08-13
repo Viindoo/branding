@@ -20,7 +20,7 @@ msgstr ""
 #: code:addons/viin_brand_base_import/static/src/xml/base_import.xml:0
 #, python-format
 msgid "File Column"
-msgstr "Cột Tệp"
+msgstr "Cột tệp"
 
 #. module: viin_brand_base_import
 #. openerp-web
@@ -42,7 +42,7 @@ msgstr ""
 #: code:addons/viin_brand_base_import/static/src/xml/base_import.xml:0
 #, python-format
 msgid "System Field"
-msgstr "Trường Hệ thống"
+msgstr "Trường hệ thống"
 
 #. module: viin_brand_base_import
 #. openerp-web

@@ -49,8 +49,8 @@ msgstr ""
 #. module: stock
 #: model_terms:ir.actions.act_window,help:stock.action_orderpoint
 msgid ""
-"Define a minimum stock rule so that system creates automatically requests for "
-"quotations or confirmed manufacturing orders to resupply your stock."
+"Define a minimum stock rule so that system creates automatically requests "
+"for quotations or confirmed manufacturing orders to resupply your stock."
 msgstr ""
 "Định nghĩa một quy tắc tồn kho tối thiểu để hệ thống tự động tạo các yêu "
 "cầu báo giá hoặc các lệnh sản xuất được xác nhận để tái cung ứng cho "

@@ -24,12 +24,12 @@ msgstr "Tên bí danh"
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_alias
 msgid "Email Aliases"
-msgstr "Bí danh Email"
+msgstr "Bí danh email"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields.selection,name:viin_brand_mail.selection__res_users__notification_type__inbox
 msgid "Handle in Viindoo"
-msgstr "Xử lí trong hệ thống"
+msgstr "Xử lý trong hệ thống"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__notification_type

@@ -17,8 +17,8 @@ msgstr ""
 #. module: mrp
 #: model_terms:digest.tip,tip_description:mrp.digest_tip_mrp_0
 msgid ""
-"With the system work center control panel, your worker can start work orders "
-"in the shop and follow instructions of the worksheet. Quality tests are "
+"With the system work center control panel, your worker can start work orders"
+" in the shop and follow instructions of the worksheet. Quality tests are "
 "perfectly integrated into the process. Workers can trigger feedback loops, "
 "maintenance alerts, scrap products, etc."
 msgstr ""

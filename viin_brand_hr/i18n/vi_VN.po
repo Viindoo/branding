@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Chỉ cần liếc nhanh trên màn hình nhân viên của phần mềm, bạn\n"
 "có thể dễ dàng tìm thấy tất cả thông tin bạn cần cho mỗi người;\n"
-"dữ liệu liên lạc, chức vụ, tính sẵn sàng, v.v..."
+"dữ liệu liên lạc, chức vụ, tính khả dụng, v.v."
 
 #. module: hr
 #: model_terms:ir.actions.act_window,help:hr.open_view_employee_list_my
@@ -57,4 +57,4 @@ msgid ""
 msgstr ""
 "Chỉ cần liếc nhanh trên màn hình nhân viên của phần mềm, bạn\n"
 "có thể dễ dàng tìm thấy tất cả thông tin bạn cần cho mỗi người;\n"
-"dữ liệu liên lạc, chức vụ, tính sẵn sàng, v.v..."
+"dữ liệu liên lạc, chức vụ, tính khả dụng, v.v."

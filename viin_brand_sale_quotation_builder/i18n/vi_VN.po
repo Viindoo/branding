@@ -23,4 +23,4 @@ msgstr "Một"
 #. module: viin_brand_sale_quotation_builder
 #: model_terms:ir.ui.view,arch_db:viin_brand_sale_quotation_builder.brand_promotion
 msgid "awesome Open Source CRM"
-msgstr "phần mềm CRM Mã nguồn mở tuyệt vời"
+msgstr "phần mềm CRM mã nguồn mở tuyệt vời"

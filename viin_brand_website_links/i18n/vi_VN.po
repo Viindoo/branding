@@ -21,8 +21,9 @@ msgid ""
 "Those trackers can be used in Google Analytics to track clicks and visitors,"
 " or in Viindoo reports to track opportunities and related revenues."
 msgstr ""
-"Những trình theo dõi này có thể được sử dụng trong Google Analytics để theo dõi lượt click và khách truy cập,"
-" hoặc được sử dụng trong các báo cáo của Viindoo để theo dõi các tiềm năng và doanh thu."
+"Những trình theo dõi này có thể được sử dụng trong Google Analytics để theo "
+"dõi lượt click và khách truy cập, hoặc được sử dụng trong các báo cáo của "
+"Viindoo để theo dõi các tiềm năng và doanh thu."
 
 #. module: viin_brand_website_links
 #: model_terms:ir.ui.view,arch_db:viin_brand_website_links.create_shorten_url

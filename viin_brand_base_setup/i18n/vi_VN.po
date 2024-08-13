@@ -20,12 +20,12 @@ msgstr ""
 #: code:addons/viin_brand_base_setup/static/src/xml/res_config_edition.xml:0
 #, python-format
 msgid "Copyright © 2019"
-msgstr ""
+msgstr "Bản quyền © 2019"
 
 #. module: viin_brand_base_setup
 #: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.res_config_settings_view_form
 msgid "Extract and analyze Viindoo data from Google Spreadsheet"
-msgstr "Xuất và phân tích Dữ liệu Viindoo ở Google Spreadsheet"
+msgstr "Xuất và phân tích dữ liệu Viindoo ở Google Spreadsheet"
 
 #. module: viin_brand_base_setup
 #. openerp-web
