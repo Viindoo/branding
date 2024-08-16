@@ -12,6 +12,7 @@ Giao diện brand Viindoo cho module Fleet
 What it does
 ============
 This module will change color navigate bar, button and logo,v.v in module Fleet following Viindoo's brand
+
 Editions Supported
 ==================
 1. Community Edition
@@ -22,6 +23,7 @@ Editions Supported
 Ứng dụng này làm gì
 ===================
 Module này sẽ thay đổi giao diện module Fleet theo thương hiệu Viindoo
+
 Ấn bản được Hỗ trợ
 ==================
 1. Ấn bản Community
