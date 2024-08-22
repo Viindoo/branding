@@ -33,7 +33,7 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     "https://www.odoo.com/documentation/17.0/applications/marketing/sms_marketing/pricing/pricing_and_faq.html": "",
     "https://www.odoo.com/documentation/17.0/applications/general/export_import_data.html": "https://viindoo.com/documentation/16.0/applications/getting-started/guiding-to-import-and-export-data.html#import-data-into-viindoo-software",
     "https://www.odoo.com/documentation/17.0/applications/productivity/mail_plugins.html": "https://viindoo.com/documentation/16.0/applications/getting-started.html",
-    "https://www.odoo.com/documentation/17.0/applications/general/auth/ldap.html": "https://viindoo.com/documentation/16.0/applications/getting-started/external-apps-integration/ldap.html?highlight=ldap",
+    "https://www.odoo.com/documentation/17.0/applications/general/auth/ldap.html": "https://viindoo.com/documentation/15.0/applications/getting-started/external-apps-integration/ldap.html?highlight=ldap",
     "https://www.odoo.com/documentation/17.0/applications/websites/website/optimize/unsplash.html": "https://viindoo.com/documentation/16.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html",
     /* base_vat */
     "https://www.odoo.com/documentation/17.0/applications/finance/accounting/taxation/taxes/vat_validation.html": "",
