@@ -30,7 +30,7 @@ class BrandWebManifest(WebManifest):
             _logger.warning("odoo's list icon has changed")
 
         json_response['icons'] = [{
-            'src': '/viin_brand_common/static/img/viindoo-icon-%s.png' % size,
+            'src': '/' + self._viindoo_icon_path(size),
             'sizes': size,
             'type': 'image/png',
         } for size in icon_sizes]
@@ -43,12 +43,12 @@ class BrandWebManifest(WebManifest):
 
         return new_response
 
-    def _icon_path(self):
-        return 'viin_brand_common/static/img/viindoo-icon-192x192.png'
+    def _viindoo_icon_path(self, size='192x192'):
+        return 'viin_brand_common/static/img/viindoo-icon-%s.png' % size
 
     @http.route()
     def offline(self):
         """ Returns the offline page delivered by the service worker """
         return request.render('viin_brand_common.webclient_offline', {
-            'viindoo_icon': base64.b64encode(file_open(self._icon_path(), 'rb').read())
+            'viindoo_icon': base64.b64encode(file_open(self._viindoo_icon_path(), 'rb').read())
         })
