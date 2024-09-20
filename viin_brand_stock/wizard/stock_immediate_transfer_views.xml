@@ -7,7 +7,7 @@
         <field name="priority">110</field>
         <field name="arch" type="xml">
             <xpath expr="//p" position="replace">
-                <p>You have not recorded <i>done</i> quantities yet, by clicking on <i>apply</i>
+                <p>You have not recorded <i>done</i> quantities yet, by clicking on <i>apply</i>,
                     Viindoo will process all the quantities.</p>
             </xpath>
         </field>
