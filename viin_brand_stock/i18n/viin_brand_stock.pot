@@ -42,10 +42,3 @@ msgid ""
 "Define a minimum stock rule so that system creates automatically requests for "
 "quotations or confirmed manufacturing orders to resupply your stock."
 msgstr ""
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.view_immediate_transfer
-msgid ""
-"You have not recorded <i>done</i> quantities yet, by clicking on "
-"<i>apply</i> Viindoo will process all the quantities."
-msgstr ""
