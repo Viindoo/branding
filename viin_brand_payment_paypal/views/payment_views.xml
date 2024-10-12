@@ -4,7 +4,7 @@
 	    <field name="model">payment.provider</field>
 	    <field name="inherit_id" ref="payment_paypal.payment_provider_form"/>
 	    <field name="arch" type="xml">
-	        <xpath expr="//group[@name='provider_credentials']/group/a" 
+	        <xpath expr="//group[@name='provider_credentials']/group[@invisible=&quot;code != 'paypal'&quot;]/a"
 	        position='attributes'>
                 <attribute name="href">https://viindoo.com/documentation/16.0/applications/finance/accounting-and-invoicing/account-receivables/customer-payments/how-to-make-a-payment-with-paypal.html#pay-with-paypal</attribute>
 	        </xpath>
