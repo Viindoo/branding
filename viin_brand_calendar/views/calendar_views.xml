@@ -8,7 +8,21 @@
 		<field name="arch" type="xml">
 			<xpath
 				expr="//button[@name='set_discuss_videocall_location']/span[2]"
-				position="replace">
+				position="replace" mode="inner">
+				<span> Add Viindoo meeting</span>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_calendar_event_form_quick_create" model="ir.ui.view">
+		<field name="name">calendar.event.form.quick_create</field>
+        <field name="model">calendar.event</field>
+		<field name="inherit_id" ref="calendar.view_calendar_event_form_quick_create" />
+		<field name="priority">110</field>
+		<field name="arch" type="xml">
+			<xpath
+				expr="//button[@name='set_discuss_videocall_location']/span[2]"
+				position="replace" mode="inner">
 				<span> Add Viindoo meeting</span>
 			</xpath>
 		</field>

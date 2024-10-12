@@ -5,9 +5,9 @@
             <field name="name">res.config.settings.view.form.inherit.hr.recruitment</field>
             <field name="model">res.config.settings</field>
             <field name="priority" eval="75" />
-            <field name="inherit_id" ref="base.res_config_settings_view_form" />
+            <field name="inherit_id" ref="hr_recruitment.res_config_settings_view_form" />
             <field name="arch" type="xml">
-                <xpath expr="//div[@name='recruitment_process_div']//div[@id='sms']" position="attributes">
+                <xpath expr="//block[@name='recruitment_process_div']//setting[@id='sms']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
             </field>

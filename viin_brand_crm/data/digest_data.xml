@@ -20,7 +20,7 @@
 				<div>
 				    <p class="tip_title">Tip: Do not waste time recording customers' data</p>
 				    <p class="tip_content">Did you know you can search a company by name or VAT number to instantly fill in all its data? The system autocompletes everything for you: logo, address, company size, business information, social media accounts, etc.</p>
-				    <img src="/crm/static/src/img/autofill.gif" class="illustration_border" />
+				    <img src="/crm/static/src/img/milk-autofill.gif" class="illustration_border" />
 				</div>
             </field>
         </record>
@@ -29,7 +29,7 @@
 				<div>
 				    <p class="tip_title">Tip: Turn a selection of opportunities into a map</p>
 				    <p class="tip_content">Did you know you can turn a list of opportunities into a map view, using the top-right map icon? A lot of screens in system can be turned into a map: tasks, contacts, delivery orders, etc.</p>
-				    <img src="/crm/static/src/img/mapview-toggle.gif" class="illustration_border" />
+				    <img src="/crm/static/src/img/milk-mapview-toggle.gif" class="illustration_border" />
 				</div>
             </field>
         </record>
