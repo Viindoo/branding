@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="account_tour_upload_bill"
-        inherit_id="account.account_tour_upload_bill">
-        <xpath expr="//h2[text()[contains(., 'Odoo')]]" position="replace">
-            <h2>With Viindoo, you won't have to record bills manually</h2>
-        </xpath>
-    </template>
+    <record id="account_tour_upload_bill" model="ir.ui.view">
+        <field name="name">account.tour.upload.bill</field>
+        <field name="model">account.tour.upload.bill</field>
+        <field name="priority">100</field>
+        <field name="inherit_id" ref="account.account_tour_upload_bill" />
+        <field name="arch" type="xml">
+            <xpath expr="//h2" position="replace" mode="inner">
+                With Viindoo, you won't have to record bills manually
+            </xpath>
+        </field>
+
+    </record>
 </odoo>
