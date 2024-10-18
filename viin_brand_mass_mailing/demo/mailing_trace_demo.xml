@@ -1,0 +1,29 @@
+<odoo>
+    <data noupdate="1">
+        <record id="mass_mailing.mass_mail_1_stat_0" model="mailing.trace">
+            <field name="message_id">1111000@viindoo.com</field>
+        </record>
+        <record id="mass_mailing.mass_mail_1_stat_1" model="mailing.trace">
+            <field name="message_id">1111001@viindoo.com</field>
+        </record>
+        <record id="mass_mailing.mass_mail_1_stat_2" model="mailing.trace">
+            <field name="message_id">1111002@viindoo.com</field>
+        </record>
+        <record id="mass_mailing.mass_mail_1_stat_3" model="mailing.trace">
+            <field name="message_id">1111003@viindoo.com</field>
+        </record>
+        <record id="mass_mailing.mass_mail_1_stat_4" model="mailing.trace">
+            <field name="message_id">1111004@viindoo.com</field>
+        </record>
+        <record id="mass_mailing.mass_mail_1_stat_5" model="mailing.trace">
+            <field name="message_id">1111005@viindoo.com</field>
+        </record>
+        <record id="mass_mailing.mass_mail_1_stat_6" model="mailing.trace">
+            <field name="message_id">1111006@viindoo.com</field>
+        </record>
+        <record id="mass_mailing.mass_mail_1_stat_7" model="mailing.trace">
+            <field name="message_id">1111007@viindoo.com</field>
+        </record>
+
+    </data>
+</odoo>
