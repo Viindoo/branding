@@ -1,18 +1,18 @@
 {
-    'name': "Mail Bot Debranding for Viindoo",
-    'name_vi_VN': "Giao diện Viindoo cho module Mail Bot",
+    'name': "Im Live Chat Mail Bot Debranding for Viindoo",
+    'name_vi_VN': "Giao diện Viindoo cho module Tôi là Chat Bot Trực tuyến",
 
     'summary': """
-Debranding Mail Bot for Viindoo
+Debranding Im Live Chat Mail Bot for Viindoo
     """,
     'summary_vi_VN': """
-Giao diện brand Viindoo cho module Mail Bot
+Giao diện brand Viindoo cho module Tôi là Chat Bot Trực tuyến
     """,
 
     'description': """
 What it does
 ============
-This module will change brand in Mail Bot following Viindoo's brand
+This module will change brand in Im Live Chat Mail Bot following Viindoo's brand
 
 Editions Supported
 ==================
@@ -24,7 +24,7 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ===================
-Module này sẽ thay đổi giao diện module Mail Bot theo thương hiệu Viindoo
+Module này sẽ thay đổi giao diện module Tôi là Chat Bot Trực tuyến theo thương hiệu Viindoo
 
 Ấn bản được Hỗ trợ
 ==================
@@ -42,7 +42,7 @@ Module này sẽ thay đổi giao diện module Mail Bot theo thương hiệu Vi
     'version': '0.1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['mail_bot', 'viin_brand_common'],
+    'depends': ['im_livechat_mail_bot', 'viin_brand_common'],
     'installable': True,
     'auto_install': True,
     'price': 0.0,
