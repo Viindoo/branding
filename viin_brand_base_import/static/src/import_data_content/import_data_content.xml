@@ -1,0 +1,13 @@
+<templates xml:space="preserve">
+    <t t-inherit="base_import.ImportDataContent" t-inherit-mode="extension">
+        <xpath expr="//p[hasclass('alert-info')]" position="replace" mode="inner">
+            If the file contains
+            the column names, the System can try auto-detecting the
+            field corresponding to the column. This makes imports
+            simpler especially when the file has many columns.
+        </xpath>
+        <xpath expr="//thead/tr/th[2]" position="replace" mode="inner">
+            System Field
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,7 @@
+<templates xml:space="preserve">
+    <t t-inherit="base_import.ImportDataSidepanel" t-inherit-mode="extension">
+        <xpath expr="//a[./i[hasclass('fa-external-link')]]" position="attributes">
+            <attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started/guiding-to-import-and-export-data.html#import-data-into-viindoo-software</attribute>
+        </xpath>
+    </t>
+</templates>
