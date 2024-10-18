@@ -1,0 +1,7 @@
+<odoo>
+
+    <record id="mail.group_mail_notification_type_inbox" model="res.groups">
+        <field name="name">Receive notifications in Viindoo</field>
+    </record>
+
+</odoo>
