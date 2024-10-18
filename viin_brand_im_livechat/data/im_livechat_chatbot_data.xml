@@ -1,0 +1,9 @@
+<odoo>
+    <data noupdate="1">
+
+        <record id="im_livechat.chatbot_script_welcome_bot" model="chatbot.script">
+            <field name="image_1920" type="base64" file="viin_brand/static/img/viindoobot.png" />
+        </record>
+
+    </data>
+</odoo>

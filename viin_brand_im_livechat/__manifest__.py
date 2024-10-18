@@ -45,12 +45,15 @@ Editions Supported
         'data/im_livechat_channel_demo.xml'
     ],
     'data': [
-        # 'security/ir.model.access.csv',
+        'data/digest_data.xml',
+        'data/im_livechat_chatbot_data.xml',
+        'data/mail_templates.xml',
         'views/im_livechat_channel_templates.xml',
         'views/im_livechat_channel_views.xml'
     ],
     'post_init_hook': 'post_init_hook',
-    'installable': False, # set auto_install True after upgrading for v17 after upgrading for v17
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
