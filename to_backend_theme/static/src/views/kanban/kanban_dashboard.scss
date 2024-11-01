@@ -1,14 +1,10 @@
-.o_kanban_dashboard:not(.o_legacy_kanban_view) {
+.o_kanban_dashboard .o_kanban_renderer {
 
-    .o_kanban_record > div {
+    .o_kanban_record .dropdown-menu {
 
-        .o_kanban_card_manage_pane {
-
-            // Dropdown menu with complex layout
-            &.container {
-                @media (max-width: 768px) {
-                    max-width: $o-kanban-default-record-width;
-                }
+        .container {
+            @media (max-width: 768px) {
+                max-width: $o-kanban-default-record-width;
             }
 
         }
