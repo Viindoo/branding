@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<function name="write" model="hr.resume.line">
+	        <value eval="[ref('hr_skills.employee_resume_line_admin_4')]" />
+	        <value eval="{'name': 'Viindoo'}" />
+    	</function>
+    </data>
+</odoo>

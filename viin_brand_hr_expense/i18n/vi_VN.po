@@ -37,3 +37,10 @@ msgid ""
 msgstr ""
 "Đừng giữ hóa đơn chi tiêu trong túi áo. Chỉ cần chụp một bức ảnh và để phần mềm "
 "số hóa giúp bạn. OCR và trí tuệ nhân tạo sẽ tự động điền dữ liệu."
+
+#. module: hr_expense
+#. odoo-javascript
+#: code:addons/hr_expense/static/src/xml/expense_qr_modal_template.xml:0
+#, python-format
+msgid "Scan this QR code to get the Viindoo app:"
+msgstr "Quét mã QR này để tải ứng dụng Viindoo:"
