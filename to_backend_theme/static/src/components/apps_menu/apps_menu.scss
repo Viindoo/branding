@@ -1,10 +1,31 @@
 :root {
-    .o_grid_apps_menu[data-theme="viindoo"] {
+    .o_apps_menu_opened[data-theme="viindoo"] {
+        --app-menu-background: url("/to_backend_theme/static/src/img/home-menu-bg-overlay.svg")
+
+    }
+
+    .o_apps_menu_opened[data-theme="milk"] {
         --app-menu-background: url("/web_responsive/static/src/img/home-menu-bg-overlay.svg"),
             linear-gradient(
                 to bottom,
-                #{$brand-primary-dark},
-                #{desaturate(lighten($brand-primary-dark, 20%), 15)}
+                #{$app-menu-background-color},
+                #{desaturate(lighten($app-menu-background-color, 20%), 15)}
             );
     }
+
+    .o_apps_menu_opened[data-theme="community"] {
+        --app-menu-background: url("/web_responsive/static/src/img/home-menu-bg-overlay.svg"),
+            linear-gradient(
+                to bottom,
+                #{$o-brand-primary},
+                #{desaturate(lighten($o-brand-primary, 20%), 15)}
+            );
+    }
+}
+.app-menu-container {
+    background: none !important
+}
+
+.o_apps_menu_opened {
+    background: var(--app-menu-background);
 }

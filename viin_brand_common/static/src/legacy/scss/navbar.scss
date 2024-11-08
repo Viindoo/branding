@@ -1,49 +1,9 @@
 .o_main_navbar {
-	background-color : $brand-primary-dark;
-	border-bottom: 1px solid $brand-primary-darker;
-
-	.show {
-		.dropdown-toggle {
-			background-color: $brand-primary-darker;
-		}
-	}
+	border-bottom: none !important;
 
 	a.dropdown-toggle{
 			    text-decoration: none;
 		}
-
-	> a,
-	> button {
-		&:hover,
-		&:focus {
-			background-color: $brand-primary-dark;
-		}
-	}
-
-	> ul {
-		> li {
-			&.o_extra_menu_items {
-				&.show {
-					> ul {
-						> li {
-							> a {
-								&.dropdown-toggle {
-									background-color: $brand-primary-dark !important;
-								}
-							}
-						}
-					}
-				}
-			}
-			> label,
-			> a {
-				&:hover,
-				&:focus{
-					background-color: $brand-primary-dark;
-				}
-			}
-		}
-	}
 }
 // = SuperUser Design
 // ============================================================================
@@ -59,7 +19,8 @@ body.o_is_superuser .o_menu_systray {
 			.badge {
 				height: auto;
 				border-radius: 0.25rem;
-				background-color: var(--o-navbar-badge-bg, #{$o-enterprise-primary-color});
+				background-color: var(--o-navbar-badge-bg, $red);
+				color:white;
             }
 		}
 	}

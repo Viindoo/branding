@@ -7,7 +7,7 @@
 <templates>
     <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension">
         <xpath expr="//Dropdown" position="attributes">
-            <attribute name="class">'o_navbar_apps_menu hide'</attribute>
+            <attribute name="class">'o_navbar_apps_menu d-none'</attribute>
             <attribute name="skipTogglerTabbing">true</attribute>
             <attribute name="hotkey" remove="'h'" add="'shift+h'" separator=" " />
         </xpath>
