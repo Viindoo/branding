@@ -97,7 +97,38 @@ $chatter_zone_width: 35% !important;
                     top: 50%;
                     right: 6px;
                     bottom: auto;
+<<<<<<< HEAD
                     transform: translateY(-50%);
+=======
+                }
+                .o_field_many2many_selection .o_dropdown_button {
+                    top: 0 !important;
+                }
+            }
+        }
+
+        // Sticky statusbar
+
+        .o_form_statusbar {
+            position: sticky !important;
+            top: 0;
+            z-index: 2;
+        }
+
+        // Support for long title (with ellipsis)
+        .oe_title {
+            .o_field_widget:not(.oe_inline) {
+                span:not(.o_field_translate) {
+                    display: block;
+                    max-width: 100%;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    width: initial;
+                    &:active {
+                        white-space: normal;
+                    }
+>>>>>>> a31dd02 ([FIX] web_responsive: fix bad UI on crm team form view)
                 }
             }
         }
