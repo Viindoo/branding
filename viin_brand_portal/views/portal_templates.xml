@@ -8,6 +8,7 @@
     	<xpath expr="//img" position="attributes">
     		<attribute name="src">/viin_brand/static/img/viindoo_logo_tiny.png</attribute>
     		<attribute name="alt">Viindoo Logo</attribute>
+    		<attribute name="style">vertical-align: text-bottom;</attribute>
     	</xpath>
     </template>
 </odoo>
