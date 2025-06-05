@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_bank_account_view_form_inherit" model="ir.ui.view">
+        <field name="name">res.bank.account.form.inherit</field>
+        <field name="model">res.partner.bank</field>
+        <field name="inherit_id" ref="l10n_vn.view_partner_bank_form_inherit_account" />
+        <field name="arch" type="xml">
+            <xpath expr="//p/a" position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/17.0/applications/finance/accounting-and-invoicing/account-receivables/customer-payments/how-to-make-a-payment-with-emv-qr-code.html</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
