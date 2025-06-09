@@ -47,7 +47,7 @@ Module này sẽ thay đổi giao diện module Invoicing theo thương hiệu V
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account'],
+    'depends': ['account', 'viin_brand'],
 
     # always loaded
     'data': [

@@ -3,7 +3,7 @@
     <data>
         <template id="report_invoice_document" inherit_id="account.report_invoice_document">
             <xpath expr="//img[@id='qrcode_odoo_logo']" position="attributes">
-                <attribute name="src">/viin_brand_account/static/img/Viindoo-logo.svg</attribute>
+                <attribute name="src">/viin_brand/static/img/Viindoo-logo.svg</attribute>
             </xpath>
         </template>
 
