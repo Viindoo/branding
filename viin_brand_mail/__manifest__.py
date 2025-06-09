@@ -56,7 +56,6 @@ Editions Supported
         'web.assets_backend': [
             # mail branding
             ('after', 'mail/static/src/core/common/chat_window.scss', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
-            ('after', 'mail/static/src/core/common/core.scss', 'viin_brand_mail/static/src/core/common/core.scss'),
             ('after', 'mail/static/src/core/common/im_status.scss', 'viin_brand_mail/static/src/core/common/im_status.scss'),
             ('after', 'mail/static/src/core/web/discuss_sidebar.scss', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
             ('after', 'mail/static/src/discuss/core/web/discuss_sidebar_categories.scss', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),

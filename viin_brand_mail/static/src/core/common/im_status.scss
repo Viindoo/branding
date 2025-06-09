@@ -1,13 +1,24 @@
 .o-mail-ImStatus {
-    &.-primary.text-success {
+    .text-success {
         color: $brand-primary !important;
     }
 
-    &.o-offline {
+    .o-away {
+        color: #ffa500 !important; // Orange color for idle/away status
+    }
+
+    .text-700 {
         color: $gray-500 !important;
     }
+}
 
-    &.o-bot {
+// Also apply to ThreadIcon component
+.o-mail-ThreadIcon {
+    .text-success {
         color: $brand-primary !important;
+    }
+
+    .o-yellow {
+        color: #ffa500 !important; // Orange color for idle/away status  
     }
 }
