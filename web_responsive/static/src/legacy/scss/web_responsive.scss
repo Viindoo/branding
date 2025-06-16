@@ -102,6 +102,30 @@ $chatter_zone_width: 35% !important;
             }
         }
 
+        .o_form_statusbar {
+            position: sticky !important;
+            top: 0;
+            z-index: 2;
+            border-top: 0.5px solid #dee2e6;
+            border-bottom: 0.5px solid #dee2e6;
+            padding-bottom: 0px !important;
+            background: white;
+        }
+
+        .o_form_sheet_bg {
+            padding-top: 0;
+            padding-left: 0;
+            padding-right: 0;
+            border-right: 1px solid #dee2e6;
+        }
+
+        .o_statusbar_buttons {
+            padding-left: 16px;
+        }
+
+        .o_form_sheet {
+            margin: 8px 32px
+        }
         @include media-breakpoint-down(sm) {
             min-width: auto;
 
