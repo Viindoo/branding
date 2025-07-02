@@ -63,6 +63,8 @@ Editions Supported
     },
     'installable': True,
     'auto_install': True,
+    'post_load': 'post_load',
+    'post_init_hook': 'post_init_hook',
     'price': 9.9,
     'currency': 'EUR',
     'license': 'OPL-1',
