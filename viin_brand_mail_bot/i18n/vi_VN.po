@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-09 04:29+0000\n"
-"PO-Revision-Date: 2024-07-09 04:29+0000\n"
+"POT-Creation-Date: 2025-07-02 02:11+0000\n"
+"PO-Revision-Date: 2025-07-02 02:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,10 +27,10 @@ msgid ""
 "Viindoo!"
 msgstr ""
 "Rất tốt, bạn có thể tùy chỉnh các câu trả lời mẫu trong ứng dụng trò chuyện "
-"trực tiếp.<br/><br/><b>Đây là cuối cùng của bản tổng quan này</b>, bạn có thể"
-" <b>đóng cuộc trò chuyện này</b> hoặc bắt đầu chuyến tham quan lại bằng cách "
-"nhập <span class=\"o_odoobot_command\">start the tour</span>. Hãy thưởng thức "
-"việc khám phá Viindoo!"
+"trực tiếp.<br/><br/><b>Đây là cuối cùng của bản tổng quan này</b>, bạn có "
+"thể <b>đóng cuộc trò chuyện này</b> hoặc bắt đầu chuyến tham quan lại bằng "
+"cách nhập <span class=\"o_odoobot_command\">start the tour</span>. Hãy "
+"thưởng thức việc khám phá Viindoo!"
 
 #. module: viin_brand_mail_bot
 #. odoo-python
@@ -59,6 +59,17 @@ msgstr ""
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
 #, python-format
 msgid ""
+"Sorry, I am not listening. To get someone's attention, <b>ping him</b>. "
+"Write <span class=\"o_odoobot_command\">@ViindooBot</span> and select me."
+msgstr ""
+"Xin lỗi, tôi không nghe thấy. Để thu hút sự chú ý của ai đó, <b>hãy ping họ</b>. "
+"Viết <span class=\"o_odoobot_command\">@ViindooBot</span> và chọn tôi."
+
+#. module: viin_brand_mail_bot
+#. odoo-python
+#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
+#, python-format
+msgid ""
 "Unfortunately, I'm just a bot 😞 I don't understand! If you need help "
 "discovering our product, please check <a "
 "href=\"https://www.viindoo.com/documentation\" target=\"_blank\">our "
@@ -70,3 +81,16 @@ msgstr ""
 "href=\"https://viindoo.com/documentation\" target=\"_blank\">tài liệu của "
 "chúng tôi</a> hoặc các <a href=\"https://viindoo.com/slides\" "
 "target=\"_blank\">video của chúng tôi</a>."
+
+#. module: viin_brand_mail_bot
+#. odoo-python
+#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
+#, python-format
+msgid ""
+"Wow you are a natural!<br/>Ping someone with @username to grab their "
+"attention. <b>Try to ping me using</b> <span "
+"class=\"o_odoobot_command\">@ViindooBot</span> in a sentence."
+msgstr ""
+"Wow bạn thật tự nhiên!<br/>Ping ai đó với @username để thu hút sự chú ý của họ. "
+"<b>Hãy thử ping tôi bằng cách sử dụng</b> <span "
+"class=\"o_odoobot_command\">@ViindooBot</span> trong một câu."

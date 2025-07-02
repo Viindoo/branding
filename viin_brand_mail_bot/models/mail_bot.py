@@ -14,8 +14,12 @@ class MailBot(models.AbstractModel):
         else:
             odoobot_state = self.env.user.odoobot_state
             if self._is_bot_in_private_channel(record):
+                if odoobot_state == 'onboarding_command' and command == 'help':
+                    self.env.user.odoobot_state = "onboarding_ping"
+                    self.env.user.odoobot_failed = False
+                    return Markup(_("Wow you are a natural!<br/>Ping someone with @username to grab their attention. <b>Try to ping me using</b> <span class=\"o_odoobot_command\">@ViindooBot</span> in a sentence."))
                 # help message
-                if self._is_help_requested(body) or odoobot_state == 'idle':
+                elif self._is_help_requested(body) or odoobot_state == 'idle':
                     return Markup(_("Unfortunately, I'm just a bot 😞 I don't understand! If you need help discovering our product, please check "
                              "<a href=\"https://www.viindoo.com/documentation\" target=\"_blank\">our documentation</a> or "
                              "<a href=\"https://www.viindoo.com/slides\" target=\"_blank\">our videos</a>."))
@@ -28,5 +32,8 @@ class MailBot(models.AbstractModel):
                     self.env.user.odoobot_failed = False
                     self.env.user.odoobot_state = "idle"
                     return Markup(_("Good, you can customize canned responses in the live chat application.<br/><br/><b>It's the end of this overview</b>, you can now <b>close this conversation</b> or start the tour again with typing <span class=\"o_odoobot_command\">start the tour</span>. Enjoy discovering Viindoo!"))
+                elif odoobot_state == 'onboarding_ping' and not self._is_bot_pinged(values):
+                    self.env.user.odoobot_failed = True
+                    return Markup(_("Sorry, I am not listening. To get someone's attention, <b>ping him</b>. Write <span class=\"o_odoobot_command\">@ViindooBot</span> and select me."))
 
             return super(MailBot, self)._get_answer(record, body, values, command)
