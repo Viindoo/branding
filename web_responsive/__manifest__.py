@@ -35,6 +35,7 @@
             "/web_responsive/static/src/legacy/scss/list_sticky_header.scss",
             "/web_responsive/static/src/legacy/js/web_responsive.esm.js",
             "/web_responsive/static/src/legacy/xml/form_buttons.xml",
+<<<<<<< HEAD
             "/web_responsive/static/src/legacy/xml/custom_favorite_item.xml",
             "/web_responsive/static/src/components/apps_menu_tools.esm.js",
             "/web_responsive/static/src/components/apps_menu/*",
@@ -51,6 +52,20 @@
             "/web_responsive/static/src/components/control_panel/*",
             "/web_responsive/static/src/components/command_palette/*",
             "/web_responsive/static/src/views/form/*",
+=======
+            "/web_responsive/static/src/components/apps_menu/apps_menu.xml",
+            "/web_responsive/static/src/components/control_panel/control_panel.xml",
+            "/web_responsive/static/src/components/search_panel/search_panel.xml",
+            "/web_responsive/static/src/components/hotkey/hotkey.xml",
+            "/web_responsive/static/src/components/chatter_topbar/chatter_topbar.esm.js",
+            "/web_responsive/static/src/components/chatter_topbar/chatter_topbar.xml",
+            "/web_responsive/static/src/components/attachment_viewer/attachment_viewer.scss",
+            "/web_responsive/static/src/components/attachment_viewer/attachment_viewer.esm.js",
+            "/web_responsive/static/src/components/attachment_viewer/attachment_viewer.xml",
+            "/web_responsive/static/src/views/form/form_controller.scss",
+            "/web_responsive/static/src/components/message/message.xml",
+            "/web_responsive/static/src/components/composer/text_input.scss",
+>>>>>>> b538367 ([FIX] web_responsive: fix show scroll in text input)
         ],
         "web.assets_tests": [
             "/web_responsive/static/tests/test_patch.js",
