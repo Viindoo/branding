@@ -49,6 +49,7 @@
             "/web_responsive/static/src/components/attachment_viewer/attachment_viewer.xml",
             "/web_responsive/static/src/views/form/form_controller.scss",
             "/web_responsive/static/src/components/message/message.xml",
+            "/web_responsive/static/src/components/composer/text_input.scss",
         ],
         "web.assets_tests": [
             "/web_responsive/static/tests/test_patch.js",
