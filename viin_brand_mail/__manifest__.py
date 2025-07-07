@@ -64,6 +64,7 @@ Editions Supported
             ('after', 'mail/static/src/components/thread_icon/thread_icon.scss', 'viin_brand_mail/static/src/components/thread_icon/thread_icon.scss'),
             ('after', 'mail/static/src/components/chatter_topbar/chatter_topbar.scss', 'viin_brand_mail/static/src/components/chatter_topbar/chatter_topbar.scss'),
             ('after', 'mail/static/src/components/composer/composer.scss', 'viin_brand_mail/static/src/components/composer/composer.scss'),
+            ('after', 'mail/static/src/components/composer_text_input/composer_text_input.scss', 'viin_brand_mail/static/src/components/composer_text_input/composer_text_input.scss'),
             ('after', 'mail/static/src/components/thread_view_topbar/thread_view_topbar.scss', 'viin_brand_mail/static/src/components/thread_view_topbar/thread_view_topbar.scss'),
         ],
     },
