@@ -5,8 +5,8 @@
  * Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import {Component, useState} from "@odoo/owl";
-import {useAutofocus, useService} from "@web/core/utils/hooks";
+import { Component, useState } from "@odoo/owl";
+import { useAutofocus, useService } from "@web/core/utils/hooks";
 
 /**
  * @extends Component
@@ -21,7 +21,7 @@ export class AppsMenuOdooSearchBar extends Component {
             offset: 0,
             hasResults: false,
         });
-        this.searchBarInput = useAutofocus({refName: "SearchBarInput"});
+        this.searchBarInput = useAutofocus({ refName: "SearchBarInput" });
         this.command = useService("command");
     }
 
@@ -29,12 +29,12 @@ export class AppsMenuOdooSearchBar extends Component {
      * @returns {String}
      */
     get inputValue() {
-        const {el} = this.searchBarInput;
+        const { el } = this.searchBarInput;
         return el ? el.value : "";
     }
 
     set inputValue(value) {
-        const {el} = this.searchBarInput;
+        const { el } = this.searchBarInput;
         if (el) {
             el.value = value;
         }
@@ -57,7 +57,7 @@ export class AppsMenuOdooSearchBar extends Component {
      */
     _openSearchMenu(value) {
         const searchValue = value ? `/${value}` : "/";
-        this.command.openMainPalette({searchValue}, null);
+        this.command.openMainPalette({ searchValue }, null);
     }
 }
 

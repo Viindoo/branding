@@ -5,24 +5,23 @@
  * Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import {Component, useState, useRef} from "@odoo/owl";
-import {session} from "@web/session";
-import {useBus, useService} from "@web/core/utils/hooks";
-import {AppMenuItem} from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
-import {AppsMenuSearchBar} from "@web_responsive/components/menu_searchbar/searchbar.esm";
-import {NavBar} from "@web/webclient/navbar/navbar";
-import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
-
+import { Component, useState, useRef } from "@odoo/owl";
+import { session } from "@web/session";
+import { useBus, useService } from "@web/core/utils/hooks";
+import { AppMenuItem } from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
+import { AppsMenuSearchBar } from "@web_responsive/components/menu_searchbar/searchbar.esm";
+import { NavBar } from "@web/webclient/navbar/navbar";
+import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 
 export class AppsMenu extends Component {
     setup() {
         super.setup();
-        this.state = useState({open: false});
+        this.state = useState({ open: false });
         this.theme = session.apps_menu.theme || "milk";
         this.menuService = useService("menu");
         this.actionService = useService("action");
         this.homeIcon = useRef("homeIcon");
-        useBus(this.env.bus, "APPS_MENU:TOGGLE", ({detail: open}) => {
+        useBus(this.env.bus, "APPS_MENU:TOGGLE", ({ detail: open }) => {
             this.setOpenState(open);
         });
         this._setupKeyNavigation();
@@ -106,4 +105,4 @@ Object.assign(AppsMenu, {
     },
 });
 
-Object.assign(NavBar.components, {AppsMenu, AppMenuItem, AppsMenuSearchBar});
+Object.assign(NavBar.components, { AppsMenu, AppMenuItem, AppsMenuSearchBar });

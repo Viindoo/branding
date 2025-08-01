@@ -4,9 +4,9 @@
  * Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import {Chatter} from "@mail/core/web/chatter";
-import {patch} from "@web/core/utils/patch";
-import {useEffect} from "@odoo/owl";
+import { Chatter } from "@mail/core/web/chatter";
+import { patch } from "@web/core/utils/patch";
+import { useEffect } from "@odoo/owl";
 
 patch(Chatter.prototype, {
     setup() {

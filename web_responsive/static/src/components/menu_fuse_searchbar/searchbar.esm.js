@@ -3,7 +3,7 @@
 /* Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import {AppsMenuCanonicalSearchBar} from "@web_responsive/components/menu_canonical_searchbar/searchbar.esm";
+import { AppsMenuCanonicalSearchBar } from "@web_responsive/components/menu_canonical_searchbar/searchbar.esm";
 
 /**
  * @extends AppsMenuCanonicalSearchBar
@@ -20,7 +20,7 @@ export class AppsMenuFuseSearchBar extends AppsMenuCanonicalSearchBar {
     }
 
     _searchMenus() {
-        const {state} = this;
+        const { state } = this;
         const query = this.inputValue;
         state.hasResults = query !== "";
         state.rootItems = this.rootMenuItems.search(query);

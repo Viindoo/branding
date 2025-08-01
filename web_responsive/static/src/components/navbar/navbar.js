@@ -10,8 +10,8 @@ patch(NavBar.prototype, {
         super.setup();
         this.appsMenuService = useService("apps_menu");
         this.homeMenuButton = useRef("homeMenuButton");
-        useBus(this.env.bus, "TOGGLE_HOME_MENU_BUTTON", ({detail: toggle}) => {
-            this.homeMenuButton.el.classList.toggle('d-none', toggle);
+        useBus(this.env.bus, "TOGGLE_HOME_MENU_BUTTON", ({ detail: toggle }) => {
+            this.homeMenuButton.el.classList.toggle("d-none", toggle);
         });
     },
 });

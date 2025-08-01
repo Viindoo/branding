@@ -4,9 +4,9 @@
  * Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import {onMounted, onWillStart, useExternalListener, useRef} from "@odoo/owl";
-import {FileViewer} from "@web/core/file_viewer/file_viewer";
-import {patch} from "@web/core/utils/patch";
+import { onMounted, onWillStart, useExternalListener, useRef } from "@odoo/owl";
+import { FileViewer } from "@web/core/file_viewer/file_viewer";
+import { patch } from "@web/core/utils/patch";
 
 const formChatterClassName = ".o-mail-Form-chatter";
 const formViewSheetClassName = ".o_form_view_container .o_form_sheet_bg";

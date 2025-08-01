@@ -2,10 +2,9 @@
 /* Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import {Component, xml} from "@odoo/owl";
-import {registry} from "@web/core/registry";
-import {useService} from "@web/core/utils/hooks";
-
+import { Component, xml } from "@odoo/owl";
+import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
 
 class AppsMenuPreferences extends Component {
     static props = {};
@@ -20,7 +19,7 @@ class AppsMenuPreferences extends Component {
         const action = await this.action.loadAction(
             "web_responsive.res_users_view_form_apps_menu_preferences_action"
         );
-        this.action.doAction({...action, res_id: this.user.userId}, {onClose}).then();
+        this.action.doAction({ ...action, res_id: this.user.userId }, { onClose }).then();
     }
 }
 
@@ -39,4 +38,4 @@ AppsMenuPreferences.template = xml`
 
 registry
     .category("systray")
-    .add("AppMenuTheme", {Component: AppsMenuPreferences}, {sequence: 100});
+    .add("AppMenuTheme", { Component: AppsMenuPreferences }, { sequence: 100 });

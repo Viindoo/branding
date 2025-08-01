@@ -1,14 +1,13 @@
 /** @odoo-module **/
 
-import {_t} from "@web/core/l10n/translation";
-import {registry} from "@web/core/registry";
-import {Mutex} from "@web/core/utils/concurrency";
-import {useService} from "@web/core/utils/hooks";
-import {AppsMenu} from "./apps_menu.esm.js";
-import {AppMenuItem} from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
-import {AppsMenuSearchBar} from "@web_responsive/components/menu_searchbar/searchbar.esm";
-import {Component, useEffect} from "@odoo/owl";
-
+import { _t } from "@web/core/l10n/translation";
+import { registry } from "@web/core/registry";
+import { Mutex } from "@web/core/utils/concurrency";
+import { useService } from "@web/core/utils/hooks";
+import { AppsMenu } from "./apps_menu.esm.js";
+import { AppMenuItem } from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
+import { AppsMenuSearchBar } from "@web_responsive/components/menu_searchbar/searchbar.esm";
+import { Component, useEffect } from "@odoo/owl";
 
 export async function nextTick() {
     await new Promise((resolve) => window.requestAnimationFrame(resolve));
@@ -18,19 +17,25 @@ export async function nextTick() {
 export class AppsMenuAction extends Component {
     setup() {
         this.menuService = useService("menu");
-        useEffect(() => {
-            this.env.bus.trigger("APPS_MENU:ACT:TOGGLE", true);
-            this.env.bus.trigger("APPS_MENU:TOGGLE", true);
-            document.body.classList.add('o_apps_menu_opened');
-            // first open
-            this.env.bus.trigger('TOGGLE_HOME_MENU_BUTTON', this.env.config.breadcrumbs.length === 1);
-            return () => {
-                document.body.classList.remove('o_apps_menu_opened');
-                this.env.bus.trigger('TOGGLE_HOME_MENU_BUTTON', false);
-                this.env.bus.trigger("APPS_MENU:TOGGLE", false);
-                this.env.bus.trigger("APPS_MENU:ACT:TOGGLE", false);
-            }
-        }, () => []);
+        useEffect(
+            () => {
+                this.env.bus.trigger("APPS_MENU:ACT:TOGGLE", true);
+                this.env.bus.trigger("APPS_MENU:TOGGLE", true);
+                document.body.classList.add("o_apps_menu_opened");
+                // first open
+                this.env.bus.trigger(
+                    "TOGGLE_HOME_MENU_BUTTON",
+                    this.env.config.breadcrumbs.length === 1
+                );
+                return () => {
+                    document.body.classList.remove("o_apps_menu_opened");
+                    this.env.bus.trigger("TOGGLE_HOME_MENU_BUTTON", false);
+                    this.env.bus.trigger("APPS_MENU:TOGGLE", false);
+                    this.env.bus.trigger("APPS_MENU:ACT:TOGGLE", false);
+                };
+            },
+            () => []
+        );
     }
 
     get apps() {
@@ -56,18 +61,17 @@ export class AppsMenuAction extends Component {
     }
 }
 
-AppsMenuAction.components = {AppsMenu, AppMenuItem, AppsMenuSearchBar};
+AppsMenuAction.components = { AppsMenu, AppMenuItem, AppsMenuSearchBar };
 AppsMenuAction.target = "current";
-AppsMenuAction.template = 'web_responsive.AppsMenuAction';
+AppsMenuAction.template = "web_responsive.AppsMenuAction";
 
 registry.category("actions").add("apps_menu", AppsMenuAction);
-
 
 export const appsMenuService = {
     dependencies: ["action"],
     start(env) {
         let isOpening = false;
-        env.bus.addEventListener("APPS_MENU:ACT:TOGGLE", ev => {
+        env.bus.addEventListener("APPS_MENU:ACT:TOGGLE", (ev) => {
             isOpening = !!ev.detail;
         });
         return {
