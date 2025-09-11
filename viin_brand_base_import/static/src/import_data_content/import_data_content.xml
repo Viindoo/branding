@@ -1,5 +1,5 @@
 <templates xml:space="preserve">
-    <t t-inherit="base_import.ImportDataContent" t-inherit-mode="extension">
+    <t t-inherit="ImportDataContent" t-inherit-mode="extension">
         <xpath expr="//p[hasclass('alert-info')]" position="replace" mode="inner">
             If the file contains
             the column names, the System can try auto-detecting the

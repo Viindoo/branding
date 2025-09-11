@@ -36,8 +36,8 @@ Module này sẽ thay đổi giao diện module Base import theo thương hiệu
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v16demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v16demo-vn.viindoo.com",
+    'live_test_url': "https://v18demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
@@ -52,12 +52,10 @@ Module này sẽ thay đổi giao diện module Base import theo thương hiệu
     # always loaded
     'assets': {
         'web.assets_backend': [
-            'viin_brand_base_import/static/src/import_action/import_action.xml',
             'viin_brand_base_import/static/src/import_data_content/import_data_content.xml',
-            'viin_brand_base_import/static/src/import_data_sidepanel/import_data_sidepanel.xml',
             ]
     },
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
