@@ -36,8 +36,8 @@ Module này sẽ thay đổi giao diện module CRM theo thương hiệu Viindoo
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v17demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v17demo-vn.viindoo.com",
+    'live_test_url': "https://v18demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
@@ -54,7 +54,7 @@ Module này sẽ thay đổi giao diện module CRM theo thương hiệu Viindoo
         'data/digest_data.xml',
         'views/crm_lead_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

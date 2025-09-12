@@ -36,8 +36,8 @@ Module này sẽ thay đổi giao diện module Digest theo thương hiệu Viin
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v17demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v17demo-vn.viindoo.com",
+    'live_test_url': "https://v18demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
@@ -55,7 +55,7 @@ Module này sẽ thay đổi giao diện module Digest theo thương hiệu Viin
         'data/digest_tips_data.xml',
         'views/digest_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
