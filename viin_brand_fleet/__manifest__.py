@@ -32,8 +32,8 @@ Module này sẽ thay đổi giao diện module Fleet theo thương hiệu Viind
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v16demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v16demo-vn.viindoo.com",
+    'live_test_url': "https://v18demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
@@ -50,7 +50,7 @@ Module này sẽ thay đổi giao diện module Fleet theo thương hiệu Viind
         'views/fleet_board_view.xml',
         'views/fleet_vehicle_cost_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
