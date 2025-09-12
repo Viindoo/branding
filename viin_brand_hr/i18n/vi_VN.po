@@ -38,34 +38,13 @@ msgstr ""
 "                    nghỉ, tuyển dụng, v.v."
 
 #. module: hr
-#: model_terms:ir.actions.act_window,help:hr.act_employee_from_department
+#: model_terms:ir.actions.act_window,help:hr.hr_employee_public_action
+#: model_terms:ir.actions.act_window,help:hr.open_view_employee_list_my
 msgid ""
 "With just a quick glance on the software employee screen, you\n"
 "                can easily find all the information you need for each person;\n"
 "                contact data, job position, availability, etc."
 msgstr ""
 "Chỉ cần liếc nhanh trên màn hình nhân viên của phần mềm, bạn\n"
-"có thể dễ dàng tìm thấy tất cả thông tin bạn cần cho mỗi người;\n"
-"dữ liệu liên lạc, chức vụ, tính khả dụng, v.v."
-
-#. module: hr
-#: model_terms:ir.actions.act_window,help:hr.hr_employee_public_action
-msgid ""
-"With just a quick glance on the software employee screen, you\n"
-"                can easily find all the information you need for each person;\n"
-"                contact data, job position, availability, etc. Tuan"
-msgstr ""
-"Chỉ cần liếc nhanh trên màn hình nhân viên của phần mềm, bạn\n"
-"có thể dễ dàng tìm thấy tất cả thông tin bạn cần cho mỗi người;\n"
-"dữ liệu liên lạc, chức vụ, tính sẵn sàng, v.v..."
-
-#. module: hr
-#: model_terms:ir.actions.act_window,help:hr.open_view_employee_list_my
-msgid ""
-"With just a quick glance on the software employee screen, you\n"
-"               can easily find all the information you need for each person;\n"
-"               contact data, job position, availability, etc."
-msgstr ""
-"Chỉ cần liếc nhanh trên màn hình nhân viên của phần mềm, bạn\n"
-"có thể dễ dàng tìm thấy tất cả thông tin bạn cần cho mỗi người;\n"
-"dữ liệu liên lạc, chức vụ, tính khả dụng, v.v."
+"                có thể dễ dàng tìm thấy tất cả thông tin bạn cần cho mỗi người;\n"
+"                dữ liệu liên lạc, chức vụ, tính khả dụng, v.v."
