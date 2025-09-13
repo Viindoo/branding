@@ -29,8 +29,8 @@ Editions Supported
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v17demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v17demo-vn.viindoo.com",
+    'live_test_url': "https://v18demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1',
@@ -41,7 +41,7 @@ Editions Supported
         'views/res_bank_views.xml'
     ],
     'auto_install': True,
-    'installable': False,
+    'installable': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
