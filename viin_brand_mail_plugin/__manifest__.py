@@ -29,8 +29,8 @@ Editions Supported
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v16demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v16demo-vn.viindoo.com",
+    'live_test_url': "https://v18demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1.0',
@@ -42,7 +42,7 @@ Editions Supported
     'data': [
         'views/mail_plugin_login.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 9.9,
     'currency': 'EUR',
