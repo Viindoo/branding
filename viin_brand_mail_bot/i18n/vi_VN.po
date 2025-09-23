@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-02 02:11+0000\n"
-"PO-Revision-Date: 2025-07-02 02:11+0000\n"
+"POT-Creation-Date: 2025-09-23 02:15+0000\n"
+"PO-Revision-Date: 2025-09-23 02:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,6 @@ msgstr ""
 #. module: viin_brand_mail_bot
 #. odoo-python
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-#, python-format
 msgid ""
 "Good, you can customize canned responses in the live chat "
 "application.<br/><br/><b>It's the end of this overview</b>, you can now "
@@ -35,7 +34,6 @@ msgstr ""
 #. module: viin_brand_mail_bot
 #. odoo-python
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-#, python-format
 msgid ""
 "I am a simple bot, but if that's a dog, he is the cutest 😊 "
 "<br/>Congratulations, you finished this tour. You can now <b>close this "
@@ -57,18 +55,17 @@ msgstr ""
 #. module: viin_brand_mail_bot
 #. odoo-python
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-#, python-format
 msgid ""
 "Sorry, I am not listening. To get someone's attention, <b>ping him</b>. "
 "Write <span class=\"o_odoobot_command\">@ViindooBot</span> and select me."
 msgstr ""
-"Xin lỗi, tôi không nghe thấy. Để thu hút sự chú ý của ai đó, <b>hãy ping họ</b>. "
-"Viết <span class=\"o_odoobot_command\">@ViindooBot</span> và chọn tôi."
+"Xin lỗi, tôi không nghe thấy. Để thu hút sự chú ý của ai đó, <b>hãy ping "
+"họ</b>. Viết <span class=\"o_odoobot_command\">@ViindooBot</span> và chọn "
+"tôi."
 
 #. module: viin_brand_mail_bot
 #. odoo-python
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-#, python-format
 msgid ""
 "Unfortunately, I'm just a bot 😞 I don't understand! If you need help "
 "discovering our product, please check <a "
@@ -85,12 +82,11 @@ msgstr ""
 #. module: viin_brand_mail_bot
 #. odoo-python
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-#, python-format
 msgid ""
 "Wow you are a natural!<br/>Ping someone with @username to grab their "
 "attention. <b>Try to ping me using</b> <span "
 "class=\"o_odoobot_command\">@ViindooBot</span> in a sentence."
 msgstr ""
-"Wow bạn thật tự nhiên!<br/>Ping ai đó với @username để thu hút sự chú ý của họ. "
-"<b>Hãy thử ping tôi bằng cách sử dụng</b> <span "
+"Wow bạn thật tự nhiên!<br/>Ping ai đó với @username để thu hút sự chú ý của "
+"họ. <b>Hãy thử ping tôi bằng cách sử dụng</b> <span "
 "class=\"o_odoobot_command\">@ViindooBot</span> trong một câu."
