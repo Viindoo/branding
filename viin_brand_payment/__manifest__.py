@@ -54,7 +54,7 @@ Module này sẽ thay đổi giao diện các module Payment Provider theo thư�
         'views/payment_provider_views.xml',
         'wizards/payment_provider_onboarding_templates.xml'
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

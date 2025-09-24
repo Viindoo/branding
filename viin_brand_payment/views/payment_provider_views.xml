@@ -15,7 +15,7 @@
 	    <field name="model">payment.provider</field>
 	    <field name="inherit_id" ref="payment.payment_provider_kanban"/>
 	    <field name="arch" type="xml">
-	       <xpath expr="//div[hasclass('o_payment_kanban_button')]/button[@target='_blank']" position="attributes">
+	       <xpath expr="//footer/button[@target='_blank']" position="attributes">
 	           <attribute name="href">https://viindoo.com/pricing?utm_source=db&amp;utm_medium=module</attribute>
 	       </xpath>
 	   </field>
