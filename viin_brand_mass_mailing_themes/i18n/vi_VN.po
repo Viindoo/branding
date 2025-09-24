@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-23 02:34+0000\n"
-"PO-Revision-Date: 2024-07-23 02:34+0000\n"
+"POT-Creation-Date: 2025-09-24 02:25+0000\n"
+"PO-Revision-Date: 2025-09-24 02:25+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,8 @@ msgid ""
 "<font style=\"color: rgb(255, 255, 255);\">Viindoo is free for "
 "everyone!</font>"
 msgstr ""
-"<font style=\"color: rgb(255, 255, 255);\">Viindoo miễn phí cho "
-"mọi người!</font>"
+"<font style=\"color: rgb(255, 255, 255);\">Viindoo miễn phí cho mọi "
+"người!</font>"
 
 #. module: viin_brand_mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_event_template
@@ -43,9 +43,9 @@ msgid ""
 "digitize your company."
 msgstr ""
 "Khám phá Viindoo, nền tảng quản lý tất cả trong một, và các ứng dụng của nó "
-"được thiết kế để cải thiện các công việc hàng ngày của nhân viên. Từ bán hàng "
-"và giao hàng, đến logistics, tiếp thị và kế toán; tìm hiểu những lựa chọn tốt "
-"nhất để số hóa công ty của bạn."
+"được thiết kế để cải thiện các công việc hàng ngày của nhân viên. Từ bán "
+"hàng và giao hàng, đến logistics, tiếp thị và kế toán; tìm hiểu những lựa "
+"chọn tốt nhất để số hóa công ty của bạn."
 
 #. module: viin_brand_mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow2_template
@@ -58,8 +58,8 @@ msgid ""
 "If you wish to evaluate Viindoo while taking into account your company's "
 "specific needs, you can book a free appointment with one of our"
 msgstr ""
-"Nếu bạn muốn đánh giá Viindoo trong khi xem xét các nhu cầu cụ thể của công ty "
-"bạn, bạn có thể đặt lịch hẹn miễn phí với một trong những"
+"Nếu bạn muốn đánh giá Viindoo trong khi xem xét các nhu cầu cụ thể của công "
+"ty bạn, bạn có thể đặt lịch hẹn miễn phí với một trong những"
 
 #. module: viin_brand_mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_newsletter_template
@@ -104,10 +104,10 @@ msgid ""
 " combines learning and networking in a casual afterwork-like atmosphere."
 msgstr ""
 "Viindoo mời bạn vào <span class=\"font-weight: bolder\">[ngày]</span> lúc "
-"<span class=\"font-weight: bolder\">[giờ]</span> để tham gia vào sự kiện roadshow "
-"nổi tiếng của họ tại <span class=\"font-weight: bolder\">[thành phố]</span>: một "
-"sự kiện kết hợp học hỏi và kết nối trong không khí thoải mái giống như một buổi "
-"sau giờ làm việc."
+"<span class=\"font-weight: bolder\">[giờ]</span> để tham gia vào sự kiện "
+"roadshow nổi tiếng của họ tại <span class=\"font-weight: bolder\">[thành "
+"phố]</span>: một sự kiện kết hợp học hỏi và kết nối trong không khí thoải "
+"mái giống như một buổi sau giờ làm việc."
 
 #. module: viin_brand_mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing_themes.theme_roadshow2_template

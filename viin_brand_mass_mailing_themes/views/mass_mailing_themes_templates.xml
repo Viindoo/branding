@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-	<template id="email_designer_snippets" inherit_id="mass_mailing.email_designer_snippets">
+	<template id="email_designer_themes" inherit_id="mass_mailing.email_designer_themes">
 		<xpath expr="//div[contains(@data-name, 'event')]" position="attributes">
-			<attribute name="data-img">viin_brand_mass_mailing_themes/static/src/img/theme_imgs/viindoo_thumb</attribute>
+			<attribute name="data-img">/viin_brand_mass_mailing_themes/static/src/img/theme_imgs/viindoo_thumb</attribute>
 		</xpath>
         <xpath expr="//div[contains(@data-name, 'newsletter')]" position="attributes">
-            <attribute name="data-img">viin_brand_mass_mailing_themes/static/src/img/theme_imgs/viindoo_newsletter_thumb</attribute>
+            <attribute name="data-img">/viin_brand_mass_mailing_themes/static/src/img/theme_imgs/viindoo_newsletter_thumb</attribute>
         </xpath>
 	</template>
 
 	<template id="theme_event_template" inherit_id="mass_mailing_themes.theme_event_template">
 		<xpath expr="//div[hasclass('col-lg-4')]/a/img" position="attributes">
-			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_header_logo.png</attribute>
+			<attribute name="src">/viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_header_logo.png</attribute>
 		</xpath>
 		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
 			<attribute name="href">https://www.facebook.com/viindoo</attribute>
@@ -38,13 +38,13 @@
 			<font style="color: rgb(255, 255, 255);">Viindoo is free for everyone!</font>
 		</xpath>
 		<xpath expr="//div[contains(@data-name, 'Media item')][1]//img" position="attributes">
-			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_1.png</attribute>
+			<attribute name="src">/viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_1.png</attribute>
 		</xpath>
 		<xpath expr="//div[contains(@data-name, 'Media item')][2]//img" position="attributes">
-			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_2.png</attribute>
+			<attribute name="src">/viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_2.png</attribute>
 		</xpath>
 		<xpath expr="//div[contains(@data-name, 'Media item')][3]//img" position="attributes">
-			<attribute name="src">viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_3.png</attribute>
+			<attribute name="src">/viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_3.png</attribute>
 		</xpath>
 	</template>
 
