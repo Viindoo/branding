@@ -4,8 +4,5 @@
         <xpath expr="//html/head/title" position="replace">
             <title>Viindoo - Point of Sale</title>
         </xpath>
-        <xpath expr="//link[@type='image/x-icon']" position="attributes">
-            <attribute name="href">/viin_brand_pos/static/src/img/viindoo-favicon.png</attribute>
-        </xpath>
     </template>
 </odoo>
