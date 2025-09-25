@@ -130,6 +130,10 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
         "https://viindoo.com/documentation/17.0/applications/sales/sales/invoicing-method/invoice-based-on-timing-of-service-provision.html",
     "https://www.odoo.com/documentation/18.0/applications/sales/sales/invoicing/down_payment.html":
         "https://viindoo.com/documentation/17.0/applications/sales/sales/invoicing-method/down-payment-in-viindoo-sales.html?highlight=down%20payment",
+    "https://www.odoo.com/documentation/18.0/applications/sales/sales/send_quotations/get_signature_to_validate.html":
+        "https://viindoo.com/documentation/16.0/applications/sales/sales/send-quotations/activate-e-sign-feature-to-confirm-order.html",
+    "https://www.odoo.com/documentation/18.0/applications/sales/sales/send_quotations/get_paid_to_validate.html":
+        "https://viindoo.com/documentation/16.0/applications/sales/sales/send-quotations/activate-online-payment-for-viindoo-website.html",
     "https://www.odoo.com/documentation/17.0/applications/sales/sales/amazon_connector/setup.html":
         "",
     /* sale_management */
