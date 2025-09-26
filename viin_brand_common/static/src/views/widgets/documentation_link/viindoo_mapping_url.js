@@ -175,5 +175,7 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     /* website */
     "https://www.odoo.com/documentation/18.0/applications/websites/website/configuration/cookies_bar.html":
         "",
+    "https://www.odoo.com/documentation/18.0/applications/websites/website/reporting/analytics.html#analytics-google-analytics":
+        "https://viindoo.com/documentation/16.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-google-analytics.html",
     /* website_sale */
 };
