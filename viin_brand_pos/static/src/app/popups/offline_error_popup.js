@@ -4,7 +4,6 @@ import { ConnectionLostError } from "@web/core/network/rpc";
 import { registry } from "@web/core/registry";
 import { _t } from "@web/core/l10n/translation";
 
-
 function offlineErrorHandlerOverride(env, error, originalError) {
     if (originalError instanceof ConnectionLostError) {
         if (!env.services.pos.data.network.warningTriggered) {
@@ -22,4 +21,6 @@ function offlineErrorHandlerOverride(env, error, originalError) {
     }
 }
 
-registry.category("error_handlers").add("offlineErrorHandler", offlineErrorHandlerOverride, { force: true });
+registry
+    .category("error_handlers")
+    .add("offlineErrorHandler", offlineErrorHandlerOverride, { force: true });

@@ -50,7 +50,6 @@ Module này sẽ thay đổi giao diện cuả Unsplash Image Library theo thư�
     'depends': ['web_unsplash'],
 
     # always loaded
-    'data': [],
     'assets': {
         'web_editor.assets_media_dialog': [
             'viin_brand_web_unsplash/static/src/components/media_dialog/*.xml',
