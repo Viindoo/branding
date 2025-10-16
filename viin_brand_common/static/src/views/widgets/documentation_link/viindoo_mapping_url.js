@@ -116,6 +116,11 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
         "https://viindoo.com/documentation/17.0/applications/supply-chain/purchase/manage-deals/vendor-bills-control.html",
     "https://www.odoo.com/documentation/18.0/applications/inventory_and_mrp/inventory/management/products/uom.html":
         "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/warehouse-management/products/activate-different-units-of-measure.html",
+    /* inventory */
+    "https://www.odoo.com/documentation/18.0/applications/inventory_and_mrp/inventory/product_management/product_tracking/package.html":
+        "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/warehouse-management/products/how-to-use-different-units-of-measure-packages-or-packaging.html#packages",
+    "https://www.odoo.com/documentation/18.0/applications/inventory_and_mrp/inventory/warehouses_storage/inventory_management/use_locations.html":
+        "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/warehouse-management/warehouses/how-to-create-warehouses-and-locations.html#setting-up-warehouse-locations",
     /* purchase_stock */
     "https://www.odoo.com/documentation/18.0/applications/inventory_and_mrp/inventory/shipping/operation/dropshipping.html":
         "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/warehouse-management/delivery-orders/delivery-directly-from-suppliers-to-customers-drop-ship.html",
