@@ -59,6 +59,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             ('prepend', 'viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss'),
             ('after', 'point_of_sale/static/src/scss/pos.scss', 'viin_brand_pos/static/src/scss/style.scss'),
             'viin_brand_pos/static/src/app/screens/receipt/order_receipt.xml',
+            'viin_brand_pos/static/src/app/screens/saver_screen.xml',
             'viin_brand_pos/static/src/app/navbar/navbar.xml',
             'viin_brand_pos/static/src/app/navbar/navbar.js',
             ('after', 'point_of_sale/static/src/app/errors/error_handlers.js', 'viin_brand_pos/static/src/app/popups/offline_error_popup.js'),
