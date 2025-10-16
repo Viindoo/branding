@@ -53,6 +53,11 @@ Module này sẽ thay đổi giao diện các module Sale theo thương hiệu V
     'data': [
         'views/sale_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'viin_brand_sale/static/src/js/sale_action_helper/sale_action_helper.js',
+        ],
+    },
     'installable': True,
     'auto_install': True,
     'price': 0.0,
