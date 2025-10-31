@@ -1,3 +1,14 @@
 body .pos-customer_facing_display .pos-payment_info .pos-odoo_logo_container .logo {
     background-image: url(/viin_brand_pos/static/src/img/Viindoo-logo-inverted.svg);
   }
+
+.pos {
+
+  .text-action{
+    color: white !important;
+  }
+  .text-action:hover{
+    color: white !important;
+  }
+
+}
