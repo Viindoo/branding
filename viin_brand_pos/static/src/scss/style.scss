@@ -32,12 +32,10 @@
     background: lighten($o-enterprise-primary-color,5%);
 }
 
-.pos .clientlist-screen .client-list tr.highlight,
-.pos .button.highlight{
+.pos .clientlist-screen .client-list tr.highlight{
     background: $primary !important;
 }
 
-.pos .control-button.highlight,
 .ticket-screen .controls button.highlight,
 .order-row.highlight,
 .ticket-screen .order-row:hover{
