@@ -1,0 +1,15 @@
+<odoo>
+    <record id="mrp_production_form_inherit" model="ir.ui.view">
+        <field name="name">mrp.production.form</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_qty']" position="attributes">
+                <attribute name="style">width: 50% !important;</attribute>
+            </xpath>
+            <xpath expr="//field[@groups='uom.group_uom']" position="attributes">
+                <attribute name="style">width: 50% !important;</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

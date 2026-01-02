@@ -52,6 +52,7 @@ Module này sẽ thay đổi giao diện các module Manufacturing theo thương
     # always loaded
     'data': [
         'data/digest_data.xml',
+        'views/mrp_production_views.xml',
     ],
     'installable': True,
     'auto_install': True,
