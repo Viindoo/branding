@@ -32,23 +32,10 @@
     background: lighten($o-enterprise-primary-color,5%);
 }
 
-.pos .clientlist-screen .client-list tr.highlight,
-.pos .button.highlight{
-    background: $primary !important;
-}
-
-.pos .control-button.highlight,
-.ticket-screen .controls button.highlight,
-.order-row.highlight,
-.ticket-screen .order-row:hover{
-    background: $primary;
-}
-
 .receipt-screen .default-view .actions .send-email button.send.highlight{
     background-color: $primary;
     opacity: 0.6;
 }
-
 
 .pos .pos-rightheader .header-button.confirm{
     background: $danger;
