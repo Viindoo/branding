@@ -36,7 +36,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'live_test_url_vi_VN': "https://v16demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.3',
+    'version': '0.3.1',
     'depends': ['viin_brand', 'web'],
     'data': [
         'views/ir_module_views.xml',
@@ -65,7 +65,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             'viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss',
         ],
         'web._assets_core': [
-            ('after', 'web/static/src/core/**/*', 'viin_brand_common/static/src/core/colors/colors.js'),
+            ('after', 'web/static/src/core/**/*', 'viin_brand_common/static/src/core/**/*'),
         ],
         'web.assets_backend': [
             # common branding
