@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="website.ResourceEditorWarningOverlay" t-inherit="website.ResourceEditorWarningOverlay" t-inherit-mode="extension">
+        <xpath expr="//h1[hasclass('text-dark')]" position="replace" mode="inner">
+            Your changes might be lost during future Viindoo upgrade.
+        </xpath>
+    </t>
+</templates>
