@@ -1,4 +1,5 @@
 from . import controllers
+from . import models
 
 from odoo.tools import config
 

@@ -4,25 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-21 02:37+0000\n"
-"PO-Revision-Date: 2024-05-21 02:37+0000\n"
+"POT-Creation-Date: 2025-10-16 07:26+0000\n"
+"PO-Revision-Date: 2025-10-16 07:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_users_form_simple_modif
-msgid ""
-"<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>\n"
-"                    Learn more"
-msgstr ""
-"<i title=\"Tài liệu\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>\n"
-"                    Tìm hiểu thêm"
 
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.login_layout
@@ -35,8 +26,8 @@ msgid ""
 "API Keys are used to connect to Viindoo from external tools without the need"
 " for a password or Two-factor Authentication."
 msgstr ""
-"Khóa API được sử dụng để kết nối với Viindoo từ các công cụ bên ngoài mà không "
-"cần mật khẩu hoặc Xác thực hai yếu tố."
+"Khóa API được sử dụng để kết nối với Viindoo từ các công cụ bên ngoài mà "
+"không cần mật khẩu hoặc Xác thực hai yếu tố."
 
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.view_module_filter
@@ -56,21 +47,40 @@ msgstr "Kiểm tra lại"
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
 msgid ""
+"Check your network connection and come back here. Viindoo will load as soon "
+"as you're back online."
+msgstr ""
 "Kiểm tra kết nối mạng của bạn và quay lại đây. Viindoo sẽ tải ngay "
 "khi bạn trực tuyến trở lại."
+
+#. module: base
+#: model:ir.model.fields,help:base.field_ir_mail_server__from_filter
+msgid ""
+"Comma-separated list of addresses or domains for which this server can be used.\n"
+"e.g.: \"notification@viindoo.com\" or \"viindoo.com\""
 msgstr ""
+"Danh sách các địa chỉ hoặc tên miền được phân tách bằng dấu phẩy mà máy chủ này có thể được sử dụng.\n"
+"VD: \"notification@viindoo.com\" or \"viindoo.com\""
 
 #. module: viin_brand_common
 #. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
-#, python-format
 msgid "Documentation"
 msgstr "Tài liệu"
 
 #. module: viin_brand_common
+#: model:ir.model.fields,field_description:viin_brand_common.field_ir_mail_server__from_filter
+msgid "FROM Filtering"
+msgstr "Bộ lọc TỪ"
+
+#. module: viin_brand_common
+#: model:ir.model,name:viin_brand_common.model_ir_mail_server
+msgid "Mail Server"
+msgstr "Máy chủ gửi thư"
+
+#. module: viin_brand_common
 #. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
-#, python-format
 msgid "My Viindoo.com account"
 msgstr "Tài khoản Viindoo.com"
 
@@ -82,7 +92,6 @@ msgstr "Ngoại tuyến"
 #. module: viin_brand_common
 #. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
-#, python-format
 msgid "Support"
 msgstr "Hỗ trợ"
 

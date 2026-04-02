@@ -62,6 +62,16 @@ msgid ""
 msgstr ""
 
 #. module: viin_brand_mail_bot
+#: model:ir.model,name:viin_brand_mail_bot.model_res_users
+msgid "User"
+msgstr ""
+
+#. module: viin_brand_mail_bot
+#: model:ir.model.fields,field_description:viin_brand_mail_bot.field_res_users__odoobot_state
+msgid "ViindooBot Status"
+msgstr ""
+
+#. module: viin_brand_mail_bot
 #. odoo-python
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
 msgid ""
