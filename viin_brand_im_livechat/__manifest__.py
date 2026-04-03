@@ -44,6 +44,11 @@ Editions Supported
     'demo': [
         'data/im_livechat_channel_demo.xml'
     ],
+    'assets': {
+        'im_livechat.assets_embed_core': [
+            'viin_brand_im_livechat/static/src/embed/common/livechat_button.xml',
+        ],
+    },
     'data': [
         'data/digest_data.xml',
         'data/im_livechat_chatbot_data.xml',

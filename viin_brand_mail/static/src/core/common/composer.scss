@@ -1,3 +1,28 @@
 .o-mail-Composer-input {
     min-height: 43px !important;
 }
+
+.o-mail-Composer-actions {
+    button {
+        &.o-mail-Composer-send.btn-link:not(:disabled) {
+            background-color: $brand-primary !important;
+        }
+    }
+}
+
+.o-mail-Composer-bg:has(textarea:focus) {
+    border-color: $brand-primary !important;
+    box-shadow:
+        0 0 4px rgba($brand-primary, 0.4),
+        0 0 8px rgba($brand-primary, 0.3);
+    transition: all 0.25s ease;
+}
+
+.o-mail-ChatWindow .o-mail-Composer-bg {
+    align-items: center;
+}
+
+.o-mail-Composer-input {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}

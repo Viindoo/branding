@@ -68,6 +68,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             # common branding
             'viin_brand_common/static/src/legacy/scss/navbar.scss',
             'viin_brand_common/static/src/legacy/scss/systray.scss',
+            ('after', 'web/static/src/core/emoji_picker/emoji_picker.scss', 'viin_brand_common/static/src/core/emoji_picker/emoji_picker.scss'),
             ('after', 'web/static/src/webclient/webclient.scss', 'viin_brand_common/static/src/webclient/webclient.scss'),
             ('after', 'web/static/src/search/search_panel/search_view.scss', 'viin_brand_common/static/src/search/search_panel/search_view.scss'),
             ('after', 'web/static/src/search/search_bar/search_bar.scss', 'viin_brand_common/static/src/search/search_bar/search_bar.scss'),
@@ -80,6 +81,12 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             'viin_brand_common/static/src/webclient/navbar/navbar.scss',
             'viin_brand_common/static/src/webclient/user_menu_item.js',
             'viin_brand_common/static/src/views/widgets/**/*',
+        ],
+        'mail.assets_public': [
+            ('after', 'web/static/src/core/emoji_picker/emoji_picker.scss', 'viin_brand_common/static/src/core/emoji_picker/emoji_picker.scss'),
+        ],
+        'im_livechat.assets_embed_core': [
+            ('after', 'web/static/src/core/emoji_picker/emoji_picker.scss', 'viin_brand_common/static/src/core/emoji_picker/emoji_picker.scss'),
         ],
     },
     'installable': True,

@@ -1,3 +1,21 @@
 .o-mail-ChatWindow-header {
     background-color: $brand-primary-dark !important;
+    color: white;
+    --mail-ChatWindow-commandHoverColor: white;
+
+    .o-mail-ChatWindow-quickActions .o-mail-ChatWindow-command {
+        color: white !important;
+    }
+
+    .o-mail-ChatWindow-quickActions .o-mail-ChatWindow-command.o-quick {
+        opacity: 1;
+    }
+
+    .o-mail-ChatWindow-command .fa-caret-down {
+        color: white !important;
+    }
+
+    .o-mail-ChatWindow-command:not(.o-active):not(.o-hover) .fa-caret-down {
+        opacity: 1;
+    }
 }
