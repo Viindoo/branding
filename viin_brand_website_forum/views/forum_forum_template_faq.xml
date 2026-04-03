@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="viin_brand_website_forum_default_faq_inherit" model="ir.ui.view">
+            <field name="name">Faq Accordion (Viindoo)</field>
+            <field name="type">qweb</field>
+            <field name="inherit_id" ref="website_forum.default_faq"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='o_website_forum_faq_heading_1']/div[hasclass('accordion-body')]//ul" position="replace" mode="inner">
+                    <li>how to install Viindoo on a specific infrastructure,</li>
+                    <li>how to configure or customize Viindoo to specific business needs,</li>
+                    <li>what's the best way to use Viindoo for a specific business need,</li>
+                    <li>how to develop modules for your own need,</li>
+                    <li>specific questions about Viindoo service offers, etc.</li>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

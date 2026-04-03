@@ -15,8 +15,12 @@
     </template>
     
     <template id="layout" name="Main layout" inherit_id="website.layout">
-    	<xpath expr="//meta[@name='generator']" position="attributes">
-    		<attribute name="content">Viindoo</attribute>
-    	</xpath>
+		<xpath expr="//meta[@name='generator']" position="attributes">
+			<attribute name="content">Viindoo</attribute>
+		</xpath>
+
+        <xpath expr="//t[@t-set='x_icon']" position="replace">
+            <t t-set="x_icon" t-value="'/viin_brand/static/img/favicon.ico'"/>
+        </xpath>
     </template>
 </odoo>

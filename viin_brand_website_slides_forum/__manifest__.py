@@ -1,17 +1,17 @@
 {
-    'name': "Forum Branding For Viindoo",
+    'name': "Slides Forum Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Forum",
 
     'summary': """
-Theme branding Viindoo for module Events""",
+Theme branding Viindoo for module Slides Forum""",
     'summary_vi_VN': """
-Giao diện brand Viindoo cho module Events
+Giao diện brand Viindoo cho module Slides Forum
 """,
 
     'description': """
 What it does
 ============
-This module will change color in navigate bar, button and logo,v.v module Forum following Viindoo's brand
+This module will change color in navigate bar, button and logo,v.v module Slides Forum following Viindoo's brand
 
 
 Editions Supported
@@ -24,7 +24,7 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ===================
-Module này sẽ thay đổi giao diện module Forum theo thương hiệu Viindoo
+Module này sẽ thay đổi giao diện module Slides Forum theo thương hiệu Viindoo
 
 
 Ấn bản được Hỗ trợ
@@ -47,17 +47,11 @@ Module này sẽ thay đổi giao diện module Forum theo thương hiệu Viind
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['website_forum'],
-    'data': [
-        'views/forum_forum_template_faq.xml',
-    ],
+    'depends': ['website_slides_forum', 'viin_brand_website_forum'],
     # always loaded
-    'demo': [
-        'data/forum_demo.xml',
-    ],
     'post_init_hook': 'post_init_hook',
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['website_slides_forum'],
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
