@@ -40,6 +40,15 @@ Editions Supported
     # any module necessary for this one to work correctly
     'depends': ['website_slides'],
 
+    'assets': {
+        'web.assets_frontend': [
+            'viin_brand_website_slides/static/src/scss/website_slides.scss',
+        ],
+    },
+    'data': [
+        'data/website_slides_templates_profile.xml',
+    ],
+
     'images': [
         # 'static/description/main_screenshot.png'
         ],

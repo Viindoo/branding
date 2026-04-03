@@ -1,0 +1,25 @@
+.o_wslides_channel_completion_progressbar .progress .progress-bar {
+    background-color: #00bbce;
+}
+.o_wslides_home_content_section .progress .progress-bar {
+    background-color: #00bbce;
+}
+.o_wslides_home_nav .navbar{
+    padding: 10px
+}
+
+.o_wprofile_nav_tabs .nav-link:not(.active):hover {
+    background: #7f4282;
+}
+
+.o_wslides_course_main .o_wslides_nav_tabs .nav-link:not(.active):hover {
+    background: #7f4282;
+}
+
+.o_wslides_course_header{
+    background: $brand-primary;
+}
+
+.o_wslides_course_pict{
+    border: none;
+}

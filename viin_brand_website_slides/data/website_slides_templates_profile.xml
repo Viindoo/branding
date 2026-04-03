@@ -1,0 +1,7 @@
+<odoo>
+    <template id="display_course" inherit_id="website_slides.display_course">
+        <xpath expr="//div[hasclass('overflow-hidden')]" position="attributes">
+            <attribute name="style"></attribute>
+        </xpath>  
+    </template>
+</odoo>
