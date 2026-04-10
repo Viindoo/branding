@@ -53,7 +53,7 @@ Module này sẽ thay đổi giao diện module TOTPortal theo thương hiệu V
     'data': [
         'views/templates.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

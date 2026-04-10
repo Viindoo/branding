@@ -53,7 +53,7 @@ Module này sẽ thay đổi giao diện module OAuth2 Authentication theo thư�
     'data': [
         'data/auth_oauth_data.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

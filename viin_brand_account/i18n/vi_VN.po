@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-25 09:30+0000\n"
-"PO-Revision-Date: 2024-07-25 09:30+0000\n"
+"POT-Creation-Date: 2026-04-03 08:59+0000\n"
+"PO-Revision-Date: 2026-04-03 08:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -44,13 +44,36 @@ msgstr ""
 "Viindoo."
 
 #. module: viin_brand_account
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_journal__invoice_reference_model
+msgid "Communication Standard"
+msgstr "Tiêu chuẩn nội dung"
+
+#. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_financial_year_op__opening_date
 msgid ""
 "Date from which the accounting is managed in Viindoo. It is the date of the "
 "opening entry."
 msgstr ""
-"Ngày kể từ khi kế toán được quản lý bởi Viindoo. Nó là ngày của bút toán đầu "
-"kì."
+"Ngày kể từ khi kế toán được quản lý bởi Viindoo. Nó là ngày của bút toán đầu"
+" kì."
+
+#. module: viin_brand_account
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_financial_year_op__display_name
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_journal__display_name
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_move__display_name
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_payment__display_name
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_payment_register__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_brand_account
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_financial_year_op__id
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_journal__id
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_move__id
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_payment__id
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_payment_register__id
+msgid "ID"
+msgstr ""
 
 #. module: viin_brand_account
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
@@ -75,12 +98,12 @@ msgstr "Sổ nhật ký"
 #. module: viin_brand_account
 #: model:ir.model,name:viin_brand_account.model_account_move
 msgid "Journal Entry"
-msgstr "Bút toán sổ nhật ký"
+msgstr "Bút toán"
 
 #. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_journal__inbound_payment_method_line_ids
 msgid ""
-"Manual: Get paid by any method outside of Viindoo.\n"
+"Manual: Get paid by any method outside of the system.\n"
 "Payment Providers: Each payment provider has its own Payment Method. Request a transaction on/to a card thanks to a payment token saved by the partner when buying or subscribing online.\n"
 "Batch Deposit: Collect several customer checks at once generating and submitting a batch deposit to your bank. Module account_batch_payment is necessary.\n"
 "SEPA Direct Debit: Get paid in the SEPA zone thanks to a mandate your partner will have granted to you. Module account_sepa is necessary.\n"
@@ -93,8 +116,8 @@ msgstr ""
 #. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_journal__outbound_payment_method_line_ids
 msgid ""
-"Manual: Pay by any method outside of Viindoo.\n"
-"Check: Pay bills by check and print it from Viindoo.\n"
+"Manual: Pay by any method outside of the system.\n"
+"Check: Pay bills by check and print it from the system.\n"
 "SEPA Credit Transfer: Pay in the SEPA zone by submitting a SEPA Credit Transfer file to your bank. Module account_sepa is necessary.\n"
 msgstr ""
 "Hướng dẫn: Thanh toán bằng bất kỳ phương thức nào ngoài Viindoo.\n"
@@ -135,6 +158,11 @@ msgid "Outbound Payment Methods"
 msgstr "Phương thức thanh toán đi"
 
 #. module: viin_brand_account
+#: model:ir.model,name:viin_brand_account.model_account_payment_register
+msgid "Pay"
+msgstr "Ghi nhận thanh toán"
+
+#. module: viin_brand_account
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_payment__payment_method_line_id
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_payment_register__payment_method_line_id
 msgid "Payment Method"
@@ -146,18 +174,13 @@ msgid "Payments"
 msgstr "Thanh toán"
 
 #. module: viin_brand_account
-#: model:ir.model,name:viin_brand_account.model_account_payment_register
-msgid "Register Payment"
-msgstr "Ghi nhận thanh toán"
-
-#. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_journal__alias_id
 msgid ""
 "Send one separate email for each invoice.\n"
 "\n"
 "Any file extension will be accepted.\n"
 "\n"
-"Only PDF and XML files will be interpreted by Viindoo"
+"Only PDF and XML files will be interpreted by the system"
 msgstr ""
 "Gửi một email riêng cho mỗi hóa đơn.\n"
 "\n"
@@ -168,25 +191,27 @@ msgstr ""
 #. module: viin_brand_account
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_bank_statement_line__quick_edit_total_amount
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_move__quick_edit_total_amount
-#: model:ir.model.fields,field_description:viin_brand_account.field_account_payment__quick_edit_total_amount
 msgid "Total (Tax inc.)"
 msgstr "Tổng cộng (Kèm thuế)"
 
 #. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_bank_statement_line__quick_edit_total_amount
 #: model:ir.model.fields,help:viin_brand_account.field_account_move__quick_edit_total_amount
-#: model:ir.model.fields,help:viin_brand_account.field_account_payment__quick_edit_total_amount
 msgid ""
 "Use this field to encode the total amount of the invoice.\n"
 "System will automatically create one invoice line with default values to match it."
 msgstr ""
-"Sử dụng trường này để mã hóa tổng số tiền của hóa đơn."
-"Hệ thống sẽ tự động tạo một dòng hóa đơn với các giá trị mặc định để phù hợp với nó."
+"Sử dụng trường này để mã hóa tổng số tiền của hóa đơn.Hệ thống sẽ tự động "
+"tạo một dòng hóa đơn với các giá trị mặc định để phù hợp với nó."
 
 #. module: viin_brand_account
-#: model_terms:ir.ui.view,arch_db:viin_brand_account.account_tour_upload_bill
-msgid "With Viindoo, you won't have to record bills manually"
-msgstr "Với Viindoo, bạn sẽ không phải ghi lại các hóa đơn bằng cách thủ công."
+#: model:ir.model.fields,help:viin_brand_account.field_account_journal__invoice_reference_model
+msgid ""
+"You can choose different models for each type of reference. The default one "
+"is the system reference."
+msgstr ""
+"Bạn có thể chọn các mẫu khác nhau cho từng loại nội dung. Loại mặc định là "
+"mẫu của hệ thống."
 
 #. module: viin_brand_account
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
@@ -197,21 +222,3 @@ msgstr "kích hoạt đơn vị tiền tệ của hóa đơn"
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
 msgid "activate the currency of the invoice"
 msgstr "kích hoạt đơn vị tiền tệ của hóa đơn"
-#. module: account
-#: model_terms:ir.actions.act_window,help:account.action_bank_statement_tree
-msgid ""
-"Viindoo allows you to reconcile a statement line directly with\n"
-"                the related sale or purchase invoices."
-msgstr ""
-"Hệ thống Viindoo cho phép bạn đối soát dòng sao kê trực tiếp với các\n"
-"                hóa đơn mua hoặc bán hàng liên quan."
-
-#. module: account
-#: model_terms:ir.actions.act_window,help:account.res_partner_action_customer
-msgid "Viindoo helps you easily track all activities related to a customer."
-msgstr "Viindoo giúp bạn dễ dàng theo dõi mọi hoạt động liên quan đến một khách hàng."
-
-#. module: account
-#: model_terms:ir.actions.act_window,help:account.res_partner_action_supplier
-msgid "Viindoo helps you easily track all activities related to a supplier."
-msgstr "Viindoo giúp bạn dễ dàng theo dõi mọi hoạt động liên quan đến nhà cung cấp."

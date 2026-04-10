@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-21 02:37+0000\n"
-"PO-Revision-Date: 2024-05-21 02:37+0000\n"
+"POT-Creation-Date: 2026-04-08 01:42+0000\n"
+"PO-Revision-Date: 2026-04-08 01:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,11 +18,10 @@ msgstr ""
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.view_users_form_simple_modif
 msgid ""
-"<i title=\"Documentation\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>\n"
-"                    Learn more"
+"<span class=\"text-muted\">\n"
+"                    API Keys are used to connect to Viindoo from external tools without the need for a password or Two-factor Authentication.\n"
+"                </span>"
 msgstr ""
-"<i title=\"Tài liệu\" class=\"fa fa-fw o_button_icon fa-info-circle\"/>\n"
-"                    Tìm hiểu thêm"
 
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.login_layout
@@ -30,13 +29,31 @@ msgid "<span>Viindoo</span>"
 msgstr ""
 
 #. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_users_form_simple_modif
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.res_config_settings_view_form
 msgid ""
-"API Keys are used to connect to Viindoo from external tools without the need"
-" for a password or Two-factor Authentication."
+"API Keys allow your users to access Viindoo with external tools when multi-"
+"factor authentication is enabled."
 msgstr ""
-"Khóa API được sử dụng để kết nối với Viindoo từ các công cụ bên ngoài mà không "
-"cần mật khẩu hoặc Xác thực hai yếu tố."
+"API Keys allow your users to access Viindoo with external tools when multi-"
+"factor authentication is enabled."
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/settings_form_view/fields/upgrade_dialog.xml:0
+msgid "Access to all Enterprise Apps"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/settings_form_view/fields/upgrade_dialog.xml:0
+msgid "And more"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/settings_form_view/fields/upgrade_dialog.xml:0
+msgid "Bugfixes guarantee"
+msgstr ""
 
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.view_module_filter
@@ -56,23 +73,62 @@ msgstr "Kiểm tra lại"
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
 msgid ""
-"Kiểm tra kết nối mạng của bạn và quay lại đây. Viindoo sẽ tải ngay "
-"khi bạn trực tuyến trở lại."
+"Check your network connection and come back here. Viindoo will load as soon "
+"as you're back online."
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.js:0
+msgid "Client Error"
 msgstr ""
 
 #. module: viin_brand_common
 #. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
-#, python-format
 msgid "Documentation"
 msgstr "Tài liệu"
 
 #. module: viin_brand_common
 #. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/settings_form_view/fields/upgrade_dialog.xml:0
+msgid "Get this feature and much more with Viindoo Enterprise!"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_users_form_simple_modif
+msgid "Learn more"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/settings_form_view/fields/upgrade_dialog.xml:0
+msgid "Mobile support"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
-#, python-format
 msgid "My Viindoo.com account"
 msgstr "Tài khoản Viindoo.com"
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.js:0
+msgid "Network Error"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/settings_form_view/fields/upgrade_dialog.xml:0
+msgid "New design"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.js:0
+msgid "Odoo Warning"
+msgstr ""
 
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
@@ -81,14 +137,62 @@ msgstr "Ngoại tuyến"
 
 #. module: viin_brand_common
 #. odoo-javascript
+#: code:addons/viin_brand_common/static/src/core/errors/error_notifications.js:0
+msgid "Ok"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/views/widgets/notification_alert/notification_alert.xml:0
+msgid ""
+"Push notifications have been blocked. Go to your browser settings to allow "
+"them."
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.xml:0
+#: code:addons/viin_brand_common/static/src/core/errors/error_notifications.js:0
+msgid "Session Expired"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
-#, python-format
 msgid "Support"
 msgstr "Hỗ trợ"
 
 #. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.js:0
+msgid "System Error"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.res_config_settings_view_form
+msgid ""
+"This name will be used for the application when Viindoo is installed through"
+" the browser."
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/settings_form_view/fields/upgrade_dialog.xml:0
+msgid "Upgrade to future versions"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/core/install_scoped_app/install_scoped_app.xml:0
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.brand_promotion_message
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.res_config_settings_view_form
 msgid "Viindoo"
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/webclient/settings_form_view/fields/upgrade_dialog.xml:0
+msgid "Viindoo Enterprise"
 msgstr ""
 
 #. module: viin_brand_common
@@ -97,9 +201,36 @@ msgid "Viindoo logo"
 msgstr ""
 
 #. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/core/install_scoped_app/install_scoped_app.xml:0
+msgid "Viindoo."
+msgstr ""
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.js:0
+msgid "Warning"
+msgstr ""
+
+#. module: viin_brand_common
+#: model_terms:ir.ui.view,arch_db:viin_brand_common.res_config_settings_view_form
+msgid ""
+"When populating your address book, Viindoo provides a list of matching "
+"companies. When selecting one item, the company data and logo are auto-"
+"filled."
+msgstr ""
+
+#. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
 msgid "You are offline"
 msgstr "Bạn đang Ngoại tuyến"
+
+#. module: viin_brand_common
+#. odoo-javascript
+#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.xml:0
+#: code:addons/viin_brand_common/static/src/core/errors/error_notifications.js:0
+msgid "Your session expired. The current page is about to be refreshed."
+msgstr ""
 
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.view_company_form

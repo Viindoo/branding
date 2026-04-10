@@ -53,7 +53,7 @@ Module này sẽ thay đổi giao diện các module Paypal Payment Acquirer the
     'data': [
         'views/payment_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

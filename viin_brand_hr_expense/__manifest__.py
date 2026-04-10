@@ -52,14 +52,16 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
     # always loaded
     'data': [
         'data/digest_data.xml',
+        'data/mail_templates.xml',
         'views/hr_expense_views.xml',
     ],
     'assets': {
         'web.assets_backend': [
             'viin_brand_hr_expense/static/src/scss/viin_brand_hr_expense.scss',
+            'viin_brand_hr_expense/static/src/components/qrcode_action/qrcode_action.xml',
         ],
     },
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

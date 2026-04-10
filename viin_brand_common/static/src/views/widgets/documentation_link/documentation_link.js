@@ -7,9 +7,11 @@ import { ODOO_VIINDOO_DOCUMENTATION_MAPPING } from "./viindoo_mapping_url";
 patch(DocumentationLink.prototype, {
     get url() {
         const original_url = super.url;
-        if (ODOO_VIINDOO_DOCUMENTATION_MAPPING[original_url] !== undefined) {
-            return ODOO_VIINDOO_DOCUMENTATION_MAPPING[original_url];
+        const viindoo_url = ODOO_VIINDOO_DOCUMENTATION_MAPPING[original_url];
+        if (viindoo_url) {
+            return viindoo_url;
         }
+        // Fallback: keep original Odoo link (working link > dead link)
         return original_url;
     },
 });

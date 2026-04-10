@@ -2,26 +2,33 @@ from odoo import tools
 from . import models
 from . import wizard
 
-if tools.config.get('test_enable', False):
-    try:
-        from odoo.addons.test_discuss_full.tests.test_performance import TestDiscussFullPerformance
-        _get_init_messaging_result_original = TestDiscussFullPerformance._get_init_messaging_result
-    except ImportError:
-        TestDiscussFullPerformance = None
-        _get_init_messaging_result_original = None
-
-
-def _get_init_messaging_result_plus(self):
-    res = _get_init_messaging_result_original(self)
-    if 'odoobot' in res and res['odoobot']:
-        res['odoobot']['name'] = 'ViindooBot'
-        res['odoobot']['email'] = 'viindoobot@example.viindoo.com'
-    return res
-
 
 def post_load():
-    if tools.config.get('test_enable', False) and _get_init_messaging_result_original and TestDiscussFullPerformance:
-        TestDiscussFullPerformance._get_init_store_data_result = _get_init_messaging_result_plus
+    """Patch MailCommon.setUpClass to revert ViindooBot back to OdooBot for tests.
+
+    In the post-install test workflow, modules are installed without --test-enable,
+    so post_init_hook (which reverts ViindooBot→OdooBot) is skipped. The DB keeps
+    ViindooBot but Odoo tests expect OdooBot.
+
+    Solution: patch MailCommon.setUpClass to revert partner_root at the start of
+    each test class, when env is available. This covers all test classes that
+    inherit from MailCommon.
+    """
+    if not tools.config.get('test_enable', False):
+        return
+    try:
+        from odoo.addons.mail.tests.common import MailCommon
+    except ImportError:
+        return
+
+    _original_setUpClass = MailCommon.setUpClass.__func__
+
+    @classmethod
+    def _patched_setUpClass(cls):
+        _original_setUpClass(cls)
+        cls.partner_root.write({'name': 'OdooBot', 'email': 'odoobot@example.com'})
+
+    MailCommon.setUpClass = _patched_setUpClass
 
 
 def post_init_hook(env):

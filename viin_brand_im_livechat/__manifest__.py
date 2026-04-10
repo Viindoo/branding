@@ -42,7 +42,8 @@ Editions Supported
 
     # always loaded
     'demo': [
-        'data/im_livechat_channel_demo.xml'
+        'data/im_livechat_channel_demo.xml',
+        'data/im_livechat_support_bot_demo.xml',
     ],
     'data': [
         'data/digest_data.xml',
@@ -52,7 +53,7 @@ Editions Supported
         'views/im_livechat_channel_views.xml'
     ],
     'post_init_hook': 'post_init_hook',
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

@@ -59,7 +59,7 @@ Module này sẽ thay đổi giao diện module Invoicing theo thương hiệu V
         'views/report_statement.xml',
         'views/terms_template.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

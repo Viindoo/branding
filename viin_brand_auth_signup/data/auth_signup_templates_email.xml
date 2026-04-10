@@ -1,0 +1,8 @@
+<odoo>
+    <template id="reset_password_email" inherit_id="auth_signup.reset_password_email">
+        <xpath expr="//a[@href='https://www.odoo.com?utm_source=db&amp;utm_medium=auth']" position="attributes">
+            <attribute name="href">https://viindoo.com?utm_source=db&amp;utm_medium=auth</attribute>
+        </xpath>
+        <xpath expr="//a[@href='https://viindoo.com?utm_source=db&amp;utm_medium=auth']" position="replace" mode="inner">Viindoo</xpath>
+    </template>
+</odoo>

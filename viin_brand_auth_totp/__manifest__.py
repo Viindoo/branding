@@ -51,10 +51,9 @@ Module này sẽ thay đổi giao diện module Two-Factor Authentication theo t
 
     # always loaded
     'data': [
-        'views/user_perferences.xml',
         'views/templates.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

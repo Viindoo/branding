@@ -43,7 +43,9 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'views/res_company_views.xml',
         'views/res_partner_views.xml',
         'views/res_users_views.xml',
-        'views/webclient_template.xml'
+        'views/res_config_settings_views.xml',
+        'views/webclient_template.xml',
+        'views/report_templates.xml',
     ],
     'assets': {
         'web._assets_primary_variables': [
@@ -63,6 +65,10 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         ],
         'web._assets_core': [
             ('after', 'web/static/src/core/**/*', 'viin_brand_common/static/src/core/colors/colors.js'),
+            'viin_brand_common/static/src/core/browser/title_service.js',
+            'viin_brand_common/static/src/core/errors/error_dialogs.js',
+            'viin_brand_common/static/src/core/errors/error_dialogs.xml',
+            'viin_brand_common/static/src/core/install_scoped_app/install_scoped_app.xml',
         ],
         'web.assets_backend': [
             # common branding
@@ -80,9 +86,14 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             'viin_brand_common/static/src/webclient/navbar/navbar.scss',
             'viin_brand_common/static/src/webclient/user_menu_item.js',
             'viin_brand_common/static/src/views/widgets/**/*',
+            'viin_brand_common/static/src/webclient/settings_form_view/fields/upgrade_dialog.xml',
+        ],
+        'web.assets_frontend': [
+            'viin_brand_common/static/src/core/errors/error_notifications.js',
+            'viin_brand_common/static/src/views/widgets/notification_alert/notification_alert.xml',
         ],
     },
-    'installable': False,
+    'installable': True,
     'post_load': 'post_load',
     'auto_install': ['web'],
     'price': 9.9,

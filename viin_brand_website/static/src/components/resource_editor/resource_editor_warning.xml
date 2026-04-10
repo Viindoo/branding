@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="website.ResourceEditorWarningOverlay" t-inherit="website.ResourceEditorWarningOverlay" t-inherit-mode="extension" owl="1">
+        <xpath expr="//h1[hasclass('fs-2')]" position="replace" mode="inner">
+            Your changes might be lost during a future system upgrade.
+        </xpath>
+    </t>
+</templates>

@@ -35,6 +35,6 @@ $border-radius: 0;
 // Font, line-height, and color for body text, headings, and more.
 
 // Input
-$input-focus-border-color: $brand-primary !important;
+$input-focus-border-color: $brand-primary;
 
 $font-family-sans-serif: o-add-unicode-support-font((Roboto, "Lucida Grande", Helvetica, Verdana, Arial, sans-serif), 1);

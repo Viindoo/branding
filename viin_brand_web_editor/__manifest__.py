@@ -27,14 +27,14 @@ Editions Supported
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1',
-    'depends': ['web_editor', 'web'],
+    'depends': ['html_editor', 'web'],
     'assets': {
         'web.assets_frontend': [
-            ('after', 'web_editor/static/src/scss/web_editor.common.scss', 'viin_brand_web_editor/static/src/scss/web_editor.common.scss'),
+            ('after', 'html_editor/static/src/scss/html_editor.common.scss', 'viin_brand_web_editor/static/src/scss/web_editor.common.scss'),
         ],
     },
-    'installable': False,
-    'auto_install': ['web_editor'],
+    'installable': True,
+    'auto_install': ['html_editor'],
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

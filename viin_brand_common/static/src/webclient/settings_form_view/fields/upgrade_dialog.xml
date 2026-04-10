@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="web.UpgradeDialog" t-inherit="web.UpgradeDialog" t-inherit-mode="extension" owl="1">
+        <xpath expr="//Dialog" position="attributes">
+            <attribute name="title.translate">Viindoo Enterprise</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('w-100','w-md-50')][1]" position="replace">
+            <div class="w-100 w-md-50">
+                Get this feature and much more with Viindoo Enterprise!
+                <ul class="list-unstyled">
+                    <li><i class="fa fa-check"/> Access to all Enterprise Apps</li>
+                    <li><i class="fa fa-check"/> New design</li>
+                    <li><i class="fa fa-check"/> Mobile support</li>
+                    <li><i class="fa fa-check"/> Upgrade to future versions</li>
+                    <li><i class="fa fa-check"/> Bugfixes guarantee</li>
+                    <li><a href="https://viindoo.com/pricing?utm_source=db&amp;utm_medium=enterprise" target="_blank"><i class="fa fa-plus"/> And more</a></li>
+                </ul>
+            </div>
+        </xpath>
+    </t>
+</templates>

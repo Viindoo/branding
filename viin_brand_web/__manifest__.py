@@ -43,16 +43,14 @@ Editions Supported
     # always loaded
     'assets': {
         'web.assets_backend': [
-            'viin_brand_web/static/src/scss/mobile_apps_funnel.scss',
             'viin_brand_web/static/src/core/dialog/dialog.js',
             'viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml',
-            'viin_brand_web/static/src/core/webclient/settings_form_view/widgets/mobile_apps_funnel.xml',
         ],
     },
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

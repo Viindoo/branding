@@ -55,7 +55,7 @@ Module này sẽ thay đổi giao diện module Digest theo thương hiệu Viin
         'data/digest_tips_data.xml',
         'views/digest_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

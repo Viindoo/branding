@@ -5,7 +5,7 @@
 	        expr="//h1/small" position="replace">
 	        <small>Viindoo Version <t t-out="version.get('server_version')"/></small>
         </xpath>
-        <xpath expr="//p" position="replace">
+        <xpath expr="//section/p[1]" position="replace">
             <p>Information about the <a target="_blank" href="https://about.viindoo.com">Viindoo Technology JSC.</a></p>
         </xpath>
         <!-- Chart of account and l10n app -->

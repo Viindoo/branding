@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="web.InstallScopedApp" t-inherit="web.InstallScopedApp" t-inherit-mode="extension" owl="1">
+        <xpath expr="//a[@href='https://odoo.com']" position="replace">
+            <a class="text-primary text-decoration-none" href="https://viindoo.com" alt="Viindoo" target="_blank">Viindoo.</a>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Override "Odoo" Welcome Bot demo chatbot -->
+        <record id="im_livechat.welcome_bot_operator_partner_demo" model="res.partner">
+            <field name="name">Viindoo</field>
+            <field name="image_1920" type="base64" file="viin_brand/static/img/viin_assistant.png"/>
+        </record>
+        <record id="im_livechat.chatbot_script_welcome_bot_demo" model="chatbot.script">
+            <field name="title">Viindoo</field>
+            <field name="image_1920" type="base64" file="viin_brand/static/img/viin_assistant.png"/>
+        </record>
+
+        <!-- Override "Support Bot" demo chatbot -->
+        <record id="im_livechat.support_bot_operator_partner_demo" model="res.partner">
+            <field name="image_1920" type="base64" file="viin_brand/static/img/viin_assistant.png"/>
+        </record>
+        <record id="im_livechat.chatbot_script_support_bot_demo" model="chatbot.script">
+            <field name="image_1920" type="base64" file="viin_brand/static/img/viin_assistant.png"/>
+        </record>
+    </data>
+</odoo>

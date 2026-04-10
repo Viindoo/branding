@@ -62,7 +62,7 @@ Editions Supported
             ('after', 'mail/static/src/discuss/core/public_web/discuss_sidebar_categories.scss', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
         ],
     },
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'post_load': 'post_load',
     'post_init_hook': 'post_init_hook',

@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
+	<!--
+		Use //meta[@charset] as anchor instead of //title or //link[@type]
+		because test_check_forbidden_statements rewrites web.layout arch
+		to a minimal HTML without those elements. meta[@charset] exists
+		in both normal and test arch.
+		In normal arch, the Viindoo <title> is inserted right after
+		<meta charset>, before the original <title>, so it takes precedence.
+	-->
 	<template id="web_layout" inherit_id="web.layout"
 		name="Viindoo Web layout">
-		<xpath expr="//title" position="attributes">
-			<attribute name="t-esc">title or 'Viindoo'</attribute>
-		</xpath>
-		<xpath expr="//link[@type='image/x-icon']" position="attributes">
-			<attribute name="t-att-href">x_icon or '/viin_brand/static/img/favicon.ico'</attribute>
+		<xpath expr="//meta[@charset='utf-8']" position="after">
+			<title t-esc="title or 'Viindoo'"/>
+			<link type="image/x-icon" rel="shortcut icon" t-att-href="x_icon or '/viin_brand/static/img/favicon.ico'"/>
 		</xpath>
 	</template>
 	

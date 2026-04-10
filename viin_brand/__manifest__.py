@@ -3,11 +3,11 @@
     'name_vi_VN': "Ứng dụng với thương hiệu Viindoo",
 
     'summary': """
-Set Viindoo Brandings for Odoo app.
+Set Viindoo Brandings.
 """,
 
     'summary_vi_VN': """
-Thiết lập thương hiệu Viindoo cho ứng dụng Odoo
+Thiết lập thương hiệu Viindoo.
         """,
 
     'description': """
@@ -38,7 +38,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'category': 'Hidden',
     'version': '0.1',
     'depends': ['base'],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 9.9,
     'currency': 'EUR',

@@ -1,0 +1,8 @@
+<odoo>
+    <template id="mail_notification_channel_invite" inherit_id="website_slides.mail_notification_channel_invite">
+        <xpath expr="//a[@href='https://www.odoo.com?utm_source=db&amp;utm_medium=email']" position="attributes">
+            <attribute name="href">https://viindoo.com?utm_source=db&amp;utm_medium=email</attribute>
+        </xpath>
+        <xpath expr="//a[@href='https://viindoo.com?utm_source=db&amp;utm_medium=email']" position="replace" mode="inner">Viindoo</xpath>
+    </template>
+</odoo>

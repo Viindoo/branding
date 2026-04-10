@@ -4,7 +4,7 @@ from odoo.addons.web.controllers.database import Database as DB
 class Database(DB):
 
     def _render_template(self, **d):
-        res = super(Database, self)._render_template()
+        res = super()._render_template(**d)
         if res:
             res = res.replace('Odoo', 'Viindoo') \
                      .replace('https://www.odoo.com/privacy', 'https://viindoo.com/policy/privacy-policy') \

@@ -40,10 +40,13 @@ Editions Supported
     # any module necessary for this one to work correctly
     'depends': ['website_slides'],
 
+    'data': [
+        'data/mail_templates.xml',
+    ],
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': False,
+    'installable': True,
     'auto_install': ['website_slides'],
     'price': 0.0,
     'currency': 'EUR',

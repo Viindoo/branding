@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-25 09:30+0000\n"
-"PO-Revision-Date: 2024-07-25 09:30+0000\n"
+"POT-Creation-Date: 2026-04-03 08:59+0000\n"
+"PO-Revision-Date: 2026-04-03 08:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,10 +40,33 @@ msgid ""
 msgstr ""
 
 #. module: viin_brand_account
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_journal__invoice_reference_model
+msgid "Communication Standard"
+msgstr ""
+
+#. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_financial_year_op__opening_date
 msgid ""
 "Date from which the accounting is managed in Viindoo. It is the date of the "
 "opening entry."
+msgstr ""
+
+#. module: viin_brand_account
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_financial_year_op__display_name
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_journal__display_name
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_move__display_name
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_payment__display_name
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_payment_register__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_account
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_financial_year_op__id
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_journal__id
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_move__id
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_payment__id
+#: model:ir.model.fields,field_description:viin_brand_account.field_account_payment_register__id
+msgid "ID"
 msgstr ""
 
 #. module: viin_brand_account
@@ -74,7 +97,7 @@ msgstr ""
 #. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_journal__inbound_payment_method_line_ids
 msgid ""
-"Manual: Get paid by any method outside of Viindoo.\n"
+"Manual: Get paid by any method outside of the system.\n"
 "Payment Providers: Each payment provider has its own Payment Method. Request a transaction on/to a card thanks to a payment token saved by the partner when buying or subscribing online.\n"
 "Batch Deposit: Collect several customer checks at once generating and submitting a batch deposit to your bank. Module account_batch_payment is necessary.\n"
 "SEPA Direct Debit: Get paid in the SEPA zone thanks to a mandate your partner will have granted to you. Module account_sepa is necessary.\n"
@@ -83,8 +106,8 @@ msgstr ""
 #. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_journal__outbound_payment_method_line_ids
 msgid ""
-"Manual: Pay by any method outside of Viindoo.\n"
-"Check: Pay bills by check and print it from Viindoo.\n"
+"Manual: Pay by any method outside of the system.\n"
+"Check: Pay bills by check and print it from the system.\n"
 "SEPA Credit Transfer: Pay in the SEPA zone by submitting a SEPA Credit Transfer file to your bank. Module account_sepa is necessary.\n"
 msgstr ""
 
@@ -116,6 +139,11 @@ msgid "Outbound Payment Methods"
 msgstr ""
 
 #. module: viin_brand_account
+#: model:ir.model,name:viin_brand_account.model_account_payment_register
+msgid "Pay"
+msgstr ""
+
+#. module: viin_brand_account
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_payment__payment_method_line_id
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_payment_register__payment_method_line_id
 msgid "Payment Method"
@@ -127,39 +155,34 @@ msgid "Payments"
 msgstr ""
 
 #. module: viin_brand_account
-#: model:ir.model,name:viin_brand_account.model_account_payment_register
-msgid "Register Payment"
-msgstr ""
-
-#. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_journal__alias_id
 msgid ""
 "Send one separate email for each invoice.\n"
 "\n"
 "Any file extension will be accepted.\n"
 "\n"
-"Only PDF and XML files will be interpreted by Viindoo"
+"Only PDF and XML files will be interpreted by the system"
 msgstr ""
 
 #. module: viin_brand_account
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_bank_statement_line__quick_edit_total_amount
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_move__quick_edit_total_amount
-#: model:ir.model.fields,field_description:viin_brand_account.field_account_payment__quick_edit_total_amount
 msgid "Total (Tax inc.)"
 msgstr ""
 
 #. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_bank_statement_line__quick_edit_total_amount
 #: model:ir.model.fields,help:viin_brand_account.field_account_move__quick_edit_total_amount
-#: model:ir.model.fields,help:viin_brand_account.field_account_payment__quick_edit_total_amount
 msgid ""
 "Use this field to encode the total amount of the invoice.\n"
 "System will automatically create one invoice line with default values to match it."
 msgstr ""
 
 #. module: viin_brand_account
-#: model_terms:ir.ui.view,arch_db:viin_brand_account.account_tour_upload_bill
-msgid "With Viindoo, you won't have to record bills manually"
+#: model:ir.model.fields,help:viin_brand_account.field_account_journal__invoice_reference_model
+msgid ""
+"You can choose different models for each type of reference. The default one "
+"is the system reference."
 msgstr ""
 
 #. module: viin_brand_account
@@ -170,20 +193,4 @@ msgstr ""
 #. module: viin_brand_account
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
 msgid "activate the currency of the invoice"
-msgstr ""
-#. module: account
-#: model_terms:ir.actions.act_window,help:account.action_bank_statement_tree
-msgid ""
-"Viindoo allows you to reconcile a statement line directly with\n"
-"                the related sale or purchase invoices."
-msgstr ""
-
-#. module: account
-#: model_terms:ir.actions.act_window,help:account.res_partner_action_customer
-msgid "Viindoo helps you easily track all activities related to a customer."
-msgstr ""
-
-#. module: account
-#: model_terms:ir.actions.act_window,help:account.res_partner_action_supplier
-msgid "Viindoo helps you easily track all activities related to a supplier."
 msgstr ""

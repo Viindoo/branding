@@ -54,7 +54,7 @@ Module này sẽ thay đổi giao diện các module Purchase theo thương hi�
         'data/digest_data.xml',
         'views/res_partner_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

@@ -47,7 +47,8 @@ Module này sẽ thay đổi giao diện module Calendar theo thương hiệu Vi
     'data': [
         'views/calendar_views.xml',
     ],
-    'installable': False,
+    'post_init_hook': 'post_init_hook',
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

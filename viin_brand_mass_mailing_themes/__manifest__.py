@@ -42,7 +42,7 @@ Module này sẽ thay đổi giao diện module Mass Mailing Themes theo thươn
     'data': [
         'views/mass_mailing_themes_templates.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <template id="hr_expense_template_submitted_expenses" inherit_id="hr_expense.hr_expense_template_submitted_expenses">
+        <xpath expr="//a[@href='https://www.odoo.com?utm_source=db&amp;utm_medium=expense']" position="attributes">
+            <attribute name="href">https://viindoo.com?utm_source=db&amp;utm_medium=expense</attribute>
+            <attribute name="style">color: #7f4282;</attribute>
+        </xpath>
+        <xpath expr="//a[@href='https://viindoo.com?utm_source=db&amp;utm_medium=expense']" position="replace" mode="inner">Viindoo</xpath>
+    </template>
+
+    <template id="hr_expense_template_register_no_user" inherit_id="hr_expense.hr_expense_template_register_no_user">
+        <xpath expr="//a[@href='https://www.odoo.com']" position="attributes">
+            <attribute name="href">https://viindoo.com</attribute>
+        </xpath>
+        <xpath expr="//a[@href='https://viindoo.com']" position="replace" mode="inner">Viindoo</xpath>
+    </template>
+
+</odoo>
