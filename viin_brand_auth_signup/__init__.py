@@ -1,13 +1,13 @@
 from odoo.tools.translate import TranslationImporter, get_po_paths
 
 
-_MODULE_NAME = 'viin_brand_portal'
+_MODULE_NAME = 'viin_brand_auth_signup'
 
 
 def _force_branding_translations(env):
     """Force-overwrite translations shipped by this branding module.
 
-    Why: core records we re-declare (e.g. ``portal.mail_template_data_portal_welcome``)
+    Why: core records we re-declare (e.g. ``auth_signup.set_password_email``)
     are ``noupdate="1"``. When a target language was installed *before* this branding
     module, the core translation for that record is already in the DB; the standard
     PO import keeps it because of the noupdate guard

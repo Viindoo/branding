@@ -38,15 +38,17 @@ Module này sẽ thay đổi giao diện các module Portal theo thương hiệu
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
 
     # any module necessary for this one to work correctly
     'depends': ['portal'],
 
     # always loaded
     'data': [
+        'data/mail_template_data.xml',
         'views/portal_templates.xml',
     ],
+    'post_init_hook': '_post_init_hook',
     'installable': True,
     'auto_install': True,
     'price': 0.0,
