@@ -51,9 +51,9 @@ Module này sẽ thay đổi giao diện module Two-Factor Authentication By Mai
 
     # always loaded
     'data': [
+        'data/mail_template_data.xml',
         'views/templates.xml',
     ],
-    'post_init_hook': 'post_init_hook',
     'installable': True,
     'auto_install': True,
     'price': 0.0,
