@@ -27,9 +27,8 @@ msgid ""
 "Use this if you want to charge your customers cards only when\n"
 "you are sure you can ship the goods to them."
 msgstr ""
-"Ghi nhận số tiền từ Odoo, khi giao hàng hoàn tất.\n"
-"Dùng tính năng này nếu bạn muốn tính phí khách hàng chỉ khi\n"
-"bạn chắc chắn có thể giao hàng cho họ."
+"Chỉ ghi nhận thanh toán sau khi đơn hàng đã giao xong.\n"
+"Dùng khi bạn muốn chỉ trừ tiền khách hàng khi chắc chắn có thể giao hàng thành công."
 
 #. module: viin_brand_payment
 #: model:ir.model.fields,field_description:viin_brand_payment.field_payment_method__display_name
