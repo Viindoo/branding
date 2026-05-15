@@ -43,6 +43,8 @@
             "/web_responsive/static/src/components/menu_odoo_searchbar/*",
             "/web_responsive/static/src/components/menu_fuse_searchbar/*",
             "/web_responsive/static/src/components/menu_searchbar/*",
+            "/web_responsive/static/src/components/navbar/*",
+            "/web_responsive/static/src/components/webclient/*",
             "/web_responsive/static/src/components/hotkey/*",
             "/web_responsive/static/src/components/file_viewer/*",
             "/web_responsive/static/src/components/chatter/*",

@@ -7,8 +7,8 @@
 export function getWebIconData(menu) {
     const result = "/web_responsive/static/img/default_icon_app.png";
     const iconData = menu.webIconData;
-    if (!menu.webIcon) {
-        return result;
+    if (!iconData) {
+        return menu.webIcon || result;
     }
     const prefix = iconData.startsWith("P")
         ? "data:image/svg+xml;base64,"
