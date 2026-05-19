@@ -2,7 +2,14 @@
 <odoo>
     <template id="auth_totp_mail_form" inherit_id="auth_totp_mail.auth_totp_mail_form">
         <xpath expr="//div[contains(@t-if, 'totp_mail')]/a" position="attributes">
-        	<attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
+        	<attribute name="href">https://viindoo.com/documentation/17.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
+        </xpath>
+    </template>
+
+    <!-- Override auth_totp_mail.account_security_alert: replace Odoo 2FA doc link with Viindoo -->
+    <template id="account_security_alert" inherit_id="auth_totp_mail.account_security_alert">
+        <xpath expr="//a[@href='https://www.odoo.com/documentation/latest/applications/general/auth/2fa.html']" position="attributes">
+            <attribute name="href">https://viindoo.com/documentation/17.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
         </xpath>
     </template>
 </odoo>

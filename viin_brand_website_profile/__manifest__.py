@@ -1,15 +1,20 @@
 {
-    'name': "Website profile Debranding for Viindoo",
-    'name_vi_VN': "",
+    'name': "Website Profile Debranding for Viindoo",
+    'name_vi_VN': "Thương hiệu Viindoo cho mô-đun Website Profile",
 
     'summary': """
-Debranding Website profile for Viindoo""",
+Debranding Website Profile for Viindoo""",
 
     'summary_vi_VN': """
-Làm lại màu sắc Phần mềm Website profile theo thương hiệu Viindoo
-        """,
+Thay thế thương hiệu Odoo bằng Viindoo trong mô-đun Website Profile
+""",
 
     'description': """
+What it does
+============
+This module replaces Odoo branding with Viindoo in the Website Profile module:
+SCSS theming for the profile pages and Odoo references in the account validation email.
+
 
 Editions Supported
 ==================
@@ -18,6 +23,11 @@ Editions Supported
     """,
 
     'description_vi_VN': """
+Ứng dụng này làm gì
+====================
+Mô-đun này thay thế thương hiệu Odoo bằng Viindoo trong mô-đun Website Profile:
+SCSS chỉnh giao diện trang hồ sơ và thay thế chuỗi Odoo trong email xác thực tài khoản.
+
 
 Ấn bản được Hỗ trợ
 ==================
@@ -27,8 +37,8 @@ Editions Supported
 
     'author': "Viindoo",
     'website': "https://viindoo.com",
-    'live_test_url': "https://v18demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
+    'live_test_url': "https://v17demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v17demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
@@ -38,7 +48,11 @@ Editions Supported
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['website_profile'],
+    'depends': ['website_profile', 'viin_brand_mail'],
+
+    'data': [
+        'data/mail_template_data.xml',
+    ],
 
     'assets': {
         'web.assets_frontend': [
@@ -49,7 +63,7 @@ Editions Supported
         # 'static/description/main_screenshot.png'
         ],
     'installable': True,
-    'auto_install': ['website_profile'],
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
