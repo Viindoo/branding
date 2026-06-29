@@ -67,3 +67,9 @@ install/win32/meta.py
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# Node.js dependencies
+node_modules/
+
+# Odoo AI agent workspace
+.odoo-ai/
