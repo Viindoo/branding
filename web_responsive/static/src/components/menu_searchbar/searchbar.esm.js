@@ -11,7 +11,7 @@ import { session } from "@web/session";
 export class AppsMenuSearchBar extends Component {
     setup() {
         super.setup();
-        this.searchType = session.apps_menu.search_type || "canonical";
+        this.searchType = session.apps_menu?.search_type || "canonical";
     }
 }
 
