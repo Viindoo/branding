@@ -31,7 +31,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     """,
 
     'author': "Viindoo",
-    'website': " https://viindoo.com",
+    'website': "https://viindoo.com/apps/modules/17.0/viin_brand_common?force_show=1",
     'live_test_url': "https://v16demo-int.viindoo.com",
     'live_test_url_vi_VN': "https://v16demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",

@@ -35,7 +35,7 @@ Module này sẽ thay đổi giao diện module OAuth2 Authentication theo thư�
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com",
+    'website': "https://viindoo.com/apps/modules/17.0/viin_brand_auth_oauth?force_show=1",
     'live_test_url': "https://v17demo-int.viindoo.com",
     'live_test_url_vi_VN': "https://v17demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
