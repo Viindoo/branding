@@ -10,10 +10,12 @@ import { registry } from "@web/core/registry";
  * never produces, and its following RGBA check asserts that exact rgb.
  *
  * Re-register the tour (force) with the custom-colour part adapted to whatever
- * the first custom swatch is on the branded palette, and drop only the
- * hard-coded custom-colour RGBA assertion. The gradient steps (a fixed preset,
- * unaffected by branding) and their RGBA check are kept intact, so the tour
- * still exercises the colorpicker.
+ * the first custom swatch is on the branded palette, and relax only the
+ * hard-coded custom-colour RGBA assertion into a pure check that the RGBA pane
+ * rendered (a plain drop would leave a click step as the LAST step, and
+ * web_tour ignores the action of a last step with a warning). The gradient
+ * steps (a fixed preset, unaffected by branding) and their RGBA check are kept
+ * intact, so the tour still exercises the colorpicker.
  */
 const tours = registry.category("web_tour.tours");
 const core = tours.get("website_background_colorpicker", null);
@@ -34,7 +36,16 @@ if (core) {
                 const dropIdx = rgbaIdx.length ? rgbaIdx[rgbaIdx.length - 1] : -1;
                 return steps.reduce((acc, s, i) => {
                     if (i === dropIdx) {
-                        // Drop the hard-coded custom-colour rgb assertion.
+                        // Relax the hard-coded custom-colour rgb assertion into a
+                        // pure check: the branded palette produces a different rgb,
+                        // but the tour must still END on a check step (web_tour
+                        // warns and ignores the auto action of a last step).
+                        acc.push({
+                            ...s,
+                            content: "Check the custom color RGBA pane is shown (brand palette)",
+                            run: undefined,
+                            isCheck: true,
+                        });
                         return acc;
                     }
                     if (s.trigger && s.trigger.includes("#65435C")) {
