@@ -3,6 +3,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { Mutex } from "@web/core/utils/concurrency";
+import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { useService } from "@web/core/utils/hooks";
 import { AppsMenu } from "./apps_menu.esm.js";
 import { AppMenuItem } from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
@@ -62,6 +63,7 @@ export class AppsMenuAction extends Component {
 }
 
 AppsMenuAction.components = { AppsMenu, AppMenuItem, AppsMenuSearchBar };
+AppsMenuAction.props = { ...standardActionServiceProps };
 AppsMenuAction.target = "current";
 AppsMenuAction.template = "web_responsive.AppsMenuAction";
 

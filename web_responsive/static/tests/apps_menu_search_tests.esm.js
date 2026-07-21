@@ -3,23 +3,22 @@
 /* Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import { click, getFixture, mount, patchWithCleanup } from "@web/../tests/helpers/utils";
-import { Component, xml } from "@odoo/owl";
+import { getFixture, mount, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { actionService } from "@web/webclient/actions/action_service";
 import { browser } from "@web/core/browser/browser";
 import { menuService } from "@web/webclient/menus/menu_service";
 import { notificationService } from "@web/core/notifications/notification_service";
-import { NavBar } from "@web/webclient/navbar/navbar";
 import { registry } from "@web/core/registry";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
 import { uiService } from "@web/core/ui/ui_service";
+import {
+    AppsMenuAction,
+    appsMenuService,
+} from "@web_responsive/components/apps_menu/apps_menu_service";
 
 const serviceRegistry = registry.category("services");
 
-class MySystrayItem extends Component {}
-
-MySystrayItem.template = xml`<li class="my-item">my item</li>`;
 let baseConfig = {};
 let target = "";
 
@@ -31,6 +30,7 @@ QUnit.module("AppsMenu Search", {
         serviceRegistry.add("notification", notificationService);
         serviceRegistry.add("hotkey", hotkeyService);
         serviceRegistry.add("ui", uiService);
+        serviceRegistry.add("apps_menu", appsMenuService);
         patchWithCleanup(browser, {
             setTimeout: (handler, delay, ...args) => handler(...args),
             clearTimeout: () => undefined,
@@ -41,13 +41,20 @@ QUnit.module("AppsMenu Search", {
             2: { id: 2, children: [], name: "App1", appID: 2, xmlid: "menu_2" },
         };
         const serverData = { menus };
-        baseConfig = { serverData };
+        baseConfig = { serverData, config: { breadcrumbs: [] } };
     },
 });
 
 QUnit.test("can be rendered", async (assert) => {
     const env = await makeTestEnv(baseConfig);
-    await mount(NavBar, target, { env });
-    await click(target, "button.o_grid_apps_menu__button");
+    // The search bar lives inside the fullscreen apps menu client action
+    // (the menu is no longer a NavBar dropdown).
+    await mount(AppsMenuAction, target, {
+        env,
+        props: { action: {}, className: "" },
+    });
+    // The open state is signalled on the bus after mount; wait a tick for the
+    // AppsMenu wrapper to render its container.
+    await nextTick();
     assert.containsOnce(target, ".app-menu-container .search-input");
 });
