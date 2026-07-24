@@ -17,10 +17,5 @@ msgstr ""
 
 #. module: viin_brand_website_sale
 #: model_terms:ir.ui.view,arch_db:viin_brand_website_sale.brand_promotion
-msgid "#1 Open Source eCommerce Software"
-msgstr ""
-
-#. module: viin_brand_website_sale
-#: model_terms:ir.ui.view,arch_db:viin_brand_website_sale.brand_promotion
-msgid "The"
+msgid "Open Source eCommerce Software"
 msgstr ""
