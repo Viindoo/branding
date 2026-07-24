@@ -7,8 +7,9 @@
                 position="replace">
                 <t t-call="web.brand_promotion_message">
                     <t t-set="_message">
+                        <!-- Label must not assert a "#1"/superiority ranking (VN advertising law). -->
                         <a target="_blank"
-                            href="https://viindoo.com/intro/ecommerce?utm_source=db&amp;utm_medium=website">The #1 Open Source eCommerce Software</a>
+                            href="https://viindoo.com/intro/ecommerce?utm_source=db&amp;utm_medium=website">Open Source eCommerce Software</a>
                     </t>
                     <t t-set="_utm_medium" t-valuef="website" />
                 </t>
