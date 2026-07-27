@@ -1,0 +1,17 @@
+// T-3 (PR #658 review-fix) - dark arm for the active notebook-tab foreground (Layer 2).
+//
+// notebook.scss paints the active horizontal-notebook tab label $o-viin-chrome-base #007F8E - only
+// 3.69:1 on the dark panel (#111B1E), failing WCAG SC 1.4.3 in dark. Contributed EXPLICITLY to
+// web.assets_web_dark (not auto-globbed); re-points ONLY the foreground teal to the base dark-mode
+// teal (--link-color). The teal underline (border-bottom-color) is a non-text accent that already
+// clears the 3:1 non-text threshold in dark, so it is left untouched. No --viin-* custom property; no
+// hardcoded brand hex.
+
+.o_notebook:not(.vertical) .nav-link.active {
+    &,
+    &:hover,
+    &:focus,
+    &:active {
+        color: var(--link-color);
+    }
+}

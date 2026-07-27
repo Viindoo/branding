@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+  <!-- Apps-menu repurpose (PR #658 item 1, relocated from navbar_rail.xml). Keep the visible + enabled
+       `.o_navbar_apps_menu` button (core app-switch tours click it first), but replace core's inner
+       <Dropdown> second app list with a plain button that opens the ONE flat home menu (ViinHomeMenu,
+       client action "viin_home_menu"). Replacing only the inner <Dropdown> (not the div) keeps the
+       override additive and reversible; data-hotkey="h" preserves the core Home-Menu accesskey.
+
+       OWNER REVERT 2026-08-03 - THE ICON IS WHITE AGAIN, PAINTED BY CORE, NOT BY US.
+       ("app icon hien co mau den. Tao muon cho nay khong override gi de no trang nhu cu.")
+       ROOT CAUSE. Core's own trigger is a bare <button> that the OWL Dropdown component decorates
+       with `o-dropdown dropdown-toggle` at run time (web/.../core/dropdown/dropdown.js:278), and
+       core styles `.o_main_navbar .o_nav_entry, .dropdown-toggle:not(.o-dropdown-toggle-custo)`
+       with the `%-main-navbar-entry-base` placeholder (web/.../navbar/navbar.variables.scss:34-50),
+       whose `o-hover-text-color()` emits a `color` reading the NavBar-entry-color custom property
+       with `$o-navbar-entry-color` as its fallback - white, because viin_brand_common pins
+       `$o-navbar-entry-color: #FFFFFF`. Replacing the <Dropdown> dropped that class, so the button
+       matched NO navbar entry rule; the `text-reset` we added then forced `color: inherit
+       !important`, which walks up past .o_navbar_apps_menu and .o_main_navbar (neither declares a
+       colour) to the body colour - #212529, i.e. BLACK on the teal navbar. Bootstrap's plain `.btn`
+       (whose own colour property also defaults to the body colour) would have done the same.
+       THE FIX IS SUBTRACTIVE. `text-reset` and `btn` are gone and NO colour is declared anywhere;
+       instead the button carries core's own `o_nav_entry` - the semantic class core provides for a
+       navbar entry that is NOT a dropdown (same pattern as core's burger toggle,
+       web/.../burger_menu/burger_menu.xml:8). That single class makes core's navbar cascade paint
+       it, so the icon is white in BOTH schemes for free, and the entry-base placeholder also
+       restores the flex/align-items/height that keeps it on the navbar row - the alignment
+       apps_menu_home.scss used to hand-replicate. `dropdown-toggle` is deliberately NOT used: it
+       would satisfy clickbot_home_menu.js's `isThemedShell()` discriminator and send core's
+       clickbot down its removed-dropdown path. -->
+  <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension">
+    <xpath expr="//div[hasclass('o_navbar_apps_menu')]/Dropdown" position="replace">
+      <button type="button" class="o_nav_entry o_viin_apps_home border-0"
+              data-hotkey="h" title="Home Menu" t-on-click="() => this.openHomeMenu()">
+        <i class="oi oi-apps"/>
+      </button>
+    </xpath>
+  </t>
+
+</templates>

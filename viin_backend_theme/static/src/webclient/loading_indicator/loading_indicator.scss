@@ -1,0 +1,20 @@
+// D15 - loading indicator (the "Loading N / M" pill, bottom-right; TDD §5 D15).
+//
+// DE-BRAND + restyle. Core paints this pill with the Odoo purple:
+//   .o_loading_indicator { background-color: $o-brand-odoo; color: white; ... }
+// which is a visible Odoo tell. Re-point it to viin_brand_common's AA teal
+// ($o-viin-chrome-base #007F8E, 4.74:1 - carries white text per the shade ladder; the decorative
+// $o-brand-primary #00BBCE would fail AA under white text and must never be used here). Position /
+// z-index / fade transition are core's and left untouched (same selector, additive override, later
+// load order in web.assets_backend); only the fill, padding and a scheme-aware elevation change.
+// NO radius (owner revision 2026-08-03 "bo hết"): it used to carry `border-radius: #{$border-radius}`
+// and core declares none on .o_loading_indicator, so the pill is square-cornered like core's.
+// Zero Viindoo-namespaced custom properties; no var() inside a Sass colour function; no hardcoded
+// themeable hex.
+
+.o_loading_indicator {
+    padding: 4px 10px;
+    background-color: $o-viin-chrome-base;
+    color: $o-white;
+    box-shadow: 0 0.25rem 0.75rem color-mix(in srgb, var(--emphasis-color) 24%, transparent);
+}

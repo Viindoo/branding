@@ -1,0 +1,42 @@
+// D12 - command palette (mockup-15 / mockup-23-dark; TDD §5 D12, §4b "no JS patch permitted").
+//
+// TOKEN + scoped restyle of .o_command_palette. The palette renders inside a Dialog, so its outer
+// card surface/radius/elevation already come from the D12 dialog restyle (core/dialog/dialog.scss)
+// via the native --body-bg / --border-color rebind - nothing to repeat here. This file themes the
+// palette-SPECIFIC chrome: a scheme-aware hairline under the search row, a muted uppercase category
+// label, a scheme-aware footer strip, and - the signature - the FOCUSED command row washed in
+// viin_brand_common's AA teal ($o-viin-chrome-base) instead of core's neutral
+// rgba($o-component-active-bg, .65) (mockup-15 highlights the active "Sales" row in teal). The wash
+// is color-mix over transparent so it composites on either scheme; row text keeps --body-color for
+// AA. Selectors mirror core's structure with one extra scoping class so specificity + later load
+// order win deterministically. Zero Viindoo-namespaced custom properties; no var() inside a Sass
+// colour function; no hardcoded themeable hex.
+
+.o_command_palette {
+    // Search row: scheme-aware separator from the results below.
+    .o_command_palette_search {
+        border-bottom: $border-width solid var(--border-color);
+    }
+
+    // Category headers ("APPLICATIONS" / "RECORDS"): muted, uppercase, letter-spaced (mockup-15).
+    .o_command_category {
+        color: var(--secondary-color);
+        font-size: 0.6875rem;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    // Focused command row: brand-teal wash (core: rgba($o-component-active-bg, .65)).
+    .o_command_palette_listbox .o_command.focused {
+        background-color: color-mix(in srgb, #{$o-viin-chrome-base} 12%, transparent);
+        color: var(--body-color);
+    }
+
+    // Footer hint strip (navigate / open / close): raised panel tier + muted text.
+    .o_command_palette_footer {
+        border-top: $border-width solid var(--border-color);
+        background-color: var(--tertiary-bg);
+        color: var(--secondary-color);
+    }
+}

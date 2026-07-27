@@ -1,0 +1,36 @@
+// D9 - kanban card (mockup-13 CRM pipeline): a clean, elevated card with an additive hover-lift.
+// Column headers, progressbars and record tags stay cluster/native - not fought.
+//
+// TOKEN + scoped restyle of .o_kanban_record only. Core paints the card surface + border from
+// COMPILE-TIME hex ($o-view-background-color / $border-color, web/.../kanban_record.scss), so those
+// would stay light in dark mode; re-point them at the native UNPREFIXED runtime props scheme.scss
+// flips (--body-bg / --border-color) so cards follow dark mode for free. Shadow + hover-lift use
+// color-mix over transparent (composites on either scheme) against --emphasis-color / the cluster
+// AA teal ($o-viin-chrome-base). NO --viin-* custom properties; NO var() inside a Sass colour
+// function; NO hardcoded themeable hex.
+//
+// NO RADIUS (owner revision 2026-08-03 "bo hết"): the card used to carry `border-radius:
+// $border-radius`. Odoo CE declares NO radius on .o_kanban_record at all, so the card is now
+// square-cornered exactly like core. The tile SEPARATION below is not a radius decision and stays.
+
+.o_kanban_record:not(.o_kanban_ghost) {
+    // Surface + border on the scheme-aware runtime props (core uses a compile-time hex that would
+    // not flip in dark).
+    background-color: var(--body-bg);
+    border-color: var(--border-color);
+
+    // Separate the cards into distinct tiles (mockup-13). Core stacks them with a -1px overlap,
+    // which fights the shadow.
+    margin-bottom: map-get($spacers, 2);
+
+    // Subtle resting elevation; transition only the additive hover properties.
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--emphasis-color) 6%, transparent);
+    transition: box-shadow 0.15s ease-in-out, transform 0.15s ease-in-out;
+
+    // Additive hover-lift (mockup-13): raise the card, deepen the shadow, hint the brand border.
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px color-mix(in srgb, var(--emphasis-color) 12%, transparent);
+        border-color: color-mix(in srgb, #{$o-viin-chrome-base} 35%, var(--border-color));
+    }
+}

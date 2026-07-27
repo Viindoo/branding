@@ -1,0 +1,32 @@
+// viin_backend_theme - W1 native-override substrate (ADDITIVE over viin_brand_common).
+//
+// SCOPE (post-2026-07-24 cluster-semantic-restore): viin_brand_common OWNS the light de-brand + AA
+// teal chrome cascade ($o-brand-primary, $primary #007F8E, $o-main-link-color, $o-navbar-background,
+// semantic colors, facet/statusbar/stat-value). This theme re-declares NONE of that. It adds ONLY
+// the pieces the base lacks: the dark-mode SCHEME (in scheme.scss) and typography (here).
+//
+// Anchored ('before', web/.../primary_variables.scss) in web._assets_primary_variables, with
+// viin_brand_common/.../brand_variables.scss (a dependency) earlier in the SAME bundle - so
+// $o-brand-primary is defined and NEVER re-declared here. Overrides are set WITHOUT `!default` so
+// core's later `!default` no-ops.
+
+// --- Typography ---------------------------------------------------------------------------------
+// Prefer Montserrat (headings) / Roboto (body) with robust system fallbacks. NOTE (W1 flag): the
+// vendored woff2 subsets (latin + latin-ext + vietnamese) are a pending binary asset task; until they
+// land these stacks fall back to the system UI font. The @font-face rules live in fonts.scss.
+$o-font-family-sans-serif: ("Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol");
+$o-headings-font-family: ("Montserrat", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif);
+
+// --- WHY NO SURFACE-VAR REBIND HERE (compile-landmine, proven by the W1 green gate) -------------
+// An earlier draft set `$o-view-background-color: var(--bs-body-bg)` and
+// `$o-webclient-background-color: var(--bs-secondary-bg)` to make Odoo panels flip in dark. That
+// BREAKS the Sass build: core `bootstrap_overridden.scss:69` does `$body-bg: $o-webclient-background-color`,
+// and Bootstrap then evaluates `color-contrast($body-bg)` -> `opaque()` -> `mix(rgba(...), $body-bg)`,
+// which cannot operate on a `var()` at compile time, so the ENTIRE web.assets_web bundle aborts and
+// the webclient renders unstyled. (It also poisons viin_brand_common/brand_cascade.scss:142
+// `mix($o-brand-primary, $o-view-background-color, 8%)`.) The SAME rule as the str-slice() text-tier
+// case therefore applies to surfaces: keep every $o-* var that feeds a compile-time color function
+// (mix/color-contrast/invert/lighten) as a REAL HEX, and deliver the light/dark surface flip purely
+// at RUNTIME via `--bs-body-bg` / `--bs-secondary-bg` overrides in scheme.scss. NB: TDD §5a's
+// "$o-view-background-color -> var(--bs-body-bg)" rebind is invalid for this reason - flagged to the
+// design; the runtime `--bs-*` path is the correct mechanism.

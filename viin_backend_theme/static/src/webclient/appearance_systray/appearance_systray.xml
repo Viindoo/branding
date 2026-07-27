@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <!-- W4 unit-b appearance systray (mockup-25 moon icon). Core Dropdown/DropdownItem give keyboard
+       nav + focus management for free; role=menuitemradio + aria-checked expose the current choice
+       to assistive tech. Every change is delegated to the viin_theme service. -->
+  <t t-name="viin_backend_theme.ViinAppearanceSystray">
+    <div class="o_viin_appearance d-flex align-items-center">
+      <Dropdown>
+        <button type="button" class="o_viin_appearance_toggle btn"
+                title="Appearance" aria-label="Appearance" aria-haspopup="menu">
+          <i class="fa fa-fw fa-moon-o" aria-hidden="true"/>
+        </button>
+
+        <t t-set-slot="content">
+          <div class="o_viin_appearance_group" role="presentation">Theme</div>
+          <DropdownItem t-foreach="schemes" t-as="opt" t-key="opt.value"
+              class="{ 'o_viin_appearance_option': true, active: state.scheme === opt.value }"
+              onSelected="() => this.setScheme(opt.value)"
+              attrs="{ role: 'menuitemradio', 'aria-checked': state.scheme === opt.value ? 'true' : 'false' }">
+            <span class="d-flex align-items-center w-100">
+              <i class="fa fa-fw me-2" t-att-class="opt.icon" aria-hidden="true"/>
+              <span t-esc="opt.label"/>
+              <i t-if="state.scheme === opt.value" class="fa fa-check ms-auto" aria-hidden="true"/>
+            </span>
+          </DropdownItem>
+
+          <div role="separator" class="dropdown-divider"/>
+
+          <div class="o_viin_appearance_group" role="presentation">Density</div>
+          <DropdownItem t-foreach="densities" t-as="opt" t-key="opt.value"
+              class="{ 'o_viin_appearance_option': true, active: state.density === opt.value }"
+              onSelected="() => this.setDensity(opt.value)"
+              attrs="{ role: 'menuitemradio', 'aria-checked': state.density === opt.value ? 'true' : 'false' }">
+            <span class="d-flex align-items-center w-100">
+              <i class="fa fa-fw me-2" t-att-class="opt.icon" aria-hidden="true"/>
+              <span t-esc="opt.label"/>
+              <i t-if="state.density === opt.value" class="fa fa-check ms-auto" aria-hidden="true"/>
+            </span>
+          </DropdownItem>
+        </t>
+      </Dropdown>
+    </div>
+  </t>
+
+</templates>

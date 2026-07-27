@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+  <!-- D3 flat "Applications" home menu (client action tag "viin_home_menu"). Mockup-faithful
+       (mockup-02-home-appdrawer / mockup-25-mobile-home): LIGHT page, LEFT-aligned greeting + date
+       subtitle, full-width search, an "Applications" section label, then one dense flat grid (no
+       category sections), responsive 6-col to 2-col. Colors are theme-aware native Bootstrap runtime
+       props (light/dark) + the viin_brand teal accent; NO teal-gradient banner (diverged from mockup). -->
+  <t t-name="viin_backend_theme.ViinHomeMenu">
+    <div class="o_viin_home_menu">
+      <div class="o_viin_home_content d-flex flex-column">
+
+        <header class="o_viin_home_header d-flex flex-column">
+          <h1 class="o_viin_home_greeting">
+            <t t-esc="greeting"/><t t-if="userName">, <t t-esc="userName"/></t>
+          </h1>
+          <div class="o_viin_home_subtitle">
+            <t t-esc="dateLabel"/><t t-if="activityCount"> &#183; <t t-esc="activityCount"/> <t t-esc="activityLabel"/></t>
+          </div>
+          <div class="o_viin_home_search d-flex align-items-center">
+            <i class="fa fa-search o_viin_home_search_icon" aria-hidden="true"/>
+            <input type="text" class="o_viin_home_search_input" t-ref="search"
+                   placeholder="Search apps, records, actions..." aria-label="Search applications"
+                   autocomplete="off" spellcheck="false"
+                   t-on-input="onSearchInput" t-on-keydown="onSearchKeydown"/>
+            <span class="o_viin_home_search_hint" aria-hidden="true">&#8984;K</span>
+          </div>
+        </header>
+
+        <div class="o_viin_home_body flex-grow-1">
+          <t t-if="filteredApps.length">
+            <div class="o_viin_home_section_label">Applications</div>
+            <div class="o_viin_home_grid" t-ref="grid" role="list"
+                 t-att-data-viin-saved-order="state.savedOrder">
+              <t t-foreach="filteredApps" t-as="app" t-key="app.id">
+                <!-- The .o_app class + data-menu-xmlid mirror core's apps-menu tiles (web.NavBar.AppsMenu):
+                     this ONE home menu is the single app list core app-switch tours resolve. The repurposed
+                     navbar apps-menu button (apps_menu_home.xml) opens this menu, and every tour built on
+                     stepUtils.showAppsMenuItem targets `.o_app[data-menu-xmlid="<root menu xmlid>"]` next.
+                     app.xmlid is the app's root-menu xmlid, the identical value core's dropdown emits, and
+                     .o_app carries NO global SCSS (pure JS/tour hook) so it does not restyle the tile. -->
+                <button type="button" class="o_app o_viin_home_app d-flex flex-column align-items-center"
+                        role="listitem"
+                        t-att-class="{ o_viin_home_app_focus: app_index === state.focusIndex }"
+                        t-att-data-index="app_index"
+                        t-att-data-menu-xmlid="app.xmlid"
+                        t-att-title="app.name"
+                        t-on-click="() => this.launch(app)">
+                  <img class="o_viin_home_app_icon" loading="lazy"
+                       t-att-src="getIconUrl(app)" t-att-alt="app.name"/>
+                  <span class="o_viin_home_app_name" t-esc="app.name"/>
+                </button>
+              </t>
+            </div>
+          </t>
+          <div t-else="" class="o_viin_home_empty d-flex flex-column align-items-center justify-content-center text-muted">
+            <i class="fa fa-search fa-2x mb-2" aria-hidden="true"/>
+            <p>No applications match your search.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </t>
+
+</templates>

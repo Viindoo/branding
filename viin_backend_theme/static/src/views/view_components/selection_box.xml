@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+  <!-- D10 bulk bar (TDD §4c): tag the selection box so the theme SCSS can tint the whole native
+       selection container (the "N selected" count AND the bulk ActionMenus, which are siblings in
+       web's o_selection_container) as one brand bar. Contents untouched: only a hook class is added;
+       the count, select-all, unselect and ActionMenus markup and behaviour are preserved. -->
+  <t t-inherit="web.SelectionBox" t-inherit-mode="extension">
+    <xpath expr="//div[hasclass('o_selection_box')]" position="attributes">
+      <attribute name="class" add="o_viin_selection_bar" separator=" "/>
+    </xpath>
+  </t>
+
+</templates>

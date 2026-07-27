@@ -1,0 +1,47 @@
+// D10 - list chrome (mockup-03 / 10 / 32): a refined multi-record table - muted, uppercase,
+// letter-spaced column headers on a subtle raised header surface, hairline row separators, a subtle
+// row hover, and a brand-teal wash on bulk-selected rows.
+//
+// TOKEN + scoped restyle of .o_list_renderer / .o_list_table. Core drives the header + cell surface
+// and borders from COMPILE-TIME hex (--ListRenderer-thead-bg-color = $o-webclient-background-color;
+// --table-bg / --table-border-color = $o-view-background-color / $border-color), which would not flip
+// in dark; re-point each at the native UNPREFIXED runtime props scheme.scss flips (--tertiary-bg /
+// --body-bg / --border-color). Row DECORATION colours (decoration-danger / -warning / -success /
+// -info / -muted) render as Bootstrap .text-* utilities (web/.../views/utils.js
+// getClassNameFromDecoration), so they already ride the cluster semantic retint - the single SSOT -
+// and are deliberately NOT touched here. Selection checkboxes already read $primary (cluster teal) -
+// also left untouched. The teal selected-row wash uses color-mix over transparent so it composites
+// on either scheme. NO --viin-* custom properties; NO var() inside a Sass colour function; NO
+// hardcoded themeable hex.
+
+.o_list_renderer {
+    // Header: subtle raised surface + scheme-aware hairline (core uses a compile-time app-bg hex).
+    --ListRenderer-thead-bg-color: var(--tertiary-bg);
+    --ListRenderer-thead-border-end-color: var(--border-color);
+
+    .o_list_table {
+        // Cell surface + all internal borders on the scheme-aware runtime props.
+        --table-bg: var(--body-bg);
+        --table-border-color: var(--border-color);
+
+        // Column headers: muted, uppercase, letter-spaced - the D10 list signature (mockup-03/10/32).
+        thead th {
+            color: var(--secondary-color);
+            font-size: 0.75rem;
+            font-weight: $font-weight-medium;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        // Subtle row hover on the raised (Panel-2) tier; never on the row being edited or bulk-selected.
+        // Rides Bootstrap's --table-accent-bg mechanism (inherited by the row cells).
+        .o_data_row:not(.o_selected_row):not(.o_data_row_selected):hover {
+            --table-accent-bg: var(--tertiary-bg);
+        }
+
+        // Bulk-selected rows (mockup-04): a brand-teal wash composited over the cell surface.
+        .o_data_row_selected {
+            --table-accent-bg: color-mix(in srgb, #{$o-viin-chrome-base} 8%, transparent);
+        }
+    }
+}

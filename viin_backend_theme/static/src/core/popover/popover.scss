@@ -1,0 +1,24 @@
+// D12 - popovers (field / avatar-card / calendar quick-create popovers; TDD §5 D12, §4b "no JS
+// patch permitted").
+//
+// TOKEN + scoped restyle of .o_popover. Bootstrap paints the popover + its arrow from COMPILE-TIME
+// hex ($popover-bg / $popover-border-color / $popover-header-bg) which would not flip in dark;
+// re-point each Bootstrap runtime custom property (UNPREFIXED - Odoo sets $variable-prefix: '') at
+// the scheme-aware props scheme.scss flips (--body-bg / --tertiary-bg / --body-color /
+// --emphasis-color / --border-color). Re-pointing --popover-bg / --popover-border-color also
+// recolours the popover arrow (Bootstrap draws it from those props), so no separate arrow rule is
+// needed. COLOUR ONLY - the corner radius is core's and is NOT re-declared here (owner revision
+// 2026-08-03): core already pins `$popover-border-radius: $border-radius`
+// (web/.../bootstrap_overridden.scss:243), so the popover follows Odoo CE's scale on its own.
+// Elevation is scheme-aware via color-mix over --emphasis-color. Zero Viindoo-namespaced custom
+// properties; no var() inside a Sass colour function; no hardcoded themeable hex.
+
+.o_popover {
+    --popover-bg: var(--body-bg);
+    --popover-border-color: var(--border-color);
+    --popover-header-bg: var(--tertiary-bg);
+    --popover-header-color: var(--emphasis-color);
+    --popover-body-color: var(--body-color);
+
+    box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--emphasis-color) 16%, transparent);
+}

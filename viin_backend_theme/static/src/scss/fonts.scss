@@ -1,0 +1,29 @@
+// viin_backend_theme - vendored web-font @font-face declarations.
+//
+// W1 FLAG (pending binary asset task): the actual woff2 subsets (latin + latin-ext + vietnamese) for
+// Montserrat (headings) and Roboto (body) are not yet vendored into static/fonts/. The font-family
+// STACKS are already wired in primary_variables.scss with system fallbacks, so the UI is correct
+// today (system UI font) and will pick up the brand faces the moment the woff2 files land here and
+// the @font-face blocks below are un-commented. Kept as commented templates - NOT active - so no
+// 404 is emitted for a font file that does not exist yet.
+//
+// Vendoring plan (self-hosted, GDPR-safe - no Google CDN call): download the Montserrat + Roboto
+// woff2 subsets, drop them under viin_backend_theme/static/fonts/{montserrat,roboto}/, add the glob
+// to web.assets_backend, and enable the blocks below with `font-display: swap`.
+//
+// @font-face {
+//     font-family: "Montserrat";
+//     font-style: normal;
+//     font-weight: 400 700;                 // variable subset
+//     font-display: swap;
+//     src: url("/viin_backend_theme/static/fonts/montserrat/montserrat-latin.woff2") format("woff2");
+//     unicode-range: U+0000-00FF, U+0131, U+0152-0153, ...;   // latin
+// }
+// @font-face {
+//     font-family: "Roboto";
+//     font-style: normal;
+//     font-weight: 300 500;
+//     font-display: swap;
+//     src: url("/viin_backend_theme/static/fonts/roboto/roboto-latin.woff2") format("woff2");
+//     unicode-range: U+0000-00FF, U+0131, U+0152-0153, ...;
+// }

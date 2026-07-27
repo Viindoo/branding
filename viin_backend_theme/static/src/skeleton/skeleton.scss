@@ -1,0 +1,76 @@
+// D15 - skeleton loading placeholders (mockup-09; TDD §5 D15 "ViinSkeleton").
+//
+// SCSS-ONLY skeleton shimmer. Odoo 19 ships NO native shimmer skeleton (list/kanban loading uses
+// blurred `.o_view_sample_data`, not a skeleton), so mockup-09's grey shimmer bars are a design
+// intent core does not provide. A real ViinSkeleton OWL component would need risky wiring to the
+// LoadingIndicator / router timing (and a RED behaviour test) - out of scope for this SCSS-only
+// unit - so it is DEFERRED as a follow-up (see the unit report). What ships here is a self-
+// contained, reusable set of pure-CSS shimmer utility classes a future ViinSkeleton component (or
+// any t-call template) can drop in with zero wiring:
+//
+//   .o_viin_skeleton            base shimmering placeholder block
+//   .o_viin_skeleton_line       a text-line-height bar (stack several for a paragraph)
+//   .o_viin_skeleton_title      a wider, taller bar for a heading
+//   .o_viin_skeleton_circle     a round placeholder (avatar / icon)
+//
+// The block surface + sweep read the scheme-aware runtime props (--tertiary-bg / --emphasis-color)
+// so the shimmer is correct in light AND dark, and the animation is fully suppressed under
+// prefers-reduced-motion (A9 / §8 risk 3). Zero Viindoo-namespaced custom properties; no var()
+// inside a Sass colour function; no hardcoded themeable hex; no bare min()/max()/clamp().
+//
+// NO RADIUS ON THE BASE BLOCK (owner revision 2026-08-03 "bo hết"): it used to carry
+// `border-radius: #{$border-radius}`, so the bars are now square. `.o_viin_skeleton_circle` keeps
+// its 50% - that is the class's whole identity (a round avatar placeholder), not a rounding tweak;
+// without it the modifier is indistinguishable from the base block.
+
+.o_viin_skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--tertiary-bg);
+
+    // Moving highlight sweep (a faint tint of the scheme's emphasis colour over transparent).
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        transform: translateX(-100%);
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            color-mix(in srgb, var(--emphasis-color) 7%, transparent) 50%,
+            transparent 100%
+        );
+        animation: o_viin_skeleton_sweep 1.4s ease-in-out infinite;
+    }
+}
+
+.o_viin_skeleton_line {
+    height: 0.75rem;
+    width: 100%;
+
+    + .o_viin_skeleton_line {
+        margin-top: 0.5rem;
+    }
+}
+
+.o_viin_skeleton_title {
+    height: 1.125rem;
+    width: 40%;
+}
+
+// SHAPE-CRITICAL, deliberately kept: 50% is what makes this modifier a circle at all.
+.o_viin_skeleton_circle {
+    border-radius: 50%;
+}
+
+@keyframes o_viin_skeleton_sweep {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .o_viin_skeleton::after {
+        animation: none;
+    }
+}

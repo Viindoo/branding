@@ -1,0 +1,56 @@
+// W4 unit-b appearance systray styling. Theme-aware: the toggle sits in the navbar (theme-aware
+// LIGHT per TDD §2.5) and inherits its color; the dropdown options highlight the current choice with
+// the AA-safe interactive teal $o-main-link-color (#007F8E light / #4FD4E2 dark).
+// NO --viin-* custom properties; NO var() in a Sass color function.
+//
+// 2026-08-03 TEXT-LINK TIER - WHY THE Sass VAR AND NOT `var(--link-color)` ANY MORE.
+// These three declarations used to read the runtime `--link-color` prop, which was the AA teal in
+// both schemes. viin_brand_common/static/src/scss/link_tier.scss now splits that token: `--link-color`
+// is the HYPERLINK colour and turns brand-secondary PURPLE in light mode. A scheme toggle and a
+// density option are CONTROLS, not hyperlinks - under the COLOUR LAW (brand_variables.scss) teal =
+// ACT - so they are re-anchored onto `$o-main-link-color`, the interactive-teal Sass token that
+// link_tier.scss keeps scheme-split (#007F8E light, #4FD4E2 dark via dark_palette.scss:157). It is
+// in scope here through web._assets_backend_helpers, resolves per BUNDLE exactly as the runtime prop
+// used to resolve per scheme, and compiles to the SAME two values - so this is value-preserving.
+
+// Navbar toggle button (rendered inside .o_viin_appearance in the systray row).
+.o_viin_appearance_toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background-color: transparent;
+    color: inherit;
+    line-height: 1;
+
+    @media (prefers-reduced-motion: no-preference) {
+        transition: color 0.12s ease-in-out;
+    }
+
+    &:hover,
+    &:focus-visible {
+        color: $o-main-link-color;
+        outline: none;
+    }
+}
+
+// Dropdown menu contents (rendered in the dropdown popover, NOT under .o_viin_appearance).
+.o_viin_appearance_group {
+    padding: $o-spacer * 0.5 $o-spacer * 0.75 $o-spacer * 0.25;
+    color: var(--secondary-color);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.o_viin_appearance_option {
+    &.active {
+        color: $o-main-link-color;
+        font-weight: 600;
+    }
+
+    .fa-check {
+        color: $o-main-link-color;
+    }
+}

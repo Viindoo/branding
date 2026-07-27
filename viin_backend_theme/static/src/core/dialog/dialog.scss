@@ -1,0 +1,32 @@
+// D12 - dialogs / modals (mockup dialogs; TDD §5 D12, §4b "no JS patch permitted").
+//
+// TOKEN + scoped restyle of .o_dialog / .modal-content. Bootstrap paints the modal card from
+// COMPILE-TIME hex ($modal-content-bg = $o-view-background-color, $modal-content-border-color,
+// $modal-content-border-radius) which would not flip in dark; re-point each Bootstrap runtime
+// custom property (UNPREFIXED - Odoo sets $variable-prefix: '') at the scheme-aware props
+// scheme.scss flips (--body-bg / --body-color / --border-color). COLOUR ONLY - the corner radius is
+// core's and is NOT re-declared here (owner revision 2026-08-03): core already pins
+// `$modal-content-border-radius: $border-radius` (web/.../bootstrap_overridden.scss:265), so the
+// modal follows Odoo CE's scale on its own. Elevation is scheme-aware via color-mix over
+// --emphasis-color so the shadow softens in dark. Body/header/footer content and Dialog slots are
+// untouched (default slot stays the body - OWL pitfall §6). Zero Viindoo-namespaced custom properties; no var() inside a
+// Sass colour function; no hardcoded themeable hex; no bare min()/max()/clamp().
+
+.o_dialog {
+    .modal-content {
+        --modal-bg: var(--body-bg);
+        --modal-color: var(--body-color);
+        --modal-border-color: var(--border-color);
+
+        box-shadow: 0 1rem 2.5rem color-mix(in srgb, var(--emphasis-color) 18%, transparent);
+    }
+
+    // Header / footer hairlines follow the scheme-aware border (core uses a compile-time hex).
+    .modal-header {
+        --modal-header-border-color: var(--border-color);
+    }
+
+    .modal-footer {
+        --modal-footer-border-color: var(--border-color);
+    }
+}

@@ -1,0 +1,14 @@
+// T-3 (PR #658 review-fix) - dark arm for the bulk-selection "N selected" count foreground (Layer 2).
+//
+// selection_box.scss renders the bulk-selection count as $o-viin-chrome-base #007F8E text on the teal
+// wash bar - only 3.69:1 on the dark panel (#111B1E), failing WCAG SC 1.4.3 in dark. Contributed
+// EXPLICITLY to web.assets_web_dark (not auto-globbed); re-points ONLY the foreground teal to the base
+// dark-mode teal (--link-color). The teal wash BACKGROUND (color-mix over transparent) is left
+// untouched - it composites correctly on the dark panel. No --viin-* custom property; no hardcoded
+// brand hex.
+
+.o_control_panel_actions .o_selection_container:has(.o_viin_selection_bar) {
+    .o_selection_box .list-group-item.active {
+        color: var(--link-color);
+    }
+}

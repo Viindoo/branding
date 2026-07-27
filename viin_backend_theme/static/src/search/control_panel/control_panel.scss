@@ -1,0 +1,32 @@
+// D5 - control-panel signature (mockup-05/06/11/12): a clean breadcrumb row above the action row,
+// flush on the panel surface with a hairline separator.
+//
+// SCSS only - NO ControlPanel JS patch and NO template inherit (upgrade-safety NF2). Facet CHIP
+// colours stay cluster-owned (viin_brand_common .o_searchview_facet) and are NOT touched here.
+// The separator is re-expressed on the native runtime border prop (--border-color) instead of core's
+// compile-time $o-gray-300, so it flips correctly in dark mode. Neutral text reads native runtime
+// props; NO --viin-* custom properties, NO hardcoded themeable hex.
+
+.o_control_panel {
+    // Re-point core's border token (control_panel.scss:2 var(--ControlPanel-border-bottom, ...)) at
+    // the scheme-aware runtime border so the panel separation is subtle in light and correct in dark.
+    --ControlPanel-border-bottom: #{$border-width} solid var(--border-color);
+
+    // Breadcrumb: muted ancestor trail, strong final crumb (matches the mockup hierarchy).
+    .o_breadcrumb {
+        .o_last_breadcrumb_item {
+            color: var(--body-color);
+            font-weight: $font-weight-bold;
+        }
+
+        .o_back_button a,
+        .breadcrumb-item > a {
+            color: var(--secondary-color);
+
+            &:hover,
+            &:focus {
+                color: var(--body-color);
+            }
+        }
+    }
+}

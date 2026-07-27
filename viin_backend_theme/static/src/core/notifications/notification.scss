@@ -1,0 +1,29 @@
+// D12 - notifications / toasts (mockup-18; TDD §5 D12, §4b "no JS patch permitted"; §8 risk 7).
+//
+// TOKEN + scoped restyle of the notification card. Core reads a NATIVE lever:
+//   .o_notification { background-color: var(--Notification__background-color, #{$o-view-background-color}); }
+// so the surface is driven by setting that same lever at the scheme-aware --tertiary-bg (a subtly
+// raised panel tier) - which flips instantly in dark. This is the §8-risk-7 decision (drive the
+// toast surface from the native panel prop so it is scheme-CORRECT: light card in light, dark card
+// in dark) rather than the prototype's always-dark snackbar. Card gets a
+// scheme-aware hairline + elevation (color-mix over --emphasis-color), and the auto-dismiss
+// progress bar is tinted with viin_brand_common's AA teal ($o-viin-chrome-base). The per-type left
+// bar (.o_notification_bar) keeps the cluster semantic colours (success/warning/danger/info) - the
+// single SSOT lever - and is deliberately not touched. The corner radius is core's and is NOT
+// re-declared here (owner revision 2026-08-03): core's own notification.xml:5 already ships the
+// Bootstrap `rounded` utility on .o_notification, which resolves var(--border-radius), so the toast
+// follows Odoo CE's scale on its own. Zero Viindoo-namespaced custom properties;
+// no var() inside a Sass colour function; no hardcoded themeable hex.
+
+.o_notification_manager .o_notification {
+    --Notification__background-color: var(--tertiary-bg);
+
+    border: $border-width solid var(--border-color);
+    box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--emphasis-color) 20%, transparent);
+    color: var(--body-color);
+}
+
+// Auto-dismiss timer bar in brand teal (core sets only its size/position, not its colour).
+.o_notification_progress {
+    background-color: $o-viin-chrome-base;
+}

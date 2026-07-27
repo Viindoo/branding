@@ -1,0 +1,27 @@
+// D10 - bulk-selection bar (mockup-04): when rows are checked, the "N selected" count and the bulk
+// ActionMenus (Export / Archive / Delete) sit on one brand-teal bar. Count + ActionMenus are
+// SIBLINGS inside web's .o_selection_container (list_controller.xml / kanban_controller.xml), so the
+// bar surface lands on that native container, scoped by :has() to the tagged box - the
+// selection_box.xml t-inherit only adds the .o_viin_selection_bar hook, contents untouched.
+//
+// The teal wash uses color-mix over transparent so it composites on either scheme; the count reads
+// the cluster AA teal ($o-viin-chrome-base #007F8E). ActionMenus keep their own colours so Delete
+// stays danger-red (mockup-04). Scoped to .o_control_panel_actions so the modal-footer SelectionBox
+// (web/.../view_components/selection_box.scss) is left alone. NO --viin-* custom properties; NO var()
+// inside a Sass colour function; NO hardcoded themeable hex. NO radius either (owner revision
+// 2026-08-03 "bo hết"): the bar used to carry `border-radius: $border-radius`; core declares none on
+// .o_selection_container, so the teal wash is now a square band exactly like core's container.
+
+.o_control_panel_actions .o_selection_container:has(.o_viin_selection_bar) {
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    background-color: color-mix(in srgb, #{$o-viin-chrome-base} 10%, transparent);
+
+    // Neutralise core's solid "active" pill on the count - reads as teal text on the shared bar.
+    .o_selection_box .list-group-item.active {
+        background-color: transparent;
+        border-color: transparent;
+        color: $o-viin-chrome-base;
+        font-weight: $font-weight-medium;
+    }
+}

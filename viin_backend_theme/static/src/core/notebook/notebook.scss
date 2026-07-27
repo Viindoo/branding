@@ -1,0 +1,37 @@
+// D11 - notebook / tabs: active + hover tab underline in brand teal (mockup-05/06 "Order Lines").
+//
+// TOKEN + light restyle of the HORIZONTAL notebook only (the vertical variant keeps core chrome).
+// Active/hover accent reuses viin_brand_common's AA teal ($o-viin-chrome-base #007F8E) - not
+// re-declared. Neutral tab text + the header baseline read the native UNPREFIXED runtime props
+// (--secondary-color / --body-color / --border-color / --body-bg) so tabs stay correct in dark mode.
+// NO --viin-* custom properties; NO hardcoded themeable hex.
+
+.o_notebook:not(.vertical) {
+    // PR #658 item 5: the `.o_notebook_headers .nav` theme baseline (background-color + border-bottom)
+    // was removed - the notebook header reverts to core's own surface. Only the active/hover tab
+    // underline below (and its dark arm in notebook.dark.scss) is theme-owned.
+    .nav-link {
+        border: 0;
+        border-bottom: 2px solid transparent;
+        color: var(--secondary-color);
+        font-weight: $font-weight-medium;
+
+        &:hover {
+            border-color: transparent;
+            border-bottom-color: color-mix(in srgb, #{$o-viin-chrome-base} 45%, transparent);
+            color: var(--body-color);
+        }
+
+        &.active {
+            &,
+            &:hover,
+            &:focus,
+            &:active {
+                border-color: transparent;
+                border-bottom-color: $o-viin-chrome-base;
+                background-color: transparent;
+                color: $o-viin-chrome-base;
+            }
+        }
+    }
+}

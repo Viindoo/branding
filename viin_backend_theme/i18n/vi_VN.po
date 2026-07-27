@@ -1,0 +1,205 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_backend_theme
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-26 03:57+0000\n"
+"PO-Revision-Date: 2026-07-26 03:57+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.xml:0
+msgid "All apps"
+msgstr "Tất cả ứng dụng"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.xml:0
+msgid "Appearance"
+msgstr "Giao diện"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.xml:0
+msgid "Applications"
+msgstr "Ứng dụng"
+
+#. module: viin_backend_theme
+#: model:ir.model.fields,help:viin_backend_theme.field_res_users__viin_color_scheme
+msgid ""
+"Backend appearance: Light, Dark, or System (follow the device preference)."
+msgstr ""
+"Giao diện nền: Sáng, Tối, hoặc Hệ thống (theo tùy chọn của thiết bị)."
+
+#. module: viin_backend_theme
+#: model:ir.model.fields,field_description:viin_backend_theme.field_res_users__viin_color_scheme
+msgid "Color Scheme"
+msgstr "Chế độ màu"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
+msgid "Comfortable"
+msgstr "Thoải mái"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
+msgid "Compact"
+msgstr "Thu gọn"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
+#: model:ir.model.fields.selection,name:viin_backend_theme.selection__res_users__viin_color_scheme__dark
+msgid "Dark"
+msgstr "Tối"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.xml:0
+msgid "Density"
+msgstr "Mật độ"
+
+#. module: viin_backend_theme
+#: model:ir.model.fields,field_description:viin_backend_theme.field_ir_http__display_name
+#: model:ir.model.fields,field_description:viin_backend_theme.field_res_users__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
+msgid "Good afternoon"
+msgstr "Chào buổi chiều"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
+msgid "Good evening"
+msgstr "Chào buổi tối"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
+msgid "Good morning"
+msgstr "Chào buổi sáng"
+
+#. module: viin_backend_theme
+#: model:ir.model,name:viin_backend_theme.model_ir_http
+msgid "HTTP Routing"
+msgstr "Định tuyến HTTP"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/bottom_nav/bottom_nav.xml:0
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.xml:0
+msgid "Home"
+msgstr "Trang chủ"
+
+#. module: viin_backend_theme
+#: model:ir.model.fields,field_description:viin_backend_theme.field_ir_http__id
+#: model:ir.model.fields,field_description:viin_backend_theme.field_res_users__id
+msgid "ID"
+msgstr "ID"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
+#: model:ir.model.fields.selection,name:viin_backend_theme.selection__res_users__viin_color_scheme__light
+msgid "Light"
+msgstr "Sáng"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
+msgid "No applications match your search."
+msgstr "Không có ứng dụng nào khớp với tìm kiếm của bạn."
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.js:0
+msgid "Pin to rail"
+msgstr "Ghim vào thanh điều hướng"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/bottom_nav/bottom_nav.xml:0
+msgid "Primary"
+msgstr "Chính"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
+msgid "Search applications"
+msgstr "Tìm kiếm ứng dụng"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
+msgid "Search apps, records, actions..."
+msgstr "Tìm ứng dụng, bản ghi, thao tác..."
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.xml:0
+msgid "Settings"
+msgstr "Cài đặt"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
+#: model:ir.model.fields.selection,name:viin_backend_theme.selection__res_users__viin_color_scheme__auto
+msgid "System"
+msgstr "Hệ thống"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.xml:0
+msgid "Theme"
+msgstr "Chủ đề"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.js:0
+msgid "Unpin from rail"
+msgstr "Bỏ ghim khỏi thanh điều hướng"
+
+#. module: viin_backend_theme
+#: model:ir.model,name:viin_backend_theme.model_res_users
+msgid "User"
+msgstr "Người dùng"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.xml:0
+msgid "Viindoo"
+msgstr "Viindoo"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
+msgid "activities due today"
+msgstr "hoạt động đến hạn hôm nay"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
+msgid "activity due today"
+msgstr "hoạt động đến hạn hôm nay"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
+msgid "⌘K"
+msgstr "⌘K"

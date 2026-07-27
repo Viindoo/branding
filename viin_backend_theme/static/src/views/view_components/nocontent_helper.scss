@@ -1,0 +1,42 @@
+// D14 - empty-state / "no content" helper (mockup empty views; TDD §5 D14).
+//
+// TOKEN-ONLY restyle of the core nocontent helper (.o_view_nocontent / .o_nocontent_help). This
+// unit makes the EXISTING empty state look on-theme only - it does NOT fabricate custom SVG
+// illustrations (the D14 own-illustration set is a separate asset task, DEFERRED as a follow-up
+// like the fonts), so the per-module illustration ::before images are left untouched. What changes:
+// comfortable spacing + line-height, the lead help line promoted to the scheme-aware emphasis text
+// tier, the supporting copy on the muted tier, and actionable hints (links / "create the first
+// record" CTAs) accented with viin_brand_common's AA teal ($o-viin-chrome-base, deepening to
+// $o-viin-chrome-deep on hover). All neutrals read the scheme-aware runtime props so the empty
+// state is correct in light AND dark. Zero Viindoo-namespaced custom properties; no var() inside a
+// Sass colour function; no hardcoded themeable hex.
+
+.o_view_nocontent {
+    .o_nocontent_help {
+        color: var(--secondary-color);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+
+        // Lead help line (Odoo renders the primary message as the first block / smiling-face node):
+        // promote to the emphasis text tier for a clear, readable heading.
+        .o_view_nocontent_smiling_face,
+        > p:first-child {
+            margin-bottom: 0.5rem;
+            color: var(--emphasis-color);
+            font-size: 1.0625rem;
+            font-weight: $font-weight-medium;
+        }
+
+        // Actionable hints (links + create CTAs) in brand teal.
+        a,
+        .o_nocontent_create {
+            color: $o-viin-chrome-base;
+            font-weight: $font-weight-medium;
+
+            &:hover,
+            &:focus {
+                color: $o-viin-chrome-deep;
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+// Apps-icon metrics parity with core's own apps-menu trigger (PR #658 item 2).
+//
+// >>> NO COLOUR IS DECLARED IN THIS FILE, DELIBERATELY (owner revert 2026-08-03). <<<
+// The apps icon must be WHITE, and it is core that paints it: apps_menu_home.xml now gives the
+// repurposed button core's `o_nav_entry` class, so `.o_main_navbar .o_nav_entry` picks up the
+// `%-main-navbar-entry-base` placeholder (web/.../webclient/navbar/navbar.variables.scss:34-50),
+// whose `o-hover-text-color()` emits `color: var(--NavBar-entry-color, #{$o-navbar-entry-color})`
+// - #FFFFFF, pinned by viin_brand_common/static/src/scss/brand_variables.scss:218. Adding ANY
+// `color` here is what turned the icon black last time (`text-reset` -> `inherit` -> body #212529),
+// so the rule for this file is: no colour, ever. Guarded by
+// viin_backend_theme/tests/test_theme_core_chrome_untouched.py.
+//
+// That same placeholder supplies display:flex + align-items:center + the navbar-row height, so the
+// three properties this file used to hand-replicate are core's again and are gone from here - the
+// vertical alignment now comes from the exact rule core uses for every other navbar entry.
+//
+// WHAT REMAINS is exactly the two METRIC properties core gives its OWN apps trigger and no other
+// navbar entry - `.o_main_navbar .o_navbar_apps_menu .dropdown-toggle` (core navbar.scss:196-201) -
+// which the repurposed button no longer matches because it is not a `.dropdown-toggle`. Without
+// them the apps icon would render at the generic entry gutter and the generic 1em glyph instead of
+// core's wider gutter and 1.2em brand-sized glyph. Both read core Sass vars in scope in
+// web.assets_backend (primary_variables.scss:177 / navbar.variables.scss:21, reached via
+// web._assets_primary_variables); neither is a colour and neither is a corner radius.
+.o_navbar_apps_menu .o_viin_apps_home {
+    --NavBar-entry-padding-left: #{$o-horizontal-padding};
+
+    font-size: $o-navbar-brand-font-size;
+}

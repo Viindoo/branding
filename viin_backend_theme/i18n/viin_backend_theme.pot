@@ -1,0 +1,204 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_backend_theme
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-26 03:57+0000\n"
+"PO-Revision-Date: 2026-07-26 03:57+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.xml:0
+msgid "All apps"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.xml:0
+msgid "Appearance"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.xml:0
+msgid "Applications"
+msgstr ""
+
+#. module: viin_backend_theme
+#: model:ir.model.fields,help:viin_backend_theme.field_res_users__viin_color_scheme
+msgid ""
+"Backend appearance: Light, Dark, or System (follow the device preference)."
+msgstr ""
+
+#. module: viin_backend_theme
+#: model:ir.model.fields,field_description:viin_backend_theme.field_res_users__viin_color_scheme
+msgid "Color Scheme"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
+msgid "Comfortable"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
+msgid "Compact"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
+#: model:ir.model.fields.selection,name:viin_backend_theme.selection__res_users__viin_color_scheme__dark
+msgid "Dark"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.xml:0
+msgid "Density"
+msgstr ""
+
+#. module: viin_backend_theme
+#: model:ir.model.fields,field_description:viin_backend_theme.field_ir_http__display_name
+#: model:ir.model.fields,field_description:viin_backend_theme.field_res_users__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
+msgid "Good afternoon"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
+msgid "Good evening"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
+msgid "Good morning"
+msgstr ""
+
+#. module: viin_backend_theme
+#: model:ir.model,name:viin_backend_theme.model_ir_http
+msgid "HTTP Routing"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/bottom_nav/bottom_nav.xml:0
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.xml:0
+msgid "Home"
+msgstr ""
+
+#. module: viin_backend_theme
+#: model:ir.model.fields,field_description:viin_backend_theme.field_ir_http__id
+#: model:ir.model.fields,field_description:viin_backend_theme.field_res_users__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
+#: model:ir.model.fields.selection,name:viin_backend_theme.selection__res_users__viin_color_scheme__light
+msgid "Light"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
+msgid "No applications match your search."
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.js:0
+msgid "Pin to rail"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/bottom_nav/bottom_nav.xml:0
+msgid "Primary"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
+msgid "Search applications"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
+msgid "Search apps, records, actions..."
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.xml:0
+msgid "Settings"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
+#: model:ir.model.fields.selection,name:viin_backend_theme.selection__res_users__viin_color_scheme__auto
+msgid "System"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.xml:0
+msgid "Theme"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.js:0
+msgid "Unpin from rail"
+msgstr ""
+
+#. module: viin_backend_theme
+#: model:ir.model,name:viin_backend_theme.model_res_users
+msgid "User"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/navbar_rail.xml:0
+msgid "Viindoo"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
+msgid "activities due today"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
+msgid "activity due today"
+msgstr ""
+
+#. module: viin_backend_theme
+#. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
+msgid "⌘K"
+msgstr ""

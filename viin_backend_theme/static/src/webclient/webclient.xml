@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+  <!-- T-4 (PR #658 review-fix): prepend a "Skip to main content" bypass-blocks link as the FIRST
+       focusable element of the webclient shell (WCAG 2.4.1). It is visually hidden until focused
+       (skip_link.scss) and, when activated, moves keyboard focus into the action region via
+       WebClient.skipToMainContent (webclient_patch.js). Purely additive: the core NavBar,
+       ActionContainer and MainComponents are left untouched. -->
+  <t t-inherit="web.WebClient" t-inherit-mode="extension">
+    <xpath expr="//t[@t-if='!state.fullscreen']" position="before">
+      <a href="#" class="o_viin_skip_link" t-on-click.prevent="() => this.skipToMainContent()">Skip to main content</a>
+    </xpath>
+  </t>
+
+</templates>

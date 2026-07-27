@@ -1,0 +1,19 @@
+// T-3 (PR #658 review-fix) - dark arm for the empty-state CTA/link foreground (Layer 2).
+//
+// nocontent_helper.scss accents the empty-state hints (links + "create the first record" CTA) with
+// $o-viin-chrome-base #007F8E - only 3.69:1 on the dark panel (#111B1E), failing WCAG SC 1.4.3 in
+// dark. Contributed EXPLICITLY to web.assets_web_dark (not auto-globbed); re-points ONLY the
+// foreground teal to the base dark-mode teal (--link-color / --link-hover-color). No --viin-* custom
+// property; no hardcoded brand hex.
+
+.o_view_nocontent .o_nocontent_help {
+    a,
+    .o_nocontent_create {
+        color: var(--link-color);
+
+        &:hover,
+        &:focus {
+            color: var(--link-hover-color);
+        }
+    }
+}

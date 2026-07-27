@@ -1,0 +1,23 @@
+// D12 - tooltips (field help / technical tooltips; TDD §5 D12, §4b "no JS patch permitted").
+//
+// TOKEN + scoped restyle of .o-tooltip. A tooltip is meant to be a HIGH-CONTRAST inverted surface;
+// Bootstrap's default ($tooltip-bg: $black) is a fixed dark chip that loses contrast in dark mode.
+// Re-point the Bootstrap tooltip runtime custom properties (UNPREFIXED - Odoo sets
+// $variable-prefix: '') to an INVERTED scheme-aware pair: surface = --emphasis-color (dark in
+// light, light in dark), text = --body-bg (light on the dark chip, dark on the light chip) - so the
+// chip stays strongly legible in BOTH schemes. The arrow is recoloured to match (core sets it from
+// the compile-time $tooltip-bg). COLOUR ONLY - the corner radius is core's and is NOT re-declared
+// here (owner revision 2026-08-03): Bootstrap already forwards it as
+// `$tooltip-border-radius: var(--border-radius)` (lib/bootstrap/scss/_variables.scss:1408), so the
+// chip follows Odoo CE's scale on its own. Zero Viindoo-namespaced custom properties; no var()
+// inside a Sass colour function; no hardcoded themeable hex; no bare min()/max()/clamp().
+
+.o-tooltip {
+    --tooltip-bg: var(--emphasis-color);
+    --tooltip-color: var(--body-bg);
+
+    // Arrow follows the chip surface (core points it at the compile-time $tooltip-bg).
+    + .popover-arrow {
+        --popover-bg: var(--emphasis-color);
+    }
+}

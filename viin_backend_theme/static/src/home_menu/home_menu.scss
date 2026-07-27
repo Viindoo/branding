@@ -1,0 +1,259 @@
+// D3 - ViinHomeMenu styling. Mockup-faithful (mockup-02-home-appdrawer / mockup-25-mobile-home):
+// a LIGHT page (theme-aware, flips with dark mode) carrying a LEFT-aligned greeting + date subtitle,
+// a full-width white search box, an "Applications" section label, then one flat dense app grid.
+//
+// COLORS: theme-aware native Bootstrap runtime props ONLY. Odoo compiles Bootstrap with
+// $variable-prefix:'' (bootstrap_overridden.scss:51), so the runtime props are UNPREFIXED
+// (--secondary-bg / --body-bg / --body-color / --secondary-color / --border-color), NOT --bs-*.
+// scheme.scss flips them under [data-bs-theme="dark"]. The only brand accent is the viin_brand
+// $o-brand-primary teal on tile hover/focus. NO teal-gradient banner (it diverged from the mockup),
+// NO --viin-* custom properties, NO var() into a Sass color function.
+//
+// NO RADIUS ANYWHERE (owner revision 2026-08-03 "bo hết"). The search box, the "/" hint chip, the
+// app tiles and the app icons used to pin $o-border-radius-lg / -sm / base. Those were already
+// core's OWN values (not a D13 inflation), but the owner asked for every cluster-owned radius
+// declaration to go, so all four are removed and the surfaces are square-cornered. Restoring them
+// is a one-line-each revert to the same `$o-border-radius*` aliases if the owner misses the tiles.
+
+// =================================================================================================
+// THE APP-DASHBOARD BACKGROUND (owner request 2026-08-03: "Ở trên app dashboard, tao muốn có cái
+// background như ở các phiên bản trước đã từng có")
+// =================================================================================================
+// INVESTIGATION - WHY THIS IS DRAWN AND NOT AN IMAGE FILE.
+//  1. ODOO 19 CE CORE SHIPS NO SUCH IMAGE. The whole of web/static/img/ holds exactly two
+//     backgrounds - graph_background.png and form_sheetbg.png - and neither is a home/app-drawer
+//     surface. CE has no app drawer at all (it is an Enterprise feature); the single home-menu token
+//     left in core 19.0 is the bare class name `.o_home_menu_background` in
+//     web/static/src/core/bottom_sheet/bottom_sheet.scss:212, with no asset behind it.
+//  2. THE IMAGE THE PREVIOUS VIINDOO VERSIONS USED IS NOT OURS. Recovered from this repo's history:
+//     origin/19.0 to_backend_theme/static/src/components/apps_menu/apps_menu.scss:3 set
+//       --app-menu-background: url("/web_responsive/static/src/img/home-menu-bg-overlay.svg"),
+//                              linear-gradient(to bottom, $brand-primary-dark,
+//                                              desaturate(lighten($brand-primary-dark, 20%), 15));
+//     i.e. a faint faceted-polygon overlay over a two-stop teal gradient. That SVG (366 bytes, three
+//     polygons at fill-opacity .02/.03) belongs to web_responsive - OCA, LGPL-3, © LasLabs /
+//     Tecnativa / ITerra / Onestein - and this PR DELETES web_responsive. Copying an LGPL-3 asset
+//     into this OPL-1 module is a licence conflict, so it is not re-added. The only other candidate,
+//     to_backend_theme/static/src/img/app_dashboard_bg.jpg, was deleted in 2018 (cd7fd7f, "remove
+//     unused image") and was itself a rename of backend_theme_v10/.../material-background.jpg - a
+//     stock wallpaper of unknown provenance, which is worse, not better.
+//  3. SO IT IS RE-DRAWN FROM THE BRAND TOKENS. Original work, no third-party asset, and the DESIGN
+//     INTENT of (2) is preserved: a soft teal wash plus two large shallow facets. Pure CSS layers,
+//     so it adds ZERO bytes of image payload to the bundle (no new file, no extra HTTP request, no
+//     data-URI) - roughly 0.5 kB of gradient declarations - and it is scheme-aware for free, which a
+//     single flat SVG could not be (a dark-canvas facet needs the opposite fill from a light one).
+//
+// CONTRAST IS THE CONSTRAINT, NOT THE COLOUR. The app TILES are opaque cards (--body-bg), so the
+// tile labels are mathematically unaffected by whatever sits behind them. What IS at risk is the
+// text painted DIRECTLY on this surface - the greeting, the date subtitle and the purple
+// "APPLICATIONS" label - so the tint peaks are deliberately low single digits and the strongest
+// layer is aimed BELOW the header band. Measured on the resulting surface: the purple section label
+// keeps >= 5:1 and the greeting >= 11:1, both clear of WCAG AA. Raising these percentages without
+// re-measuring the section label is the way to break that.
+//
+// The layers are painted with color-mix() against `transparent`, so they composite over whatever
+// --secondary-bg resolves to in the active scheme. Interpolating a Sass token INTO a CSS function is
+// the cluster's established form (see the notebook underline); it is NOT a var() inside a Sass
+// colour function, which stays banned.
+.o_viin_home_menu {
+    // Facet + wash tints. Light uses the DECORATIVE brand teal (it never carries text here, so the
+    // 2.33:1 identity teal is exactly the right rung). Dark uses the deep teal instead, which sits
+    // far closer to the canvas - the "darker treatment" the dark scheme needs, and it keeps the dark
+    // page reading as dark instead of as a washed-out teal panel.
+    //
+    // THE DARK PERCENTAGES ARE LOWER THAN THE LIGHT ONES LOOK LIKE THEY SHOULD BE, AND THAT IS
+    // MEASURED, NOT TASTE. A dark canvas has almost no luminance to spare: the first draft ran the
+    // dark layers at 30/20/26% and tests/test_home_menu_background.py caught the result - the muted
+    // section label fell from 7.24:1 on the bare #0B1315 band to 4.49:1 over the composited
+    // backdrop, i.e. BELOW WCAG AA. The same tint that is imperceptible on a light band is a
+    // page-repaint on a dark one. At 12/8/10% the worst-case composite is #08272C and the label
+    // recovers to 6.06:1, with the wash still clearly visible. Re-tune these only with that test
+    // watching.
+    $-bg-facet-a: if(
+        $o-viin-dark-bundle,
+        color-mix(in srgb, #{$o-viin-chrome-deep} 12%, transparent),
+        color-mix(in srgb, #{$o-brand-primary} 7%, transparent)
+    );
+    $-bg-facet-b: if(
+        $o-viin-dark-bundle,
+        color-mix(in srgb, #{$o-viin-chrome-deep} 8%, transparent),
+        color-mix(in srgb, #{$o-brand-primary} 5%, transparent)
+    );
+    $-bg-wash: if(
+        $o-viin-dark-bundle,
+        color-mix(in srgb, #{$o-viin-chrome-deep} 10%, transparent),
+        color-mix(in srgb, #{$o-brand-primary} 8%, transparent)
+    );
+
+    height: 100%;
+    overflow-y: auto;
+    background-color: var(--secondary-bg); // light-gray page (flips in dark)
+    // Two shallow facets (echoing the polygons of the previous theme's overlay) over a vertical wash
+    // that fades out before it reaches the header text. Declared on the scrolling box, so the
+    // default `background-attachment: scroll` pins them to the box - the backdrop stays put while
+    // the app grid scrolls, which is what the old full-page drawer did.
+    //
+    // EACH FACET EDGE IS FEATHERED OVER ~6%, NOT A ZERO-WIDTH STOP. A hard stop is what the source
+    // SVG could afford at 2-3% fill on a saturated teal page; on today's near-neutral band the same
+    // hard edge renders as a single straight seam across the full width and reads as a banding
+    // artifact rather than as a designed fold (confirmed by eye on the live build). A short ramp
+    // keeps the facet legible as a facet and removes the seam.
+    background-image:
+        linear-gradient(163deg, transparent 0 54%, $-bg-facet-a 60%),
+        linear-gradient(-14deg, transparent 0 68%, $-bg-facet-b 74%),
+        linear-gradient(to top, $-bg-wash 0%, transparent 55%);
+    background-repeat: no-repeat;
+    color: var(--body-color);
+    padding-block: ($o-spacer * 2.5);
+
+    // Left-aligned content column, roughly centered in the available width (mockup proportions).
+    .o_viin_home_content {
+        width: 100%;
+        max-width: 1040px;
+        margin-inline: auto;
+        padding-inline: ($o-spacer * 1.5);
+    }
+
+    // --- header: greeting + date subtitle + white search (all left-aligned) ---
+    .o_viin_home_header {
+        gap: $o-spacer;
+        margin-block-end: ($o-spacer * 1.5);
+
+        .o_viin_home_greeting {
+            margin: 0;
+            font-family: $o-headings-font-family;
+            font-weight: 700;
+            font-size: 2rem;
+            line-height: 1.15;
+            color: var(--body-color);
+        }
+
+        .o_viin_home_subtitle {
+            margin: 0;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+        }
+
+        .o_viin_home_search {
+            width: 100%;
+            margin-block-start: ($o-spacer * 0.5);
+            gap: 0.6rem;
+            padding: 0.6rem 0.9rem;
+            border: $border-width solid var(--border-color);
+            background-color: var(--body-bg); // white card (flips in dark)
+            box-shadow: 0 1px 2px rgba(var(--emphasis-color-rgb), 0.04);
+
+            &:focus-within {
+                border-color: $o-brand-primary;
+                box-shadow: 0 0 0 0.15rem rgba($o-brand-primary, 0.18);
+            }
+
+            .o_viin_home_search_icon {
+                color: var(--secondary-color);
+                flex: 0 0 auto;
+            }
+
+            .o_viin_home_search_input {
+                flex: 1 1 auto;
+                border: 0;
+                background: transparent;
+                color: var(--body-color);
+                outline: none;
+                font-size: 1rem;
+
+                &::placeholder { color: var(--secondary-color); }
+            }
+
+            .o_viin_home_search_hint {
+                flex: 0 0 auto;
+                padding: 0.1rem 0.4rem;
+                border: $border-width solid var(--border-color);
+                color: var(--secondary-color);
+                font-size: 0.75rem;
+                line-height: 1.2;
+            }
+        }
+    }
+
+    // --- "APPLICATIONS" section label ---
+    // PR #658 item 6 (owner decision 2026-08-03). Under viin_brand_common's COLOUR LAW
+    // (static/src/scss/brand_variables.scss) a section label is not an action - it is the STRUCTURE
+    // the app grid is organised into - so it carries the brand SECONDARY purple, matching the
+    // group-by search facet and the list group header. This is the lowest-risk purple in the
+    // cluster: the class is theme-owned (home_menu.xml:32), no core rule targets it, so no
+    // !important and no token re-point is needed - a plain `color` on a (0,2,0) selector.
+    //   light  #7F4282 on the --secondary-bg band #E9ECEF = 5.90:1
+    // (It was var(--secondary-color), the muted-grey tier - readable but semantically silent.)
+    //
+    // >>> OWNER REVISION 2026-08-03: the purple is LIGHT-MODE ONLY. <<<
+    // In web.assets_web_dark the label returns to exactly what it was before the accent landed -
+    // var(--secondary-color), the muted tier - which is the "default look / core colours" the owner
+    // asked for and is comfortably readable there: viin_brand_common's dark_palette.scss re-points
+    // $body-secondary-color to #8EA5A8, and Bootstrap emits it as --secondary-color, giving 7.24:1
+    // on the dark band #0B1315 (vs 2.24:1 if the light purple had simply recompiled).
+    // The flag is viin_brand_common's $o-viin-dark-bundle, declared in brand_variables.scss inside
+    // web._assets_primary_variables - in scope here because that bundle is included at the top of
+    // web.assets_backend, which web.assets_web_dark recompiles. Still no *.dark.scss companion: the
+    // choice is made at COMPILE time, so each bundle carries exactly one declaration.
+    .o_viin_home_section_label {
+        margin-block-end: $o-spacer;
+        @if $o-viin-dark-bundle {
+            color: var(--secondary-color);
+        } @else {
+            color: $o-brand-secondary;
+        }
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    // --- flat dense grid: ~6 cols on desktop, auto-stepping down to 2 cols on mobile (mobile-first) ---
+    .o_viin_home_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: $o-spacer;
+    }
+
+    .o_viin_home_app {
+        gap: 0.6rem;
+        padding: ($o-spacer * 1.25) 0.5rem;
+        border: $border-width solid var(--border-color);
+        background-color: var(--body-bg); // white card (flips in dark)
+        color: inherit;
+        cursor: pointer;
+        text-align: center;
+        transition: border-color 0.12s ease-in-out, box-shadow 0.12s ease-in-out,
+            transform 0.12s ease-in-out;
+
+        &:hover,
+        &:focus-visible,
+        &.o_viin_home_app_focus {
+            border-color: $o-brand-primary;
+            box-shadow: 0 2px 12px rgba($o-brand-primary, 0.18);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .o_viin_home_app_icon {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+        }
+
+        .o_viin_home_app_name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            line-height: 1.2;
+            color: var(--body-color);
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+    }
+
+    .o_viin_home_empty {
+        min-height: 40vh;
+    }
+}

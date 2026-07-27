@@ -1,0 +1,36 @@
+// W4 unit-b - density size rules (mockup-32-sales-list-compact). TDD §5 / §5a: [data-viin-density]
+// is the ONE theme-owned FUNCTIONAL attribute (comfortable 44px / compact 34px rows), NOT a color
+// token. Attribute-scoped SCSS only: NO custom property, NO color, NO --viin-*. The attribute is
+// stamped on <html> by the W4a boot reflection + flipped instantly by the viin_theme service.
+//
+// Compile-time size values, runtime-scoped by the attribute selector. $o-* Sass vars come from
+// web._assets_backend_helpers (top of web.assets_backend), so file order here is irrelevant.
+
+// Comfortable (default) - explicit so the two states are predictable and the toggle is reversible.
+[data-viin-density="comfortable"] {
+    .o_list_renderer .o_data_row {
+        height: 44px;
+    }
+}
+
+// Compact - denser list + kanban (mockup-32). The list row height is the acceptance target (§7).
+// A table row's `height` is only a FLOOR: the row ends up as tall as its cell content, so the row
+// hits 34px only when the cell padding + line-height fit inside it. Trim both so the content is
+// <= 34px and the height floor governs.
+[data-viin-density="compact"] {
+    .o_list_renderer {
+        .o_data_row {
+            height: 34px;
+        }
+
+        .o_data_cell,
+        thead th {
+            padding-block: 0.15rem;   // ~2.4px each - was 0.25rem, which left the row at ~40px
+            line-height: 1.2;
+        }
+    }
+
+    .o_kanban_renderer .o_kanban_record {
+        padding: $o-spacer * 0.5;
+    }
+}
