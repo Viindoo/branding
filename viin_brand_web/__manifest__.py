@@ -27,8 +27,8 @@ Editions Supported
 
     'author': "Viindoo",
     'website': "https://viindoo.com/apps/modules/19.0/viin_brand_web?force_show=1",
-    'live_test_url': "https://v18demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
+    'live_test_url': "https://v19demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
@@ -43,16 +43,21 @@ Editions Supported
     # always loaded
     'assets': {
         'web.assets_backend': [
-            'viin_brand_web/static/src/scss/mobile_apps_funnel.scss',
             'viin_brand_web/static/src/core/dialog/dialog.js',
             'viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml',
-            'viin_brand_web/static/src/core/webclient/settings_form_view/widgets/mobile_apps_funnel.xml',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_web/static/tests/dialog_debrand.test.js',
+            'viin_brand_web/static/tests/action_dialog_debrand.test.js',
+        ],
+        'web.assets_tests': [
+            'viin_brand_web/static/tests/tours/about_debrand_tour.js',
         ],
     },
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
