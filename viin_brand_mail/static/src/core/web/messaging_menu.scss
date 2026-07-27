@@ -1,3 +1,26 @@
 .o-mail-MessagingMenu {
     min-height: inherit;
 }
+
+// Systray unread counters (a11y pass). Both badges are rendered inside .o_main_navbar
+// .o_menu_systray, which paints them `background-color: var(--o-navbar-badge-bg,
+// #{$o-navbar-badge-bg})` with `color: var(--o-navbar-badge-color, ...)` inheriting the navbar's
+// near-white entry colour (web/static/src/webclient/navbar/navbar.scss). $o-navbar-badge-bg
+// resolves to $o-success = #00B365, giving only 2.75:1 - well under the WCAG AA 4.5:1 needed for
+// this 11px text. Both contextual tokens are re-pointed HERE, on the badge elements themselves,
+// so the fix is scoped to these two counters: $o-success stays untouched globally and every other
+// success surface (buttons, alerts) is unaffected. Deriving the shade with mix() from $o-success
+// keeps the value data-driven off the brand SSOT instead of hardcoding a second green literal;
+// mix(black, $o-success, 28%) = #008149, which is 4.96:1 against pure white.
+// ActivityMenu is housed here rather than in a new file so the manifest needs no extra asset entry
+// - both counters are backend systray-menu chrome and web.assets_backend is the only bundle that
+// ships either template.
+//
+// The shade itself is $o-viin-unread-badge-green, DECLARED in this module's
+// static/src/core/common/core.scss (loaded earlier in this bundle) because the Discuss unread badge
+// now needs the same value for its dark arm. One derivation, one home (ODOO-AI-ETHOS #11 SSOT).
+.o-mail-MessagingMenu-counter,
+.o-mail-ActivityMenu-counter {
+    --o-navbar-badge-bg: #{$o-viin-unread-badge-green};
+    --o-navbar-badge-color: white;
+}

@@ -1,7 +1,6 @@
 a.o_mail_redirect,
 a.o_channel_redirect {
     background-color: initial;
-    padding-left: 0;
     font-size: inherit;
 
     &:hover,
@@ -12,6 +11,31 @@ a.o_channel_redirect {
     }
 }
 
+// Unread-counter fill. Core paints every `.o-discuss-badge` (and its `.o-innerBadge`)
+// `background-color: var(--o-discuss-badge-bg) !important` with a forced `color: white !important`,
+// defaulting the token to $o-success (mail/static/src/core/common/core.scss:32-44) - white on
+// #00B365 is only 2.75:1, the same AA failure the systray counters have. This module re-points the
+// token; because core's consumer carries `!important`, feeding the custom property is the only
+// lever that works.
+//
+// THE SHADE IS SCHEME-SPLIT (owner revision 2026-08-03: no purple in dark).
+// LIGHT keeps the brand purple: #FFFFFF on #7F4282 = 6.99:1.
+// DARK had a LIVE, UNGUARDED AA FAILURE that the purple's retired dark arm caused - $o-brand-secondary
+// lightened to #B589B8 there, and core's forced white label measured 2.90:1 on it. With the purple now
+// light-only that arm is gone, and simply letting the token recompile would be worse still (it
+// collapses to the muted #8EA5A8, white = 2.59:1). So dark takes the shade the cluster ALREADY
+// established for exactly this job - the AA-corrected $o-success the systray counters use
+// (static/src/core/web/messaging_menu.scss) - which is green, i.e. core's own semantic for this
+// badge, and clears AA under the forced white: #FFFFFF on #008149 = 4.96:1.
+// Declared as a token here (this is the first viin_brand_mail SCSS in every bundle it ships in) and
+// consumed by messaging_menu.scss too, so the one derivation has one home (ODOO-AI-ETHOS #11 SSOT);
+// derived with mix() from the brand $o-success rather than hardcoding a second green literal.
+$o-viin-unread-badge-green: mix(black, $o-success, 28%) !default;   // #008149, 4.96:1 under white
+
 .o-discuss-badge {
-    --o-discuss-badge-bg: #{$o-brand-primary}; // #7f4282
+    @if $o-viin-dark-bundle {
+        --o-discuss-badge-bg: #{$o-viin-unread-badge-green};
+    } @else {
+        --o-discuss-badge-bg: #{$o-brand-secondary}; // #7F4282 (= $o-brand-secondary, purple)
+    }
 }

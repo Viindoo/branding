@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 09:34+0000\n"
-"PO-Revision-Date: 2025-09-22 09:34+0000\n"
+"POT-Creation-Date: 2026-07-24 05:13+0000\n"
+"PO-Revision-Date: 2026-07-24 05:13+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -77,6 +77,21 @@ msgid "Delete Emails"
 msgstr "Xoá Email"
 
 #. module: viin_brand_mail
+#: model:ir.model.fields,field_description:viin_brand_mail.field_ir_http__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_gateway_allowed__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_mail__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_template__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_thread__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_alias
 msgid "Email Aliases"
 msgstr "Bí danh email"
@@ -115,6 +130,21 @@ msgstr "Định tuyến HTTP"
 #: model:ir.model.fields.selection,name:viin_brand_mail.selection__res_users__notification_type__inbox
 msgid "Handle in Viindoo"
 msgstr "Xử lý trong hệ thống"
+
+#. module: viin_brand_mail
+#: model:ir.model.fields,field_description:viin_brand_mail.field_ir_http__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_gateway_allowed__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_mail__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_template__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_thread__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_config_settings__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__id
+msgid "ID"
+msgstr ""
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,help:viin_brand_mail.field_res_config_settings__alias_domain_id
@@ -162,12 +192,12 @@ msgstr "Thư gửi đi"
 #: model:ir.model.fields,help:viin_brand_mail.field_res_users__notification_type
 msgid ""
 "Policy on how to handle Chatter notifications:\n"
-"- Handle by Emails: notifications appear in your Viindoo Inbox and are sent to your email at the same time\n"
-"- Handle in Viindoo: notifications appear in your Viindoo Inbox"
+"- By Emails: notifications are sent to your email address\n"
+"- In Viindoo: notifications appear in your Viindoo Inbox"
 msgstr ""
-"Chính sách cho cách thức xử lý các thông báo Chatter:\n"
-"- Xử lý bằng Email: các thông báo sẽ xuất hiện trong hộp thư đến của hệ thống và đồng thời được gửi đến địa chỉ email của bạn\n"
-"- Xử lý trong Hệ thống: các thông báo xuất hiện trong Hộp thư đến trong hệ thống"
+"Chính sách xử lý thông báo của cửa sổ trò chuyện:\n"
+"- Bằng email: thông báo được gửi tới địa chỉ email của bạn\n"
+"- Trong Viindoo: thông báo xuất hiện trong hộp thư đến Viindoo"
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_push_device

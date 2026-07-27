@@ -1,37 +1,90 @@
+// Chat-window chrome de-brand. Restores the 18.0 semantic - darkened brand TEAL header carrying
+// white glyphs - that the v19 port lost by substituting the brand PURPLE $o-brand-secondary.
+// 18.0 used $brand-primary-dark = darken($brand-primary #00bbce, 10%) = #008D9B, which is only
+// 3.97:1 against white text, so the restore lands on the cluster CHROME-BASE AA teal SSOT
+// $o-navbar-background (#007F8E, 4.74:1) declared in
+// viin_brand_common/static/src/scss/brand_variables.scss - no new literal is introduced.
+//
+// This file loads into web.assets_backend, mail.assets_public AND im_livechat.assets_embed_core,
+// always immediately after mail/static/src/core/common/chat_window.scss, so equal-specificity
+// overrides win on source order alone; !important appears only where a core/Bootstrap !important
+// has to be beaten.
 .o-mail-ChatWindow-header {
-    background-color: $brand-primary-dark !important;
+    // v19 renamed the header dropdown-toggle hover token. Neither .o-mail-ChatWindow-command nor
+    // --mail-ChatWindow-commandHoverColor exists anywhere in v19 core: the toggle is
+    // .o-mail-ChatWindow-moreActions and reads --mail-ChatWindow-moreActionsHoverColor
+    // (mail/static/src/core/common/chat_window.scss), whose default is black - unreadable on the
+    // teal chrome. White keeps the 18.0 "header glyphs stay white" semantic.
+    --mail-ChatWindow-moreActionsHoverColor: white;
+
+    background-color: $o-navbar-background !important;
     color: white;
-    --mail-ChatWindow-commandHoverColor: white;
+}
 
-    .o-mail-ChatWindow-quickActions .o-mail-ChatWindow-command {
-        color: white !important;
-    }
+// Fold / Close and the other quick actions moved to mail/static/src/core/common/action_list.* in
+// v19 and now render as .o-mail-ActionList-button (a .btn.btn-secondary), so the ported
+// .o-mail-ChatWindow-quickActions .o-mail-ChatWindow-command rules matched nothing and the glyphs
+// kept the Bootstrap secondary foreground #212529 = 1.79:1 on the header. Drive the native --btn-*
+// tokens rather than a raw colour, exactly as core's own livechat patch does
+// (im_livechat/static/src/embed/common/chat_window_patch.scss): that patch loads AFTER this file
+// in im_livechat.assets_embed_core, so the embed stays free to re-point the same tokens at the
+// operator's configured title colour and this branding never clobbers it.
+.o-mail-ChatWindow-header .o-mail-ActionList button {
+    --btn-color: white;
+    --btn-hover-color: white;
+    --btn-active-color: white;
+}
 
-    .o-mail-ChatWindow-quickActions .o-mail-ChatWindow-command.o-quick {
-        opacity: 1;
-    }
+// The parent-channel breadcrumb separator - core renders it as
+// `<i class="fa fa-chevron-right ... text-muted opacity-75"/>` inside the header
+// (mail/static/src/core/common/chat_window.xml, the mail.ChatWindow.headerContent sub-template) -
+// carries a hard Bootstrap `.text-muted` (`color: var(--bs-secondary-color) !important` = grey
+// #495057), so unlike the channel-name span beside it (which is white via the header `color`
+// inherit) it stays dark on the teal chrome: ~2.3:1, below the 3:1 non-text floor. Realign every
+// muted glyph in the header to the inherited white so the whole header reads white; `!important`
+// is required to beat Bootstrap's own, and `inherit` keeps it identical to its sibling (which the
+// core `opacity-75` then dims to match). Scoped to the header so no muted text elsewhere is touched.
+.o-mail-ChatWindow-header .text-muted {
+    color: inherit !important;
+}
 
-    .o-mail-ChatWindow-command .fa-caret-down {
-        color: white !important;
-    }
-
-    .o-mail-ChatWindow-command:not(.o-active):not(.o-hover) .fa-caret-down {
-        opacity: 1;
+// Core dims idle header actions to 50% opacity, which composites white down to 2.30:1 on the teal
+// chrome - below even the 3:1 non-text threshold. This restores the 18.0 `opacity: 1` semantic the
+// .o-quick rule carried; the selector mirrors core's so equal specificity resolves by load order.
+.o-mail-ChatWindow-header .o-mail-ActionList-group {
+    button:not(:hover):not(:focus-visible):not(:active):not(.btn-success) {
+        --o-mail-ActionList-Button-opacity: 1;
     }
 }
 
 .o-mail-ChatWindow {
+    // 18.0 wrote `border: $brand-primary-dark !important`. That shorthand also resets border-style
+    // to `none`, so Bootstrap's .border style was wiped and NO border ever rendered - the intended
+    // brand outline has been dead since 18.0. Setting only the colour restores it while keeping
+    // the width/style .border/.border-dark supply (v19 ChatWindow.attClass ships
+    // "o-rounded-bubble border border-dark mb-2"). !important is required to beat .border-dark's
+    // own `border-color: ... !important`.
     &.border {
-        border: $brand-primary-dark !important;
+        border-color: $o-navbar-background !important;
     }
 
     font-size: 1rem;
 }
 
-.o-mail-ChatWindow-command {
+// 18.0 darkened the header dropdown toggle on hover/open. Its .o-mail-ChatWindow-command target no
+// longer exists; the v19 toggle is .o-mail-ChatWindow-moreActions, which core pins with
+// `background-color: inherit !important`, so beating it needs !important at higher specificity.
+.o-mail-ChatWindow-moreActions {
 
     &:hover,
-    &.o-active {
-        background-color: rgba(0, 0, 0, 0.25);
+    &.o-active,
+    &.o-hover {
+        background-color: rgba(0, 0, 0, 0.25) !important;
+    }
+
+    // Core fades the caret to 25% opacity while the menu is closed, which is barely legible on the
+    // teal chrome. 18.0 forced it fully opaque - selector mirrors core's for load-order resolution.
+    &:not(.o-active):not(.o-hover) .fa-caret-down {
+        opacity: 1;
     }
 }

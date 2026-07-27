@@ -6,5 +6,6 @@ from . import mail_mail
 from . import mail_template
 from . import mail_thread
 from . import push_devices
+from . import res_company
 from . import res_config_settings
 from . import res_users

@@ -1,0 +1,266 @@
+// Mail-owned dark surfaces (PR #658 review-fix M-1, Option A Layer-2 residue).
+//
+// WHY THIS FILE EXISTS / WHERE IT LIVES (design pr658-review-fix §5a - placement by dependency graph)
+// -----------------------------------------------------------------------------------------------
+// viin_brand_common/static/src/scss/dark_palette.scss (C-2) recompiles web.assets_web_dark with the
+// surface + text + link + border Sass vars redefined to dark values, so EVERY mail surface that
+// reads an overridable web/Bootstrap Sass var recompiles dark-correct FOR FREE - e.g. the chatter
+// message list ($o-view-background-color -> #111B1E), and the Activity / Discuss systray
+// `.list-group` panels (Bootstrap $list-group-bg is remapped to $o-view-background-color in
+// web/static/src/scss/bootstrap_overridden.scss, and _list-group.scss emits --list-group-bg from it
+// at `.list-group` scope, so those panels are ALREADY #111B1E in dark - VERIFIED, no rule added
+// here to avoid a dead/redundant override).
+//
+// This file adds a rule ONLY for a surface core `mail` sculpts from a LITERAL that no overridable
+// Sass var reaches - the exact case the recompile cannot close.
+//
+// viin_brand_mail depends ['mail', 'viin_brand_common'], so these overrides load AFTER core mail's
+// own SCSS (source order) and legitimately override a real dependency (owner refinement #3).
+//
+// EXPLICIT DARK-BUNDLE CONTRIBUTION (NOT auto-glob). Core's dark tail glob is
+// 'web/static/src/**/*.dark.scss' (web/__manifest__.py:348) - it covers the `web` module ONLY,
+// never viin_brand_mail. So this file is contributed EXPLICITLY to web.assets_web_dark in the
+// manifest (('after', <this module's own message.scss>, ...)); it is NOT picked up by any auto-glob
+// and never enters the light bundle.
+//
+// NO var() INSIDE A SASS COLOUR FUNCTION (compile landmine). Sass mix()/rgba() evaluate their args
+// at COMPILE time and choke on a runtime var(). In the recompiled dark bundle $danger and $body-bg
+// are concrete Sass values (#dc3545 and #111B1E via dark_palette.scss), so mix() resolves them at
+// compile into a concrete dark hex - the compile-time analogue of color-mix(), and exactly the
+// architecture C-2 already commits to (a recompiled bundle, not a runtime attribute flip). mix() is
+// already the cluster's proven tint tool (e.g. brand_variables.scss mix(black, $o-success, 28%)).
+
+// --- Overdue / rotting kanban card ------------------------------------------------------------
+// Core mail/static/src/scss/rotting_mixin.scss paints this from a STATIC light-pink literal
+// `rgba(255, 201, 201, .3)` that no Sass var reaches, so it does NOT recompile in dark: over the
+// dark card it composites to a muddy near-neutral that loses the "overdue / danger" read. Re-point
+// it to a danger tint mixed over the dark body surface - it stays unmistakably danger (red-dominant)
+// while the light body text on the card clears WCAG AA. The higher-specificity core
+// `&.o_record_selected` state (var(--KanbanColumn__highlight-selected)) is deliberately NOT touched
+// and keeps winning for a selected card.
+.o_kanban_renderer .o_kanban_record.oe_kanban_card_rotting {
+    background-color: mix($danger, $body-bg, 25%);
+}
+
+// --- Chatter / thread message-date muted timestamp --------------------------------------------
+// Core mail/static/src/core/common/message.scss:21 sets `.o-mail-Message-date { color: $text-muted }`
+// and Odoo maps $text-muted -> $o-main-color-muted = rgba($o-gray-700, $o-opacity-muted)
+// (web/static/src/scss/bootstrap_overridden.scss:85, primary_variables.scss:121). $o-gray-700 is NOT
+// flipped by the dark palette, so in dark this compiles to a translucent DARK grey (~rgba(73,80,87))
+// reading well below AA (~1.6-2.1:1) on the #111B1E surface. Re-point it to the dark muted-text token
+// --secondary-color, which dark_palette.scss drives to #8EA5A8 (6.75:1 on #111B1E) via
+// $body-secondary-color (emitted at :root by Bootstrap _root.scss:69). Same specificity as core,
+// later source order -> wins; the `.text-muted`-carrying scheduled-message timestamp is already
+// #8EA5A8 via the same token, so both paths stay in lock-step.
+.o-mail-Message-date {
+    color: var(--secondary-color);
+}
+
+// ================================================================================================
+// DISCUSS APP dark coverage (owner-directed, PR #658)
+// ------------------------------------------------------------------------------------------------
+// The C-2 recompile flips every surface that reads an OVERRIDABLE Sass var ($body-bg /
+// $o-view-background-color / $border-color / $body-color) for free - so the resting sidebar surface
+// (core.dark.scss), the conversation header (discuss_content.dark.scss), the message thread body
+// text and the composer are all dark-correct with NO rule here. The surfaces below are the
+// exception: core `mail` sculpts them from the RAW Bootstrap grayscale ramp ($gray-100..500 /
+// $white) that dark_palette.scss deliberately does NOT flip, in BOTH its light *.scss (recompiled
+// early in the web.assets_web include) AND its own *.dark.scss tail (which layers light grays over
+// the already-dark base). Each therefore stays LIGHT in dark, rendering the near-white $body-color
+// text on a near-white surface = unreadable. Each rule re-points ONE such surface onto the dark
+// neutrals the recompile DID flip, evaluated at COMPILE time (mix() over the concrete dark
+// $o-webclient-background-color / $o-view-background-color / $o-action - the same derivation core's
+// own discuss.dark.scss uses for --mail-Discuss-surface-dark; never var() inside a Sass function).
+//
+// PLACEMENT. This file is contributed to web.assets_web_dark as a PLAIN APPEND (see __manifest__),
+// so it loads LAST - after core's mail *.dark.scss tail - and these same-specificity overrides win
+// on source order. !important is carried only where the core rule being beaten carries one.
+
+// --- Sidebar item: hover + active surfaces ----------------------------------------------------
+// core/public_web/discuss_sidebar.scss:44-46 paints the item HOVER from `mix($gray-100, $gray-200)
+// !important` (light; no dark override exists), and discuss_sidebar.dark.scss:2-3 re-points the
+// ACTIVE item's custom properties to `mix($gray-200, $gray-300)` / `rgba($gray-400, .15)` (also
+// light) - so BOTH the hovered row and the currently-open channel render a near-white item under
+// near-white names. Re-point the hover onto a raised dark neutral, and restore the active tokens to
+// the action-tinted dark surface the light rule's OWN fallback already intends
+// (`mix($o-view-background-color, $o-action, 90%)`).
+.o-mail-DiscussSidebar-item {
+    --mail-DiscussSidebar-itemActiveBgColor: #{mix($o-view-background-color, $o-action, 86%)};
+    --mail-DiscussSidebar-itemActiveOutlineColor: #{mix($o-view-background-color, $o-action, 55%)};
+
+    &:hover {
+        background-color: mix($white, $o-webclient-background-color, 26%) !important;
+        outline-color: mix($white, $o-webclient-background-color, 34%) !important;
+    }
+}
+
+// --- Category header hover --------------------------------------------------------------------
+// discuss/core/public_web/discuss_sidebar_categories.scss:69-72 paints the category-row hover from
+// `mix($gray-100, $gray-200)` (light; no dark override) - the category title (btn text-reset ->
+// $body-color) then sits on a near-white row on hover. Same raised dark neutral as the item hover.
+.o-mail-DiscussSidebarCategory:hover {
+    background-color: mix($white, $o-webclient-background-color, 26%);
+    outline-color: mix($white, $o-webclient-background-color, 34%);
+}
+
+// --- Bordered (compact sub-channel) container -------------------------------------------------
+// discuss_sidebar_categories.scss:7-9 fills the bordered container from
+// `var(---mail-DiscussSidebarChannel-borderedBgColor, mix($white, $dark, 98%))`, and
+// discuss_sidebar_categories.dark.scss:7 sets that custom property to `mix($gray-100, $gray-200,
+// 75%)` (light). Re-point the property to a subtle raised dark neutral.
+.o-mail-DiscussSidebarChannel-container {
+    ---mail-DiscussSidebarChannel-borderedBgColor: #{mix($white, $o-webclient-background-color, 14%)};
+}
+
+// --- Messaging-menu / systray dropdown --------------------------------------------------------
+// core/public_web/messaging_menu.scss fills the panel + list from
+// `var(--mail-MessagingMenu-bg, $o-view-background-color)` and the list border from
+// `var(--mail-MessagingMenu-listBorderColor, rgba($gray-200, .5))`; messaging_menu.dark.scss sets
+// those custom properties to `mix($gray-100, $gray-200, 65%)` / `rgba($gray-300, .25)` (light), so
+// the whole dropdown renders a near-white panel under near-white text. Re-point both onto the dark
+// view surface + the scheme border token.
+.o-mail-MessagingMenu {
+    --mail-MessagingMenu-bg: #{$o-view-background-color};
+    --mail-MessagingMenu-listBorderColor: #{$border-color};
+}
+
+// --- Conversation-header action controls ------------------------------------------------------
+// core/public_web/discuss_content.scss:29-45 (+ discuss_content.dark.scss) paint the header action
+// button hover/active states and the action-group container from the raw $gray-200..400 ramp
+// (light !important) - light-gray chips floating on the dark conversation header. Re-point onto the
+// raised dark neutrals; !important mirrors core's own.
+.o-mail-DiscussContent-headerActionsGroup {
+    background-color: mix($white, $o-webclient-background-color, 12%);
+    outline-color: mix($white, $o-webclient-background-color, 20%);
+}
+
+.o-mail-DiscussContent-headerActions button {
+    &:not(.o-isActive):hover {
+        background-color: mix($white, $o-webclient-background-color, 22%) !important;
+    }
+
+    &.o-isActive {
+        background-color: mix($white, $o-webclient-background-color, 26%) !important;
+    }
+
+    &.o-isActive:hover {
+        background-color: mix($white, $o-webclient-background-color, 32%) !important;
+    }
+}
+
+// ================================================================================================
+// PR #658 review-fix - dark surfaces the first pass MISSED (live mobile+dark acceptance sweep)
+// ------------------------------------------------------------------------------------------------
+// Four more mail surfaces core sculpts from the raw Bootstrap grayscale ramp / a compile-time
+// literal that no overridable Sass var reaches, so the C-2 dark recompile leaves them LIGHT: the
+// near-white $body-color text then sits on a near-white / mid-gray fill and fails WCAG AA. Each rule
+// re-points ONE such surface onto a neutral the recompile DID flip ($o-view-background-color ->
+// #111B1E, --secondary-color -> #8EA5A8), evaluated at COMPILE time (mix() over concrete literals -
+// never var() inside a Sass colour function). This file is the last writer in web.assets_web_dark, so
+// same-specificity overrides win on source order; !important is carried only where the core rule being
+// beaten carries one. LIGHT mode is untouched (this file is dark-bundle-only).
+
+// --- BUG-2a: chat-window body surface ---------------------------------------------------------
+// The chat popup / mobile fullscreen window root carries the `bg-100` utility (chat_window.xml:6),
+// which web/static/src/scss/bootstrap_review_backend.scss:240-243 emits through o-print-color as
+// `background-color: $o-gray-100 !important` (#F8F9FA). $o-gray-100 is NOT flipped by the dark
+// recompile, so the window body stayed near-white under the near-white $body-color message text
+// (1.06:1). Re-point it onto the dark view surface the recompile drives $o-view-background-color to
+// (#111B1E). The teal header (chat_window.scss, web.assets_backend) and its brand border are
+// separate elements and unaffected; !important beats bg-100's own.
+.o-mail-ChatWindow {
+    background-color: $o-view-background-color !important;
+}
+
+// --- BUG-2b: message bubbles (Discuss thread AND chat-window self-authored) --------------------
+// Core message.scss:91-104 sets `--o-message-bubble-bg: mix($o-view-background-color, $_color, 90%)`
+// per `.o-#{type}` (blue/green/orange = message category), which WOULD recompile dark-correct for
+// free. But mail/static/src/core/common/message.dark.scss (reaches web.assets_web_dark via mail's own
+// `mail/static/src/**/*.dark.scss` glob) overrides each variant's `background-color`/`border-color`
+// DIRECTLY with `mix($gray-100, darken($_color, ..), ..) !important` - light, because $gray-100 is
+// unflipped - so the bubble stayed light blue (#D4E6F0) under the near-white $body-color (1.15:1),
+// viewport-independent (desktop dark too). Re-point every variant (its resting fill, muted fill,
+// border and tail) onto a dark surface tinted by its OWN category colour, so the blue/green/orange
+// distinction survives while the light body text clears AA. Mirrors core's dark structure at equal
+// specificity; later source order wins.
+$_viin-dark-bubble-map: (
+    'o-blue': $info,
+    'o-green': $success,
+    'o-orange': $warning,
+);
+@each $_type, $_color in $_viin-dark-bubble-map {
+    $_dark-bubble-bg: mix($o-view-background-color, $_color, 85%);
+    $_dark-bubble-border: mix($o-view-background-color, $_color, 70%);
+
+    .o-mail-Message-bubble.#{$_type} {
+        --o-message-bubble-bg: #{$_dark-bubble-bg};
+        --o-message-bubble-border-color: #{$_dark-bubble-border};
+        background-color: $_dark-bubble-bg !important;
+        border-color: $_dark-bubble-border !important;
+
+        // Core paints the muted bubble the plain view surface ($o-view-background-color, already
+        // dark); message.dark.scss over-darkens the light gray mix instead. Restore the dark view bg.
+        &.o-muted {
+            background-color: $o-view-background-color !important;
+        }
+    }
+
+    .o-mail-Message-bubbleTail.#{$_type} {
+        .o-mail-Message-bubbleTailBg {
+            color: $_dark-bubble-bg !important;
+        }
+        .o-mail-Message-bubbleTailBorder {
+            color: $_dark-bubble-border !important;
+        }
+    }
+}
+
+// --- BUG-4: read conversation name + preview in the messaging-menu / systray list --------------
+// A READ (non-unread, non-hard-muted) conversation is rendered by NotificationItem with muted=1
+// (mail/static/src/core/public_web/messaging_menu.xml:45 `!thread.isUnread ? 1 : 0`), which stamps
+// the `text-muted` class on the item root (notification_item.xml:9). Odoo's BACKEND redefines that
+// utility to the Sass LITERAL `$text-muted` = $o-main-color-muted = rgba($o-gray-700, .76)
+// (web/static/src/scss/utilities_custom_backend.scss:18, bootstrap_overridden.scss:85,
+// primary_variables.scss:121) - NOT the runtime `var(--secondary-color)` Bootstrap 5.3 uses - so it
+// does NOT flip: the read name + preview inherited rgba(73,80,87,.76) = 2.14:1 on the #111B1E list.
+// Re-point them onto the dark muted-text token --secondary-color (#8EA5A8, 6.75:1), exactly like the
+// Message-date fix above, resolved through core's own :root emission. Scoped to `.text-muted` so
+// UNREAD items (bright, muted=0) are untouched. The preview's decorative `opacity: .75`
+// (notification_item.scss:70) is lifted to 1 so the muted token's designed contrast is not
+// double-dimmed below AA (the read-item de-emphasis is already carried by the muted colour itself).
+.o-mail-NotificationItem.text-muted {
+    // name + preview + the read timestamp (`-date`) all inherit the same un-flipped `.text-muted`
+    // literal (rgba(73,80,87,.76) = 2.14:1); re-point all three to the dark muted token.
+    .o-mail-NotificationItem-name,
+    .o-mail-NotificationItem-text,
+    .o-mail-NotificationItem-date {
+        color: var(--secondary-color) !important;
+    }
+
+    .o-mail-NotificationItem-text,
+    .o-mail-NotificationItem-date {
+        opacity: 1;
+    }
+}
+
+// --- BUG-5: composer input fill (chat-window composer AND form chatter composer) ---------------
+// The composer field is `.o-mail-Composer-bg { background-color: var(--mail-Composer-bg,
+// $o-view-background-color) }` (composer.scss:103-104) and the input itself is transparent, so it
+// shows that fill. mail/static/src/core/common/composer.dark.scss sets `.o-mail-Composer {
+// --mail-Composer-bg: mix($gray-100, $o-view-background-color) }` - a slightly raised field that in a
+// real dark theme would be dark, but with the unflipped light $gray-100 composites to the mid-gray
+// #858A8C, giving only 3.14:1 under the near-white $body-color input text (and a barely-legible
+// placeholder). Re-point the field onto a subtly RAISED dark neutral (6% white over the dark view
+// surface), preserving core's raised-field affordance while the input text + placeholder clear AA.
+// Same selector as composer.dark.scss; later source order wins.
+//
+// SSOT (2026-08-03): the value is now DECLARED as `$o-viin-composer-bg` in this module's
+// static/src/core/common/composer.scss - which compiles earlier in this same bundle (it rides
+// web.assets_backend, this file is appended to web.assets_web_dark) - and only CONSUMED here. That
+// file's send-message danger tint mixes $danger over the composer's resting fill, so the two must be
+// the same surface: duplicating the expression here is exactly how a tint ends up computed over a
+// surface that no longer exists. It resolves to this same `mix($white, $o-view-background-color, 6%)`
+// in the dark bundle.
+.o-mail-Composer {
+    --mail-Composer-bg: #{$o-viin-composer-bg};
+}

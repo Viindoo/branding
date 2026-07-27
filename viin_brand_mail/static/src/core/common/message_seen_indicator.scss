@@ -1,7 +1,23 @@
+// "Seen by everyone" tick de-brand. v19 renamed the class AND moved the colour behind a custom
+// property, so the whole 18.0 file was inert and the tick rendered 100% core Odoo:
+//   - 18.0 targeted `.o-all-seen.text-primary`; neither class exists in v19. v19 renders
+//     `o-mail-MessageSeenIndicator ... o-hasEveryoneSeen opacity-75`
+//     (mail/static/src/discuss/core/common/message_seen_indicator.xml:4).
+//   - v19 core paints it with
+//     `color: var(--mail-MessageSeenIndicator-hasEveryoneSeenColor, lighten($primary, 20%))`
+//     (mail/static/src/discuss/core/common/message_seen_indicator.scss:2-3).
+//
+// Feed core's own custom property rather than re-declaring `color`, mirroring the idiom core
+// itself uses in message_seen_indicator.dark.scss:1-3. That is order- and specificity-immune, it
+// leaves core's dark-mode value (`lighten($primary, 15%)`, same selector, dark bundle) intact,
+// and it needs no `!important` because core's consumer declares none. Interpolation `#{...}` is
+// required: a bare `$var` inside a custom property is emitted literally, not evaluated.
+//
+// Value: the cluster CHROME-BASE AA teal SSOT $o-navbar-background (#007F8E) rather than 18.0's
+// flat #00BBCE. The tick sits on the light message-list surface, where #00BBCE is only 2.33:1
+// while #007F8E is 4.74:1. Core additionally stacks `opacity-75` on the glyph, so the effective
+// rendered ratio is ~3.11:1 - still at/above the WCAG 1.4.11 non-text 3:1 floor (#00BBCE would
+// have blended to ~1.93:1, below it).
 .o-mail-MessageSeenIndicator {
-    &.o-all-seen {
-        &.text-primary {
-            color: #00bbce !important;
-        }
-    }
+    --mail-MessageSeenIndicator-hasEveryoneSeenColor: #{$o-navbar-background};
 }

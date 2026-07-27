@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+  <!-- Carry viin_brand_common's numbered statusbar steps onto the two mail DURATION statusbars.
+
+       WHY THIS FILE EXISTS AT ALL. `mail.StatusBarDurationField` is a `t-inherit-mode="primary"`
+       COPY of `web.StatusBarField`, and `mail.RottingStatusBarDurationField` is a primary copy of
+       THAT one. Core's template engine bounds a primary parent's accumulated extensions to the
+       child's own blockId (web/static/src/core/templates.js `_getTemplate` breaks at
+       `otherBlockId > blockId`), so an extension of `web.StatusBarField` registered after mail
+       loads never reaches either copy - and extending `mail.StatusBarDurationField` does not
+       propagate to the rotting copy either, for the same reason. Each is therefore extended on its
+       own. Without this file the CRM lead form - `crm.lead.stage_id` uses the
+       `rotting_statusbar_duration` widget - would be the one statusbar in the product with no step
+       numbers.
+
+       IDEMPOTENT BY CONSTRUCTION. If viin_brand_common happens to load BEFORE mail, its own
+       extension of `web.StatusBarField` is already inside these copies and the xpaths below simply
+       re-set the same two attributes to the same two values. `position="attributes"` overwrites, so
+       there is no duplicate-class or double-apply failure mode in either load order. That property
+       is the reason both this file and its parent add ATTRIBUTES only and never restructure the
+       button (see viin_brand_common/static/src/views/fields/statusbar/statusbar_steps.xml).
+
+       The `viinStepNumber()` getter is inherited through the prototype chain
+       (RottingStatusBarDurationField -> StatusBarDurationField -> StatusBarField, which
+       viin_brand_common patches), so no JS is needed here. The SCSS is
+       viin_brand_common's too: it keys off the `.o_viin_numbered_step` class, not off the field
+       wrapper, so it already covers `.o_field_statusbar_duration` and
+       `.o_field_rotting_statusbar_duration`. Neither mail's time-in-stage span nor the rotting
+       overdue badge is touched. -->
+  <t t-inherit="mail.StatusBarDurationField" t-inherit-mode="extension">
+    <xpath expr="//button[@role='radio']" position="attributes">
+      <attribute name="class" add="o_viin_numbered_step" separator=" "/>
+      <attribute name="t-att-data-viin-step">viinStepNumber(item)</attribute>
+    </xpath>
+  </t>
+
+  <t t-inherit="mail.RottingStatusBarDurationField" t-inherit-mode="extension">
+    <xpath expr="//button[@role='radio']" position="attributes">
+      <attribute name="class" add="o_viin_numbered_step" separator=" "/>
+      <attribute name="t-att-data-viin-step">viinStepNumber(item)</attribute>
+    </xpath>
+  </t>
+
+</templates>

@@ -1,10 +1,47 @@
+// Presence-glyph de-brand: Viindoo paints "online"/"bot" in the brand teal instead of Bootstrap
+// green. 18.0 used $brand-primary (#00bbce); the v19 port mis-substituted the brand PURPLE
+// $o-brand-secondary. Restored to teal via the cluster CHROME-BASE AA teal SSOT
+// $o-navbar-background (#007F8E) rather than the flat #00BBCE: mail.ImStatus always renders the
+// glyph on a `bg-white bg-opacity-100` puck (mail/static/src/core/common/im_status.xml), including
+// inside the teal chat-window header, and #00BBCE on white is only 2.33:1 - below the 3:1 WCAG
+// non-text-contrast floor for a meaningful status indicator. #007F8E on white is 4.74:1.
+
+// SINGLE SOURCE OF TRUTH for the idle/away glyph. THREE sites must render an identical colour or
+// the picker stops matching the dot it produces - keep them all on this variable, never a literal:
+//   1. `.o-mail-ImStatus .o-yellow`         - the presence dot itself
+//   2. `.o-mail-ThreadIcon .o-yellow`       - same dot via a nested <ImStatus>, wins by !important
+//   3. `.o-mail-ImStatusDropdown .o-yellow` - the "Away" swatch in the status picker
+//
+// v19 renamed the class: 18.0 rendered `fa fa-circle o-away` (18.0 im_status.xml:15), v19 renders
+// `fa fa-circle o-yellow` (mail/static/src/core/common/im_status.xml:19), so the forward-ported
+// `.o-away` rule was inert and idle fell back to core `.o-yellow { color: $yellow; }` = #ffc107
+// (mail/static/src/core/common/core.scss:297).
+//
+// The VALUE deliberately diverges from 18.0's #ffa500 - do NOT "restore" that value. Per the
+// owner's standing darker-for-AA rule (the same rule that took the chrome teal #008D9B -> #007F8E)
+// hue and saturation are locked and only lightness is pushed down, so this stays unmistakably
+// amber: #b27400 is exactly darken(#ffa500, 15%), hue 38.8deg / saturation 100% preserved. 15% is
+// the minimal round step clearing WCAG 1.4.11's 3:1 non-text floor on ALL THREE backgrounds these
+// glyphs sit on - the white ImStatus puck 3.90:1, the dropdown menu #f8f9fa 3.70:1, and the
+// focused/hovered dropdown row #e4e5e6 3.09:1 (14% would fail the last at 2.93:1). For reference
+// 18.0's #ffa500 was 1.97:1 on white and core's #ffc107 only 1.63:1.
+//
+// Idle is a SEMANTIC state colour and must NOT be re-tinted to the brand teal: `text-success`
+// already paints online/bot teal, so a teal idle would make the two states indistinguishable.
+// #b27400 stays far from every neighbouring state - dE2000 42.9 vs teal #007F8E and 33.3 vs
+// danger #dc3545.
+$o-viin-mail-status-away-color: #b27400;
+
 .o-mail-ImStatus {
     .text-success {
-        color: $brand-primary !important;
+        color: $o-navbar-background !important;
     }
 
-    .o-away {
-        color: #ffa500 !important; // Orange color for idle/away status
+    // Site 1 of 3 - the presence dot. No `!important` (unlike `.text-success`, which must beat a
+    // Bootstrap `!important` utility): core's `.o-yellow` is a bare (0,1,0) rule with no
+    // `!important`, and this (0,2,0) selector already outranks it regardless of bundle order.
+    .o-yellow {
+        color: $o-viin-mail-status-away-color;
     }
 
     .text-700 {
@@ -15,10 +52,34 @@
 // Also apply to ThreadIcon component
 .o-mail-ThreadIcon {
     .text-success {
-        color: $brand-primary !important;
+        color: $o-navbar-background !important;
     }
 
+    // Site 2 of 3. In v19 ThreadIcon renders the idle glyph through a nested <ImStatus>
+    // (mail/static/src/core/common/thread_icon.xml:14), so BOTH this selector and
+    // `.o-mail-ImStatus .o-yellow` match the same <i> at equal specificity (0,2,0) - and this one
+    // wins outright through the pre-existing `!important`. Leaving it behind would therefore
+    // silently defeat the AA fix everywhere a ThreadIcon is on screen (sidebar, chat-window
+    // header), which is exactly how the original de-brand went stale unnoticed.
     .o-yellow {
-        color: #ffa500 !important; // Orange color for idle/away status  
+        color: $o-viin-mail-status-away-color !important;
+    }
+}
+
+// Site 3 of 3 - the "Away" swatch in the status picker. `mail.ImStatusDropdown` puts the literal
+// class `o-mail-ImStatusDropdown` on the menu element via `menuClass` (core
+// mail/static/src/core/common/im_status_dropdown.xml:4, applied at
+// web/static/src/core/dropdown/dropdown.js:174), and the swatch is a plain
+// `<i class="fa fa-circle o-yellow me-1">` inside a DropdownItem (im_status_dropdown.xml:9). It
+// was left on core's #ffc107 while the dot it selects became branded amber - a picker that did not
+// match its own result (dE2000 23.5 apart). No `!important`: the only competing declaration is
+// core's bare (0,1,0) `.o-yellow`, and any `.dropdown-item` colour is inherited from the parent, so
+// this (0,2,0) rule on the element itself wins outright.
+//
+// The dropdown toggle is `<ImStatus persona='store.self'/>` (im_status_dropdown.xml:5), so it is
+// already covered by site 1.
+.o-mail-ImStatusDropdown {
+    .o-yellow {
+        color: $o-viin-mail-status-away-color;
     }
 }

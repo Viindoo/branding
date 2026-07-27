@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 09:34+0000\n"
-"PO-Revision-Date: 2025-09-22 09:34+0000\n"
+"POT-Creation-Date: 2026-07-24 05:13+0000\n"
+"PO-Revision-Date: 2026-07-24 05:13+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -68,6 +68,21 @@ msgid "Delete Emails"
 msgstr ""
 
 #. module: viin_brand_mail
+#: model:ir.model.fields,field_description:viin_brand_mail.field_ir_http__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_gateway_allowed__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_mail__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_template__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_thread__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_alias
 msgid "Email Aliases"
 msgstr ""
@@ -105,6 +120,21 @@ msgstr ""
 #. module: viin_brand_mail
 #: model:ir.model.fields.selection,name:viin_brand_mail.selection__res_users__notification_type__inbox
 msgid "Handle in Viindoo"
+msgstr ""
+
+#. module: viin_brand_mail
+#: model:ir.model.fields,field_description:viin_brand_mail.field_ir_http__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_gateway_allowed__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_mail__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_template__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_thread__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_config_settings__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__id
+msgid "ID"
 msgstr ""
 
 #. module: viin_brand_mail
@@ -147,8 +177,8 @@ msgstr ""
 #: model:ir.model.fields,help:viin_brand_mail.field_res_users__notification_type
 msgid ""
 "Policy on how to handle Chatter notifications:\n"
-"- Handle by Emails: notifications are sent to your email address\n"
-"- Handle in Odoo: notifications appear in your Odoo Inbox"
+"- By Emails: notifications are sent to your email address\n"
+"- In Viindoo: notifications appear in your Viindoo Inbox"
 msgstr ""
 
 #. module: viin_brand_mail
