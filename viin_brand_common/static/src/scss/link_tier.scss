@@ -1,0 +1,120 @@
+// THE TEXT-LINK TIER (owner request 2026-08-03: "màu của text link ... override thành màu
+// secondary của Viindoo"). Backend-only. Splits ONE conflated Bootstrap token into the two
+// meanings it actually carries in Odoo.
+//
+// =================================================================================================
+// THE PROBLEM: `--link-color` IS TWO DIFFERENT THINGS
+// =================================================================================================
+// Odoo compiles Bootstrap with `$variable-prefix: ''` (web/static/src/scss/bootstrap_overridden.scss
+// :51), so Bootstrap's link tokens are emitted UNPREFIXED - `--link-color`, `--link-color-rgb`,
+// `--link-hover-color` (web/static/lib/bootstrap/scss/_root.scss:82-90), NOT `--bs-link-color`.
+// The chain that fills them, in compile order, is:
+//
+//   web/static/src/scss/primary_variables.scss:123   $o-main-link-color: darken($o-brand-primary, 5%) !default
+//   web/static/src/scss/bootstrap_overridden.scss:76 $link-color: $o-main-link-color !default
+//   web/static/lib/bootstrap/scss/_variables.scss:456 $link-hover-color: shift-color($link-color, $link-shade-percentage) !default
+//   web/static/lib/bootstrap/scss/_root.scss:82-90   :root { --link-color / -rgb / --link-hover-color ... }
+//   web/static/lib/bootstrap/scss/_reboot.scss:244   a { color: rgba(var(--link-color-rgb), var(--link-opacity, 1)) }
+//
+// viin_brand_common/static/src/scss/brand_variables.scss:78 pins `$o-main-link-color` to the AA teal
+// #007F8E, so today EVERY consumer of that chain is teal. But the chain is borrowed by FOUR
+// Bootstrap components that are NOT hyperlinks and simply reuse the token as a generic
+// "interactive accent" (all in web/static/lib/bootstrap/scss/_variables.scss):
+//
+//   :1163-1164  $nav-link-color / $nav-link-hover-color   -> var(--link-color)   TABS
+//   :843-844    $btn-link-color / $btn-link-hover-color   -> var(--link-color)   BUTTONS (.btn-link)
+//   :846        $btn-link-focus-shadow-rgb                -> mix of $link-color  BUTTON focus glow
+//   :1301-1313  $pagination-color / -hover / -focus       -> var(--link-color)   PAGERS
+//
+// Re-pointing `--link-color` alone would therefore turn the "Add Contact" `.btn-link`, every
+// Bootstrap tab and every pager purple - which the owner explicitly does NOT want ("buttons must
+// stay teal/neutral"). So the fix is not a re-point, it is a SPLIT: `$link-color` becomes the
+// HYPERLINK colour, and the four borrowers are re-anchored onto the interactive-teal tier they
+// actually mean. Bootstrap exposes all of them as `!default` variables precisely so they can be
+// separated; nothing here is a cascade override.
+//
+// =================================================================================================
+// WHY THIS ANCHOR (backend-only, after core's bootstrap_overridden, before Bootstrap's _variables)
+// =================================================================================================
+// Contributed to `web.assets_backend` at ('before', 'web/static/lib/bootstrap/scss/_variables.scss').
+// The backend bundle's head is: include web._assets_helpers (-> web._assets_primary_variables ->
+// brand_variables.scss / dark_palette.scss / primary_variables.scss), include
+// web._assets_backend_helpers (-> bootstrap_overridden.scss), pre_variables.scss, THEN
+// lib/bootstrap/scss/_variables.scss (web/__manifest__.py). Landing between the last two means:
+//   * `$o-main-link-color`, `$o-brand-secondary` and `$o-viin-dark-bundle` are already FINAL - the
+//     brand_variables.scss / dark_palette.scss ordering ambiguity those files document is resolved
+//     by the time we run, so this is the first point where the two schemes can be told apart safely;
+//   * `$link-color` already exists (bootstrap_overridden.scss:76 in light, dark_palette.scss:158 in
+//     dark), so re-assigning it here is a plain overwrite, not a new global inside a nested scope;
+//   * Bootstrap's own `!default` declarations have NOT run yet, so every assignment below wins
+//     without `!important` and without touching a single core file.
+// BACKEND-ONLY is deliberate. `web._assets_primary_variables` (where brand_variables.scss lives) is
+// also pulled into `web.assets_frontend`, so putting the purple there would repaint the LOGIN page
+// and the public portal too. The owner asked about the backend text link; the public frontend keeps
+// the teal `$primary` de-brand viin_brand_common/static/src/scss/frontend_primary.scss owns.
+//
+// =================================================================================================
+// LIGHT ONLY - THE PURPLE NEVER ENTERS THE DARK BUNDLE
+// =================================================================================================
+// `web.assets_web_dark` recompiles this whole bundle, so a rule written here is emitted TWICE unless
+// it is told apart at compile time. That is what `$o-viin-dark-bundle` (brand_variables.scss:143,
+// forced true by dark_palette.scss) is for, and it is why the two link declarations below are
+// written as `if()` and not as bare values. Under the COLOUR LAW's 2026-08-03 revision the purple
+// accent EXISTS ONLY IN LIGHT MODE: in dark, links keep the #4FD4E2 teal dark_palette.scss:158
+// already sets, unchanged. Both branches of each `if()` reference variables that are defined in
+// BOTH bundles, so neither branch can raise "Undefined variable" whichever way Sass evaluates it.
+
+// --- The interactive-teal HOVER rung -------------------------------------------------------------
+// The borrowers below need a hover value, and it must stay scheme-aware. `$o-main-link-color` is
+// already the scheme-split interactive teal (#007F8E light, #4FD4E2 dark - dark_palette.scss:157),
+// so the light rung is derived from it with Bootstrap's OWN link-hover formula
+// (`shade-color($c, $link-shade-percentage)`, _variables.scss:456 + $link-shade-percentage: 30% from
+// bootstrap_overridden.scss:79). That reproduces today's compiled `--link-hover-color` #005963
+// EXACTLY, so re-anchoring the borrowers is value-preserving rather than a restyle. `!default` keeps
+// the dark arm dark_palette.scss declares (#7FE0EA, the same literal that file already owns) - a
+// shade() in dark would darken the light-on-dark teal, which is the wrong direction.
+$o-viin-interactive-hover: shade-color($o-main-link-color, $link-shade-percentage) !default;
+
+// --- The HYPERLINK tier: brand secondary in light, unchanged teal in dark ------------------------
+// $o-brand-secondary #7F4282 measures 6.99:1 on the white form sheet, 6.63:1 on the --body-bg
+// #F8F9FA list surface and 5.90:1 on the --secondary-bg #E9ECEF app band - AA on all three. The
+// hover rung reuses Bootstrap's own shade formula on the SAME token (no second literal enters the
+// module): shade-color(#7F4282, 30%) = #592E5B, 10.68:1 on white.
+// This feeds :root --link-color / --link-color-rgb / --link-hover-color, hence the `a` reboot rule,
+// and every core rule that bakes `$link-color` at compile time - which is exactly the set of real
+// hyperlinks: `.o_form_uri` (the many2one record link, form_controller.scss:126-137), the m2o
+// dropdown's "Create"/"Search More" anchors (autocomplete.scss:35-37), the x2many "Add a line"
+// anchor (list_renderer.scss:467), `a[type=action]` (form_controller.scss:1043) and the calendar
+// "+N more" link (calendar_renderer.scss:203).
+$link-color: if($o-viin-dark-bundle, $link-color, $o-brand-secondary);
+$link-hover-color: if(
+    $o-viin-dark-bundle,
+    $o-viin-interactive-hover,
+    shade-color($o-brand-secondary, $link-shade-percentage)
+);
+
+// --- The BORROWERS: re-anchored onto the interactive teal, in BOTH schemes -----------------------
+// Each of these compiles to the value it has TODAY (light #007F8E / #005963, dark #4FD4E2 / #7FE0EA),
+// so this block is a no-op on the rendered pixel - it exists so the purple above cannot reach a
+// surface that is not a hyperlink. They are assigned as Sass VALUES rather than left on
+// `var(--link-color)` precisely because a Sass value is resolved per BUNDLE, which is how the
+// light/dark split is expressed everywhere else in this cluster.
+//
+// TABS - Bootstrap `.nav-link`. (The form notebook does not depend on this: the theme paints its
+// own active tab with $o-viin-chrome-base in viin_backend_theme/.../notebook/notebook.scss:33 and
+// its dark arm in notebook.dark.scss. This covers every OTHER Bootstrap nav in the backend.)
+$nav-link-color: $o-main-link-color;
+$nav-link-hover-color: $o-viin-interactive-hover;
+
+// BUTTONS - `.btn-link` is a BUTTON, not a hyperlink (measured: the kanban "Add Contact" control).
+// Under the COLOUR LAW teal = ACT, so a link-styled button stays teal.
+$btn-link-color: $o-main-link-color;
+$btn-link-hover-color: $o-viin-interactive-hover;
+// ...and so does its focus glow, which core derives from $link-color (_variables.scss:846).
+$btn-link-focus-shadow-rgb: to-rgb($o-main-link-color);
+
+// PAGERS - Bootstrap `.pagination`. (The backend list pager is `.o_pager` / `.btn-secondary` and is
+// unaffected either way; this keeps the Bootstrap component consistent with the two above.)
+$pagination-color: $o-main-link-color;
+$pagination-hover-color: $o-viin-interactive-hover;
+$pagination-focus-color: $o-viin-interactive-hover;

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+  <!-- Numbered steps on core's ARROW statusbar (owner 2026-08-03). ATTRIBUTES ONLY, by design.
+
+       The button keeps its `t-esc="item.label"` exactly as core wrote it; this extension adds a
+       hook class and the ordinal, and statusbar_steps.scss draws the digit from
+       `content: attr(data-viin-step)`. Three things follow from that, and all three are the reason
+       it is written this way:
+
+         1. NO DOM TEXT CHANGES. Core's own Hoot suite asserts statusbar button text exactly
+            (`expect(".o_arrow_button_current").toHaveText("first record")`), and so do the sale /
+            crm tours. A `<span>` holding the digit would append it to `button.textContent`.
+
+         2. NO LOAD-ORDER DEPENDENCY ON mail. `mail.StatusBarDurationField` is a
+            `t-inherit-mode="primary"` COPY of `web.StatusBarField`, and core's template engine
+            applies to that copy every extension of the parent whose blockId is lower than the
+            copy's own (web/static/src/core/templates.js `_getTemplate`: it walks
+            `templateExtensions[parent]` and breaks at `otherBlockId > blockId`). mail's own xpath
+            targets `//*[@t-esc='item.label']`, so an extension of ours that REMOVED that t-esc
+            would make mail's copy fail to build if we happened to load first. Adding attributes is
+            safe in either order, and re-adding the same attribute is idempotent, which is why the
+            mail duration copies can be extended separately (viin_brand_mail) without a conflict.
+
+         3. NO GEOMETRY CHANGE. Nothing here touches the clip-path chevron, the container padding
+            or the container border. That is the T-2 regression class the D6 stepper caused: core's
+            areItemsWrapping() folds the whole bar into one dropdown as soon as the ROOT measures
+            taller than its first child, so anything that inflates the measured container breaks the
+            widget at every width.
+
+       The marker is decorative: it duplicates position information the surrounding radiogroup
+       already conveys (role="radio" + aria-current="step"), so it is generated content and is
+       announced by nothing. -->
+  <t t-inherit="web.StatusBarField" t-inherit-mode="extension">
+    <xpath expr="//button[@role='radio']" position="attributes">
+      <attribute name="class" add="o_viin_numbered_step" separator=" "/>
+      <attribute name="t-att-data-viin-step">viinStepNumber(item)</attribute>
+    </xpath>
+  </t>
+
+</templates>

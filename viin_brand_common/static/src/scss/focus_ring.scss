@@ -1,0 +1,45 @@
+// A11y focus-ring base (PR #658 review-fix C-7; WCAG 2.1 SC 1.4.11 non-text contrast >= 3:1).
+//
+// The always-installed base owns a SHARED focus-ring token applied to core interactive elements on
+// :focus-visible, so an UNTHEMED install is keyboard-accessible too (the redesign theme only wires
+// its own shell widgets on top). The review found 35/44 tab stops fail >= 3:1 in dark and that form
+// inputs show ZERO focus change.
+//
+// LIGHT / DARK arms via ONE Sass var. `$o-viin-focus` is #005E68 here (7.5:1 on white); the dark
+// bundle recompiles with dark_palette.scss setting `$o-viin-focus: #7FE0EA` FIRST (no !default), so
+// this file emits the dark value on web.assets_web_dark and the light value on web.assets_backend -
+// no runtime attribute flip needed.
+//
+// :root is used deliberately (the SCSS guideline exception for a token shared across bundles); the
+// ring reaches the pixel as the --o-viin-focus custom property so the light/dark value resolves per
+// compiled bundle rather than being baked per selector.
+$o-viin-focus: #005E68 !default;
+
+:root {
+    --o-viin-focus: #{$o-viin-focus};
+}
+
+// The DOUBLE-RING pattern: a 2px teal outline offset 1px OUT, plus a 1px inner box-shadow halo in
+// the surface colour (--body-bg). The halo guarantees the ring is separated from the element's own
+// fill, so it clears >= 3:1 against BOTH the element and its surround on any surface, in either
+// scheme. :focus-visible (not :focus) so pointer clicks do not paint the ring.
+// TEXT-ENTRY FIELDS: no override. Owner decision 2026-08-02 (PR #658 batch 3, item 3) removed the
+// former single flush `outline: 2px solid var(--o-viin-focus)` on input/textarea/select/.form-control/
+// .form-select/.o_input:focus-visible, so core's NATIVE input focus (Bootstrap's own :focus glow)
+// applies. The button/link/checkbox/notebook-tab/data-row a11y double-ring below is untouched: it
+// still owns the shared --o-viin-focus token and keeps its >= 3:1 non-text contrast contract, so an
+// untethered install stays keyboard-accessible on those elements.
+
+// BUTTONS / LINKS / CHECKBOXES / TABS / ROWS keep the DOUBLE-RING: the ring colour can match the
+// element's own fill (e.g. a teal button), so the 1px inner halo in the surface colour is what
+// separates the ring from the fill and guarantees >= 3:1 against BOTH the element and its surround.
+.form-check-input:focus-visible,
+.btn:focus-visible,
+a:focus-visible,
+.dropdown-item:focus-visible,
+.o_notebook .nav-link:focus-visible,
+.o_data_row:focus-visible {
+    outline: 2px solid var(--o-viin-focus);
+    outline-offset: 1px;
+    box-shadow: 0 0 0 1px var(--body-bg);
+}

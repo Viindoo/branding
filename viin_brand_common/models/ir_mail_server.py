@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class IrMailServer(models.Model):
@@ -6,4 +6,4 @@ class IrMailServer(models.Model):
 
     from_filter = fields.Char(
         help="Comma-separated list of addresses or domains for which this server can be used.\n"
-             "e.g.: 'notification@viindoo.com' or 'viindoo.com")
+             "e.g.: 'notification@viindoo.com' or 'viindoo.com'")

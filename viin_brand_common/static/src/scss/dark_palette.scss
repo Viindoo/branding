@@ -1,0 +1,324 @@
+// Recompiled dark palette (PR #658 review-fix C-2, Option A Layer 1) - the COMPLETE dark fix.
+//
+// WHY A RECOMPILED BUNDLE, NOT A RUNTIME ALLOW-LIST
+// -----------------------------------------------------------------------------------------------
+// web.assets_web_dark = ('include', 'web.assets_web') [-> web.assets_backend -> _assets_helpers ->
+// _assets_primary_variables -> primary_variables.scss] + a trailing '**/*.dark.scss' glob
+// (web/__manifest__.py). Core sculpts many surfaces from compile-time Sass hexes INSIDE
+// color-contrast()/mix() and every Bootstrap .text-*/.bg-* utility; a runtime [data-bs-theme]
+// attribute flip cannot reach inside an already-computed color-contrast()/mix() result, and
+// var()-ifying those calls breaks the compile. So the ONLY way to cover every surface is an
+// INDEPENDENT full recompile of the dark bundle with the surface + brand Sass vars redefined to
+// dark values FIRST - which is exactly what this file does. This deletes the whole
+// container/text/utility allow-list (the retired viin_backend_theme/.../dark_surfaces.scss) and
+// ends its escalating !important war, because core's OWN rules recompile dark-correct.
+//
+// CONTRIBUTION (manifest) - EXPLICIT, dark bundle ONLY, positioned before core consumes the vars:
+//   'web.assets_web_dark': [
+//       ('before', 'web/static/src/scss/primary_variables.scss',
+//        'viin_brand_common/static/src/scss/dark_palette.scss'),
+//   ]
+// NAMING LANDMINE (heeded): this file is NOT named *.variables.scss (that auto-globs into
+// _assets_primary_variables -> would leak into the LIGHT bundle) and NOT *.dark.scss (that
+// auto-globs into the dark-bundle TAIL -> too late for a variable override, and is auto-removed
+// from light). A plain name contributed EXPLICITLY only to web.assets_web_dark is the correct lever.
+//
+// NO !default (load-bearing). brand_variables.scss declares the LIGHT values with `!default`; every
+// override here is set WITHOUT `!default` so it FORCES over that earlier default regardless of the
+// relative order of the two 'before primary_variables.scss' anchors. Because this file compiles
+// before core's primary_variables.scss / secondary_variables.scss / bootstrap_overridden.scss and
+// before Bootstrap's own _variables.scss, each core `... !default` that follows then no-ops.
+// $enable-dark-mode is false in Odoo (bootstrap_overridden.scss:60), so Bootstrap emits NO
+// [data-bs-theme=dark] arm to fight these :root values - the recompiled light emission carries the
+// dark values directly.
+
+// --- THIS IS THE DARK BUNDLE (compile-time scheme flag) -----------------------------------------
+// brand_variables.scss declares `$o-viin-dark-bundle: false !default`; set TRUE here, WITHOUT
+// `!default`, so it forces regardless of the relative order of the two 'before
+// primary_variables.scss' anchors. Every rule in the cluster that paints the LIGHT-ONLY purple
+// accent is wrapped in `@if not $o-viin-dark-bundle`, so those rules emit NOTHING into this bundle
+// and the surface renders its genuine default (owner revision 2026-08-03 - see the COLOUR LAW in
+// brand_variables.scss). This is a Sass boolean, not a colour: it never reaches the CSS.
+$o-viin-dark-bundle: true;
+
+// --- Surface neutrals -------------------------------------------------------------------------
+// Panel / view / form-sheet / card / modal tier (the surface a readable token sits on).
+$body-bg: #111B1E;
+$o-view-background-color: #111B1E;
+// App-shell background band behind the panels (.o_web_client reads $o-webclient-background-color;
+// Bootstrap emits --secondary-bg from $body-secondary-bg).
+$o-webclient-background-color: #0B1315;
+$body-secondary-bg: #0B1315;
+// Raised tier: list/kanban/settings headers, hover.
+$body-tertiary-bg: #152225;
+
+// Kanban canvas (PR #658 review-fix FIX GROUP 1). The kanban renderer paints its canvas from
+// `--Kanban-background: #{$o-kanban-background}` (kanban_controller.scss) and $o-kanban-background is
+// `$o-gray-100` (#F8F9FA, kanban.variables.scss) - a SEPARATE grayscale lever the surface-neutral
+// $body-*-bg overrides above never reach, so the canvas, `.o_kanban_group` (reads
+// --KanbanGroup-background -> --Kanban-background) and `.o_kanban_header` (inherits the group) all
+// stayed LIGHT in dark, floating the dark card on a light canvas. Darken the Sass var to the
+// app-grey band (same tier as $o-webclient-background-color) so a dark card reads as raised above it.
+// Set without !default so it wins kanban.variables.scss' later `!default` regardless of glob order.
+$o-kanban-background: #0B1315;
+
+// --- Text tier --------------------------------------------------------------------------------
+// Primary text. Overriding $body-color ALSO re-tints the DEF-004 derived tier
+// $body-tertiary-color (rgba($body-color, .5), Bootstrap _variables.scss:444) and every Bootstrap
+// grayscale/theme .text-* utility at compile - so the 8-pass !important war disappears.
+$body-color: #EDF4F5;
+$o-main-text-color: #EDF4F5;
+// Strong text / headings (var-based --emphasis-color / --heading-color and the compiled
+// $headings-color surfaces, e.g. .o_form_view .oe_title).
+$body-emphasis-color: #C9D6D8;
+$o-main-headings-color: #C9D6D8;
+// Muted / secondary text (help, timestamps, field labels).
+$body-secondary-color: #8EA5A8;
+// ... and the OTHER muted-text token, which is a separate lever and was still light-mode-only.
+// `$o-main-color-muted: rgba($o-gray-700, $o-opacity-muted)` (primary_variables.scss:121) is built
+// from the fixed grayscale ramp, so like every other $o-gray-* consumer it recompiled UNCHANGED
+// into the dark bundle: `.text-muted` measured `rgba(73,80,87,0.76)` in BOTH bundles. Core feeds it
+// into $text-muted (bootstrap_overridden.scss:85) and from there into the whole `.text-muted`
+// utility, $dropdown-link-disabled-color (:191), the control-panel breadcrumb (control_panel.scss:95),
+// the emoji picker (:65) and - the surface that exposed it - the DISABLED statusbar steps
+// (statusbar_field.scss:118 `&:disabled &:not(.o_arrow_button_current) { color: $text-muted }`,
+// which is what every READONLY statusbar renders: sale.order, account.move, purchase.order ...).
+//
+// LIVE-MEASURED on the dark sale order form: composited over the resting step #25383C that alpha
+// resolves to #404A50 = 1.35:1. Formally those steps are inactive components, which WCAG SC 1.4.3
+// exempts - but "exempt" is not "legible", and the owner is looking at a statusbar whose upcoming
+// stages have vanished. It also matters for the step NUMBERS added the same day: they are painted
+// `currentColor` precisely so they can never be less readable than their label, which means an
+// invisible label is an invisible number.
+// Collapsed onto the dark MUTED tier declared just above, opaque rather than alpha so it composites
+// identically on every dark rung: #8EA5A8 is 6.75:1 on the panel #111B1E, 7.24:1 on the app band
+// #0B1315, 6.29:1 on the raised #152225 and 4.73:1 on the statusbar's resting step #25383C (it
+// drops to 3.79:1 only on the #31474C hover rung of an already-disabled step - still ~3x the
+// pre-fix value, and an inactive control). Aliased, never re-literalised: "muted text" means ONE
+// thing in this bundle, which is the same rule $o-viin-text-secondary follows below.
+$o-main-color-muted: $body-secondary-color;
+
+// --- Borders ----------------------------------------------------------------------------------
+$border-color: #25383C;
+
+// --- Neutral CONTROL tier (2026-08-03, feeds dark_buttons.scss) ---------------------------------
+// The fill of a NEUTRAL pill control - `.btn-secondary`: the pager arrows, the RESTING chatter
+// "Log note" / "Activity" toggles (chatter.xml:14/22/26 give them `btn-secondary`), the
+// control-panel custom buttons. Core's map keys that button off $o-gray-300 #DEE2E6 with
+// $o-gray-900 #212529 text, a grayscale pair no $body-*-bg override reaches, so in the recompiled
+// dark bundle those pills stayed LIGHT GREY on the #0B1315 canvas.
+// The dark arm keeps light mode's DESIGN RELATIONSHIP rather than inventing a louder one: light
+// puts the pill 1.30:1 above its white page with 11.85:1 text, so the dark pill sits one rung above
+// the panel (1.44:1) with 10.95:1 text - a subtle chrome control, not a filled emphasis button.
+// Declared here so the whole dark neutral ladder (app #0B1315 -> panel #111B1E -> raised #152225 ->
+// border/control #25383C -> control-hover #31474C) lives in ONE file (ODOO-AI-ETHOS #11 SSOT);
+// the resting tone is an ALIAS of $border-color, not a fifth literal.
+$o-viin-dark-control-bg: $border-color;   // #25383C - $body-color #EDF4F5 on it = 10.95:1
+$o-viin-dark-control-hover-bg: #31474C;   // one rung brighter for :hover - #FFFFFF on it = 9.83:1
+
+// --- SELECTED / CURRENT-ITEM tier (2026-08-03, RC-2) --------------------------------------------
+// "This row or list item is the selected one." Light mode marks that with an INFO-TINTED band, not
+// with a brighter neutral: `$o-list-group-active-bg: lighten(saturate(adjust-hue($o-info, 15), 1.8),
+// 50)` (primary_variables.scss:200) is a pale blue sitting only ~1.11:1 from the white page - the
+// HUE, the bold weight and the leading marker carry the meaning, luminance never does. The dark arm
+// keeps exactly that relationship, reusing the info-tinted dark band this module already paints the
+// selected LIST ROW with (`.table-info`, dark_secondary_surfaces.dark.scss) - promoted to a NAMED
+// token here so "selected surface" is declared ONCE for both consumers (ODOO-AI-ETHOS #11) instead
+// of the same literal living in two files. It is 1.25:1 from the panel (light: 1.11:1) and carries
+// $body-color #EDF4F5 at 12.68:1.
+$o-viin-dark-selection-bg: #123037;
+
+// --- NO PURPLE IN DARK: neutralise $o-brand-secondary itself (owner revision 2026-08-03) --------
+// The previous pass gave the purple a dark ARM (#B589B8, 6.03:1 on this panel) plus a scheme-aware
+// label token $o-viin-on-secondary. The owner reversed that: the purple accent is LIGHT-ONLY, and
+// in dark every accented surface falls back to its default look. BOTH of those tokens are therefore
+// RETIRED here - #B589B8 no longer appears anywhere in the cluster, and $o-viin-on-secondary is
+// deleted outright (its only two consumers were the chatter Log-note toggle, now the DEFAULT neutral
+// button, and the group-by facet label, now light-only where a plain $o-white is correct).
+//
+// WHY THE TOKEN STILL NEEDS A DARK VALUE AT ALL, rather than simply dropping this line. Our OWN
+// rules are all wrapped in `@if not $o-viin-dark-bundle`, so they are already gone from this bundle.
+// But THREE CORE rules read $o-brand-secondary directly and recompile here no matter what we do:
+//   web/static/src/views/form/form_controller.scss:1120  .o_xxs_form_view .o_form_label  (mobile
+//                                                        form label - TEXT)
+//   web/static/src/search/search_panel/search_view.scss:111  section header `border-bottom`
+//   point_of_sale/.../pos_kanban_view/pos_kanban_view.scss:5,16  POS backend kanban - TEXT
+// Left at the light #7F4282 those three would still be purple in dark - and the first of them at
+// 2.50:1 on this panel, an outright WCAG AA failure. So the token collapses onto the dark MUTED tier
+// this file already declares: no purple survives anywhere in web.assets_web_dark, and all three core
+// surfaces land on a neutral that reads correctly for each of them (a muted label, a subtle divider).
+//   #8EA5A8 on the panel #111B1E = 6.75:1 (AA) - vs 2.50:1 for the light purple.
+// ALIASED to $body-secondary-color, never re-literalised: core's own `.text-body-secondary` uses the
+// same tier, so "de-accented secondary" means one thing across the bundle (ODOO-AI-ETHOS #11 SSOT).
+// Declared HERE, after $body-secondary-color, because Sass resolves top-down.
+$o-brand-secondary: $body-secondary-color;
+
+// --- Dark arm of the readable `.text-secondary` TEXT tier ---------------------------------------
+// The light fix value #6C757D is only 3.73:1 on the dark panel #111B1E, so it cannot simply
+// recompile into the dark bundle. Point it at the dark MUTED-text tier this file already declares
+// ($body-secondary-color #8EA5A8 = 6.75:1 on #111B1E), which is the same token core's
+// `.text-body-secondary` uses - so "secondary text" means one thing in both schemes. Aliased, never
+// re-literalised. (Untouched, `.text-secondary` would recompile to core's #DEE2E6 - readable at
+// 13.45:1 in dark, but a near-white "muted" text that is louder than the body copy it qualifies.)
+$o-viin-text-secondary: $body-secondary-color;
+
+// --- Content links (C-6 dark arm) -------------------------------------------------------------
+// :root --link-color is emitted from $link-color (= $o-main-link-color). The light AA teal
+// #007F8E measures only 3.69:1 on #111B1E; the dark arm lifts it to a lighter teal. The teal
+// CHROME (navbar/rail) is scheme-invariant and owned elsewhere - this governs CONTENT links only.
+$o-main-link-color: #4FD4E2;
+$link-color: #4FD4E2;
+$link-hover-color: #7FE0EA;
+// Dark arm of the interactive-teal HOVER rung (2026-08-03, text-link tier). link_tier.scss splits
+// the conflated `--link-color` token: the HYPERLINK tier turns brand-secondary purple in LIGHT,
+// while Bootstrap's `.nav-link` / `.btn-link` / `.pagination` borrowers are re-anchored onto the
+// interactive teal and therefore need their own hover value. Declared HERE, aliased to the
+// $link-hover-color literal this file already owns, so the dark rung stays byte-identical to what
+// those components compile to today and NO new hex enters the module. link_tier.scss derives the
+// LIGHT rung with Bootstrap's own shade formula and declares it `!default`, so this wins in dark.
+// (A shade() would be the wrong direction here: it darkens a light-on-dark teal.)
+$o-viin-interactive-hover: $link-hover-color;
+
+// --- DROPDOWN-ITEM + LIST-GROUP interactive states (RC-1 / RC-2, owner defect report 2026-08-03) --
+// THE DEFECT, MEASURED (live confirm-by-toggle on web.assets_web_dark). Core re-declares the four
+// Bootstrap dropdown-link scalars in bootstrap_overridden.scss:184-189 and only the FIRST of them is
+// semantic:
+//     $dropdown-link-color:        $o-main-text-color   <- semantic, this file already re-points it
+//     $dropdown-link-hover-color:  $black               <- :185  a LITERAL
+//     $dropdown-link-hover-bg:     rgba($black, .08)    <- :186  a DARKENING overlay
+//     $dropdown-link-active-color: $black               <- :188  a LITERAL
+//     $dropdown-link-active-bg:    transparent          <- :189  scheme-neutral, left alone below
+// The three literals are unreachable from every surface/text override above, so they recompiled
+// UNCHANGED into the dark bundle. The loudest consumer is the m2o/m2m/o2m AUTOCOMPLETE: its active
+// row reads the pair as COMPILE-TIME Sass (autocomplete.scss:25-26 `color: $dropdown-link-hover-color;
+// background-color: $dropdown-link-hover-bg`), so the highlighted suggestion painted #000000 on the
+// #111B1E panel = 1.20:1 - the bug the owner reported. Bootstrap ALSO emits the same two as the
+// runtime `--dropdown-link-hover-color` / `--dropdown-link-active-color` (lib/bootstrap/scss/
+// _dropdown.scss:37-40, $prefix is '' in Odoo), which is how the SAME literals reach six more
+// surfaces: _dropdown.scss:191/198 (every `.dropdown-item:hover` / `.active`), utils.scss:284-285,
+// core/dropdown/dropdown.scss:88, webclient/webclient.scss:76 (`.dropdown-item.active:hover`),
+// model_field_selector_popover.scss:11 and html_editor.common.scss:533/538.
+//
+// RC-2 is the same defect one map over: core keys the LIST-GROUP action/active tiers off the
+// grayscale ramp and an $o-info derivative (bootstrap_overridden.scss:199-203) -
+// `$list-group-action-hover-color: $gray-900` (#212529 = 1.14:1 on the panel, which is what the
+// systray Activity/Messaging row under a stationary pointer rendered) and
+// `$list-group-active-color/-bg` = near-black on a LIGHT pale-blue band.
+//
+// WHY LAYER 1 AND WHY THESE EXACT LEVERS. Every one of the surfaces above is core's OWN rule reading
+// core's OWN token, so re-pointing the SOURCE scalars makes all of them recompile dark-correct from
+// one place - no per-component allow-list and no !important war (ODOO-AI-ETHOS #11). Two of the six
+// are set through the `$o-*` seam rather than the Bootstrap name, because that is the seam core put
+// there: `$list-group-active-color: $o-list-group-active-color !default` (:201) and
+// `$list-group-active-bg: $o-list-group-active-bg !default` (:202) - and grep confirms those two
+// $o- tokens have no other consumer, so the seam is closed. `$list-group-hover-bg` is deliberately
+// NOT set: core derives it as `$list-group-hover-bg: $dropdown-link-hover-bg !default` (:199), which
+// resolves to the value set here, so the two hover bands stay one idea by construction.
+//
+// THE HOVER BAND MUST LIGHTEN, NOT DARKEN. Core's `rgba($black, .08)` is an overlay that darkens the
+// surface under it; on an already-dark panel that is a ~1.02:1 no-op, i.e. the hover affordance
+// simply disappears. The dark arm uses the neutral CONTROL rung declared above - the same tone
+// `.btn-secondary` rests on - which sits 1.43:1 above the panel: perceptible as a band, subtle as
+// chrome, and it carries $body-color at 10.95:1. Opaque rather than an alpha so it composites
+// identically on the panel, the raised tier and inside a popover.
+//
+// $dropdown-link-active-bg is left at core's `transparent`: it carries no colour, so it is already
+// scheme-correct, and light mode marks a SELECTED dropdown item with weight plus the `:before` arrow
+// (webclient.scss:71-79) rather than a resting band. Faithfully mirrored, not "improved".
+$dropdown-link-hover-color: $body-color;             // #EDF4F5 - 10.95:1 on the band, was #000000
+$dropdown-link-hover-bg: $o-viin-dark-control-bg;    // #25383C - lightens the panel by 1.43:1
+$dropdown-link-active-color: $body-color;            // selected item label, was #000000 = 1.20:1
+$list-group-action-hover-color: $body-color;         // was $gray-900 #212529 = 1.14:1
+$o-list-group-active-color: $body-color;             // was $o-black on a pale-blue band
+$o-list-group-active-bg: $o-viin-dark-selection-bg;  // info-tinted dark band, 12.68:1 under the label
+
+// --- ACTIVE / CURRENT component tier (owner defect report 2026-08-03: "glaring") ----------------
+// THE DEFECT, MEASURED. Core seeds the "current component" trio from the grayscale ramp and the flat
+// decorative teal (web/static/src/scss/primary_variables.scss:132-134):
+//     $o-component-active-color:  $o-black;
+//     $o-component-active-bg:     mix($o-action, $o-gray-100, 20%);   // -> #C6EDF1
+//     $o-component-active-border: $o-action;                          // brand_variables -> #007F8E
+// None of those three is reachable from the surface-neutral $body-*-bg overrides above, so all three
+// recompiled UNCHANGED into web.assets_web_dark. The statusbar seeds
+// --o-statusbar-background-active straight off that trio (statusbar_field.scss:14-15), and Bootstrap
+// paints the CURRENT step - which core renders `disabled` (statusbar_field.xml:40
+// `t-att-disabled="props.isDisabled || item.isSelected"`) - from --btn-disabled-color, i.e.
+// `color-contrast($background)` of the DARK control fill = #FFFFFF. Live-measured on the dark sale
+// order form: WHITE #FFFFFF on the light-cyan #C6EDF1 slab = 1.25:1. Both halves of the owner's
+// report in one number - the slab glares on the #0B1315 canvas AND the label sinks into it.
+//
+// WHY LAYER 1 HERE AND NOT A KEY IN dark_buttons.scss. These three tokens are read by FIVE
+// consumers, and a per-map fix would reach only two of them:
+//     web/static/src/views/fields/statusbar/statusbar_field.scss:14-15  the current-step fill+outline
+//     web/static/src/scss/primary_variables.scss:255-257                $o-btns-bs-override "secondary"
+//     web/static/src/scss/primary_variables.scss:268-270                $o-btns-bs-override "light"
+//     web/static/src/scss/primary_variables.scss:285-287                $o-btns-bs-OUTLINE-override
+//     web/static/src/webclient/settings_form_view/settings_form_view.scss  --settings__tab-bg--active
+// Re-pointing the SOURCE tokens makes every one of them recompile dark-correct from a single place
+// (ODOO-AI-ETHOS #11 SSOT), and dark_buttons.scss keeps forwarding them verbatim - it now forwards
+// the DARK values without any edit to its ACTIVE keys.
+//
+// SAME FORMULA, DARK NEUTRAL. The fill keeps core's own construction - the interactive teal mixed
+// 20% into the surface one rung above the panel - with the dark tier substituted for $o-gray-100.
+// It must NOT read $o-action / $o-brand-primary: this file is anchored ('before',
+// primary_variables.scss) and its order relative to brand_variables.scss (same anchor) is
+// undefined, so only tokens declared EARLIER IN THIS FILE may be read. $o-main-link-color is the
+// dark teal declared just above, so the mix is single-sourced and no new hex enters the module.
+//   fill  mix(#4FD4E2, #152225, 20%) = #21464B - #FFFFFF on it 10.28:1, $body-color 9.23:1
+//         (was 1.25:1); one rung above the resting step #25383C, exactly as light's #C6EDF1 sits
+//         one hair above its #DEE2E6 neighbours - the OUTLINE carries the emphasis in both schemes.
+//   border -> the dark teal. The light #007F8E outline is only 2.37:1 on the new dark fill (it is
+//         3.79:1 on light's #C6EDF1), so the delineation that makes the current step readable as
+//         "current" would be weaker in dark than in light; the dark teal restores it at 5.80:1 and
+//         is the SAME dark arm this file already gives every other foreground teal. Light is
+//         untouched, so $o-component-active-border stays the chrome base there.
+//   color -> the dark body tier. This is the `:active` PRESSED label of a neutral button
+//         (`.btn-secondary:active`); left at core's $o-black it would be 1.87:1 on the new fill.
+$o-component-active-bg: mix($o-main-link-color, $body-tertiary-bg, 20%);
+$o-component-active-border: $o-main-link-color;
+$o-component-active-color: $body-color;
+
+// --- A11y focus ring dark arm (C-7) -----------------------------------------------------------
+// focus_ring.scss (web.assets_backend, included in this dark bundle) declares
+// `$o-viin-focus: #005E68 !default;` and emits `--o-viin-focus`. Setting it here FIRST (no
+// !default) makes the ring compile to the light-on-dark teal in the dark bundle, clearing WCAG
+// SC 1.4.11 (>= 3:1) on #111B1E; the light bundle keeps #005E68 (7.5:1 on white).
+$o-viin-focus: #7FE0EA;
+
+// --- Mobile burger / app-menu sidebar (PR #658 batch 3) -----------------------------------------
+// The LAST unthemed light island in dark mode. Core's burger_menu.variables.scss hardcodes the panel
+// WHITE ($o-burger-base-bg: $o-white, :3), the topbar $o-gray-100 #F8F9FA (:6), the entry text
+// $o-gray-800 #343A40 (:4) and the topbar text $o-black (:7) - and burger_menu.scss reads those four
+// vars DIRECTLY (:21/:22/:34/:60), so none of them is reachable from the surface-neutral $body-*-bg
+// overrides above. The panel therefore recompiled WHITE in web.assets_web_dark.
+//
+// LIVE-MEASURED DEFECT (dark mode, 375px). The `web.SectionMenu` sidebar section titles
+// (navbar.xml:51/:67, `fw-bolder text-900 pt-3 pb-2`) computed the dark #EDF4F5 on that WHITE panel =
+// 1.11:1, invisible. Before dark_secondary_surfaces.dark.scss re-pointed `.text-900 { --color }`
+// class-wide they were #212529-on-white (readable) - so that fix did not CAUSE the island, it exposed
+// it: the burger user-menu links (`.text-body`, burger_user_menu.xml:8) already resolved the dark
+// #EDF4F5 on the same white panel, and a WHITE panel in dark mode is itself the half-dark bug class
+// this cluster exists to close.
+//
+// WHY LAYER 1 (Sass vars) AND NOT A LAYER-2 TAIL RULE in dark_secondary_surfaces.dark.scss, and why
+// the SURFACE is darkened rather than the `.text-900` scope narrowed:
+//   - All four tokens are `!default` and are read by NOTHING but burger_menu.scss (grep-verified
+//     across core + tvtmaaddons + this repo), so this is a closed, native lever - exactly the
+//     $o-kanban-background case above. Setting them here WITHOUT `!default`, before core's
+//     `web/static/src/**/*.variables.scss` glob (guaranteed by this file's
+//     ('before', primary_variables.scss) anchor, since that glob follows primary_variables.scss in
+//     web._assets_primary_variables), makes core's OWN rules recompile dark-correct: no specificity
+//     war, no !important, and no dead override to audit.
+//   - Decisively, burger_menu.scss:60 is
+//     `@include o-hover-text-color(rgba($o-burger-base-color, .8), $o-burger-base-color)`. Darkening
+//     the var lets Sass re-composite BOTH the .8-alpha resting arm and the full-opacity hover arm from
+//     the dark text. A tail rule would have to hand-composite that alpha against a guessed backdrop
+//     and re-emit the hover state - re-implementing core logic.
+//   - Narrowing `.text-900` instead would restore #212529-on-white and leave the panel light in dark
+//     mode, i.e. keep the half-dark bug and leave the panel's `.text-body` links broken anyway.
+// Never a var() inside a Sass colour function (banned): $o-burger-base-color feeds rgba(), so it must
+// stay a real colour - all four resolve to the concrete hexes declared earlier in this file.
+$o-burger-base-bg: $o-view-background-color;   // panel #111B1E - same tier as the form sheet / card
+$o-burger-base-color: $body-color;             // entry text #EDF4F5; the rgba(.8) arm reads 10.40:1
+$o-burger-topbar-bg: $body-tertiary-bg;        // topbar #152225 - raised band above the panel
+$o-burger-topbar-color: $body-color;           // topbar text; `.o_sidebar_close.text-reset` inherits it

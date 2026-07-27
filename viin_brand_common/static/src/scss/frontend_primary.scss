@@ -1,0 +1,27 @@
+// Frontend $primary de-brand (PR #658 review-fix C-5) - make the PUBLIC/login primary the AA teal.
+//
+// THE LEAK (grounded, verified live on a plain [web + brand] install):
+//   compiled web.assets_frontend  ->  :root { --primary: #714B67 }   (Odoo enterprise aubergine)
+//   compiled web.assets_backend   ->  :root { --primary: #007F8E }   (correct AA teal)
+// :root --primary is emitted by Bootstrap _root.scss from $theme-colors['primary'], NOT from the
+// $primary Sass var. On the BACKEND, html_editor sets $prevent-backend-colors-alteration and
+// map-removes 'primary' from $theme-colors, so web/.../pre_variables.scss rebuilds it from $primary
+// (the base AA teal) -> teal. On the FRONTEND that flag is absent, so html_editor keeps
+// $theme-colors['primary'] = o-color('o-cc1-btn-primary') (the content palette base-1 aubergine
+// that brand_palette_reset deliberately keeps for CONTENT swatches), and pre_variables' map-merge
+// PRESERVES it -> the login CTA/links leak aubergine. Setting `$primary: #007F8E !default` alone
+// (brand_variables.scss) fixes the $primary VAR but never the $theme-colors-emitted :root --primary.
+//
+// THE FIX: after pre_variables.scss has finalised $theme-colors and BEFORE Bootstrap builds its
+// maps / emits :root, re-point ONLY the 'primary' theme-color to $primary (the base AA teal, set
+// `!default` in brand_variables.scss so a downstream website theme can still win by assigning
+// $primary earlier). Content o-colors (o-color-1..5, the .text-o-color-* / .bg-o-color-* swatches)
+// are a SEPARATE map and stay untouched, so the content aubergine is preserved. Backend is
+// unaffected (this file rides web.assets_frontend only).
+//
+// Contributed via ('after', 'web/static/src/scss/pre_variables.scss', ...) to web.assets_frontend -
+// web is a hard dependency, so the anchor is installability-safe; pre_variables.scss sits before
+// the Bootstrap _variables/_maps/_root import in that bundle.
+@if variable-exists('theme-colors') {
+    $theme-colors: map-merge($theme-colors, ('primary': $primary)) !global;
+}

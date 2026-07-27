@@ -1,0 +1,276 @@
+// Dark arm of the NEUTRAL button map - `$o-btns-bs-override["secondary"]` (2026-08-03).
+//
+// THE DEFECT
+// -----------------------------------------------------------------------------------------------
+// Core seeds the neutral button from a GRAYSCALE pair no surface variable reaches
+// (web/static/src/scss/primary_variables.scss:247-259):
+//     "secondary": (background: $o-gray-300, border: $o-gray-300, color: $o-gray-900, ...)
+// $o-gray-* is a fixed ramp; dark_palette.scss re-points $body-*-bg / $body-color but deliberately
+// NOT the ramp (several compile-time literals depend on it). So in the recompiled
+// web.assets_web_dark bundle every `.btn-secondary` still rendered #212529 on #DEE2E6 - light-grey
+// pills floating on the #0B1315 app canvas: the list/kanban PAGER arrows, the RESTING chatter
+// "Log note" / "Activity" toggles (mail chatter.xml:14/22/26), control-panel custom buttons.
+//
+// WHY A SECOND DARK FILE INSTEAD OF ADDING THIS TO dark_palette.scss
+// -----------------------------------------------------------------------------------------------
+// dark_palette.scss is anchored ('before', web/static/src/scss/primary_variables.scss). At that
+// point core has not yet declared $o-component-active-bg / -border / -color (primary_variables.scss:132-134),
+// so a map written there could not FORWARD them - it would have to hand-copy literals. Anchoring
+// AFTER primary_variables.scss lets the three ACTIVE keys be forwarded by NAME, which is what keeps
+// this file honest: whatever those tokens resolve to for the active bundle is what the map carries.
+//     * web/static/src/views/fields/statusbar/statusbar_field.scss:2-16 reads the "secondary" entry
+//       for --o-statusbar-background-active / --o-statusbar-border-active / --o-statusbar-background-hover
+//       (the current-stage arrow fill, its outline AND its notch);
+//     * web/static/src/search/control_panel/control_panel.scss:171 feeds the same entry into the
+//       %-custom-button button-variant.
+// UPDATE 2026-08-03 (owner: the dark current step is "glaring", its white label sinks). The three
+// $o-component-active-* tokens now have a DARK ARM of their own, declared at the end of
+// dark_palette.scss - so forwarding them by name here is exactly what carries the dark values
+// through to those two surfaces. No key below changed; the values they forward did. See that file
+// for the measured before/after (WHITE on #C6EDF1 = 1.25:1 -> WHITE on #21464B = 10.28:1).
+//
+// The anchor is still far ahead of every CONSUMER: `web._assets_primary_variables` is included from
+// `web._assets_helpers` at the very TOP of web.assets_backend, whereas the map is expanded into CSS
+// only in web/static/src/scss/bootstrap_review_backend.scss:17-30 (inside web._assets_bootstrap_backend),
+// and read by the view SCSS later still.
+//
+// map-merge, NOT a plain assignment: by this point core has already run its own
+// `$o-btns-bs-override: map-merge((primary, secondary, light), $o-btns-bs-override)` (line 232), so
+// the variable holds brand_variables.scss' AA-teal "primary" entry plus core's "secondary"/"light".
+// Merging replaces the single "secondary" key and leaves the teal primary button untouched; a plain
+// assignment would wipe it and hand `.btn-primary` back to the flat 2.33:1 decorative teal.
+//
+// CONTRIBUTION (viin_brand_common/__manifest__.py), dark bundle ONLY:
+//     'web.assets_web_dark': [
+//         ('after', 'web/static/src/scss/primary_variables.scss',
+//          'viin_brand_common/static/src/scss/dark_buttons.scss'),
+//     ]
+// The name is neither *.variables.scss (would auto-glob into the LIGHT primary-variables bundle) nor
+// *.dark.scss (would auto-glob into the dark-bundle TAIL, far too late for a variable) - the same
+// naming landmine dark_palette.scss documents.
+//
+// All nine state keys are supplied: each entry is passed straight to Bootstrap's button-variant
+// mixin, so omissions are not allowed (core's own comment, primary_variables.scss:227-230).
+
+$o-btns-bs-override: map-merge($o-btns-bs-override, (
+    "secondary": (
+        // Resting: the neutral CONTROL rung of the dark ladder, one step above the panel - the same
+        // "subtle pill" relationship light mode builds with $gray-300 on white (1.30:1), not a loud
+        // filled button. Text is the dark body tier: 10.95:1, matching light's 11.85:1.
+        background: $o-viin-dark-control-bg,
+        border: $o-viin-dark-control-bg,
+        color: $body-color,
+
+        // Hover: one rung brighter with the label pushed to pure white - mirroring light mode's
+        // $gray-300 -> $gray-400 fill step with $o-gray-900 -> $o-black text step. 9.83:1.
+        // This key DELIBERATELY also moves the statusbar's HOVERED step
+        // (statusbar_field.scss:16 --o-statusbar-background-hover), and that is a SECOND dark defect
+        // being closed rather than collateral damage: core's $o-gray-400 #CED4DA is a near-white
+        // flash on a dark statusbar and leaves the dark step label at ~1.25:1.
+        hover-background: $o-viin-dark-control-hover-bg,
+        hover-border: $o-viin-dark-control-hover-bg,
+        hover-color: #FFFFFF,
+
+        // ACTIVE: forwarded BY NAME from core's own tokens, so the statusbar current-stage arrow
+        // (fill + outline + notch) and the control-panel custom button always carry whatever the
+        // active bundle resolves them to. Since 2026-08-03 that is a DARK arm in this bundle
+        // (dark_palette.scss) and core's own light values in web.assets_backend.
+        active-background: $o-component-active-bg,
+        active-border: $o-component-active-border,
+        active-color: $o-component-active-color,
+    ),
+
+    // ----------------------------------------------------------------------------------------------
+    // "light" - the GHOST button (2026-08-03, prerequisite of the `.bg-light` dark arm)
+    // ----------------------------------------------------------------------------------------------
+    // Core keys it off the page colour itself: `(background: $o-white, border: $o-white,
+    // color: $o-gray-900, hover-background: $o-gray-200, hover-color: $o-black)`
+    // (primary_variables.scss:261-273). That is a GHOST button by design - invisible against the
+    // sheet it sits on until hovered - and, like the neutral map above, it recompiled unchanged into
+    // the dark bundle: WHITE pills on the #0B1315 canvas. Core itself treats the class as light-only
+    // and swaps it out where it already handles a dark theme
+    // (`#{ isDarkTheme ? 'btn-secondary' : 'btn-light' }`, spreadsheet edit_dialog.xml), which is the
+    // clearest possible statement that the map has no dark arm. Backend consumers: the inline-list
+    // `o_form_button_save` / `_cancel`, the model-field-selector popover ROWS, the signature widget's
+    // draw/load/auto toggles, the chatter jump-to-present pill, the attachment select/clear buttons.
+    //
+    // WHY THIS ENTRY IS LOAD-BEARING FOR RC-3/RC-4 AND NOT AN OPPORTUNISTIC EXTRA. The `.bg-light`
+    // dark arm in dark_secondary_surfaces.dark.scss re-points that utility's `--background-color`
+    // class-wide, and core's select-menu toggler carries BOTH classes
+    // (`o_select_menu_toggler d-flex border btn btn-light w-100 bg-light`, select_menu.xml:50). The
+    // utility's `background-color: ... !important` wins the surface, so darkening `.bg-light` while
+    // leaving this map light would render core's $o-gray-900 label on a dark fill - a NEW dark-on-dark
+    // failure created by the fix. The enumeration in that file found this pair; this entry is how it
+    // is closed at the source rather than papered over with a two-class rule.
+    //
+    // SAME RELATIONSHIP, DARK NEUTRAL. Light: fill = the page, hover = one grey step (1.19:1) with the
+    // label stepping $o-gray-900 -> $o-black. Dark: fill = the PANEL tier (so the ghost stays a
+    // ghost - a filled pill here would invent an affordance light mode does not have), hover = the
+    // neutral CONTROL rung 1.43:1 above it with the label stepping $body-color -> #FFFFFF. All values
+    // are aliases of the ladder declared in dark_palette.scss; no new hex enters the module.
+    //   resting  $body-color #EDF4F5 on the panel #111B1E = 15.72:1 (was #212529 = 1.14:1 had the
+    //            fill ever been darkened, and a white island on the canvas as shipped)
+    //   hover    #FFFFFF on #25383C = 11.79:1 (was $o-black on $o-gray-200)
+    "light": (
+        background: $o-view-background-color,
+        border: $o-view-background-color,
+        color: $body-color,
+
+        hover-background: $o-viin-dark-control-bg,
+        hover-border: $o-viin-dark-control-bg,
+        hover-color: #FFFFFF,
+
+        active-background: $o-component-active-bg,
+        active-border: $o-component-active-border,
+        active-color: $o-component-active-color,
+    ),
+));
+
+// ==================================================================================================
+// Dark arm of the OUTLINE neutral map - `$o-btns-bs-outline-override["secondary"]` (2026-08-03)
+// ==================================================================================================
+// THE DEFECT (owner: the stat-button border glares, and hovering one makes its text white-on-white).
+// Core keys the OUTLINE neutral off the same fixed grayscale ramp
+// (web/static/src/scss/primary_variables.scss:276-286):
+//     "secondary": (background: transparent, border: $o-gray-300, color: $o-gray-900,
+//                   hover-background: $o-gray-200, hover-border: $o-gray-300, hover-color: $o-black, ...)
+// Odoo expands this map through the SAME `button-variant` mixin as the filled one
+// (bootstrap_review_backend.scss:32-45 - NOT Bootstrap's `button-outline-variant`), so `border` is a
+// literal border colour and `hover-background` a literal fill. The visible consumer is the form
+// SMART BUTTON: form_compiler.js:157-164 compiles every one as
+// `oe_stat_button btn btn-outline-secondary`. Live-measured on the dark contact form (panel #111B1E):
+//     border  #DEE2E6 vs the panel = 13.45:1 - a pure-white hairline round every stat button, the
+//             "too much contrast/glare" the owner reported (light mode's own border is 1.30:1);
+//     resting label #212529 = 1.14:1 - invisible, and it is what a stat button WITHOUT the
+//             StatInfo template renders its bare `<span>` in (button_box.scss:65);
+//     hover   fill #E9ECEF, while `.o_stat_text` / `.o_stat_value` read --o-stat-text-color, which
+//             brand_cascade.scss correctly pins to the dark body tier #EDF4F5 -> 1.06:1. WHITE ON
+//             WHITE: exactly the unreadable hover the owner reported.
+// The two halves are ONE defect: a light-mode outline map recompiled onto a dark canvas.
+//
+// WHY THIS MAP AND NOT A RULE ON .oe_stat_button. The stat button is only the loudest consumer -
+// `.btn-outline-secondary` is generic chrome, and the same map feeds
+// button_box.scss:172's --button-box-border-color (the mobile stat-strip divider) and
+// viin_backend_theme's dropdown.scss `.o-dropdown.btn-secondary.show`. Fixing the map fixes all of
+// them; a component rule would leave the others light and start another allow-list.
+//
+// SAME LADDER, SAME RELATIONSHIPS. Light puts a 1.30:1 hairline on white and fills it one hair
+// lighter on hover; dark puts a 1.43:1 hairline on the panel and fills it with that same tone, with
+// the outline stepping one rung brighter so it survives the fill - the mirror of light's
+// $gray-300 border over a $gray-200 fill. All values are ALIASES of the dark ladder declared in
+// dark_palette.scss; no new hex enters the module.
+//   border  $border-color #25383C vs panel #111B1E = 1.43:1 (was 13.45:1)
+//   color   $body-color #EDF4F5 on the panel = 15.72:1 (was 1.14:1)
+//   hover   $body-color on #25383C = 10.95:1, and the stat label/value (#EDF4F5, ours) likewise
+//           10.95:1 (was 1.06:1)
+// The ACTIVE trio is forwarded by name for the same reason as the filled map above.
+$o-btns-bs-outline-override: map-merge($o-btns-bs-outline-override, (
+    "secondary": (
+        background: transparent,
+        border: $border-color,
+        color: $body-color,
+
+        hover-background: $o-viin-dark-control-bg,
+        hover-border: $o-viin-dark-control-hover-bg,
+        hover-color: $body-color,
+
+        active-background: $o-component-active-bg,
+        active-border: $o-component-active-border,
+        active-color: $o-component-active-color,
+    ),
+
+    // ----------------------------------------------------------------------------------------------
+    // "primary" - the PRIMARY OUTLINE CTA (RC-5, owner defect report 2026-08-03)
+    // ----------------------------------------------------------------------------------------------
+    // THE DEFECT, MEASURED. Core ships NO "primary" key in this map, so `.btn-outline-primary` falls
+    // through to `@each $-name, $-color in $theme-colors { .btn-outline-#{$-name} {
+    // @include button-outline-variant($-color) } }` (bootstrap_review_backend.scss:64-76) and the
+    // mixin sets `--btn-color: $color` verbatim (lib/bootstrap/scss/mixins/_buttons.scss). With
+    // $theme-colors["primary"] correctly pinned to the AA teal #007F8E by brand_variables.scss, the
+    // LABEL therefore recompiles #007F8E into the dark bundle - 3.69:1 on the #111B1E panel, a WCAG
+    // AA failure on the "New" button of every form view (form_controller.xml:9 `btn
+    // btn-outline-primary o_form_button_create`) and on the kanban "Load more..." control
+    // (kanban_renderer.xml:61/67). #007F8E is 4.74:1 on WHITE - it is an AA teal for LIGHT mode and
+    // cannot cross the scheme boundary unchanged.
+    //
+    // WHY A MAP KEY AND NOT $theme-colors. Re-pointing $theme-colors["primary"] in dark would move
+    // `--primary`, the FILLED `.btn-primary`, `.bg-primary`, `.border-primary` and the brand identity
+    // tier with it - the exact opposite of a scoped fix. Adding the key here is core's OWN mechanism:
+    // bootstrap_review_backend.scss:71-75 skips its `button-outline-variant` fallback for any name
+    // present in this map, so exactly one generator still emits the class, and light mode - where
+    // this file is not loaded - keeps core's teal outline untouched.
+    //
+    // LIGHTEN, DO NOT HUE-SHIFT. Every value is $o-main-link-color, the dark teal dark_palette.scss
+    // already declares as the light-on-dark arm of the interactive teal - the same token
+    // $o-component-active-border uses - so the CTA stays unmistakably teal and no new hex enters the
+    // module. Note the map is expanded through `button-variant`, NOT `button-outline-variant`
+    // (bootstrap_review_backend.scss:33-46), so `border` is a literal border colour and
+    // `hover-background` a literal fill.
+    //   label   #4FD4E2 on the panel #111B1E = 9.85:1 (was #007F8E = 3.69:1)
+    //   border  the same teal = 9.85:1. Louder than light's 4.74:1 hairline by necessity, not by
+    //           choice: a dark canvas needs more luminance before a teal reads AS teal, and this is
+    //           the PRIMARY call to action - it outranks the 1.43:1 neutral hairline the
+    //           "secondary" outline above uses, which is the correct hierarchy in both schemes.
+    //   hover   the teal becomes the FILL (mirroring button-outline-variant's own
+    //           `$active-background: $color`) with the label dropping to the panel tone: #111B1E on
+    //           #4FD4E2 = 9.85:1. color-contrast() would pick pure black here; the panel tone is this
+    //           ladder's equivalent and keeps the button reading as part of the dark surface.
+    "primary": (
+        background: transparent,
+        border: $o-main-link-color,
+        color: $o-main-link-color,
+
+        hover-background: $o-main-link-color,
+        hover-border: $o-main-link-color,
+        hover-color: $o-view-background-color,
+
+        active-background: $o-component-active-bg,
+        active-border: $o-component-active-border,
+        active-color: $o-component-active-color,
+    ),
+));
+
+// ==================================================================================================
+// Dark arm of the CONTEXTUAL TEXT map - `$o-theme-text-colors` (RC-5, 2026-08-03)
+// ==================================================================================================
+// THE DEFECT, MEASURED. `$o-theme-text-colors` (web/static/src/scss/primary_variables.scss:92-97) is
+// core's OWN WCAG-tuning seam: a map that overrides the `$theme-colors` value used by the
+// `.text-{success,info,warning,danger}` utilities, precisely so contextual TEXT can be darkened
+// enough to pass AA on a WHITE page without dragging the matching `.bg-*`/`.btn-*` surface with it.
+// Every one of its four values is therefore tuned for light mode ONLY, and all four recompiled
+// unchanged into the dark bundle. On the #111B1E panel:
+//     "danger"  #D23F3A = 3.74:1   <- the cog-menu "Delete" item the owner reported
+//     "info"    #0180A5 = 3.85:1
+//     "warning" #9A6B01 = 3.75:1
+//     "success" #008818 = 3.71:1
+// Four near-miss AA failures in one declaration. Fixing only "danger" would leave three, so all four
+// get the arm - it is one lever, one defect class, and the map is written as a whole either way.
+//
+// SCOPE IS WIDER THAN THE `.text-*` UTILITY, WHICH IS THE POINT. `o-text-color()`
+// (bs_mixins_overrides_backend.scss:9-17) reads this map, and core calls it from the INVALID-STATE
+// indicators too: notebook.scss:62 (a notebook tab holding an invalid field), fields.scss:70 (the
+// invalid field itself), time_picker.scss:8, mail activity_controller.scss:137. Those are exactly the
+// messages a user must not miss, and they were all sitting at ~3.7:1.
+//
+// LIGHTEN, DO NOT HUE-SHIFT (the RC-5 instruction, taken literally). Each dark value is core's OWN
+// light value tinted toward white by a single uniform weight, read back OUT of the map by name - so
+// no hue is chosen by hand, no hex is invented, and if core ever retunes its light values the dark
+// arm tracks them automatically. This file is anchored ('after', primary_variables.scss), which is
+// what makes reading the map possible at all; dark_palette.scss compiles BEFORE that file, where the
+// map does not exist yet. The consumer (bootstrap_review_backend.scss:108-115, inside
+// web._assets_bootstrap_backend) is far later still.
+//
+// 30% is the smallest step that clears AA on the panel with headroom while staying obviously the same
+// hue - a mid tint, not a pastel. Measured on #111B1E after the tint:
+//     "danger"  #E07975 = 5.96:1     "info"    #4DA6C0 = 6.25:1
+//     "warning" #B8974D = 6.30:1     "success" #4DAC5D = 6.13:1
+// All four land within a third of a stop of the neutral muted tier (#8EA5A8, 6.75:1), so contextual
+// text reads as a PEER of secondary text rather than shouting over the body copy - the same
+// relationship light mode builds at ~4.7-5.5:1 on white. Dark bundle only: light keeps core's values.
+$o-viin-dark-semantic-text-tint: 30% !default;
+
+@each $-name, $-light-value in $o-theme-text-colors {
+    $o-theme-text-colors: map-merge($o-theme-text-colors, (
+        $-name: mix($o-white, $-light-value, $o-viin-dark-semantic-text-tint),
+    )) !global;
+}

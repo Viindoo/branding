@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-16 07:26+0000\n"
-"PO-Revision-Date: 2025-10-16 07:26+0000\n"
+"POT-Creation-Date: 2026-07-24 03:45+0000\n"
+"PO-Revision-Date: 2026-07-24 03:45+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,15 +19,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.login_layout
 msgid "<span>Viindoo</span>"
 msgstr ""
-
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_users_form_simple_modif
-msgid ""
-"API Keys are used to connect to Viindoo from external tools without the need"
-" for a password or Two-factor Authentication."
-msgstr ""
-"Khóa API được sử dụng để kết nối với Viindoo từ các công cụ bên ngoài mà "
-"không cần mật khẩu hoặc Xác thực hai yếu tố."
 
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.view_module_filter
@@ -50,33 +41,14 @@ msgid ""
 "Check your network connection and come back here. Viindoo will load as soon "
 "as you're back online."
 msgstr ""
-"Kiểm tra kết nối mạng của bạn và quay lại đây. Viindoo sẽ tải ngay "
-"khi bạn trực tuyến trở lại."
-
-#. module: base
-#: model:ir.model.fields,help:base.field_ir_mail_server__from_filter
-msgid ""
-"Comma-separated list of addresses or domains for which this server can be used.\n"
-"e.g.: \"notification@viindoo.com\" or \"viindoo.com\""
-msgstr ""
-"Danh sách các địa chỉ hoặc tên miền được phân tách bằng dấu phẩy mà máy chủ này có thể được sử dụng.\n"
-"VD: \"notification@viindoo.com\" or \"viindoo.com\""
+"Kiểm tra kết nối mạng của bạn và quay lại đây. Viindoo sẽ tải ngay khi bạn "
+"trực tuyến trở lại."
 
 #. module: viin_brand_common
 #. odoo-javascript
 #: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
 msgid "Documentation"
 msgstr "Tài liệu"
-
-#. module: viin_brand_common
-#: model:ir.model.fields,field_description:viin_brand_common.field_ir_mail_server__from_filter
-msgid "FROM Filtering"
-msgstr "Bộ lọc TỪ"
-
-#. module: viin_brand_common
-#: model:ir.model,name:viin_brand_common.model_ir_mail_server
-msgid "Mail Server"
-msgstr "Máy chủ gửi thư"
 
 #. module: viin_brand_common
 #. odoo-javascript
@@ -103,7 +75,7 @@ msgstr ""
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
 msgid "Viindoo logo"
-msgstr ""
+msgstr "Biểu trưng Viindoo"
 
 #. module: viin_brand_common
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
@@ -115,4 +87,4 @@ msgstr "Bạn đang Ngoại tuyến"
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.view_partner_address_form
 #: model_terms:ir.ui.view,arch_db:viin_brand_common.view_partner_form
 msgid "e.g. https://viindoo.com"
-msgstr ""
+msgstr "vd. https://viindoo.com"

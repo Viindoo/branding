@@ -1,0 +1,30 @@
+// Native color-scheme correctness (relocated from viin_backend_theme/scheme.scss, PR #658 C-2).
+//
+// Core paints `.o_web_client { color-scheme: $o-webclient-color-scheme }` where
+// $o-webclient-color-scheme DEFAULTS to the INVALID custom-ident `bright`
+// (web/static/src/scss/primary_variables.scss:13 -> webclient/webclient.scss). An invalid ident is
+// treated as `normal`, so the whole web-client subtree never opts into the dark UA scheme - it skews
+// light-dark(), native scrollbars / form controls / date pickers, and getComputedStyle
+// (phantom-white reads). This value is core-origin (NOT theme/cluster).
+//
+// It is a scheme-INVARIANT correctness fix, independent of the dark BUNDLE mechanism, so it belongs
+// in the always-installed base (viin_brand_common) - dark mode is correct even with the redesign
+// theme absent. Track the app toggle (data-bs-theme) rather than Bootstrap's `light dark` (which
+// would follow the OS pref and desync native chrome from the app's chosen scheme). (0,2,0) beats
+// core's `.o_web_client` (0,1,0).
+:root,
+:root[data-bs-theme="light"] {
+    color-scheme: light;
+}
+
+[data-bs-theme="dark"] {
+    color-scheme: dark;
+}
+
+[data-bs-theme="light"] .o_web_client {
+    color-scheme: light;
+}
+
+[data-bs-theme="dark"] .o_web_client {
+    color-scheme: dark;
+}

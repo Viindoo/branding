@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
-	<template id="web_layout" inherit_id="web.layout"
-		name="Viindoo Web layout">
-		<xpath expr="//title" position="attributes">
-			<attribute name="t-esc">title or 'Viindoo'</attribute>
-		</xpath>
-		<xpath expr="//link[@type='image/x-icon']" position="attributes">
-			<attribute name="t-att-href">x_icon or '/viin_brand/static/img/favicon.ico'</attribute>
-		</xpath>
-	</template>
-	
 	<template id="brand_promotion_message" inherit_id="web.brand_promotion_message" name="Viindoo Brand Promotion Message">
 		<xpath expr="//t[@t-set='odoo_logo']/a" position="attributes">
 			<attribute name="t-attf-href">https://viindoo.com?utm_source=db&amp;utm_medium=#{_utm_medium}</attribute>
@@ -30,6 +20,10 @@
     	</xpath>
     	<xpath expr="//a[@href='https://www.odoo.com?utm_source=db&amp;utm_medium=auth']" position="attributes">
     		<attribute name="href">https://viindoo.com?utm_source=db&amp;utm_medium=auth</attribute>
+    	</xpath>
+    	<xpath expr="//t[@t-set='no_footer']" position="after">
+    		<t t-set="title">Viindoo</t>
+    		<t t-set="x_icon">/viin_brand/static/img/favicon.ico</t>
     	</xpath>
     </template>
 
@@ -65,9 +59,9 @@
                     filter: grayscale(.6);
                     }
                     .card button {
-                    background-color: #00bbce;
+                    background-color: #00BBCE;
                     color: #FFFFFF;
-                    border: 1px solid #00bbce;
+                    border: 1px solid #00BBCE;
                     border-radius: .25rem;
                     padding: .5rem 1rem;
                     cursor: pointer;
@@ -91,7 +85,20 @@
 			<attribute name="href">/viin_brand_common/static/img/viindoo-icon-ios.png</attribute>
 		</xpath>
 		<xpath expr="//meta[@name='theme-color']" position="attributes">
-			<attribute name="content">#008d9b</attribute>
+			<attribute name="content">#00BBCE</attribute>
+		</xpath>
+		<xpath expr="//t[@t-set='body_classname']" position="after">
+			<t t-set="title">Viindoo</t>
+			<t t-set="x_icon">/viin_brand/static/img/favicon.ico</t>
+			<!-- PR #658 C-2/T-5: color_scheme boot reflection (FOUC free). The base owns dark end to
+			     end, so it stamps Bootstrap's color mode attribute data-bs-theme on the html root from
+			     the server resolved color_scheme (ir.http.color_scheme: cookie, then user pref, then
+			     light) before any JS runs. data-bs-theme is kept as a hint for Bootstrap's own dark
+			     component variants; the actual dark paint rides the recompiled web.assets_web_dark
+			     bundle. The redesign theme keeps the separate data-viin-density reflection. -->
+			<t t-set="html_data" t-value="dict(html_data or {}, **{
+				'data-bs-theme': 'dark' if color_scheme == 'dark' else 'light',
+			})"/>
 		</xpath>
     </template>
 </odoo>

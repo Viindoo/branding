@@ -1,14 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Expose the per user color scheme preference on the self service Preferences form so a user
+         can switch light / dark / auto themselves. No admin rights are needed: viin_color_scheme is
+         in SELF_READABLE_FIELDS and SELF_WRITEABLE_FIELDS, and the SELF scope pins the write to the
+         current user. Anchored in the core other_preferences group, which base declares expressly
+         for such override additions. -->
     <record id="view_users_form_simple_modif" model="ir.ui.view">
-	    <field name="name">res.users.preferences.form</field>
-	    <field name="model">res.users</field>
-        <field name="priority">100</field>
-	    <field name="inherit_id" ref="base.view_users_form_simple_modif" />
-	    <field name="arch" type="xml">
-           <xpath expr="//page[@name='page_account_security']/group/div/widget[@name='documentation_link']/parent::div" position="replace" mode="inner">
-                API Keys are used to connect to Viindoo from external tools without the need for a password or Two-factor Authentication.
-                <widget name="documentation_link" path="https://viindoo.com/documentation/16.0/developer/development/integrate-with-third-party-resources.html" lable="Learn more" icon="fa-fw o_button_icon fa-info-circle"/>
-           </xpath>
-	    </field>
-	</record>
+        <field name="name">res.users.preferences.form.inherit.viin.backend.theme</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='other_preferences']" position="inside">
+                <field name="viin_color_scheme"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

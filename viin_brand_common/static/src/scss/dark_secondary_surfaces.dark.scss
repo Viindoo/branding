@@ -1,0 +1,317 @@
+// PR #658 review-fix FIX GROUP 1 (Layer 2) - dark arms for secondary surfaces core paints from a
+// COMPILE-TIME grayscale literal or a runtime custom property that no overridable SEMANTIC Sass var
+// routes through, so the dark_palette.scss Layer-1 var overrides cannot reach them.
+//
+// WHY LAYER 2 (a tail rule) AND NOT dark_palette.scss (a Layer-1 var override)
+// -----------------------------------------------------------------------------------------------
+// The three surfaces below resolve to $o-gray-100/$o-gray-200 (#F8F9FA / #E9ECEF) or to a Bootstrap
+// table-variant, all read at COMPILE time. The only Sass lever that would flip them early is the
+// grayscale scalar itself - but $o-gray-200 ALSO feeds $tooltip-color (bootstrap_overridden.scss:236,
+// a FOREGROUND on the near-black tooltip), so darkening it globally turns every dark-mode tooltip
+// dark-on-dark. So instead we re-point ONLY the specific surface tokens, in a file contributed
+// EXPLICITLY to web.assets_web_dark as a plain APPEND: it lands AFTER the whole `web.assets_web`
+// include (which carries core's settings/search/list rules), so it wins on source order at
+// equal-or-higher specificity, and - being absent from web.assets_backend - never leaks into light.
+// NOT auto-globbed: core's `web/static/src/**/*.dark.scss` glob only covers core's own tree, so a
+// viin_brand_common `*.dark.scss` is neither auto-added to the dark tail nor auto-removed from light;
+// it appears ONLY where the manifest lists it. (Kanban is handled in dark_palette.scss via the clean
+// $o-kanban-background Sass var - it has a dedicated overridable lever, these do not.)
+
+// --- Settings chrome ---------------------------------------------------------------------------
+// settings_form_view.scss:47/50 declares `--settings__tab-bg: #{map-get($grays, '100')}` (#F8F9FA
+// sidebar) and `--settings__title-bg: #{map-get($grays, '200')}` (#E9ECEF section-header strip),
+// plus `--settings__tab-bg--active: #{$o-component-active-bg}` (a LIGHT action/gray-100 mix). All
+// three are compile-time grayscale literals. Re-declare them on core's own selector; the tail order
+// wins at equal specificity.
+// Values reference the dark-ladder Sass vars dark_palette.scss declares earlier in this same
+// (single) dark-bundle compilation - $body-secondary-bg #0B1315 (app-grey) / $body-tertiary-bg
+// #152225 (raised) - so the ladder stays single-sourced (ETHOS SSOT); they interpolate to concrete
+// hex, so the compile-cascade guard still resolves them.
+.o_base_settings_view .o_form_renderer {
+    --settings__tab-bg: #{$body-secondary-bg};         // sidebar -> app-grey band
+    --settings__title-bg: #{$body-tertiary-bg};        // section-header strips -> raised tier
+    --settings__tab-bg--active: #{$body-tertiary-bg};  // selected-tab highlight -> raised (was light)
+}
+// The sidebar/highlight are now dark, so core's `&:hover, &.selected { color: $black }`
+// (settings_form_view.scss) would paint the hovered/selected tab label BLACK on a dark surface
+// (invisible). Keep it the light --settings__tab-color instead. Equal specificity, later source
+// order wins.
+.o_setting_container .settings_tab .tab:hover,
+.o_setting_container .settings_tab .tab.selected {
+    color: var(--settings__tab-color);
+}
+
+// --- Search facet band -------------------------------------------------------------------------
+// The facet pill carries the `.bg-200` utility (search_bar.xml), which the o-print-color mixin
+// (functions.scss:48) emits as `background-color: var(--background-color) !important` = $o-gray-200
+// (#E9ECEF). At rest the `.bg-view` darkening overlay is opacity:0, so the value text (the dark
+// #EDF4F5 body colour) sits on the light band at ~1.07:1 - invisible. Darken the RESTING band to the
+// raised tier; the extra `.o_searchview_facet` class (higher specificity) plus `!important` beats the
+// utility's own `!important`.
+.o_searchview_facet.bg-200 {
+    background-color: #{$body-tertiary-bg} !important;   // raised tier (see ladder note above)
+}
+
+// --- Selected list row (.table-info) -----------------------------------------------------------
+// list_renderer.js:938 pushes `table-info` onto a selected row. Bootstrap 5.3 paints a table CELL
+// through core's `.table > :not(caption) > * > *` rule (web/static/lib/bootstrap/scss/_tables.scss
+// :33-40), which is NOT a single surface but THREE stacked layers, each reading inherited tokens:
+//   - background-color reads the `--bs-table-bg` token;
+//   - box-shadow paints an opaque `inset 0 0 0 9999px` OVERLAY reading the accent-token chain
+//     `--bs-table-bg-state` then `--bs-table-bg-type` then `--bs-table-accent-bg`;
+//   - color reads the `--bs-table-color-state` then `-type` then `--bs-table-color` chain.
+// (Bootstrap's table tokens keep the `bs-` prefix in this build - the review measured them live and
+// the row override below computes through them - so they are named as-is, not as `--primary`/`--o-*`.)
+// Bootstrap's `.table-info` variant (mixins/_table-variants.scss) fills those tokens with a LIGHT
+// info tint: `--bs-table-bg` #CCEBFA band, a light inset accent overlay (#C1DEEC as measured), and
+// `color-contrast()` near-black text.
+//
+// WHY THE EARLIER ROW-VAR OVERRIDE WAS NOT ENOUGH (compile-green var, render-light cell)
+// -----------------------------------------------------------------------------------------------
+// Re-pointing ONLY the row's `--bs-table-bg` / `--bs-table-color` (the block just below) makes the
+// ROW token compute the dark #123037 - and a token check passes - but a live UI review measured the
+// CELLS (`tr.o_data_row.table-info > .o_data_cell` / `> .o_list_record_selector`) still rendering a
+// LIGHT band: the inset box-shadow accent overlay repaints the cell on top of the background, and a
+// light background-color + near-black text survived the row-only override. The visible pixel comes
+// from the CELL, so the override has to land ON THE CELL. Keep the row-token block (consumers that
+// read `--bs-table-bg` still get dark), and ADD an explicit cell override for the three paint layers.
+// The selection tone is $o-viin-dark-selection-bg (dark_palette.scss), NOT a literal repeated here:
+// since 2026-08-03 the list-group active tier reads the same token, so "the selected surface" is
+// declared once for both consumers (ODOO-AI-ETHOS #11). It interpolates to the same concrete #123037
+// the compile-cascade guard already pins.
+.o_list_table .table-info {
+    --bs-table-bg: #{$o-viin-dark-selection-bg};   // dark info-tinted selection surface (row token)
+    --bs-table-color: #{$body-color};    // light row text token ($body-color #EDF4F5; was near-black on the tint)
+}
+// The CELL is what actually paints. Override the dark band directly, NEUTRALIZE Bootstrap's light
+// inset accent overlay by repainting the box-shadow with the same dark band, and force light text
+// (the cell measured rgb(0,0,0) on the light band). Specificity (0,4,1) beats core's cell rule
+// `.table > :not(caption) > * > *` (0,1,1) and, in the dark tail, wins source order too - so no
+// !important is needed (core's rule is not !important). Both colours are interpolated Sass aliases
+// (never a var() inside a Sass colour function - banned) and resolve to concrete hex, so the
+// compile-cascade guard still pins them. On the #123037 band the teal checkbox (#00BBCE) clears
+// >=3:1 non-text and the light text (#EDF4F5) clears WCAG AA.
+.o_list_table tr.o_data_row.table-info > .o_data_cell,
+.o_list_table tr.o_data_row.table-info > .o_list_record_selector {
+    background-color: #{$o-viin-dark-selection-bg};              // the dark band the cell actually paints
+    box-shadow: inset 0 0 0 9999px #{$o-viin-dark-selection-bg}; // repaint BS's light inset accent overlay
+    color: #{$body-color};                      // light cell text (was rgb(0,0,0) on the old light band)
+}
+
+// --- Form-label + .text-900 emphasis text: dark body colour (PR #658 batch 3, item 6a) ----------
+// PROVEN dark-on-dark WCAG failure (live confirm-by-toggle on web.assets_web_dark, 2026-08-02).
+// Core's form_group.xml hard-adds `o_wrap_label text-break text-900` to every form-label CELL
+// (:33/:46/:58); the VALUE cell is `o_wrap_input`, WITHOUT text-900. The `.text-900` utility
+// (bootstrap_review_backend.scss via text-emphasis-variant -> o-print-color, functions.scss:48)
+// compiles to
+//     .text-900 { --color: RGBA(33,37,41, var(--text-opacity,1)); color: var(--color) !important; }
+// where 33,37,41 is $o-gray-900 #212529 (primary_variables.scss:59) - a COMPILE-TIME literal that is
+// IDENTICAL in the dark bundle, because dark_palette.scss re-points $body-color / $o-main-text-color,
+// NOT the $o-gray-* scale the .text-N00 utilities read. The general `<label class="o_form_label">`
+// (form_label.xml) carries NO colour of its own, so it INHERITS #212529 from its
+// `.o_cell.o_wrap_label.text-900` parent cell = 1.14:1 on the dark sheet #111B1E (the field VALUES,
+// in `.o_wrap_input` cells with no .text-900, correctly render the #EDF4F5 body text at 15.72:1).
+//
+// CORRECTION of the earlier note here, which WRONGLY claimed the general .o_form_label "inherits the
+// dark body text #EDF4F5". It does not: it inherits #212529 from the .text-900 CELL. That mistake
+// (looking for a colour rule ON .o_form_label and missing the parent cell) is exactly why a prior
+// pass concluded "nothing to fix". The live confirm-by-toggle settled it: injecting a dark colour on
+// the .text-900 label cell flipped the label to #EDF4F5; removing it reverted to #212529.
+
+// FIX 1 - general form label: give the label its OWN dark body colour. A direct declaration on the
+// label beats the value it would otherwise INHERIT from the .text-900 cell WITHOUT !important - the
+// cell's `!important` governs only the cell's own cascade, never what a child inherits, and any
+// direct value on an element always beats an inherited one. Runtime token, not a hardcoded hex.
+// Specificity (0,3,0) scoped under .o_form_view; the mobile `.o_xxs_form_view ... .o_form_label`
+// $o-brand-secondary rule (0,5,0) still outranks it, so the mobile label keeps its own tint - which
+// since 2026-08-03 is no longer a purple: the owner made the purple accent light-only, so
+// dark_palette.scss re-points $o-brand-secondary to the dark muted tier #8EA5A8 (6.75:1 here) for
+// exactly this rule and the two other CORE rules that read the token directly.
+.o_form_view .o_form_label {
+    color: var(--body-color);
+
+    // FADED-LABEL LEGIBILITY POLISH (kept, PR #658 batch 3 item 6a). Core fades empty/readonly/false
+    // labels with `.o_form_view .o_form_label.o_form_label_{empty,false,readonly} { opacity: 0.66 }`
+    // (form_controller.scss:606). With FIX 1 the label BASE is now #EDF4F5, so at 0.66 it composites
+    // to #A2AAAC = 7.41:1 over #111B1E (clears AA and AAA) but reads a full step dimmer than a filled
+    // label (15.72:1); lifting to 0.85 composites to #CCD3D5 = 11.54:1, closing the perceptual gap the
+    // owner reported ("sunk"). This math only holds ON the #EDF4F5 base FIX 1 establishes - before the
+    // colour fix the faded label was #212529-on-dark regardless of opacity, so the polish alone never
+    // fixed the real defect. Kept because it still helps on the corrected base. Same (0,3,0)
+    // specificity as core's fade rule; dark-tail source order wins. Dark-bundle only.
+    &.o_form_label_empty,
+    &.o_form_label_false,
+    &.o_form_label_readonly {
+        opacity: 0.85;
+    }
+}
+
+// FIX 2 - close the whole .text-900 class for the backend dark bundle (blast radius; owner values
+// completeness). .text-900 is a GLOBAL near-black emphasis utility also applied to navbar apps-menu
+// section titles (navbar.xml:51/:67), property-field + property-definition labels
+// (card_properties_field.xml:11, properties_field.xml:30, property_definition.xml), kanban column
+// titles (kanban_header.xml:13) and animated numbers (animated_number.xml:5) - every one baking the
+// same #212529 and therefore dark-on-dark too. Re-point core's OWN `--color` custom property (which
+// its `color: var(--color) !important` rule reads) to the dark body tier: equal specificity (0,1,0),
+// later source order in this dark tail wins the --color cascade, so no !important war and no fighting
+// core's rule - we feed it the right value. --color is local to .text-900 elements, so nothing else
+// is touched.
+//
+// SCOPING / SAFETY: this file is contributed ONLY to web.assets_web_dark (backend dark) - never to
+// web.assets_backend (light), never to a print/report or frontend bundle - so light mode keeps
+// #212529 (correct near-black on white) and print is untouched. Within the backend dark bundle every
+// enumerated .text-900 usage sits on a DARK app surface (form sheet, kanban header, property popover,
+// card) - INCLUDING the mobile navbar/burger case, which is dark BECAUSE dark_palette.scss darkens
+// that panel. That last clause was NOT true when this note was first written, and the gap was a real
+// AA failure: core hardcodes the burger / app-menu sidebar WHITE ($o-burger-base-bg: $o-white,
+// burger_menu.variables.scss:3, consumed at burger_menu.scss:34), so the re-point below rendered its
+// `web.SectionMenu` section titles (navbar.xml:51/:67) as #EDF4F5 on #FFFFFF = 1.11:1. The remedy is
+// at the END of dark_palette.scss - Layer-1 $o-burger-* overrides darkening the panel to #111B1E, the
+// topbar to #152225 and the entry/topbar text to $body-color - i.e. the SURFACE is darkened rather
+// than this .text-900 scope narrowed, which also fixes the panel's NON-.text-900 text (the
+// `.text-body` user-menu links and the li/button menu rows) that was equally unreadable. Guarded by
+// tests/test_brand_cascade_compile.py::
+// test_dark_mobile_burger_sidebar_is_a_dark_surface_so_its_text_clears_aa.
+// None of the enumerated usages is a black-on-light chip/badge (badges pick their own text via
+// .text-bg-* + color-contrast(), not .text-900), so the class-wide re-point is safe. $body-color
+// interpolates to a concrete hex (never a var() inside a Sass colour function - banned).
+.text-900 {
+    --color: #{$body-color};
+}
+
+// ==================================================================================================
+// RC-3 / RC-4 - the LIGHT-SURFACE and NEAR-BLACK-TEXT utility families (2026-08-03)
+// ==================================================================================================
+// THE DEFECT. `.text-900` above closed exactly ONE cell of a grid core generates mechanically. The
+// grayscale `$o-grays` ramp feeds BOTH axes (bootstrap_review_backend.scss:230-243: `.text-#{$-name}`
+// via text-emphasis-variant and `.bg-#{$-name}, .text-bg-#{$-name}` via o-print-color), and the
+// Bootstrap black/white + `light`/`dark` theme names are generated the same way (:148-172, :113-115).
+// Every one of those values is a COMPILE-TIME literal off a fixed ramp, so - exactly like .text-900 -
+// they recompiled UNCHANGED into web.assets_web_dark. Live-measured on the dark bundle:
+//     .bg-100  #F8F9FA   the COMMAND-PALETTE FOOTER strip: #8EA5A8 on it = 2.46:1  (RC-3)
+//     .bg-200  #E9ECEF   light band under the dark body text
+//     .bg-300  #DEE2E6   light band; also core's selection/toggle band and the `.vr` divider
+//     .text-dark  #212529 = 1.14:1 on the panel                                    (RC-4)
+//     .text-black #000000 = 1.16:1 on the panel
+//     .bg-white   #FFFFFF / .bg-light #F8F9FA - light islands on a dark canvas
+//
+// WHY `--background-color` / `--color` AND NOT THE PROPERTY. The o-print-color mixin
+// (functions.scss:48) emits BOTH halves - `--#{$-rule}: RGBA(...)` and
+// `#{$-rule}: var(--#{$-rule}) !important` - so the paint is already `!important` at specificity
+// (0,1,0) and cannot be outranked without an escalating !important war. Re-pointing core's OWN custom
+// property instead feeds its own rule the right value: equal specificity, later source order in this
+// dark tail wins the custom-property cascade (`!important` on the `background-color` declaration has
+// no bearing on which `--background-color` declaration wins), so there is no war and nothing dead to
+// audit. That is the `.text-900` precedent above, applied to the rest of the grid.
+//
+// SAFETY ENUMERATION (mandatory before going class-wide - a class-wide re-point burned this cluster
+// once, with the WHITE burger panel). Every `class="..."` occurrence of the six utilities was
+// enumerated across odoo_19.0/addons, tvtmaaddons_19.0 and this repo. Findings:
+//   * NOT REACHED BY THESE SELECTORS AT ALL, because they are different class names: `text-bg-100`
+//     `text-bg-200` `text-bg-300` `text-bg-light` `text-bg-white` (core generates the text-bg-* pair
+//     with its OWN color-contrast() label, bootstrap_review_backend.scss:245-247), `bg-white-25/-50`,
+//     `text-black-25/-50`. So every black-on-light PILL keeps its correct pair: `.badge` +
+//     `.o_badge_color_N` (badge.scss:3-6, direct !important declarations), `.o_tag.o_tag_color_N`
+//     (tags_list.scss:6-13), the 56 `.o_cw_popover.o_calendar_color_N` chips, `.dropdown-menu-dark`.
+//     Guarded so a future over-broad re-point fails: tests/test_brand_cascade_compile.py::
+//     test_black_on_light_pill_exceptions_stay_black_on_light_in_the_dark_bundle.
+//   * DELIBERATE LIGHT/DARK PAIRS that flip TOGETHER because both halves are in this block:
+//     `bg-200 text-black` (event foldable badge) and `badge bg-light text-dark` (tvtmaaddons
+//     viin_vrp total). Neither breaks - the pill goes dark and its label goes light.
+//   * ALREADY BROKEN TODAY, fixed by darkening the surface: `bg-white text-900` (website snippet nav
+//     arrows) rendered #EDF4F5 on #FFFFFF = 1.11:1 because .text-900 is already re-pointed above;
+//     `badge bg-light` (mail ActivityCell counter) inherits the body colour ($badge-color is
+//     `inherit` in the backend, bootstrap_overridden.scss:301) = 1.11:1 on #F8F9FA; the tvtmaaddons
+//     LinkedIn/Facebook post previews (`viin_social_preview ... bg-white`) declare no text colour and
+//     so also rendered #EDF4F5 on white.
+//   * OUT OF THIS BUNDLE ENTIRELY, so untouched: POS screens (`point_of_sale.assets_prod`), the
+//     mass-mailing body and its mail-theme snippets (rendered in an IFRAME off
+//     `mass_mailing.assets_mail_themes`), website snippets rendered in the site preview iframe off
+//     the FRONTEND bundle, and every portal template. web.assets_web_dark is pulled in exactly once,
+//     by the webclient layout (web/views/webclient_templates.xml:301, `media="screen"`), so light
+//     mode, print and report bundles are all untouched by construction.
+//   * ONE GENUINE HAZARD FOUND, and closed at its source rather than by narrowing scope: core's
+//     select-menu toggler is `btn btn-light ... bg-light` (select_menu.xml:50), and `.bg-light`'s
+//     `!important` fill would have won the surface while `$o-btns-bs-override["light"]` still supplied
+//     core's $o-gray-900 label - dark-on-dark. `dark_buttons.scss` now gives that map a dark arm, so
+//     the pair is coherent. See the "light" entry there for the full reasoning.
+//   * ACCEPTED COSMETIC CHANGE, flagged for a live eyeball: mail's link-preview image placeholder is
+//     `bg-100 text-300` (link_preview.xml) - a #DEE2E6 icon on #F8F9FA, i.e. a deliberately GHOSTLY
+//     1.19:1 placeholder. `.text-300` is correctly left alone (near-white is right on dark), so on the
+//     darkened box the icon becomes prominent (13.4:1) instead of ghostly. That is a louder
+//     placeholder, not a broken one, and the alternative is leaving a light island.
+//
+// THE DARK RAMP. Only two rungs of the ladder carry BOTH the body tier (#EDF4F5) and the muted tier
+// (#8EA5A8) above AA, so the four light-grey surfaces map onto those two, preserving the light ramp's
+// DIRECTION (higher N sits further from the page) rather than inventing rungs:
+//     #152225 raised   - #EDF4F5 14.85:1, #8EA5A8 6.29:1
+//     #25383C control  - #EDF4F5 10.95:1, #8EA5A8 4.73:1
+// The next rung up (#31474C) is deliberately NOT used here: #8EA5A8 on it is 3.83:1, so any of these
+// surfaces that happens to carry muted text would fail. `.bg-200` and `.bg-300` therefore share the
+// control rung - honest, since light's own #E9ECEF and #DEE2E6 are a 1.08:1 hair apart, and it keeps
+// the `.bg-300` selection bands (mail's NavigableList active option, the push-to-talk toggle) at a
+// perceptible 1.43:1 instead of the 1.07:1 the raised rung would give them.
+//
+// All values are interpolated Sass aliases of the ladder dark_palette.scss declares earlier in this
+// same single dark-bundle compilation, so they resolve to concrete hex for the compile-cascade guard
+// and no new hex enters the module (never a var() inside a Sass colour function - banned).
+.bg-100 {
+    --background-color: #{$body-tertiary-bg};
+}
+
+.bg-200 {
+    --background-color: #{$o-viin-dark-control-bg};
+}
+
+.bg-300 {
+    --background-color: #{$o-viin-dark-control-bg};
+}
+
+// `.bg-light` is $o-gray-100, the same tone as `.bg-100`; `.bg-white` means "the page/sheet colour",
+// whose dark equivalent is the panel tier every form sheet, card and modal already uses.
+.bg-light {
+    --background-color: #{$body-tertiary-bg};
+}
+
+.bg-white {
+    --background-color: #{$o-view-background-color};
+}
+
+// The near-black TEXT utilities collapse onto the brightest text tier - the same value `.text-900`
+// takes above, so "strongest text" means ONE thing in this bundle. Light's own #212529 / #000000 are
+// a 1.2:1 hair apart, so distinguishing them in dark would be inventing a difference.
+.text-dark,
+.text-black {
+    --color: #{$body-color};
+}
+
+// `.btn-link` + a contextual class is a SEPARATE lever that the two rules above cannot reach, and it
+// is where RC-4 was actually measured. bootstrap_review_backend.scss:122-129 wraps every
+// `.btn-link.text-#{$-name}` in `o-btn-link-variant($o-gray-600 !important, o-text-color($-name) or
+// $-color !important)`, and that mixin emits a DIRECT `color:` (utils.scss:184-201 ->
+// o-hover-text-color), not a custom property - at specificity (0,2,0) with `!important`, so it
+// outranks `.text-dark`'s (0,1,0) `color: var(--color) !important` no matter what `--color` holds.
+// Measured: the mail-activity "Reschedule" toggler in the crm.lead list (x9 on one screen) rendered
+// $o-gray-600 #6C757D = 3.73:1 at rest, and would have rendered #212529 = 1.14:1 on hover.
+//
+// The fix keeps core's DESIGN - muted at rest, contextual on hover - instead of flattening both to one
+// value, which would delete the affordance:
+//   rest   the dark muted tier #8EA5A8 = 6.75:1 on the panel (core's intent: a quiet link)
+//   hover  the utility's own dark arm via `var(--color)`, i.e. #EDF4F5 = 15.72:1 (core's intent: the
+//          contextual colour). Read through the custom property so the two rules cannot drift, with a
+//          literal fallback so it is never an unresolved var() - and never self-referential.
+// Both selectors match core's shape exactly, so each wins on later source order at equal specificity:
+// (0,2,0) for the resting arm, (0,3,0) for the state arm core compiles as
+// `.btn-link.text-dark:hover, .btn-link.text-dark:focus, .btn-link.text-dark.focus`.
+// SCOPED to `dark`/`black` on purpose: the other `.btn-link.text-*` combinations share the same
+// 3.73:1 resting grey, but they are a separate reported item and are NOT silently changed here.
+.btn-link.text-dark,
+.btn-link.text-black {
+    color: #{$body-secondary-color} !important;
+
+    &:hover,
+    &:focus,
+    &.focus {
+        color: var(--color, #{$body-color}) !important;
+    }
+}

@@ -1,0 +1,87 @@
+// Content color-palette SCOPE fix (design SSOT .odoo-ai/designs/cluster-semantic-restore-2026-07-24.md,
+// "MODULE viin_brand_common"; ODOO-AI-ETHOS #6 - see-something-say-something / #8 behaviour test).
+//
+// THE BLEED THIS FILE STOPS
+// -----------------------------------------------------------------------------------------------
+// brand_variables.scss sets `$o-enterprise-color: #00BBCE` (teal). That is REQUIRED for chrome and
+// must stay teal: the backend navbar family reads it, and portal/.../chatter/scss/primary_variables.scss
+// UNCONDITIONALLY does `$o-brand-odoo: $o-enterprise-color`, so an aubergine $o-enterprise-color would
+// re-aubergine the portal navbar. But core ALSO seeds the editor/website CONTENT colour palette from
+// the SAME variable, at Sass compile time:
+//   html_editor/static/src/scss/html_editor.variables.scss:121  'o-color-1': $o-enterprise-color   (in $o-color-palettes base-1)
+//   html_editor/static/src/scss/html_editor.variables.scss:144  'beta':      $o-enterprise-color   (in $o-theme-color-palettes base-1)
+// So `o-color-1` - a USER-FACING content swatch (the .bg-o-color-1 / .text-o-color-1 utilities
+// html_editor.common.scss:515-520 generate from the active palette), NOT chrome - compiles to teal
+// #00BBCE instead of Odoo's #714B67. That breaks 4 core Hoot tests
+// (html_editor color_selector.test.js:90,1153 and website builder image_shape.test.js:261,319, all
+// asserting rgb(113, 75, 103) = #714B67). Heritage 18.0 never touched the palette, so this is
+// accidental over-reach of the chrome brand-teal into content colours.
+//
+// THE FIX - reset ONLY base-1 o-color-1 (and the legacy theme `beta`) back to core aubergine, keep
+// every chrome token and every OTHER palette entry exactly as they are.
+//
+// WHY A SEPARATE FILE, APPENDED (NOT ANCHORED) TO web._assets_primary_variables
+// -----------------------------------------------------------------------------------------------
+// $o-color-palettes is a compile-time Sass MAP that html_editor BUILDS from $o-enterprise-color, so
+// the reset must map-merge into it AFTER html_editor.variables.scss has run. Two hard constraints
+// shape how:
+//   1. viin_brand_common must NOT depend on html_editor/website (they may be uninstalled; a depend
+//      would force-install them).
+//   2. An UNCONDITIONAL manifest anchor on a non-dependency file - e.g.
+//      ('after', 'html_editor/static/src/scss/html_editor.variables.scss', ...) - HARD-ERRORS
+//      (ir_asset AssetPaths.index raises ValueError) when html_editor is not installed.
+// So this file is a PLAIN APPEND to web._assets_primary_variables (a bundle both html_editor and
+// website already contribute to). That is enough to guarantee it runs AFTER html_editor.variables.scss
+// WITHOUT any anchor: html_editor injects its file `('after', web/.../primary_variables.scss, ...)`,
+// i.e. TOP-anchored just below primary_variables.scss, while this file APPENDS to the bundle tail -
+// the tail is always after that top slot, in EITHER module load order. website's own primary_variables
+// (also a tail append) may land before OR after this file; both are safe, because website's base-1
+// map-merge only ADDS 'menu'/'footer' and PRESERVES o-color-1 (verified by compiling both orderings).
+//
+// SAFE WHEN html_editor / website ARE ABSENT
+// -----------------------------------------------------------------------------------------------
+// When html_editor is not installed, $o-color-palettes is never built. The `variable-exists` guard
+// then makes each block a clean NO-OP (no undefined-variable error, no chrome change) - so this file
+// is inert on a plain [web + brand] install. `!global` is required because the assignment sits inside
+// a control directive and must write the module-global map, not a local shadow.
+//
+// SCOPE / SAFETY
+// -----------------------------------------------------------------------------------------------
+// The inner map-merge preserves o-color-2..5 (and website's menu/footer) on base-1; the outer
+// map-merge preserves base-2 and every website generic-*/default-* palette. ONLY base-1 o-color-1
+// (and theme base-1 `beta`) change. No chrome token is touched: $o-brand-primary/$o-brand-odoo/
+// $o-enterprise-color/$o-navbar-background/$primary/$o-btns-bs-override/$o-viin-chrome-* all stay
+// teal - verified byte-identical before/after this file (dart-sass, both bundle configs).
+//
+// #714B67 is core's OWN $o-enterprise-color default (web/static/src/scss/primary_variables.scss:74) =
+// the pre-brand value of base-1 o-color-1. It is a literal here because brand_variables.scss has
+// already overridden $o-enterprise-color to teal, so no live token still holds the aubergine to alias;
+// restoring core's exact literal is the only faithful lever (data read from core source, not invented).
+
+@if variable-exists('o-color-palettes') {
+    // Content palette: base-1 o-color-1 -> core aubergine (was bled to the chrome brand teal).
+    $o-color-palettes: map-merge(
+        $o-color-palettes,
+        (
+            'base-1': map-merge(
+                map-get($o-color-palettes, 'base-1'),
+                ('o-color-1': #714B67)
+            ),
+        )
+    ) !global;
+}
+
+@if variable-exists('o-theme-color-palettes') {
+    // Legacy theme palette: base-1 `beta` -> core aubergine. Normally map-removed by
+    // html_editor/secondary_variables.scss:26-28 (so it emits no class), but reset for the
+    // $o-support-13-0-color-system path and for symmetry with the content palette above.
+    $o-theme-color-palettes: map-merge(
+        $o-theme-color-palettes,
+        (
+            'base-1': map-merge(
+                map-get($o-theme-color-palettes, 'base-1'),
+                ('beta': #714B67)
+            ),
+        )
+    ) !global;
+}
