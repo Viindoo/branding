@@ -3,11 +3,11 @@
     'name_vi_VN': "Ứng dụng với thương hiệu Viindoo",
 
     'summary': """
-Set Viindoo Brandings for Odoo app.
+Set Viindoo Brandings.
 """,
 
     'summary_vi_VN': """
-Thiết lập thương hiệu Viindoo cho ứng dụng Odoo
+Thiết lập thương hiệu Viindoo.
         """,
 
     'description': """
