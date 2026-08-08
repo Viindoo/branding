@@ -50,11 +50,13 @@ Module này sẽ thay đổi giao diện module Event Exhibitors theo thương h
     'depends': ['website_event_exhibitor'],
 
     # always loaded
-    'demo': [
-        'data/event_sponsor_demo.xml',
+    'data': [
         'views/event_sponsor_views.xml',
     ],
-    'installable': False,
+    'demo': [
+        'data/event_sponsor_demo.xml',
+    ],
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
