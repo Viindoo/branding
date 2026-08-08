@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-23 04:03+0000\n"
-"PO-Revision-Date: 2025-09-23 04:03+0000\n"
+"POT-Creation-Date: 2026-08-07 21:16+0000\n"
+"PO-Revision-Date: 2026-08-07 21:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,9 @@ msgstr ""
 
 #. module: viin_brand_mass_mailing
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_call_to_action
-msgid "<span style=\"font-weight: bolder;\">50,000+ companies</span> run Viindoo."
+msgid ""
+"<font style=\"color: white;\"><strong>50,000+ companies</strong> run "
+"Viindoo.</font>"
 msgstr ""
 
 #. module: viin_brand_mass_mailing
@@ -31,6 +33,18 @@ msgid "Dedicated Server"
 msgstr ""
 
 #. module: viin_brand_mass_mailing
+#: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_mailing_mailing__display_name
+#: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_mass_mailing
+#: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_mailing_mailing__id
+#: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_res_config_settings__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_mass_mailing
 #: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_mailing_mailing__mail_server_id
 msgid "Mail Server"
 msgstr ""
@@ -41,59 +55,6 @@ msgid "Mass Mailing"
 msgstr ""
 
 #. module: viin_brand_mass_mailing
-#: model_terms:mailing.mailing,body_arch:mass_mailing.mass_mail_1
-msgid ""
-"Hello,\n"
-"                                                <br/><br/>\n"
-"                                                This month we shipped a refreshed CRM dashboard, faster pivot reports across every module, and new integrations that help your team close more deals — all without leaving Viindoo. We also welcomed 47 new customers and published our SME playbook, free to download below.\n"
-"                                                <br/><br/>\n"
-"                                                Curious about what's next? Join our live walkthrough on the 15th to see how teams like Phương Nam Foods cut their order cycle by 40% with Viindoo."
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model:mailing.mailing,name:mass_mailing.mass_mail_1
-msgid "Monthly Customer Update"
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model:mailing.mailing,subject:mass_mailing.mass_mail_1
-msgid "Your monthly Viindoo update: new features, tips & success stories"
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:mailing.mailing,body_arch:mass_mailing.mass_mail_1
-msgid " All Rights Reserved"
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
-msgid "That way, Viindoo evolves much faster than any other solution."
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_image
-msgid ""
-"The open source model of Viindoo has allowed us to leverage\n"
-"                thousands of developers and business experts to build hundreds of apps in just a few\n"
-"                years."
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
-msgid ""
-"The open source model of Viindoo has allowed us to leverage thousands of developers\n"
-"                    and\n"
-"                    business experts to build hundreds of apps in just a few years."
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
-msgid ""
-"Usability improvements made on Viindoo will automatically apply to all\n"
-"                    of our fully integrated apps."
-msgstr ""
-
-#. module: viin_brand_mass_mailing
 #: model:ir.model.fields,help:viin_brand_mass_mailing.field_mailing_mailing__mail_server_id
 #: model:ir.model.fields,help:viin_brand_mass_mailing.field_res_config_settings__mass_mailing_outgoing_mail_server
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.res_config_settings_view_form
@@ -101,34 +62,4 @@ msgid ""
 "Use a specific mail server in priority. Otherwise Viindoo relies on the "
 "first outgoing mail server available (based on their sequencing) as it does "
 "for normal mails."
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
-msgid ""
-"With strong technical foundations, Viindoo's framework is unique.\n"
-"                    It provides top notch usability that scales across all apps."
-msgstr ""
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_picture
-msgid ""
-"With strong technical foundations, Viindoo's framework is unique. It "
-"provides <span style=\"font-weight: bolder;\">top notch usability that "
-"scales across all apps</span>."
-msgstr ""
-
-#. module: mass_mailing
-#: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailing_lists
-msgid ""
-"No need to import mailing lists, you can send mailings to contacts saved in "
-"other Viindoo apps."
-msgstr ""
-
-#. module: mass_mailing
-#: model_terms:ir.actions.act_window,help:mass_mailing.action_create_mass_mailings_from_campaign
-#: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailings_from_campaign
-msgid ""
-"You don't need to import your mailing lists, you can easily\n"
-"                send emails<br> to any contact saved in other Viindoo apps."
 msgstr ""

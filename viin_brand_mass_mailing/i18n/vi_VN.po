@@ -1,13 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* viin_brand_mass_mailing
+# 	* mass_mailing (reused core xmlid override - see NOTE in viin_brand_stock/i18n/vi_VN.po)
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-23 04:04+0000\n"
-"PO-Revision-Date: 2025-09-23 04:04+0000\n"
+"POT-Creation-Date: 2026-08-07 16:26+0000\n"
+"PO-Revision-Date: 2026-08-07 16:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,9 +18,12 @@ msgstr ""
 
 #. module: viin_brand_mass_mailing
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_call_to_action
-msgid "<span style=\"font-weight: bolder;\">50,000+ companies</span> run Viindoo."
+msgid ""
+"<font style=\"color: white;\"><strong>50,000+ companies</strong> run "
+"Viindoo.</font>"
 msgstr ""
-"<span style=\"font-weight: bolder;\">Hơn 50.000 công ty</span> dùng Viindoo."
+"<font style=\"color: white;\"><strong>Hơn 50.000 công ty</strong> dùng "
+"Viindoo.</font>"
 
 #. module: viin_brand_mass_mailing
 #: model:ir.model,name:viin_brand_mass_mailing.model_res_config_settings
@@ -30,6 +34,18 @@ msgstr "Thiết lập cấu hình"
 #: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_res_config_settings__mass_mailing_outgoing_mail_server
 msgid "Dedicated Server"
 msgstr "Máy chủ riêng"
+
+#. module: viin_brand_mass_mailing
+#: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_mailing_mailing__display_name
+#: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_brand_mass_mailing
+#: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_mailing_mailing__id
+#: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_res_config_settings__id
+msgid "ID"
+msgstr "ID"
 
 #. module: viin_brand_mass_mailing
 #: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_mailing_mailing__mail_server_id
@@ -72,42 +88,6 @@ msgid " All Rights Reserved"
 msgstr " Bản quyền đã đăng ký"
 
 #. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
-msgid "That way, Viindoo evolves much faster than any other solution."
-msgstr ""
-"Bằng cách đó, Viindoo phát triển nhanh hơn nhiều so với bất kỳ giải pháp nào"
-" khác."
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_image
-msgid ""
-"The open source model of Viindoo has allowed us to leverage\n"
-"                thousands of developers and business experts to build hundreds of apps in just a few\n"
-"                years."
-msgstr ""
-"Mô hình mã nguồn mở của Viindoo đã cho phép chúng tôi tận dụng hàng nghìn nhà phát triển và\n"
-"các chuyên gia kinh doanh để xây dựng hàng trăm ứng dụng chỉ trong vài năm."
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
-msgid ""
-"The open source model of Viindoo has allowed us to leverage thousands of developers\n"
-"                    and\n"
-"                    business experts to build hundreds of apps in just a few years."
-msgstr ""
-"Mô hình mã nguồn mở của Viindoo đã cho phép chúng tôi tận dụng hàng nghìn nhà phát triển và\n"
-"các chuyên gia kinh doanh để xây dựng hàng trăm ứng dụng chỉ trong vài năm."
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
-msgid ""
-"Usability improvements made on Viindoo will automatically apply to all\n"
-"                    of our fully integrated apps."
-msgstr ""
-"Các cải tiến về khả năng sử dụng được thực hiện trên Viindoo sẽ tự động áp dụng cho tất cả\n"
-" trong số các ứng dụng được tích hợp đầy đủ của chúng tôi."
-
-#. module: viin_brand_mass_mailing
 #: model:ir.model.fields,help:viin_brand_mass_mailing.field_mailing_mailing__mail_server_id
 #: model:ir.model.fields,help:viin_brand_mass_mailing.field_res_config_settings__mass_mailing_outgoing_mail_server
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.res_config_settings_view_form
@@ -120,26 +100,6 @@ msgstr ""
 "gửi thư đầu tiên khả dụng (dựa trên trình tự của chúng) như đối với các thư "
 "thông thường."
 
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_text_block
-msgid ""
-"With strong technical foundations, Viindoo's framework is unique.\n"
-"                    It provides top notch usability that scales across all apps."
-msgstr ""
-"Với nền tảng kỹ thuật vững chắc, hệ thống của Viindoo là duy nhất.\n"
-" Nó cung cấp khả năng sử dụng vượt trội mở rộng trên tất cả các ứng dụng."
-
-#. module: viin_brand_mass_mailing
-#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_picture
-msgid ""
-"With strong technical foundations, Viindoo's framework is unique. It "
-"provides <span style=\"font-weight: bolder;\">top notch usability that "
-"scales across all apps</span>."
-msgstr ""
-"Với nền tảng kỹ thuật vững chắc, khung của Viindoo là duy nhất. Nó cung "
-"cấp<span style=\"font-weight: bolder;\">khả năng sử dụng vượt trội mở rộng "
-"trên toàn bộ tất cả ứng dụng</span>."
-
 #. module: mass_mailing
 #: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailing_lists
 msgid ""
@@ -148,12 +108,3 @@ msgid ""
 msgstr ""
 "Không cần nhập danh sách gửi thư, bạn có thể gửi thư cho các liên hệ được lưu trong "
 "các ứng dụng Viindoo khác."
-
-#. module: mass_mailing
-#: model_terms:ir.actions.act_window,help:mass_mailing.action_create_mass_mailings_from_campaign
-#: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailings_from_campaign
-msgid ""
-"You don't need to import your mailing lists, you can easily\n"
-"                send emails<br> to any contact saved in other Viindoo apps."
-msgstr "Bạn không cần nhập danh sách gửi thư, bạn có thể dễ dàng\n"
-"                gửi email<br> cho bất kỳ liên hệ nào được lưu trong các ứng dụng Viindoo khác."

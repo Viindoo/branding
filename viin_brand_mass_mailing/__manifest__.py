@@ -52,9 +52,6 @@ Module này sẽ thay đổi giao diện các module Email Marketing theo thươ
     # always loaded
     'data': [
         'views/snippets/s_call_to_action.xml',
-        'views/snippets/s_picture.xml',
-        'views/snippets/s_text_block.xml',
-        'views/snippets/s_text_image.xml',
         'views/mailing_mailing_views.xml',
         'views/mailing_list_views.xml',
         'views/res_config_settings_views.xml',
@@ -64,7 +61,7 @@ Module này sẽ thay đổi giao diện các module Email Marketing theo thươ
         'data/mass_mailing_demo.xml',
         'demo/mailing_trace_demo.xml'
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
