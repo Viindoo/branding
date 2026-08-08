@@ -50,7 +50,7 @@ Module này sẽ thay đổi giao diện module Fleet theo thương hiệu Viind
         'views/fleet_board_view.xml',
         'views/fleet_vehicle_cost_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
