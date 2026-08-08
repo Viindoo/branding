@@ -3,7 +3,13 @@
     <data>
     	<function name="write" model="auth.oauth.provider">
 	        <value eval="[ref('auth_oauth.provider_openerp')]" />
-	        <value eval="{'enabled': False}" />
+	        <value eval="{
+	            'enabled': False,
+	            'name': 'Legacy Accounts (Disabled)',
+	            'body': '',
+	            'auth_endpoint': '',
+	            'validation_endpoint': '',
+	        }" />
     	</function>
     </data>
 </odoo>
