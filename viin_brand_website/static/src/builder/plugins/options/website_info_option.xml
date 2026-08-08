@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="website.InfoPageOption" t-inherit-mode="extension" owl="1">
+        <xpath expr="//BuilderRow[@label.translate='Odoo Information']" position="attributes">
+            <attribute name="label.translate">Viindoo Information</attribute>
+        </xpath>
+    </t>
+</templates>

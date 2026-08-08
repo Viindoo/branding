@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- CTA snippets: "run Odoo" / "trust Odoo" → "run Viindoo" / "trust Viindoo" -->
+    <template id="s_call_to_action" inherit_id="website.s_call_to_action">
+        <xpath expr="//h2" position="replace" mode="inner">
+            50,000+ companies run Viindoo to grow their businesses.
+        </xpath>
+    </template>
+
+    <template id="s_cta_box" inherit_id="website.s_cta_box">
+        <xpath expr="//h2" position="replace" mode="inner">
+            50,000+ companies run Viindoo<br/>to grow their businesses.
+        </xpath>
+    </template>
+
+    <template id="s_cta_card" inherit_id="website.s_cta_card">
+        <xpath expr="//h2" position="replace" mode="inner">
+            50,000+ companies run Viindoo <br class="d-none d-lg-inline"/>to grow their businesses.
+        </xpath>
+    </template>
+
+    <template id="s_cta_mockups" inherit_id="website.s_cta_mockups">
+        <xpath expr="//h2" position="replace" mode="inner">
+            50,000+ companies trust Viindoo.
+        </xpath>
+    </template>
+
+    <!-- Form aside: "Odoo apps, services" → generic -->
+    <template id="s_form_aside" inherit_id="website.s_form_aside">
+        <xpath expr="//p" position="replace" mode="inner">
+            Chat with us through or fill in this form to get information about anything related to our apps, services, and company.
+        </xpath>
+    </template>
+
+    <!-- Table of content: "Design Odoo templates" → "Viindoo templates" -->
+    <template id="s_table_of_content" inherit_id="website.s_table_of_content">
+        <xpath expr="//p[contains(., 'Odoo')]" position="replace" mode="inner">
+            Design Viindoo templates easily with clean HTML and Bootstrap CSS. These templates offer a responsive, mobile-first design with SEO-ready markup.
+        </xpath>
+    </template>
+
+    <!-- NOTE: "Website info page" (show_website_info) and "Go to your Odoo Apps" button title
+         (layout) de-brand overrides used to live here as separate <template> records sharing the
+         SAME local id as the ones already declared in views/website_templates.xml - a same-module
+         xmlid collision (viin_brand_website.show_website_info / viin_brand_website.layout) that
+         silently overwrote the earlier file's arch_db (favicon/meta-generator override, "Viindoo
+         Version" label) with no install-time error. Both overrides have been merged as additional
+         <xpath> children of the existing templates in views/website_templates.xml instead. -->
+
+</odoo>

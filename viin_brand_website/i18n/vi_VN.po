@@ -1,13 +1,15 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
+# 	* website (reused core xmlid overrides - see NOTE in viin_brand_stock/i18n/vi_VN.po
+# 	  for why odoo-bin i18n export attributes these to the core module)
 # 	* viin_brand_website
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-13 02:52+0000\n"
-"PO-Revision-Date: 2025-10-13 02:52+0000\n"
+"POT-Creation-Date: 2026-08-07 16:26+0000\n"
+"PO-Revision-Date: 2026-08-07 16:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +18,56 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_website
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.s_cta_card
+msgid ""
+"50,000+ companies run Viindoo <br class=\"d-none d-lg-inline\"/>to grow "
+"their businesses."
+msgstr ""
+"50.000+ công ty sử dụng Viindoo<br class=\"d-none d-lg-inline\"/> để phát "
+"triển hoạt động kinh doanh của họ."
+
+#. module: viin_brand_website
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.s_call_to_action
+msgid "50,000+ companies run Viindoo to grow their businesses."
+msgstr "50,000+ công ty sử dụng Viindoo để phát triển hoạt động kinh doanh của họ."
+
+#. module: viin_brand_website
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.s_cta_box
+msgid "50,000+ companies run Viindoo<br/>to grow their businesses."
+msgstr "50,000+ công ty sử dụng Viindoo<br/> để phát triển hoạt động kinh doanh của họ."
+
+#. module: viin_brand_website
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.s_cta_mockups
+msgid "50,000+ companies trust Viindoo."
+msgstr "50.000+ công ty tin dùng Viindoo."
+
+#. module: viin_brand_website
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.s_form_aside
+msgid ""
+"Chat with us through or fill in this form to get information about anything "
+"related to our apps, services, and company."
+msgstr ""
+"Trò chuyện với chúng tôi hoặc điền vào biểu mẫu này để nhận thông tin về "
+"bất kỳ điều gì liên quan đến ứng dụng, dịch vụ và công ty của chúng tôi."
+
+#. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.brand_promotion
 msgid "Create a"
 msgstr "Tạo một"
+
+#. module: viin_brand_website
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.s_table_of_content
+msgid ""
+"Design Viindoo templates easily with clean HTML and Bootstrap CSS. These "
+"templates offer a responsive, mobile-first design with SEO-ready markup."
+msgstr ""
+"Thiết kế mẫu Viindoo dễ dàng với HTML và Bootstrap CSS sạch. Các mẫu này "
+"cung cấp thiết kế đáp ứng, ưu tiên thiết bị di động, với cấu trúc chuẩn SEO."
+
+#. module: viin_brand_website
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.layout
+msgid "Go to your Viindoo Apps"
+msgstr "Đi tới Ứng dụng Viindoo của bạn"
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.show_website_info
@@ -37,9 +86,10 @@ msgstr ""
 "này được tự động tạo bởi hệ thống."
 
 #. module: viin_brand_website
-#: model_terms:ir.ui.view,arch_db:viin_brand_website.show_website_info
-msgid "Viindoo Technology JSC."
-msgstr "Công Ty Cổ phần Công Nghệ Viindoo."
+#. odoo-javascript
+#: code:addons/viin_brand_website/static/src/builder/plugins/options/website_info_option.xml:0
+msgid "Viindoo Information"
+msgstr "Thông tin Viindoo"
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.show_website_info
@@ -49,8 +99,8 @@ msgstr "Phiên bản Viindoo"
 #. module: viin_brand_website
 #. odoo-javascript
 #: code:addons/viin_brand_website/static/src/components/resource_editor/resource_editor_warning.xml:0
-msgid "Your changes might be lost during future Viindoo upgrade."
-msgstr "Các thay đổi bạn thực hiện có thể bị mất khi Viindoo được nâng cấp trong các phiên bản tiếp theo."
+msgid "Your changes might be lost during a future system upgrade."
+msgstr "Các thay đổi bạn thực hiện có thể bị mất khi hệ thống được nâng cấp trong các phiên bản tiếp theo."
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.brand_promotion
@@ -61,6 +111,15 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.res_config_settings_view_form
 msgid "https://viindoo.com"
 msgstr ""
+
+#. module: viin_brand_website
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.show_website_info
+msgid ""
+"instance of Viindoo, the <a class=\"o_translate_inline\" target=\"_blank\" "
+"href=\"https://viindoo.com\">Open Source ERP</a>."
+msgstr ""
+"Viindoo, <a class=\"o_translate_inline\" target=\"_blank\" "
+"href=\"https://viindoo.com\">một ERP open source</a>."
 
 #. module: website
 #: model_terms:digest.tip,tip_description:website.digest_tip_website_0
@@ -102,4 +161,3 @@ msgstr ""
 " từ khóa, hệ thống sẽ giới thiệu cho bạn những từ khóa tốt nhất để nhắm mục "
 "tiêu. Sau đó, điều chỉnh tiêu đề và mô tả của bạn cho phù hợp để tăng lưu "
 "lượng truy cập."
-

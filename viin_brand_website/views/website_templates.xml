@@ -5,15 +5,25 @@
 	        expr="//h1/small" position="replace">
 	        <small>Viindoo Version <t t-out="version.get('server_version')"/></small>
         </xpath>
-        <xpath expr="//p" position="replace">
-            <p>Information about the <a target="_blank" href="https://about.viindoo.com">Viindoo Technology JSC.</a></p>
+        <xpath expr="//section/p[1]" position="replace">
+            <p>
+                Information about the <t t-out="res_company.name"/> instance of Viindoo, the <a class="o_translate_inline" target="_blank" href="https://viindoo.com">Open Source ERP</a>.
+            </p>
         </xpath>
         <!-- Chart of account and l10n app -->
         <xpath expr="//div[@t-if='l10n']/dl/dt/a" position="attributes">
             <attribute name="t-attf-href">https://viindoo.com/intro/accounting</attribute>
         </xpath>
     </template>
-    
+
+    <!-- Outer wrapper view: its own `name` field feeds website.layout's title xpath
+         (main_object.sudo().name) when no explicit website_meta_title override applies,
+         since core's website_info() controller never sets 'main_object' and
+         ir_ui_view._render_template() then defaults it to this view record itself. -->
+    <record id="website.website_info" model="ir.ui.view">
+        <field name="name">Viindoo Information</field>
+    </record>
+
     <template id="layout" name="Main layout" inherit_id="website.layout">
 		<xpath expr="//meta[@name='generator']" position="attributes">
 			<attribute name="content">Viindoo</attribute>
@@ -21,6 +31,10 @@
 
         <xpath expr="//t[@t-set='x_icon']" position="replace">
             <t t-set="x_icon" t-value="'/viin_brand/static/img/favicon.ico'"/>
+        </xpath>
+
+        <xpath expr="//a[hasclass('o_frontend_to_backend_apps_btn')]" position="attributes">
+            <attribute name="title">Go to your Viindoo Apps</attribute>
         </xpath>
     </template>
 </odoo>

@@ -46,14 +46,19 @@ Editions Supported
         'data/digest_data.xml',
         'views/templates.xml',
         'views/website_templates.xml',
-        'views/res_config_settings_views.xml'
+        'views/res_config_settings_views.xml',
+        'views/snippets.xml',
     ],
     'assets': {
         'web.assets_backend': [
             'viin_brand_website/static/src/components/configurator/configurator.scss',
+            'viin_brand_website/static/src/components/website_loader/website_loader.scss',
         ],
         'website.assets_editor': [
             'viin_brand_website/static/src/components/resource_editor/resource_editor_warning.xml',
+        ],
+        'website.website_builder_assets': [
+            'viin_brand_website/static/src/builder/plugins/options/website_info_option.xml',
         ],
         'web.assets_tests': [
             'viin_brand_website/static/tests/tours/colorpicker_brand_override.js',
@@ -62,7 +67,7 @@ Editions Supported
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
