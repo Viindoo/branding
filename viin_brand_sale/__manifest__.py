@@ -56,9 +56,11 @@ Module này sẽ thay đổi giao diện các module Sale theo thương hiệu V
     'assets': {
         'web.assets_backend': [
             'viin_brand_sale/static/src/js/sale_action_helper/sale_action_helper.js',
+            'viin_brand_sale/static/src/views/sale_file_upload_kanban/sale_file_upload_kanban_renderer.js',
+            'viin_brand_sale/static/src/views/sale_file_upload_list/sale_file_upload_list_renderer.js',
         ],
     },
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

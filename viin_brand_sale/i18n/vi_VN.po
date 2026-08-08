@@ -1,12 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
+# 	* sale (reused core xmlid override - see NOTE in viin_brand_stock/i18n/vi_VN.po)
+# 	* viin_brand_sale
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-03 02:54+0000\n"
-"PO-Revision-Date: 2024-07-03 02:54+0000\n"
+"POT-Creation-Date: 2026-08-07 16:26+0000\n"
+"PO-Revision-Date: 2026-08-07 16:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -31,3 +33,20 @@ msgid ""
 msgstr ""
 "Ví dụ, nếu bạn bán số giờ dịch vụ trả trước, hệ thống sẽ đề xuất bạn\n"
 "                bán thêm số giờ khi tất cả số giờ đã đặt hàng được sử dụng hết."
+
+#. module: viin_brand_sale
+#. odoo-javascript
+#: code:addons/viin_brand_sale/static/src/views/sale_file_upload_kanban/sale_file_upload_kanban_renderer.js:0
+#: code:addons/viin_brand_sale/static/src/views/sale_file_upload_list/sale_file_upload_list_renderer.js:0
+msgid ""
+"\n"
+"            If your customer runs on version 18 or higher, customer data and sales order lines\n"
+"            will be automatically created. Any other pdf containing an attached\n"
+"            UBL-RequestForQuotation file will work as well.\n"
+"        "
+msgstr ""
+"\n"
+"            Nếu khách hàng của bạn sử dụng phiên bản 18 trở lên, dữ liệu khách hàng\n"
+"            và các dòng đơn bán hàng sẽ được tạo tự động. Bất kỳ tệp PDF nào khác\n"
+"            chứa tệp UBL-RequestForQuotation đính kèm cũng sẽ hoạt động.\n"
+"        "

@@ -1,12 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
+# 	* viin_brand_sale
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-03 02:54+0000\n"
-"PO-Revision-Date: 2024-07-03 02:54+0000\n"
+"POT-Creation-Date: 2026-08-07 21:16+0000\n"
+"PO-Revision-Date: 2026-08-07 21:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,16 +15,14 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: sale
-#: model_terms:ir.actions.act_window,help:sale.action_orders_upselling
+#. module: viin_brand_sale
+#. odoo-javascript
+#: code:addons/viin_brand_sale/static/src/views/sale_file_upload_kanban/sale_file_upload_kanban_renderer.js:0
+#: code:addons/viin_brand_sale/static/src/views/sale_file_upload_list/sale_file_upload_list_renderer.js:0
 msgid ""
-"An order is to upsell when delivered quantities are above initially\n"
-"                ordered quantities, and the invoicing policy is based on ordered quantities."
-msgstr ""
-
-#. module: sale
-#: model_terms:ir.actions.act_window,help:sale.action_orders_upselling
-msgid ""
-"As an example, if you sell pre-paid hours of services, the system recommends you\n"
-"                to sell extra hours when all ordered hours have been consumed."
+"\n"
+"            If your customer runs on version 18 or higher, customer data and sales order lines\n"
+"            will be automatically created. Any other pdf containing an attached\n"
+"            UBL-RequestForQuotation file will work as well.\n"
+"        "
 msgstr ""
