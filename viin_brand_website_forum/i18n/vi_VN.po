@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-08 08:03+0000\n"
-"PO-Revision-Date: 2025-10-08 08:03+0000\n"
+"POT-Creation-Date: 2026-08-07 16:26+0000\n"
+"PO-Revision-Date: 2026-08-07 16:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,8 +15,8 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: website_forum
-#: model_terms:forum.forum,faq:website_forum.forum_help
+#. module: viin_brand_website_forum
+#: model_terms:ir.ui.view,arch_db:viin_brand_website_forum.viin_brand_website_forum_default_faq_inherit
 msgid "how to configure or customize Viindoo to specific business needs,"
 msgstr "Cách cấu hình hoặc tùy chỉnh Viindoo cho các nhu cầu kinh doanh cụ thể,"
 
@@ -25,18 +25,17 @@ msgstr "Cách cấu hình hoặc tùy chỉnh Viindoo cho các nhu cầu kinh do
 msgid "how to develop modules for your own need,"
 msgstr "Cách phát triển các mô-đun theo nhu cầu riêng của bạn,"
 
-#. module: website_forum
-#: model_terms:forum.forum,faq:website_forum.forum_help
+#. module: viin_brand_website_forum
+#: model_terms:ir.ui.view,arch_db:viin_brand_website_forum.viin_brand_website_forum_default_faq_inherit
 msgid "how to install Viindoo on a specific infrastructure,"
 msgstr "Cách cài đặt Viindoo trên một hạ tầng cụ thể,"
 
-#. module: website_forum
-#: model_terms:forum.forum,faq:website_forum.forum_help
+#. module: viin_brand_website_forum
+#: model_terms:ir.ui.view,arch_db:viin_brand_website_forum.viin_brand_website_forum_default_faq_inherit
 msgid "specific questions about Viindoo service offers, etc."
 msgstr "Các câu hỏi cụ thể về các gói dịch vụ của Viindoo, v.v."
 
-#. module: website_forum
-#: model_terms:forum.forum,faq:website_forum.forum_help
+#. module: viin_brand_website_forum
+#: model_terms:ir.ui.view,arch_db:viin_brand_website_forum.viin_brand_website_forum_default_faq_inherit
 msgid "what's the best way to use Viindoo for a specific business need,"
 msgstr "Cách tốt nhất để sử dụng Viindoo cho một nhu cầu kinh doanh cụ thể,"
-

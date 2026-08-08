@@ -56,7 +56,7 @@ Module này sẽ thay đổi giao diện module Forum theo thương hiệu Viind
         'data/forum_demo.xml',
     ],
     'post_init_hook': 'post_init_hook',
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
