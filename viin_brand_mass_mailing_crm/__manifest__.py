@@ -53,7 +53,7 @@ Module này sẽ thay đổi giao diện các module Mass Mailing On Lead / Oppo
     'demo': [
         'data/mass_mailing_demo.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
