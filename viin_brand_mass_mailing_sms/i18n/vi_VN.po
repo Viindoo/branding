@@ -1,12 +1,16 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
+# 	* mass_mailing_sms (reused core xmlid override - see NOTE in
+# 	  viin_brand_stock/i18n/vi_VN.po; viin_brand_mass_mailing_sms itself has no
+# 	  translatable terms of its own, which is why a scoped `odoo-bin i18n
+# 	  export viin_brand_mass_mailing_sms` reports "No translatable terms found")
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-24 01:46+0000\n"
-"PO-Revision-Date: 2025-09-24 01:46+0000\n"
+"POT-Creation-Date: 2026-04-08 01:42+0000\n"
+"PO-Revision-Date: 2026-04-08 01:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
