@@ -13,6 +13,21 @@
             <xpath expr="//group[@name='other_preferences']" position="inside">
                 <field name="viin_color_scheme"/>
             </xpath>
+            <!-- Viindoo "Learn more" doc link for the API keys block. The locator is deliberately
+                 UNQUALIFIED, i.e. no //page[@name='page_security'] prefix: this is core
+                 auth_passkey's own proven idiom (auth_passkey.auth_passkey_users_preferences
+                 targets //div[@name='api_keys']), and it keeps resolving if the enclosing page name
+                 churns again, as it already did once (page_account_security to page_security). A
+                 wrong page name in the prefix would be a hard ParseError at module install, and the
+                 prefix buys nothing: div[@name='api_keys'] is unique in the inherited arch. Lands
+                 right after the helper text in the label column, so the block reads label, then
+                 hint, then doc link, leaving the key list and its buttons uncluttered. -->
+            <xpath expr="//div[@name='api_keys']/div[1]/span[hasclass('text-muted')]" position="after">
+                <widget name="documentation_link"
+                        path="https://viindoo.com/documentation/16.0/developer/development/integrate-with-third-party-resources.html"
+                        label="Learn more"
+                        icon="fa-fw o_button_icon fa-info-circle"/>
+            </xpath>
         </field>
     </record>
 </odoo>

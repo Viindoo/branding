@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_layout" inherit_id="web.report_layout">
+        <xpath expr="//title" position="replace" mode="inner">
+            <t t-out="title or 'Viindoo Report'"/>
+        </xpath>
+    </template>
+
+    <template id="report_preview_layout" inherit_id="web.report_preview_layout">
+        <xpath expr="//title" position="replace" mode="inner">
+            <t t-out="title or 'Viindoo Report'"/>
+        </xpath>
+    </template>
+
+</odoo>

@@ -37,13 +37,25 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.3',
-    'depends': ['viin_brand', 'web'],
+    # base_setup is a HARD dependency, not a convenience: views/res_config_settings_views.xml
+    # resolves ref="base_setup.res_config_settings_view_form" at load time. base_setup is
+    # auto_install with depends base+web, i.e. the SAME graph depth as this module, so without the
+    # explicit edge the loader does not guarantee it lands first and the install fails
+    # intermittently with ValueError: External ID not found in the system.
+    'depends': ['base_setup', 'viin_brand', 'web'],
     'data': [
         'views/ir_module_views.xml',
         'views/res_company_views.xml',
         'views/res_partner_views.xml',
         'views/webclient_template.xml',
         'views/res_users_views.xml',
+        # De-brand the General Settings copy (API-keys help, PWA name help, web_app_name
+        # placeholder, partner-autocomplete title). Extends base_setup, hence the depends edge
+        # above. Appended: no earlier entry in this list is depended on by it.
+        'views/res_config_settings_views.xml',
+        # De-brand the PDF/HTML report <title>, which core ships as "Odoo Report" in both
+        # web.report_layout and web.report_preview_layout. Order-free.
+        'views/report_templates.xml',
     ],
     'assets': {
         'web._assets_primary_variables': [
@@ -90,6 +102,19 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'web.assets_frontend': [
             ('after', 'web/static/src/scss/pre_variables.scss',
              'viin_brand_common/static/src/scss/frontend_primary.scss'),
+            # De-brand the PUBLIC error notifications. Core's counterpart
+            # web/static/src/public/error_notifications.js ships _t("Odoo Session Expired") and
+            # _t("Your Odoo session expired...") at 19.0. Ours RE-registers the same keys with
+            # {force: true}, so it MUST evaluate after core's registration - a plain append (bundle
+            # tail) is the only placement that guarantees that. Frontend, matching core's own
+            # public/ surface.
+            'viin_brand_common/static/src/core/errors/error_notifications.js',
+            # PWA scoped-app install page. FRONTEND on purpose, and a deliberate CORRECTION to the
+            # feature branch, which filed it under web._assets_core: core's web.webclient_scoped_app
+            # (addons/web/views/webclient_templates.xml) loads only web.assets_frontend_minimal plus
+            # web.assets_frontend_lazy and never a backend bundle, so on any backend bundle this
+            # template extension would never load on the one page it targets.
+            'viin_brand_common/static/src/core/install_scoped_app/install_scoped_app.xml',
         ],
         'web.assets_backend': [
             # 2026-08-03 TEXT-LINK TIER (owner: links -> Viindoo secondary). Splits Bootstrap's
@@ -129,6 +154,27 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             # def-index ~1257, before any of those views is opened. See the file header for the
             # transpiler snapshot mechanism and the journal-dashboard sparkline caveat.
             'viin_brand_common/static/src/core/colors/colors.js',
+            # De-brand core's v19 error DIALOGS (web.SessionExpiredDialog, and the
+            # WarningDialog/RedirectWarningDialog "Odoo Warning" title fallbacks). RE-HOMED here
+            # from web._assets_core, a bundle key this module retired
+            # (tests/test_asset_upgrade.py RETIRED_BUNDLE_KEYS). Plain appends are correct for both:
+            # the .js only patch()es OWL prototypes and assigns static class fields, so it is
+            # order-immune once the web.assets_web include at the top of this bundle has run; the
+            # .xml carries t-inherit="web.SessionExpiredDialog" and so must simply share a bundle
+            # with the component it extends. Grouped next to colors.js, the other eager core/
+            # side-effect module.
+            'viin_brand_common/static/src/core/errors/error_dialogs.js',
+            'viin_brand_common/static/src/core/errors/error_dialogs.xml',
+            # De-brand core's web.UpgradeDialog (the Enterprise-upsell dialog opened from any
+            # `upgrade_boolean` field). RELOCATED here from the retired
+            # `webclient/settings_form_view/` path (tests/test_asset_upgrade.py
+            # RETIRED_ASSET_FRAGMENTS) so it no longer needs an allow-list entry. The .js also
+            # closes PR #633 rebase verdict c2-common.md finding R-7: the template was de-branded
+            # but the primary CTA still opened odoo.com - now patched to open viindoo.com instead.
+            # Wordmark is "System" per owner decision D3. Both are plain appends, order-immune,
+            # grouped with this module's other eager core/ side-effect modules.
+            'viin_brand_common/static/src/core/upgrade_dialog/upgrade_dialog.js',
+            'viin_brand_common/static/src/core/upgrade_dialog/upgrade_dialog.xml',
             'viin_brand_common/static/src/webclient/webclient.js',
             'viin_brand_common/static/src/webclient/user_menu_item.js',
             'viin_brand_common/static/src/views/widgets/**/*',
@@ -151,6 +197,21 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             # sibling cannot see whether the numbers are in reading order - the statusbar's DOM
             # order is the reverse of its visual order.
             'viin_brand_common/static/tests/statusbar_steps.test.js',
+            # 2026-08-07: RED test-first guard for PR #633 rebase finding R-7 (web.UpgradeDialog
+            # de-brand is only half done) + owner decision D3 (wordmark = "System"). Protects two
+            # rules: the CTA must never open odoo.com, and the dialog copy must never carry the
+            # Odoo/Viindoo wordmark. Authored before the production fix lands - see
+            # upgrade_dialog_debrand.test.js's header for the static RED argument.
+            'viin_brand_common/static/tests/upgrade_dialog_debrand.test.js',
+            # 2026-08-08: RED test-first guard for BUG S13-1 + BUG S14-1 (rb633-accept-20260808-k4x9
+            # acceptance report) + owner decision D3 (wordmark = "System" for the whole error/crash
+            # dialog family). Protects: ClientErrorDialog/NetworkErrorDialog technical-details titles
+            # must carry the "System " prefix (error_dialogs.js:16-17 currently drop "Odoo" instead
+            # of prefixing "System"), and RPCErrorDialog's server-error message/traceback must never
+            # leak core's raw "Odoo Server Error" string (no setup() override exists yet to normalize
+            # it). Authored before the production fix lands - see error_dialogs_debrand.test.js's
+            # header for the static RED argument.
+            'viin_brand_common/static/tests/error_dialogs_debrand.test.js',
         ],
     },
     'installable': True,

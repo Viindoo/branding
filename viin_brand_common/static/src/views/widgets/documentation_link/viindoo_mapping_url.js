@@ -1,8 +1,21 @@
 /** @odoo-module **/
 
-/* Define documentation of odoo which will be replaced by Viindoo one on setting pages only,
-if none found the system will fallback to the original one of odoo
-This approach help we manage nearly all odoo documentation to be replaced or not
+/* Full inventory of Odoo CE 19.0 documentation links.
+ * Keys: exact paths from Odoo 19.0 XML (documentation= and documentation_link path=).
+ * Values: Viindoo doc URL if available, empty string "" if not yet available.
+ *
+ * Logic in documentation_link.js - the three cases are NOT interchangeable:
+ *   - non-empty value -> the Viindoo URL is used.
+ *   - value ""        -> DELIBERATE SUPPRESSION, not a fallback. documentation_link.js returns
+ *                        the mapped value verbatim (`if (mapped !== undefined) return mapped;`)
+ *                        and the paired template patch (documentation_link.xml, `t-if="url"`)
+ *                        then HIDES the link. It does NOT fall back to www.odoo.com - that
+ *                        fallback is exactly the de-brand leak this module exists to close, and
+ *                        dozens of keys below rely on the suppression.
+ *   - key absent      -> core's original odoo.com link is returned. This is the ONLY fallback.
+ *
+ * To contribute: find an empty "" entry, write the Viindoo doc page, fill in the URL. Never
+ * "fix" an empty value by deleting its key - that re-opens the leak the empty value closes.
  */
 
 export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
@@ -41,6 +54,8 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
         "",
     "https://www.odoo.com/documentation/19.0/applications/finance/accounting/payables/pay/sepa.html":
         "",
+    "https://www.odoo.com/documentation/19.0/applications/finance/accounting/payables/pay/trusted_accounts.html":
+        "",
     "https://www.odoo.com/documentation/19.0/applications/finance/accounting/payables/supplier_bills/invoice_digitization.html":
         "",
     "https://www.odoo.com/documentation/19.0/applications/finance/accounting/others/analytic_accounting.html":
@@ -51,6 +66,12 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     "https://www.odoo.com/documentation/19.0/applications/general/auth/google.html":
         "https://viindoo.com/documentation/16.0/applications/getting-started/system-settings/sign-in-with-google-authentication.html",
     /* base_setup */
+    /* OBS-1: Settings > General Settings > Users ("Active Users" doc-link icon) and
+    Geolocation ("Geolocate your partners" doc-link icon) have no Viindoo-authored
+    replacement page yet - suppress (empty string) rather than leak a live www.odoo.com
+    link or guess an unverified URL from memory. */
+    "https://www.odoo.com/documentation/19.0/applications/general/users.html":
+        "",
     "https://www.odoo.com/documentation/19.0/applications/marketing/sms_marketing/pricing/pricing_and_faq.html":
         "",
     "https://www.odoo.com/documentation/19.0/applications/general/export_import_data.html":
@@ -61,11 +82,7 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
         "https://viindoo.com/documentation/15.0/applications/getting-started/external-apps-integration/ldap.html?highlight=ldap",
     "https://www.odoo.com/documentation/19.0/applications/websites/website/optimize/unsplash.html":
         "https://viindoo.com/documentation/17.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html",
-    /* OBS-1: Settings > General Settings > Users ("Active Users" doc-link icon) and
-    Geolocation ("Geolocate your partners" doc-link icon) have no Viindoo-authored
-    replacement page yet - suppress (empty string) rather than leak a live www.odoo.com
-    link or guess an unverified URL from memory. */
-    "https://www.odoo.com/documentation/19.0/applications/general/users.html": "",
+    /* OBS-1 (see the base_setup note above): no Viindoo-authored page yet - suppress. */
     "https://www.odoo.com/documentation/19.0/applications/general/integrations/geolocation.html":
         "",
     /* base_vat */
@@ -82,14 +99,16 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     "https://www.odoo.com/documentation/19.0/applications/sales/crm/acquire_leads/lead_mining.html":
         "",
     /* digest */
-    "https://www.odoo.com/documentation/19.0/applications/general/digest_emails.html": "",
-    /* event */
-    /* hr_recruitment */
+    "https://www.odoo.com/documentation/19.0/applications/general/digest_emails.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/general/digest_emails.html#custom-digest-emails":
+        "",
     /* hr_timesheet */
-    "https://www.odoo.com/documentation/19.0/applications/services/timesheets/overview/time_off.html":
+    "https://www.odoo.com/documentation/19.0/applications/services/timesheets/time_off.html":
         "https://viindoo.com/documentation/17.0/applications/human-resources/time-off/how-to-create-time-off-types.html",
     /* iap */
-    "https://www.odoo.com/documentation/19.0/applications/general/in_app_purchase.html": "",
+    "https://www.odoo.com/documentation/19.0/applications/general/in_app_purchase.html":
+        "",
     /* mail */
     "https://www.odoo.com/documentation/19.0/applications/general/email_communication/email_servers.html":
         "https://viindoo.com/documentation/17.0/applications/getting-started/system-settings/how-to-set-mail-server-for-sending-receiving-emails-in-viindoo.html",
@@ -112,16 +131,61 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
         "https://viindoo.com/documentation/17.0/applications/supply-chain/manufacturing/operations/manage-subcontracts-in-your-manufacturing-proccess.html",
     "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/manufacturing/management/use_mps.html":
         "https://viindoo.com/documentation/17.0/applications/supply-chain/manufacturing/planning/how-to-use-the-master-production-schedule-in-viindoo.html",
-    "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/management/planning/scheduled_dates.html":
-        "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/warehouse-management/planning/understanding-the-scheduled-delivery-date-computation.html",
+    "https://www.odoo.com/documentation/19.0/applications/productivity/iot/devices/printer.html":
+        "",
+    /* payment_adyen */
+    "https://www.odoo.com/documentation/19.0/applications/finance/payment_providers/adyen.html#place-a-hold-on-a-card":
+        "",
+    /* payment_authorize */
+    "https://www.odoo.com/documentation/19.0/applications/finance/payment_providers/authorize.html":
+        "",
     /* point_of_sale */
     "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/pricing/cash_rounding.html":
         "https://viindoo.com/documentation/17.0/applications/finance/accounting-and-invoicing/account-receivables/customer-invoices/settings/configure-cash-rounding-method.html",
+    "https://www.odoo.com/documentation/19.0/applications/finance/accounting/taxation/taxes/B2B_B2C.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/payment_methods.html":
+        "",
     "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/payment_methods/terminals/vantiv.html":
         "https://viindoo.com/documentation/17.0/applications/sales/point-of-sale/pricing-features/payment-with-vantiv-payment-terminal-in-pos.html",
     "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/payment_methods/terminals/six.html":
         "https://viindoo.com/documentation/17.0/applications/sales/point-of-sale/pricing-features/payment-with-six-payment-terminal-in-pos.html",
     "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/payment_methods/terminals/adyen.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/payment_methods/terminals/stripe.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/payment_methods/terminals/viva_com.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/payment_methods/terminals/razorpay.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/payment_methods/terminals/mercado_pago.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/payment_methods/terminals/pine_labs.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/payment_methods/terminals/qfpay.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/configuration/epos_ssc.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/employee_login.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/pricing/discounts.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/pricing/loyalty.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/pricing/pricelists.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/pricing/fiscal_position.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/receipts_invoices.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/restaurant/tips.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/shop/customer_display.html":
+        "",
+    /* pos_restaurant */
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/restaurant/floors_tables.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/point_of_sale/restaurant/bill_printing.html":
         "",
     /* product */
     "https://www.odoo.com/documentation/19.0/applications/sales/sales/products_prices/products/product_images.html":
@@ -136,22 +200,26 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     /* purchase_stock */
     "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/shipping/operation/dropshipping.html":
         "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/warehouse-management/delivery-orders/delivery-directly-from-suppliers-to-customers-drop-ship.html",
+    "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/warehouses_storage/replenishment/mto.html":
+        "",
     /* sale */
     "https://www.odoo.com/documentation/19.0/applications/sales/sales/products_prices/products/variants.html":
         "https://viindoo.com/documentation/17.0/applications/getting-started/products/using-product-variants-in-viindoo.html",
     "https://www.odoo.com/documentation/19.0/applications/sales/sales/products_prices/prices/pricing.html":
         "https://viindoo.com/documentation/17.0/applications/sales/sales/manage-your-pricing/manage-multiple-prices-per-product.html",
+    "https://www.odoo.com/documentation/19.0/applications/sales/sales/send_quotations/get_signature_to_validate.html":
+        "https://viindoo.com/documentation/16.0/applications/sales/sales/send-quotations/activate-e-sign-feature-to-confirm-order.html",
+    "https://www.odoo.com/documentation/19.0/applications/sales/sales/send_quotations/get_paid_to_validate.html":
+        "https://viindoo.com/documentation/16.0/applications/sales/sales/send-quotations/activate-online-payment-for-viindoo-website.html",
     "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/shipping/setup/third_party_shipper.html":
         "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/shipping/configure-delivery-methods.html",
     "https://www.odoo.com/documentation/19.0/applications/sales/sales/invoicing/invoicing_policy.html":
         "https://viindoo.com/documentation/17.0/applications/sales/sales/invoicing-method/invoice-based-on-timing-of-service-provision.html",
     "https://www.odoo.com/documentation/19.0/applications/sales/sales/invoicing/down_payment.html":
         "https://viindoo.com/documentation/17.0/applications/sales/sales/invoicing-method/down-payment-in-viindoo-sales.html?highlight=down%20payment",
-    "https://www.odoo.com/documentation/19.0/applications/sales/sales/send_quotations/get_signature_to_validate.html":
-        "https://viindoo.com/documentation/16.0/applications/sales/sales/send-quotations/activate-e-sign-feature-to-confirm-order.html",
-    "https://www.odoo.com/documentation/19.0/applications/sales/sales/send_quotations/get_paid_to_validate.html":
-        "https://viindoo.com/documentation/16.0/applications/sales/sales/send-quotations/activate-online-payment-for-viindoo-website.html",
     "https://www.odoo.com/documentation/19.0/applications/sales/sales/amazon_connector/setup.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/sales/gelato.html":
         "",
     /* sale_management */
     "https://www.odoo.com/documentation/19.0/applications/sales/sales/send_quotations/quote_template.html":
@@ -160,7 +228,11 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     "https://www.odoo.com/documentation/19.0/applications/sales/sales/send_quotations/pdf_quote_builder.html":
         "https://viindoo.com/documentation/17.0/applications/sales/sales/send-quotations/designing-quotation-template-for-fast-and-efficient-sales-process.html",
     /* sale_stock */
+    "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/management/planning/scheduled_dates.html":
+        "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/warehouse-management/planning/understanding-the-scheduled-delivery-date-computation.html",
     /* stock */
+    "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/product_management/product_tracking/package.html":
+        "",
     "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/management/products/usage.html#packages":
         "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/warehouse-management/products/how-to-use-different-units-of-measure-packages-or-packaging.html",
     "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/management/misc/batch_transfers.html":
@@ -183,6 +255,8 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
         "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/advanced-routes/understanding-pull-push-rules-in-supply-routes.html",
     "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/management/delivery/dropshipping.html":
         "https://viindoo.com/documentation/17.0/applications/supply-chain/inventory/warehouse-management/delivery-orders/delivery-directly-from-suppliers-to-customers-drop-ship.html",
+    "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/warehouses_storage/inventory_management/use_locations.html":
+        "",
     /* stock_account */
     "https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/management/reporting/integrating_landed_costs.html":
         "https://viindoo.com/documentation/17.0/applications/finance/accounting-and-invoicing/inventory/accounting-for-landed-cost.html",
@@ -190,9 +264,34 @@ export const ODOO_VIINDOO_DOCUMENTATION_MAPPING = {
     "https://www.odoo.com/documentation/19.0/applications/websites/website/optimize/unsplash.html#generate-an-unsplash-access-key":
         "https://viindoo.com/documentation/17.0/applications/websites/website/optimize/how-to-intergrate-with-free-image-library-at-unsplash.html",
     /* website */
-    "https://www.odoo.com/documentation/19.0/applications/websites/website/configuration/cookies_bar.html":
+    "https://www.odoo.com/documentation/19.0/applications/websites/website/configuration/domain_names.html#domain-name-website-map":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/websites/website/configuration/translate.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/websites/website/reporting/analytics.html#analytics-plausible":
         "",
     "https://www.odoo.com/documentation/19.0/applications/websites/website/reporting/analytics.html#analytics-google-analytics":
         "https://viindoo.com/documentation/16.0/applications/websites/website/optimize/how-to-track-your-website-s-traffic-in-google-analytics.html",
+    "https://www.odoo.com/documentation/19.0/applications/websites/website/configuration/cdn.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/websites/website/configuration/google_search_console.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/websites/website/configuration/cookies_bar.html":
+        "",
+    /* website_payment */
+    "https://www.odoo.com/documentation/19.0/applications/finance/payment_providers.html":
+        "",
     /* website_sale */
+    "https://www.odoo.com/documentation/19.0/applications/websites/website/configuration/address_autocomplete.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/websites/ecommerce/managing_products/variants.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/sales/sales/products_prices/loyalty_discount.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/websites/ecommerce/ecommerce_management/order_handling.html#abandoned-cart":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/websites/ecommerce/google_merchant_center.html":
+        "",
+    "https://www.odoo.com/documentation/19.0/applications/websites/ecommerce/shipping.html#click-collect":
+        "",
 };

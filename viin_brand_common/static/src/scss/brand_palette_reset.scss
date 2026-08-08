@@ -57,6 +57,12 @@
 // the pre-brand value of base-1 o-color-1. It is a literal here because brand_variables.scss has
 // already overridden $o-enterprise-color to teal, so no live token still holds the aubergine to alias;
 // restoring core's exact literal is the only faithful lever (data read from core source, not invented).
+//
+// SCOPE NOTE (added with R-3, owner decision D4): this file now carries TWO independent base-1
+// palette adjustments that share one mechanism, not one. Blocks 1-2 below RESET a bled chrome token
+// back to core (the o-color-1 story above). Block 3 RESTORES a brand token that the v19 SCSS
+// retirement dropped (the CC1 secondary button). Everything the header says about the guard, the
+// plain-append ordering and the base-1-only scope applies unchanged to all three.
 
 @if variable-exists('o-color-palettes') {
     // Content palette: base-1 o-color-1 -> core aubergine (was bled to the chrome brand teal).
@@ -81,6 +87,84 @@
             'base-1': map-merge(
                 map-get($o-theme-color-palettes, 'base-1'),
                 ('beta': #714B67)
+            ),
+        )
+    ) !global;
+}
+
+// =================================================================================================
+// R-3 RESTORE: the CC1 SECONDARY BUTTON -> Viindoo brand secondary (owner decision D4)
+// =================================================================================================
+// WHAT WAS LOST. The pre-19 layer retired by a251e97 pinned --o-cc1-btn-secondary and
+// --o-cc1-btn-secondary-border to the brand purple through a `!important` cascade block on the
+// document root. Grep on 19.0: zero hits anywhere in the repo. Consumer: the website/frontend
+// colour-combination CC1 secondary button, which silently reverted to core's aubergine.
+//
+// WHY NOT THE OLD MECHANISM. That block is banned twice over here - brand_variables.scss may hold
+// no document-root rule (tests/test_asset_upgrade.py::test_visual_scss_theme_layer_is_retired) and
+// an `!important` cascade shim is against the cluster's styling rules. Worse, it had stopped working:
+// at 19.0 the custom property --o-cc1-btn-secondary has NO reader on the painting path (see the
+// EMISSION NUANCE below), so overriding it changed nothing a user could see. The native lever is
+// the same guarded base-1 map-merge the o-color-1 block above already uses.
+//
+// THE LEVER, TRACED IN CORE. html_editor/static/src/scss/secondary_variables.scss:19-21 composes
+// the ACTIVE palette as
+//     $o-color-palette: map-get($o-color-palettes, $o-color-palette-name) or ();
+//     $o-color-palette: map-merge($-combination-additions, $o-color-palette);
+// with core's own comment "Original color palette can contain override of the default combinations".
+// The palette map is the SECOND map-merge argument, so a base-1 'o-cc1-btn-secondary' entry WINS
+// over the $o-color-combinations default. html_editor/static/src/scss/bootstrap_overridden.scss:9-11
+// then resolves it into $colors, and html_editor.common.scss consumes it:
+//   :654  $-btn-secondary-color: if($-btn-secondary, o-color($-btn-secondary), map-get($theme-colors, 'secondary'));
+//   :657  .o_cc1 ... .btn-fill-secondary { @include button-variant($-btn-secondary-color, $-btn-secondary-border-color); }
+//   :660  .o_cc1 ... .btn-outline-secondary { @include button-outline-variant(...); }
+// and website_sale/static/src/scss/product_tile.scss:1297-1342 reads the identical pair for the
+// shop product tile. A raw hex is a legal value on this path: o-color() early-returns any Sass
+// `color` via check-color-identifier-type() (html_editor/.../secondary_variables.scss:53-61), and
+// core itself sets these keys both as colour NAMES (website/.../primary_variables.scss:1171) and as
+// hex literals, so both forms are supported.
+//
+// EMISSION NUANCE - READ THIS BEFORE WRITING A TEST FOR IT. html_editor.common.scss:64-70 prints
+// --o-cc1-btn-secondary ONLY in the `@if not $-btn-secondary` branch, i.e. as the FALLBACK for an
+// UNSET key. Now that the key IS set, that custom property is deliberately NOT emitted; only
+// --o-cc1-btn-secondary-text is (`@else`, :69, via color-contrast() - white against this purple).
+// The colour therefore reaches the pixel as a COMPILED Bootstrap button-variant rule, not as a
+// custom property. A guard for this restore must assert the compiled `.o_cc1 .btn-fill-secondary`
+// background, never the presence of a --o-cc1-btn-secondary variable, which would be red by design.
+//
+// BACKEND IS PROVABLY UNAFFECTED, so the COLOUR LAW's "purple never paints a BUTTON" clause
+// (brand_variables.scss) still holds. html_editor/.../bootstrap_overridden.scss:16-24 would also
+// feed these two keys into Bootstrap's own $o-btn-bg-colors/$o-btn-border-colors 'secondary'
+// entries - but that merge is wrapped in
+//     @if not (variable-exists('prevent-backend-colors-alteration') and $prevent-backend-colors-alteration)
+// and html_editor/.../bootstrap_overridden_backend.scss:15 sets that flag `true`, so the backend
+// bundle skips it. The restore lands on the website/frontend CC1 content surface only - exactly the
+// consumer that was lost.
+//
+// ORDER IS SAFE AGAINST website. website/.../primary_variables.scss is also a bundle-tail append and
+// may land either side of this file, but its own base-1 map-merge (:63-66) adds ONLY 'menu' and
+// 'footer' - it never writes o-cc1-btn-secondary - so this value survives both orderings. The
+// per-theme presets that DO set the key (e.g. 'kiddo-3' at :1171) live in their own palette maps, not
+// in base-1, so a website theme still legitimately wins with its own secondary.
+//
+// ALIASED, never re-literalised. The value is $o-brand-secondary, declared once in
+// brand_variables.scss, which loads earlier in this same bundle. A second brand-secondary hex
+// literal is how a palette drifts out of SSOT. The two literals in the blocks above are a different
+// case: they restore core's OWN aubergine default, for which no live token remains to alias.
+// Aliasing also earns the COLOUR LAW's light-only behaviour for free:
+// dark_palette.scss:154 re-points $o-brand-secondary itself (without `!default`) for
+// web.assets_web_dark, and this file is a bundle-TAIL append, so in each scheme it reads the value
+// already final for that scheme - no dark arm, no guard, no purple on a dark canvas.
+@if variable-exists('o-color-palettes') {
+    $o-color-palettes: map-merge(
+        $o-color-palettes,
+        (
+            'base-1': map-merge(
+                map-get($o-color-palettes, 'base-1'),
+                (
+                    'o-cc1-btn-secondary': $o-brand-secondary,
+                    'o-cc1-btn-secondary-border': $o-brand-secondary,
+                )
             ),
         )
     ) !global;

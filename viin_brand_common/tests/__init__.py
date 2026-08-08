@@ -7,7 +7,10 @@ from . import test_frontend_primary_compile
 from . import test_focus_ring_compile
 from . import test_color_scheme_pref
 from . import test_asset_upgrade
+from . import test_scss_variable_closure
 from . import test_debrand_render
 from . import test_debrand_layout
 from . import test_debrand_mail_server
 from . import test_warning_zero
+from . import test_owl_extension_self_shadow
+from . import test_template_inherit_id_targets_view

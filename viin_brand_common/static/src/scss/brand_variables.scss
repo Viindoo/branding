@@ -289,10 +289,74 @@ $o-component-active-border: $o-viin-chrome-base !default;
 // yet in scope in this file, whose `!default`s must land before Bootstrap consumes them.
 $o-viin-text-secondary: #6C757D !default;
 
+// --- Brand BODY FONT: the theme-ABSENT fallback (R-1 restore, owner decision D4) -------------
+// RESTORED TOKEN. The pre-19 layer that a251e97 retired carried
+//   $font-family-sans-serif: o-add-unicode-support-font((Roboto, "Lucida Grande", ...), 1)
+// in the deleted static/src/scss/bootstrap_overridden.scss. Nothing on 19.0 replaced it, so the
+// Viindoo body font had come to depend entirely on viin_backend_theme being installed.
+//
+// NATIVE LEVER, not $font-family-sans-serif directly. Core web routes the whole Bootstrap type
+// scale through one brand-facing token, both rungs declared `!default`:
+//   web/static/src/scss/bootstrap_overridden.scss:117  $font-family-sans-serif: $o-font-family-sans-serif !default;
+//   web/static/src/scss/primary_variables.scss:114     $o-font-family-sans-serif: o-add-unicode-support-font($o-system-fonts) !default;
+// Both files compile AFTER this one - this file is prepended to web._assets_primary_variables,
+// and core's web._assets_helpers lists ('include', 'web._assets_primary_variables') before
+// web._assets_backend_helpers/bootstrap_overridden.scss - so setting the token here FIRST makes
+// each of core's later `!default` assignments a no-op. Setting $font-family-sans-serif instead
+// would reach the same pixels while bypassing the hook core publishes for exactly this purpose.
+//
+// o-add-unicode-support-font() IS in scope here: web/static/src/scss/utils.scss:211 declares it
+// `($font, $index: false)` and core lists utils.scss inside web._assets_helpers BEFORE that
+// ('include', 'web._assets_primary_variables') entry. Passing 1 makes the loop (utils.scss:212-218)
+// insert 'Odoo Unicode Support Noto' at position 1, i.e. AHEAD of Roboto, so glyphs Roboto lacks
+// still resolve; the function's unconditional `or $-part == sans-serif` clause also re-appends it
+// before the generic family, which is core's own behaviour and harmless (a repeated family name in
+// a font stack is simply never reached). Same call the retired file used - faithful, not re-derived.
+//
+// BACKEND-ONLY, which is exactly the deleted file's original scope: the FRONTEND builds its own
+// stack straight from $o-system-fonts and never reads this token
+// (web/static/src/scss/bootstrap_overridden_frontend.scss:50 - verified to carry no
+// $o-font-family-sans-serif reference at all), so the website/portal typeface is untouched.
+//
+// WHY IT IS DECLARED HERE AT ALL - the whole point of R-1. viin_backend_theme/static/src/scss/
+// primary_variables.scss:17 already sets the SAME variable WITHOUT `!default`, and it loads later
+// (that module depends on this one), so the THEME still wins wherever it is installed. This
+// declaration is purely the fallback for a DB where the theme is uninstalled: without it the
+// backend body font silently reverts to Odoo's stock $o-system-fonts stack - no error, no failing
+// test, just the wrong typeface. That silence is why the loss went unnoticed.
+$o-font-family-sans-serif: o-add-unicode-support-font(
+    (Roboto, "Lucida Grande", Helvetica, Verdana, Arial, sans-serif), 1
+) !default;
+
+// --- SQUARE CORNERS (R-2 restore, owner decision D4) ----------------------------------------
+// RESTORED TOKEN. The same deleted file forced `$border-radius: 0` cluster-wide; 19.0 replaced it
+// with nothing, so every Bootstrap component reverted to Odoo's rounded default. Purely visual,
+// zero error - the definition of a silent loss.
+//
+// NATIVE LEVER, not $border-radius directly, and the same compile-order mechanism as the font
+// token above:
+//   web/static/src/scss/bootstrap_overridden.scss:99   $border-radius: $o-border-radius !default;
+//   web/static/src/scss/primary_variables.scss:218     $o-border-radius: o-to-rem(4px) !default;
+// Setting 0 here FIRST no-ops core's 4px default, and every $border-radius-derived surface
+// (buttons, cards, inputs, badges, dropdowns) squares off through core's own chain.
+//
+// BACKEND-ONLY, matching the retired file's scope: bootstrap_overridden_frontend.scss carries no
+// border-radius / o-border reference whatsoever (verified), so the website keeps core's rounding.
+//
+// SCOPE - the BASE rung ONLY. The pre-19 layer set $border-radius: 0 and left the -sm / -lg rungs
+// at core defaults, so $o-border-radius-sm (3px) / $o-border-radius-lg (6px) are deliberately NOT
+// zeroed and core's bootstrap_overridden.scss:100-101 keeps deriving them unchanged. Nothing
+// downstream contests this: viin_backend_theme declares no radius token at all, so this is the
+// single declaration in the cluster.
+$o-border-radius: 0 !default;
+
 // --- Deliberately NOT set here (scope discipline) -------------------------------------------
 // $o-theme-text-colors: left at its core default - a contrast-tuned text-variant map with no
 //   Viindoo-specific data source; inventing hexes would violate data-driven SSOT.
 // Layout/density tokens ($o-font-size-base, $o-statusbar-height, $o-input-border-required,
-//   $o-tip-*): not set - viin_backend_theme (P3) owns layout/density tokens.
+//   $o-tip-*): not set - viin_backend_theme (P3) owns layout/density tokens. The TWO exceptions
+//   are the R-1 font-family and R-2 border-radius tokens declared just above: both are restored
+//   pre-19 brand tokens with no 19.0 replacement, and both are declared WITH `!default` precisely
+//   so the theme keeps ownership when installed - they only take effect when it is not.
 // $o-enterprise-primary-color (pre-19 POS hook): not restored - viin_brand_pos is
 //   installable:False + out of scope; it must migrate to $o-brand-secondary when upgraded later.
