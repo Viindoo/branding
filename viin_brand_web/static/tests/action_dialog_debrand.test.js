@@ -25,16 +25,19 @@ describe.tags("desktop");
 // An act_window with target="new" and no `name` never sets a title prop
 // (web/static/src/webclient/actions/action_service.js:1069-1071), so this default really renders.
 
-test("ActionDialog opened without a title renders the Viindoo wordmark, never Odoo", async () => {
+// Expected value updated to "System" per owner decision D3 (unify the Dialog/ActionDialog title
+// wordmark with the error/crash-dialog family, which already used "System").
+test("ActionDialog opened without a title renders the System wordmark, never Odoo", async () => {
     const env = await makeDialogMockEnv();
     await mountWithCleanup(ActionDialog, { env, props: { close: () => {} } });
 
     expect(".o_dialog").toHaveCount(1);
-    expect("header .modal-title").toHaveText("Viindoo");
+    expect("header .modal-title").toHaveText("System");
     expect(queryText("header .modal-title")).not.toInclude("Odoo");
 });
 
-test("Dialog opened without a title renders the Viindoo wordmark, never Odoo", async () => {
+// Expected value updated to "System" per owner decision D3 (same rationale as above).
+test("Dialog opened without a title renders the System wordmark, never Odoo", async () => {
     class Parent extends Component {
         static components = { Dialog };
         static template = xml`<Dialog>Content</Dialog>`;
@@ -43,7 +46,7 @@ test("Dialog opened without a title renders the Viindoo wordmark, never Odoo", a
     await makeDialogMockEnv();
     await mountWithCleanup(Parent);
 
-    expect("header .modal-title").toHaveText("Viindoo");
+    expect("header .modal-title").toHaveText("System");
     expect(queryText("header .modal-title")).not.toInclude("Odoo");
 });
 

@@ -7,7 +7,9 @@ import { Dialog } from "@web/core/dialog/dialog";
 import { ActionDialog } from "@web/webclient/actions/action_dialog";
 
 // De-brand the default backend Dialog title: a dialog opened without an explicit `title` prop
-// must fall back to the Viindoo wordmark, never the stock Odoo one.
+// must fall back to the "System" wordmark, never the stock Odoo one. Owner decision D3 (2026):
+// unify the Dialog/ActionDialog title wordmark with the error/crash-dialog family
+// (viin_brand_common/static/src/core/errors/error_dialogs.js), which already uses "System".
 //
 // Core ships that fallback as a plain string literal in a static class field:
 //     static defaultProps = { ... title: "Odoo" ... }
@@ -27,7 +29,10 @@ import { ActionDialog } from "@web/webclient/actions/action_dialog";
 // TypeError from deep inside the asset bundle, and silently skipping would ship un-debranded UI.
 // We do neither: we rewrite only what we can prove is rewritable, and report the rest.
 const ODOO_WORDMARK = "Odoo";
-const VIINDOO_WORDMARK = "Viindoo";
+// Value is "System" per owner decision D3 - the identifier keeps its original name (naming is out
+// of scope for D3; only the replacement VALUE changes) so it now names a value it no longer holds
+// literally; do not "helpfully" restore "Viindoo" here.
+const VIINDOO_WORDMARK = "System";
 
 // Every class carrying its OWN default title. If core adds another class that snapshots
 // Dialog.defaultProps, add it here and mirror it in static/tests/action_dialog_debrand.test.js.
@@ -53,7 +58,7 @@ for (const [label, target] of DEBRAND_TARGETS) {
         // Literal wordmark substitution rather than a regex: the precondition above already
         // guarantees the shape, so a regex buys nothing and only invites a future loosening
         // (e.g. /odoo/gi) that would mangle unrelated substrings. Substituting the wordmark -
-        // rather than assigning "Viindoo" outright - keeps the de-brand working if core ever
+        // rather than assigning "System" outright - keeps the de-brand working if core ever
         // qualifies the literal (e.g. "Odoo 20").
         defaultProps.title = coreTitle.replaceAll(ODOO_WORDMARK, VIINDOO_WORDMARK);
     } else {
