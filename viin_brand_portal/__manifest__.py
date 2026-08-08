@@ -45,11 +45,10 @@ Module này sẽ thay đổi giao diện các module Portal theo thương hiệu
 
     # always loaded
     'data': [
-        'data/mail_template_data.xml',
         'views/portal_templates.xml',
     ],
     'post_init_hook': '_post_init_hook',
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
