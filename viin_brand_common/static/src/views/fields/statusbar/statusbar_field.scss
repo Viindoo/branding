@@ -1,5 +1,17 @@
 .o_field_statusbar {
     > .o_statusbar_status {
+        // Keep the status-flow arrows at the framework's compact control size.
+        // The brand's larger $o-font-size-base (15px vs core's 14px) widens each
+        // arrow enough that a 4-stage statusbar no longer fits on one row on
+        // small screens, so one arrow wraps into the overflow dropdown - breaking
+        // core's mobile web StatusBarField tests, which assert every stage renders
+        // as an inline arrow (and, via adjustVisibleItems, that no false wrap
+        // collapses them). This only trims the arrow chrome; stage labels stay
+        // legible.
+        > .o_arrow_button {
+            font-size: $o-font-size-base-small;
+        }
+
         > .o_arrow_button:not(.d-none) {
             &.o_arrow_button_current:disabled, &:active:not(.o_first) {
 				background-color: $brand-primary-super-light;
