@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* mrp
+# 	* viin_brand_mrp
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-24 03:34+0000\n"
-"PO-Revision-Date: 2025-09-24 03:34+0000\n"
+"POT-Creation-Date: 2026-08-07 21:16+0000\n"
+"PO-Revision-Date: 2026-08-07 21:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,17 +15,77 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: mrp
-#: model_terms:digest.tip,tip_description:mrp.digest_tip_mrp_0
-msgid ""
-"With the system work center control panel, your worker can start work orders"
-" in the shop and follow instructions of the worksheet. Quality tests are "
-"perfectly integrated into the process. Workers can trigger feedback loops, "
-"maintenance alerts, scrap products, etc."
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report
+msgid "Auto Print Allocation Report"
 msgstr ""
 
-#. module: mrp
-#: model:digest.tip,name:mrp.digest_tip_mrp_0
-#: model_terms:digest.tip,tip_description:mrp.digest_tip_mrp_0
-msgid "Tip: Use tablets in the shop to control manufacturing"
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report_labels
+msgid "Auto Print Allocation Report Labels"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_done_production_order
+msgid "Auto Print Done Production Order"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_done_mrp_lot
+msgid "Auto Print Produced Lot Label"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_done_mrp_product_labels
+msgid "Auto Print Produced Product Labels"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report_labels
+msgid ""
+"If this checkbox is ticked, the system will automatically print the "
+"allocation report labels of a MO when it is done."
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report
+msgid ""
+"If this checkbox is ticked, the system will automatically print the "
+"allocation report of a MO when it is done and has assigned moves."
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_done_mrp_lot
+msgid ""
+"If this checkbox is ticked, the system will automatically print the lot/SN "
+"label of a MO when it is done."
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_done_mrp_product_labels
+msgid ""
+"If this checkbox is ticked, the system will automatically print the product "
+"labels of a MO when it is done."
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_done_production_order
+msgid ""
+"If this checkbox is ticked, the system will automatically print the "
+"production order of a MO when it is done."
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model,name:viin_brand_mrp.model_stock_picking_type
+msgid "Picking Type"
 msgstr ""

@@ -53,7 +53,7 @@ Module này sẽ thay đổi giao diện các module Manufacturing theo thương
     'data': [
         'data/digest_data.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

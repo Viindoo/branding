@@ -1,13 +1,16 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* mrp
+# 	* mrp (reused core xmlid override - digest tip content lives in this module's
+# 	  own data/digest_data.xml but `odoo-bin i18n export` attributes it to the
+# 	  ORIGINALLY OWNING module since the xmlid is reused, not redeclared)
+# 	* viin_brand_mrp
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-24 03:34+0000\n"
-"PO-Revision-Date: 2025-09-24 03:34+0000\n"
+"POT-Creation-Date: 2026-08-07 16:26+0000\n"
+"PO-Revision-Date: 2026-08-07 16:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -33,3 +36,88 @@ msgstr ""
 #: model_terms:digest.tip,tip_description:mrp.digest_tip_mrp_0
 msgid "Tip: Use tablets in the shop to control manufacturing"
 msgstr "Mẹo: Sử dụng máy tính bảng trong cửa hàng để kiểm soát quá trình sản xuất"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report
+msgid "Auto Print Allocation Report"
+msgstr "Tự động in báo cáo phân bổ"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report_labels
+msgid "Auto Print Allocation Report Labels"
+msgstr "Tự động in nhãn báo cáo phân bổ"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_done_production_order
+msgid "Auto Print Done Production Order"
+msgstr "Tự động in lệnh sản xuất hoàn tất"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_done_mrp_lot
+msgid "Auto Print Produced Lot Label"
+msgstr "Tự động in nhãn số lô/sê-ri đã sản xuất"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_done_mrp_product_labels
+msgid "Auto Print Produced Product Labels"
+msgstr "Tự động in nhãn sản phẩm đã sản xuất"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__id
+msgid "ID"
+msgstr "ID"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report_labels
+msgid ""
+"If this checkbox is ticked, the system will automatically print the "
+"allocation report labels of a MO when it is done."
+msgstr ""
+"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in nhãn báo cáo phân bổ của MO "
+"khi nó hoàn tất."
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report
+msgid ""
+"If this checkbox is ticked, the system will automatically print the "
+"allocation report of a MO when it is done and has assigned moves."
+msgstr ""
+"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in báo cáo phân bổ của MO khi nó "
+"hoàn tất và có điều chuyển đã chỉ định."
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_done_mrp_lot
+msgid ""
+"If this checkbox is ticked, the system will automatically print the lot/SN "
+"label of a MO when it is done."
+msgstr ""
+"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in nhãn số lô/sê-ri của MO khi nó"
+" hoàn tất."
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_done_mrp_product_labels
+msgid ""
+"If this checkbox is ticked, the system will automatically print the product "
+"labels of a MO when it is done."
+msgstr ""
+"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in nhãn sản phẩm của MO khi nó "
+"hoàn tất."
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_done_production_order
+msgid ""
+"If this checkbox is ticked, the system will automatically print the "
+"production order of a MO when it is done."
+msgstr ""
+"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in lệnh sản xuất của MO khi nó "
+"hoàn tất."
+
+#. module: viin_brand_mrp
+#: model:ir.model,name:viin_brand_mrp.model_stock_picking_type
+msgid "Picking Type"
+msgstr "Kiểu lấy hàng"
