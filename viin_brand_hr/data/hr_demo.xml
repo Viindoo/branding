@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-      <record id="hr.job_ceo" model="hr.job">
-          <field name="description">Demonstration of different Viindoo services for each client and convincing the client about functionality of the application.
-The candidate should have excellent communication skills.
-Relationship building and influencing skills
-Expertise in New Client Acquisition (NCAs) and Relationship Management.
-Gathering market and customer information.
-Coordinating with the sales and support team for adopting different strategies
-Reviewing progress and identifying opportunities and new areas for development.
-Building strong relationships with clients / customers for business growth profitability.
-Keep regular interaction with key clients for better extraction and expansion.</field>
-      </record>
-
       <record id="hr.job_cto" model="hr.job">
           <field name="description">You will take part in the consulting services we provide to our partners and customers : design, analysis, development, testing, project management, support/coaching. You will work autonomously as well as coordinate and supervise small distributed development teams for some projects. Optionally, you will deliver software training sessions to partners and customers (8-10 people/session). You will report to the Head of Professional Services and work closely with all developers and consultants.
 
