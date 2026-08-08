@@ -53,7 +53,7 @@ Module này sẽ thay đổi giao diện các module Product theo thương hiệ
     'data': [
         'views/product_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
