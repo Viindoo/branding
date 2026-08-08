@@ -1,5 +1,9 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
+# 	* event (reused core xmlid override - see NOTE in viin_brand_stock/i18n/vi_VN.po;
+# 	  viin_brand_website_event itself has no translatable terms of its own, which is
+# 	  why a scoped `odoo-bin i18n export viin_brand_website_event` reports
+# 	  "No translatable terms found")
 #
 msgid ""
 msgstr ""
