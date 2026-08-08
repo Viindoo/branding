@@ -1,13 +1,14 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* viin_brand_im_livechat
+# 	* im_livechat (reused core xmlid override - see NOTE in viin_brand_stock/i18n/vi_VN.po)
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-13 03:19+0000\n"
-"PO-Revision-Date: 2025-09-13 03:19+0000\n"
+"POT-Creation-Date: 2026-08-07 16:25+0000\n"
+"PO-Revision-Date: 2026-08-07 16:25+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,6 +20,15 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:viin_brand_im_livechat.support_page
 msgid "<strong>Viindoo</strong>"
 msgstr ""
+
+#. module: viin_brand_im_livechat
+#: model_terms:ir.ui.view,arch_db:viin_brand_im_livechat.im_livechat_channel_view_form
+msgid ""
+"Agents who are inactive in the system for more than 30 minutes will be "
+"considered disconnected."
+msgstr ""
+"Tư vấn viên không hoạt động trong hệ thống quá 30 phút sẽ được coi là đã "
+"ngắt kết nối."
 
 #. module: viin_brand_im_livechat
 #: model:ir.model.fields,field_description:viin_brand_im_livechat.field_im_livechat_channel__button_background_color
@@ -36,15 +46,14 @@ msgid "Default background color of the channel header once open"
 msgstr "Màu nền mặc định cho header của kênh khi nó được mở ra"
 
 #. module: viin_brand_im_livechat
+#: model:ir.model.fields,field_description:viin_brand_im_livechat.field_im_livechat_channel__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_brand_im_livechat
 #: model_terms:ir.ui.view,arch_db:viin_brand_im_livechat.im_livechat_channel_view_form
-msgid ""
-"For websites built with the Viindoo CMS, go to Website &gt; Configuration "
-"&gt; Settings and select the Website Live Chat Channel you want to add to "
-"your website."
-msgstr ""
-"Đối với website sử dụng Viindoo CMS, hãy đi đến Website &gt; Cấu hình &gt; "
-"Thiết lập và chọn Kênh chat trực tuyến ở website mà bạn muốn thêm vào "
-"website của bạn"
+msgid "FOR WEBSITES BUILT WITH VIINDOO"
+msgstr "DÀNH CHO WEBSITE XÂY DỰNG BẰNG VIINDOO"
 
 #. module: viin_brand_im_livechat
 #: model:ir.model.fields,field_description:viin_brand_im_livechat.field_im_livechat_channel__header_background_color
@@ -52,18 +61,14 @@ msgid "Header Background Color"
 msgstr "Màu nền Header"
 
 #. module: viin_brand_im_livechat
+#: model:ir.model.fields,field_description:viin_brand_im_livechat.field_im_livechat_channel__id
+msgid "ID"
+msgstr "ID"
+
+#. module: viin_brand_im_livechat
 #: model:ir.model,name:viin_brand_im_livechat.model_im_livechat_channel
 msgid "Livechat Channel"
 msgstr "Kênh Chat Trực tuyến"
-
-#. module: viin_brand_im_livechat
-#: model_terms:ir.ui.view,arch_db:viin_brand_im_livechat.im_livechat_channel_view_form
-msgid ""
-"Operators that do not show any activity In Viindoo for more than 30 minutes "
-"will be considered as disconnected."
-msgstr ""
-"Những người vận hành mà không có bất cứ hoạt động nào trong Viindoo nhiều "
-"hơn 30 phút được coi là không kết nối."
 
 #. module: viin_brand_im_livechat
 #: model_terms:ir.ui.view,arch_db:viin_brand_im_livechat.livechat_email_template
