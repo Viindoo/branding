@@ -1,8 +1,32 @@
 /*Profile User Page*/
 
+// SCSS variable-closure repair. This file used to read the LEGACY 18.0 name $brand-primary,
+// declared by viin_brand_common/static/src/scss/primary_variables.scss until commit a251e97
+// deleted that file for the 19.0 brand_variables.scss SSOT. Nothing reachable from
+// web.assets_frontend has declared it since, and Sass aborts a whole bundle at the first
+// undefined VARIABLE - so this one line was serving NO frontend CSS at all
+// (`Undefined variable: "$brand-primary"`). Guarded by
+// viin_brand_common/tests/test_scss_variable_closure.py.
+//
+// TOKEN CHOICE IS CONSTRAINED BY THIS MODULE'S DEPENDS. viin_brand_website_profile depends on
+// ['website_profile'] ONLY - it does NOT declare viin_brand_common - so the Viindoo-only tokens
+// ($o-viin-chrome-base / -deep) must NOT be used here: reaching for them would re-create exactly
+// the undeclared-cross-module dependency that caused this break. Only CORE-declared tokens are
+// used ($o-brand-primary, web/static/src/scss/primary_variables.scss:78, carried into
+// web.assets_frontend by the web._assets_helpers include) plus Bootstrap functions
+// (bootstrap/scss/_functions.scss, same include). viin_brand_common re-points $o-brand-primary to
+// the Viindoo teal #00BBCE when installed; when it is absent this degrades to core's own value
+// rather than failing to compile. That dependency asymmetry is reported upward separately - do
+// NOT "fix" it by adding a depends edge here.
 .o_wprofile_body {
     .o_wprofile_gradient {
-        background-image: linear-gradient(-7deg, darken($brand-primary, 10), $brand-primary) !important;
+        // 18.0 wrote `darken($brand-primary, 10)`. Migrated to Bootstrap's non-deprecated
+        // shade-color() - this repo's own convention (viin_brand_common/.../link_tier.scss:76,93)
+        // - at the weight that REPRODUCES the old value: shade-color(#00BBCE, 25%) = #008C9B
+        // against 18.0's darken(#00BBCE, 10%) = #008D9B, a single 1/255 step on the green channel
+        // and exact on red and blue. Behaviour preserving, and it keeps the darker -> flat teal
+        // direction of the original gradient.
+        background-image: linear-gradient(-7deg, shade-color($o-brand-primary, 25%), $o-brand-primary) !important;
 
 
         .o_wprofile_top3_card_footer {
