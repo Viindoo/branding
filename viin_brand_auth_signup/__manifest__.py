@@ -1,17 +1,18 @@
 {
-    'name': "Signup Authentication Branding For Viindoo",
-    'name_vi_VN': "Giao diện Viindoo cho module Signup Authentication",
+    'name': "Sign Up Debranding for Viindoo",
+    'name_vi_VN': "Thương hiệu Viindoo cho mô-đun Đăng ký",
 
     'summary': """
-Theme branding Viindoo for module Signup Authentication""",
+Debranding Sign Up email templates for Viindoo""",
     'summary_vi_VN': """
-Giao diện brand Viindoo cho module Signup Authentication
+Thay thế thương hiệu Odoo bằng Viindoo trong các mẫu email đăng ký
 """,
 
     'description': """
 What it does
 ============
-This module will change color navigate bar, button and logo,v.v in module Signup Authentication following Viindoo's brand
+This module replaces Odoo branding with Viindoo in auth_signup email templates
+(new user invite, portal invite, password reset).
 
 
 Editions Supported
@@ -23,8 +24,9 @@ Editions Supported
 
     'description_vi_VN': """
 Ứng dụng này làm gì
-===================
-Module này sẽ thay đổi giao diện module Signup Authentication theo thương hiệu Viindoo
+====================
+Mô-đun này thay thế thương hiệu Odoo bằng Viindoo trong các mẫu email đăng ký
+(mời người dùng mới, mời cổng thông tin, đặt lại mật khẩu).
 
 
 Ấn bản được Hỗ trợ
@@ -36,15 +38,15 @@ Module này sẽ thay đổi giao diện module Signup Authentication theo thư�
 
     'author': "Viindoo",
     'website': "https://viindoo.com/apps/modules/19.0/viin_brand_auth_signup?force_show=1",
-    'live_test_url': "https://v18demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
+    'live_test_url': "https://v19demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     # any module necessary for this one to work correctly
     'depends': ['auth_signup'],
@@ -52,9 +54,10 @@ Module này sẽ thay đổi giao diện module Signup Authentication theo thư�
     # always loaded
     'data': [
         'data/mail_template_data.xml',
+        'data/auth_signup_templates_email.xml',
     ],
     'post_init_hook': '_post_init_hook',
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
