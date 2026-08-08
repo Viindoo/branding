@@ -51,11 +51,11 @@ Module này sẽ thay đổi giao diện cuả Unsplash Image Library theo thư�
 
     # always loaded
     'assets': {
-        'web_editor.assets_media_dialog': [
+        'html_editor.assets_media_dialog': [
             'viin_brand_web_unsplash/static/src/components/media_dialog/*.xml',
         ],
     },
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
