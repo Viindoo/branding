@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* stock
+# 	* viin_brand_stock
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-25 07:48+0000\n"
-"PO-Revision-Date: 2025-09-25 07:48+0000\n"
+"POT-Creation-Date: 2026-08-07 21:16+0000\n"
+"PO-Revision-Date: 2026-08-07 21:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,31 +15,125 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: stock
-#: model_terms:ir.actions.act_window,help:stock.action_location_form
-msgid ""
-"Define your locations to reflect your warehouse structure and\n"
-"            organization. The system is able to manage physical locations\n"
-"            (warehouses, shelves, bin, etc), partner locations (customers,\n"
-"            vendors) and virtual locations which are the counterpart of\n"
-"            the stock operations like the manufacturing orders\n"
-"            consumptions, inventories, etc."
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_delivery_slip
+msgid "Auto Print Delivery Slip"
 msgstr ""
 
-#. module: stock
-#: model_terms:ir.actions.act_window,help:stock.action_location_form
-msgid ""
-"Every stock operation in Viindoo moves the products from one\n"
-"            location to another one.  For instance, if you receive products\n"
-"            from a vendor, the system will move products from the Vendor\n"
-"            location to the Stock location. Each report can be performed on\n"
-"            physical, partner or virtual locations."
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_lot_labels
+msgid "Auto Print Lot/SN Labels"
 msgstr ""
 
-#. module: stock
-#: model_terms:ir.actions.act_window,help:stock.action_orderpoint
-msgid ""
-"Define a minimum stock rule so that system creates automatically requests for "
-"quotations or confirmed manufacturing orders to resupply your stock."
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_package_label
+msgid "Auto Print Package Label"
 msgstr ""
 
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_packages
+msgid "Auto Print Packages"
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_product_labels
+msgid "Auto Print Product Labels"
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_reception_report
+msgid "Auto Print Reception Report"
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_reception_report_labels
+msgid "Auto Print Reception Report Labels"
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_return_slip
+msgid "Auto Print Return Slip"
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_delivery_slip
+msgid ""
+"If this checkbox is ticked, the system will automatically print the delivery"
+" slip of a picking when it is validated."
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_lot_labels
+msgid ""
+"If this checkbox is ticked, the system will automatically print the lot/SN "
+"labels of a picking when it is validated."
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_package_label
+msgid ""
+"If this checkbox is ticked, the system will automatically print the package "
+"label when \"Put in Pack\" button is used."
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_packages
+msgid ""
+"If this checkbox is ticked, the system will automatically print the packages"
+" and their contents of a picking when it is validated."
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_product_labels
+msgid ""
+"If this checkbox is ticked, the system will automatically print the product "
+"labels of a picking when it is validated."
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_reception_report_labels
+msgid ""
+"If this checkbox is ticked, the system will automatically print the "
+"reception report labels of a picking when it is validated."
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_reception_report
+msgid ""
+"If this checkbox is ticked, the system will automatically print the "
+"reception report of a picking when it is validated and has assigned moves."
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_return_slip
+msgid ""
+"If this checkbox is ticked, the system will automatically print the return "
+"slip of a picking when it is validated."
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
+msgid ""
+"If this checkbox is ticked, the system will automatically show the reception"
+" report (if there are moves to allocate to) when validating."
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model,name:viin_brand_stock.model_stock_picking_type
+msgid "Picking Type"
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
+msgid "Show Reception Report at Validation"
+msgstr ""
