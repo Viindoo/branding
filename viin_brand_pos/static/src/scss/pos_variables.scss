@@ -1,0 +1,62 @@
+// POS-local bridge: aliases the FIVE legacy Viindoo POS SCSS variable names that
+// viin_brand_pos/static/src/scss/style.scss still references bare, onto the real v19
+// viin_brand_common SSOT tokens (viin_brand_common/static/src/scss/brand_variables.scss).
+//
+// WHY THIS FILE EXISTS. The 18.0-era viin_brand_common/static/src/scss/primary_variables.scss
+// declared $brand-primary / $brand-primary-dark / $brand-primary-darker /
+// $o-enterprise-primary-color directly (the old POS hook names). Commit a251e97 deleted that
+// file (and legacy/scss/bootstrap_overridden_common.scss) when viin_brand_common was upgraded
+// to the 19.0 brand_variables.scss SSOT, which declares only the NEW $o-* token names and
+// explicitly does not restore the old POS hook - its own closing comment reads: "$o-enterprise-
+// primary-color (pre-19 POS hook): not restored - viin_brand_pos is installable:False + out of
+// scope; it must migrate to $o-brand-secondary when upgraded later." This file is that
+// migration, now that viin_brand_pos is installable again. Without it, style.scss's bare
+// references to the four legacy names are genuine undefined-variable references - a hard Sass
+// compile error the moment point_of_sale._assets_pos compiles (Sass errors on an undefined
+// VARIABLE, unlike an undefined function call, which Sass instead passes through silently as
+// literal unresolved CSS text - verified empirically against dart-sass 1.102.0 while designing
+// this fix).
+//
+// WHY UNCONDITIONAL (no `!default` on ANY of the five):
+//   - $brand-primary / $brand-primary-dark / $brand-primary-darker / $o-enterprise-primary-color
+//     are viin_brand_pos-private names that nothing else in this bundle sets, so a plain
+//     assignment and a `!default` one behave identically for these four; the plain form is used
+//     for consistency with the fifth binding below, which genuinely needs it.
+//   - $primary MUST win over core's own later default:
+//       web/static/src/scss/bootstrap_overridden.scss:  $primary: $o-brand-primary !default;
+//     That line runs AFTER this file within point_of_sale._assets_pos (see the manifest anchor
+//     comment for why). By the time THIS file runs, $primary is already non-null - brand_
+//     variables.scss's own `$primary: $o-navbar-background !default;` (the AA-contrast dark
+//     teal) already fired, because this file is anchored immediately after brand_variables.scss.
+//     A `!default` here would therefore be a silent no-op and the historical POS PURPLE would
+//     never apply; the unconditional form is required to actually win.
+//
+// SSOT: every RHS below aliases an existing $o-* token already declared in
+// viin_brand_common/static/src/scss/brand_variables.scss - never a literal hex in this file.
+
+// $brand-primary (legacy POS hook): the flat Viindoo brand teal - alias of the single
+// $o-brand-primary declaration (brand_variables.scss line 13).
+$brand-primary: $o-brand-primary;
+
+// $brand-primary-dark (legacy POS hook): 18.0 defined this as "the brand teal darkened 10%"
+// (#008D9B). The v19 AA-contrast chrome ladder collapsed that rung onto the ladder's BASE token
+// instead (brand_variables.scss line 126, itself $o-navbar-background #007F8E, 4.74:1 on
+// white) - #008D9B only reached 3.97:1 and failed WCAG AA, per that file's own comment.
+$brand-primary-dark: $o-viin-chrome-base;
+
+// $brand-primary-darker (legacy POS hook): 18.0's "brand teal darkened 20%" (#005E68). The v19
+// AA ladder keeps this exact hex as the deep/pressed rung - alias of $o-viin-chrome-deep
+// (brand_variables.scss line 127, 7.5:1 on white).
+$brand-primary-darker: $o-viin-chrome-deep;
+
+// $o-enterprise-primary-color (legacy pre-19 POS hook): brand_variables.scss's own closing
+// comment names this exact migration target - the Viindoo brand SECONDARY (purple), never the
+// primary teal, matching the historical POS purple identity.
+$o-enterprise-primary-color: $o-brand-secondary;
+
+// $primary (Bootstrap/core hook, not a Viindoo-only name): without this line, core's own
+// `$primary: $o-brand-primary !default;` (web/static/src/scss/bootstrap_overridden.scss) - or,
+// absent that, brand_variables.scss's own `$primary: $o-navbar-background !default;` - would
+// leave the POS UI's interactive surfaces in brand teal instead of the historical POS PURPLE.
+// Unconditional (see file header) so it wins over both of those `!default` assignments.
+$primary: $o-brand-secondary;
