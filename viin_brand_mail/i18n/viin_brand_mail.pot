@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-24 05:13+0000\n"
-"PO-Revision-Date: 2026-07-24 05:13+0000\n"
+"POT-Creation-Date: 2026-08-07 21:16+0000\n"
+"PO-Revision-Date: 2026-08-07 21:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -58,6 +58,11 @@ msgid "Browser keys"
 msgstr ""
 
 #. module: viin_brand_mail
+#: model:ir.model,name:viin_brand_mail.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_res_config_settings
 msgid "Config Settings"
 msgstr ""
@@ -77,6 +82,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_template__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_thread__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_company__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__display_name
 msgid "Display Name"
@@ -85,6 +91,11 @@ msgstr ""
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_alias
 msgid "Email Aliases"
+msgstr ""
+
+#. module: viin_brand_mail
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_company__email_secondary_color
+msgid "Email Button Color"
 msgstr ""
 
 #. module: viin_brand_mail
@@ -132,6 +143,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_template__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_thread__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_res_company__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_config_settings__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__id
 msgid "ID"
@@ -184,6 +196,11 @@ msgstr ""
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_push_device
 msgid "Push Notification Device"
+msgstr ""
+
+#. module: viin_brand_mail
+#: model:ir.model,website_form_label:viin_brand_mail.model_mail_mail
+msgid "Send an E-mail"
 msgstr ""
 
 #. module: viin_brand_mail

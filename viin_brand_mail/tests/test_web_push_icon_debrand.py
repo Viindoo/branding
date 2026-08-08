@@ -11,7 +11,8 @@ class TestWebPushIconDebrand(TransactionCase):
     Odoo default icon (``/web/static/img/odoo-icon-192x192.png``) whenever a push
     notification has no author (e.g. a guest sender). ``viin_brand_mail`` inherits
     that method to replace this default with the Viindoo app icon
-    (``/viin_brand_mail/static/img/viindoo_app_icon.png``).
+    (``/viin_brand_common/static/img/viindoo-icon-192x192.png``) - the size-correct
+    192x192 asset, not this module's own ``static/img/viindoo_app_icon.png`` (95x95px).
 
     The substitution is UNCONDITIONAL: it must not depend on ``test_enable``, on a
     context key, or on any other runtime switch. A previous implementation gated it
@@ -51,7 +52,7 @@ class TestWebPushIconDebrand(TransactionCase):
         payload = self.partner._notify_by_web_push_prepare_payload(message)
         self.assertEqual(
             payload["options"]["icon"],
-            "/viin_brand_mail/static/img/viindoo_app_icon.png",
+            "/viin_brand_common/static/img/viindoo-icon-192x192.png",
             "Anonymous web-push notifications must show the Viindoo app icon, "
             "not the Odoo default mascot",
         )
@@ -86,7 +87,7 @@ class TestWebPushIconDebrand(TransactionCase):
         payload = self.partner._notify_by_web_push_prepare_payload(message)
         self.assertEqual(
             payload["options"]["icon"],
-            "/viin_brand_mail/static/img/viindoo_app_icon.png",
+            "/viin_brand_common/static/img/viindoo-icon-192x192.png",
             "The de-brand must apply regardless of test_enable - the production "
             "code path must have exactly one shape",
         )

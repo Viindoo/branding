@@ -24,8 +24,8 @@ class TestEmailButtonColorDebrand(TransactionCase):
             "New company must not default to Odoo's legacy aubergine/purple button color",
         )
         self.assertEqual(
-            company.email_secondary_color, '#007F8E',
-            "New company's email button color must default to the Viindoo AA-contrast teal",
+            company.email_secondary_color, '#7f4282',
+            "New company's email button color must default to Viindoo's brand secondary colour",
         )
 
     def test_existing_company_still_on_odoo_purple_is_normalized_by_post_init_hook(self):
@@ -35,8 +35,9 @@ class TestEmailButtonColorDebrand(TransactionCase):
         company.write({'email_secondary_color': '#875A7B'})  # simulate a pre-upgrade record
         post_init_hook(self.env)
         self.assertEqual(
-            company.email_secondary_color, '#007F8E',
-            "post_init_hook must normalize a company still on Odoo's legacy purple to Viindoo teal",
+            company.email_secondary_color, '#7f4282',
+            "post_init_hook must normalize a company still on Odoo's legacy purple to "
+            "Viindoo's brand secondary colour",
         )
 
     def test_existing_company_with_explicit_custom_color_is_left_untouched(self):

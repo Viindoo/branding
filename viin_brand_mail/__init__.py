@@ -110,10 +110,11 @@ def post_load():
 
 def post_init_hook(env):
     # OBS-1 debrand: normalize any company still holding mail's untouched core default
-    # ('#875A7B', legacy Odoo aubergine) for the outgoing-notification button color to the
-    # Viindoo AA-contrast teal, so pre-existing companies (upgrade path) get debranded too -
-    # not just companies created after this module is installed. A company whose value already
-    # differs from the stock default (an explicit customer choice) is left untouched.
+    # ('#875A7B', legacy Odoo aubergine) for the outgoing-notification button color to
+    # Viindoo's brand secondary colour (owner decision D1: '#7f4282'), so pre-existing
+    # companies (upgrade path) get debranded too - not just companies created after this
+    # module is installed. A company whose value already differs from the stock default
+    # (an explicit customer choice) is left untouched.
     env['res.company'].sudo().search([('email_secondary_color', '=', '#875A7B')]).write({
-        'email_secondary_color': '#007F8E',
+        'email_secondary_color': '#7f4282',
     })
