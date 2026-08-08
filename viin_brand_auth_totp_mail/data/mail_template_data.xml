@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="auth_totp_mail.mail_template_totp_invite" model="mail.template">
+            <field name="subject">Invitation to activate two-factor authentication on your account</field>
+        </record>
+    </data>
+</odoo>

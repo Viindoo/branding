@@ -35,7 +35,7 @@ Module này sẽ thay đổi giao diện module Two-Factor Authentication By Mai
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_auth_totp_mail_enforce?force_show=1",
+    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_auth_totp_mail?force_show=1",
     'live_test_url': "https://v18demo-int.viindoo.com",
     'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
@@ -47,13 +47,14 @@ Module này sẽ thay đổi giao diện module Two-Factor Authentication By Mai
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['auth_totp_mail_enforce'],
+    'depends': ['auth_totp_mail'],
 
     # always loaded
     'data': [
+        'data/mail_template_data.xml',
         'views/templates.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

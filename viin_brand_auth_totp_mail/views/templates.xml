@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="auth_totp_mail_form" inherit_id="auth_totp_mail_enforce.auth_totp_mail_form">
+    <template id="auth_totp_mail_form" inherit_id="auth_totp_mail.auth_totp_mail_form">
         <xpath expr="//div[contains(@t-if, 'totp_mail')]/a" position="attributes">
         	<attribute name="href">https://viindoo.com/documentation/16.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
         </xpath>
