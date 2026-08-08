@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-23 02:15+0000\n"
-"PO-Revision-Date: 2025-09-23 02:15+0000\n"
+"POT-Creation-Date: 2026-08-07 16:25+0000\n"
+"PO-Revision-Date: 2026-08-07 16:25+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,36 +16,32 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid ""
-"Good, you can customize canned responses in the live chat "
-"application.<br/><br/><b>It's the end of this overview</b>, you can now "
-"<b>close this conversation</b> or start the tour again with typing <span "
-"class=\"o_odoobot_command\">start the tour</span>. Enjoy discovering "
-"Viindoo!"
-msgstr ""
-"Rất tốt, bạn có thể tùy chỉnh các câu trả lời mẫu trong ứng dụng trò chuyện "
-"trực tiếp.<br/><br/><b>Đây là cuối cùng của bản tổng quan này</b>, bạn có "
-"thể <b>đóng cuộc trò chuyện này</b> hoặc bắt đầu chuyến tham quan lại bằng "
-"cách nhập <span class=\"o_odoobot_command\">start the tour</span>. Hãy "
-"thưởng thức việc khám phá Viindoo!"
+#: model:ir.model.fields,field_description:viin_brand_mail_bot.field_mail_bot__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail_bot.field_res_users__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
 
 #. module: viin_brand_mail_bot
 #. odoo-python
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
 msgid ""
-"I am a simple bot, but if that's a dog, he is the cutest 😊 "
-"<br/>Congratulations, you finished this tour. You can now <b>close this "
-"conversation</b> or start the tour again with typing <span "
-"class=\"o_odoobot_command\">start the tour</span>. Enjoy discovering "
-"Viindoo!"
+"Great! You can customize %(bold_start)scanned responses%(bold_end)s in the "
+"Discuss app."
 msgstr ""
-"Tôi chỉ là một robot đơn giản, nhưng nếu đó là một con chó, nó là con chó dễ"
-" thương nhất 😊 <br/>Chúc mừng bạn đã hoàn thành chuyến tham quan này. Bạn có"
-" thể <b>đóng cuộc trò chuyện này</b> hoặc bắt đầu chuyến tham quan lại bằng "
-"cách nhập <span class=\"o_odoobot_command\">start the tour</span>. Hãy "
-"thưởng thức việc khám phá Viindoo!"
+"Tuyệt vời! Bạn có thể tùy chỉnh %(bold_start)scác câu trả lời mẫu"
+"%(bold_end)s trong ứng dụng Thảo luận."
+
+#. module: viin_brand_mail_bot
+#. odoo-python
+#: code:addons/viin_brand_mail_bot/models/res_user.py:0
+msgid "Hello,"
+msgstr "Xin chào,"
+
+#. module: viin_brand_mail_bot
+#: model:ir.model.fields,field_description:viin_brand_mail_bot.field_mail_bot__id
+#: model:ir.model.fields,field_description:viin_brand_mail_bot.field_res_users__id
+msgid "ID"
+msgstr "ID"
 
 #. module: viin_brand_mail_bot
 #: model:ir.model,name:viin_brand_mail_bot.model_mail_bot
@@ -56,33 +52,52 @@ msgstr ""
 #. odoo-python
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
 msgid ""
-"Sorry, I am not listening. To get someone's attention, <b>ping him</b>. "
-"Write <span class=\"o_odoobot_command\">@ViindooBot</span> and select me."
+"Sorry, I am not listening. To get someone's attention, %(bold_start)sping "
+"him%(bold_end)s. Write %(command_start)s@ViindooBot%(command_end)s and "
+"select me."
 msgstr ""
-"Xin lỗi, tôi không nghe thấy. Để thu hút sự chú ý của ai đó, <b>hãy ping "
-"họ</b>. Viết <span class=\"o_odoobot_command\">@ViindooBot</span> và chọn "
-"tôi."
+"Xin lỗi, tôi không nghe thấy. Để thu hút sự chú ý của ai đó, %(bold_start)s"
+"hãy ping họ%(bold_end)s. Viết %(command_start)s@ViindooBot%(command_end)s "
+"và chọn tôi."
+
+#. module: viin_brand_mail_bot
+#. odoo-python
+#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
+msgid "Thanks"
+msgstr "Cám ơn"
 
 #. module: viin_brand_mail_bot
 #. odoo-python
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
 msgid ""
-"Unfortunately, I'm just a bot 😞 I don't understand! If you need help "
-"discovering our product, please check <a "
-"href=\"https://www.viindoo.com/documentation\" target=\"_blank\">our "
-"documentation</a> or <a href=\"https://www.viindoo.com/slides\" "
-"target=\"_blank\">our videos</a>."
+"That's the end of this overview. You can %(bold_start)sclose this "
+"conversation%(bold_end)s or type %(command_start)sstart the "
+"tour%(command_end)s to see it again. Enjoy discovering Viindoo!"
 msgstr ""
-"Thật không may, tôi chỉ là một robot 😞, tôi không hiểu! Nếu bạn cần trợ giúp"
-" khám phá sản phẩm của chúng tôi, vui lòng kiểm tra <a "
-"href=\"https://viindoo.com/documentation\" target=\"_blank\">tài liệu của "
-"chúng tôi</a> hoặc các <a href=\"https://viindoo.com/slides\" "
-"target=\"_blank\">video của chúng tôi</a>."
+"Đây là phần cuối của tổng quan này. Bạn có thể %(bold_start)sđóng cuộc trò "
+"chuyện này%(bold_end)s hoặc gõ %(command_start)sstart the tour"
+"%(command_end)s để xem lại. Hãy thưởng thức việc khám phá Viindoo!"
+
+#. module: viin_brand_mail_bot
+#. odoo-python
+#: code:addons/viin_brand_mail_bot/models/res_user.py:0
+msgid "Try to send me an emoji"
+msgstr "Hãy thử gửi cho tôi một biểu tượng cảm xúc"
 
 #. module: viin_brand_mail_bot
 #: model:ir.model,name:viin_brand_mail_bot.model_res_users
 msgid "User"
 msgstr "Người dùng"
+
+#. module: viin_brand_mail_bot
+#. odoo-python
+#: code:addons/viin_brand_mail_bot/models/res_user.py:0
+msgid ""
+"Viindoo's chat helps employees collaborate efficiently. I'm here to help you"
+" discover its features."
+msgstr ""
+"Ứng dụng trò chuyện của Viindoo giúp nhân viên cộng tác hiệu quả. Tôi ở đây "
+"để giúp bạn khám phá các tính năng của ứng dụng này."
 
 #. module: viin_brand_mail_bot
 #: model:ir.model.fields,field_description:viin_brand_mail_bot.field_res_users__odoobot_state
@@ -93,10 +108,10 @@ msgstr "Tình trạng ViindooBot"
 #. odoo-python
 #: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
 msgid ""
-"Wow you are a natural!<br/>Ping someone with @username to grab their "
-"attention. <b>Try to ping me using</b> <span "
-"class=\"o_odoobot_command\">@ViindooBot</span> in a sentence."
+"Wow you are a natural!%(new_line)sPing someone with @username to grab their "
+"attention. %(bold_start)sTry to ping me using%(bold_end)s "
+"%(command_start)s@ViindooBot%(command_end)s in a sentence."
 msgstr ""
-"Wow bạn thật tự nhiên!<br/>Ping ai đó với @username để thu hút sự chú ý của "
-"họ. <b>Hãy thử ping tôi bằng cách sử dụng</b> <span "
-"class=\"o_odoobot_command\">@ViindooBot</span> trong một câu."
+"Wow bạn thật tự nhiên!%(new_line)sPing ai đó với @username để thu hút sự "
+"chú ý của họ. %(bold_start)sHãy thử ping tôi bằng cách sử dụng%(bold_end)s "
+"%(command_start)s@ViindooBot%(command_end)s trong một câu."
