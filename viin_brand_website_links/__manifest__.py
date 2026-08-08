@@ -53,7 +53,7 @@ Module này sẽ thay đổi giao diện module Link Tracker theo thương hiệ
     'data': [
         'views/website_links_template.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
