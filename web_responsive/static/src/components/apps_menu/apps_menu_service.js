@@ -3,12 +3,12 @@
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { Mutex } from "@web/core/utils/concurrency";
+import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { useService } from "@web/core/utils/hooks";
 import { AppsMenu } from "./apps_menu.esm.js";
 import { AppMenuItem } from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
 import { AppsMenuSearchBar } from "@web_responsive/components/menu_searchbar/searchbar.esm";
 import { Component, useEffect } from "@odoo/owl";
-import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
 export async function nextTick() {
     await new Promise((resolve) => window.requestAnimationFrame(resolve));
