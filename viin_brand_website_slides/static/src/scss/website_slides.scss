@@ -1,23 +1,62 @@
+// eLearning (website_slides) Viindoo de-brand.
+//
+// SCSS variable-closure repair + brand-hex de-hardcoding. Two defects of the same class were
+// fixed together here:
+//   1. `.o_wslides_course_header` read the LEGACY 18.0 name $brand-primary, declared by
+//      viin_brand_common/static/src/scss/primary_variables.scss until commit a251e97 deleted that
+//      file for the 19.0 brand_variables.scss SSOT. Nothing reachable from web.assets_frontend
+//      has declared it since, and Sass aborts a whole bundle at the first undefined VARIABLE - so
+//      this file was serving NO frontend CSS at all (`Undefined variable: "$brand-primary"`).
+//      Guarded by viin_brand_common/tests/test_scss_variable_closure.py.
+//   2. The other four brand colours were HARDCODED hexes (#00bbce twice, #7f4282 twice). A
+//      literal cannot inherit the COLOUR LAW, so it silently survives every future re-point of
+//      the brand - including the dark-mode arm. Both are now tokens.
+//
+// TOKEN CHOICE IS CONSTRAINED BY THIS MODULE'S DEPENDS. viin_brand_website_slides depends on
+// ['website_slides'] ONLY - it does NOT declare viin_brand_common - so the Viindoo-only tokens
+// ($o-viin-chrome-base / -deep) must NOT be used here: reaching for them would re-create exactly
+// the undeclared-cross-module dependency that caused this break. Only CORE-declared tokens are
+// used - $o-brand-primary and $o-brand-secondary (web/static/src/scss/primary_variables.scss:78
+// and :80), carried into web.assets_frontend by the web._assets_helpers include. viin_brand_common
+// re-points both to the Viindoo hexes (#00BBCE / #7F4282) when installed; when it is absent they
+// degrade to core's own values rather than failing to compile. That dependency asymmetry is
+// reported upward separately - do NOT "fix" it by adding a depends edge here.
+
 .o_wslides_channel_completion_progressbar .progress .progress-bar {
-    background-color: #00bbce;
+    // was the hardcoded #00bbce = the Viindoo brand teal. COLOUR LAW clause TEAL = ACT: a
+    // progress fill is a decorative brand surface carrying no text, which is the tier
+    // $o-brand-primary (2.33:1) is for.
+    background-color: $o-brand-primary;
 }
 .o_wslides_home_content_section .progress .progress-bar {
-    background-color: #00bbce;
+    // was the hardcoded #00bbce - same tier and same rationale as the progress bar above.
+    background-color: $o-brand-primary;
 }
 .o_wslides_home_nav .navbar{
     padding: 10px
 }
 
 .o_wprofile_nav_tabs .nav-link:not(.active):hover {
-    background: #7f4282;
+    // was the hardcoded #7f4282 = the Viindoo brand secondary (purple).
+    // BEHAVIOUR-PRESERVING MIGRATION ONLY, and it is worth flagging why it stops there: the
+    // COLOUR LAW (brand_variables.scss, PURPLE = STRUCTURE clause) states the boundary it does
+    // enforce as "purple never paints a BUTTON, a tab or a pager" - and this IS a tab hover. So
+    // the token is correct as a de-hardcoding, but the HUE itself is contested by the law. Re-hueing
+    // it to the teal ACT tier is a visible restyle and therefore an OWNER decision, not something
+    // to slip into a compile fix; it is reported upward rather than done silently here.
+    background: $o-brand-secondary;
 }
 
 .o_wslides_course_main .o_wslides_nav_tabs .nav-link:not(.active):hover {
-    background: #7f4282;
+    // was the hardcoded #7f4282 - same tab-hover surface, same COLOUR LAW tension flagged above.
+    background: $o-brand-secondary;
 }
 
 .o_wslides_course_header{
-    background: $brand-primary;
+    // 18.0 read $brand-primary, which that era defined as $o-enterprise-color = the flat brand
+    // teal #00BBCE. $o-brand-primary is that exact value on v19 (brand_variables.scss:13), so
+    // this is a pure rename onto the SSOT token - identical pixels.
+    background: $o-brand-primary;
 }
 
 .o_wslides_course_pict{

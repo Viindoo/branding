@@ -47,12 +47,13 @@ Editions Supported
     },
     'data': [
         'data/website_slides_templates_profile.xml',
+        'data/mail_templates.xml',
     ],
 
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': False,
+    'installable': True,
     'auto_install': ['website_slides'],
     'price': 0.0,
     'currency': 'EUR',
