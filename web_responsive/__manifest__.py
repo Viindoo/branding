@@ -55,12 +55,20 @@
         "web.assets_clickbot": [
             "/web_responsive/static/src/clickbot/clickbot.esm.js",
         ],
+        # The checkbox-metrics reset is declared on BOTH test pages, because 18.0 runs both:
+        # web.tests_assets is the legacy QUnit page (WebSuite.test_qunit_desktop) and
+        # web.assets_unit_tests is the Hoot page (WebSuite.test_unit_desktop). The Hoot entry is
+        # the load-bearing one - see the commit message for the A/B measurement.
+        "web.tests_assets": [
+            "/web_responsive/static/tests/qunit_reset.css",
+        ],
         # Explicit file list only - never a glob over static/tests/**: an unresolved module id in
         # this shared bundle is a FATAL module-loader error that aborts the entire web unit-test
         # suite before any test body runs (see viin_brand_pos/static/tests/
         # navbar_favicon_guard.test.js:23-37 for a live-run-confirmed instance of this failure
         # mode).
         "web.assets_unit_tests": [
+            "/web_responsive/static/tests/qunit_reset.css",
             "/web_responsive/static/tests/apps_menu.test.js",
             "/web_responsive/static/tests/apps_menu_search.test.js",
             "/web_responsive/static/tests/webclient.test.js",

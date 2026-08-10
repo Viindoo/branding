@@ -1,0 +1,23 @@
+/* Core's list suites assert pixel column widths computed under the default
+   checkbox metrics; the "big checkboxes" restyle (+10px margin-right, 1.5em
+   box) shifts the record-selector column by exactly those pixels.
+
+   Measured on 18.0, not inherited from the 17.0 commit message: an A/B run of
+   WebSuite.test_unit_desktop with the brand absent from the addons path vs the
+   brand installed and this reset absent returned 0 failures against 28, of
+   which 11 were @web/views/list/column_widths and 5 more were the daterange /
+   datetime column-width variants. The 17.0 runbot ids and counts are
+   deliberately NOT carried over - 18.0's suite has different test names and
+   different numbers.
+
+   Loaded only on the two test pages (web.tests_assets for the legacy QUnit
+   page, web.assets_unit_tests for the Hoot page); the real webclient keeps big
+   checkboxes. */
+.o_list_view .o-checkbox:not(.o_boolean_toggle) {
+    margin-right: 0;
+    margin-top: 0;
+}
+.o_list_view .o-checkbox:not(.o_boolean_toggle) .form-check-input {
+    height: 1em;
+    width: 1em;
+}
