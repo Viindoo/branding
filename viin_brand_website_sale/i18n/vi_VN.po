@@ -17,8 +17,8 @@ msgstr ""
 
 #. module: viin_brand_website_sale
 #: model_terms:ir.ui.view,arch_db:viin_brand_website_sale.brand_promotion
-msgid "The #1 Open Source eCommerce Software"
-msgstr "Phần mềm Thương mại Điện tử mã nguồn mở số 1"
+msgid "Open Source eCommerce Software"
+msgstr "Phần mềm Thương mại Điện tử mã nguồn mở"
 
 #. module: viin_brand_website_sale
 #: model_terms:ir.ui.view,arch_db:viin_brand_website_sale.brand_promotion
