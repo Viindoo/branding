@@ -4,6 +4,7 @@
 
 import { expect, test } from "@odoo/hoot";
 import { mockService, mountWithCleanup, patchWithCleanup } from "@web/../tests/web_test_helpers";
+import { defineMailModels } from "@mail/../tests/mail_test_helpers";
 import { registry } from "@web/core/registry";
 import { session } from "@web/session";
 import { WebClient } from "@web/webclient/webclient";
@@ -21,6 +22,13 @@ import { WebClient } from "@web/webclient/webclient";
 // strength of THIS guard existing under its new session-flag shape - see
 // forward-port/17-to-18-20260807/web_responsive/intents/221946b.md. If this test cannot fail for
 // the right reason, that classification has nothing behind it.
+
+// web_responsive depends on `mail`, which patches the WebClient's NavBar/systray with components
+// that reach for mail's own server models. Without mail's mock models registered, mounting the
+// WebClient aborts with `Cannot find a definition for model "discuss.channel"` and all four tests
+// below fail for a harness reason rather than the guard they exist to protect. Module-level call,
+// matching core's own convention.
+defineMailModels();
 
 /**
  * A minimal, spy-able stand-in for the core "menu" service (@web/webclient/menus/menu_service).

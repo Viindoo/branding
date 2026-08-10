@@ -12,6 +12,7 @@ import {
     mockService,
     mountWithCleanup,
 } from "@web/../tests/web_test_helpers";
+import { defineMailModels } from "@mail/../tests/mail_test_helpers";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { NavBar } from "@web/webclient/navbar/navbar";
 import { WebClient } from "@web/webclient/webclient";
@@ -34,6 +35,27 @@ import { AppsMenuAction } from "@web_responsive/components/apps_menu/apps_menu_s
 // `assert.step(`do-action:${action.tag}`)` would read `.tag` off a STRING, get `undefined`, and
 // record "do-action:undefined" - a green test asserting nothing. The tests below step on the
 // argument itself and expect the literal string "menu".
+
+// web_responsive depends on `mail`, so mail patches NavBar (and the WebClient systray) with
+// components that reach for mail's own server models. Without mail's mock models registered, the
+// very first mount aborts with `Cannot find a definition for model "discuss.channel"` and every
+// test in this file fails for a harness reason instead of a business one. Core's own convention
+// for this is a module-level defineMailModels() call - see
+// addons/base_automation/static/tests/kanban_header_patch.test.js and board/.../add_to_dashboard.test.js.
+defineMailModels();
+
+/**
+ * `env.config` as the real action service would supply it to a mounted action
+ * (action_service.js:828-829, `controller.config.breadcrumbs = reactive(...)`). A bare
+ * `mountWithCleanup(AppsMenuAction, {props})` has no `env.config` at all, and
+ * AppsMenuAction.setup() unconditionally reads `this.env.config.breadcrumbs.length`
+ * (apps_menu_service.js:35), so mounting it directly without this crashes Owl's root on every
+ * mount. `componentEnv` is 18.0 core's own mechanism for this exact situation - core's
+ * `mountView()` test helper supplies `env.config` the identical way when mounting a View directly
+ * instead of through the action service (view_test_helpers.js:228-232:
+ * `componentEnv: { config: params.config }`).
+ */
+const APPS_MENU_ACTION_ENV = { config: { breadcrumbs: [] } };
 
 /**
  * A fully-populated `standardActionServiceProps` object (@web/webclient/actions/action_service),
@@ -101,7 +123,10 @@ test("mounting the apps menu flags exactly the current app as active, and no oth
     await makeMockEnv();
     getService("menu").setCurrentMenu(1);
 
-    await mountWithCleanup(AppsMenuAction, { props: makeActionProps() });
+    await mountWithCleanup(AppsMenuAction, {
+        props: makeActionProps(),
+        componentEnv: APPS_MENU_ACTION_ENV,
+    });
     await animationFrame();
 
     expect(".o-app-menu-item.active").toHaveCount(1);
@@ -123,7 +148,10 @@ test(
         // Companion control: also prove the schema is not merely declared but actually mountable
         // with a fully-populated props object.
         defineMenus([{ id: 1 }]);
-        await mountWithCleanup(AppsMenuAction, { props: makeActionProps() });
+        await mountWithCleanup(AppsMenuAction, {
+            props: makeActionProps(),
+            componentEnv: APPS_MENU_ACTION_ENV,
+        });
         await animationFrame();
 
         expect(".o_grid_apps_menu").toHaveCount(1);
@@ -135,7 +163,10 @@ test("opening the apps menu pushes no breadcrumb", async () => {
     // `actions").add("menu"` over CE core is empty). Core's action service special-cases exactly
     // that tag: _getBreadcrumbs keeps only controllers whose action.tag !== "menu"
     // (action_service.js:449), so a controller stack containing only the apps-menu action yields
-    // an empty breadcrumb trail. Go through the real action service, not a hand-seeded env.config.
+    // an empty breadcrumb trail. Go through the real action service, not a hand-seeded env.config -
+    // unlike the two tests above, this one never touches APPS_MENU_ACTION_ENV: the breadcrumbs
+    // array asserted below is the REAL one action_service.js computes from _getBreadcrumbs(), not
+    // one this file supplied, so the assertion stays non-trivial.
     defineMenus([{ id: 1 }]);
     await mountWithCleanup(WebClient);
     await getService("action").doAction("menu");
