@@ -1,5 +1,8 @@
+import base64
+
 from lxml import html
 
+from odoo import tools
 from odoo.tests.common import HttpCase, tagged
 
 # viin_brand_common's web.layout brand defaults (Viindoo/branding#654 fix,
@@ -167,4 +170,42 @@ class TestWebsiteTitleNotPreempted(HttpCase):
             href, BRAND_FAVICON,
             "the brand default favicon must not override the website's "
             "own configured favicon on a website-rendered page",
+        )
+
+
+@tagged("-at_install", "post_install")
+class TestWebsiteFaviconDefault(HttpCase):
+    """The brand favicon must be a DEFAULT, not an override.
+
+    Two properties have to hold at once, and the pair is the whole point:
+    a fresh website starts branded, AND a website that sets its own favicon
+    actually gets to serve it. The QWeb `position="replace"` this module used to
+    carry gave the first and destroyed the second.
+    """
+
+    def test_new_website_starts_with_the_brand_favicon(self):
+        website = self.env["website"].create({"name": "Fresh Site"})
+        with tools.file_open("viin_brand/static/img/favicon.ico", "rb") as f:
+            expected = base64.b64encode(f.read())
+        self.assertEqual(
+            website.favicon,
+            expected,
+            "a newly created website must start with the brand favicon, not Odoo's",
+        )
+
+    def test_a_configured_favicon_is_not_overwritten_by_the_default(self):
+        website = self.env["website"].create({"name": "Custom Site"})
+        branded = website.favicon
+        # A 1x1 PNG - content is irrelevant, only that it is the customer's own.
+        custom = base64.b64encode(
+            base64.b64decode(
+                "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+            )
+        )
+        website.favicon = custom
+        self.assertNotEqual(
+            website.favicon,
+            branded,
+            "a favicon the customer set must survive - the brand value is a default, "
+            "not an override",
         )
