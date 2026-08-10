@@ -19,6 +19,13 @@ BRAND_FAVICON = "/viin_brand/static/img/favicon.ico"
 CORE_FAVICON = "/web/static/img/favicon.ico"
 CUSTOM_FAVICON = "/test/custom-favicon.ico"
 
+# Odoo renamed this route between 17.0 and 18.0: /web/offline -> /odoo/offline
+# (web/controllers/webmanifest.py). viin_brand_common's own controller overrides the handler with a
+# bare @http.route(), so it inherits core's path automatically and the branded offline page follows
+# the rename by itself - only a test that hardcodes the old path breaks, which is what this
+# constant exists to stop happening silently again.
+OFFLINE_URL = "/odoo/offline"
+
 
 @tagged("-at_install", "post_install")
 class TestWebLayoutBrandDefaults(HttpCase):
@@ -133,12 +140,12 @@ class TestWebLayoutBrandDefaults(HttpCase):
     def test_explicit_title_wins_over_brand_default(self):
         """A page that supplies its own title keeps it.
 
-        viin_brand_common's own /web/offline page sets <t t-set="title">
+        viin_brand_common's own offline page sets <t t-set="title">
         Offline</t> in its t-call="web.layout" body. This is the assertion
         that fails if the brand default is ever expressed as an
         unconditional assignment rather than a fallback.
         """
-        response = self.url_open("/web/offline")
+        response = self.url_open(OFFLINE_URL)
         self.assertEqual(response.status_code, 200)
         document = response.text
         self.assertEqual(document.count("<title>"), 1)
@@ -175,7 +182,7 @@ class TestWebLayoutBrandDefaults(HttpCase):
         title_nodes[0].addnext(x_icon_node)
         offline_view.write({"arch_db": etree.tostring(arch, encoding="unicode")})
 
-        response = self.url_open("/web/offline")
+        response = self.url_open(OFFLINE_URL)
         self.assertEqual(response.status_code, 200)
         document = response.text
         self.assertIn(

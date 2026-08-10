@@ -19,8 +19,22 @@
 			<attribute name="content">Viindoo</attribute>
 		</xpath>
 
-        <xpath expr="//t[@t-set='x_icon']" position="replace">
-            <t t-set="x_icon" t-value="'/viin_brand/static/img/favicon.ico'"/>
-        </xpath>
+        <!-- The x_icon override that used to sit here is deliberately gone.
+             It read:
+                 <xpath expr="//t[@t-set='x_icon']" position="replace">
+                     <t t-set="x_icon" t-value="'/viin_brand/static/img/favicon.ico'"/>
+                 </xpath>
+             locate_node (odoo/tools/template_inheritance.py) resolves an xpath to the FIRST
+             document-order match, which in the combined website.layout arch is website's own
+             producer (website/views/website_templates.xml:103,
+             t-set x_icon = website.image_url(website, 'favicon')). Replacing it destroyed the
+             website's configured favicon and substituted an unconditional brand path with no
+             `or` guard, so a website that had configured its own favicon never got to serve it.
+             Re-adding a guard would not help: after the replace, x_icon is unset at that point,
+             so `x_icon or <brand>` still collapses to the brand every time.
+             This block exists only on 18.0 - 17.0 has no such override - so removing it restores
+             the 17.0 behaviour the forward-ported test in tests/test_website_title_not_preempted.py
+             encodes. Non-website pages still get the brand default from viin_brand_common's own
+             fallback in views/webclient_template.xml. -->
     </template>
 </odoo>
