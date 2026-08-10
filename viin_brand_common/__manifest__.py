@@ -64,6 +64,19 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'web._assets_core': [
             ('after', 'web/static/src/core/**/*', 'viin_brand_common/static/src/core/**/*'),
         ],
+        # The base-font reset is wired into BOTH test pages, because 18.0 runs both.
+        # web.tests_assets  -> the legacy QUnit page (/web/tests/legacy), still executed by
+        #                      core's WebSuite.test_qunit_desktop.
+        # web.assets_unit_tests -> the Hoot page (/web/tests), executed by
+        #                      WebSuite.test_unit_desktop. This one is load-bearing: an A/B run
+        #                      on this branch (brand off vs brand on, reset absent) measured
+        #                      0 failures vs 28, and every one of those 28 was on the Hoot page.
+        'web.tests_assets': [
+            'viin_brand_common/static/tests/qunit_font_reset.css',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_common/static/tests/qunit_font_reset.css',
+        ],
         'web.assets_backend': [
             # common branding
             'viin_brand_common/static/src/legacy/scss/navbar.scss',

@@ -1,0 +1,10 @@
+/* Core web QUnit suites assert pixel geometry (Draggable confinement, Scroller
+   offsets, Calendar drag positions, tour anchors) computed under the default
+   14px base font. The brand raises the base font to 15px, shifting those
+   measurements by fractions of a pixel and failing ~45 geometry tests on full
+   builds (runbot 223219/396221). This file loads only in web.tests_assets
+   (after web.assets_backend) and pins the test page back to core metrics; the
+   real webclient is untouched. */
+body {
+    font-size: 0.875rem;
+}

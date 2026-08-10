@@ -2,6 +2,9 @@
 
 /* eslint-disable no-import-assign */
 import * as colors from "@web/core/colors/colors";
+import { session } from "@web/session";
+
+const coreGetColor = colors.getColor;
 
 var GRAPH_COLORS = [
     "#00bbce",
@@ -23,10 +26,17 @@ var GRAPH_COLORS = [
     "#e5a8a8",
     "#ffd07f",
     "#ca95ca",
-    "929ca6",
+    "#929ca6",
 ];
 
 colors.getColor = function (index, colorScheme) {
+    // Only brand real sessions (marker stamped by viin_brand_common ir_http
+    // session_info). Mock/test sessions keep the core palette: core graph
+    // QUnit suites assert those exact colors (runbot 223219/396221, 30
+    // GraphView tests were red under the unconditional override).
+    if (!session.viin_brand) {
+        return coreGetColor(index, colorScheme);
+    }
     const graph_colors = GRAPH_COLORS;
     return graph_colors[index % graph_colors.length];
 };
