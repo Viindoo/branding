@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="hr_expense.hr_expense_qr_code">
+        <xpath expr="//h3" position="replace">
+            <h3>Scan this QR code to get the Viindoo app:</h3> 
+        </xpath>
+    </t>
+</templates>
