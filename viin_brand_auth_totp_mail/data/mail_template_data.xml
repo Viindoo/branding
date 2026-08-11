@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <function name="write" model="ir.model.data">
+        <function name="search" model="ir.model.data">
+            <value
+                eval="[('module', '=', 'auth_totp_mail'), ('name', '=', 'mail_template_totp_invite')]" />
+        </function>
+        <value eval="{'noupdate': False}" />
+    </function>
+
+    <function name="write" model="mail.template">
+        <value eval="[ref('auth_totp_mail.mail_template_totp_invite')]" />
+        <value
+            eval="{'subject': 'Invitation to activate two-factor authentication on your Viindoo account'}" />
+    </function>
+
+    <function name="write" model="ir.model.data">
+        <function name="search" model="ir.model.data">
+            <value
+                eval="[('module', '=', 'auth_totp_mail'), ('name', '=', 'mail_template_totp_invite')]" />
+        </function>
+        <value eval="{'noupdate': True}" />
+    </function>
+</odoo>
