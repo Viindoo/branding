@@ -73,7 +73,7 @@ class FrontendPrimaryCompileTest(TransactionCase):
         self.assertIsNotNone(
             VIINDOO_THEME_COLOR,
             "VIINDOO_THEME_COLOR must be defined in "
-            "viin_brand_common/controllers/webmanifest.py (the single Python brand-hex SSOT).",
+            "viin_brand_web/controllers/webmanifest.py (the single Python brand-hex SSOT).",
         )
         flat_brand_teal = VIINDOO_THEME_COLOR.lower()
         expected_teal = VIINDOO_AA_INTERACTIVE_COLOR
@@ -97,7 +97,7 @@ class FrontendPrimaryCompileTest(TransactionCase):
         )
         self.assertEqual(
             frontend_primary, expected_teal,
-            "The frontend --primary compiled to %s instead of the AA Viindoo teal %s. viin_brand_common "
+            "The frontend --primary compiled to %s instead of the AA Viindoo teal %s. viin_brand_web "
             "must de-brand the frontend $primary to the AA teal so public pages render on-brand."
             % (frontend_primary, expected_teal),
         )
@@ -129,7 +129,7 @@ class FrontendPrimaryCompileTest(TransactionCase):
         assignments = re.findall(r"^\s*\$primary\s*:\s*([^;]+);", scss, re.MULTILINE)
         self.assertTrue(
             assignments,
-            "brand_variables.scss declares no `$primary:` - viin_brand_common must own the frontend "
+            "brand_variables.scss declares no `$primary:` - viin_brand_web must own the frontend "
             "primary de-brand (it is contributed to web._assets_primary_variables, which the "
             "frontend bundle includes).",
         )

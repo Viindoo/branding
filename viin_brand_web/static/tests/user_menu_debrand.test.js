@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, test } from "@odoo/hoot";
 // (web/static/src/webclient/user_menu/user_menu_items.js:137-145):
 //   "support" -> supportItem, "shortcuts", "separator", "preferences",
 //   "odoo_account" -> odooAccountItem, "install_pwa", "log_out".
-// viin_brand_common deletes two of those keys and substitutes Viindoo entries
+// viin_brand_web deletes two of those keys and substitutes Viindoo entries
 // (static/src/webclient/user_menu_item.js:50-57). `Registry.remove()` is
 // `delete this.content[key]` with NO existence check and NO throw
 // (web/static/src/core/registry.js:176-181), so a core RENAME of either key turns both calls into

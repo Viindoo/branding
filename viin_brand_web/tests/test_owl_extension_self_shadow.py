@@ -169,7 +169,7 @@ class OwlExtensionSelfShadowTest(TransactionCase):
             total, 0,
             "scanner found zero t-inherit-mode=\"extension\" elements repo-wide - this means "
             "the scan itself is broken (wrong glob pattern or wrong attribute name), not that "
-            "the repo genuinely has none: viin_brand_common alone ships several",
+            "the repo genuinely has none: viin_brand_web alone ships several",
         )
 
     def test_synthetic_self_shadow_is_detected_and_clean_extension_is_not(self):

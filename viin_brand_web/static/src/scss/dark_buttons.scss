@@ -40,10 +40,10 @@
 // Merging replaces the single "secondary" key and leaves the teal primary button untouched; a plain
 // assignment would wipe it and hand `.btn-primary` back to the flat 2.33:1 decorative teal.
 //
-// CONTRIBUTION (viin_brand_common/__manifest__.py), dark bundle ONLY:
+// CONTRIBUTION (viin_brand_web/__manifest__.py), dark bundle ONLY:
 //     'web.assets_web_dark': [
 //         ('after', 'web/static/src/scss/primary_variables.scss',
-//          'viin_brand_common/static/src/scss/dark_buttons.scss'),
+//          'viin_brand_web/static/src/scss/dark_buttons.scss'),
 //     ]
 // The name is neither *.variables.scss (would auto-glob into the LIGHT primary-variables bundle) nor
 // *.dark.scss (would auto-glob into the dark-bundle TAIL, far too late for a variable) - the same

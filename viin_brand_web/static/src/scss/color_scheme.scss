@@ -8,7 +8,7 @@
 // (phantom-white reads). This value is core-origin (NOT theme/cluster).
 //
 // It is a scheme-INVARIANT correctness fix, independent of the dark BUNDLE mechanism, so it belongs
-// in the always-installed base (viin_brand_common) - dark mode is correct even with the redesign
+// in the always-installed base (viin_brand_web) - dark mode is correct even with the redesign
 // theme absent. Track the app toggle (data-bs-theme) rather than Bootstrap's `light dark` (which
 // would follow the OS pref and desync native chrome from the app's chosen scheme). (0,2,0) beats
 // core's `.o_web_client` (0,1,0).

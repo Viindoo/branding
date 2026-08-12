@@ -3,7 +3,7 @@ import { describe, expect, test } from "@odoo/hoot";
 // Core DocumentationLink widget (web/static/src/views/widgets/documentation_link/documentation_link.js):
 // `super.url` returns the "documentation" attribute unmodified when it is already an absolute
 // URL, or `https://www.odoo.com/documentation/<server-version>` + the relative `path` prop
-// otherwise. Import the REAL, unmodified viin_brand_common patch as a side effect so the
+// otherwise. Import the REAL, unmodified viin_brand_web patch as a side effect so the
 // mutation it applies to `DocumentationLink.prototype.url` runs before any test body executes
 // (same idiom as viin_brand_web's dialog_debrand.test.js).
 import { DocumentationLink } from "@web/views/widgets/documentation_link/documentation_link";

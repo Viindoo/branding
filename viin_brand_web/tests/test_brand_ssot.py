@@ -64,7 +64,7 @@ class BrandHexSsotTest(TransactionCase):
         self.assertIsNotNone(
             VIINDOO_THEME_COLOR,
             "VIINDOO_THEME_COLOR must be defined in "
-            "viin_brand_common/controllers/webmanifest.py (the single Python brand-hex SSOT).",
+            "viin_brand_web/controllers/webmanifest.py (the single Python brand-hex SSOT).",
         )
         self.assertTrue(
             os.path.exists(BRAND_VARIABLES_SCSS),
@@ -97,7 +97,7 @@ class BrandHexSsotTest(TransactionCase):
           web/.../scss/primary_variables.scss             $o-brand-odoo: $o-community-color;
           portal/.../chatter/scss/primary_variables.scss  $o-brand-odoo: $o-enterprise-color;
                                                            (unconditional reassignment)
-        viin_brand_common does NOT depend on portal, so tests/test_brand_color_compile.py's
+        viin_brand_web does NOT depend on portal, so tests/test_brand_color_compile.py's
         compiled-CSS assertion can only ever exercise the COMMUNITY resolution path
         (web.assets_backend) - it can never observe the portal chatter bundle. Concrete blind
         spot this closes: if $o-enterprise-color's teal override were removed while
@@ -110,7 +110,7 @@ class BrandHexSsotTest(TransactionCase):
         self.assertIsNotNone(
             VIINDOO_THEME_COLOR,
             "VIINDOO_THEME_COLOR must be defined in "
-            "viin_brand_common/controllers/webmanifest.py (the single Python brand-hex SSOT).",
+            "viin_brand_web/controllers/webmanifest.py (the single Python brand-hex SSOT).",
         )
         self.assertTrue(
             os.path.exists(BRAND_VARIABLES_SCSS),
@@ -134,7 +134,7 @@ class BrandHexSsotTest(TransactionCase):
                 "feeds $o-brand-odoo on the PORTAL CHATTER path (portal/static/src/chatter/scss/"
                 "primary_variables.scss unconditionally reassigns $o-brand-odoo: "
                 "$o-enterprise-color) - core default #714B67 (Odoo enterprise aubergine). "
-                "viin_brand_common does not depend on portal, so NO compiled-CSS test can ever "
+                "viin_brand_web does not depend on portal, so NO compiled-CSS test can ever "
                 "observe this surface; only this source-literal assertion protects it.",
             ),
             (

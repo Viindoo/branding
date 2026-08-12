@@ -4,7 +4,7 @@
 // (Bootstrap map retint, component styling, dark mode) is owned by viin_backend_theme, which
 // reads these variables downstream in dependency load order.
 // The brand primary MUST equal the single Python brand constant VIINDOO_THEME_COLOR
-// (viin_brand_common/controllers/webmanifest.py); tests/test_brand_ssot.py asserts they agree.
+// (viin_brand_web/controllers/webmanifest.py); tests/test_brand_ssot.py asserts they agree.
 // This file is prepended to web._assets_primary_variables (manifest, `before`
 // web/static/src/scss/primary_variables.scss), so each `!default` below is set FIRST and
 // therefore wins over web's later default assignment of the same variable.

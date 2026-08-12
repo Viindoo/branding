@@ -16,7 +16,7 @@
 //   web/static/lib/bootstrap/scss/_root.scss:82-90   :root { --link-color / -rgb / --link-hover-color ... }
 //   web/static/lib/bootstrap/scss/_reboot.scss:244   a { color: rgba(var(--link-color-rgb), var(--link-opacity, 1)) }
 //
-// viin_brand_common/static/src/scss/brand_variables.scss:78 pins `$o-main-link-color` to the AA teal
+// viin_brand_web/static/src/scss/brand_variables.scss:78 pins `$o-main-link-color` to the AA teal
 // #007F8E, so today EVERY consumer of that chain is teal. But the chain is borrowed by FOUR
 // Bootstrap components that are NOT hyperlinks and simply reuse the token as a generic
 // "interactive accent" (all in web/static/lib/bootstrap/scss/_variables.scss):
@@ -51,7 +51,7 @@
 // BACKEND-ONLY is deliberate. `web._assets_primary_variables` (where brand_variables.scss lives) is
 // also pulled into `web.assets_frontend`, so putting the purple there would repaint the LOGIN page
 // and the public portal too. The owner asked about the backend text link; the public frontend keeps
-// the teal `$primary` de-brand viin_brand_common/static/src/scss/frontend_primary.scss owns.
+// the teal `$primary` de-brand viin_brand_web/static/src/scss/frontend_primary.scss owns.
 //
 // =================================================================================================
 // LIGHT ONLY - THE PURPLE NEVER ENTERS THE DARK BUNDLE

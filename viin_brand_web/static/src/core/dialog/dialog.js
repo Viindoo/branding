@@ -9,7 +9,7 @@ import { ActionDialog } from "@web/webclient/actions/action_dialog";
 // De-brand the default backend Dialog title: a dialog opened without an explicit `title` prop
 // must fall back to the "System" wordmark, never the stock Odoo one. Owner decision D3 (2026):
 // unify the Dialog/ActionDialog title wordmark with the error/crash-dialog family
-// (viin_brand_common/static/src/core/errors/error_dialogs.js), which already uses "System".
+// (viin_brand_web/static/src/core/errors/error_dialogs.js), which already uses "System".
 //
 // Core ships that fallback as a plain string literal in a static class field:
 //     static defaultProps = { ... title: "Odoo" ... }

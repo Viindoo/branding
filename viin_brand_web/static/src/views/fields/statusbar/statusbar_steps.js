@@ -21,7 +21,7 @@ import { StatusBarField } from "@web/views/fields/statusbar/statusbar_field";
  * "..." dropdowns (adjustVisibleItems), which shrinks `items.inline` and would silently renumber the
  * remaining steps. getAllItems() is the only list that stays the whole, ordered stage sequence.
  *
- * WHY viin_brand_common AND NOT viin_backend_theme. The statusbar's chrome is this module's already:
+ * WHY viin_brand_web AND NOT viin_backend_theme. The statusbar's chrome is this module's already:
  * it paints the current-arrow outline through core's own --o-statusbar-border-active token
  * (brand_variables.scss $o-component-active-border). The theme is under an explicit owner revert -
  * viin_backend_theme/tests/test_theme_core_chrome_untouched.py forbids it from naming

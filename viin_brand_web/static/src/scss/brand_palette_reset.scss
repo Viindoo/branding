@@ -25,7 +25,7 @@
 // $o-color-palettes is a compile-time Sass MAP that html_editor BUILDS from $o-enterprise-color, so
 // the reset must map-merge into it AFTER html_editor.variables.scss has run. Two hard constraints
 // shape how:
-//   1. viin_brand_common must NOT depend on html_editor/website (they may be uninstalled; a depend
+//   1. viin_brand_web must NOT depend on html_editor/website (they may be uninstalled; a depend
 //      would force-install them).
 //   2. An UNCONDITIONAL manifest anchor on a non-dependency file - e.g.
 //      ('after', 'html_editor/static/src/scss/html_editor.variables.scss', ...) - HARD-ERRORS

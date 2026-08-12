@@ -9,13 +9,13 @@ import { makeDialogMockEnv, mountWithCleanup } from "@web/../tests/web_test_help
 //   NetworkErrorDialog.title    = _t("Odoo Network Error")  (NetworkErrorDialog extends ErrorDialog {})
 //   RPCErrorDialog.inferTitle() sets this.title = _t("Odoo Server Error"/"Odoo Client Error"/
 //                                "Odoo Network Error") keyed on props.type ("server"/"script"/"network")
-// viin_brand_common/static/src/core/errors/error_dialogs.js patches all of the above to drop the
+// viin_brand_web/static/src/core/errors/error_dialogs.js patches all of the above to drop the
 // "Odoo" wordmark. Per owner decision D3 (MASTER_DESIGN_DOC rb633-accept-20260808-k4x9-scenarios.md,
 // S13/S14/S16), the WHOLE error/crash-dialog family must read "System ..." - matching the sibling
 // that is already correct (error_dialogs.js:15 `ErrorDialog.title = _t("System Error")`) and
 // viin_brand_web's Dialog/ActionDialog default title, also unified on "System" by the same D3.
 import { ClientErrorDialog, NetworkErrorDialog, RPCErrorDialog } from "@web/core/errors/error_dialogs";
-// Side-effect import of the REAL, unmodified viin_brand_common patch so its static-field
+// Side-effect import of the REAL, unmodified viin_brand_web patch so its static-field
 // reassignments (lines 15-17) and the RPCErrorDialog.prototype.inferTitle patch() (lines 20-27) run
 // before any test body executes (same idiom as colors_debrand.test.js / documentation_link_debrand
 // .test.js / user_menu_debrand.test.js). error_dialogs.js/.xml are wired eagerly into
@@ -54,7 +54,7 @@ describe.current.tags("desktop");
 // title as bare "Client Error", never "System Client Error". Same class of bug flagged (not
 // independently live-reproduced there) for NetworkErrorDialog - closed statically below.
 //
-// RED today: viin_brand_common/static/src/core/errors/error_dialogs.js:16 sets
+// RED today: viin_brand_web/static/src/core/errors/error_dialogs.js:16 sets
 // `ClientErrorDialog.title = _t("Client Error")` - it DROPS "Odoo" instead of PREFIXING "System",
 // unlike the correct sibling on line 15 (`ErrorDialog.title = _t("System Error")`). So texts[0]
 // below reads "Client Error" today, which fails `toMatch(/^System /)`.

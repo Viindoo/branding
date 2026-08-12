@@ -2,7 +2,7 @@
 # BEHAVIOR/contract, not the code).
 #
 # OWNERSHIP (PR #658 review-fix C-1): the per-user color-scheme preference AND the server-side
-# ir.http.color_scheme() resolver now live in viin_brand_common - the ALWAYS-installed brand base -
+# ir.http.color_scheme() resolver now live in viin_brand_web - the ALWAYS-installed brand base -
 # so dark mode resolves server-side even on a database WITHOUT the redesign theme
 # (viin_backend_theme). This suite was relocated here from viin_backend_theme/tests/test_theme_prefs.py
 # because the base now OWNS the field + method, so the base owns their behavior test.

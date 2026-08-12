@@ -13,9 +13,9 @@
 #
 # WebLayoutFragileLocatorTest guards that invariant as a deterministic REGISTRY/SOURCE scan: NO
 # view inside web.layout's inheritance tree - whichever module owns it - may carry either fragile
-# locator. The scan is deliberately NOT scoped to viin_brand_common: core's suite breaks on the
+# locator. The scan is deliberately NOT scoped to viin_brand_web: core's suite breaks on the
 # combined tree, so a SIBLING branding module re-introducing one of these locators breaks it just
-# as hard, and a viin_brand_common-only filter could never see that. Offenders are reported with
+# as hard, and a viin_brand_web-only filter could never see that. Offenders are reported with
 # their owning module so the failure stays actionable. RED before the fix
 # (views/webclient_template.xml's web_layout template carried both),
 # GREEN after the de-brand is re-homed onto the render vars (<t t-set="title"/>, <t t-set="x_icon"/>)
@@ -216,7 +216,7 @@ class DebrandHeadRenderTest(HttpCase):
         """The backend web client page must render the Viindoo <title>, never core's 'Odoo'.
 
         Core web.layout renders <title t-esc="title or 'Odoo'"/> and web.webclient_bootstrap sets no
-        title, so the branded title must come from viin_brand_common. Regression guard for the
+        title, so the branded title must come from viin_brand_web. Regression guard for the
         re-homing: the backend surface must keep 'Viindoo'."""
         self.authenticate("admin", "admin")
         response = self.url_open("/odoo")
@@ -267,7 +267,7 @@ class DebrandHeadRenderTest(HttpCase):
         """The login page favicon must resolve to the Viindoo asset, never core's favicon.
 
         Core web.layout renders the shortcut-icon link href as `x_icon or '/web/static/img/favicon.ico'`;
-        viin_brand_common must brand it to /viin_brand/static/img/favicon.ico. Regression guard for
+        viin_brand_web must brand it to /viin_brand/static/img/favicon.ico. Regression guard for
         the re-homing (the login page bypasses web.webclient_bootstrap).
 
         Scoped to the no-website path this cluster owns: skipped when `website` is co-installed

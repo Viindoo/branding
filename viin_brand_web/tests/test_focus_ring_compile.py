@@ -1,6 +1,6 @@
 # A11y focus-ring contrast guard (PR #658 review-fix C-7; ODOO-AI-ETHOS #8; WCAG 2.1 SC 1.4.11).
 #
-# WHAT IS PROTECTED (behaviour, not code): viin_brand_common - the always-installed base - defines
+# WHAT IS PROTECTED (behaviour, not code): viin_brand_web - the always-installed base - defines
 # a shared focus-ring token applied to core interactive elements on :focus-visible, and that ring
 # must be a VISIBLE indicator (WCAG SC 1.4.11 non-text contrast >= 3:1) against its surround in
 # BOTH schemes. The review found 35/44 tab stops fail >= 3:1 in dark and that form inputs show zero

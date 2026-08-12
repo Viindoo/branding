@@ -1289,7 +1289,7 @@ class BrandCascadeCompileTest(TransactionCase):
         self.assertIsNotNone(
             VIINDOO_THEME_COLOR,
             "VIINDOO_THEME_COLOR must be defined in "
-            "viin_brand_common/controllers/webmanifest.py (the single Python brand-hex SSOT).",
+            "viin_brand_web/controllers/webmanifest.py (the single Python brand-hex SSOT).",
         )
         return VIINDOO_THEME_COLOR.lower()
 

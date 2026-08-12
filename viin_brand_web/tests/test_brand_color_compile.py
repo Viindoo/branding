@@ -9,7 +9,7 @@
 # but $o-brand-primary is a DIFFERENT variable from $o-brand-odoo, so that test stays GREEN even
 # when the compiled navbar leaks purple because the module dropped the $o-brand-odoo family. This
 # test closes that gap by asserting the OBSERVABLE compiled colour of the .o_main_navbar surface -
-# not a source literal. No extra dependency is required: viin_brand_common depends only on
+# not a source literal. No extra dependency is required: viin_brand_web depends only on
 # viin_brand + web, and .o_main_navbar ships inside web.assets_backend.
 #
 # Per the 2026-07-24 approved design decision, the navbar background must NOT compile to the flat
@@ -153,13 +153,13 @@ class BrandColorCompileTest(TransactionCase):
         """Backend navbar surface must compile to the Viindoo brand teal, never Odoo purple/aubergine.
 
         The .o_main_navbar background is derived by core web from the $o-brand-odoo colour family.
-        If viin_brand_common drops that family, $o-brand-odoo falls back to core $o-community-color
+        If viin_brand_web drops that family, $o-brand-odoo falls back to core $o-community-color
         (#71639e) and the compiled navbar renders community purple. This asserts the OBSERVABLE
         compiled colour, so it fails whenever the brand family leaks a non-Viindoo colour."""
         self.assertIsNotNone(
             VIINDOO_THEME_COLOR,
             "VIINDOO_THEME_COLOR must be defined in "
-            "viin_brand_common/controllers/webmanifest.py (the single Python brand-hex SSOT).",
+            "viin_brand_web/controllers/webmanifest.py (the single Python brand-hex SSOT).",
         )
         expected_teal = VIINDOO_THEME_COLOR.lower()
 
@@ -183,13 +183,13 @@ class BrandColorCompileTest(TransactionCase):
             ODOO_COMMUNITY_PURPLE, navbar_hexes,
             "Backend navbar compiled to Odoo COMMUNITY PURPLE %s (navbar backgrounds: %r). The "
             "$o-brand-odoo colour family was dropped, so $o-brand-odoo fell back to core "
-            "$o-community-color. viin_brand_common must set the family to the Viindoo brand teal."
+            "$o-community-color. viin_brand_web must set the family to the Viindoo brand teal."
             % (ODOO_COMMUNITY_PURPLE, navbar_hexes),
         )
         self.assertNotIn(
             ODOO_ENTERPRISE_AUBERGINE, navbar_hexes,
             "Backend navbar compiled to Odoo ENTERPRISE AUBERGINE %s (navbar backgrounds: %r). "
-            "viin_brand_common must set the $o-brand-odoo colour family to the Viindoo brand teal."
+            "viin_brand_web must set the $o-brand-odoo colour family to the Viindoo brand teal."
             % (ODOO_ENTERPRISE_AUBERGINE, navbar_hexes),
         )
 
@@ -268,7 +268,7 @@ class BrandColorCompileTest(TransactionCase):
         self.assertIsNotNone(
             VIINDOO_THEME_COLOR,
             "VIINDOO_THEME_COLOR must be defined in "
-            "viin_brand_common/controllers/webmanifest.py (the single Python brand-hex SSOT).",
+            "viin_brand_web/controllers/webmanifest.py (the single Python brand-hex SSOT).",
         )
         flat_brand_teal = VIINDOO_THEME_COLOR.lower()
         expected_teal = VIINDOO_AA_INTERACTIVE_COLOR

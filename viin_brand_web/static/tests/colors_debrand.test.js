@@ -3,7 +3,7 @@ import { describe, expect, test } from "@odoo/hoot";
 // Business rule under protection: the backend graph / pivot / dashboard charts must render the
 // Viindoo brand palette (teal-first), never core's blue-first palette. Core exposes chart series
 // colours only through getColor() in web/static/src/core/colors/colors.js, whose unpatched
-// sm-palette leads with "#4EA7F2" (blue). viin_brand_common reassigns that export eagerly in
+// sm-palette leads with "#4EA7F2" (blue). viin_brand_web reassigns that export eagerly in
 // static/src/core/colors/colors.js. Import the REAL, unmodified override as a side effect so its
 // export reassignment runs before any test body executes (same idiom as user_menu_debrand.test.js
 // and documentation_link_debrand.test.js).

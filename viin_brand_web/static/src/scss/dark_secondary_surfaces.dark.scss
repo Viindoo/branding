@@ -13,7 +13,7 @@
 // include (which carries core's settings/search/list rules), so it wins on source order at
 // equal-or-higher specificity, and - being absent from web.assets_backend - never leaks into light.
 // NOT auto-globbed: core's `web/static/src/**/*.dark.scss` glob only covers core's own tree, so a
-// viin_brand_common `*.dark.scss` is neither auto-added to the dark tail nor auto-removed from light;
+// viin_brand_web `*.dark.scss` is neither auto-added to the dark tail nor auto-removed from light;
 // it appears ONLY where the manifest lists it. (Kanban is handled in dark_palette.scss via the clean
 // $o-kanban-background Sass var - it has a dedicated overridable lever, these do not.)
 

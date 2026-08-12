@@ -16,7 +16,7 @@
 // CONTRIBUTION (manifest) - EXPLICIT, dark bundle ONLY, positioned before core consumes the vars:
 //   'web.assets_web_dark': [
 //       ('before', 'web/static/src/scss/primary_variables.scss',
-//        'viin_brand_common/static/src/scss/dark_palette.scss'),
+//        'viin_brand_web/static/src/scss/dark_palette.scss'),
 //   ]
 // NAMING LANDMINE (heeded): this file is NOT named *.variables.scss (that auto-globs into
 // _assets_primary_variables -> would leak into the LIGHT bundle) and NOT *.dark.scss (that
