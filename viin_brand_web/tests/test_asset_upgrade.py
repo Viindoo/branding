@@ -20,7 +20,7 @@ DOC_MAP_JS = os.path.join(
 )
 BRAND_VARIABLES_SCSS = os.path.join(MODULE_DIR, "static", "src", "scss", "brand_variables.scss")
 
-# viin_brand_common-OWNED source paths that the visual-theme retirement removes. Only tokens that
+# viin_brand_web-OWNED source paths that the visual-theme retirement removes. Only tokens that
 # reference this module are checked - a surviving CORE insertion anchor such as
 # 'web/static/src/scss/primary_variables.scss' (the anchor brand_variables.scss is injected before)
 # is NOT owned by this module and must not trip the guard.
@@ -76,10 +76,20 @@ COLORS_JS = os.path.join(MODULE_DIR, "static", "src", "core", "colors", "colors.
 # tests/test_brand_cascade_compile.py::
 # test_the_statusbar_numbering_layer_declares_no_step_or_container_geometry). It sits on core's own
 # path because that is where a reader looks for it.
+#
+# res_config_edition.xml - a PRE-EXISTING viin_brand_web asset (present in this module before the
+# viin_brand_common relocation; DESIGN_DOC viin-brand-common-refactor-2026-08-11.md S:5.2 marks it
+# "PRE-EXISTING, keep"). It has nothing to do with the 18.0 visual-theme retirement this guard
+# otherwise protects; it merely happens to sit under the historically-retired
+# `webclient/settings_form_view/` fragment. This guard could never see it before the relocation - it
+# only ever filtered tokens carrying the `viin_brand_common/` prefix, and this token was never in
+# that module's manifest. Now that the guard scans this module's OWN full manifest, the collision is
+# real but harmless: allow-listed here rather than by loosening RETIRED_ASSET_FRAGMENTS.
 INTENTIONAL_ASSETS_UNDER_RETIRED_PATHS = frozenset({
-    "viin_brand_common/static/src/views/fields/statusbar/statusbar_steps.js",
-    "viin_brand_common/static/src/views/fields/statusbar/statusbar_steps.xml",
-    "viin_brand_common/static/src/views/fields/statusbar/statusbar_steps.scss",
+    "viin_brand_web/static/src/views/fields/statusbar/statusbar_steps.js",
+    "viin_brand_web/static/src/views/fields/statusbar/statusbar_steps.xml",
+    "viin_brand_web/static/src/views/fields/statusbar/statusbar_steps.scss",
+    "viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml",
 })
 
 
@@ -110,7 +120,7 @@ class AssetUpgradeGuardTest(TransactionCase):
         assets = manifest.get("assets", {})
         self.assertTrue(assets, "manifest must still declare an 'assets' block")
 
-        viin_tokens = [t for t in _iter_asset_tokens(assets) if "viin_brand_common/" in t]
+        viin_tokens = [t for t in _iter_asset_tokens(assets) if "viin_brand_web/" in t]
         for token in viin_tokens:
             if token in INTENTIONAL_ASSETS_UNDER_RETIRED_PATHS:
                 continue
@@ -138,11 +148,11 @@ class AssetUpgradeGuardTest(TransactionCase):
         )
         self.assertTrue(
             any(
-                t.endswith("viin_brand_common/static/src/scss/brand_variables.scss")
+                t.endswith("viin_brand_web/static/src/scss/brand_variables.scss")
                 for t in primary_tokens
             ),
             "web._assets_primary_variables must reference "
-            "viin_brand_common/static/src/scss/brand_variables.scss (the brand-hex SSOT); got %r"
+            "viin_brand_web/static/src/scss/brand_variables.scss (the brand-hex SSOT); got %r"
             % primary_tokens,
         )
 
@@ -200,7 +210,7 @@ class AssetUpgradeGuardTest(TransactionCase):
         manifest = _load_manifest()
         backend_ops = manifest.get("assets", {}).get("web.assets_backend", [])
         self.assertIn(
-            "viin_brand_common/static/src/core/colors/colors.js", backend_ops,
+            "viin_brand_web/static/src/core/colors/colors.js", backend_ops,
             "colors.js must be an eager (bare-string) entry in web.assets_backend; got %r"
             % backend_ops,
         )
@@ -220,7 +230,7 @@ class AssetUpgradeGuardTest(TransactionCase):
         manifest = _load_manifest()
         backend_ops = manifest.get("assets", {}).get("web.assets_backend", [])
         for token in sorted(INTENTIONAL_ASSETS_UNDER_RETIRED_PATHS):
-            path = os.path.join(MODULE_DIR, token.split("viin_brand_common/", 1)[1])
+            path = os.path.join(MODULE_DIR, token.split("viin_brand_web/", 1)[1])
             self.assertTrue(
                 os.path.exists(path),
                 "%r is allow-listed past the `views/fields/` retirement guard but does not exist. "

@@ -92,11 +92,11 @@ class BrandWebManifest(WebManifest):
         return 'Viindoo'
 
     def _viindoo_icon_path(self, size='192x192'):
-        return 'viin_brand_common/static/img/viindoo-icon-%s.png' % size
+        return 'viin_brand_web/static/img/viindoo-icon-%s.png' % size
 
     @http.route()
     def offline(self):
         """ Returns the offline page delivered by the service worker """
-        return request.render('viin_brand_common.webclient_offline', {
+        return request.render('viin_brand_web.webclient_offline', {
             'viindoo_icon': base64.b64encode(file_open(self._viindoo_icon_path(), 'rb').read())
         })

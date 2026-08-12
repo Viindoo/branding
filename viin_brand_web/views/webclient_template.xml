@@ -82,7 +82,7 @@
 
 	<template id="webclient_bootstrap" inherit_id="web.webclient_bootstrap">
 		<xpath expr="//link[@rel='apple-touch-icon']" position="attributes">
-			<attribute name="href">/viin_brand_common/static/img/viindoo-icon-ios.png</attribute>
+			<attribute name="href">/viin_brand_web/static/img/viindoo-icon-ios.png</attribute>
 		</xpath>
 		<xpath expr="//meta[@name='theme-color']" position="attributes">
 			<attribute name="content">#00BBCE</attribute>

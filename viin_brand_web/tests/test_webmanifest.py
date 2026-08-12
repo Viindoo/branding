@@ -19,14 +19,14 @@ ODOO_ICON_MARKER = "odoo-icon"
 # It is the fallback used by `_get_scoped_app_icons` for any app that ships no
 # static/description/icon.svg, and therefore also what `/scoped_app_icon_png` (Safari's fixed-size
 # PWA icon, i.e. the apple-touch-icon of the Install-App page) redirects to.
-VIINDOO_FALLBACK_ICON_SRC = "/viin_brand_common/static/img/viindoo-icon-192x192.png"
+VIINDOO_FALLBACK_ICON_SRC = "/viin_brand_web/static/img/viindoo-icon-192x192.png"
 
 # An app_id that deliberately ships NO static/description/icon.svg, so requesting it EXERCISES the
 # `_icon_path()` fallback branch instead of the icon.svg branch. This module itself is the safest
 # choice: it is always installed when these tests run. (`base`, used by the colour test below, DOES
 # ship base/static/description/icon.svg and therefore never reaches the fallback - which is exactly
 # why the pre-existing scoped test could not see the mascot leak.)
-FALLBACK_ICON_APP_ID = "viin_brand_common"
+FALLBACK_ICON_APP_ID = "viin_brand_web"
 
 # The `web.web_app_name` ir.config_parameter core reads for the PWA name, and a customer value used
 # to prove it survives the de-brand.
@@ -45,7 +45,7 @@ class BrandWebManifestRoutesTest(WebManifestRoutesTest):
         JSON case may differ from the canonical #00BBCE)."""
         self.assertIsNotNone(
             VIINDOO_THEME_COLOR,
-            "VIINDOO_THEME_COLOR must be defined in viin_brand_common/controllers/webmanifest.py "
+            "VIINDOO_THEME_COLOR must be defined in viin_brand_web/controllers/webmanifest.py "
             "(single Python brand-hex SSOT).",
         )
         self.assertEqual(
@@ -71,8 +71,8 @@ class BrandWebManifestRoutesTest(WebManifestRoutesTest):
         self._assert_brand_color(data["theme_color"], "theme_color")
         self.assertEqual(data["prefer_related_applications"], False)
         self.assertCountEqual(data["icons"], [
-            {'src': '/viin_brand_common/static/img/viindoo-icon-192x192.png', 'sizes': '192x192', 'type': 'image/png'},
-            {'src': '/viin_brand_common/static/img/viindoo-icon-512x512.png', 'sizes': '512x512', 'type': 'image/png'}
+            {'src': '/viin_brand_web/static/img/viindoo-icon-192x192.png', 'sizes': '192x192', 'type': 'image/png'},
+            {'src': '/viin_brand_web/static/img/viindoo-icon-512x512.png', 'sizes': '512x512', 'type': 'image/png'}
         ])
         self.assertGreaterEqual(len(data["shortcuts"]), 0)
         for shortcut in data["shortcuts"]:
@@ -97,8 +97,8 @@ class BrandWebManifestRoutesTest(WebManifestRoutesTest):
         self._assert_brand_color(data["theme_color"], "theme_color")
         self.assertEqual(data["prefer_related_applications"], False)
         self.assertCountEqual(data["icons"], [
-            {'src': '/viin_brand_common/static/img/viindoo-icon-192x192.png', 'sizes': '192x192', 'type': 'image/png'},
-            {'src': '/viin_brand_common/static/img/viindoo-icon-512x512.png', 'sizes': '512x512', 'type': 'image/png'}
+            {'src': '/viin_brand_web/static/img/viindoo-icon-192x192.png', 'sizes': '192x192', 'type': 'image/png'},
+            {'src': '/viin_brand_web/static/img/viindoo-icon-512x512.png', 'sizes': '512x512', 'type': 'image/png'}
         ])
         self.assertEqual(len(data["shortcuts"]), 0)
 
@@ -246,11 +246,11 @@ class BrandWebManifestRoutesTest(WebManifestRoutesTest):
         its presence from the head of the document.
         """
         self.authenticate("demo", "demo")
-        response = self.url_open("/viin_brand_common/static/img/viindoo-icon-ios.png")
+        response = self.url_open("/viin_brand_web/static/img/viindoo-icon-ios.png")
         self.assertEqual(response.status_code, 200)
 
         document = self.url_open("/web")
         self.assertIn(
-            '<link rel="apple-touch-icon" href="/viin_brand_common/static/img/viindoo-icon-ios.png"/>', document.text,
+            '<link rel="apple-touch-icon" href="/viin_brand_web/static/img/viindoo-icon-ios.png"/>', document.text,
             "Icon for iOS is present in the head of the document.",
         )

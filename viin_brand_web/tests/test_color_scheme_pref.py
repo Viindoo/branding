@@ -26,7 +26,7 @@ from odoo.exceptions import AccessError
 
 # The module path whose `request` symbol color_scheme() reads. Patched (not the global
 # odoo.http.request) so the cookie branch is exercised without a live HTTP request.
-_IR_HTTP_MODULE = "odoo.addons.viin_brand_common.models.ir_http"
+_IR_HTTP_MODULE = "odoo.addons.viin_brand_web.models.ir_http"
 
 
 class _FakeHttpRequest:
@@ -49,7 +49,7 @@ class TestViinColorSchemePref(TransactionCase):
         field = self.env["res.users"]._fields.get("viin_color_scheme")
         self.assertIsNotNone(
             field,
-            "res.users.viin_color_scheme was not added by viin_brand_common (the base that owns the "
+            "res.users.viin_color_scheme was not added by viin_brand_web (the base that owns the "
             "dark-mode preference).",
         )
         self.assertEqual(
