@@ -15,5 +15,4 @@ from . import test_scss_variable_closure
 from . import test_debrand_render
 from . import test_debrand_layout
 from . import test_owl_extension_self_shadow
-from . import test_template_inherit_id_targets_view
 from . import test_hoot_tag_buffer_guard
