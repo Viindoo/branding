@@ -5,7 +5,7 @@
 // via the native --body-bg / --border-color rebind - nothing to repeat here. This file themes the
 // palette-SPECIFIC chrome: a scheme-aware hairline under the search row, a muted uppercase category
 // label, a scheme-aware footer strip, and - the signature - the FOCUSED command row washed in
-// viin_brand_common's AA teal ($o-viin-chrome-base) instead of core's neutral
+// viin_brand_web's AA teal ($o-viin-chrome-base) instead of core's neutral
 // rgba($o-component-active-bg, .65) (mockup-15 highlights the active "Sales" row in teal). The wash
 // is color-mix over transparent so it composites on either scheme; row text keeps --body-color for
 // AA. Selectors mirror core's structure with one extra scoping class so specificity + later load

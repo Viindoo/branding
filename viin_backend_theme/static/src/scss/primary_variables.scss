@@ -1,12 +1,12 @@
-// viin_backend_theme - W1 native-override substrate (ADDITIVE over viin_brand_common).
+// viin_backend_theme - W1 native-override substrate (ADDITIVE over viin_brand_web).
 //
-// SCOPE (post-2026-07-24 cluster-semantic-restore): viin_brand_common OWNS the light de-brand + AA
+// SCOPE (post-2026-07-24 cluster-semantic-restore): viin_brand_web OWNS the light de-brand + AA
 // teal chrome cascade ($o-brand-primary, $primary #007F8E, $o-main-link-color, $o-navbar-background,
 // semantic colors, facet/statusbar/stat-value). This theme re-declares NONE of that. It adds ONLY
 // the pieces the base lacks: the dark-mode SCHEME (in scheme.scss) and typography (here).
 //
 // Anchored ('before', web/.../primary_variables.scss) in web._assets_primary_variables, with
-// viin_brand_common/.../brand_variables.scss (a dependency) earlier in the SAME bundle - so
+// viin_brand_web/.../brand_variables.scss (a dependency) earlier in the SAME bundle - so
 // $o-brand-primary is defined and NEVER re-declared here. Overrides are set WITHOUT `!default` so
 // core's later `!default` no-ops.
 
@@ -23,7 +23,7 @@ $o-headings-font-family: ("Montserrat", "Roboto", -apple-system, BlinkMacSystemF
 // BREAKS the Sass build: core `bootstrap_overridden.scss:69` does `$body-bg: $o-webclient-background-color`,
 // and Bootstrap then evaluates `color-contrast($body-bg)` -> `opaque()` -> `mix(rgba(...), $body-bg)`,
 // which cannot operate on a `var()` at compile time, so the ENTIRE web.assets_web bundle aborts and
-// the webclient renders unstyled. (It also poisons viin_brand_common/brand_cascade.scss:142
+// the webclient renders unstyled. (It also poisons viin_brand_web/static/src/scss/brand_cascade.scss:239
 // `mix($o-brand-primary, $o-view-background-color, 8%)`.) The SAME rule as the str-slice() text-tier
 // case therefore applies to surfaces: keep every $o-* var that feeds a compile-time color function
 // (mix/color-contrast/invert/lighten) as a REAL HEX, and deliver the light/dark surface flip purely

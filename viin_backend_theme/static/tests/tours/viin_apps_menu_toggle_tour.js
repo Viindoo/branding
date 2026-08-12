@@ -19,7 +19,7 @@
 // controller underneath (apps_menu_home.js).
 //
 // WHY SETTINGS IS THE VIEW. It is the one app guaranteed to exist in a minimal
-// viin_brand_common + viin_brand_mail + viin_backend_theme install, and the sibling
+// viin_brand_web + viin_brand_mail + viin_backend_theme install, and the sibling
 // viin_home_menu_tour (static/tests/tours/viin_appearance_tour.js) already launches it the same way,
 // so this tour adds no new install-scope assumption. Its form carries the stable core root class
 // `.o_base_settings_view` (web/static/src/webclient/settings_form_view/settings_form_view.scss:9,39),

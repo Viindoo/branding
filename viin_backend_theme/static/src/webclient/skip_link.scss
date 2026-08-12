@@ -3,7 +3,7 @@
 // The link (webclient.xml, prepended as the FIRST focusable element) is visually hidden until it
 // receives keyboard focus, then slides into view at the top-inline-start corner. It uses the native
 // scheme-aware runtime props (--body-bg / --link-color) so it reads correctly in light AND dark, and
-// the shared base focus token (--o-viin-focus, viin_brand_common/focus_ring.scss) for its ring. NO
+// the shared base focus token (--o-viin-focus, viin_brand_web/focus_ring.scss) for its ring. NO
 // --viin-* parallel token; NO hardcoded themeable hex; NO radius declaration (owner revision
 // 2026-08-03 "bo hết" - the cluster owns zero radius overrides, so this link is square-cornered).
 

@@ -1,7 +1,7 @@
 // D11 - notebook / tabs: active + hover tab underline in brand teal (mockup-05/06 "Order Lines").
 //
 // TOKEN + light restyle of the HORIZONTAL notebook only (the vertical variant keeps core chrome).
-// Active/hover accent reuses viin_brand_common's AA teal ($o-viin-chrome-base #007F8E) - not
+// Active/hover accent reuses viin_brand_web's AA teal ($o-viin-chrome-base #007F8E) - not
 // re-declared. Neutral tab text + the header baseline read the native UNPREFIXED runtime props
 // (--secondary-color / --body-color / --border-color / --body-bg) so tabs stay correct in dark mode.
 // NO --viin-* custom properties; NO hardcoded themeable hex.

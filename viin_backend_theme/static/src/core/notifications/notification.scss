@@ -7,7 +7,7 @@
 // toast surface from the native panel prop so it is scheme-CORRECT: light card in light, dark card
 // in dark) rather than the prototype's always-dark snackbar. Card gets a
 // scheme-aware hairline + elevation (color-mix over --emphasis-color), and the auto-dismiss
-// progress bar is tinted with viin_brand_common's AA teal ($o-viin-chrome-base). The per-type left
+// progress bar is tinted with viin_brand_web's AA teal ($o-viin-chrome-base). The per-type left
 // bar (.o_notification_bar) keeps the cluster semantic colours (success/warning/danger/info) - the
 // single SSOT lever - and is deliberately not touched. The corner radius is core's and is NOT
 // re-declared here (owner revision 2026-08-03): core's own notification.xml:5 already ships the

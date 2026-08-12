@@ -2,7 +2,7 @@
 //
 // DE-BRAND + restyle. Core paints this pill with the Odoo purple:
 //   .o_loading_indicator { background-color: $o-brand-odoo; color: white; ... }
-// which is a visible Odoo tell. Re-point it to viin_brand_common's AA teal
+// which is a visible Odoo tell. Re-point it to viin_brand_web's AA teal
 // ($o-viin-chrome-base #007F8E, 4.74:1 - carries white text per the shade ladder; the decorative
 // $o-brand-primary #00BBCE would fail AA under white text and must never be used here). Position /
 // z-index / fade transition are core's and left untouched (same selector, additive override, later

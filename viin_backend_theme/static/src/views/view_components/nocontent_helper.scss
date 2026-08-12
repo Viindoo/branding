@@ -6,7 +6,7 @@
 // like the fonts), so the per-module illustration ::before images are left untouched. What changes:
 // comfortable spacing + line-height, the lead help line promoted to the scheme-aware emphasis text
 // tier, the supporting copy on the muted tier, and actionable hints (links / "create the first
-// record" CTAs) accented with viin_brand_common's AA teal ($o-viin-chrome-base, deepening to
+// record" CTAs) accented with viin_brand_web's AA teal ($o-viin-chrome-base, deepening to
 // $o-viin-chrome-deep on hover). All neutrals read the scheme-aware runtime props so the empty
 // state is correct in light AND dark. Zero Viindoo-namespaced custom properties; no var() inside a
 // Sass colour function; no hardcoded themeable hex.

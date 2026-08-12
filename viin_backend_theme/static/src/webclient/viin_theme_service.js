@@ -12,7 +12,7 @@
 //  - EFFECTIVE scheme (light/dark) is what the server serves. 'auto' resolves to the OS preference
 //    via matchMedia("(prefers-color-scheme: dark)").
 //  - Scheme toggle = PERSIST + RELOAD (PR #658 C-2/T-1). Dark mode is now the RECOMPILED
-//    web.assets_web_dark bundle owned by viin_brand_common - a server-selected bundle cannot swap
+//    web.assets_web_dark bundle owned by viin_brand_web - a server-selected bundle cannot swap
 //    without a reload - so setScheme persists the EFFECTIVE scheme to the `color_scheme` cookie the
 //    server reads (name FIXED by the base ir.http.color_scheme + boot reflection) and the CHOICE to
 //    the user field, then reloads. It does NOT instant-flip [data-bs-theme]; on reload the server

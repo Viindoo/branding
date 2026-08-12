@@ -14,7 +14,7 @@
        core styles `.o_main_navbar .o_nav_entry, .dropdown-toggle:not(.o-dropdown-toggle-custo)`
        with the `%-main-navbar-entry-base` placeholder (web/.../navbar/navbar.variables.scss:34-50),
        whose `o-hover-text-color()` emits a `color` reading the NavBar-entry-color custom property
-       with `$o-navbar-entry-color` as its fallback - white, because viin_brand_common pins
+       with `$o-navbar-entry-color` as its fallback - white, because viin_brand_web pins
        `$o-navbar-entry-color: #FFFFFF`. Replacing the <Dropdown> dropped that class, so the button
        matched NO navbar entry rule; the `text-reset` we added then forced `color: inherit
        !important`, which walks up past .o_navbar_apps_menu and .o_main_navbar (neither declares a

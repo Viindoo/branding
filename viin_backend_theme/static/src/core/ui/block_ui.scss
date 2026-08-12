@@ -3,7 +3,7 @@
 //
 // The blocking scrim MUST stay dark + blurred so the white loading text (web.BlockUI line1/line2)
 // remains legible - a fully-teal scrim would be garish and unreadable. So this is a MINIMAL,
-// grounded touch: give the scrim a brand undertone by mixing viin_brand_common's deep AA teal
+// grounded touch: give the scrim a brand undertone by mixing viin_brand_web's deep AA teal
 // ($o-viin-chrome-deep #005E68, 7.5:1) into the neutral black scrim, so a long operation reads as
 // Viindoo rather than generic Odoo/black while keeping contrast. Touches ONLY the confirmed
 // .o_blockUI selector (no dependency on inner message markup); core's backdrop-filter blur is kept.

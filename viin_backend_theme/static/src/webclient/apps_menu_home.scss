@@ -5,7 +5,7 @@
 // repurposed button core's `o_nav_entry` class, so `.o_main_navbar .o_nav_entry` picks up the
 // `%-main-navbar-entry-base` placeholder (web/.../webclient/navbar/navbar.variables.scss:34-50),
 // whose `o-hover-text-color()` emits `color: var(--NavBar-entry-color, #{$o-navbar-entry-color})`
-// - #FFFFFF, pinned by viin_brand_common/static/src/scss/brand_variables.scss:218. Adding ANY
+// - #FFFFFF, pinned by viin_brand_web/static/src/scss/brand_variables.scss:240. Adding ANY
 // `color` here is what turned the icon black last time (`text-reset` -> `inherit` -> body #212529),
 // so the rule for this file is: no colour, ever. Guarded by
 // viin_backend_theme/tests/test_theme_core_chrome_untouched.py.

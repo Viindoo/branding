@@ -2,7 +2,7 @@
 // flush on the panel surface with a hairline separator.
 //
 // SCSS only - NO ControlPanel JS patch and NO template inherit (upgrade-safety NF2). Facet CHIP
-// colours stay cluster-owned (viin_brand_common .o_searchview_facet) and are NOT touched here.
+// colours stay cluster-owned (viin_brand_web .o_searchview_facet) and are NOT touched here.
 // The separator is re-expressed on the native runtime border prop (--border-color) instead of core's
 // compile-time $o-gray-300, so it flips correctly in dark mode. Neutral text reads native runtime
 // props; NO --viin-* custom properties, NO hardcoded themeable hex.

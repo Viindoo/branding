@@ -9,7 +9,7 @@
 // that the earlier build patched a non-existent `_loadDefaultApp` on the prototype, which is exactly
 // the method patched here (it DOES exist in v19).
 //
-// The title de-brand (setParts zopenerp: "Viindoo") is INHERITED from viin_brand_common's own
+// The title de-brand (setParts zopenerp: "Viindoo") is INHERITED from viin_brand_web's own
 // WebClient patch and is deliberately NOT duplicated here - the two patches compose cleanly.
 //
 // T-4 (PR #658 review-fix): skipToMainContent backs the "Skip to main content" bypass-blocks link

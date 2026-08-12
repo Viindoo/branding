@@ -5,7 +5,7 @@
 //
 // 2026-08-03 TEXT-LINK TIER - WHY THE Sass VAR AND NOT `var(--link-color)` ANY MORE.
 // These three declarations used to read the runtime `--link-color` prop, which was the AA teal in
-// both schemes. viin_brand_common/static/src/scss/link_tier.scss now splits that token: `--link-color`
+// both schemes. viin_brand_web/static/src/scss/link_tier.scss now splits that token: `--link-color`
 // is the HYPERLINK colour and turns brand-secondary PURPLE in light mode. A scheme toggle and a
 // density option are CONTROLS, not hyperlinks - under the COLOUR LAW (brand_variables.scss) teal =
 // ACT - so they are re-anchored onto `$o-main-link-color`, the interactive-teal Sass token that

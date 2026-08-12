@@ -176,7 +176,7 @@
     }
 
     // --- "APPLICATIONS" section label ---
-    // PR #658 item 6 (owner decision 2026-08-03). Under viin_brand_common's COLOUR LAW
+    // PR #658 item 6 (owner decision 2026-08-03). Under viin_brand_web's COLOUR LAW
     // (static/src/scss/brand_variables.scss) a section label is not an action - it is the STRUCTURE
     // the app grid is organised into - so it carries the brand SECONDARY purple, matching the
     // group-by search facet and the list group header. This is the lowest-risk purple in the
@@ -188,10 +188,10 @@
     // >>> OWNER REVISION 2026-08-03: the purple is LIGHT-MODE ONLY. <<<
     // In web.assets_web_dark the label returns to exactly what it was before the accent landed -
     // var(--secondary-color), the muted tier - which is the "default look / core colours" the owner
-    // asked for and is comfortably readable there: viin_brand_common's dark_palette.scss re-points
+    // asked for and is comfortably readable there: viin_brand_web's dark_palette.scss re-points
     // $body-secondary-color to #8EA5A8, and Bootstrap emits it as --secondary-color, giving 7.24:1
     // on the dark band #0B1315 (vs 2.24:1 if the light purple had simply recompiled).
-    // The flag is viin_brand_common's $o-viin-dark-bundle, declared in brand_variables.scss inside
+    // The flag is viin_brand_web's $o-viin-dark-bundle, declared in brand_variables.scss inside
     // web._assets_primary_variables - in scope here because that bundle is included at the top of
     // web.assets_backend, which web.assets_web_dark recompiles. Still no *.dark.scss companion: the
     // choice is made at COMPILE time, so each bundle carries exactly one declaration.

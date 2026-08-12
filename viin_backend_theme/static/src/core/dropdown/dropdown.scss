@@ -7,7 +7,7 @@
 // item gets a brand-teal wash: core hardcodes the Sass $dropdown-link-hover-bg on
 // `.dropdown-item.focus`, so it is re-declared here (this file loads after core in
 // web.assets_backend; equal-or-higher specificity + later order wins). The teal reuses
-// viin_brand_common's AA teal ($o-viin-chrome-base #007F8E) via color-mix over transparent so it
+// viin_brand_web's AA teal ($o-viin-chrome-base #007F8E) via color-mix over transparent so it
 // composites on either scheme, and item text stays on the scheme-aware --body-color for AA.
 // COLOUR ONLY - the corner radius is core's and is NOT re-declared here (owner revision
 // 2026-08-03): Bootstrap already forwards it as `$dropdown-border-radius: var(--border-radius)`
