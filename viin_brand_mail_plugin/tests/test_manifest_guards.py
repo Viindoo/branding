@@ -51,3 +51,23 @@ class TestViinBrandMailPluginManifestDependsGuard(TransactionCase):
             "so the edge was dead weight and is removed outright rather than "
             "re-pointed at viin_brand_web.",
         )
+
+    def test_manifest_depends_on_mail_plugin_and_no_brand_module_at_all(self):
+        """MED-1 (integrated review): the assertNotIn above is a NEGATIVE check that will pass
+        forever, vacuously, once ``viin_brand_common`` stops existing anywhere in this repo - it
+        can never fail again and so stops protecting anything. Assert the POSITIVE invariant it
+        was actually meant to protect instead: this module depends on EXACTLY its core counterpart
+        (``mail_plugin``) and on NO ``viin_brand_*`` module at all - not the retired
+        ``viin_brand_common``, not its ``viin_brand_web`` successor, not any future brand module."""
+        depends = _load_manifest().get("depends", [])
+        self.assertEqual(
+            depends, ["mail_plugin"],
+            "viin_brand_mail_plugin must depend on exactly ['mail_plugin'] and nothing else: %r"
+            % (depends,),
+        )
+        brand_edges = [entry for entry in depends if entry.startswith("viin_brand")]
+        self.assertFalse(
+            brand_edges,
+            "viin_brand_mail_plugin must depend on NO viin_brand_* module (it consumes nothing "
+            "from any of them): %r" % (brand_edges,),
+        )
