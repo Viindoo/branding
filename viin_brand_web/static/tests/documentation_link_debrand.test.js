@@ -7,7 +7,7 @@ import { describe, expect, test } from "@odoo/hoot";
 // mutation it applies to `DocumentationLink.prototype.url` runs before any test body executes
 // (same idiom as viin_brand_web's dialog_debrand.test.js).
 import { DocumentationLink } from "@web/views/widgets/documentation_link/documentation_link";
-import "@viin_brand_common/views/widgets/documentation_link/documentation_link";
+import "@viin_brand_web/views/widgets/documentation_link/documentation_link";
 
 describe.current.tags("headless");
 

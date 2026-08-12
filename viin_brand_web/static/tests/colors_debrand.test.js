@@ -13,7 +13,7 @@ import { describe, expect, test } from "@odoo/hoot";
 // following tests protect the three v19 getColor capabilities the 2-arg 18.0 layer would have
 // broken: (1) size-keyed palettes, (2) the named "odoo" branch, (3) dark-scheme variants.
 import { getColor } from "@web/core/colors/colors";
-import "@viin_brand_common/core/colors/colors";
+import "@viin_brand_web/core/colors/colors";
 
 describe.current.tags("headless");
 

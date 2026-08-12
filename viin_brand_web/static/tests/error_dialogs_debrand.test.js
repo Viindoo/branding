@@ -23,7 +23,7 @@ import { ClientErrorDialog, NetworkErrorDialog, RPCErrorDialog } from "@web/core
 // this test file's own module runs (see user_menu_debrand.test.js header for the full mechanism) -
 // no re-import of a "patched result" is required, mounting the classes imported above already
 // observes the patch.
-import "@viin_brand_common/core/errors/error_dialogs";
+import "@viin_brand_web/core/errors/error_dialogs";
 
 describe.current.tags("desktop");
 

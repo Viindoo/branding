@@ -13,7 +13,7 @@ import { beforeEach, describe, expect, test } from "@odoo/hoot";
 import { registry } from "@web/core/registry";
 import { allowTranslations, serverState } from "@web/../tests/web_test_helpers";
 import { odooAccountItem } from "@web/webclient/user_menu/user_menu_items";
-import "@viin_brand_common/webclient/user_menu_item";
+import "@viin_brand_web/webclient/user_menu_item";
 
 describe.current.tags("headless");
 

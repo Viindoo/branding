@@ -18,7 +18,7 @@ import { defineModels, fields, models, mountView } from "@web/../tests/web_test_
 //
 // Importing the production JS + XML as side effects mirrors the idiom the sibling debrand tests
 // use, so the patch and the template extension are live in the Hoot runtime.
-import "@viin_brand_common/views/fields/statusbar/statusbar_steps";
+import "@viin_brand_web/views/fields/statusbar/statusbar_steps";
 
 describe.current.tags("desktop");
 
