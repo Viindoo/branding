@@ -2,7 +2,7 @@
 //
 // WHY THIS FILE EXISTS / WHERE IT LIVES (design pr658-review-fix §5a - placement by dependency graph)
 // -----------------------------------------------------------------------------------------------
-// viin_brand_common/static/src/scss/dark_palette.scss (C-2) recompiles web.assets_web_dark with the
+// viin_brand_web/static/src/scss/dark_palette.scss (C-2) recompiles web.assets_web_dark with the
 // surface + text + link + border Sass vars redefined to dark values, so EVERY mail surface that
 // reads an overridable web/Bootstrap Sass var recompiles dark-correct FOR FREE - e.g. the chatter
 // message list ($o-view-background-color -> #111B1E), and the Activity / Discuss systray
@@ -14,7 +14,7 @@
 // This file adds a rule ONLY for a surface core `mail` sculpts from a LITERAL that no overridable
 // Sass var reaches - the exact case the recompile cannot close.
 //
-// viin_brand_mail depends ['mail', 'viin_brand_common'], so these overrides load AFTER core mail's
+// viin_brand_mail depends ['mail', 'viin_brand_web'], so these overrides load AFTER core mail's
 // own SCSS (source order) and legitimately override a real dependency (owner refinement #3).
 //
 // EXPLICIT DARK-BUNDLE CONTRIBUTION (NOT auto-glob). Core's dark tail glob is

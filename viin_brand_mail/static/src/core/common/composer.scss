@@ -2,7 +2,7 @@
 // in the brand TEAL ($brand-primary #00bbce); the v19 port mis-substituted the brand PURPLE
 // $o-brand-secondary. Both surfaces sit under white or near-white glyphs, so the restore lands on
 // the cluster CHROME-BASE AA teal SSOT $o-navbar-background (#007F8E, 4.74:1 against white)
-// declared in viin_brand_common/static/src/scss/brand_variables.scss - no new literal introduced.
+// declared in viin_brand_web/static/src/scss/brand_variables.scss - no new literal introduced.
 //
 // This file loads into web.assets_backend, mail.assets_public AND im_livechat.assets_embed_core,
 // always immediately after mail/static/src/core/common/composer.scss, so equal-specificity
@@ -63,7 +63,7 @@
 //   Send message (customer-facing = ACT) -> the deep teal rung, unchanged.
 //   Log note     (internal)              -> the stock `.btn-secondary` grey, in both schemes.
 // The purple is gone from this file entirely, and with it the 2.90:1 dark label: there is no purple
-// left in the dark bundle for a white label to fail against (see viin_brand_common's COLOUR LAW).
+// left in the dark bundle for a white label to fail against (see viin_brand_web's COLOUR LAW).
 // No !important is needed anywhere below: each selector is (0,3,0) and out-specifies both
 // `.btn-primary` (0,1,0), where the button tokens are declared, and Bootstrap's `.btn.active` (0,2,0).
 
@@ -143,7 +143,7 @@ $o-viin-neutral-btn: map-get($o-btns-bs-override, "secondary") !default;
 // being typed ON, not by a button colour the user is no longer looking at.
 //
 // TINT, NOT FILL. Everything here is derived from the SEMANTIC $danger token (= $o-danger #CC5252,
-// set in viin_brand_common's brand_variables.scss and forwarded by core's
+// set in viin_brand_web's brand_variables.scss and forwarded by core's
 // `$danger: $o-danger !default`) - no new literal, and no full red fill that would fight the text:
 //   light  composer text #212529 on #FBF1F1 = 13.92:1
 //   dark   composer text #EDF4F5 on #2C2529 = 13.24:1

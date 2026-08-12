@@ -20,16 +20,16 @@
 #
 # WHY A COMPILED-CSS GUARD AND NOT A BROWSER TOUR. These surfaces are produced by SASS at asset
 # COMPILE time from variables that live three modules away (`$o-navbar-background`,
-# `$o-brand-secondary`, `$o-success` in viin_brand_common/static/src/scss/brand_variables.scss),
+# `$o-brand-secondary`, `$o-success` in viin_brand_web/static/src/scss/brand_variables.scss),
 # so the observable output is the compiled bundle. Asserting it needs no browser, is
 # deterministic, and runs inside this module's own suite. Same mechanism as the established
-# in-repo guards viin_brand_common/tests/test_brand_color_compile.py and
+# in-repo guards viin_brand_web/tests/test_brand_color_compile.py and
 # viin_brand_html_editor/tests/test_asset_upgrade.py.
 #
 # WHY THE EXPECTED HEXES ARE ASSERTED THE WAY THEY ARE. Two different shapes on purpose:
 #   * where the design SSOT names a TOKEN (CHROME-BASE teal #007F8E, brand secondary #7F4282) the
 #     token is asserted as a fixed, hand-chosen design constant - the same discipline as
-#     viin_brand_common's VIINDOO_NAVBAR_BACKGROUND_COLOR, and never by re-deriving the Sass
+#     viin_brand_web's VIINDOO_NAVBAR_BACKGROUND_COLOR, and never by re-deriving the Sass
 #     expression inside the test (which would compare production logic against itself);
 #   * where the value is DERIVED with no named token (the systray badge green, `mix(black,
 #     $o-success, 28%)`) only the RULE is asserted - still a green, no longer the unreadable
@@ -53,7 +53,7 @@
 #
 # So wherever the resolution is expressible, the value is resolved THROUGH THE CORE RULE THAT READS
 # IT - the browser's own path - using the cluster's single cascade resolver, which lives in
-# viin_brand_common/tests/test_brand_cascade_compile.py and is IMPORTED here rather than copied
+# viin_brand_web/tests/test_brand_cascade_compile.py and is IMPORTED here rather than copied
 # (ODOO-AI-ETHOS #11 SSOT). A core rename then makes the resolution fail and the guard goes RED,
 # which is the entire point. Two properties cannot be resolved that way and carry a cheap
 # NAME-EXISTENCE guard on core's own source instead; each says so, and why, in its own docstring.
@@ -74,20 +74,20 @@ try:
     # The flat brand-identity teal, read from the module cluster's single Python SSOT (never
     # hardcoded-and-compared-to-itself). Imported defensively so a missing constant yields a crisp
     # per-test failure rather than breaking collection of the whole tests package.
-    from odoo.addons.viin_brand_common.controllers.webmanifest import VIINDOO_THEME_COLOR
+    from odoo.addons.viin_brand_web.controllers.webmanifest import VIINDOO_THEME_COLOR
 except ImportError:
     VIINDOO_THEME_COLOR = None
 
 try:
-    # The cluster's ONE cascade resolver, declared by viin_brand_common (ODOO-AI-ETHOS #11 SSOT) and
+    # The cluster's ONE cascade resolver, declared by viin_brand_web (ODOO-AI-ETHOS #11 SSOT) and
     # imported rather than re-implemented here. `_computed_value(css, chain, prop_names)` returns
     # what the CSS cascade computes for prop_names on chain[0] - `!important` first, then
     # specificity, then source order - and follows `var()` outwards through the ancestor chain
     # exactly as a browser resolves an inherited custom property. `_winning_declaration` is the same
     # machinery without the var() hop, used where the value is a plain number (an opacity).
     # Only these two private helpers are imported: pulling in a TestCase class would make this
-    # module re-run viin_brand_common's suite under viin_brand_mail.
-    from odoo.addons.viin_brand_common.tests.test_brand_cascade_compile import (
+    # module re-run viin_brand_web's suite under viin_brand_mail.
+    from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
         _computed_value,
         _winning_declaration,
     )
@@ -95,12 +95,12 @@ except ImportError:
     _computed_value = _winning_declaration = None
 
 try:
-    # The STOCK neutral button, modelled once by viin_brand_common (the core web pager arrow) and
+    # The STOCK neutral button, modelled once by viin_brand_web (the core web pager arrow) and
     # imported rather than re-transcribed. Owner revision 2026-08-03 makes the OPEN "Log note" toggle
     # render the DEFAULT `.btn-secondary`, and the honest way to assert "the default" is to resolve a
     # real stock `.btn-secondary` in the SAME bundle and compare - which needs that module's element
     # model, not a hex copied into this file (ODOO-AI-ETHOS #11 SSOT).
-    from odoo.addons.viin_brand_common.tests.test_brand_cascade_compile import (
+    from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
         PAGER_ANCESTORS,
         PAGER_PREVIOUS_CLASSES,
     )
@@ -108,7 +108,7 @@ except ImportError:
     PAGER_ANCESTORS = PAGER_PREVIOUS_CLASSES = None
 
 # CHROME-BASE AA teal - the cluster SSOT token `$o-navbar-background` declared in
-# viin_brand_common/static/src/scss/brand_variables.scss. 4.74:1 against white, clearing the WCAG
+# viin_brand_web/static/src/scss/brand_variables.scss. 4.74:1 against white, clearing the WCAG
 # AA normal-text threshold; every chrome/interactive/glyph surface restored by the 2026-07-24
 # design decision resolves to this one shade rather than a per-file literal.
 CHROME_BASE_TEAL = "#007f8e"
@@ -216,7 +216,7 @@ SHARED_DEBRAND_SOURCES = (
 )
 SYSTRAY_DEBRAND_SOURCE = "viin_brand_mail/static/src/core/web/messaging_menu.scss"
 
-# The independent DARK recompile. viin_brand_common's dark_palette.scss (C-2) redefines the surface /
+# The independent DARK recompile. viin_brand_web's dark_palette.scss (C-2) redefines the surface /
 # text / border Sass vars to dark values here, so every mail surface reading an OVERRIDABLE Sass var
 # recompiles dark-correct for free. web.assets_web_dark = ('include', 'web.assets_web') + a
 # 'web/static/src/**/*.dark.scss' tail (web/__manifest__.py), so core mail's rotting_mixin.scss and
@@ -596,7 +596,7 @@ class MailContrastCompileTest(TransactionCase):
         """Fail crisply when the cluster's shared cascade resolver could not be imported."""
         self.assertIsNotNone(
             _computed_value,
-            "viin_brand_common/tests/test_brand_cascade_compile.py must expose _computed_value and "
+            "viin_brand_web/tests/test_brand_cascade_compile.py must expose _computed_value and "
             "_winning_declaration: they are the cluster's SINGLE cascade resolver and every guard "
             "below resolves its value THROUGH core's own consumer with them, so a core rename goes "
             "RED instead of orphaning our declaration silently.",
@@ -954,7 +954,7 @@ class MailContrastCompileTest(TransactionCase):
 
         HOW "THE DEFAULT" IS ASSERTED, AND WHY NOT A HEX. The oracle is a REAL stock `.btn-secondary`
         resolved out of the SAME bundle - the core web pager arrow, whose element model
-        viin_brand_common owns - and the claim is that the open Log note computes the SAME fill and
+        viin_brand_web owns - and the claim is that the open Log note computes the SAME fill and
         the SAME label as it. That is the behaviour ("it renders the default neutral button"), it is
         automatically correct in both schemes (light #212529-on-#DEE2E6, dark #EDF4F5-on-#25383C via
         dark_buttons.scss), and it cannot be satisfied by a grey that merely looks right today.
@@ -987,7 +987,7 @@ class MailContrastCompileTest(TransactionCase):
         )
         self.assertIsNotNone(
             PAGER_PREVIOUS_CLASSES,
-            "viin_brand_common/tests/test_brand_cascade_compile.py must expose PAGER_ANCESTORS / "
+            "viin_brand_web/tests/test_brand_cascade_compile.py must expose PAGER_ANCESTORS / "
             "PAGER_PREVIOUS_CLASSES: they model the stock `.btn-secondary` this guard compares the "
             "open Log-note toggle against, so 'the default neutral button' is measured rather than "
             "re-literalised here.",
@@ -1354,7 +1354,7 @@ class MailContrastCompileTest(TransactionCase):
         self.assertIsNotNone(
             VIINDOO_THEME_COLOR,
             "VIINDOO_THEME_COLOR must be importable from "
-            "viin_brand_common/controllers/webmanifest.py (the single Python brand-hex SSOT).",
+            "viin_brand_web/controllers/webmanifest.py (the single Python brand-hex SSOT).",
         )
         flat_brand_teal = VIINDOO_THEME_COLOR.lower()
 
@@ -1967,7 +1967,7 @@ class MailContrastCompileTest(TransactionCase):
     # ==============================================================================================
     # 12. Dark mode - mail-owned surfaces the recompiled dark palette (C-2) cannot reach (M-1)
     # ==============================================================================================
-    # viin_brand_common/dark_palette.scss recompiles web.assets_web_dark with the surface / text /
+    # viin_brand_web/dark_palette.scss recompiles web.assets_web_dark with the surface / text /
     # border Sass vars redefined to dark values, so every mail surface that reads an OVERRIDABLE Sass
     # var (e.g. the chatter thread -> $o-view-background-color -> #111B1E) recompiles dark-correct for
     # free - NO rule is added here for those. The two surfaces below are the exception core `mail`

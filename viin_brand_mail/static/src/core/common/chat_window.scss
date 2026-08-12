@@ -3,7 +3,7 @@
 // 18.0 used $brand-primary-dark = darken($brand-primary #00bbce, 10%) = #008D9B, which is only
 // 3.97:1 against white text, so the restore lands on the cluster CHROME-BASE AA teal SSOT
 // $o-navbar-background (#007F8E, 4.74:1) declared in
-// viin_brand_common/static/src/scss/brand_variables.scss - no new literal is introduced.
+// viin_brand_web/static/src/scss/brand_variables.scss - no new literal is introduced.
 //
 // This file loads into web.assets_backend, mail.assets_public AND im_livechat.assets_embed_core,
 // always immediately after mail/static/src/core/common/chat_window.scss, so equal-specificity

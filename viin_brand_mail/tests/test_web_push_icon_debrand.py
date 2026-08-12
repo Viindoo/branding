@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import tools
 from odoo.tests.common import TransactionCase, tagged
+from odoo.tools.misc import file_path
 
 
 @tagged("post_install", "-at_install")
@@ -11,7 +12,7 @@ class TestWebPushIconDebrand(TransactionCase):
     Odoo default icon (``/web/static/img/odoo-icon-192x192.png``) whenever a push
     notification has no author (e.g. a guest sender). ``viin_brand_mail`` inherits
     that method to replace this default with the Viindoo app icon
-    (``/viin_brand_common/static/img/viindoo-icon-192x192.png``) - the size-correct
+    (``/viin_brand_web/static/img/viindoo-icon-192x192.png``) - the size-correct
     192x192 asset, not this module's own ``static/img/viindoo_app_icon.png`` (95x95px).
 
     The substitution is UNCONDITIONAL: it must not depend on ``test_enable``, on a
@@ -52,7 +53,7 @@ class TestWebPushIconDebrand(TransactionCase):
         payload = self.partner._notify_by_web_push_prepare_payload(message)
         self.assertEqual(
             payload["options"]["icon"],
-            "/viin_brand_common/static/img/viindoo-icon-192x192.png",
+            "/viin_brand_web/static/img/viindoo-icon-192x192.png",
             "Anonymous web-push notifications must show the Viindoo app icon, "
             "not the Odoo default mascot",
         )
@@ -87,7 +88,41 @@ class TestWebPushIconDebrand(TransactionCase):
         payload = self.partner._notify_by_web_push_prepare_payload(message)
         self.assertEqual(
             payload["options"]["icon"],
-            "/viin_brand_common/static/img/viindoo-icon-192x192.png",
+            "/viin_brand_web/static/img/viindoo-icon-192x192.png",
             "The de-brand must apply regardless of test_enable - the production "
             "code path must have exactly one shape",
+        )
+
+    def test_debrand_icon_path_resolves_to_a_real_file_on_disk(self):
+        """The icon path this override emits must resolve to a REAL FILE on disk.
+
+        The two literal-string assertions above only prove the code emits a
+        particular string; they would stay green even if the file behind that
+        string had moved or been deleted, because a string comparison has no
+        opinion about the filesystem. That is exactly what happened here: the
+        code kept emitting ``/viin_brand_common/static/img/viindoo-icon-192x192.png``
+        after that file was removed from ``viin_brand_common/static/img/`` - no
+        exception, no log line, just a 404 image rendered in a real push
+        notification. This test resolves the code's own returned path through
+        Odoo's addons-path file lookup (the same mechanism the web server uses to
+        serve ``/<module>/static/...`` URLs) so a future silent 404 fails loudly
+        here instead of shipping quietly.
+        """
+        message = self._make_message(author_id=False)
+        payload = self.partner._notify_by_web_push_prepare_payload(message)
+        icon_path = payload["options"]["icon"]
+        # icon_path has the shape "/<module>/static/img/<file>.png" - file_path()
+        # expects an addons-path-relative path with no leading slash.
+        relative_path = icon_path.lstrip("/")
+        try:
+            resolved_path = file_path(relative_path)
+        except FileNotFoundError:
+            resolved_path = None
+        self.assertIsNotNone(
+            resolved_path,
+            "The web-push icon path %r returned by the de-brand override does not "
+            "resolve to any file under the addons path. This is the silent-404 "
+            "failure mode: the code can emit a well-formed-looking path to an "
+            "asset that no longer exists, and a bare string-equality assertion "
+            "cannot catch that." % icon_path,
         )

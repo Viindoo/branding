@@ -37,7 +37,7 @@ Editions Supported
     'version': '0.1.6',
 
     # any module necessary for this one to work correctly
-    'depends': ['mail', 'viin_brand_common'],
+    'depends': ['mail', 'viin_brand_web'],
 
     # always loaded
     'data': [
@@ -64,7 +64,7 @@ Editions Supported
             ('after', 'mail/static/src/core/public_web/discuss_sidebar.scss', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
             ('after', 'mail/static/src/core/public_web/messaging_menu.scss', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
             ('after', 'mail/static/src/discuss/core/public_web/discuss_sidebar_categories.scss', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
-            # 2026-08-03: carry viin_brand_common's numbered statusbar steps onto mail's two
+            # 2026-08-03: carry viin_brand_web's numbered statusbar steps onto mail's two
             # PRIMARY copies of web.StatusBarField (statusbar_duration and the CRM
             # rotting_statusbar_duration). A primary copy does not inherit extensions registered
             # after its own blockId, so each copy needs its own attributes-only extension - see the

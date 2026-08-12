@@ -26,11 +26,11 @@ class MailThread(models.AbstractModel):
         # core's own behaviour. `tests/test_web_push_icon_debrand.py` protects the
         # de-brand itself.
         #
-        # Target asset: `viin_brand_common/static/img/viindoo-icon-192x192.png`, not this
+        # Target asset: `viin_brand_web/static/img/viindoo-icon-192x192.png`, not this
         # module's own `static/img/viindoo_app_icon.png` - the latter is 95x95px (verified
         # on disk), not the 192x192 the core string being replaced names, so it is not the
-        # size-correct swap; viin_brand_mail hard-depends on viin_brand_common.
+        # size-correct swap; viin_brand_mail hard-depends on viin_brand_web.
         icon = (payload.get('options') or {}).get('icon') or ''
         if 'odoo-icon-192x192.png' in icon:
-            payload['options']['icon'] = '/viin_brand_common/static/img/viindoo-icon-192x192.png'
+            payload['options']['icon'] = '/viin_brand_web/static/img/viindoo-icon-192x192.png'
         return payload

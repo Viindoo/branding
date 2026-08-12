@@ -1,7 +1,7 @@
 .o-mail-DiscussSidebar {
     // Scheme-aware divider. The fixed light $gray-500 never flipped in dark, so the sidebar edge
     // rendered as a "white" line on the dark Discuss app. var(--border-color) resolves to the light
-    // border in light mode and to the recompiled dark #25383C in dark (viin_brand_common/static/
+    // border in light mode and to the recompiled dark #25383C in dark (viin_brand_web/static/
     // src/scss/dark_palette.scss emits it at :root via $border-color), keeping the edge subtle in
     // BOTH schemes - and softer than $gray-500 in light too. !important is retained solely to beat
     // the element's own Bootstrap .border-end / .border-secondary utilities (both !important); at
