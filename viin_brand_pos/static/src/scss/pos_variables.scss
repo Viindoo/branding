@@ -1,6 +1,6 @@
 // POS-local bridge: aliases the FIVE legacy Viindoo POS SCSS variable names that
 // viin_brand_pos/static/src/scss/style.scss still references bare, onto the real v19
-// viin_brand_common SSOT tokens (viin_brand_common/static/src/scss/brand_variables.scss).
+// viin_brand_web SSOT tokens (viin_brand_web/static/src/scss/brand_variables.scss).
 //
 // WHY THIS FILE EXISTS. The 18.0-era viin_brand_common/static/src/scss/primary_variables.scss
 // declared $brand-primary / $brand-primary-dark / $brand-primary-darker /
@@ -32,7 +32,7 @@
 //     never apply; the unconditional form is required to actually win.
 //
 // SSOT: every RHS below aliases an existing $o-* token already declared in
-// viin_brand_common/static/src/scss/brand_variables.scss - never a literal hex in this file.
+// viin_brand_web/static/src/scss/brand_variables.scss - never a literal hex in this file.
 
 // $brand-primary (legacy POS hook): the flat Viindoo brand teal - alias of the single
 // $o-brand-primary declaration (brand_variables.scss line 13).
