@@ -6,14 +6,16 @@
 // as the LEGACY 18.0 names $brand-primary-light / $brand-primary-dark / $brand-secondary-dark /
 // $brand-secondary-light (plus $brand-primary-darker at the :active rule further down). All five
 // were declared by the 18.0-era viin_brand_common/static/src/scss/primary_variables.scss, which
-// commit a251e97 DELETED when viin_brand_common moved to the 19.0 brand_variables.scss SSOT.
+// commit a251e97 DELETED when viin_brand_common moved to the 19.0 brand_variables.scss SSOT
+// (that SSOT has since relocated AGAIN, from viin_brand_common to viin_brand_web, in this
+// repo's later web-layer module split - see the depends edge this module now declares).
 // Three of the five were then undefined tree-wide; the other two (-dark, -darker) survive ONLY
 // in viin_brand_pos/static/src/scss/pos_variables.scss, a file contributed exclusively to
 // point_of_sale._assets_pos and therefore UNREACHABLE from here. Sass aborts a whole bundle at
 // the FIRST undefined VARIABLE, so web.assets_backend - and its web.assets_web_dark recompile -
 // served NO CSS at all (`Undefined variable: "$brand-primary-light"`), killing the entire
 // backend UI. The compiler error named only the first line; the real unreachable set was five.
-// viin_brand_common/tests/test_scss_variable_closure.py is the guard that reports all of them.
+// viin_brand_web/tests/test_scss_variable_closure.py is the guard that reports all of them.
 //
 // THE FIX SHAPE: migrate this CONSUMER onto the v19 SSOT tokens instead of reviving the retired
 // names behind a global bridge. brand_variables.scss's own closing comment rules that the legacy
@@ -25,15 +27,15 @@
 // REACHABILITY - be precise here, because vague prose about what is "defined" is exactly how the
 // original break shipped. Two DIFFERENT guarantees back the four tokens used below:
 //   - $o-viin-chrome-base / $o-viin-chrome-deep are Viindoo-only: they exist ONLY because
-//     viin_brand_onboarding declares 'viin_brand_common' in its depends, which contributes
+//     viin_brand_onboarding declares 'viin_brand_web' in its depends, which contributes
 //     brand_variables.scss to web._assets_primary_variables through a ('before',
 //     'web/static/src/scss/primary_variables.scss') anchor. That dependency edge is what makes
 //     them legal here - it is load-bearing, not incidental, and must not be dropped.
 //   - $o-brand-primary / $o-brand-secondary are CORE-declared
-//     (web/static/src/scss/primary_variables.scss:78 and :80); viin_brand_common merely re-points
+//     (web/static/src/scss/primary_variables.scss:78 and :80); viin_brand_web merely re-points
 //     them to the Viindoo hexes first. They therefore resolve even without the brand SSOT.
 // The sibling modules viin_brand_website_profile / viin_brand_website_slides do NOT declare
-// viin_brand_common, which is why they are restricted to the second group only.
+// viin_brand_web, which is why they are restricted to the second group only.
 //
 // BOTH SCHEMES, because web.assets_web_dark RECOMPILES this bundle:
 //   - the TEAL ladder ($o-brand-primary -> $o-viin-chrome-base -> $o-viin-chrome-deep) is
@@ -59,7 +61,7 @@
 // 18.0 read `darken($brand-secondary, 10%)` = #5E3160 into ui-1 and `lighten($brand-secondary,
 // 10%)` = #A053A4 into ui-2. There is no v19 purple ladder to collapse onto, so the two rungs are
 // derived from the token with Bootstrap's OWN shade/tint formulas - this repo's established
-// convention (viin_brand_common/static/src/scss/link_tier.scss:76,93) - never a second literal.
+// convention (viin_brand_web/static/src/scss/link_tier.scss:76,93) - never a second literal.
 // Both functions are in scope: core lists bootstrap/scss/_functions.scss in web._assets_helpers,
 // included at the head of web.assets_backend (web/__manifest__.py:50), long before this file.
 // WEIGHT: 25% is the Bootstrap-shade equivalent of 18.0's HSL darken-10% on this token -

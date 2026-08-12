@@ -35,7 +35,7 @@ Editions Supported
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1',
-    'depends': ['viin_brand_common', 'onboarding'],
+    'depends': ['viin_brand_web', 'onboarding'],
     'assets': {
         'web.assets_backend': [
             ('after', '/onboarding/static/src/scss/onboarding.scss', '/viin_brand_onboarding/static/src/scss/onboarding.scss'),
