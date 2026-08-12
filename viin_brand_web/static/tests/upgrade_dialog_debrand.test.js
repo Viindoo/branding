@@ -13,7 +13,7 @@ import {
 // odoo/addons/web/static/src/webclient/settings_form_view/fields/upgrade_dialog.js
 import { UpgradeDialog } from "@web/webclient/settings_form_view/fields/upgrade_dialog";
 
-describe.tags("desktop");
+describe.current.tags("desktop");
 
 // Business rules under protection (PR #633 rebase verdict c2-common.md finding R-7 + owner
 // decision D3, MASTER_DESIGN_DOC plan.md decisions table):

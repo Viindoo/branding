@@ -17,7 +17,7 @@ import { ActionDialog } from "@web/webclient/actions/action_dialog";
 // these tests a faithful proof of the real load order rather than an artificial one.
 import "@viin_brand_web/core/dialog/dialog";
 
-describe.tags("desktop");
+describe.current.tags("desktop");
 
 // Business rule under protection: NO backend dialog may fall back to the stock Odoo wordmark once
 // viin_brand_web is installed. `dialog_debrand.test.js` guards the base Dialog default; these tests
