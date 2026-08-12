@@ -36,7 +36,7 @@ Editions Supported
     'version': '0.1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['mail_plugin', 'viin_brand_common'],
+    'depends': ['mail_plugin'],
 
     # always loaded
     'data': [
