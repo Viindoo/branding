@@ -32,7 +32,7 @@
 # assert a colour instead of the property that matters (readability). Instead the test PARSES the
 # compiled `color-mix(in srgb, <hex> <pct>%, transparent)` layers out of the bundle and alpha-
 # composites them with the standard source-over formula the cluster already owns
-# (viin_brand_common _composite_over). That formula is EXTERNAL (W3C), not production logic, so this
+# (viin_brand_web _composite_over). That formula is EXTERNAL (W3C), not production logic, so this
 # is not the test re-implementing the feature and comparing it against itself - it reads what
 # shipped and applies the spec to it.
 import os
@@ -40,7 +40,7 @@ import re
 
 from odoo.tests.common import TransactionCase, tagged
 
-from odoo.addons.viin_brand_common.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
     DARK_BUNDLE,
     WCAG_AA_NORMAL_TEXT,
     _composite_over,

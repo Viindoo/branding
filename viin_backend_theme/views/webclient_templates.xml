@@ -4,7 +4,7 @@
          backend renders the correct row density on the very first server render, before any JS runs.
          data-viin-density comes from the viin_density cookie, defaulting to comfortable.
 
-         T-5 (PR #658): the color_scheme (data-bs-theme) reflection MOVED to viin_brand_common - the
+         T-5 (PR #658): the color_scheme (data-bs-theme) reflection MOVED to viin_brand_web - the
          base now owns dark mode end to end (recompiled web.assets_web_dark bundle + ir.http.color_scheme
          + boot stamp), so dark works even without this redesign theme. Only the density reflection,
          which is theme owned, stays here. -->

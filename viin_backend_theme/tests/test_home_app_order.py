@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Per-user home-menu app-order preference guards (PR #658 item 7; ODOO-AI-ETHOS #8: protect the
-# BEHAVIOR/contract, not the code). Mirrors viin_brand_common/tests/test_color_scheme_pref.py.
+# BEHAVIOR/contract, not the code). Mirrors viin_brand_web/tests/test_color_scheme_pref.py.
 #
 # WHAT IS PROTECTED
 #  1. res.users.viin_home_app_order is a per-user Char (a comma-separated list of app root-menu

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-# test_theme_prefs was RELOCATED to viin_brand_common/tests/test_color_scheme_pref.py (PR #658
+# test_theme_prefs was RELOCATED to viin_brand_web/tests/test_color_scheme_pref.py (PR #658
 # review-fix C-1): the color-scheme preference field + ir.http.color_scheme() resolver now live in
-# the always-installed base viin_brand_common, so the base owns their behaviour test. Nothing
+# the always-installed viin_brand_web, so it owns their behaviour test. Nothing
 # theme-specific remained in that file, so it was deleted here rather than trimmed.
 # test_w1_substrate was RETIRED (PR #658 review-fix): it asserted the CONTENT of the now-deleted
 # no-reload dark_surfaces.scss / scheme.scss (C-2 re-based dark on the recompiled web.assets_web_dark
@@ -26,3 +26,4 @@ from . import test_home_menu_background
 from . import test_theme_radius_is_core
 from . import test_home_app_order
 from . import test_tours
+from . import test_manifest_depends

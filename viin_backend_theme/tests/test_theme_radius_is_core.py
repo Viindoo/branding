@@ -18,7 +18,7 @@
 #       circles and the single D5 base-rung token, so the invariant cannot be reopened by a SECOND,
 #       undocumented override.
 #
-# OWNER DECISION D5 (square corners, base rung only). viin_brand_common's D4 restore
+# OWNER DECISION D5 (square corners, base rung only). viin_brand_web's D4 restore
 # (static/src/scss/brand_variables.scss:351, `$o-border-radius: 0 !default;`) put back a pre-19
 # brand-identity token that a prior SCSS restructure had silently dropped. This file's ORIGINAL
 # invariant (2026-08-03, "bo het") predates that restore and read any `$o-border-radius` assignment
@@ -43,13 +43,13 @@
 # lib/bootstrap/scss/_variables.scss:1246) and Odoo sets `$variable-prefix: ''` - so a component can
 # silently follow a raised global with nobody having written a component rule. Only the compiled
 # value shows what a surface actually renders. BOTH bundles are checked: web.assets_web_dark is a
-# full RECOMPILE (viin_brand_common/static/src/scss/dark_palette.scss), so it can drift on its own.
+# full RECOMPILE (viin_brand_web/static/src/scss/dark_palette.scss), so it can drift on its own.
 #
 # THE EXPECTED VALUES: CORE'S OWN SCALE FOR -sm/-lg, THE CLUSTER'S D5 OVERRIDE FOR base - BOTH READ
 # FROM THEIR SOURCE, NEVER HARDCODED. `$o-border-radius-sm` / `-lg` stay `o-to-rem(3px|6px)` in
 # web/static/src/scss/primary_variables.scss:219-220 and are what core's own
 # bootstrap_overridden.scss:100-101 feeds `$border-radius-sm` / `-lg` with; they are parsed out of
-# that core file at test time. The BASE rung is different under D5: viin_brand_common's own
+# that core file at test time. The BASE rung is different under D5: viin_brand_web's own
 # brand_variables.scss:351 (`$o-border-radius: 0 !default;`) is now base's ground truth, so this
 # guard reads IT dynamically too, instead of hardcoding "0" - if the owner ever retunes the D5 value,
 # this test and the source-scan's exact-pin (below) both move together instead of silently diverging.
@@ -65,11 +65,11 @@
 # statusbar_field.scss is gone and its exception with it; its absence from this list stays
 # load-bearing, and re-adding that THEME file would fail the sweep. The numbering affordance the
 # owner did ask back for was re-implemented on the same day as an additive marker in
-# viin_brand_common - no pill, no clip-path, no container chrome - and is listed on its own path.)
+# viin_brand_web - no pill, no clip-path, no container chrome - and is listed on its own path.)
 #
 # OWNER DECISION D5 IS PINNED THE SAME WAY, BUT IS NOT A SHAPE EXCEPTION. The circles above survive
 # because the radius IS the element's identity; D5 (`$o-border-radius: 0 !default;`,
-# viin_brand_common/static/src/scss/brand_variables.scss:351) survives for a DIFFERENT reason - it is
+# viin_brand_web/static/src/scss/brand_variables.scss:351) survives for a DIFFERENT reason - it is
 # a deliberate Viindoo brand-identity choice (square corners) the owner ruled affirmatively KEEPS,
 # not a rounding taste this file exists to police. It is pinned with the same EXACT (path,
 # declaration) discipline - a single base-rung Sass token, not a broad allow - so a SECOND radius
@@ -94,7 +94,7 @@ CORE_BOOTSTRAP_SOURCE = "web/static/src/scss/bootstrap_overridden.scss"
 # Owner decision D5's single base-rung override (square corners) - the ONE line this file's
 # invariant now excludes from "the cluster owns no radius". Read dynamically (never hardcoded) so a
 # future D5 retune keeps this guard and the source-scan allow-list below in sync with each other.
-CLUSTER_OVERRIDE_SOURCE = ("viin_brand_common", "static/src/scss/brand_variables.scss")
+CLUSTER_OVERRIDE_SOURCE = ("viin_brand_web", "static/src/scss/brand_variables.scss")
 # `$o-border-radius: <value> !default;` - the same declaration the allow-list entry below pins.
 _CLUSTER_OVERRIDE_RE = re.compile(r"\$o-border-radius:\s*([^;!]+?)\s*!default")
 
@@ -140,7 +140,6 @@ BTN_EXPECTED_TOKENS = {"base", "sm"}
 # the guard survives a repackaging; a module that IS present is always scanned, installed or not.
 CLUSTER_MODULES = (
     "viin_backend_theme",
-    "viin_brand_common",
     "viin_brand_mail",
     "viin_brand_web",
     "viin_brand_html_editor",
@@ -159,7 +158,7 @@ ALLOWED_RADIUS_DECLARATIONS = {
     # this inline rule is not overriding anything - it is the only styling source on that page, and
     # .25rem is already exactly core's $o-border-radius. Deleting it would square the button, i.e.
     # move FURTHER from Odoo CE rather than closer, which is the opposite of this file's rule.
-    ("viin_brand_common", "views/webclient_template.xml"): {"border-radius:.25rem"},
+    ("viin_brand_web", "views/webclient_template.xml"): {"border-radius:.25rem"},
     # The statusbar STEP-NUMBER marker (owner request 2026-08-03: the step numbers came back on
     # core's arrow steps). `50%` on a `::after` box whose entire content is a single digit: the
     # circle IS the marker - squared, it stops reading as a step badge and becomes a stray number
@@ -172,7 +171,7 @@ ALLOWED_RADIUS_DECLARATIONS = {
     # This is the successor to the D6 stepper's `.o_viin_step_marker` entry the header describes.
     # That one came with a whole pill restyle (clip-path: none, container padding) and was reverted
     # WITH it; this one is the numbering affordance ALONE, which is the part the owner asked back.
-    ("viin_brand_common", "static/src/views/fields/statusbar/statusbar_steps.scss"):
+    ("viin_brand_web", "static/src/views/fields/statusbar/statusbar_steps.scss"):
         {"border-radius:50%"},
     # OWNER DECISION D5 (square corners, base rung only): the ONE deliberate radius declaration this
     # cluster now ships. `$o-border-radius: 0 !default;` restores a pre-19 brand-identity token (D4)
@@ -180,7 +179,7 @@ ALLOWED_RADIUS_DECLARATIONS = {
     # override, and not a reopening of the dozen-file "bo het" regression this file's header
     # describes: -sm / -lg stay untouched, and this is the ONLY entry pinned to this file, so a
     # second declaration added here tomorrow still fails and gets its own explicit decision.
-    ("viin_brand_common", "static/src/scss/brand_variables.scss"): {"$o-border-radius:0!default"},
+    ("viin_brand_web", "static/src/scss/brand_variables.scss"): {"$o-border-radius:0!default"},
 }
 
 # A radius declaration in authored source: a CSS/custom property `(-*)border-radius:` or a Sass
@@ -499,7 +498,7 @@ class TestThemeRadiusIsCore(TransactionCase):
         """No cluster source file declares a corner radius, except the shape-critical circles and
         owner decision D5's single square-corners token.
 
-        OWNER DECISION D5: `$o-border-radius: 0 !default;` (viin_brand_common/static/src/scss/
+        OWNER DECISION D5: `$o-border-radius: 0 !default;` (viin_brand_web/static/src/scss/
         brand_variables.scss:351) is pinned in ALLOWED_RADIUS_DECLARATIONS by its EXACT normalized
         text, the same discipline as the shape-critical circles - not a reopening of the sweep below,
         and not a loosened rule: any OTHER radius declaration anywhere in the cluster still fails.

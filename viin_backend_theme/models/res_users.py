@@ -12,7 +12,7 @@ class ResUsers(models.Model):
     # menu's drag-reorder only (never user-typed), so no @api.constrains on the format is needed; the
     # JS read path parses it defensively (unknown xmlids ignored, missing apps appended in default
     # sequence), so a stale value can never hide an accessible app. The 'viin_' prefix mirrors
-    # viin_color_scheme (viin_brand_common).
+    # viin_color_scheme (viin_brand_web).
     viin_home_app_order = fields.Char(
         string="Home App Order",
         help="Comma-separated application root-menu xmlids giving this user's preferred home-menu "
@@ -22,7 +22,7 @@ class ResUsers(models.Model):
     @property
     def SELF_READABLE_FIELDS(self):
         # A user may read their own home-menu app order (no admin rights needed). Composes additively
-        # with viin_brand_common's own SELF_READABLE_FIELDS override through the MRO.
+        # with viin_brand_web's own SELF_READABLE_FIELDS override through the MRO.
         return super().SELF_READABLE_FIELDS + ['viin_home_app_order']
 
     @property

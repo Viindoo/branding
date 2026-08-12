@@ -6,7 +6,7 @@
 # test_w1_substrate.py asserted the CONTENT of static/src/scss/dark_surfaces.scss and scheme.scss -
 # ~40 source-text assertions protecting the RETIRED no-reload `[data-bs-theme]` allow-list dark
 # engine. PR #658 C-2 DELETED both files and re-based dark mode on the RECOMPILED web.assets_web_dark
-# bundle owned by viin_brand_common (dark_palette.scss, Option A Layer 1), so those assertions now
+# bundle owned by viin_brand_web (dark_palette.scss, Option A Layer 1), so those assertions now
 # (a) read files that no longer exist and (b) snapshot an architecture that was deliberately removed.
 # Keeping them would red every correct step of the re-architecture, so they are gone. What survived
 # as genuine BEHAVIOUR is folded here, plus the NEW Option-A contract the theme now owns:
@@ -30,9 +30,9 @@
 # recompiles every backend rule. Only the compiled bundle shows whether the done-marker actually
 # renders a readable colour on the dark panel; a source-substring check ("#4FD4E2 appears somewhere")
 # is not a behaviour assertion. So the contrast tests resolve the value a real element COMPUTES
-# through the real cascade, REUSING viin_brand_common's cascade + WCAG SSOT
+# through the real cascade, REUSING viin_brand_web's cascade + WCAG SSOT
 # (tests/test_brand_cascade_compile.py, whose dark arm landed with C-6) instead of re-implementing it
-# (ODOO-AI-ETHOS #11 SSOT). viin_backend_theme depends on viin_brand_common, so that module is always
+# (ODOO-AI-ETHOS #11 SSOT). viin_backend_theme depends on viin_brand_web, so that module is always
 # installed and importable at test time; if it is ever restructured this import is the signal to
 # re-ground, not to fork a second copy of the resolver.
 import os
@@ -40,7 +40,7 @@ import re
 
 from odoo.tests.common import BaseCase, TransactionCase, tagged
 
-from odoo.addons.viin_brand_common.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
     CHROME_BASE,
     CHROME_DEEP,
     DARK_BUNDLE,
@@ -54,9 +54,9 @@ from odoo.addons.viin_brand_common.tests.test_brand_cascade_compile import (
     _winning_declaration,
 )
 # The brand-secondary purple is declared ONLY in SCSS (there is no Python constant for it, unlike
-# the brand primary), so the expected value is READ from viin_brand_common's token SSOT with that
+# the brand primary), so the expected value is READ from viin_brand_web's token SSOT with that
 # module's own resolver rather than re-literalised here (ODOO-AI-ETHOS #11).
-from odoo.addons.viin_brand_common.tests.test_brand_ssot import (
+from odoo.addons.viin_brand_web.tests.test_brand_ssot import (
     BRAND_VARIABLES_SCSS,
     _resolve_scss_hex,
 )
@@ -135,7 +135,7 @@ class TestThemeDarkWidgetContrast(TransactionCase):
     def _compiled_css(self, bundle_name):
         """Compile ``bundle_name`` and return its CSS payload as decoded text (19.0 API:
         ``ir.qweb._get_asset_bundle(name, css=True, js=False).css()`` - same contract as
-        viin_brand_common/tests/test_brand_cascade_compile.py)."""
+        viin_brand_web/tests/test_brand_cascade_compile.py)."""
         bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=True, js=False)
         attachments = bundle.css() or self.env["ir.attachment"]
         css = "".join(
@@ -170,7 +170,7 @@ class TestThemeDarkWidgetContrast(TransactionCase):
     def test_home_menu_section_label_is_the_structure_purple_on_its_own_band(self):
         """The home-menu section label must be the STRUCTURE purple, readable on its band, both schemes.
 
-        OWNER DECISION 2026-08-03. viin_brand_common's COLOUR LAW (brand_variables.scss) reads
+        OWNER DECISION 2026-08-03. viin_brand_web's COLOUR LAW (brand_variables.scss) reads
         TEAL = ACT / PURPLE = META-STRUCTURE. "Applications" is a section label - it organises the
         app grid, it is not something the user can do - so it joins the group-by search facet and
         the list group header as a purple STRUCTURE accent. It previously read
@@ -188,12 +188,12 @@ class TestThemeDarkWidgetContrast(TransactionCase):
         THE SURFACE IS RESOLVED, NOT ASSUMED. The label sits on the menu root's own band, which
         home_menu.scss paints `background-color: var(--secondary-bg)` - a runtime prop that flips
         between the schemes ($gray-200 #E9ECEF light / #0B1315 dark, the latter from
-        viin_brand_common's dark_palette.scss $body-secondary-bg). So the contrast is measured
+        viin_brand_web's dark_palette.scss $body-secondary-bg). So the contrast is measured
         against the band the compiled bundle ACTUALLY declares for that element, in each bundle,
         rather than against a hardcoded page colour that could silently go stale.
 
         STILL NO DARK COMPANION FILE, AND THAT IS PART OF THE CONTRACT: the choice is made at COMPILE
-        time by viin_brand_common's $o-viin-dark-bundle flag, so each bundle carries exactly one
+        time by viin_brand_web's $o-viin-dark-bundle flag, so each bundle carries exactly one
         `color` declaration and there is no cascade fight and no *.dark.scss to keep in sync.
 
         This is the lowest-risk purple in the cluster: `.o_viin_home_section_label` is theme-owned
@@ -206,7 +206,7 @@ class TestThemeDarkWidgetContrast(TransactionCase):
         expected_purple = _resolve_scss_hex(_read(BRAND_VARIABLES_SCSS), "$o-brand-secondary")
         self.assertIsNotNone(
             expected_purple,
-            "$o-brand-secondary must be declared in viin_brand_common's brand_variables.scss - it "
+            "$o-brand-secondary must be declared in viin_brand_web's brand_variables.scss - it "
             "is the SSOT for every META/STRUCTURE purple surface in this cluster.",
         )
         expected_purple = expected_purple.lower()
@@ -239,7 +239,7 @@ class TestThemeDarkWidgetContrast(TransactionCase):
             self.assertNotIn(
                 colour, (CHROME_BASE, CHROME_DEEP),
                 "The %s home-menu section label compiled the teal %s. A section label is "
-                "STRUCTURE, not an ACT - see the colour law in viin_brand_common's "
+                "STRUCTURE, not an ACT - see the colour law in viin_brand_web's "
                 "brand_variables.scss." % (arm, colour),
             )
             if arm == "light":

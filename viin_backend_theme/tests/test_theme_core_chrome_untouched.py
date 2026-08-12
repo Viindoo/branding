@@ -13,7 +13,7 @@
 #      `clip-path: none` on `.o_arrow_button`, which is exactly what turns core's chevron chain into
 #      rectangles - so the guard is "a compiled `clip-path: none` never reaches an arrow button, and
 #      core's polygon geometry is still there". The brand-teal CURRENT arrow the owner does want is
-#      NOT ours and is not touched: viin_brand_common paints it through core's own
+#      NOT ours and is not touched: viin_brand_web paints it through core's own
 #      --o-statusbar-border-active token (see that module's
 #      test_statusbar_current_arrow_outline_is_chrome_base_over_a_light_fill).
 #
@@ -28,7 +28,7 @@
 #      the label, removed the border and added a hairline rule - which pushed the label outside the
 #      button. The guard names each of those four defects as a property that must NOT be declared,
 #      so a partial re-introduction still fails. The Viindoo purple TEXT is deliberately NOT guarded
-#      here: it is viin_brand_common's (--o-stat-text-color, light-only), asserted in that module's
+#      here: it is viin_brand_web's (--o-stat-text-color, light-only), asserted in that module's
 #      test_brand_secondary_text_clears_wcag_aa_on_light_and_dark_surfaces.
 #
 # WHY COMPILED CSS AND A SOURCE SCAN, NOT ONE OR THE OTHER. The compiled assertions describe what a
@@ -38,7 +38,7 @@
 # the source scan holds the other side: the theme's OWN sources must not mention those core hooks at
 # all. Neither half is redundant; both are cheap.
 #
-# THE CASCADE MACHINERY IS REUSED, NOT FORKED (ODOO-AI-ETHOS #11). viin_brand_common already owns a
+# THE CASCADE MACHINERY IS REUSED, NOT FORKED (ODOO-AI-ETHOS #11). viin_brand_web already owns a
 # compiled-CSS cascade resolver, the WCAG helpers and the element ancestor pools for exactly these
 # surfaces; viin_backend_theme depends on that module, so it is always importable at test time.
 import os
@@ -46,7 +46,7 @@ import re
 
 from odoo.tests.common import BaseCase, TransactionCase, tagged
 
-from odoo.addons.viin_brand_common.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
     BACKEND_BUNDLE,
     BUTTONBOX_ANCESTORS,
     CHROME_BASE,
@@ -60,7 +60,7 @@ from odoo.addons.viin_brand_common.tests.test_brand_cascade_compile import (
     _normalize_colour,
     _winning_declaration,
 )
-from odoo.addons.viin_brand_common.tests.test_brand_ssot import (
+from odoo.addons.viin_brand_web.tests.test_brand_ssot import (
     BRAND_VARIABLES_SCSS,
     _resolve_scss_hex,
 )
@@ -83,7 +83,7 @@ NAVBAR = {
     "ancestors": frozenset({"o_web_client", "o_navbar"}),
     "prev_sibling": frozenset(),
 }
-# button_box.xml:5 + form_compiler.js:157-164, transcribed the same way viin_brand_common does.
+# button_box.xml:5 + form_compiler.js:157-164, transcribed the same way viin_brand_web does.
 BUTTONBOX = {
     "classes": frozenset({
         "o-form-buttonbox", "d-print-none", "position-relative", "d-flex", "w-md-auto",
@@ -100,7 +100,7 @@ STAT_BUTTON = {
     "prev_sibling": frozenset(),
 }
 # The icon is the first child of the stat button; the label is the first child of .o_stat_info
-# (button_box renders text then value - which is why viin_brand_common models .o_stat_text as the
+# (button_box renders text then value - which is why viin_brand_web models .o_stat_text as the
 # VALUE's previous sibling).
 STAT_ICON = {
     "classes": frozenset({"o_button_icon"}),
@@ -264,7 +264,7 @@ class TestCoreChromeIsUntouched(TransactionCase):
         entry from `%-main-navbar-entry-base`, whose `o-hover-text-color()` emits
         `color: var(--NavBar-entry-color, #{$o-navbar-entry-color})`
         (web/static/src/webclient/navbar/navbar.variables.scss:34-50). Nothing in the addons path
-        declares --NavBar-entry-color, so the Sass fallback wins - and viin_brand_common pins
+        declares --NavBar-entry-color, so the Sass fallback wins - and viin_brand_web pins
         `$o-navbar-entry-color: #FFFFFF`. Replacing core's <Dropdown> dropped the `dropdown-toggle`
         class that selects that rule, and the `text-reset` we substituted resolved `inherit` up to
         the body colour. Giving the button core's own `o_nav_entry` class puts it back on that rule.
@@ -296,7 +296,7 @@ class TestCoreChromeIsUntouched(TransactionCase):
         expected = _resolve_scss_hex(_read(BRAND_VARIABLES_SCSS), "$o-navbar-entry-color")
         self.assertIsNotNone(
             expected,
-            "$o-navbar-entry-color must be declared in viin_brand_common's brand_variables.scss - "
+            "$o-navbar-entry-color must be declared in viin_brand_web's brand_variables.scss - "
             "it is the SSOT this guard reads the expected navbar-entry colour from.",
         )
         expected = expected.lower()
@@ -349,7 +349,7 @@ class TestCoreChromeIsUntouched(TransactionCase):
         difference between the two screenshots.
 
         WHAT IS DELIBERATELY NOT ASSERTED HERE: the Viindoo purple stat TEXT. It survives the revert
-        and belongs to viin_brand_common (--o-stat-text-color, light-only), which guards it in
+        and belongs to viin_brand_web (--o-stat-text-color, light-only), which guards it in
         test_brand_secondary_text_clears_wcag_aa_on_light_and_dark_surfaces. Duplicating it here
         would fork the SSOT."""
         for bundle_name in BUNDLES:

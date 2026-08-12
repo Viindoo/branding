@@ -6,7 +6,7 @@
 Viindoo Backend Theme (viin_backend_theme)
 ==========================================
 A PURELY ADDITIVE Odoo 19 backend redesign layer on top of the Viindoo branding base
-(``viin_brand_common`` + ``viin_brand_mail``), which already own the de-brand and the AA teal
+(``viin_brand_web`` + ``viin_brand_mail``), which already own the de-brand and the AA teal
 chrome cascade. This theme adds ONLY what the base does not:
 
 * an instant, no-reload dark mode (native ``[data-bs-theme]`` on Bootstrap's own ``--bs-*``);
@@ -15,7 +15,7 @@ chrome cascade. This theme adds ONLY what the base does not:
 * Montserrat / Roboto typography.
 
 It re-declares NO brand hex and re-implements NONE of the base cascade: the brand-primary SSOT is
-read from ``viin_brand_common``. There is ZERO ``--viin-*`` parallel token system - Viindoo supplies
+read from ``viin_brand_web``. There is ZERO ``--viin-*`` parallel token system - Viindoo supplies
 values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
 """,
     'author': "Viindoo",
@@ -29,8 +29,8 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
     # the OCA `web_responsive`, both dropped from the repo). `old_technical_name` carries the old
     # module's install state over to this one on upgrade - the standard Viindoo module-rename key.
     'old_technical_name': 'to_backend_theme',
-    # viin_brand reached transitively via viin_brand_common; mail chrome (chat window etc.) via viin_brand_mail.
-    'depends': ['web', 'viin_brand_common', 'viin_brand_mail'],
+    # viin_brand reached transitively via viin_brand_web; mail chrome (chat window etc.) via viin_brand_mail.
+    'depends': ['web', 'viin_brand_web', 'viin_brand_mail'],
     # Server QWeb inherit on web.webclient_bootstrap (theme-owned): the density boot stamp
     # (data-viin-density on <html> for FOUC-free first render) + the pinch-to-zoom viewport override
     # (WCAG SC 1.4.4). This is a SERVER template rendered at boot, so it loads via 'data', not an OWL
@@ -40,7 +40,7 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
         'views/webclient_templates.xml',
     ],
     'assets': {
-        # Loads BEFORE core primary_variables.scss, and AFTER viin_brand_common's brand_variables.scss
+        # Loads BEFORE core primary_variables.scss, and AFTER viin_brand_web's brand_variables.scss
         # (a dependency, so it is earlier in this same bundle) - so $o-brand-primary is already defined
         # when this file reads it. Adds ONLY the dark-surface rebinds + typography the base lacks.
         'web._assets_primary_variables': [
@@ -56,7 +56,7 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
         # ($o-border-radius / -sm / -lg, web/static/src/scss/primary_variables.scss:218-220, fed into
         # $border-radius* by core bootstrap_overridden.scss:99-101). Guarded by
         # tests/test_theme_radius_is_core.py - re-adding any radius declaration turns it RED.
-        # C-5 (PR #658): the frontend (login) $primary de-brand lives in viin_brand_common (the base
+        # C-5 (PR #658): the frontend (login) $primary de-brand lives in viin_brand_web (the web
         # de-brand owner), which re-points $theme-colors['primary'] to the AA teal on
         # web.assets_frontend as an OVERRIDABLE default. This theme contributes NOTHING to the public
         # frontend bundle: the D16 login redesign (login.scss split-screen) was removed (owner: theme
@@ -65,10 +65,10 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
             'viin_backend_theme/static/src/scss/fonts.scss',
             # C-2 (PR #658): the no-reload dark layer (scheme.scss runtime [data-bs-theme] var flip +
             # the 426-line dark_surfaces.scss allow-list) is RETIRED. Dark now recompiles through
-            # viin_brand_common/static/src/scss/dark_palette.scss on web.assets_web_dark (Option A
+            # viin_brand_web/static/src/scss/dark_palette.scss on web.assets_web_dark (Option A
             # Layer 1), so core's own rules recompile dark-correct with no allow-list and no
             # !important war. The color-scheme correctness fix from scheme.scss moved to the base
-            # (viin_brand_common/static/src/scss/color_scheme.scss).
+            # (viin_brand_web/static/src/scss/color_scheme.scss).
             # W4 unit-b - density size rules ([data-viin-density] attribute-scoped, 44px/34px rows;
             # NO custom property, NO color). Attribute stamped by W4a boot + flipped by viin_theme.
             'viin_backend_theme/static/src/scss/density.scss',
@@ -108,13 +108,13 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
             #    giu cai mui ten nhu mac dinh"): the theme's `clip-path: none` + gap + numbered
             #    markers turned core's chevron chain into rectangles. Deleting the whole unit -
             #    rather than re-tuning it - is what restores core exactly; the brand-teal current
-            #    arrow the owner DOES want is untouched, because it is painted by viin_brand_common
+            #    arrow the owner DOES want is untouched, because it is painted by viin_brand_web
             #    through core's own --o-statusbar-border-active token, not by this theme.
             #  * D7 button-box stat strip (views/form/button_box/button_box.scss) is GONE. Its teal
             #    icon holder + uppercase label + border-0/gap reflow pushed the label outside the
             #    button and added a stray hairline rule. Core's default layout (icon left, label
             #    above value, inside the bordered box) is restored; the Viindoo purple stat TEXT
-            #    stays, owned by viin_brand_common's --o-stat-text-color (light-only).
+            #    stays, owned by viin_brand_web's --o-stat-text-color (light-only).
             # Guarded by tests/test_theme_core_chrome_untouched.py.
             'viin_backend_theme/static/src/search/control_panel/control_panel.scss',
             'viin_backend_theme/static/src/core/notebook/notebook.scss',
@@ -154,7 +154,7 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
             # custom properties.
             #  - viin_theme service (PR #658 T-1): the SCHEME toggle PERSISTS (color_scheme cookie +
             #    res.users.viin_color_scheme ORM write) then RELOADS - dark is the recompiled
-            #    web.assets_web_dark bundle owned by viin_brand_common, which a server-selected bundle
+            #    web.assets_web_dark bundle owned by viin_brand_web, which a server-selected bundle
             #    cannot swap without a reload. DENSITY stays INSTANT (dataset.viinDensity +
             #    viin_density cookie, no reload).
             'viin_backend_theme/static/src/webclient/viin_theme_service.js',
@@ -173,7 +173,7 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
         # web.assets_web include, so it wins on source order at equal specificity; being absent from
         # web.assets_backend, it never leaks the dark teal into light mode.
         # (statusbar_field.dark.scss was removed with the D6 stepper revert above - core's arrow
-        # statusbar needs no dark arm from us: viin_brand_common's dark bundle recompiles it.)
+        # statusbar needs no dark arm from us: viin_brand_web's dark bundle recompiles it.)
         'web.assets_web_dark': [
             'viin_backend_theme/static/src/views/view_components/nocontent_helper.dark.scss',
             'viin_backend_theme/static/src/views/view_components/selection_box.dark.scss',
