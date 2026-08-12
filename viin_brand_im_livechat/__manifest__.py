@@ -38,7 +38,7 @@ Editions Supported
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['im_livechat', 'viin_brand_common'],
+    'depends': ['im_livechat'],
 
     # always loaded
     'demo': [
