@@ -16,10 +16,82 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_web
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.login_layout
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.webclient_bootstrap
+msgid "/viin_brand/static/img/favicon.ico"
+msgstr "/viin_brand/static/img/favicon.ico"
+
+#. module: viin_brand_web
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.login_layout
+msgid "<span>Viindoo</span>"
+msgstr ""
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
+msgid "Access to all Enterprise Apps"
+msgstr "Truy cập đến tất cả các ứng dụng Enterprise"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
+msgid "And more"
+msgstr "Và thêm nữa"
+
+#. module: viin_brand_web
+#: model:ir.model.fields,help:viin_brand_web.field_res_users__viin_color_scheme
+msgid ""
+"Backend appearance: Light, Dark, or System (follow the device preference)."
+msgstr ""
+"Giao diện nền: Sáng, Tối, hoặc Hệ thống (theo tùy chọn của thiết bị)."
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
+msgid "Bugfixes guarantee"
+msgstr "Cam kết sửa lỗi"
+
+#. module: viin_brand_web
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.webclient_offline
+msgid "Check again"
+msgstr "Kiểm tra lại"
+
+#. module: viin_brand_web
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.webclient_offline
+msgid ""
+"Check your network connection and come back here. Viindoo will load as soon "
+"as you're back online."
+msgstr ""
+"Kiểm tra kết nối mạng của bạn và quay lại đây. Viindoo sẽ tải ngay khi bạn "
+"trực tuyến trở lại."
+
+#. module: viin_brand_web
+#: model:ir.model.fields,field_description:viin_brand_web.field_res_users__viin_color_scheme
+msgid "Color Scheme"
+msgstr "Chế độ màu"
+
+#. module: viin_brand_web
 #. odoo-javascript
 #: code:addons/viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml:0
 msgid "Copyright © 2019"
 msgstr "Bản quyền © 2019"
+
+#. module: viin_brand_web
+#: model:ir.model.fields.selection,name:viin_brand_web.selection__res_users__viin_color_scheme__dark
+msgid "Dark"
+msgstr "Tối"
+
+#. module: viin_brand_web
+#: model:ir.model.fields,field_description:viin_brand_web.field_ir_http__display_name
+#: model:ir.model.fields,field_description:viin_brand_web.field_res_users__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/webclient/user_menu_item.js:0
+msgid "Documentation"
+msgstr "Tài liệu"
 
 #. module: viin_brand_web
 #. odoo-javascript
@@ -29,12 +101,165 @@ msgstr "Chứng nhận GNU LGPL"
 
 #. module: viin_brand_web
 #. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
+msgid "Get this feature and much more with System Enterprise!"
+msgstr "Nhận tính năng này và nhiều tính năng khác với System Enterprise!"
+
+#. module: viin_brand_web
+#: model:ir.model,name:viin_brand_web.model_ir_http
+msgid "HTTP Routing"
+msgstr "Định tuyến HTTP"
+
+#. module: viin_brand_web
+#: model:ir.model.fields,field_description:viin_brand_web.field_ir_http__id
+#: model:ir.model.fields,field_description:viin_brand_web.field_res_users__id
+msgid "ID"
+msgstr "ID"
+
+#. module: viin_brand_web
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.view_users_form_simple_modif
+msgid "Learn more"
+msgstr "Tìm hiểu thêm"
+
+#. module: viin_brand_web
+#: model:ir.model.fields.selection,name:viin_brand_web.selection__res_users__viin_color_scheme__light
+msgid "Light"
+msgstr "Sáng"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
+msgid "Mobile support"
+msgstr "Tương thích trên điện thoại"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/webclient/user_menu_item.js:0
+msgid "My Viindoo.com account"
+msgstr "Tài khoản Viindoo.com"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
+msgid "New design"
+msgstr "Thiết kế Mới"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
+msgid "Odoo Warning"
+msgstr "Cảnh báo hệ thống"
+
+#. module: viin_brand_web
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.webclient_offline
+msgid "Offline"
+msgstr "Ngoại tuyến"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_notifications.js:0
+msgid "Ok"
+msgstr "Ok"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/views/widgets/notification_alert/notification_alert.xml:0
+msgid ""
+"Push notifications have been blocked. Go to your browser settings to allow "
+"them."
+msgstr ""
+"Thông báo đẩy đã bị chặn. Vào cài đặt trình duyệt của bạn để cho phép "
+"chúng."
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.xml:0
+#: code:addons/viin_brand_web/static/src/core/errors/error_notifications.js:0
+msgid "Session Expired"
+msgstr "Phiên đăng nhập hết hạn"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/webclient/user_menu_item.js:0
+msgid "Support"
+msgstr "Hỗ trợ"
+
+#. module: viin_brand_web
+#: model:ir.model.fields.selection,name:viin_brand_web.selection__res_users__viin_color_scheme__auto
+msgid "System"
+msgstr "Hệ thống"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
+msgid "System Client Error"
+msgstr "Lỗi Hệ thống Client"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
+msgid "System Enterprise"
+msgstr "System Enterprise"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
+msgid "System Error"
+msgstr "Lỗi Hệ thống"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
+msgid "System Network Error"
+msgstr "Lỗi Hệ thống mạng"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
+msgid "Upgrade to future versions"
+msgstr "Nâng cấp đến các phiên bản tương lai"
+
+#. module: viin_brand_web
+#: model:ir.model,name:viin_brand_web.model_res_users
+msgid "User"
+msgstr "Người dùng"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/install_scoped_app/install_scoped_app.xml:0
 #: code:addons/viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml:0
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.brand_promotion_message
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.login_layout
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.webclient_bootstrap
 msgid "Viindoo"
 msgstr "Hệ thống Viindoo"
 
 #. module: viin_brand_web
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.webclient_offline
+msgid "Viindoo logo"
+msgstr "Biểu trưng Viindoo"
+
+#. module: viin_brand_web
 #. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/install_scoped_app/install_scoped_app.xml:0
 #: code:addons/viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml:0
 msgid "Viindoo."
 msgstr ""
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
+msgid "Warning"
+msgstr "Cảnh báo"
+
+#. module: viin_brand_web
+#: model_terms:ir.ui.view,arch_db:viin_brand_web.webclient_offline
+msgid "You are offline"
+msgstr "Bạn đang Ngoại tuyến"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.xml:0
+#: code:addons/viin_brand_web/static/src/core/errors/error_notifications.js:0
+msgid "Your session expired. The current page is about to be refreshed."
+msgstr "Phiên đăng nhập của bạn đã hết hạn. Trang hiện tại sắp được tải lại."

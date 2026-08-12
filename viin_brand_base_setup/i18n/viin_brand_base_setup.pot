@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* viin_brand_common
+# 	* viin_brand_base_setup
 #
 msgid ""
 msgstr ""
@@ -15,291 +15,73 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.login_layout
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_bootstrap
-msgid "/viin_brand/static/img/favicon.ico"
-msgstr ""
-
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.login_layout
-msgid "<span>Viindoo</span>"
-msgstr ""
-
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.res_config_settings_view_form
+#. module: viin_brand_base_setup
+#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.res_config_settings_view_form
 msgid ""
 "API Keys allow your users to access the system with external tools when "
 "multi-factor authentication is enabled."
 msgstr ""
 
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "Access to all Enterprise Apps"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "And more"
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model.fields,help:viin_brand_common.field_res_users__viin_color_scheme
-msgid ""
-"Backend appearance: Light, Dark, or System (follow the device preference)."
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "Bugfixes guarantee"
-msgstr ""
-
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_module_filter
+#. module: viin_brand_base_setup
+#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.view_module_filter
 msgid "By Odoo"
 msgstr ""
 
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_module_filter
+#. module: viin_brand_base_setup
+#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.view_module_filter
 msgid "By Viindoo / TVTMA"
 msgstr ""
 
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
-msgid "Check again"
-msgstr ""
-
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
-msgid ""
-"Check your network connection and come back here. Viindoo will load as soon "
-"as you're back online."
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model.fields,field_description:viin_brand_common.field_res_users__viin_color_scheme
-msgid "Color Scheme"
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model.fields,help:viin_brand_common.field_ir_mail_server__from_filter
+#. module: viin_brand_base_setup
+#: model:ir.model.fields,help:viin_brand_base_setup.field_ir_mail_server__from_filter
 msgid ""
 "Comma-separated list of addresses or domains for which this server can be used.\n"
 "e.g.: 'notification@viindoo.com' or 'viindoo.com'"
 msgstr ""
 
-#. module: viin_brand_common
-#: model:ir.model.fields.selection,name:viin_brand_common.selection__res_users__viin_color_scheme__dark
-msgid "Dark"
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model.fields,field_description:viin_brand_common.field_ir_http__display_name
-#: model:ir.model.fields,field_description:viin_brand_common.field_ir_mail_server__display_name
-#: model:ir.model.fields,field_description:viin_brand_common.field_res_users__display_name
+#. module: viin_brand_base_setup
+#: model:ir.model.fields,field_description:viin_brand_base_setup.field_ir_mail_server__display_name
 msgid "Display Name"
 msgstr ""
 
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
-msgid "Documentation"
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model.fields,field_description:viin_brand_common.field_ir_mail_server__from_filter
+#. module: viin_brand_base_setup
+#: model:ir.model.fields,field_description:viin_brand_base_setup.field_ir_mail_server__from_filter
 msgid "FROM Filtering"
 msgstr ""
 
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "Get this feature and much more with System Enterprise!"
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model,name:viin_brand_common.model_ir_http
-msgid "HTTP Routing"
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model.fields,field_description:viin_brand_common.field_ir_http__id
-#: model:ir.model.fields,field_description:viin_brand_common.field_ir_mail_server__id
-#: model:ir.model.fields,field_description:viin_brand_common.field_res_users__id
+#. module: viin_brand_base_setup
+#: model:ir.model.fields,field_description:viin_brand_base_setup.field_ir_mail_server__id
 msgid "ID"
 msgstr ""
 
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_users_form_simple_modif
-msgid "Learn more"
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model.fields.selection,name:viin_brand_common.selection__res_users__viin_color_scheme__light
-msgid "Light"
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model,name:viin_brand_common.model_ir_mail_server
+#. module: viin_brand_base_setup
+#: model:ir.model,name:viin_brand_base_setup.model_ir_mail_server
 msgid "Mail Server"
 msgstr ""
 
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "Mobile support"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
-msgid "My Viindoo.com account"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "New design"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.js:0
-msgid "Odoo Warning"
-msgstr ""
-
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
-msgid "Offline"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/errors/error_notifications.js:0
-msgid "Ok"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/views/widgets/notification_alert/notification_alert.xml:0
-msgid ""
-"Push notifications have been blocked. Go to your browser settings to allow "
-"them."
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.xml:0
-#: code:addons/viin_brand_common/static/src/core/errors/error_notifications.js:0
-msgid "Session Expired"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/webclient/user_menu_item.js:0
-msgid "Support"
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model.fields.selection,name:viin_brand_common.selection__res_users__viin_color_scheme__auto
-msgid "System"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.js:0
-msgid "System Client Error"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "System Enterprise"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.js:0
-msgid "System Error"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.js:0
-msgid "System Network Error"
-msgstr ""
-
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.res_config_settings_view_form
+#. module: viin_brand_base_setup
+#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.res_config_settings_view_form
 msgid ""
 "This name will be used for the application when it is installed through the "
 "browser."
 msgstr ""
 
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "Upgrade to future versions"
-msgstr ""
-
-#. module: viin_brand_common
-#: model:ir.model,name:viin_brand_common.model_res_users
-msgid "User"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/install_scoped_app/install_scoped_app.xml:0
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.brand_promotion_message
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.login_layout
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.res_config_settings_view_form
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_bootstrap
+#. module: viin_brand_base_setup
+#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.res_config_settings_view_form
 msgid "Viindoo"
 msgstr ""
 
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
-msgid "Viindoo logo"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/install_scoped_app/install_scoped_app.xml:0
-msgid "Viindoo."
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.js:0
-msgid "Warning"
-msgstr ""
-
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.res_config_settings_view_form
+#. module: viin_brand_base_setup
+#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.res_config_settings_view_form
 msgid ""
 "When populating your address book, the system provides a list of matching "
 "companies. When selecting one item, the company data and logo are auto-"
 "filled."
 msgstr ""
 
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.webclient_offline
-msgid "You are offline"
-msgstr ""
-
-#. module: viin_brand_common
-#. odoo-javascript
-#: code:addons/viin_brand_common/static/src/core/errors/error_dialogs.xml:0
-#: code:addons/viin_brand_common/static/src/core/errors/error_notifications.js:0
-msgid "Your session expired. The current page is about to be refreshed."
-msgstr ""
-
-#. module: viin_brand_common
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_company_form
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_partner_address_form
-#: model_terms:ir.ui.view,arch_db:viin_brand_common.view_partner_form
+#. module: viin_brand_base_setup
+#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.view_company_form
+#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:viin_brand_base_setup.view_partner_form
 msgid "e.g. https://viindoo.com"
 msgstr ""
