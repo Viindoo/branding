@@ -1,4 +1,4 @@
-# Mail-server de-brand guard (ODOO-AI-ETHOS #8). Once viin_brand_common is installed, no Odoo
+# Mail-server de-brand guard (ODOO-AI-ETHOS #8). Once viin_brand_base_setup is installed, no Odoo
 # wordmark may leak through user-facing field help. Core Odoo 19.0 ir.mail_server.from_filter help
 # (OSM-grounded, declared in base) reads:
 #     Comma-separated list of addresses or domains for which this server can be used.
@@ -34,6 +34,6 @@ class MailServerDebrandTest(TransactionCase):
         self.assertNotIn(
             "odoo", lowered,
             "ir.mail_server.from_filter help still carries the Odoo wordmark (%r). "
-            "viin_brand_common must override this field's help with Viindoo-branded text "
+            "viin_brand_base_setup must override this field's help with Viindoo-branded text "
             "(e.g. an example using \"viindoo.com\")." % help_text,
         )

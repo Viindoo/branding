@@ -1,6 +1,6 @@
 # Module-owned QWeb-directive hygiene guard (DESIGN 4c title-xpath row / ODOO-AI-ETHOS #8).
 #
-# CONTRACT: viin_brand_common must ship NO deprecated QWeb directive (t-esc / t-raw) in its own
+# CONTRACT: viin_brand_base_setup must ship NO deprecated QWeb directive (t-esc / t-raw) in its own
 # module-owned view data - it uses the modern t-out directive instead. A re-introduced value-bearing
 # t-esc/t-raw in this module MUST fail this test.
 #
@@ -95,6 +95,6 @@ class TitleDebrandSourceGuardTest(TransactionCase):
                     )
         self.assertFalse(
             offenders,
-            "viin_brand_common ships a deprecated QWeb directive in its own view data; use the "
+            "viin_brand_base_setup ships a deprecated QWeb directive in its own view data; use the "
             "modern t-out directive instead. Offenders:\n%s" % "\n".join(offenders),
         )
