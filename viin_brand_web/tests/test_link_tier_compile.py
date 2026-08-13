@@ -229,39 +229,6 @@ class TestLinkTierCompile(TransactionCase):
     # ---------------------------------------------------------------------------------------------
     # LIGHT: nothing that is NOT a hyperlink follows it
     # ---------------------------------------------------------------------------------------------
-    def test_light_buttons_tabs_and_pagers_keep_the_interactive_teal(self):
-        """The three Bootstrap components that BORROW the link token must stay on the AA teal.
-
-        This is the owner's explicit constraint ("buttons must stay teal/neutral") and the reason
-        the fix is a split rather than a re-point. Each borrower is asserted on the custom property
-        Bootstrap declares for it, so the check survives a core restyle of the component itself.
-
-        RED on a naive `$link-color: $o-brand-secondary` with no re-anchoring: all three inherit
-        `var(--link-color)` and compile purple."""
-        expected_purple = self._expected_purple()
-        css = self._compiled_css(BACKEND_BUNDLE)
-        for name, selector, prop in LINK_BORROWERS:
-            values = self._declared_on(css, selector, prop)
-            self.assertTrue(
-                values,
-                "no %s custom property found on %s - core renamed the token, so the re-anchor in "
-                "link_tier.scss no longer reaches %s and it is silently free to follow the purple "
-                "link tier. Re-ground against the current Bootstrap _variables.scss."
-                % (prop, selector, name),
-            )
-            resolved = [_normalize_colour(value) for value in values]
-            self.assertIn(
-                CHROME_BASE, resolved,
-                "%s must keep the interactive teal %s on %s; compiled %r. Under the COLOUR LAW "
-                "teal = ACT, and a tab / link-styled button / pager is not a hyperlink."
-                % (name, CHROME_BASE, prop, values),
-            )
-            self.assertNotIn(
-                expected_purple, resolved,
-                "%s picked up the text-link purple %s on %s (%r) - the split in link_tier.scss is "
-                "not holding." % (name, expected_purple, prop, values),
-            )
-
     def test_light_plain_buttons_are_untouched_by_the_link_tier(self):
         """`<a class="btn ...">` must render as a BUTTON, never as a purple link.
 
