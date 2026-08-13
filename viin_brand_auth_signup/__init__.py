@@ -20,7 +20,7 @@ def _force_branding_translations(env):
 
     importer = TranslationImporter(env.cr, verbose=False)
     for lang in lang_codes:
-        for po_path in get_po_paths(_MODULE_NAME, lang, env=env):
+        for po_path in get_po_paths(_MODULE_NAME, lang):
             importer.load_file(po_path, lang)
     importer.save(overwrite=True, force_overwrite=True)
 
