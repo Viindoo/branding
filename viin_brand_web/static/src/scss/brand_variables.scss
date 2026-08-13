@@ -75,7 +75,7 @@ $o-navbar-background: #007F8E !default;
 // renders on decorative brand surfaces - only the interactive/text tier darkens.
 // SSOT (C-8): both aliased to the single #007F8E declaration ($o-navbar-background above).
 $primary: $o-navbar-background !default;             // interactive surface: root --primary + $primary-derived
-$o-main-link-color: $o-navbar-background !default;   // interactive text: --link-color (+ --link-color-rgb 0,127,142)
+$o-main-link-color: #7f4282 !default;   // interactive text: --link-color (+ --link-color-rgb 0,127,142)
 
 // --- Primary BUTTON surface (2026-07-24 AA-contrast decision) -------------------------------
 // The primary BUTTON is a SEPARATE core lever from $primary: web/static/src/scss/
@@ -327,28 +327,6 @@ $o-viin-text-secondary: #6C757D !default;
 $o-font-family-sans-serif: o-add-unicode-support-font(
     (Roboto, "Lucida Grande", Helvetica, Verdana, Arial, sans-serif), 1
 ) !default;
-
-// --- SQUARE CORNERS (R-2 restore, owner decision D4) ----------------------------------------
-// RESTORED TOKEN. The same deleted file forced `$border-radius: 0` cluster-wide; 19.0 replaced it
-// with nothing, so every Bootstrap component reverted to Odoo's rounded default. Purely visual,
-// zero error - the definition of a silent loss.
-//
-// NATIVE LEVER, not $border-radius directly, and the same compile-order mechanism as the font
-// token above:
-//   web/static/src/scss/bootstrap_overridden.scss:99   $border-radius: $o-border-radius !default;
-//   web/static/src/scss/primary_variables.scss:218     $o-border-radius: o-to-rem(4px) !default;
-// Setting 0 here FIRST no-ops core's 4px default, and every $border-radius-derived surface
-// (buttons, cards, inputs, badges, dropdowns) squares off through core's own chain.
-//
-// BACKEND-ONLY, matching the retired file's scope: bootstrap_overridden_frontend.scss carries no
-// border-radius / o-border reference whatsoever (verified), so the website keeps core's rounding.
-//
-// SCOPE - the BASE rung ONLY. The pre-19 layer set $border-radius: 0 and left the -sm / -lg rungs
-// at core defaults, so $o-border-radius-sm (3px) / $o-border-radius-lg (6px) are deliberately NOT
-// zeroed and core's bootstrap_overridden.scss:100-101 keeps deriving them unchanged. Nothing
-// downstream contests this: viin_backend_theme declares no radius token at all, so this is the
-// single declaration in the cluster.
-$o-border-radius: 0 !default;
 
 // --- Deliberately NOT set here (scope discipline) -------------------------------------------
 // $o-theme-text-colors: left at its core default - a contrast-tuned text-variant map with no
