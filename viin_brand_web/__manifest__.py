@@ -168,7 +168,14 @@ Editions Supported
             # grouped with this module's other eager core/ side-effect modules.
             'viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.js',
             'viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml',
-            'viin_brand_web/static/src/webclient/webclient.js',
+            # 2026-08-17: de-brand the title SERVICE's own empty-composition fallback, relocated
+            # from the retired webclient/webclient.js (branding core-test regressions run,
+            # decisions.md "Decided without a gate" #5 - the old WebClient.setup() patch injected
+            # a PERMANENT title part that leaked into every later composed title, e.g.
+            # "Viindoo - Hello, world!" instead of "Hello, world!"). Eager side-effect module,
+            # grouped with this module's other eager core/ patches (colors.js, error_dialogs.js,
+            # upgrade_dialog.js) - order-immune once web.assets_web's include has run.
+            'viin_brand_web/static/src/core/browser/title_service.js',
             'viin_brand_web/static/src/webclient/user_menu_item.js',
             'viin_brand_web/static/src/views/widgets/**/*',
             # 2026-08-03: numbered steps on core's ARROW statusbar (owner: the step numbers went
@@ -207,6 +214,15 @@ Editions Supported
             # it). Authored before the production fix lands - see error_dialogs_debrand.test.js's
             # header for the static RED argument.
             'viin_brand_web/static/tests/error_dialogs_debrand.test.js',
+            # 2026-08-17: RED test-first guard for the title-service relocation (branding
+            # core-test regressions run, decisions.md "Decided without a gate" #5). Protects two
+            # rules at once: an otherwise-empty title composition must fall back to the Viindoo
+            # de-brand (never core's stock "Odoo"), and that de-brand must never leak into a title
+            # that DOES have a composed part (the exact corruption caught by production tour
+            # website_event.tests.test_website_event.TestUi.test_website_event_pages_seo step
+            # [8/8]). Authored before the production fix lands - see
+            # title_service_debrand.test.js's header for the static RED argument.
+            'viin_brand_web/static/tests/title_service_debrand.test.js',
         ],
         'web.assets_tests': [
             'viin_brand_web/static/tests/tours/about_debrand_tour.js',
