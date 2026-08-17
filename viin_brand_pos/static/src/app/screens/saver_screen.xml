@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.SaverScreen" t-inherit-mode="extension">
-        <xpath expr="//div/img" position="attributes">
-            <attribute name="src">/viin_brand_pos/static/src/img/Viindoo-logo-slogan-half-inverted.svg</attribute>
+        <!-- Core 19.0's SaverScreen carries no img tag, only a shared "pos-logo" div (also used
+             by this module's own navbar.xml, and styled by core's navbar.scss from the
+             navbar logo CSS custom property set below). Mirror navbar.xml's own working
+             pattern instead of attribute-patching a non-existent img tag. -->
+        <xpath expr="//div[hasclass('pos-logo')]" position="attributes">
+            <attribute name="style">--navbar-logo: url('/viin_brand_pos/static/src/img/Viindoo-logo-slogan-half-inverted.svg')</attribute>
         </xpath>
     </t>
 </templates>

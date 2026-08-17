@@ -88,6 +88,13 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
         'point_of_sale.assets_prod': [
             'viin_brand_pos/static/src/css/**/*',
         ],
+        'web.assets_tests': [
+            # Files in /static/tests/tours are loaded in the backend in test
+            # mode - the same bundle core's own point_of_sale POS tours load
+            # from (point_of_sale/__manifest__.py). Mirrors
+            # ViinBrandPosSaverScreenLogoTour's own header comment.
+            'viin_brand_pos/static/tests/tours/**/*',
+        ],
         'web.assets_unit_tests': [
             # navbar_favicon_guard.test.js mounts the REAL point_of_sale Navbar via
             # setupPosEnv()/mountWithCleanup() (point_of_sale's own web.assets_unit_tests_setup
