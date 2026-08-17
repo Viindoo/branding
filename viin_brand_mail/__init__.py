@@ -7,6 +7,7 @@ if tools.config.get('test_enable', False):
     from unittest.mock import patch
 
     from odoo.addons.mail.tests.common import MailCommon
+    from odoo.addons.mail.tests.discuss.test_ui import TestUi as CoreDiscussTestUi
 
     from .models.mail_thread import MailThread as ViinBrandMailThread
     try:
@@ -78,6 +79,17 @@ def _restore_core_bot_branding_fixture(setup_class_original):
     class transaction and is rolled back on teardown, so it never reaches committed
     data - unlike the previous implementation, which performed this same write from
     `post_init_hook`, i.e. on the production install path.
+
+    `mail.tests.discuss.test_ui.TestUi` (its `test_05_can_create_channel_tour`
+    tour renders the Discuss sidebar and reads the bot's live `name`) is
+    wrapped SEPARATELY with this same builder rather than being covered by the
+    MailCommon fixture above: it derives from `base.tests.common.
+    HttpCaseWithUserDemo`, a plain `HttpCase` mixin used by ~30 unrelated core
+    suites across `website`, `sale`, `im_livechat`, `digest`, etc. that have no
+    stake in the bot's naming - wrapping `HttpCaseWithUserDemo` itself would
+    restore core's naming for all of them too, far beyond what this fixture
+    needs to cover. Targeting `TestUi` alone keeps the blast radius to the one
+    class that actually needs it.
     """
     def setUpClass(cls):
         setup_class_original(cls)
@@ -93,6 +105,13 @@ def post_load():
     if not tools.config.get('test_enable', False):
         return
     MailCommon.setUpClass = _restore_core_bot_branding_fixture(MailCommon.setUpClass.__func__)
+    # mail.tests.discuss.test_ui.TestUi derives from HttpCaseWithUserDemo (NOT MailCommon), so the
+    # MailCommon fixture above misses it too - same reason as TestSyncGoogle below. Its
+    # test_05_can_create_channel_tour tour renders the Discuss sidebar and asserts the literal
+    # "OdooBot" text; wrapped narrowly on TestUi itself (not on HttpCaseWithUserDemo, which ~30
+    # unrelated core suites also derive from - see the docstring above) to keep the fixture's blast
+    # radius to exactly the one suite that needs it.
+    CoreDiscussTestUi.setUpClass = _restore_core_bot_branding_fixture(CoreDiscussTestUi.setUpClass.__func__)
     # google_calendar's sync suites derive from HttpCase (NOT MailCommon), so the MailCommon fixture
     # above misses them. They hardcode the stock bot address odoobot@example.com in ~14 expected
     # google-API organizer/attendee payloads (test_sync_odoo2google.py); the event organizer is
