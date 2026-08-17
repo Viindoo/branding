@@ -64,8 +64,12 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 MODULE_DIR = os.path.dirname(_HERE)
 HOME_MENU_SCSS = os.path.join(MODULE_DIR, "static", "src", "home_menu", "home_menu.scss")
 
-# An app TILE and its label, transcribed from home_menu.xml:42-51 -
-# `.o_viin_home_grid` > `<button class="o_app o_viin_home_app ...">` > `<span class="o_viin_home_app_name">`.
+# An app TILE and its label, transcribed from home_menu.xml -
+# `.o_viin_home_grid` > `<a class="o_app o_viin_home_app ..." href="...">` > `<span class="o_viin_home_app_name">`.
+# (The tile became an anchor on 2026-08-17 so core's app-switch tours can resolve
+# `a[data-menu-xmlid="<app>"]`, exactly as core renders its own apps menu. The CLASS list is
+# byte-for-byte what the previous <button> carried, which is why this contrast model is unaffected -
+# the cascade resolver keys on classes, and none of them changed.)
 HOME_TILE_CLASSES = frozenset({"o_app", "o_viin_home_app", "d-flex", "flex-column", "align-items-center"})
 HOME_TILE_ANCESTORS = HOME_SECTION_LABEL_ANCESTORS | {"o_viin_home_grid"}
 HOME_TILE_LABEL_CLASSES = frozenset({"o_viin_home_app_name"})

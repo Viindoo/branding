@@ -3,9 +3,20 @@
 
   <!-- Apps-menu repurpose (PR #658 item 1, relocated from navbar_rail.xml). Keep the visible + enabled
        `.o_navbar_apps_menu` button (core app-switch tours click it first), but replace core's inner
-       <Dropdown> second app list with a plain button that opens the ONE flat home menu (ViinHomeMenu,
-       client action "viin_home_menu"). Replacing only the inner <Dropdown> (not the div) keeps the
-       override additive and reversible; data-hotkey="h" preserves the core Home-Menu accesskey.
+       <Dropdown> second app list with a plain button that opens the ONE flat home menu (ViinHomeMenu).
+       Replacing only the inner <Dropdown> (not the div) keeps the override additive and reversible;
+       data-hotkey="h" preserves the core Home-Menu accesskey.
+
+       WHY CORE'S <Dropdown> IS STILL REPLACED, AFTER THE 2026-08-17 MECHANISM CHANGE. It renders a
+       SECOND, complete app list. Leaving it in place beside the theme's home menu would put two
+       controls with the same function on one screen, which is precisely what the owner ruled out
+       ("lam thua nut khien 2 nut cung xuat hien voi cung chuc nang tren giao dien chi de phuc vu
+       test"). What changed on 2026-08-17 is only what the surviving button DOES: openHomeMenu() no
+       longer runs a full-page doAction that unmounts the current controller - it opens the same home
+       menu as a NON-NAVIGATING overlay above it, which is core's own contract for this button and
+       what all 57 core tours built on stepUtils.showAppsMenuItem() depend on. See apps_menu_home.js
+       for the full rationale and for the Dropdown-content-slot design that was evaluated and
+       rejected.
 
        OWNER REVERT 2026-08-03 - THE ICON IS WHITE AGAIN, PAINTED BY CORE, NOT BY US.
        ("app icon hien co mau den. Tao muon cho nay khong override gi de no trang nhu cu.")

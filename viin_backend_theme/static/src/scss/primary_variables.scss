@@ -14,8 +14,29 @@
 // Prefer Montserrat (headings) / Roboto (body) with robust system fallbacks. NOTE (W1 flag): the
 // vendored woff2 subsets (latin + latin-ext + vietnamese) are a pending binary asset task; until they
 // land these stacks fall back to the system UI font. The @font-face rules live in fonts.scss.
-$o-font-family-sans-serif: ("Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol");
-$o-headings-font-family: ("Montserrat", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif);
+//
+// BOTH STACKS GO THROUGH o-add-unicode-support-font(), BECAUSE CORE PUTS BOTH OF ITS OWN THROUGH IT
+// (web/static/src/scss/primary_variables.scss:114,117). Replacing the two declarations here had
+// quietly dropped that wrapper from both, and with it the fallback a user actually notices: an
+// emoji or an uncommon script rendered as an empty box, in headings AND in body text. The headings
+// line had lost the emoji families outright as well.
+//
+// WHAT THE WRAPPER ADDS ON TOP OF THE EMOJI NAMES: Odoo ships a small Noto subset
+// ('Odoo Unicode Support Noto', web/static/fonts/fonts.scss) for characters a user's system font
+// may not carry - or carries unreadably - and the function splices it in just before the generic
+// `sans-serif`. So the wrapper and the four emoji families are two DIFFERENT fallbacks and both
+// have to be present; the guard in tests/test_theme_core_text_untouched.py measures both, on both
+// stacks, in the compiled bundle.
+//
+// NB core's own headings line passes a NESTED list - `(("SF Pro Display", $o-system-fonts))` is a
+// two-element list whose second element is itself a list - so the function's `== sans-serif` test
+// never matches there and core's headings silently get no support font. Both declarations below
+// pass a FLAT list, so ours genuinely do. That difference is deliberate and is why the editor reset
+// (editor_content_font.scss) restates core's expression verbatim instead of reusing this variable.
+//
+// Montserrat / Roboto are the Viindoo brand SSOT and are NOT up for revert.
+$o-font-family-sans-serif: o-add-unicode-support-font(("Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"));
+$o-headings-font-family: o-add-unicode-support-font(("Montserrat", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"));
 
 // --- WHY NO SURFACE-VAR REBIND HERE (compile-landmine, proven by the W1 green gate) -------------
 // An earlier draft set `$o-view-background-color: var(--bs-body-bg)` and

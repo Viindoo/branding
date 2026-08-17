@@ -18,6 +18,15 @@
 // web.assets_backend file therefore installs an accessor on `window.clickEverywhere` to capture that
 // late assignment (the core function) and hand callers a theme-aware wrapper instead.
 //
+// STILL NEEDED AFTER THE D3 MECHANISM CHANGE (2026-08-17), and here is the honest check of that.
+// The apps button no longer navigates - it opens the home menu as an overlay above the current
+// controller - but core's <Dropdown> is still REPLACED (leaving it would put a second, complete app
+// list on the navbar beside ours, which the owner ruled out). So core's clickbot still finds no
+// `.o_navbar_apps_menu .dropdown-toggle` and still throws without this wrapper; deleting it would
+// re-break web:TestMenusDemoLight on the themed build. The wrapper needed no change for D3: it drives
+// the SAME selectors, and the tiles it enumerates are simply <a> now instead of <button>, which
+// `.o_app[data-menu-xmlid]` matches either way.
+//
 // BEHAVIOUR. When the theme apps-menu is active (core's `.dropdown-toggle` is gone), the wrapper walks
 // apps through the home menu: click `.o_navbar_apps_menu button` to open the ONE home menu, then
 // enumerate/click `.o_viin_home_menu .o_app[data-menu-xmlid]` tiles (home_menu.xml), faithfully
@@ -143,8 +152,11 @@ async function openApp(xmlid) {
     const tile = document.querySelector(`.o_viin_home_menu .o_app[data-menu-xmlid="${xmlid}"]`);
     let isModal = false;
     await triggerClick(tile, `home-menu app tile "${xmlid}"`);
-    // Settle: a modal opened, or the home menu was replaced by the app - AND no pending RPC / OWL
-    // scheduler task remains (waitForCondition), so an async render error still surfaces.
+    // Settle: a modal opened, or the home menu went away - AND no pending RPC / OWL scheduler task
+    // remains (waitForCondition), so an async render error still surfaces. "Went away" covers both
+    // arms since D3: the boot-landing client action is REPLACED by the app, and the navbar overlay
+    // CLOSES itself the moment a tile is chosen (home_menu.js `launch`). Either way HOME_TILE stops
+    // matching, which is what this condition reads.
     await waitForCondition(() => {
         if (document.querySelector(".o_dialog:not(.o_error_dialog)")) {
             isModal = true;

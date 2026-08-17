@@ -1,0 +1,51 @@
+// The rich-text editor's CONTENT keeps core's portable system font - the brand heading font stops
+// at the editor's edge (owner decision D2, 2026-08-17: "khong cho font brand vao than email").
+//
+// WHY THIS IS A BUSINESS RULE AND NOT A STYLE PREFERENCE.
+// -----------------------------------------------------------------------------------------------
+// `.odoo-editor-editable` / `.note-editable` is not backend chrome - it is the DRAFT of a document
+// that leaves this machine. `mail`'s html_mail widget runs `convert_inline` on save, which walks the
+// body and writes each element's COMPUTED style into a `style="..."` attribute, `font-family`
+// included (mail/static/src/views/web/fields/html_mail_field/convert_inline.js). Whatever font the
+// editor was showing is therefore baked into the mail that reaches the recipient.
+//
+// So a brand heading font in there is not "our UI looking like us", it is us asserting a font on
+// somebody else's mail client. Montserrat is a Viindoo brand face; the recipient does not have it -
+// and neither do we yet: the woff2 subsets are still a pending asset task (fonts.scss records the
+// @font-face blocks as commented templates), so today the name resolves to nothing anywhere. Either
+// way the recipient falls through to whatever comes next in the list, which is a font WE chose for a
+// screen THEY are not looking at.
+//
+// Core's own stack is exactly the right answer, and not by coincidence: it is a pure system stack
+// (`-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, ...`) every platform resolves locally,
+// which is what a mail body wants. So the editor's headings are put back on it.
+//
+// WHY THE VALUE IS RESTATED HERE INSTEAD OF READ FROM A VARIABLE. `$o-headings-font-family` is
+// overridden by this theme WITHOUT `!default` and loaded `('before', web/.../primary_variables.scss)`
+// in web._assets_primary_variables, so core's own `!default` declaration no-ops and its value is
+// unreachable from any file in the bundle - there is no variable left holding it. The expression
+// below is therefore core's declaration transcribed CHARACTER FOR CHARACTER
+// (web/static/src/scss/primary_variables.scss:117), including the nested-list form: `$o-system-fonts`
+// is itself a comma list, so `o-add-unicode-support-font()` sees a two-element list, its
+// `== sans-serif` test never matches, and no support font is spliced in. Reproducing the shape - not
+// just the fonts - is what makes the compiled value identical to core's.
+//
+// A TRANSCRIPTION ROTS, SO IT IS PINNED. tests/test_theme_core_text_untouched.py
+// (TestEditorContentKeepsCoresPortableFont) reads core's real declaration out of the INSTALLED `web`
+// module at test time and fails in seconds if the two ever diverge. Without that pin the only thing
+// that would notice is `@mail/inline/html_mail_field`, which asserts the inlined attribute character
+// for character, thirty minutes into a HOOT run.
+$o-viin-editor-headings-font-family: o-add-unicode-support-font(("SF Pro Display", $o-system-fonts));
+
+// BOTH class names, because both are live: `.odoo-editor-editable` is the html_editor root and
+// `.note-editable` is the field-level wrapper the mail widget's own test styles target
+// (mail/static/tests/inline/html_mail_field.test.js). Specificity (0,1,1) beats Bootstrap's bare
+// `h1..h6` reboot rule (0,0,1) at any load order, so this file's position in the bundle is
+// irrelevant. The `.h1`-`.h6` utilities are listed too: pasted content can carry them, and a pasted
+// heading is inlined by the same code path as an authored one.
+.odoo-editor-editable,
+.note-editable {
+    :is(h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6) {
+        font-family: $o-viin-editor-headings-font-family;
+    }
+}

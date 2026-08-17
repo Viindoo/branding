@@ -63,6 +63,13 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
         # over-reach + blank login on Chrome), so login renders as core Odoo, de-branded by viin_brand.
         'web.assets_backend': [
             'viin_backend_theme/static/src/scss/fonts.scss',
+            # D2 (owner, 2026-08-17): the brand heading font stops at the rich-text editor's edge.
+            # mail's convert_inline bakes the editor's COMPUTED font-family into the saved mail body,
+            # so a brand face in there is asserted on the RECIPIENT's mail client - which does not
+            # have it (and neither do we yet: the woff2 subsets above are still pending). Puts the
+            # editor's headings back on core's portable system stack. Pure cascade, no variable
+            # override, so it cannot affect backend chrome.
+            'viin_backend_theme/static/src/scss/editor_content_font.scss',
             # C-2 (PR #658): the no-reload dark layer (scheme.scss runtime [data-bs-theme] var flip +
             # the 426-line dark_surfaces.scss allow-list) is RETIRED. Dark now recompiles through
             # viin_brand_web/static/src/scss/dark_palette.scss on web.assets_web_dark (Option A

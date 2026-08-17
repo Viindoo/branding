@@ -7,7 +7,12 @@
        category sections), responsive 6-col to 2-col. Colors are theme-aware native Bootstrap runtime
        props (light/dark) + the viin_brand teal accent; NO teal-gradient banner (diverged from mockup). -->
   <t t-name="viin_backend_theme.ViinHomeMenu">
-    <div class="o_viin_home_menu">
+    <!-- `o_viin_home_overlay` is added ONLY on the navbar arm (props.close is set), where this same
+         markup is rendered by the overlay service above a still-mounted controller instead of as a
+         full-page client action. It carries nothing but the fixed positioning that makes the panel
+         fill the area under the navbar - i.e. the identical full-screen picture the client action
+         produced (home_menu.scss). -->
+    <div class="o_viin_home_menu" t-att-class="{ o_viin_home_overlay: isOverlay }">
       <div class="o_viin_home_content d-flex flex-column">
 
         <header class="o_viin_home_header d-flex flex-column">
@@ -30,26 +35,69 @@
         <div class="o_viin_home_body flex-grow-1">
           <t t-if="filteredApps.length">
             <div class="o_viin_home_section_label">Applications</div>
-            <div class="o_viin_home_grid" t-ref="grid" role="list"
+            <!-- NO `role="list"` HERE, AND NO `role="listitem"` ON THE TILES (2026-08-17).
+                 An explicit ARIA role REPLACES an element's own role - it does not add to it - so
+                 `role="listitem"` on a tile told assistive technology "this is an item in a list"
+                 INSTEAD of "this is a link", and a screen-reader user was never told the thing they
+                 were sitting on could be followed. It also dropped the tiles out of links
+                 navigation, which is how many screen-reader users move around a page of links.
+                 That was already wrong when the tiles were <button>s; it got worse the moment they
+                 became real links, since the role being suppressed was now an accurate and useful
+                 one.
+                 The grid's `role="list"` had to go with it: ARIA requires a `list` to own
+                 `listitem` children, so keeping the container role while removing the child roles
+                 would leave a malformed list announcing zero items - a different defect, not a fix.
+                 The alternative shape - keep both roles and wrap every tile in its own
+                 `<div role="listitem">` - was REJECTED: the tiles are direct CSS-grid children and
+                 the drag-reorder hook keys on them, so a wrapper breaks the layout and the sortable
+                 unless it is neutralised with `display: contents`, which has its own history of
+                 dropping elements out of the accessibility tree. That trades a known defect for an
+                 unpredictable one, and it adds markup that exists only to carry a role.
+                 Nothing else read these roles: the a11y tour, the arrow-key grid navigation (which
+                 keys on `[data-index]` and the computed column count) and the sortable
+                 (`.o_viin_home_app`) are all role-independent. Guarded by
+                 static/tests/tours/viin_a11y_tour.js. -->
+            <div class="o_viin_home_grid" t-ref="grid"
                  t-att-data-viin-saved-order="state.savedOrder">
               <t t-foreach="filteredApps" t-as="app" t-key="app.id">
-                <!-- The .o_app class + data-menu-xmlid mirror core's apps-menu tiles (web.NavBar.AppsMenu):
-                     this ONE home menu is the single app list core app-switch tours resolve. The repurposed
-                     navbar apps-menu button (apps_menu_home.xml) opens this menu, and every tour built on
-                     stepUtils.showAppsMenuItem targets `.o_app[data-menu-xmlid="<root menu xmlid>"]` next.
-                     app.xmlid is the app's root-menu xmlid, the identical value core's dropdown emits, and
-                     .o_app carries NO global SCSS (pure JS/tour hook) so it does not restyle the tile. -->
-                <button type="button" class="o_app o_viin_home_app d-flex flex-column align-items-center"
-                        role="listitem"
-                        t-att-class="{ o_viin_home_app_focus: app_index === state.focusIndex }"
-                        t-att-data-index="app_index"
-                        t-att-data-menu-xmlid="app.xmlid"
-                        t-att-title="app.name"
-                        t-on-click="() => this.launch(app)">
+                <!-- A TILE IS AN ANCHOR, exactly as core renders its own apps-menu entries: core's
+                     DropdownItem picks its tag from the presence of `href` (dropdown_item.xml:6), so
+                     `a[data-menu-xmlid="<app xmlid>"]` is the selector core's own tours resolve after
+                     clicking the apps button - `stepUtils.showAppsMenuItem()` then
+                     `a[data-menu-xmlid="base.menu_administration"]` in 57 core tour files. A <button>
+                     could never match that, which is the RC-1 failure on runbot batch 223955.
+
+                     It is also simply the better element, independently of any test: middle-click
+                     opens the app in a new tab, right-click offers "copy link address", and a screen
+                     reader announces "link, <App name>" and lists the tile under links navigation -
+                     which is only true because the tile carries NO explicit role to suppress that
+                     one (see the note on the grid above). The href comes from CORE's own helper
+                     (NavBar.prototype.getMenuItemHref via getMenuHref) so there is exactly one
+                     definition of a backend app URL.
+
+                     NOTHING VISIBLE CHANGES: the class list, the icon, the label, the focus marker,
+                     the drag hook and `title` are byte-for-byte what the <button> carried;
+                     home_menu.scss adds `text-decoration: none` so the link inherits the tile's own
+                     typography rather than the browser's link styling. `.o_app` still carries no
+                     global SCSS - it is a pure JS/tour hook - and app.xmlid is still the app's
+                     root-menu xmlid, the identical value core's dropdown emits.
+
+                     A DRAG IS NOT A CLICK: core's own draggable hook calls preventDefault on the
+                     pointerdown that starts a drag (so the browser never begins a native link drag)
+                     and preventDefault + stopPropagation on the click that would follow a drop
+                     (draggable_hook_builder.js), so press-drag reorder keeps working unchanged and
+                     a dropped tile never navigates. -->
+                <a class="o_app o_viin_home_app d-flex flex-column align-items-center"
+                   t-att-href="getMenuHref(app)"
+                   t-att-class="{ o_viin_home_app_focus: app_index === state.focusIndex }"
+                   t-att-data-index="app_index"
+                   t-att-data-menu-xmlid="app.xmlid"
+                   t-att-title="app.name"
+                   t-on-click="(ev) => this.onTileClick(ev, app)">
                   <img class="o_viin_home_app_icon" loading="lazy"
                        t-att-src="getIconUrl(app)" t-att-alt="app.name"/>
                   <span class="o_viin_home_app_name" t-esc="app.name"/>
-                </button>
+                </a>
               </t>
             </div>
           </t>

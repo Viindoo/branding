@@ -13,35 +13,92 @@
 // keyboard/click paths above.
 //
 // T-4 (PR #658): the search box autofocuses ONLY when the home menu is opened by an explicit user
-// action (rail / "All apps" / bottom-nav), which pass viin_home_focus_search in the doAction context.
-// It does NOT autofocus on the BOOT landing (WebClient._loadDefaultApp -> doAction with no flag):
-// there the FIRST focusable element must remain the "Skip to main content" bypass-blocks link
-// (WCAG 2.4.1), and an autofocus would steal that first-Tab position. Auto-moving focus on load is
-// itself a WCAG 3.2 concern, so gating it on a deliberate open is the correct behaviour.
+// action - the `autofocusSearch` prop on the overlay arm, or viin_home_focus_search in the doAction
+// context on the client-action arm. It does NOT autofocus on the BOOT landing
+// (WebClient._loadDefaultApp -> doAction with no flag): there the FIRST focusable element must remain
+// the "Skip to main content" bypass-blocks link (WCAG 2.4.1), and an autofocus would steal that
+// first-Tab position. Auto-moving focus on load is itself a WCAG 3.2 concern, so gating it on a
+// deliberate open is the correct behaviour.
+//
+// D3 MECHANISM CHANGE, 2026-08-17 (owner decision D3) - THIS COMPONENT NOW HAS TWO MOUNT POINTS.
+// It used to be reachable ONLY as a full-page client action, which meant the navbar apps button had
+// to `doAction()` - and a doAction UNMOUNTS the controller the user was on. Core's contract for that
+// button is the opposite: `.o_navbar_apps_menu button` opens a popover and does NOT navigate, which
+// is what all 57 core tour files built on `stepUtils.showAppsMenuItem()` depend on (they either open
+// an app from the list that appears, or click the button as harmless boilerplate and keep working on
+// the SAME view). So the navbar arm now renders this component through the OVERLAY service instead,
+// above the still-mounted controller, and the client action survives for the BOOT LANDING only -
+// where there is no controller to preserve. ONE button, ONE home menu, one design; only the
+// mechanism differs, and the user cannot tell the two apart.
+//
+// The tiles are `<a href>` rather than `<button>` for the same reason core renders its own app list
+// that way (dropdown_item.xml picks the tag from the presence of `href`): middle-click opens a new
+// tab, right-click copies the link, and a screen reader announces a link to a page. Nothing about
+// the rendered tile changes.
 
-import { Component, useState, useRef, onWillStart } from "@odoo/owl";
+import { Component, useState, useRef, useExternalListener, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService, useAutofocus } from "@web/core/utils/hooks";
+import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { useSortable } from "@web/core/utils/sortable_owl";
 import { fuzzyLookup } from "@web/core/utils/search";
 import { _t } from "@web/core/l10n/translation";
 import { user } from "@web/core/user";
+import { NavBar } from "@web/webclient/navbar/navbar";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { getAppIconUrl } from "../webclient/app_icons";
 
+// The navbar chrome the OVERLAY arm must not treat as "outside" - clicking the apps button is the
+// toggle, and it must reach its own handler with the overlay still open (a pointerdown-close here
+// would close it a beat before the click re-opened it, i.e. the toggle would never shut).
+const APPS_MENU_SELECTOR = ".o_navbar_apps_menu";
+const OVERLAY_ROOT_SELECTOR = ".o_viin_home_overlay";
+
 export class ViinHomeMenu extends Component {
     static template = "viin_backend_theme.ViinHomeMenu";
-    static props = { ...standardActionServiceProps };
+    // TWO MOUNT POINTS, ONE COMPONENT (D3 mechanism change, 2026-08-17). This renders either as the
+    // BOOT-LANDING client action (WebClient._loadDefaultApp - the action-service props below), or as
+    // the NON-NAVIGATING OVERLAY the navbar apps button opens (`close` set, no action). `action` is
+    // therefore optional: the overlay arm has no action behind it, which is the entire point - the
+    // controller the user was on stays mounted underneath.
+    static props = {
+        ...standardActionServiceProps,
+        action: { type: Object, optional: true },
+        close: { type: Function, optional: true },
+        autofocusSearch: { type: Boolean, optional: true },
+    };
 
     setup() {
         this.menuService = useService("menu");
         this.orm = useService("orm");
         this.gridRef = useRef("grid");
         // Autofocus only on a user-triggered open (see the T-4 note in the file header); the boot
-        // landing leaves the skip-link as the first focusable element. The flag is stable for the
-        // component's life, so a conditional hook call at setup is safe.
-        if (this.props.action?.context?.viin_home_focus_search) {
+        // landing leaves the skip-link as the first focusable element. Both flags are stable for the
+        // component's life, so the conditional hook calls at setup are safe.
+        const focusSearch = this.isOverlay
+            ? this.props.autofocusSearch
+            : this.props.action?.context?.viin_home_focus_search;
+        if (focusSearch) {
             useAutofocus({ refName: "search" });
+        }
+        if (this.isOverlay) {
+            // DISMISSAL, borrowed verbatim from what core's own apps DROPDOWN does - because the
+            // contract this overlay restores is core's: clicking the apps button must not navigate,
+            // and interacting with the page underneath must put the app list away again
+            // (web/static/src/core/dropdown/dropdown.js `closeOnClickAway`, no backdrop). A pointer
+            // interaction that lands outside both the overlay and the navbar apps button closes it.
+            // In a real session that is a click on the navbar; under a tour it is the next step's
+            // click on the controller below, which is exactly the behaviour that leaves the DOM
+            // clean for the rest of the tour instead of stranding a full-screen panel over it.
+            useExternalListener(document, "pointerdown", this.onOutsidePointerDown.bind(this), {
+                capture: true,
+            });
+            // Escape dismisses and hands focus back to the button that opened it - a non-modal
+            // overlay that traps the user is an accessibility defect (WCAG 2.1.2). The full-page
+            // client-action arm has no trigger to return to, so it does not register this.
+            useHotkey("escape", () => this.props.close({ restoreFocus: true }), {
+                bypassEditableProtection: true,
+            });
         }
         this.state = useState({
             query: "",
@@ -96,8 +153,37 @@ export class ViinHomeMenu extends Component {
         });
     }
 
+    /** Rendered as the navbar's non-navigating overlay rather than as the boot-landing page? */
+    get isOverlay() {
+        return Boolean(this.props.close);
+    }
+
     get apps() {
         return this._orderApps(this.menuService.getApps());
+    }
+
+    /** Close the overlay when the user interacts with anything it does not own.
+     *  A no-op on the client-action arm, which never registers the listener. */
+    onOutsidePointerDown(ev) {
+        const target = ev.target;
+        if (!(target instanceof Element)) {
+            return;
+        }
+        if (target.closest(OVERLAY_ROOT_SELECTOR) || target.closest(APPS_MENU_SELECTOR)) {
+            return;
+        }
+        this.props.close();
+    }
+
+    /** The tile's `href`, from CORE's OWN helper - never a second copy of the URL scheme.
+     *
+     *  `NavBar.prototype.getMenuItemHref` is the single place Odoo 19 builds an app's backend URL
+     *  (`/odoo/<actionPath|action-<id>>`, navbar.js), and it is what core's own apps-menu
+     *  DropdownItems are given. It reads nothing off `this`, so calling it through the prototype is
+     *  safe and keeps ONE definition: if core changes the URL shape, these tiles follow it for free
+     *  instead of silently pointing at a dead route. */
+    getMenuHref(app) {
+        return NavBar.prototype.getMenuItemHref(app);
     }
 
     /** Parse the stored csv of app root-menu xmlids into a clean list (blank entries dropped). */
@@ -208,10 +294,28 @@ export class ViinHomeMenu extends Component {
         return getAppIconUrl(app);
     }
 
-    launch(app) {
-        if (app) {
-            this.menuService.selectMenu(app);
+    /** A tile is a real `<a href>`, so a MODIFIED click is the browser's to handle - that is the
+     *  whole reason it is a link and not a button: middle-click and ctrl/cmd-click open the app in a
+     *  new tab, shift-click in a new window, and right-click offers "copy link address". A plain
+     *  primary click is ours: the webclient is a single-page app, so it routes through the menu
+     *  service instead of reloading the page. Core's DropdownItem takes the same preventDefault
+     *  branch on its own app links (dropdown_item.js `onClick`). */
+    onTileClick(ev, app) {
+        if (ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) {
+            return;
         }
+        ev.preventDefault();
+        this.launch(app);
+    }
+
+    launch(app) {
+        if (!app) {
+            return;
+        }
+        this.menuService.selectMenu(app);
+        // The overlay's job is done the moment an app is chosen; leaving it up would cover the app
+        // the user just asked for. (The client-action arm is replaced by the new controller instead.)
+        this.props.close?.();
     }
 
     onSearchInput(ev) {

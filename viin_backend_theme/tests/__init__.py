@@ -20,6 +20,14 @@
 # widget they described - they asserted markup that no longer exists.
 from . import test_theme_core_chrome_untouched
 from . import test_theme_dark_widgets
+# test_theme_core_text_untouched is NEW with the 2026-08-17 core-regression fix (runbot batch
+# 223955). test_theme_core_chrome_untouched guards core's LOOK; this one guards the TEXT core
+# renders - the property `text-transform`, which rewrites what every automated oracle reads back
+# without touching the DOM, and which turned 100 core HOOT assertions red at once. It also carries
+# the owner's D2 editor-font pins, for the same reason: all of it is "the theme must not change what
+# core produces". Listed after test_theme_dark_widgets because it imports that file's home-menu
+# element models, exactly as test_home_menu_background does below.
+from . import test_theme_core_text_untouched
 # test_home_menu_background is NEW with the owner's 2026-08-03 app-dashboard request. It imports
 # test_theme_dark_widgets' :root reader + home-menu element models, so it is listed after it.
 from . import test_home_menu_background

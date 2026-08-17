@@ -1,6 +1,6 @@
-// D10 - list chrome (mockup-03 / 10 / 32): a refined multi-record table - muted, uppercase,
-// letter-spaced column headers on a subtle raised header surface, hairline row separators, a subtle
-// row hover, and a brand-teal wash on bulk-selected rows.
+// D10 - list chrome (mockup-03 / 10 / 32): a refined multi-record table - muted, letter-spaced
+// column headers on a subtle raised header surface, hairline row separators, a subtle row hover,
+// and a brand-teal wash on bulk-selected rows.
 //
 // TOKEN + scoped restyle of .o_list_renderer / .o_list_table. Core drives the header + cell surface
 // and borders from COMPILE-TIME hex (--ListRenderer-thead-bg-color = $o-webclient-background-color;
@@ -24,12 +24,23 @@
         --table-bg: var(--body-bg);
         --table-border-color: var(--border-color);
 
-        // Column headers: muted, uppercase, letter-spaced - the D10 list signature (mockup-03/10/32).
+        // Column headers: muted, letter-spaced - the D10 list signature (mockup-03/10/32) minus the
+        // case transform.
+        //
+        // OWNER DECISION D1, 2026-08-17 ("bo uppercase"). A column header renders a CORE string - a
+        // field label the application produced and that core reads back - so uppercasing it changed
+        // what every oracle sees while changing nothing in the DOM: 25 desktop + 24 mobile HOOT
+        // failures on runbot batch 223955 (`@web/views/list/list_view`, export_data_dialog,
+        // form_view, state_selection_field, one2many_field, boolean_favorite_field), and any tour
+        // asserting `[data-name="login"] span:contains("Login")` on a list header. The owner
+        // considered and REJECTED substituting `font-variant-caps: all-small-caps` (unmeasured, and
+        // the brand faces are not vendored yet so the browser would synthesize it), and rejected
+        // keeping the uppercase with a red CI. The header keeps its refined look from the four
+        // declarations that remain. Guarded by tests/test_theme_core_text_untouched.py.
         thead th {
             color: var(--secondary-color);
             font-size: 0.75rem;
             font-weight: $font-weight-medium;
-            text-transform: uppercase;
             letter-spacing: 0.04em;
         }
 

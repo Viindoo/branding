@@ -67,6 +67,18 @@ class TestViinThemeA11yTour(HttpCase):
         flat home menu is now the sole app switcher, so there is no rail to make one Tab stop.)"""
         self.start_tour("/odoo", "viin_a11y_skip_link_tour", login="admin")
 
+    def test_home_tiles_are_announced_as_links(self):
+        """A home-menu app tile keeps its own `link` role - nothing overrides it.
+
+        An explicit ARIA role REPLACES an element's implicit one. The tiles carried
+        `role="listitem"`, so a screen reader announced a list item where the user could actually
+        follow a link, and the tiles dropped out of links navigation. Harmless-looking while the
+        tiles were buttons; a real defect once they became anchors, because the role being
+        suppressed became an accurate and useful one.
+
+        RED before the 2026-08-17 fix: `a.o_app[href]:not([role])` matched nothing."""
+        self.start_tour("/odoo", "viin_a11y_home_tile_semantics_tour", login="admin")
+
 
 @tagged("post_install", "-at_install")
 class TestViinAppsMenuHome(HttpCase):
@@ -87,13 +99,28 @@ class TestViinAppsMenuHome(HttpCase):
 
     def test_apps_icon_toggles_back_to_the_previous_view(self):
         """Owner request 2026-08-03: the apps icon TOGGLES - a second click returns to the view the
-        user came from ("bấm app icon lần nữa thì nó lại về lại view cũ").
+        user came from ("bấm app icon lần nữa thì nó lại về lại view cũ"). Owner decision D3,
+        2026-08-17: it does so WITHOUT leaving the page.
 
         RED before the toggle: openHomeMenu() unconditionally re-ran doAction("viin_home_menu"), so
-        the second click pushed a SECOND home menu and the original view never came back. GREEN
-        after: openHomeMenu() detects it is already on the home menu and hands back to the
-        controller underneath via actionService.restore() - core's own historyBack mechanism."""
+        the second click pushed a SECOND home menu and the original view never came back.
+        RED again before D3, on the step this tour gained: the first click ran a full-page doAction,
+        which UNMOUNTED the Settings view, so "the Settings view is still mounted underneath" could
+        not match. GREEN after: the apps button renders the same home menu as a non-navigating
+        overlay above the untouched controller."""
         self.start_tour("/odoo", "viin_apps_menu_toggle_tour", login="admin")
+
+    def test_home_menu_overlay_does_not_block_the_view_underneath(self):
+        """D3: the home menu is an overlay, not a blocker - the view underneath stays reachable.
+
+        This is the property core's apps DROPDOWN has and that 57 core tours depend on: no backdrop,
+        and an interaction outside the panel dismisses it instead of being swallowed. The tour opens
+        the panel over Settings, clicks the Settings control panel UNDERNEATH it, and asserts the
+        panel went away while the view stayed.
+
+        RED before D3: the first apps click destroyed the Settings view, so its control panel did not
+        exist to be clicked and the tour stalled."""
+        self.start_tour("/odoo", "viin_apps_menu_overlay_dismiss_tour", login="admin")
 
 
 @tagged("post_install", "-at_install")

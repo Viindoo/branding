@@ -106,6 +106,29 @@
     color: var(--body-color);
     padding-block: ($o-spacer * 2.5);
 
+    // --- THE OVERLAY ARM (D3 mechanism change, owner decision D3, 2026-08-17) -------------------
+    // The navbar apps button no longer navigates to a client action - it renders this same component
+    // through the overlay service, ABOVE the controller the user was on, which therefore stays
+    // mounted. `.o-overlay-item` is already `position: fixed` with the overlay z-index
+    // (web/static/src/core/overlay/overlay_container.scss) but carries no inset, so it would collapse
+    // to its content; these four lines are the entire difference between the two arms.
+    //
+    // IT STOPS AT THE NAVBAR, DELIBERATELY. Covering the navbar would bury the very button that
+    // toggles the panel back off, which is the owner's 2026-08-03 round trip ("bam app icon lan nua
+    // thi no lai ve lai view cu"). `$o-navbar-height` is core's own variable
+    // (web/.../navbar/navbar.variables.scss:3), reached through web._assets_backend_helpers, so the
+    // panel follows the navbar if core ever retunes it. The result on screen is pixel-identical to
+    // what the full-page client action produced, because that action filled exactly this box.
+    //
+    // NO BACKDROP, ALSO DELIBERATELY: core's apps dropdown has none either, and a backdrop is what
+    // would make the underlying view unreachable. Dismissal is an outside pointerdown or Escape
+    // (home_menu.js), the same two gestures core's Dropdown answers to.
+    &.o_viin_home_overlay {
+        position: fixed;
+        inset: $o-navbar-height 0 0 0;
+        height: auto;
+    }
+
     // Left-aligned content column, roughly centered in the available width (mockup proportions).
     .o_viin_home_content {
         width: 100%;
@@ -223,6 +246,11 @@
         color: inherit;
         cursor: pointer;
         text-align: center;
+        // The tile is an `<a href>` (home_menu.xml) so middle-click / copy-link / screen-reader
+        // semantics work. `color: inherit` above already neutralises the link colour; this
+        // neutralises the other half of the browser's default link styling, so the anchor renders
+        // byte-for-byte like the <button> it replaced.
+        text-decoration: none;
         transition: border-color 0.12s ease-in-out, box-shadow 0.12s ease-in-out,
             transform 0.12s ease-in-out;
 

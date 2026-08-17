@@ -3,7 +3,7 @@
 // TOKEN + scoped restyle of .o_command_palette. The palette renders inside a Dialog, so its outer
 // card surface/radius/elevation already come from the D12 dialog restyle (core/dialog/dialog.scss)
 // via the native --body-bg / --border-color rebind - nothing to repeat here. This file themes the
-// palette-SPECIFIC chrome: a scheme-aware hairline under the search row, a muted uppercase category
+// palette-SPECIFIC chrome: a scheme-aware hairline under the search row, a muted category
 // label, a scheme-aware footer strip, and - the signature - the FOCUSED command row washed in
 // viin_brand_web's AA teal ($o-viin-chrome-base) instead of core's neutral
 // rgba($o-component-active-bg, .65) (mockup-15 highlights the active "Sales" row in teal). The wash
@@ -18,12 +18,29 @@
         border-bottom: $border-width solid var(--border-color);
     }
 
-    // Category headers ("APPLICATIONS" / "RECORDS"): muted, uppercase, letter-spaced (mockup-15).
-    .o_command_category {
+    // Category headers ("APPLICATIONS" / "RECORDS"): muted, letter-spaced (mockup-15).
+    //
+    // THE SELECTOR IS THE FIX. `.o_command_category` is NOT the label - core renders it as the
+    // WRAPPER div that holds every command row of that category, and puts the label in its
+    // first-child <span> (command_palette.xml:25-26, where that span already carries core's own
+    // `text-uppercase fw-bold text-muted smaller` utilities). Written against the wrapper, every
+    // declaration here INHERITED down onto `.o_command`, `.o_command_name` and `.o_command_hotkey`,
+    // so the palette's command rows rendered at 11px, muted, bold and letter-spaced - a defect a
+    // user SEES, quite apart from any test. Targeting the direct-child label span keeps the mockup's
+    // label treatment and stops the leak; guarded by
+    // tests/test_theme_core_text_untouched.py::test_command_rows_do_not_inherit_the_category_labels_typography.
+    //
+    // AND THE `text-transform` IS GONE, NOT MOVED. Core ALREADY uppercases this label with its own
+    // `text-uppercase` utility on that same span, so ours was redundant - and being redundant is
+    // exactly why it was so expensive: HOOT reads RENDERED text, so with the rule on the wrapper
+    // every core assertion over a command's own text read back the transformed string
+    // (`> Expected: [ "Command#", ] / > Received: [ "COMMAND#", ]`, runbot batch 223955,
+    // log_404581.txt - 39 desktop + 18 mobile failures across command_service / command_palette /
+    // menu_provider alone). The label still renders uppercase; core does it.
+    .o_command_category > span {
         color: var(--secondary-color);
         font-size: 0.6875rem;
         font-weight: $font-weight-bold;
-        text-transform: uppercase;
         letter-spacing: 0.06em;
     }
 
