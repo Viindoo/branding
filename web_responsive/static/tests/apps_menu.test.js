@@ -270,3 +270,49 @@ test("opening the apps menu pushes no breadcrumb", async () => {
 
     expect(getService("action").currentController.config.breadcrumbs).toEqual([]);
 });
+
+test.tags("desktop");
+test("a module that patches the apps menu reaches the menu the user actually opens", async () => {
+    // Real, shipped shape of the third-party pattern this test protects
+    // (erponline-enterprise/viin_customizer_web_responsive): a module imports AppsMenuAction and
+    // patches its prototype with an overridden setup() that calls super.setup(), the same way it
+    // patches getAppCreatorItem()/openAppCreator() to back a template it also extends:
+    //     import { AppsMenuAction } from "@web_responsive/components/apps_menu/apps_menu_service";
+    //     patch(AppsMenuAction.prototype, {
+    //         setup() { super.setup(); this.isCustomizer = odoo.customizer; },
+    //         getAppCreatorItem() { ... },
+    //     });
+    // setup() is used as the marker here (instead of a bespoke method the template never calls)
+    // because Owl guarantees it runs exactly once, synchronously, for ANY instance that mounts -
+    // so recording a step from it observes the prototype surface of whatever actually renders the
+    // screen, without this test asserting anything about that class's name or its place in the
+    // prototype graph (no `instanceof`, no class-shape assertion).
+    patchWithCleanup(AppsMenuAction.prototype, {
+        setup() {
+            super.setup();
+            expect.step("apps-menu-action-patch-reached-the-mounted-screen");
+        },
+    });
+
+    defineMenus([{ id: 1 }]);
+    await mountWithCleanup(WebClient);
+
+    // Control: the menu is not already on screen and the patch has not fired yet, so the
+    // assertions after opening it cannot pass for free.
+    expect(".app-menu-container").toHaveCount(0);
+    expect.verifySteps([]);
+
+    // Drive the exact path a user takes to open the menu - the "apps_menu" service, not a direct
+    // instantiation of any class - because the regression this protects is precisely that this
+    // path can reach a class the patch never touched.
+    await getService("apps_menu").toggleMenu(true);
+    await animationFrame();
+
+    // The menu really did open...
+    expect(".app-menu-container").toHaveCount(1);
+    // ...and the screen the user is looking at carries the same prototype surface a third party
+    // patches onto AppsMenuAction. A module that extends web_responsive.AppsMenuAction's template
+    // to call a method it added via this exact patch pattern must find that method on whatever
+    // renders the template for the user - not only on one of several presentations of it.
+    expect.verifySteps(["apps-menu-action-patch-reached-the-mounted-screen"]);
+});

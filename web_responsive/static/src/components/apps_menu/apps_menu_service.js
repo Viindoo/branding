@@ -21,11 +21,15 @@ export async function nextTick() {
  * Presented two ways, which is why the screen itself is a base class rather than the client
  * action it used to be:
  *
- *  - AppsMenuOverlay - how a user actually opens it. Rendered through the "overlay" service, ON
- *    TOP of whatever the user was already looking at, so their view is never unmounted.
  *  - AppsMenuAction  - the client action still registered under the "menu" tag, which is what
  *    the /odoo URL and core's breadcrumb special-case (action_service.js: _getBreadcrumbs keeps
- *    only controllers whose action.tag !== "menu") resolve to.
+ *    only controllers whose action.tag !== "menu") resolve to. It is also the PATCH TARGET
+ *    third-party modules reach for by class name (see the comment on its own declaration below).
+ *  - AppsMenuOverlay - how a user actually opens it. Rendered through the "overlay" service, ON
+ *    TOP of whatever the user was already looking at, so their view is never unmounted. It
+ *    extends AppsMenuAction below, not this base class directly, so a prototype patch() applied
+ *    to AppsMenuAction is inherited here too - both presentations must carry the same prototype
+ *    surface for a third-party patch to reach whichever one actually renders for the user.
  *
  * Everything observable about the screen - the o_apps_menu_opened body class, the APPS_MENU:*
  * bus events, the app grid - is identical in both, so it lives here once.
@@ -96,14 +100,16 @@ export class AppsMenuScreen extends Component {
     }
 }
 
-export class AppsMenuOverlay extends AppsMenuScreen {
-    static props = { close: { type: Function } };
-
-    dismiss() {
-        this.props.close();
-    }
-}
-
+/**
+ * The class registered under the "menu" actions tag - and the PATCH TARGET third-party modules
+ * reach for by class name (e.g. erponline-enterprise/viin_customizer_web_responsive's
+ * `patch(AppsMenuAction.prototype, {...})`), which also extends this screen's shared template
+ * ("web_responsive.AppsMenuAction") by name. Any other presentation of this screen (AppsMenuOverlay
+ * below is the only one today) MUST descend from this class rather than sit beside it as a sibling
+ * of AppsMenuScreen - a sibling renders the same template without the patched prototype members,
+ * which is exactly the regression this fix repairs: `TypeError: ctx.getAppCreatorItem is not a
+ * function` on the overlay once a third party had patched only AppsMenuAction.
+ */
 export class AppsMenuAction extends AppsMenuScreen {
     static props = { ...standardActionServiceProps };
     static displayName = _t("Home");
@@ -115,6 +121,28 @@ export class AppsMenuAction extends AppsMenuScreen {
 }
 
 registry.category("actions").add("menu", AppsMenuAction);
+
+/**
+ * How the user actually opens the Home Menu (see appsMenuService.openMenu below) - rendered
+ * through the "overlay" service ON TOP of whatever they were already looking at. Deliberately a
+ * DESCENDANT of AppsMenuAction, not a sibling of it, so a patch() applied to AppsMenuAction's
+ * prototype - by this module or a third party, in either load order - is inherited here too.
+ * `static target` / `static displayName` are inherited from AppsMenuAction but inert for an
+ * overlay (it is never pushed onto the action stack) - left as-is on purpose, not "cleaned up".
+ */
+export class AppsMenuOverlay extends AppsMenuAction {
+    static props = { close: { type: Function } };
+
+    // AppsMenuAction's override reads env.config.breadcrumbs, which only a mounted action
+    // controller has; an overlay has none, so resolve it the way the base class does instead.
+    get coversNothing() {
+        return !this.env.services.action.currentController;
+    }
+
+    dismiss() {
+        this.props.close();
+    }
+}
 
 export const appsMenuService = {
     dependencies: ["action", "overlay"],
