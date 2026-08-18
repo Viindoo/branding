@@ -81,6 +81,12 @@
 
 .app-menu-container {
     @include full-screen-dropdown();
+    // The menu is rendered through the overlay service now, not as a client action inside
+    // .o_action_manager, so it can no longer inherit "just below the navbar" from its position in
+    // the document flow - a `position: fixed` box with `top: auto` would land wherever its static
+    // position happened to be. Pin it explicitly; this matches the height the mixin already
+    // reserves for the navbar.
+    top: $o-navbar-height;
     overflow: auto;
     background-clip: border-box;
     padding: 1rem 0.5rem;

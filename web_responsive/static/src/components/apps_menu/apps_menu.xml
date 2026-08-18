@@ -16,8 +16,24 @@
         <!-- The kanban dropdown is replaced with the odoo default one
         as the default one took physical place in the DOM -->
         <xpath expr="//Dropdown" position="replace">
+            <!-- Core renders the `.o_menu_toggle` anchor ONLY inside the small-screen branch
+            disabled just above (web/static/src/webclient/navbar/navbar.xml), so disabling that
+            branch removed it from the DOM at every viewport - and `.o_main_navbar .o_menu_toggle`
+            is the trigger core's own mobile tours click first. Rebuild the anchor here, on the
+            branch that does render, so those tours keep working WITHOUT re-enabling core's
+            sidebar and moving the user dropdown out of the place this module puts it.
+            `t-on-click.prevent` is what stops the href from navigating. -->
             <t t-if="this.ui.isSmall">
-                <t t-call="web.NavBar.AppsMenu.Sidebar" />
+                <a
+                    href="/odoo"
+                    class="o_menu_toggle border-0"
+                    t-att-class="{'hasImage': currentApp?.webIconData}"
+                    accesskey="h"
+                    t-ref="menuApps"
+                    t-on-click.prevent="_openAppMenuSidebar"
+                >
+                    <t t-call="web.NavBar.AppsMenu.Sidebar" />
+                </a>
             </t>
             <t t-else="" />
             <button class="o_grid_apps_menu__button"

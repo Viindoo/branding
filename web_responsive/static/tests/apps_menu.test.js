@@ -6,11 +6,15 @@ import { expect, test } from "@odoo/hoot";
 import { animationFrame } from "@odoo/hoot-mock";
 import {
     contains,
+    defineActions,
     defineMenus,
+    defineModels,
     getService,
     makeMockEnv,
-    mockService,
+    models,
     mountWithCleanup,
+    onRpc,
+    patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 import { defineMailModels } from "@mail/../tests/mail_test_helpers";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
@@ -29,12 +33,18 @@ import { AppsMenuAction } from "@web_responsive/components/apps_menu/apps_menu_s
 // hand-seeds a terminal DOM state.
 //
 // THE TRAP (design doc §Q4.1). At 18.0 AppsMenuAction is registered under actions tag "menu", not
-// "apps_menu" (apps_menu_service.js:100), and appsMenuService.toggleMenu() calls
-// env.services.action.doAction("menu") with a BARE STRING, not an action object
-// (apps_menu_service.js:88). A literal port of the 17.0 assertion
-// `assert.step(`do-action:${action.tag}`)` would read `.tag` off a STRING, get `undefined`, and
-// record "do-action:undefined" - a green test asserting nothing. The tests below step on the
-// argument itself and expect the literal string "menu".
+// "apps_menu" (apps_menu_service.js:100), and appsMenuService.toggleMenu() historically called
+// env.services.action.doAction("menu") with a BARE STRING, not an action object. A literal port of
+// the 17.0 assertion `assert.step(`do-action:${action.tag}`)` would read `.tag` off a STRING, get
+// `undefined`, and record "do-action:undefined" - a green test asserting nothing.
+//
+// This suite no longer steps on the doAction argument at all. Stepping on it pinned the MECHANISM
+// (an action-stack push) rather than the RULE, and that mechanism is itself the defect the
+// "keeps the current view mounted" tests below exist to forbid: AppsMenuAction declares
+// `static target = "current"`, so pushing it REPLACES the mounted controller and destroys the
+// screen the user was looking at. Tests that pinned doAction would have had to be deleted to fix
+// the bug - so they are re-expressed here against the observable outcome (the home menu is
+// presented / dismissed) and now survive any correct implementation.
 
 // web_responsive depends on `mail`, so mail patches NavBar (and the WebClient systray) with
 // components that reach for mail's own server models. Without mail's mock models registered, the
@@ -43,6 +53,39 @@ import { AppsMenuAction } from "@web_responsive/components/apps_menu/apps_menu_s
 // for this is a module-level defineMailModels() call - see
 // addons/base_automation/static/tests/kanban_header_patch.test.js and board/.../add_to_dashboard.test.js.
 defineMailModels();
+
+/**
+ * A record + list view for the screen the home menu must NOT destroy. The "underlying view
+ * survives" rule is only observable against a REAL mounted controller, so this suite opens a real
+ * act_window action rather than asserting against a hand-seeded DOM. Shape copied from core's own
+ * client_action.test.js fixture (addons/web/static/tests/webclient/actions/client_action.test.js).
+ */
+class AppsMenuUnderlying extends models.Model {
+    _name = "apps.menu.underlying";
+    _rec_name = "display_name";
+
+    _records = [{ id: 1, display_name: "A record the home menu must not destroy" }];
+
+    _views = {
+        list: /* xml */ `
+            <list>
+                <field name="display_name"/>
+            </list>
+        `,
+    };
+}
+
+defineModels([AppsMenuUnderlying]);
+
+defineActions([
+    {
+        id: 1,
+        xml_id: "action_apps_menu_underlying",
+        name: "Underlying Screen",
+        res_model: "apps.menu.underlying",
+        views: [[false, "list"]],
+    },
+]);
 
 /**
  * `env.config` as the real action service would supply it to a mounted action
@@ -74,46 +117,100 @@ function makeActionProps() {
 }
 
 test.tags("desktop");
-test("clicking the navbar apps button while the menu is closed opens the apps-menu client action", async () => {
+test("clicking the navbar apps button presents the home menu", async () => {
     defineMenus([{ id: 1 }]);
-    mockService("action", {
-        doAction(action) {
-            expect.step(action);
-        },
-    });
+    await mountWithCleanup(WebClient);
 
-    await mountWithCleanup(NavBar);
+    // Control: the menu is not already on screen, so the assertion after the click cannot pass
+    // for free.
+    expect(".app-menu-container").toHaveCount(0);
+
     await contains("button.o_grid_apps_menu__button").click();
 
-    expect.verifySteps(["menu"]);
+    // `.app-menu-container` is rendered under `t-if="state.open"` (apps_menu.xml:36), so it is
+    // present only while the menu is actually open - not merely mounted.
+    expect(".app-menu-container").toHaveCount(1);
 });
 
 test.tags("desktop");
-test(
-    "clicking the navbar apps button while the menu is open restores the previous controller " +
-        "instead of opening it a second time",
-    async () => {
-        defineMenus([{ id: 1 }]);
-        mockService("action", {
-            doAction(action) {
-                expect.step(action);
-            },
-            restore() {
-                expect.step("restore");
-            },
-        });
-        await makeMockEnv();
-        // Drive the real "apps_menu" service into the open state exactly the way AppsMenuAction's
-        // own setup() does on mount (apps_menu_service.js:29), rather than reaching into a private
-        // flag.
-        getService("apps_menu").setOpen(true);
+test("clicking the navbar apps button while the home menu is open dismisses it", async () => {
+    defineMenus([{ id: 1 }]);
+    await mountWithCleanup(WebClient);
+    await getService("action").doAction(1);
 
-        await mountWithCleanup(NavBar);
-        await contains("button.o_grid_apps_menu__button").click();
+    await contains("button.o_grid_apps_menu__button").click();
+    expect(".app-menu-container").toHaveCount(1);
 
-        expect.verifySteps(["restore"]);
-    }
-);
+    await contains("button.o_grid_apps_menu__button").click();
+
+    // The second click closes the menu rather than presenting it a second time, and the screen the
+    // user came from is what they are left looking at.
+    expect(".app-menu-container").toHaveCount(0);
+    expect(".o_list_view").toHaveCount(1);
+});
+
+test.tags("desktop");
+test("opening the home menu keeps the current view mounted", async () => {
+    defineMenus([{ id: 1 }]);
+    await mountWithCleanup(WebClient);
+    await getService("action").doAction(1);
+
+    // The screen the user is on before touching the home menu.
+    expect(".o_control_panel").toHaveCount(1);
+    expect(".o_list_view").toHaveCount(1);
+
+    await getService("apps_menu").toggleMenu(true);
+    await animationFrame();
+
+    // The menu is presented...
+    expect(".app-menu-container").toHaveCount(1);
+    // ...as an OVERLAY: the screen it opened over is still mounted underneath it. Opening a menu
+    // must never destroy the user's current screen.
+    expect(".o_control_panel").toHaveCount(1);
+    expect(".o_list_view").toHaveCount(1);
+});
+
+test.tags("desktop");
+test("closing the home menu returns to the same screen without refetching it", async () => {
+    onRpc("web_search_read", () => {
+        expect.step("web_search_read");
+    });
+    defineMenus([{ id: 1 }]);
+    await mountWithCleanup(WebClient);
+    await getService("action").doAction(1);
+
+    // Loading the screen the first time legitimately reads its records.
+    expect.verifySteps(["web_search_read"]);
+
+    await getService("apps_menu").toggleMenu(true);
+    await animationFrame();
+    await getService("apps_menu").toggleMenu(false);
+    await animationFrame();
+
+    expect(".app-menu-container").toHaveCount(0);
+    expect(".o_list_view").toHaveCount(1);
+    // The view was never torn down, so coming back to it costs no round trip. A refetch here is
+    // the signature of the controller having been destroyed and rebuilt.
+    expect.verifySteps([]);
+});
+
+test("the navbar keeps the menu-toggle anchor that core tours click", async () => {
+    defineMenus([{ id: 1 }]);
+    await makeMockEnv();
+    // Core renders `<a class="o_menu_toggle">` only inside the small-screen branch of
+    // web.NavBar.AppsMenu (web/static/src/webclient/navbar/navbar.xml:77). `ui.isSmall` is a plain
+    // reactive property (web/static/src/core/ui/ui_service.js:213), so forcing it here pins the
+    // small-screen contract without depending on which Hoot preset the runner happens to execute -
+    // this test protects the mobile contract even in the desktop run.
+    patchWithCleanup(getService("ui"), { isSmall: true });
+
+    await mountWithCleanup(NavBar);
+
+    // The trigger core's own mobile tours reach for - `main_flow_tour` clicks
+    // `.o_main_navbar .o_menu_toggle` at step 1 of 311. An inherit that removes it from the DOM
+    // silently breaks every such tour at its first step.
+    expect(".o_main_navbar .o_menu_toggle").toHaveCount(1);
+});
 
 test("mounting the apps menu flags exactly the current app as active, and no other app", async () => {
     defineMenus([
