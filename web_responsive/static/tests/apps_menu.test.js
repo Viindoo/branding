@@ -150,6 +150,27 @@ test("clicking the navbar apps button while the home menu is open dismisses it",
 });
 
 test.tags("desktop");
+test("the app grid is present in the same render cycle the menu reports itself open", async () => {
+    // Root-cause regression test (apps_menu.esm.js AppsMenu.setup()/setOpenState): `state.open`
+    // must be correct on the component's FIRST render, so `.app-menu-container` (t-if="state.open",
+    // apps_menu.xml:52) appears in the same render cycle as `.o_grid_apps_menu` (the element
+    // AppsMenu always renders, unconditionally, the moment it mounts). Deliberately NO extra
+    // animationFrame() call after toggleMenu(true) resolves - inserting one would give the buggy
+    // two-render-cycle path (mount closed, then a bus round trip flips it open) enough time to
+    // finish and hide exactly the ~20ms empty-overlay flash this test exists to forbid.
+    defineMenus([{ id: 1 }]);
+    await mountWithCleanup(WebClient);
+
+    expect(".o_grid_apps_menu").toHaveCount(0);
+    expect(".app-menu-container").toHaveCount(0);
+
+    await getService("apps_menu").toggleMenu(true);
+
+    expect(".o_grid_apps_menu").toHaveCount(1);
+    expect(".app-menu-container").toHaveCount(1);
+});
+
+test.tags("desktop");
 test("opening the home menu keeps the current view mounted", async () => {
     defineMenus([{ id: 1 }]);
     await mountWithCleanup(WebClient);

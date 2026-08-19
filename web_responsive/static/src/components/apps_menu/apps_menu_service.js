@@ -53,7 +53,15 @@ export class AppsMenuScreen extends Component {
                     document.body.classList.remove("o_apps_menu_opened");
                     this.env.bus.trigger("TOGGLE_HOME_MENU_BUTTON", false);
                     this.appsMenu.setOpen(false);
-                    this.env.bus.trigger("APPS_MENU:ACT:TOGGLE", false);
+                    // Must match the open-side trigger three lines up and AppsMenu's own listener
+                    // (apps_menu.esm.js: useBus(this.env.bus, "APPS_MENU:TOGGLE", ...)). This used
+                    // to fire "APPS_MENU:ACT:TOGGLE" - a name with no listener at all since the
+                    // dual-event open/close design (both "ACT:TOGGLE" and "TOGGLE" fired together)
+                    // was consolidated onto "APPS_MENU:TOGGLE" alone; the close side was never
+                    // updated to match. Harmless today only because the whole subtree is destroyed
+                    // by this same cleanup anyway, but a silently-unheard close event is exactly the
+                    // kind of asymmetry that bites the next thing that listens for it.
+                    this.env.bus.trigger("APPS_MENU:TOGGLE", false);
                 };
             },
             () => [],
@@ -153,6 +161,25 @@ export const appsMenuService = {
         // nothing, which is the whole point of holding one.
         const mutex = new Mutex();
 
+        // KNOWN TRAP, deliberately left unfixed - see toggleMenu() below for the mechanism.
+        // AppsMenuScreen.setup()'s useEffect calls appsMenu.setOpen(true) unconditionally
+        // (isOpening = true) on mount, regardless of WHICH presentation mounted it. That is fine
+        // for the overlay presentation - openMenu() below is what set removeOverlay in the first
+        // place. But this module also registers AppsMenuAction under the "menu" actions tag
+        // (registry.category("actions").add("menu", ...)): if anything ever mounts that action
+        // directly - doAction("menu"), a client-action URL, a third-party module - isOpening
+        // becomes true WITHOUT openMenu() ever having run, so removeOverlay stays null. The next
+        // click on the apps button calls toggleMenu() with no argument: `openState` is falsy and
+        // `isOpening` is already true, so the `else` branch below runs closeMenu() - which checks
+        // `if (removeOverlay)`, finds null, and does nothing. The button is then completely dead
+        // (verified live: 3 clicks, 0 change) until the action itself is dismissed some other way.
+        // Unreachable TODAY - a repo-wide grep of branding18/tvtmaaddons18/erponline-enterprise18
+        // finds no doAction("menu") caller and no ir.actions.client row for it - so there is no
+        // live path to red-then-green a fix against. Deciding what closeMenu() SHOULD do when the
+        // action presentation (not the overlay) is what's mounted - synthesize an overlay-shaped
+        // teardown? dismiss the action instead? - needs its own design and its own reachable test,
+        // not a guess bolted onto this bug's fix. Left as a documented trap for whoever gives a
+        // third-party module a reason to reach this tag directly.
         const closeMenu = () => {
             if (removeOverlay) {
                 removeOverlay();

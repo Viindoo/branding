@@ -60,7 +60,10 @@
 
     <!--Apps Menu Action-->
     <t t-name="web_responsive.AppsMenuAction">
-        <AppsMenu>
+        <!-- AppsMenuScreen only ever mounts this template while the menu IS the thing being shown
+        (apps_menu_service.js), so `open` is always true here - passed down as a prop rather than
+        left for AppsMenu's own useState to catch up to over a bus round trip one render late. -->
+        <AppsMenu open="true">
             <t t-set-slot="search_bar">
                 <AppsMenuSearchBar />
             </t>

@@ -1,4 +1,4 @@
-/* global document, location, window */
+/* global document */
 
 /* Copyright 2018 Tecnativa - Jairo Llopis
  * Copyright 2021 ITerra - Sergey Shebanin
@@ -22,6 +22,16 @@ import {BurgerMenu} from "@web/webclient/burger_menu/burger_menu";
 export class AppsMenu extends Component {
     static template = "web_responsive.AppsMenu";
     static props = {
+        // AppsMenu is only ever instantiated as a child of AppsMenuScreen (apps_menu.xml's
+        // "web_responsive.AppsMenuAction" template), which itself only exists while the menu is
+        // actually being presented - so the caller always knows the right value up front. Reading
+        // it as a prop, instead of starting closed and waiting for AppsMenuScreen's mounted-effect
+        // to correct it one render cycle later over the APPS_MENU:TOGGLE bus, is what makes
+        // `.app-menu-container` (t-if="state.open", apps_menu.xml:52) appear in the SAME render
+        // cycle as `.o_grid_apps_menu` instead of a frame later - closing the ~20ms empty-overlay
+        // flash a mocked single-frame click (and, on a slow device, a real one) could otherwise
+        // observe.
+        open: {type: Boolean, optional: true},
         slots: {
             type: Object,
             optional: true,
@@ -29,7 +39,7 @@ export class AppsMenu extends Component {
     };
     setup() {
         super.setup();
-        this.state = useState({open: false});
+        this.state = useState({open: this.props.open ?? false});
         this.theme = session.apps_menu?.theme || "milk";
         this.menuService = useService("menu");
         browser.localStorage.setItem("redirect_menuId", "");
@@ -113,31 +123,6 @@ export class AppsMenu extends Component {
         }
     }
 
-    onMenuClick() {
-        if (!session.apps_menu?.is_redirect_home) {
-            this.setOpenState(!this.state.open);
-        } else {
-            const redirect_menuId =
-                browser.localStorage.getItem("redirect_menuId") || "";
-            if (!redirect_menuId) {
-                this.setOpenState(true);
-            } else {
-                this.setOpenState(!this.state.open);
-            }
-            const {href, hash} = location;
-            const menuId = this.router.current.menu_id;
-            if (menuId && menuId !== redirect_menuId) {
-                browser.localStorage.setItem(
-                    "redirect_menuId",
-                    this.router.current.menu_id
-                );
-            }
-
-            if (href.includes(hash)) {
-                window.history.replaceState(null, "", href.replace(hash, ""));
-            }
-        }
-    }
 }
 
 // Add this patch after the WebClient patch
