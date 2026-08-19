@@ -14,9 +14,11 @@ import { AppsMenuAction } from "@web_responsive/components/apps_menu/apps_menu_s
 defineMailModels();
 
 // Re-implementation of the QUnit suite retired by 8069ccc (apps_menu_search_tests.esm.js).
-// Real transition: mount the actual fullscreen client action (never a hand-seeded DOM) and let its
-// own useEffect open the container (apps_menu_service.js:27-31 triggers "APPS_MENU:TOGGLE", which
-// AppsMenu.setup() subscribes to - apps_menu.esm.js:43-45), then read the real rendered DOM.
+// Real transition: mount the actual fullscreen client action (never a hand-seeded DOM) and read the
+// real rendered DOM. The template AppsMenuAction mounts always passes AppsMenu the `open="true"`
+// prop directly (apps_menu.xml), so the container is open from AppsMenu's very first render -
+// AppsMenuScreen's mounted-effect / APPS_MENU:TOGGLE bus round trip (apps_menu_service.js,
+// apps_menu.esm.js) also fires on mount, but is redundant here since the prop already opened it.
 test("the search input renders exactly once inside the fullscreen apps-menu container", async () => {
     defineMenus([{ id: 1, name: "App One" }]);
 

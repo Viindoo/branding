@@ -11,7 +11,6 @@ import { useBus, useService } from "@web/core/utils/hooks";
 import {AppMenuItem} from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
 import {AppsMenuSearchBar} from "@web_responsive/components/menu_searchbar/searchbar.esm";
 import {NavBar} from "@web/webclient/navbar/navbar";
-import {browser} from "@web/core/browser/browser";
 import {patch} from "@web/core/utils/patch";
 import {router} from "@web/core/browser/router";
 import {session} from "@web/session";
@@ -39,15 +38,24 @@ export class AppsMenu extends Component {
     };
     setup() {
         super.setup();
-        this.state = useState({open: this.props.open ?? false});
+        // `open` wins whenever the caller passes it (AppsMenuScreen always does - apps_menu.xml -
+        // so `.app-menu-container` renders in the SAME cycle the screen mounts, not a frame later
+        // over the APPS_MENU:TOGGLE bus round trip; see the props declaration above). Only when
+        // AppsMenu is mounted WITHOUT that prop does is_redirect_home's own menuId===0 computation
+        // apply - it must never override an explicitly-passed prop, or it silently reopens the
+        // exact flash the prop exists to close.
+        let open = this.props.open;
+        if (open === undefined) {
+            open = false;
+            if (session.apps_menu?.is_redirect_home) {
+                this.router = router;
+                const menuId = Number(this.router.current.menu_id || 0);
+                open = menuId === 0;
+            }
+        }
+        this.state = useState({open});
         this.theme = session.apps_menu?.theme || "milk";
         this.menuService = useService("menu");
-        browser.localStorage.setItem("redirect_menuId", "");
-        if (session.apps_menu?.is_redirect_home) {
-            this.router = router;
-            const menuId = Number(this.router.current.menu_id || 0);
-            this.state = useState({open: menuId === 0});
-        }
         this.actionService = useService("action");
         this.homeIcon = useRef("homeIcon");
         useBus(this.env.bus, "APPS_MENU:TOGGLE", ({ detail: open }) => {
@@ -122,7 +130,6 @@ export class AppsMenu extends Component {
             focusableInputElements[nextIndex].focus();
         }
     }
-
 }
 
 // Add this patch after the WebClient patch

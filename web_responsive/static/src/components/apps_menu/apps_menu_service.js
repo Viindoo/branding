@@ -161,29 +161,46 @@ export const appsMenuService = {
         // nothing, which is the whole point of holding one.
         const mutex = new Mutex();
 
-        // KNOWN TRAP, deliberately left unfixed - see toggleMenu() below for the mechanism.
         // AppsMenuScreen.setup()'s useEffect calls appsMenu.setOpen(true) unconditionally
         // (isOpening = true) on mount, regardless of WHICH presentation mounted it. That is fine
         // for the overlay presentation - openMenu() below is what set removeOverlay in the first
         // place. But this module also registers AppsMenuAction under the "menu" actions tag
         // (registry.category("actions").add("menu", ...)): if anything ever mounts that action
         // directly - doAction("menu"), a client-action URL, a third-party module - isOpening
-        // becomes true WITHOUT openMenu() ever having run, so removeOverlay stays null. The next
-        // click on the apps button calls toggleMenu() with no argument: `openState` is falsy and
-        // `isOpening` is already true, so the `else` branch below runs closeMenu() - which checks
-        // `if (removeOverlay)`, finds null, and does nothing. The button is then completely dead
-        // (verified live: 3 clicks, 0 change) until the action itself is dismissed some other way.
-        // Unreachable TODAY - a repo-wide grep of branding18/tvtmaaddons18/erponline-enterprise18
-        // finds no doAction("menu") caller and no ir.actions.client row for it - so there is no
-        // live path to red-then-green a fix against. Deciding what closeMenu() SHOULD do when the
-        // action presentation (not the overlay) is what's mounted - synthesize an overlay-shaped
-        // teardown? dismiss the action instead? - needs its own design and its own reachable test,
-        // not a guess bolted onto this bug's fix. Left as a documented trap for whoever gives a
-        // third-party module a reason to reach this tag directly.
+        // becomes true WITHOUT openMenu() ever having run, so removeOverlay stays null. Reachable
+        // TODAY, not a hypothetical: erponline-enterprise18/viin_customizer_web_responsive
+        // (auto_install: True) patches CustomizerViewStore._getPageAction to return
+        // {type: "ir.actions.client", tag: "menu"} and dispatches it via its own action service;
+        // web_responsive's own apps_menu.test.js also drives doAction("menu") directly through the
+        // real "action" service. Either way, the next click on the apps button calls toggleMenu()
+        // with no argument: `openState` is falsy and `isOpening` is already true, so the `else`
+        // branch below runs closeMenu().
         const closeMenu = () => {
             if (removeOverlay) {
                 removeOverlay();
                 removeOverlay = null;
+                return;
+            }
+            // No overlay to remove: the "menu" action itself is what's mounted (see above), not
+            // the overlay. It is dismissed the way any client action is - by restoring whatever
+            // controller was on the real action stack before it (mirrors AppsMenuScreen.dismiss()'s
+            // own comment: "The client action is dismissed by the action stack itself"). Only when
+            // one exists: action_service.js's _getBreadcrumbs already excludes tag === "menu"
+            // controllers, so a non-empty breadcrumbs array on the current controller means there
+            // really is something underneath to go back to. A bare doAction("menu") with nothing
+            // before it (the boot fallback, or a standalone client-action URL) has nothing to
+            // reveal, so the button is correctly a no-op there - there is nothing to close TO. Out
+            // of reach by design: a "menu" action mounted through a foreign, isolated action
+            // service (e.g. the customizer bridge above runs its own "customizer_action" service,
+            // not this env's "action") is invisible to env.services.action.currentController, so
+            // this stays a safe no-op for that case too - dismissing it is that service's own
+            // responsibility, not this one's.
+            const currentController = env.services.action.currentController;
+            if (
+                currentController?.action?.tag === "menu" &&
+                currentController.config.breadcrumbs.length
+            ) {
+                env.services.action.restore();
             }
         };
 

@@ -20,6 +20,9 @@ import { defineMailModels } from "@mail/../tests/mail_test_helpers";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { NavBar } from "@web/webclient/navbar/navbar";
 import { WebClient } from "@web/webclient/webclient";
+import { router } from "@web/core/browser/router";
+import { session } from "@web/session";
+import { AppsMenu } from "@web_responsive/components/apps_menu/apps_menu.esm";
 // Importing AppsMenuAction also runs apps_menu.esm.js's module-level side effects (the NavBar/
 // BurgerMenu patches, AppMenuItem, AppsMenuSearchBar registration) because apps_menu_service.js
 // imports apps_menu.esm.js itself - so this file's import graph alone is enough to exercise the
@@ -215,6 +218,41 @@ test("closing the home menu returns to the same screen without refetching it", a
     expect.verifySteps([]);
 });
 
+test.tags("desktop");
+test("clicking the navbar apps button dismisses the menu action too, not only the overlay", async () => {
+    // AppsMenuAction is registered under the "menu" actions tag (apps_menu_service.js), so it can
+    // be reached via doAction("menu") directly - a client-action URL, the boot fallback, or (proven
+    // live) erponline-enterprise18/viin_customizer_web_responsive's bridge module, which patches
+    // CustomizerViewStore._getPageAction to return {type: "ir.actions.client", tag: "menu"} and
+    // dispatches it via its own isolated action service - WITHOUT ever going through
+    // appsMenuService.openMenu() (the overlay path). AppsMenuScreen.setup()'s useEffect still
+    // unconditionally calls appsMenu.setOpen(true) on mount regardless of which presentation
+    // mounted it, so the toggle button must be able to dismiss THIS presentation too, not only the
+    // overlay one - otherwise it goes silently dead (verified: clicks do nothing) the moment
+    // anything mounts "menu" without going through toggleMenu()/openMenu() first.
+    defineMenus([{ id: 1 }]);
+    await mountWithCleanup(WebClient);
+    await getService("action").doAction(1);
+
+    expect(".o_list_view").toHaveCount(1);
+    expect(".app-menu-container").toHaveCount(0);
+
+    // Mount the "menu" action directly through the real action service - not through
+    // getService("apps_menu").toggleMenu(true) - to land in exactly the buggy state
+    // (isOpening=true, removeOverlay=null).
+    await getService("action").doAction("menu");
+    await animationFrame();
+    expect(".app-menu-container").toHaveCount(1);
+
+    await contains("button.o_grid_apps_menu__button").click();
+    await animationFrame();
+
+    // The button must actually dismiss the menu action and return the user to the screen they
+    // were on before - not sit there as a dead no-op.
+    expect(".app-menu-container").toHaveCount(0);
+    expect(".o_list_view").toHaveCount(1);
+});
+
 test("the navbar keeps the menu-toggle anchor that core tours click", async () => {
     defineMenus([{ id: 1 }]);
     await makeMockEnv();
@@ -249,6 +287,28 @@ test("mounting the apps menu flags exactly the current app as active, and no oth
 
     expect(".o-app-menu-item.active").toHaveCount(1);
     expect(".o-app-menu-item.active[data-menu-xmlid='menu_app_one']").toHaveCount(1);
+});
+
+test("the is_redirect_home branch never overrides the open prop AppsMenuScreen always passes", async () => {
+    // migrations/18.0.1.0.8/post-migration.py backfills is_redirect_home=True for every upgraded
+    // user with no action_id - the DOMINANT configuration on a real (upgraded) database, not an
+    // edge case. AppsMenuScreen's template always passes open="true" to <AppsMenu> (apps_menu.xml,
+    // the only instantiation site in this module), specifically so `.app-menu-container`
+    // (t-if="state.open") appears in the SAME render cycle the screen mounts (66a6a7d65d) - no
+    // waiting for AppsMenuScreen's mounted-effect to correct it a frame later over the
+    // APPS_MENU:TOGGLE bus. THAT bus correction is exactly what would otherwise mask this test: it
+    // fires unconditionally on every mount through AppsMenuScreen and overwrites state.open to true
+    // regardless of what this branch computed, so mounting AppsMenu through its usual parent cannot
+    // observe the branch's OWN construction-time value. Mount AppsMenu standalone instead - no
+    // AppsMenuScreen wrapper, so nothing ever corrects it - and read the DOM AppsMenu itself commits
+    // on construction, which is exactly what a real first paint would show.
+    patchWithCleanup(session, {apps_menu: {is_redirect_home: true}});
+    patchWithCleanup(router, {current: {menu_id: "5"}});
+
+    await makeMockEnv();
+    await mountWithCleanup(AppsMenu, {props: {open: true}});
+
+    expect(".app-menu-container").toHaveCount(1);
 });
 
 test(
