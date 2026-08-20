@@ -43,6 +43,34 @@ Backend theme for Viindoo, based on the Openworx Backend Theme
         'web.assets_backend_lazy': [
             ('after', 'web/static/src/views/pivot/pivot_view.scss', 'to_backend_theme/static/src/views/pivot/pivot_view.scss'),
         ],
+        # to_backend_theme's own SCSS leaks into web.assets_unit_tests_setup / web.tests_assets via
+        # web's ('include', 'web.assets_backend') + ('include', 'web.assets_backend_lazy')
+        # (addons/web/__manifest__.py); each 'remove' strips it back out of the two TEST-ONLY
+        # bundles so core's own Hoot/QUnit tests measure core's own theme metrics, not Viindoo's.
+        # web.assets_backend / web.assets_backend_lazy themselves (the real webclient) are
+        # untouched - AssetPaths.remove() operates on the accumulated per-bundle path list, not on
+        # the source bundle. A stale/renamed path here raises ValueError on module update - keep
+        # that loud, never catch it (odoo/addons/base/models/ir_asset.py AssetPaths._raise_not_found).
+        'web.assets_unit_tests_setup': [
+            ('remove', 'to_backend_theme/static/src/components/apps_menu/apps_menu.scss'),
+            ('remove', 'to_backend_theme/static/src/components/apps_menu_item/apps_menu_item.scss'),
+            ('remove', 'to_backend_theme/static/src/components/menu_canonical_searchbar/searchbar.scss'),
+            ('remove', 'to_backend_theme/static/src/scss/style.scss'),
+            ('remove', 'to_backend_theme/static/src/views/form/form_controller.scss'),
+            ('remove', 'to_backend_theme/static/src/views/kanban/kanban_dashboard.scss'),
+            ('remove', 'to_backend_theme/static/src/views/pivot/pivot_view.scss'),
+        ],
+        # web.tests_assets is the legacy QUnit page; it includes web.assets_backend +
+        # web.assets_backend_lazy the same way, so it needs the identical remove list.
+        'web.tests_assets': [
+            ('remove', 'to_backend_theme/static/src/components/apps_menu/apps_menu.scss'),
+            ('remove', 'to_backend_theme/static/src/components/apps_menu_item/apps_menu_item.scss'),
+            ('remove', 'to_backend_theme/static/src/components/menu_canonical_searchbar/searchbar.scss'),
+            ('remove', 'to_backend_theme/static/src/scss/style.scss'),
+            ('remove', 'to_backend_theme/static/src/views/form/form_controller.scss'),
+            ('remove', 'to_backend_theme/static/src/views/kanban/kanban_dashboard.scss'),
+            ('remove', 'to_backend_theme/static/src/views/pivot/pivot_view.scss'),
+        ],
     },
     'post_init_hook': 'post_init_hook',
     'installable': True,
