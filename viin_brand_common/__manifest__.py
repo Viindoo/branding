@@ -64,18 +64,57 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'web._assets_core': [
             ('after', 'web/static/src/core/**/*', 'viin_brand_common/static/src/core/**/*'),
         ],
-        # The base-font reset is wired into BOTH test pages, because 18.0 runs both.
-        # web.tests_assets  -> the legacy QUnit page (/web/tests/legacy), still executed by
-        #                      core's WebSuite.test_qunit_desktop.
-        # web.assets_unit_tests -> the Hoot page (/web/tests), executed by
-        #                      WebSuite.test_unit_desktop. This one is load-bearing: an A/B run
-        #                      on this branch (brand off vs brand on, reset absent) measured
-        #                      0 failures vs 28, and every one of those 28 was on the Hoot page.
+        # Brand SCSS leaks into web.assets_unit_tests_setup / web.tests_assets because both bundles
+        # carry ('include', 'web.assets_backend') (addons/web/__manifest__.py), so core's own
+        # Hoot/QUnit unit tests were measuring Viindoo's design tokens instead of core's own. Each
+        # 'remove' below strips one of this module's own SCSS files back out of those two TEST-ONLY
+        # bundles; web.assets_backend itself (the real webclient) is untouched - AssetPaths.remove()
+        # operates on the accumulated per-bundle path list, not on the source bundle that
+        # contributed it, so this is safe. A stale/renamed path here raises ValueError on module
+        # update - keep that loud, never catch it
+        # (odoo/addons/base/models/ir_asset.py AssetPaths._raise_not_found).
+        'web.assets_unit_tests_setup': [
+            ('remove', 'viin_brand_common/static/src/core/emoji_picker/emoji_picker.scss'),
+            ('remove', 'viin_brand_common/static/src/core/file_viewer/file_viewer.scss'),
+            ('remove', 'viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss'),
+            ('remove', 'viin_brand_common/static/src/legacy/scss/navbar.scss'),
+            ('remove', 'viin_brand_common/static/src/legacy/scss/progress_bar.scss'),
+            ('remove', 'viin_brand_common/static/src/legacy/scss/secondary_variables.scss'),
+            ('remove', 'viin_brand_common/static/src/legacy/scss/systray.scss'),
+            ('remove', 'viin_brand_common/static/src/scss/bootstrap_overridden.scss'),
+            ('remove', 'viin_brand_common/static/src/scss/primary_variables.scss'),
+            ('remove', 'viin_brand_common/static/src/search/search_bar/search_bar.scss'),
+            ('remove', 'viin_brand_common/static/src/search/search_panel/search_view.scss'),
+            ('remove', 'viin_brand_common/static/src/views/fields/fields.scss'),
+            ('remove', 'viin_brand_common/static/src/views/fields/statusbar/statusbar_field.scss'),
+            ('remove', 'viin_brand_common/static/src/views/form/button_box/button_box.scss'),
+            ('remove', 'viin_brand_common/static/src/webclient/navbar/navbar.scss'),
+            ('remove', 'viin_brand_common/static/src/webclient/settings_form_view/settings_form_view.scss'),
+            ('remove', 'viin_brand_common/static/src/webclient/webclient.scss'),
+        ],
+        # web.tests_assets is the legacy QUnit page (/web/tests/legacy, still executed by core's
+        # WebSuite.test_qunit_desktop); it includes web.assets_backend the same way
+        # web.assets_unit_tests_setup does, so it needs the identical remove list.
         'web.tests_assets': [
-            'viin_brand_common/static/tests/qunit_font_reset.css',
+            ('remove', 'viin_brand_common/static/src/core/emoji_picker/emoji_picker.scss'),
+            ('remove', 'viin_brand_common/static/src/core/file_viewer/file_viewer.scss'),
+            ('remove', 'viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss'),
+            ('remove', 'viin_brand_common/static/src/legacy/scss/navbar.scss'),
+            ('remove', 'viin_brand_common/static/src/legacy/scss/progress_bar.scss'),
+            ('remove', 'viin_brand_common/static/src/legacy/scss/secondary_variables.scss'),
+            ('remove', 'viin_brand_common/static/src/legacy/scss/systray.scss'),
+            ('remove', 'viin_brand_common/static/src/scss/bootstrap_overridden.scss'),
+            ('remove', 'viin_brand_common/static/src/scss/primary_variables.scss'),
+            ('remove', 'viin_brand_common/static/src/search/search_bar/search_bar.scss'),
+            ('remove', 'viin_brand_common/static/src/search/search_panel/search_view.scss'),
+            ('remove', 'viin_brand_common/static/src/views/fields/fields.scss'),
+            ('remove', 'viin_brand_common/static/src/views/fields/statusbar/statusbar_field.scss'),
+            ('remove', 'viin_brand_common/static/src/views/form/button_box/button_box.scss'),
+            ('remove', 'viin_brand_common/static/src/webclient/navbar/navbar.scss'),
+            ('remove', 'viin_brand_common/static/src/webclient/settings_form_view/settings_form_view.scss'),
+            ('remove', 'viin_brand_common/static/src/webclient/webclient.scss'),
         ],
         'web.assets_unit_tests': [
-            'viin_brand_common/static/tests/qunit_font_reset.css',
             'viin_brand_common/static/tests/webclient_title.test.js',
         ],
         'web.assets_backend': [
