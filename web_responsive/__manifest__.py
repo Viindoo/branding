@@ -55,12 +55,50 @@
         "web.assets_clickbot": [
             "/web_responsive/static/src/clickbot/clickbot.esm.js",
         ],
-        # The checkbox-metrics reset is declared on BOTH test pages, because 18.0 runs both:
-        # web.tests_assets is the legacy QUnit page (WebSuite.test_qunit_desktop) and
-        # web.assets_unit_tests is the Hoot page (WebSuite.test_unit_desktop). The Hoot entry is
-        # the load-bearing one - see the commit message for the A/B measurement.
+        # web_responsive's own SCSS leaks into web.assets_unit_tests_setup / web.tests_assets via
+        # web's ('include', 'web.assets_backend') (addons/web/__manifest__.py); each 'remove'
+        # strips it back out of the two TEST-ONLY bundles so core's own Hoot/QUnit tests measure
+        # core's own layout metrics, not web_responsive's. web.assets_backend itself (the real
+        # webclient) is untouched - AssetPaths.remove() operates on the accumulated per-bundle
+        # path list, not on the source bundle. A stale/renamed path here raises ValueError on
+        # module update - keep that loud, never catch it
+        # (odoo/addons/base/models/ir_asset.py AssetPaths._raise_not_found).
+        "web.assets_unit_tests_setup": [
+            ("remove", "web_responsive/static/src/components/apps_menu/apps_menu.scss"),
+            ("remove", "web_responsive/static/src/components/apps_menu_item/apps_menu_item.scss"),
+            ("remove", "web_responsive/static/src/components/chatter/chatter.scss"),
+            ("remove", "web_responsive/static/src/components/command_palette/main.scss"),
+            ("remove", "web_responsive/static/src/components/file_viewer/file_viewer.scss"),
+            ("remove", "web_responsive/static/src/components/hotkey/hotkey.scss"),
+            ("remove", "web_responsive/static/src/components/menu_canonical_searchbar/searchbar.scss"),
+            ("remove", "web_responsive/static/src/components/menu_searchbar/searchbar.scss"),
+            ("remove", "web_responsive/static/src/legacy/scss/big_boxes.scss"),
+            ("remove", "web_responsive/static/src/legacy/scss/form_variable.scss"),
+            ("remove", "web_responsive/static/src/legacy/scss/list_sticky_header.scss"),
+            ("remove", "web_responsive/static/src/legacy/scss/primary_variable.scss"),
+            ("remove", "web_responsive/static/src/legacy/scss/web_responsive.scss"),
+            ("remove", "web_responsive/static/src/views/form/form_controller.scss"),
+            ("remove", "web_responsive/static/src/views/form/form_statusbar.scss"),
+        ],
+        # web.tests_assets is the legacy QUnit page (WebSuite.test_qunit_desktop); it includes
+        # web.assets_backend the same way web.assets_unit_tests_setup does, so it needs the
+        # identical remove list.
         "web.tests_assets": [
-            "/web_responsive/static/tests/qunit_reset.css",
+            ("remove", "web_responsive/static/src/components/apps_menu/apps_menu.scss"),
+            ("remove", "web_responsive/static/src/components/apps_menu_item/apps_menu_item.scss"),
+            ("remove", "web_responsive/static/src/components/chatter/chatter.scss"),
+            ("remove", "web_responsive/static/src/components/command_palette/main.scss"),
+            ("remove", "web_responsive/static/src/components/file_viewer/file_viewer.scss"),
+            ("remove", "web_responsive/static/src/components/hotkey/hotkey.scss"),
+            ("remove", "web_responsive/static/src/components/menu_canonical_searchbar/searchbar.scss"),
+            ("remove", "web_responsive/static/src/components/menu_searchbar/searchbar.scss"),
+            ("remove", "web_responsive/static/src/legacy/scss/big_boxes.scss"),
+            ("remove", "web_responsive/static/src/legacy/scss/form_variable.scss"),
+            ("remove", "web_responsive/static/src/legacy/scss/list_sticky_header.scss"),
+            ("remove", "web_responsive/static/src/legacy/scss/primary_variable.scss"),
+            ("remove", "web_responsive/static/src/legacy/scss/web_responsive.scss"),
+            ("remove", "web_responsive/static/src/views/form/form_controller.scss"),
+            ("remove", "web_responsive/static/src/views/form/form_statusbar.scss"),
         ],
         # Explicit file list only - never a glob over static/tests/**: an unresolved module id in
         # this shared bundle is a FATAL module-loader error that aborts the entire web unit-test
@@ -68,7 +106,6 @@
         # navbar_favicon_guard.test.js:23-37 for a live-run-confirmed instance of this failure
         # mode).
         "web.assets_unit_tests": [
-            "/web_responsive/static/tests/qunit_reset.css",
             "/web_responsive/static/tests/apps_menu.test.js",
             "/web_responsive/static/tests/apps_menu_search.test.js",
             "/web_responsive/static/tests/webclient.test.js",
