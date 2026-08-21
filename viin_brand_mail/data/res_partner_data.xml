@@ -4,4 +4,10 @@
         <field name="image_1920" type="base64" file="viin_brand/static/img/viindoobot.png"/>
         <field name="email">viindoobot@example.viindoo.com</field>
     </record>
+
+    <!-- This file is not `noupdate`, so the rebranding above re-applies on every module update.
+         `post_init_hook` runs only on INSTALL (odoo/modules/loading.py:178,244), so the test-mode
+         restore has to be driven from here too, or an update leaves the partner branded and every
+         core test hardcoding the vanilla OdooBot identity fails. -->
+    <function model="res.partner" name="_viin_brand_restore_bot_test_identity"/>
 </odoo>

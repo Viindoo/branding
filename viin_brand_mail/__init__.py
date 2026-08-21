@@ -1,4 +1,3 @@
-from odoo import tools
 from . import models
 from . import wizard
 
@@ -24,5 +23,7 @@ def post_load():
 
 
 def post_init_hook(env):
-    if tools.config.get('test_enable', False) and env.ref('base.partner_root', raise_if_not_found=False):
-        env.ref('base.partner_root').write({'name': 'OdooBot', 'email': 'odoobot@example.com'})
+    # The restore itself lives in `models/res_partner.py` and is driven from
+    # `data/res_partner_data.xml`, which runs on install AND on update. This hook only keeps the
+    # install path covered without restating the logic.
+    env['res.partner']._viin_brand_restore_bot_test_identity()
