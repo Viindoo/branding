@@ -1,10 +1,11 @@
 # Copyright 2023 Taras Shabaranskyi
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-from odoo.tests import new_test_user
+from odoo.tests import new_test_user, tagged
 
 from odoo.addons.base.tests.common import BaseCommon
 
 
+@tagged("-at_install", "post_install")
 class TestResUsers(BaseCommon):
     def test_compute_redirect_home(self):
         record = new_test_user(self.env, login="jeant@mail.com")
