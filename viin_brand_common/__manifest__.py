@@ -117,6 +117,17 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'web.assets_unit_tests': [
             'viin_brand_common/static/tests/webclient_title.test.js',
         ],
+        # Tours driving tests/test_brand_appearance_contract.py, which guards the
+        # brand appearance on the REAL webclient and website - the only place it
+        # can still be guarded now that the unit-test bundles carry no brand CSS.
+        # Explicit file list, never a glob over static/tests/**: an unresolved
+        # module id in this shared bundle is a FATAL module-loader error that
+        # aborts the whole web test suite before any test body runs. This file
+        # imports only '@web/core/registry', which is present in the backend and
+        # the frontend alike, so it is safe on both pages the bundle serves.
+        'web.assets_tests': [
+            'viin_brand_common/static/tests/tours/brand_appearance_tour.js',
+        ],
         'web.assets_backend': [
             # common branding
             'viin_brand_common/static/src/legacy/scss/navbar.scss',
