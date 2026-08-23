@@ -1,20 +1,15 @@
-import logging
 import re
 
 from odoo.tests.common import HttpCase, tagged
 
-_logger = logging.getLogger(__name__)
+from odoo.addons.viin_brand_common.tests.common import (
+    BrandBundleCssMixin,
+    CORE_TEST_BUNDLES,
+    WEBCLIENT_BUNDLE,
+    brand_marker_re,
+)
 
 MODULE = "viin_brand_common"
-
-# The two bundles core's own JS unit tests are served from. Both pull in
-# web.assets_backend with ('include', ...) (addons/web/__manifest__.py), which
-# is how this module's SCSS used to reach them in the first place.
-CORE_TEST_BUNDLES = ("web.assets_unit_tests_setup", "web.tests_assets")
-
-# The bundle the real webclient is served from - the counterweight side of the
-# same contract.
-WEBCLIENT_BUNDLE = "web.assets_web"
 
 # The two stylesheets that carry the brand identity itself: the design tokens
 # (colour, base font size) and the Bootstrap overrides (square corners). Named
@@ -26,14 +21,9 @@ BRAND_IDENTITY_STYLESHEETS = (
     "/%s/static/src/scss/bootstrap_overridden.scss" % MODULE,
 )
 
-# Odoo's SCSS compiler prefixes every source file it concatenates with a
-# comment naming that file's path. Matching on the FULL comment - "/* " then a
-# leading slash then the module name - and never on the bare module name is
-# load-bearing: a bare substring search for "web_responsive" also matches
-# "viin_customizer_web_responsive", and a bare search for a module name would
-# equally match any module that merely has it as a suffix. That mistake
-# produces a red run with nothing wrong, which is worse than no test.
-MODULE_MARKER_RE = re.compile(r"/\* (/%s/[^*]*) \*/" % re.escape(MODULE))
+# Every stylesheet marker owned by this module. See brand_marker_re() for why
+# the anchoring on both sides of the module name is load-bearing.
+MODULE_MARKER_RE = brand_marker_re(MODULE)
 
 # The theme colour core's own unit tests assert (html_editor's
 # color_selector.test.js expects rgb(113, 75, 103) = #714B67). Sourced from
@@ -42,7 +32,7 @@ CORE_THEME_COLOUR_RE = re.compile(r"--o-color-1:\s*#714B67", re.IGNORECASE)
 
 
 @tagged("-at_install", "post_install")
-class TestBrandCssOutOfCoreTestBundles(HttpCase):
+class TestBrandCssOutOfCoreTestBundles(BrandBundleCssMixin, HttpCase):
     """Brand CSS must reach the real webclient and NOTHING ELSE.
 
     The whole point of the ``('remove', ...)`` directives in this module's
@@ -62,35 +52,14 @@ class TestBrandCssOutOfCoreTestBundles(HttpCase):
     stale-bundle trap that cost this campaign a whole measurement round: when
     an SCSS edit breaks compilation, Odoo keeps serving the PREVIOUS bundle and
     an inspection of the source files alone reports success.
-    """
 
-    def _fetch_bundle_css(self, bundle_name):
-        """Return ``(url, css)`` for ``bundle_name`` as actually served."""
-        bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=True, js=False)
-        attachment = bundle.css()
-        self.assertTrue(
-            attachment,
-            "%s produced no CSS at all - the bundle failed to compile, and "
-            "every other assertion about its contents would be meaningless"
-            % bundle_name,
-        )
-        url = attachment[0].url
-        response = self.url_open(url)
-        self.assertEqual(
-            response.status_code,
-            200,
-            "the compiled CSS of %s must be served at %s" % (bundle_name, url),
-        )
-        # Decode explicitly: requests guesses latin-1 for a text/* response that
-        # carries no charset, which silently mangles any non-ASCII content.
-        css = response.content.decode("utf-8")
-        _logger.info(
-            "[brand-css-guard] %s served from %s (%d bytes)",
-            bundle_name,
-            url,
-            len(response.content),
-        )
-        return url, css
+    Every read goes through BrandBundleCssMixin._fetch_bundle_css, which proves
+    the bundle really compiled before any absence is interpreted. Without that
+    witness the absence assertion below passes at the exact moment the bundle is
+    broken, because a compile-error stylesheet contains no module's markers at
+    all - which is how runbot build rb-fb7185e-224180 reported success over a
+    bundle that had not compiled.
+    """
 
     def test_brand_stylesheets_are_absent_from_core_unit_test_bundles(self):
         """No stylesheet of this module may reach core's unit-test pages.
