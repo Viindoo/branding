@@ -37,6 +37,30 @@ Editions Supported
     'version': '0.1',
     'depends': ['viin_brand_common', 'onboarding'],
     'assets': {
+        # Brand SCSS leaks into web.assets_unit_tests_setup / web.tests_assets because both bundles
+        # carry ('include', 'web.assets_backend') (addons/web/__manifest__.py), so core's own
+        # Hoot/QUnit unit tests were measuring Viindoo's design tokens instead of core's own. The
+        # 'remove' below strips this module's own SCSS file back out of those two TEST-ONLY
+        # bundles; web.assets_backend itself (the real webclient) is untouched - AssetPaths.remove()
+        # operates on the accumulated per-bundle path list, not on the source bundle that
+        # contributed it, so this is safe. A stale/renamed path here raises ValueError on module
+        # update - keep that loud, never catch it
+        # (odoo/addons/base/models/ir_asset.py AssetPaths._raise_not_found).
+        # Specific to this module: onboarding.scss consumes $brand-primary-light/-dark/-darker and
+        # $brand-secondary-light/-dark, which only viin_brand_common's primary_variables.scss
+        # defines - and which these two test bundles no longer carry once viin_brand_common removes
+        # its own primary_variables.scss from them. So this leak did not merely pollute core's
+        # tests with Viindoo's design tokens, it ABORTED the compile of the whole bundle
+        # ("Undefined variable: $brand-primary-light").
+        'web.assets_unit_tests_setup': [
+            ('remove', 'viin_brand_onboarding/static/src/scss/onboarding.scss'),
+        ],
+        # web.tests_assets is the legacy QUnit page (/web/tests/legacy, still executed by core's
+        # WebSuite.test_qunit_desktop); it includes web.assets_backend the same way
+        # web.assets_unit_tests_setup does, so it needs the identical remove entry.
+        'web.tests_assets': [
+            ('remove', 'viin_brand_onboarding/static/src/scss/onboarding.scss'),
+        ],
         'web.assets_backend': [
             ('after', '/onboarding/static/src/scss/onboarding.scss', '/viin_brand_onboarding/static/src/scss/onboarding.scss'),
         ],
