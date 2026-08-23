@@ -61,9 +61,6 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'web._assets_helpers': [
             'viin_brand_common/static/src/legacy/scss/bootstrap_overridden_common.scss',
         ],
-        'web._assets_core': [
-            ('after', 'web/static/src/core/**/*', 'viin_brand_common/static/src/core/**/*'),
-        ],
         # Brand SCSS leaks into web.assets_unit_tests_setup / web.tests_assets because both bundles
         # carry ('include', 'web.assets_backend') (addons/web/__manifest__.py), so core's own
         # Hoot/QUnit unit tests were measuring Viindoo's design tokens instead of core's own. Each
@@ -132,7 +129,27 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
             # common branding
             'viin_brand_common/static/src/legacy/scss/navbar.scss',
             'viin_brand_common/static/src/legacy/scss/systray.scss',
+            # Overrides of files under web/static/src/core/, one explicit
+            # ('after', <core file>, <our file>) per file. NEVER re-glob these into
+            # 'web._assets_core': that bundle is ('include')-ed by FIVE bundles -
+            # web.assets_backend, point_of_sale.base_app, mail.assets_public,
+            # im_livechat.assets_embed_external and hr_attendance.assets_public_attendance -
+            # so one glob there also rides into the PoS terminal, the public mail page, the
+            # livechat embed and the attendance kiosk. In the livechat embed it does not merely
+            # leak, it BREAKS: im_livechat drops core's own title_service.js from that bundle
+            # (addons/im_livechat/__manifest__.py 'im_livechat.assets_embed_core'), but its
+            # 'remove' names only core's path, so our patch of that file survived with its
+            # import gone and failed every JS module on /im_livechat/support - core's
+            # im_livechat.tests.test_im_livechat_support_page.TestImLivechatSupportPage.test_load_modules.
+            # Anchoring per file also puts each override AFTER the core file it overrides:
+            # ('after', <glob>, ...) resolves its target to the FIRST sorted match only
+            # (ir_asset.py _process_path: `target = target_paths[0][0]`), so the old glob dropped
+            # all four files near the TOP of the core block, where core's own emoji_picker.scss -
+            # same selector, same specificity, later in the bundle - silently won over ours.
+            ('after', 'web/static/src/core/browser/title_service.js', 'viin_brand_common/static/src/core/browser/title_service.js'),
+            ('after', 'web/static/src/core/colors/colors.js', 'viin_brand_common/static/src/core/colors/colors.js'),
             ('after', 'web/static/src/core/emoji_picker/emoji_picker.scss', 'viin_brand_common/static/src/core/emoji_picker/emoji_picker.scss'),
+            ('after', 'web/static/src/core/file_viewer/file_viewer.scss', 'viin_brand_common/static/src/core/file_viewer/file_viewer.scss'),
             ('after', 'web/static/src/webclient/webclient.scss', 'viin_brand_common/static/src/webclient/webclient.scss'),
             ('after', 'web/static/src/search/search_panel/search_view.scss', 'viin_brand_common/static/src/search/search_panel/search_view.scss'),
             ('after', 'web/static/src/search/search_bar/search_bar.scss', 'viin_brand_common/static/src/search/search_bar/search_bar.scss'),
