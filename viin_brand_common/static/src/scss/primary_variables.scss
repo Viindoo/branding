@@ -2,7 +2,18 @@ $o-font-size-base: o-to-rem(15) !default;
 
 // Change colors here
 $o-community-color: #00bbce !default;
-$o-enterprise-color: #00bbce !default;
+// $o-enterprise-color feeds 'o-color-1' in the website builder's theme palette
+// (web_editor.variables.scss $o-color-palettes -> 'base-1' -> 'o-color-1', emitting
+// --o-color-1). DynamicSvg's colorpicker RESET path (web_editor snippets.options.js
+// registry.DynamicSvg.color()) re-reads --o-color-1 via weUtils.getCSSVariableValue()
+// and pipes it through normalizeCSSColor()/convertRgbaToCSSColor(), which always
+// .toUpperCase()s the hex result (web/static/src/core/utils/colors.js). The literal
+// here MUST stay uppercase so the raw custom-property string and the normalised
+// round-tripped string match byte-for-byte - a future re-lowercasing silently
+// re-breaks core's website.tests.test_ui.TestUiHtmlEditor.test_dynamic_svg_theme_colors
+// tour at its "Check the SVG uses the theme colors on reset" step. Same hex value,
+// case only (#00bbce == #00BBCE) - no pixel change.
+$o-enterprise-color: #00BBCE !default;
 $o-enterprise-primary-color: #7f4282 !default;
 
 $o-brand-odoo: $o-community-color !default;
