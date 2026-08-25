@@ -269,6 +269,38 @@ test("the navbar keeps the menu-toggle anchor that core tours click", async () =
     // `.o_main_navbar .o_menu_toggle` at step 1 of 311. An inherit that removes it from the DOM
     // silently breaks every such tour at its first step.
     expect(".o_main_navbar .o_menu_toggle").toHaveCount(1);
+
+    // ...and it is the ONLY apps control on a small screen. apps_menu.xml's own comment states
+    // the intent as one-or-the-other ("Rebuild the anchor here, ON THE BRANCH THAT DOES
+    // RENDER"), but the `<button class="o_grid_apps_menu__button">` is written as a SIBLING of
+    // the `t-if`/`t-else` pair rather than inside the `t-else`, so it renders in BOTH branches
+    // and a phone gets two controls for one action. This is not cosmetic: the extra button is
+    // an unshrinkable (`flex-shrink:0`) child of a 375px navbar whose ONLY shrinkable sibling is
+    // `.o_breadcrumb`, so every pixel the duplicate occupies is taken from the breadcrumb - the
+    // element a tour's `:visible` filter must find. Measured live at 375x667 on
+    // /odoo/action-mrp.mrp_bom_form_action/1: without this module 1 control and
+    // `.o_last_breadcrumb_item.active` 149.9px wide (visible); with it 2 controls and that same
+    // element 0px wide (NOT visible), which is what hangs the tour until its 20s watchdog fires.
+    expect(".o_grid_apps_menu__button").toHaveCount(0);
+});
+
+test("on a wide screen the navbar offers the home-menu grid button instead of the mobile toggle", async () => {
+    // The other half of the one-or-the-other contract, and the reason the assertion above cannot
+    // be satisfied by simply deleting the button: on a wide screen the grid button IS the apps
+    // control, and the `.o_menu_toggle` anchor - which core renders only in its small-screen
+    // branch - must NOT be there. Without this test, moving the button inside the `t-else` and
+    // moving it out of the template altogether look identical to the suite.
+    defineMenus([{ id: 1 }]);
+    await makeMockEnv();
+    // Pinned explicitly rather than left to the ambient viewport, for the same reason the
+    // small-screen test above pins it: this contract then holds in BOTH the desktop and the
+    // mobile Hoot preset runs, instead of only in whichever one the runner happens to execute.
+    patchWithCleanup(getService("ui"), { isSmall: false });
+
+    await mountWithCleanup(NavBar);
+
+    expect(".o_main_navbar .o_grid_apps_menu__button").toHaveCount(1);
+    expect(".o_main_navbar .o_menu_toggle").toHaveCount(0);
 });
 
 test("mounting the apps menu flags exactly the current app as active, and no other app", async () => {

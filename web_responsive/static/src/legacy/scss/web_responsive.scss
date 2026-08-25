@@ -237,3 +237,43 @@ $chatter_zone_width: 35% !important;
         }
     }
 }
+
+// The breadcrumb must never be squeezable to unreadable/zero width on a narrow (mobile)
+// navbar. Core renders `.o_breadcrumb` with Bootstrap's `.min-w-0` utility (min-width: 0
+// !important, no floor) as the ONLY flex-shrinkable sibling of `.o_menu_systray`
+// (flex-shrink-0, core), so every systray icon a module adds is paid for entirely out of the
+// breadcrumb, down to 0px. Measured live at 375x667 on /odoo/action-mrp.mrp_bom_form_action/1:
+// an unmodified build renders `.o_last_breadcrumb_item.active` at 149.9px (readable, visible)
+// against a natural `.o_breadcrumb` of 181.9px; a module-heavy systray (+126.3px of icons)
+// crushes that same element to 0px (not visible) - which is what hangs a mobile tour at its
+// first `:visible` step until the 20s watchdog fires.
+//
+// `ui.isSmall` (web/static/src/core/ui/ui_service.js, SIZES.SM) is true up to 767px, i.e. the
+// same threshold as Bootstrap's `md` breakpoint - use it here so the floor engages exactly when
+// the mobile (single `.o_menu_toggle`) navbar layout is active, and never on desktop where the
+// navbar already has room.
+@include media-breakpoint-down(md) {
+    .o_main_navbar {
+        .o_breadcrumb {
+            // Reproduces the untouched build's own natural (proven-readable) breadcrumb width
+            // instead of a guessed number. `!important` is required to win over `.min-w-0`,
+            // which is itself `!important` ($enable-important-utilities: true,
+            // bootstrap/scss/_variables.scss) - same specificity, so only `!important` wins.
+            min-width: 182px !important;
+        }
+
+        .o_menu_systray {
+            // The systray grows with every module that adds an icon (theme switcher, timer,
+            // notifications, ...) and core pins it non-shrinkable via the `.flex-shrink-0`
+            // utility - itself `!important` for the same reason as `.min-w-0` above, so
+            // overriding it also requires `!important` (a bare `flex-shrink: 1` here would be
+            // silently dead - `!important` always wins over specificity, never the reverse).
+            // Once the breadcrumb has its floor, the systray must be what gives on a narrow
+            // screen instead: let it shrink and scroll internally rather than force the navbar
+            // itself wider than the viewport. Every icon stays reachable by a swipe; none is
+            // silently dropped.
+            flex-shrink: 1 !important;
+            overflow-x: auto;
+        }
+    }
+}

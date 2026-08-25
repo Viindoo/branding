@@ -35,14 +35,15 @@
                     <t t-call="web.NavBar.AppsMenu.Sidebar" />
                 </a>
             </t>
-            <t t-else="" />
-            <button class="o_grid_apps_menu__button"
-                    title="Home Menu"
-                    data-hotkey="h"
-                    t-on-click.stop="() => this.appsMenuService.toggleMenu()"
-                    t-ref="homeMenuButton">
-                <i class="fa fa-th-large fs-4"/>
-            </button>
+            <t t-else="">
+                <button class="o_grid_apps_menu__button"
+                        title="Home Menu"
+                        data-hotkey="h"
+                        t-on-click.stop="() => this.appsMenuService.toggleMenu()"
+                        t-ref="homeMenuButton">
+                    <i class="fa fa-th-large fs-4"/>
+                </button>
+            </t>
         </xpath>
     </t>
 
