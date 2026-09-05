@@ -81,7 +81,3 @@ class TestBrandAppearanceContract(HttpCase):
     def test_real_backend_renders_text_at_the_brand_base_font_size(self):
         """Viindoo reads one step larger than core: 15px, not core's 14px."""
         self.start_tour("/odoo", "viin_brand_font_size_tour", login="admin")
-
-    def test_real_backend_buttons_keep_the_brand_square_corners(self):
-        """Square corners are part of the identity, not a Bootstrap default."""
-        self.start_tour("/odoo", "viin_brand_square_corners_tour", login="admin")

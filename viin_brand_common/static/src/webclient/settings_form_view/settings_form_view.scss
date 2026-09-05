@@ -1,8 +1,10 @@
-.o_base_settings {
-	.o_setting_container {
-		.settings_tab {
-			.selected {
-				box-shadow: inset 3px 0 0 $brand-primary;
+.o_base_settings_view {
+	.o_form_renderer {
+		.o_setting_container {
+			.settings_tab {
+				.selected {
+					box-shadow: inset 3px 0 0 $brand-primary;
+				}
 			}
 		}
 	}

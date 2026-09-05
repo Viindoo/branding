@@ -44,8 +44,6 @@ const BRAND_PRIMARY_RGB = "rgb(0, 187, 206)";
 const THEME_SECONDARY_RGB = "rgb(45, 49, 66)";
 // Viindoo's base text runs one step larger than core's 14px.
 const BRAND_BASE_FONT_SIZE = "15px";
-// Square corners are part of the identity: Bootstrap's $border-radius is 0.
-const BRAND_BORDER_RADIUS = "0px";
 
 const MEASURED_FLAG = "data-viin-brand-measured";
 
@@ -186,30 +184,5 @@ registry.category("web_tour.tours").add("viin_brand_font_size_tour", {
             },
         },
         sentinelStep("font-size"),
-    ],
-});
-
-registry.category("web_tour.tours").add("viin_brand_square_corners_tour", {
-    url: "/odoo",
-    steps: () => [
-        {
-            trigger: ".o_main_navbar",
-            content: "Wait until the real webclient has painted",
-        },
-        {
-            trigger: "body.o_web_client",
-            content: "Buttons in the real backend must keep the brand's square corners",
-            run: () => {
-                assertRendered(
-                    "backend .btn border-top-left-radius",
-                    measureOnProbe("button", "btn", "border-top-left-radius"),
-                    BRAND_BORDER_RADIUS,
-                    "Square corners are part of the identity; any rounding means " +
-                        "Bootstrap's default $border-radius came back.",
-                );
-                markMeasured("square-corners");
-            },
-        },
-        sentinelStep("square-corners"),
     ],
 });

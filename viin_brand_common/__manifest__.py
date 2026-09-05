@@ -36,7 +36,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'live_test_url_vi_VN': "https://v16demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.3.3',
+    'version': '0.3.6',
     'depends': ['viin_brand', 'web'],
     'data': [
         'views/ir_module_views.xml',

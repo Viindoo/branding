@@ -1,23 +1,11 @@
-.o_mail_systray_item {
-	.o_notification_counter {
-		background: $brand-secondary !important;
-	}
-	.o_mail_systray_dropdown {
-		.o_mail_systray_dropdown_top {
-			.o_filter_button {
-				&.active,
-				&:hover {
-					color: $brand-secondary !important;
-				}
-			}
-		}
-	}
+.o-mail-MessagingMenu-counter {
+	background: $brand-secondary !important;
 }
 
-.o_mail_discuss {
-	.o_mail_discuss_sidebar {
-		.o_mail_discuss_item {
-			&.o_active {
+.o-mail-Discuss {
+	.o-mail-DiscussSidebar {
+		.o-mail-DiscussSidebar-item {
+			&.o-active {
 				box-shadow: inset 3px 0 0 $brand-primary !important;
 			}
 		}
