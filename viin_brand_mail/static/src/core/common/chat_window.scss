@@ -21,8 +21,8 @@
 }
 
 .o-mail-ChatWindow {
-    &.border {
-        border: $brand-primary-dark !important;
+    &.rounded-4 {
+        border-radius: 0.3rem !important;
     }
 
     font-size: 1rem;
