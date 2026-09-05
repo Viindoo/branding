@@ -66,7 +66,7 @@
         left for AppsMenu's own useState to catch up to over a bus round trip one render late. -->
         <AppsMenu open="true">
             <t t-set-slot="search_bar">
-                <AppsMenuSearchBar />
+                <AppsMenuSearchBar dismiss="dismiss.bind(this)" />
             </t>
             <AppMenuItem
                 t-foreach="apps"

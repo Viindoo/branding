@@ -9,7 +9,7 @@ import {session} from "@web/session";
 
 export class AppsMenuSearchBar extends Component {
     static template = "web_responsive.AppsMenuSearchBar";
-    static props = {};
+    static props = {dismiss: Function};
     static components = {
         AppsMenuOdooSearchBar,
         AppsMenuCanonicalSearchBar,

@@ -6,6 +6,7 @@
 
 import {Component, useState} from "@odoo/owl";
 import {useAutofocus, useService} from "@web/core/utils/hooks";
+import {patch} from "@web/core/utils/patch";
 
 /**
  * @extends Component
@@ -13,7 +14,7 @@ import {useAutofocus, useService} from "@web/core/utils/hooks";
  */
 export class AppsMenuOdooSearchBar extends Component {
     static template = "web_responsive.AppsMenuOdooSearchBar";
-    static props = {};
+    static props = {dismiss: Function};
     setup() {
         super.setup();
         this.state = useState({
@@ -24,6 +25,8 @@ export class AppsMenuOdooSearchBar extends Component {
         });
         this.searchBarInput = useAutofocus({refName: "SearchBarInput"});
         this.command = useService("command");
+        this.menuService = useService("menu");
+        this._paletteDismissTracking = false;
     }
 
     /**
@@ -58,7 +61,29 @@ export class AppsMenuOdooSearchBar extends Component {
      */
     _openSearchMenu(value) {
         const searchValue = value ? `/${value}` : "/";
-        this.command.openMainPalette({searchValue}, null);
+        // core's command service drops onClose on every call after the first while its palette
+        // stays open, so re-passing it here per keystroke would orphan a patch() layer per call.
+        if (this._paletteDismissTracking) {
+            this.command.openMainPalette({searchValue});
+            return;
+        }
+        this._paletteDismissTracking = true;
+        // openMainPalette's onClose fires on every dialog close, selection or Escape alike, so
+        // only a menu actually having been selected may dismiss the apps-menu overlay.
+        let menuWasSelected = false;
+        const unpatch = patch(this.menuService, {
+            selectMenu(menu) {
+                menuWasSelected = true;
+                return super.selectMenu(menu);
+            },
+        });
+        this.command.openMainPalette({searchValue}, () => {
+            this._paletteDismissTracking = false;
+            unpatch();
+            if (menuWasSelected) {
+                this.props.dismiss();
+            }
+        });
     }
 }
 

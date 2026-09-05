@@ -21,7 +21,7 @@ import {scrollTo} from "@web/core/utils/scrolling";
  */
 export class AppsMenuCanonicalSearchBar extends Component {
     static template = "web_responsive.AppsMenuCanonicalSearchBar";
-    static props = {};
+    static props = {dismiss: Function};
     setup() {
         super.setup();
         this.state = useState({
@@ -207,6 +207,7 @@ export class AppsMenuCanonicalSearchBar extends Component {
      */
     _onSearchItemClick(ev, menu) {
         ev.preventDefault();
+        this.props.dismiss();
         this.menuService.selectMenu(menu);
     }
 
