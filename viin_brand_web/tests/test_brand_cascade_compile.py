@@ -767,6 +767,10 @@ _FUNC_RGB_RE = re.compile(
 # Pseudo-classes that describe a STATE or a structural position of the element rather than a
 # different element. A compound is a candidate only if every one of these it carries was declared
 # by the caller, so a `:hover` rule never pollutes the resting-state answer.
+# A bare element type (`i`, `span`, `div`). Anchored so it can never be confused with a class, id,
+# attribute or pseudo token - every one of those carries a leading sigil the token regex keeps.
+_TYPE_SELECTOR_RE = re.compile(r"[A-Za-z][\w-]*")
+
 _STATE_PSEUDO_CLASSES = frozenset({
     "hover", "focus", "focus-visible", "focus-within", "active", "disabled", "enabled",
     "checked", "first-child", "last-child", "only-child", "first-of-type", "last-of-type",
@@ -872,14 +876,23 @@ def _compound_state_pseudo_classes(compound):
     return found
 
 
-def _compound_matches(compound, classes, states, pseudo_element):
+def _compound_matches(compound, classes, states, pseudo_element, tag=None):
     """Whether one compound selector matches an element with ``classes`` in ``states``.
 
-    Deliberately CONSERVATIVE about what it does not model: a compound carrying an id, an
-    attribute selector or a type selector returns False, and so does an unrecognised pseudo-class.
-    Every surface asserted in this file is styled purely through classes, so the only effect is
+    Deliberately CONSERVATIVE about what it does not model: a compound carrying an id or an
+    attribute selector returns False, and so does an unrecognised pseudo-class. The only effect is
     that exotic competitor rules are ignored - which is stated in each test's docstring rather
     than hidden.
+
+    TYPE SELECTORS are matched only against an element that DECLARES its tag (``tag=``). An element
+    modelled without one still returns False for any type-bearing compound, which is the historical
+    behaviour and the conservative direction - but that default is a real blind spot, not a
+    harmless simplification, and it produced a live false measurement: core styles the
+    empty-message placeholder through `.o-mail-Message-body > i.text-muted.opacity-75`
+    (mail message.xml:110 renders an `<i>`), and a class-only model silently skipped that rule and
+    reported the element at the dimmed opacity the rule exists to cancel. A guard whose subject is
+    styled through its tag MUST declare it; the tag is transcribed from the same template as the
+    classes.
 
     Pseudo-element matching is STRICT IN BOTH DIRECTIONS: a query for ``::before`` is matched only
     by a compound that names that pseudo-element, and a compound naming one never matches a query
@@ -897,7 +910,7 @@ def _compound_matches(compound, classes, states, pseudo_element):
             # arguments constrain the ORIGINATING element, never the pseudo-element box, so the
             # pseudo-element is not propagated into the recursion.
             for argument in token[5:-1].split(","):
-                if _compound_matches(argument.strip(), classes, states, None):
+                if _compound_matches(argument.strip(), classes, states, None, tag):
                     return False
         elif token.startswith(":"):
             name = token[1:].split("(", 1)[0]
@@ -915,8 +928,11 @@ def _compound_matches(compound, classes, states, pseudo_element):
                 return False
         elif token == "*":
             continue
+        elif _TYPE_SELECTOR_RE.fullmatch(token):
+            if tag is None or token.lower() != tag:
+                return False
         else:
-            return False                              # id, [attr] or type selector - not modelled
+            return False                              # id or [attr] - not modelled
     if pseudo_element and not matched_pseudo_element:
         return False
     # Require at least one positive class so the universal-ish rules of unrelated components are
@@ -989,19 +1005,62 @@ def _winning_declaration(css, element, prop_names):
     return best_value
 
 
+def _selector_scope_applies(selector, ancestors):
+    """Whether ``selector``'s ANCESTOR CONTEXT can be satisfied by an element whose styling
+    ancestors carry the class names in ``ancestors``.
+
+    The SCOPE half of :func:`_matches_element`, factored out because a rule can be ruled out by its
+    ancestor context ALONE - with no model of the subject at all. That is exactly what a guard
+    needs when it identifies its rules by the SUBJECT they style and then reads raw declarations
+    out of the compiled bundle instead of resolving one property through the cascade: a
+    subject-only match happily returns a rule scoped to a context the element is not in, and since
+    such a guard reads the LAST match, one scoped rule anywhere in the bundle silently hands it a
+    value no browser ever paints on that element. Nothing about that failure is specific to the
+    module that shipped the scoped rule, so the check is stated once, here, in terms of the
+    element's own ancestor pool.
+
+    THE RULE. Every ANCESTOR compound's positive classes must be a subset of ``ancestors`` - so an
+    unscoped rule always applies and a rule scoped to another context never does. A compound linked
+    to the next one by a sibling combinator (``+``/``~``) is a SIBLING, not an ancestor, and is
+    skipped by that check.
+
+    Combinator KIND (descendant vs child), ancestor ORDER and @media context are not distinguished,
+    and the pool is a flat SET of every class on the real chain rather than the chain itself. Each
+    of those approximations can only ADD candidate rules, never remove one a browser would apply -
+    so a transcription that names too many ancestors makes a guard fail loudly rather than pass
+    silently, which is why the pools are written generously."""
+    compounds = _split_compounds(selector)
+    for position, (_combinator, compound) in enumerate(compounds[:-1]):
+        if compounds[position + 1][0] in ("+", "~"):
+            continue                                  # sibling of the chain, not an ancestor of it
+        if not _compound_classes(compound) <= ancestors:
+            return False
+        if _compound_state_pseudo_classes(compound):
+            # The ancestor pool is a set of CLASSES with no element state or structural position,
+            # so an ancestor compound gated on a state/structural pseudo-class can never be
+            # confirmed - and every surface asserted through this module is a resting, enabled
+            # element that is not in that context. This is the ancestor-side dual of the subject
+            # rule in _compound_matches (every state pseudo the SUBJECT carries must be declared by
+            # the caller). Without it, a class-less ancestor compound passed the subset check above
+            # vacuously: Bootstrap ships `fieldset:disabled .btn` in the SAME selector group as
+            # `.btn:disabled` / `.btn.disabled`, and its `fieldset:disabled` compound carries no
+            # class, so `_compound_classes(...) <= ancestors` was trivially True. `fieldset:disabled
+            # .btn` (specificity 0,2,1) then outranked the real `.btn:hover` (0,2,0) and handed
+            # every hovered/resting `.btn` facet the button's `--btn-disabled-bg` (which mirrors the
+            # base fill) instead of the `--btn-hover-bg` deep rung - a phantom competitor, since a
+            # search facet is never rendered inside a disabled <fieldset>.
+            return False
+    return True
+
+
 def _matches_element(selector, element):
     """Whether ``selector``'s SUBJECT (its right-most compound) matches the modelled element.
 
     Ancestor and sibling context are approximated rather than fully evaluated, which is enough for
     the class-only selectors these surfaces use:
-    * every ANCESTOR compound's positive classes must be a subset of ``element["ancestors"]`` - so
-      an unscoped rule always applies and a rule scoped to another context never does. A compound
-      linked to the next one by a sibling combinator (``+``/``~``) is a SIBLING, not an ancestor,
-      and is skipped by that check. An ancestor compound additionally gated on a state/structural
-      pseudo-class (``fieldset:disabled``, ``:first-child`` ...) is rejected: the ancestor pool
-      carries no state or position, and the surfaces asserted here are resting, enabled elements
-      that are never inside such a context - so treating it as a phantom ancestor would let a rule
-      like ``fieldset:disabled .btn`` (0,2,1) outrank the real ``.btn:hover`` (0,2,0);
+    * the ANCESTOR context is decided by :func:`_selector_scope_applies`, which owns that rule and
+      the reasoning behind it (it is also usable on its own, by a caller that identifies its rules
+      by SUBJECT and only needs to know whether a rule reaches the element at all);
     * when the SUBJECT is reached by a sibling combinator, the compound before it is matched
       against ``element["prev_sibling"]`` - the classes on the element's immediately preceding
       sibling, transcribed from the same core template as ``classes``. This check is
@@ -1012,41 +1071,39 @@ def _matches_element(selector, element):
       value. An element with no preceding sibling models it as an empty set, which correctly
       fails every sibling-gated rule.
 
-    Combinator KIND (descendant vs child), ancestor ORDER, sibling chains deeper than one hop, and
-    @media context are not distinguished. Each of those would only ADD candidate rules, and an
-    extra candidate makes a guard fail loudly rather than pass silently."""
+    * when the SUBJECT is reached by a CHILD combinator (``>``), the compound before it must be
+      satisfied by ``element["parent"]`` - the classes on the element's immediate parent. This is
+      the exact dual of the sibling check above and exists for the same reason: `>` states a
+      relation the flat ancestor pool cannot express, so without it a rule written for a DIRECT
+      child is handed to any descendant, and the extra candidate can win the cascade and report a
+      value the element never renders. The check runs only when the caller MODELS a parent; a chain
+      that does not is left on the old permissive reading (`>` treated as a descendant), so
+      declaring one is opt-in and can only tighten, never loosen.
+
+    Ancestor ORDER, `>` links deeper inside the selector than the subject's own, sibling chains
+    deeper than one hop, and @media context are still not distinguished. Each of those would only
+    ADD candidate rules, and an extra candidate makes a guard fail loudly rather than pass
+    silently."""
     compounds = _split_compounds(selector)
     if not compounds:
         return False
     if not _compound_matches(
         compounds[-1][1], element["classes"], element.get("states", frozenset()),
-        element.get("pseudo_element"),
+        element.get("pseudo_element"), element.get("tag"),
     ):
         return False
-    ancestors = element["ancestors"]
-    for position, (_combinator, compound) in enumerate(compounds[:-1]):
-        if compounds[position + 1][0] in ("+", "~"):
-            continue                                  # sibling of the chain, not an ancestor of it
-        if not _compound_classes(compound) <= ancestors:
-            return False
-        if _compound_state_pseudo_classes(compound):
-            # The ancestor pool is a set of CLASSES with no element state or structural position,
-            # so an ancestor compound gated on a state/structural pseudo-class can never be
-            # confirmed - and every surface asserted here is a resting, enabled element that is not
-            # in that context. This is the ancestor-side dual of the subject rule in
-            # _compound_matches (every state pseudo the SUBJECT carries must be declared by the
-            # caller). Without it, a class-less ancestor compound passed the subset check above
-            # vacuously: Bootstrap ships `fieldset:disabled .btn` in the SAME selector group as
-            # `.btn:disabled` / `.btn.disabled`, and its `fieldset:disabled` compound carries no
-            # class, so `_compound_classes(...) <= ancestors` was trivially True. `fieldset:disabled
-            # .btn` (specificity 0,2,1) then outranked the real `.btn:hover` (0,2,0) and handed
-            # every hovered/resting `.btn` facet the button's `--btn-disabled-bg` (which mirrors the
-            # base fill) instead of the `--btn-hover-bg` deep rung - a phantom competitor, since a
-            # search facet is never rendered inside a disabled <fieldset>.
-            return False
+    if not _selector_scope_applies(selector, element["ancestors"]):
+        return False
     if compounds[-1][0] in ("+", "~"):
         prev_sibling = element.get("prev_sibling") or frozenset()
         if not _compound_matches(compounds[-2][1], prev_sibling, frozenset(), None):
+            return False
+    if compounds[-1][0] == ">" and element.get("parent") is not None:
+        # Subset rather than a full compound match, mirroring the ANCESTOR rule in
+        # _selector_scope_applies: a parent IS an ancestor, just the nearest one. A parent compound
+        # carrying no class (a bare `div >`) has an empty class set and stays permissive, which is
+        # the half of the relation this model still cannot decide.
+        if not _compound_classes(compounds[-2][1]) <= element["parent"]:
             return False
     return True
 
@@ -4674,4 +4731,69 @@ class BrandCascadeCompileTest(TransactionCase):
                 ratio, WCAG_AA_NORMAL_TEXT,
                 "%s renders its label %s on the chip %s at %.2f:1 - below the WCAG AA normal-text "
                 "threshold of %.1f:1." % (label, text, pill, ratio, WCAG_AA_NORMAL_TEXT),
+            )
+
+    # ----------------------------------------------------------------------------------------
+    # The resolver's own selector semantics
+    # ----------------------------------------------------------------------------------------
+    def test_child_combinator_matches_a_direct_child_and_not_a_deeper_descendant(self):
+        """A `>` rule must reach the element it was written for, and no element below it.
+
+        WHY THIS IS ASSERTED ON THE RESOLVER ITSELF. Every guard in this cluster is only as true as
+        the rules the resolver decides are candidates, and a wrong candidate set produces a
+        confident, precise, WRONG number that no contrast assertion can detect. Two relations have
+        now been caught doing exactly that: the painted sibling (a surface the model could not see)
+        and this one. `>` states a relation a FLAT ancestor pool cannot express, so it used to be
+        read as a plain descendant - permissive, and therefore silently handing a rule written for a
+        direct child to anything nested below it, where the extra candidate can win on specificity.
+
+        THE LIVE CASE. Core cancels the placeholder's dimming with
+        `.o-mail-Message-body > i.text-muted.opacity-75 { opacity: 100% !important }`. That rule
+        must reach the `<i>` core renders directly inside the body (mail message.xml:110) and must
+        NOT reach a `.text-muted.opacity-75` nested deeper in the same body, which core did not
+        write it for.
+
+        BOTH DIRECTIONS, AND WHY NEITHER ALONE IS ENOUGH. A resolver that reads `>` as a descendant
+        passes the first subTest and fails the second; one that refuses `>` outright fails the
+        first. No single wrong reading passes both, which is what makes this pin real rather than a
+        restatement of the implementation.
+
+        The TYPE half is pinned here too: the same selector carries an `i`, and a class-only
+        element model skips the rule entirely - the defect that made the placeholder guard measure
+        the dimmed opacity the rule exists to cancel."""
+        rule = ".o-mail-Message-body > i.text-muted.opacity-75"
+        ancestors = frozenset({"o-mail-Message", "o-mail-Message-body", "o-discuss-text-body"})
+        body = frozenset({"o-mail-Message-body", "position-relative", "py-2"})
+        direct_child = {
+            "classes": frozenset({"text-muted", "opacity-75"}), "ancestors": ancestors,
+            "prev_sibling": frozenset(), "parent": body, "tag": "i",
+        }
+        # Same element, same ancestors, one level deeper: its parent is the rich-body wrapper, so
+        # core's rule was not written for it.
+        deeper = dict(direct_child, parent=frozenset({"o-mail-Message-richBody", "overflow-x-auto"}))
+        untagged = dict(direct_child, tag=None)
+
+        with self.subTest(relation="direct child"):
+            self.assertTrue(
+                _matches_element(rule, direct_child),
+                "%r does not reach an `<i class='text-muted opacity-75'>` whose immediate parent is "
+                "`.o-mail-Message-body` - the exact element core wrote it for (message.xml:110). A "
+                "resolver that cannot match it reports the placeholder at the dimmed opacity this "
+                "rule exists to cancel, which is a measurement no contrast assertion can catch."
+                % rule,
+            )
+        with self.subTest(relation="deeper descendant"):
+            self.assertFalse(
+                _matches_element(rule, deeper),
+                "%r reaches an element nested BELOW `.o-mail-Message-body` rather than a direct "
+                "child of it. `>` is a relation, not a decoration: read as a plain descendant it "
+                "adds a candidate a browser never applies, and an added candidate can win on "
+                "specificity and hand a guard a value the element never renders." % rule,
+            )
+        with self.subTest(relation="type selector, tag not modelled"):
+            self.assertFalse(
+                _matches_element(rule, untagged),
+                "%r matched an element that declares no tag. A type-bearing rule must stay "
+                "unmatched until the caller models the tag, or every class-only element in the "
+                "cluster silently inherits rules written for one element type." % rule,
             )
