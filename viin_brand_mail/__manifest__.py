@@ -60,6 +60,11 @@ Editions Supported
             ('after', 'mail/static/src/core/common/im_status.scss', 'viin_brand_mail/static/src/core/common/im_status.scss'),
             ('after', 'mail/static/src/core/common/composer.scss', 'viin_brand_mail/static/src/core/common/composer.scss'),
             ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message.scss'),
+            # Light-scheme AA repair of the message METADATA tier (timestamp, in-body muted
+            # markers, the two opacity-thinned nodes). Rides every bundle a mail message renders
+            # in; guarded to the light scheme inside the file, so the dark bundle this one is
+            # recompiled into emits none of it. See message_contrast.scss.
+            ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
             ('after', 'mail/static/src/discuss/core/common/message_seen_indicator.scss', 'viin_brand_mail/static/src/core/common/message_seen_indicator.scss'),
             ('after', 'mail/static/src/core/public_web/discuss_sidebar.scss', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
             ('after', 'mail/static/src/core/public_web/messaging_menu.scss', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
@@ -89,11 +94,13 @@ Editions Supported
             ('after', 'mail/static/src/core/common/chat_window.scss', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
             ('after', 'mail/static/src/core/common/im_status.scss', 'viin_brand_mail/static/src/core/common/im_status.scss'),
             ('after', 'mail/static/src/core/common/composer.scss', 'viin_brand_mail/static/src/core/common/composer.scss'),
+            ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
         ],
         'im_livechat.assets_embed_core': [
             ('after', 'mail/static/src/core/common/chat_window.scss', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
             ('after', 'mail/static/src/core/common/im_status.scss', 'viin_brand_mail/static/src/core/common/im_status.scss'),
             ('after', 'mail/static/src/core/common/composer.scss', 'viin_brand_mail/static/src/core/common/composer.scss'),
+            ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
         ],
     },
     'installable': True,

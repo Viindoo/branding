@@ -218,16 +218,24 @@ $_viin-dark-bubble-map: (
 // --- BUG-4: read conversation name + preview in the messaging-menu / systray list --------------
 // A READ (non-unread, non-hard-muted) conversation is rendered by NotificationItem with muted=1
 // (mail/static/src/core/public_web/messaging_menu.xml:45 `!thread.isUnread ? 1 : 0`), which stamps
-// the `text-muted` class on the item root (notification_item.xml:9). Odoo's BACKEND redefines that
-// utility to the Sass LITERAL `$text-muted` = $o-main-color-muted = rgba($o-gray-700, .76)
-// (web/static/src/scss/utilities_custom_backend.scss:18, bootstrap_overridden.scss:85,
-// primary_variables.scss:121) - NOT the runtime `var(--secondary-color)` Bootstrap 5.3 uses - so it
-// does NOT flip: the read name + preview inherited rgba(73,80,87,.76) = 2.14:1 on the #111B1E list.
-// Re-point them onto the dark muted-text token --secondary-color (#8EA5A8, 6.75:1), exactly like the
-// Message-date fix above, resolved through core's own :root emission. Scoped to `.text-muted` so
-// UNREAD items (bright, muted=0) are untouched. The preview's decorative `opacity: .75`
-// (notification_item.scss:70) is lifted to 1 so the muted token's designed contrast is not
-// double-dimmed below AA (the read-item de-emphasis is already carried by the muted colour itself).
+// the `text-muted` class on the item root (notification_item.xml:9).
+//
+// WHAT THIS RULE OWNS IS THE SECOND DIMMING, not the colour tier. Core thins the preview and the
+// read timestamp again ON TOP of that tier - `.o-mail-NotificationItem-text { opacity: .75 }`
+// (notification_item.scss:70) and the template's own `opacity-75` on `-date`
+// (notification_item.xml:26) - and a tier that sits just above the AA floor does not survive being
+// multiplied a second time. Lifting both to 1 leaves the de-emphasis carried by the muted COLOUR,
+// which is the tier's own job.
+//
+// THE TIER IS NAMED, NEVER RESTATED - two independent names reach it and this file owns neither.
+// The utility compiles from the Sass $text-muted -> $o-main-color-muted
+// (utilities_custom_backend.scss:18, bootstrap_overridden.scss:85); --secondary-color is emitted
+// from $body-secondary-color (bootstrap _root.scss:69, with $prefix ''). dark_palette.scss aliases
+// $o-main-color-muted onto $body-secondary-color, so both names resolve to ONE tier in this bundle.
+// Reading the runtime token is what keeps the declaration following that alias - and following any
+// ancestor that re-points it - instead of pinning a literal here. Scoped to `.text-muted` so UNREAD
+// items (bright, muted=0) are untouched. The value this lands on is asserted by the compile guard,
+// never by this comment.
 .o-mail-NotificationItem.text-muted {
     // name + preview + the read timestamp (`-date`) all inherit the same un-flipped `.text-muted`
     // literal (rgba(73,80,87,.76) = 2.14:1); re-point all three to the dark muted token.
@@ -263,4 +271,542 @@ $_viin-dark-bubble-map: (
 // in the dark bundle.
 .o-mail-Composer {
     --mail-Composer-bg: #{$o-viin-composer-bg};
+}
+
+// --- BUG-7: the two message tiers the TEMPLATE thins, on every dark surface --------------------
+// Different origin from BUG-2/4/5 above, and the difference decides the fix. Those were light
+// literals the dark recompile could not reach. Here the dark tier underneath is already correct;
+// both nodes carry an `opacity` utility in message.xml ITSELF, so both schemes render them thinned,
+// and what fails is the MULTIPLICATION - a tier tuned to clear AA once does not clear it twice.
+// It fails hardest on the message BUBBLES, which BUG-2b paints one rung ABOVE the panel.
+//
+// THE GROUNDS, in this bundle: the form-view chatter #0B1315 (the only background in that chain is
+// form_renderer.scss:5-6 $o-webclient-background-color, with the Chatter root `bg-inherit` on top of
+// it), the Discuss thread and the chat-window body #111B1E (BUG-2a), and BUG-2b's three bubbles -
+// blue #122F35, green #143024, orange #35311A. The bubble is the binding ground rather than the
+// panel: message_model.js:198 gives every non-note, non-notification message a bubbleColor, so an
+// empty message and an edited one are both bubbled.
+//
+// LIGHT IS UNTOUCHED - this file reaches web.assets_web_dark only. The light arm of these same two
+// nodes lives in this module's core/common/message_contrast.scss, guarded to the light scheme from
+// inside that file, so the two schemes state their values independently rather than racing.
+//
+// `!important` on both `opacity` declarations is REQUIRED, not chosen: Bootstrap emits every
+// utility through its utilities API under $enable-important-utilities, so `.opacity-75` and
+// `.opacity-50` each carry their own, and no normal declaration beats an important one at any
+// specificity. Among important declarations specificity decides, and both selectors below outrank
+// the utilities' (0,1,0).
+
+// The empty-message placeholder (message.xml:110). Two de-emphasis mechanisms stack on one node -
+// `.text-muted` for the colour tier, `.opacity-75` on top - and the tier alone is the one that still
+// reads. Dropping the multiplier leaves the node on the metadata tier every other muted marker in
+// the body shares, which is a de-emphasis and not a flattening: it stays a full 2.33:1 step below
+// the message body copy. Correcting the opacity instead of the stack would take 92% on the orange
+// bubble, at which point the 8% left is doing no visible work.
+//   form chatter 7.24 | panel/thread 6.75 | blue 5.44 | green 5.48 | orange 5.06
+//   (was         4.56 |              4.36 |      3.73 |       3.75 |       3.53)
+// `> i` keeps this off the `Subject:` line (an `em`, :113) and off the failure-notification glyph
+// (:195), which stacks the same utility on a `text-danger` tone this rule has no business
+// re-tuning. The selector names both utilities because both are load-bearing: `.opacity-75` is what
+// is corrected, `.text-muted` is what makes 100% a de-emphasised value rather than a flattened one.
+// NOT scoped away from the spreadsheet island - the declaration is correct there too, so BUG-6
+// consumes this rule rather than repeating it. (0,3,1).
+.o-mail-Message-body > i.text-muted.opacity-75 {
+    opacity: 100% !important;
+}
+
+// The `(edited)` marker (message.xml:152). Unlike the placeholder it has NO colour tier of its own -
+// the span carries only `o-xsmaller` - so it inherits the message body's colour through
+// `.o-discuss-text-body` (core.dark.scss:13) and the 50% IS its whole de-emphasis. That is what
+// rules out simply lifting the opacity: at 100% the marker would be the body copy's exact tone,
+// told apart from the words around it by size alone.
+// It is moved onto the metadata tier instead, read through `var(--secondary-color)` - the SAME
+// custom property this file's `.o-mail-Message-date` rule reads - so the marker and the timestamp
+// beside it track each other through any re-tune of that tier instead of drifting apart. That is
+// also the move the light arm makes on this node, so the marker names ONE tier in both schemes.
+// Reading the custom property lands on the identical `$body-secondary-color` value a bare
+// `$text-muted` read would, but without aliasing through that Sass global: any other module's SCSS
+// that assigns `$text-muted` with no `!default` ahead of this rule's compile can no longer reach
+// this span, because the property this rule names is not the one that write touches. It keeps a
+// 2.33:1 colour step below the body copy, and its 0.65rem `o-xsmaller` carries the rest of the
+// de-emphasis.
+//   form chatter 7.24 | panel/thread 6.75 | blue 5.44 | green 5.48 | orange 5.06
+//   (was         4.89 |              4.80 |      4.32 |       4.34 |       4.18)
+// `color` carries NO flag, and that is the rule this file follows rather than a matter of taste:
+// nothing DECLARES a colour on this span - it only inherits one - so a normal declaration reaches
+// it, and BUG-6's island arm outranks it on specificity alone.
+// `.o-mail-Message-edited` is the stable hook rather than the inner span's utilities: the server
+// emits that wrapper into the body (mail_thread.py `_message_update_content`) and core's JS replaces
+// its children with this span (message.js, `editedEl.replaceChildren`), so it is present exactly
+// when the marker is. (0,2,0).
+.o-mail-Message-edited .opacity-50 {
+    color: var(--secondary-color);
+    opacity: 100% !important;
+}
+
+// ================================================================================================
+// BUG-6: the embedded Chatter inside the SPREADSHEET LIGHT ISLAND (2026-09-06)
+// ------------------------------------------------------------------------------------------------
+// THE COLLISION. Odoo 19 keeps the spreadsheet editor a LIGHT ISLAND in dark mode - the vendored
+// o-spreadsheet library ships ONE light palette and no `prefers-color-scheme`, so
+// spreadsheet/static/src/o_spreadsheet/o_spreadsheet_extended.dark.scss exists ONLY in this bundle
+// and re-lights the subtree (`color-scheme: light`, `.bg-white -> #fff`, `.border* -> #d5dae8`).
+// That file repaints the LABEL of every button in the editor - `.o-spreadsheet .btn { color:#374151 }`,
+// (0,2,0) and NO `!important` - but it never touches a FILL or a SURFACE. So a Chatter embedded in
+// the editor's comments side panel serves its labels from the LIGHT scheme and everything behind
+// them from the DARK one. Measured live at 1440px:
+//     Log note / Activity   #374151 on the dark control rung #25383C   = 1.19:1
+//     Send message          #374151 on the chrome teal #007F8E         = 2.17:1
+// A transparent control (Resolve, Delete, the cell-address toggle) is NOT in this set: it renders
+// on the engine's own permanently-white `.o-sidePanel` and already carries the forced label at
+// 10.31:1. Only a control that paints its OWN dark fill collides.
+// None of those colours is mis-designed: `.btn-secondary` was BUILT as #EDF4F5 on #25383C = 10.95:1
+// (dark_buttons.scss). It is a half-override - one scheme's label over the other scheme's fill.
+//
+// THE DIRECTION: FINISH THE ISLAND, DO NOT DARKEN IT. Core's five consecutive "force light theme"
+// commits and its `color-scheme: light` are an explicit statement that this subtree is light; the
+// engine's own `.o-sidePanel` already computes to rgb(255,255,255). Darkening the panel would fight
+// the library, and re-pointing the LABEL would only fight core's rule. So the embedded Chatter is
+// switched to the island's LIGHT scheme instead, which is also what makes it match the light-mode
+// chatter a user sees on any form view.
+//
+// THE TRAP THIS BLOCK IS BUILT AROUND. The Chatter's message body carries no colour of its own: it
+// inherits the app-wide dark $body-color #EDF4F5, which reads 15.72:1 today ONLY BECAUSE the surface
+// is dark. Lighting the surface without re-pointing every inherited-from-dark value MOVES the
+// defect - #EDF4F5 on #FFFFFF is 1.11:1. So each surface below is paired with the text tier that
+// lands on it, and every value the dark palette flipped is re-pointed inside the island:
+//     $body-color #EDF4F5 -> $-island-text              | $body-secondary-color #8EA5A8 (2.59:1) -> $-island-text-muted
+//     $link-color #4FD4E2 (1.77:1) -> $-island-link     | the dark bubble tints (1.38:1) -> core's own LIGHT bubble formula
+//
+// SCOPE - the single most important property of this block. EVERY rule is nested under
+// `.o-spreadsheet`, the editor root. Nothing here can reach the Discuss app, the form-view chatter,
+// a chat window, livechat, or any composer outside the spreadsheet editor: an element that is not a
+// descendant of `.o-spreadsheet` matches no selector below. That is also what keeps the ~2900 lines
+// of existing contrast guards in tests/test_mail_contrast_compile.py untouched - none of them models
+// an ancestor chain containing `.o-spreadsheet`.
+//
+// `!important` IS USED ONLY WHERE THE COMPETING DECLARATION CARRIES ITS OWN, which is the only
+// case a normal declaration cannot win at any specificity: `.text-muted` (Bootstrap's utilities API
+// emits it important), the message BUBBLES (core's message.dark.scss and this file's BUG-2b arm
+// both do), `.o-discuss-text-body` (core styles it as a BARE class, important, in both schemes) and
+// the MENTION chips (core's `o-mention-variant` mixin emits `color: ... !important`). Every other
+// rule below wins on specificity alone. Each one is justified where it is used.
+//
+// LIGHT MODE IS UNTOUCHED: this file is contributed to web.assets_web_dark only.
+
+// The island palette, declared once here as a LOCAL SSOT. The first four are core's OWN island
+// literals, read out of o_spreadsheet_extended.dark.scss (`.bg-white -> #fff`, the
+// `.o_model_field_selector_chain_part` / `.o_tree_editor_condition` raised surface `#f6f7fa`, and
+// the `.btn` label `#374151` this block measures everything against; the island's `.border` colour
+// #d5dae8 needs no entry here because core already paints it `!important`): reusing them is what
+// makes this fix a completion of the island rather than a second,
+// unrelated light theme sitting inside it. The interactive pair is the Viindoo brand SSOT
+// (brand_variables.scss), whose AA teal is tuned for a WHITE ground - which is exactly the ground
+// the island provides. NOTE THE BUNDLE: $body-color / $body-bg / $border-color / $link-color all
+// hold DARK values here, so inheriting any of them is the bug - every value below is explicit.
+$_viin-island-surface: #FFFFFF;             // core island `.bg-white`; #374151 on it = 10.31:1
+$_viin-island-raised: #F6F7FA;              // core island's raised sub-surface; 9.62:1
+$_viin-island-text: #374151;                // core island's forced `.btn` label = its body-text tier
+// The muted tier's ground is the message BUBBLE, not the panel surface: `.o-mail-Message-bubble` is
+// `position-absolute` behind the text, so the timestamp, the subject line, the translation notices
+// and the tracking rows all composite over a TINT. $o-gray-600 clears AA on white (4.69:1) but only
+// 4.21:1 on the blue bubble, the darkest variant, so the tier sits one rung down the SAME ramp -
+// unflipped by dark_palette.scss, the tone core's island gives `.btn-link.text-action`, and it
+// tracks a core re-tune.
+//   blue #E6F5FD 5.48 | green #E6F7F0 5.51 | orange #FFFAEB 5.85 | no bubble 6.11
+// Read from the light scheme's own metadata tier rather than re-typed: the island renders on the
+// same three bubble tints and on a white panel that is the lighter of the two grounds that tier is
+// already tuned for, so a second declaration here could only drift from it. That file rides
+// web.assets_backend, which this bundle recompiles before appending this one, so the value is in
+// scope here.
+$_viin-island-text-muted: $o-viin-mail-muted;   // #5B636A
+$_viin-island-link: $o-navbar-background;   // #007F8E = 4.74:1 on white, the AA teal
+$_viin-island-link-hover: $o-viin-chrome-deep;  // #005E68 = 7.5:1, the ladder's pressed rung
+
+.o-spreadsheet {
+
+    // --- The Chatter's own ground, and the text tiers that land on it -----------------------
+    // `.o-mail-Chatter` carries `bg-inherit` (chatter.xml:5), i.e. `background-color: inherit` at
+    // (0,1,0) - core's deliberate "take the surface you are dropped on". Stating the surface here at
+    // (0,2,0) beats it without `!important` and, unlike inheriting, does not depend on any other
+    // module keeping a background on the panel.
+    // `color` is the coherence half: it re-points the inherited dark $body-color for the message
+    // body, the author name (`<span class="o-mail-Message-author smaller">`, message.xml:39 - not a
+    // `.btn`, so core's island label never reaches it) and every other un-coloured descendant.
+    // The three custom properties re-point the tiers that resolve through a token rather than
+    // through inheritance: `--secondary-color` is what this file's own `.o-mail-Message-date` rule
+    // reads (#8EA5A8 = 2.59:1 on white), and `--link-color-rgb` is what Bootstrap's reboot reads for
+    // every `<a>` (`_reboot.scss:245`; $link-color is #4FD4E2 here = 1.77:1 on white).
+    .o-mail-Chatter {
+        --secondary-color: #{$_viin-island-text-muted};
+        --link-color: #{$_viin-island-link};
+        --link-color-rgb: #{to-rgb($_viin-island-link)};
+        --link-hover-color: #{$_viin-island-link-hover};
+        --link-hover-color-rgb: #{to-rgb($_viin-island-link-hover)};
+
+        background-color: $_viin-island-surface;
+        color: $_viin-island-text;
+    }
+
+    // The sticky topbar paints its OWN opaque surface - core chatter.scss:5-7 gives it
+    // $o-webclient-background-color, #0B1315 here (1.82:1 under the forced label), so lighting the
+    // Chatter root alone would leave the button band dark. (0,2,0) beats core's (0,1,0). Its pinned
+    // state additionally paints a gradient built from $o-view-background-color (#111B1E), which
+    // would smear dark across a white band; re-pointed to the island's raised tone so the pin still
+    // reads as a subtle band. (0,3,0) beats core's `.o-mail-Chatter-top.shadow-sm` (0,2,0).
+    .o-mail-Chatter-top {
+        background-color: $_viin-island-surface;
+
+        &.shadow-sm {
+            background-image: linear-gradient(90deg, transparent, $_viin-island-raised, transparent);
+        }
+    }
+
+    .o-mail-Chatter {
+
+        // `.text-muted` is NOT the runtime token: Odoo's backend compiles the utility from the Sass
+        // literal $text-muted -> $o-main-color-muted, which dark_palette.scss:99 drives to
+        // $body-secondary-color #8EA5A8 - 2.59:1 on the island surface. Bootstrap's utilities API
+        // emits it with `!important` at (0,1,0), which is one of the four places in this block where
+        // the flag is genuinely required: a normal declaration cannot beat an important one at any
+        // specificity. (0,3,0) + `!important` wins. Same lever as this file's BUG-4 rule, opposite
+        // direction.
+        .text-muted {
+            color: $_viin-island-text-muted !important;
+        }
+
+        // --- The three composer buttons ------------------------------------------------------
+        // Re-pointed through Bootstrap's own button custom properties rather than by painting
+        // `background-color`: `.btn` reads `background-color: var(--btn-bg)` /
+        // `border-color: var(--btn-border-color)` and each state rule reads its own `--btn-*-*`
+        // (lib/bootstrap/scss/_buttons.scss:37-119), so one token block carries resting, hover,
+        // active and disabled coherently instead of four rules per button. The declarations that
+        // seed those tokens are `.btn-secondary` / `.btn-primary` at (0,1,0) (bootstrap_review_backend
+        // .scss:17-30 expanding $o-btns-bs-override, whose dark arm is dark_buttons.scss); (0,3,0)
+        // here beats them on specificity alone - no `!important`.
+        //
+        // `--btn-color` is set even though core's island rule currently overrides the label at
+        // (0,2,0): it makes this block self-consistent rather than dependent on that rule surviving.
+        // If core ever drops `.o-spreadsheet .btn { color }`, the label falls back to these tokens
+        // and stays readable; today they are simply outranked.
+
+        // NEUTRAL - "Log note" and "Activity" at rest. This is core's OWN light seed for the button,
+        // read back by name: $o-btns-bs-override["secondary"] is (background: $o-gray-300, border:
+        // $o-gray-300, color: $o-gray-900) at primary_variables.scss:247-249, and dark_palette.scss
+        // deliberately does NOT flip the grayscale ramp, so those Sass tokens still hold their LIGHT
+        // values right here. The island therefore gets exactly the pill light mode builds - no hex is
+        // chosen by hand, and a core re-tune of the ramp moves this with it.
+        //   resting  #374151 on #DEE2E6 = 7.92:1   (was 1.19:1)
+        //   hover    #374151 on #CED4DA = 6.90:1
+        .btn-secondary {
+            --btn-color: #{$o-gray-900};
+            --btn-bg: #{$o-gray-300};
+            --btn-border-color: #{$o-gray-300};
+
+            --btn-hover-color: #{$o-gray-900};
+            --btn-hover-bg: #{$o-gray-400};
+            --btn-hover-border-color: #{$o-gray-400};
+
+            // Core's light map sends the pressed state to $o-component-active-bg, the pale teal
+            // #C6EDF1. Inside the island that tone is now the PRIMARY button's resting fill (below),
+            // so reusing it would make a pressed neutral look like the CTA. The pressed rung is the
+            // hover neutral instead - light mode's own $gray-300 -> $gray-400 step, held one beat.
+            --btn-active-color: #{$o-gray-900};
+            --btn-active-bg: #{$o-gray-400};
+            --btn-active-border-color: #{$o-gray-400};
+
+            --btn-disabled-color: #{$o-gray-900};
+            --btn-disabled-bg: #{$o-gray-200};
+            --btn-disabled-border-color: #{$o-gray-200};
+        }
+
+        // CTA - "Send message" at rest. This is the one button that CANNOT simply take light mode's
+        // seed: light `.btn-primary` is the AA teal #007F8E carrying a WHITE label, and core's island
+        // rule forces #374151 onto it instead - 2.17:1, unreadable in ANY scheme. The pair has to be
+        // resolved on the FILL, and 4.5:1 against #374151 requires a light one. So the CTA keeps its
+        // identity through HUE and BORDER rather than through weight: a pale teal fill - core's own
+        // `mix($o-brand-primary, $o-gray-100, 20%)`, the expression brand_variables.scss:258 already
+        // uses for the light $o-component-active-bg - inside the full-strength AA teal border, which
+        // is what separates it at a glance from the flat grey neutrals beside it.
+        //   resting  #374151 on #C6EDF1 = 8.24:1   (was 2.17:1)
+        //   hover    #374151 on #A1E3EB = 7.22:1
+        .btn-primary {
+            --btn-color: #{$_viin-island-text};
+            --btn-bg: #{mix($o-brand-primary, $o-gray-100, 20%)};
+            --btn-border-color: #{$_viin-island-link};
+
+            --btn-hover-color: #{$_viin-island-text};
+            --btn-hover-bg: #{mix($o-brand-primary, $o-gray-100, 35%)};
+            --btn-hover-border-color: #{$_viin-island-link};
+
+            --btn-active-color: #{$_viin-island-text};
+            --btn-active-bg: #{mix($o-brand-primary, $o-gray-100, 50%)};
+            --btn-active-border-color: #{$_viin-island-link-hover};
+
+            --btn-disabled-color: #{$_viin-island-text};
+            --btn-disabled-bg: #{$o-gray-200};
+            --btn-disabled-border-color: #{$o-gray-200};
+        }
+
+        // The OPEN composer toggles. viin_brand_mail's own core/common/composer.scss:76-125 paints
+        // these two states with a DIRECT `background-color`, not through the token map, so the token
+        // blocks above cannot reach them: `.o-mail-Chatter-sendMessage.btn-primary.active` takes
+        // $o-viin-chrome-deep (#005E68) and `.o-mail-Chatter-logNote.btn-primary.active` takes
+        // $o-btns-bs-override["secondary"].background, which in THIS bundle is the dark control rung
+        // #25383C. Both are dark chips under the forced #374151 label - the same defect one click
+        // later. Those rules are (0,3,0); (0,5,0) here wins on specificity, no `!important`.
+        // The teal steps one rung stronger than the CTA's resting fill so "this composer is open"
+        // stays legible as a state change, and the note toggle steps to light mode's own pressed
+        // neutral - mirroring exactly the light/dark pairing composer.scss documents for each.
+        //   send open  #374151 on #7CDAE4 = 6.38:1
+        //   note open  #374151 on #CED4DA = 6.90:1
+        .o-mail-Chatter-sendMessage.btn-primary.active {
+            background-color: mix($o-brand-primary, $o-gray-100, 50%);
+            border-color: $_viin-island-link-hover;
+        }
+
+        .o-mail-Chatter-logNote.btn-primary.active {
+            background-color: $o-gray-400;
+            border-color: $o-gray-400;
+        }
+
+        // --- The composer field --------------------------------------------------------------
+        // `.o-mail-Composer-bg` shows `var(--mail-Composer-bg, $o-view-background-color)`
+        // (composer.scss:103-104), and this file's BUG-5 rule drives that property to
+        // $o-viin-composer-bg - the 6%-lifted DARK panel. Left alone, the island would light
+        // everything around a still-dark field and put the re-pointed #374151 input text on it: the
+        // trap one layer down. The island value is the surface itself, which is precisely what
+        // $o-viin-composer-bg resolves to in the LIGHT bundle ($o-view-background-color = white), so
+        // the field returns to core's own light affordance - white fill inside the island's #d5dae8
+        // border, which core's island rule already paints on the `.border`-carrying input container.
+        // (0,3,0) beats BUG-5's `.o-mail-Composer` (0,1,0).
+        .o-mail-Composer {
+            --mail-Composer-bg: #{$_viin-island-surface};
+        }
+
+        // --- Message bubbles -------------------------------------------------------------------
+        // These DO render in the chatter: message_model.js:198 gives every non-note, non-notification
+        // message a bubbleColor, which is exactly what "Send message" posts. Core's own
+        // message.dark.scss and this file's BUG-2b arm both paint them from a dark tint
+        // (`mix($o-view-background-color, $_color, 85%)` = #0E2E3C for blue), so on the lit island
+        // they would be dark cards under #374151 text - 1.38:1, the trap again.
+        // Re-derived with core's LIGHT formula (message.scss:97-102), substituting the island's
+        // surface for $o-view-background-color and the unflipped $o-gray-900 for $body-color: the
+        // blue/green/orange distinction survives at exactly the strength light mode gives it.
+        //   blue #E6F5FD = 9.25:1 | green #E6F7F0 = 9.29:1 | orange #FFFAEB = 9.88:1
+        // `!important` here is NOT a choice: both competing rules carry their own, so a normal
+        // declaration loses at any specificity. (0,4,0) + important beats both.
+        // $_viin-dark-bubble-map is BUG-2b's map, reused rather than re-typed - one list of variants.
+        @each $_type, $_color in $_viin-dark-bubble-map {
+            $_island-bubble-bg: mix($_viin-island-surface, $_color, 90%);
+            $_island-bubble-border: mix(
+                $_viin-island-surface, mix($_color, $o-gray-900, 75%), 80%
+            );
+
+            .o-mail-Message-bubble.#{$_type} {
+                --o-message-bubble-bg: #{$_island-bubble-bg};
+                --o-message-bubble-border-color: #{$_island-bubble-border};
+                background-color: $_island-bubble-bg !important;
+                border-color: $_island-bubble-border !important;
+
+                // Core paints the muted bubble the plain view surface; on the island that is the
+                // island surface, so a muted message reads as flat paper rather than a card.
+                &.o-muted {
+                    background-color: $_viin-island-surface !important;
+                }
+            }
+
+            .o-mail-Message-bubbleTail.#{$_type} {
+                .o-mail-Message-bubbleTailBg {
+                    color: $_island-bubble-bg !important;
+                }
+                .o-mail-Message-bubbleTailBorder {
+                    color: $_island-bubble-border !important;
+                }
+            }
+        }
+
+        // --- The TEXT that lands on those bubbles ---------------------------------------------
+        // Lighting the bubble without re-pointing this leaves the trap one layer deeper, and the
+        // pair is worse than the one the block started from: #EDF4F5 on the #E6F5FD bubble is
+        // 1.00:1 - near-white on near-white - and 1.11:1 on the bare surface.
+        //
+        // THE CHATTER ROOT'S `color` DOES NOT REACH THIS TEXT, which is why re-pointing the root
+        // was necessary but not sufficient. `.o-mail-Message-body` declares no colour of its own
+        // (message.scss:45-58); it inherits from `.o-discuss-text-body` (message.xml:82), the
+        // wrapper that CONTAINS it - and core styles that wrapper as a BARE class, (0,1,0), with
+        // `!important`, twice: core.scss:99 `$gray-700` then core.dark.scss:13 `$o-main-text-color`
+        // #EDF4F5, the dark file winning on source order. An `!important` declaration outranks
+        // EVERY normal one at any specificity, so the root's (0,2,0) normal `color` is not in the
+        // running at all and inheritance never gets a turn.
+        //
+        // `!important` IS THEREFORE GENUINELY REQUIRED HERE - the second such case in this block.
+        // Against an important declaration, specificity decides among important declarations only:
+        // (0,3,0) beats core's (0,1,0), so this wins; without the flag it would lose at ANY
+        // specificity.
+        //
+        // ONE RULE, TWO SURFACES: the same class is on the COMPOSER TEXTAREA (composer.xml:77), so
+        // this also returns the text the user TYPES to the island, over the white field the
+        // `.o-mail-Composer` rule above already restored - a second, independent place the same
+        // pairing had gone incoherent.
+        //   body / input on the surface #FFFFFF   10.31:1   (was 1.11:1)
+        //   on the bubbles   blue 9.25:1 | green 9.29:1 | orange 9.88:1   (was ~1.00:1)
+        .o-discuss-text-body {
+            color: $_viin-island-text !important;
+        }
+
+        // --- Mentions and record links inside a message body -----------------------------------
+        // An @-mention and the link a tracked record renders as are the most common rich content in
+        // a chatter body, and core's dark tail hands them the brand teal LIGHTENED FOR A DARK
+        // GROUND: core.dark.scss:5-11 passes `lighten($o-action, 10%)` - #02E8FF - through
+        // `o-mention-variant`, whose first declaration is `color: ... !important` (core.scss:333).
+        // On the island that is 1.50:1 on the surface and 1.42:1 on its own chip: the worst pair in
+        // this whole section. viin_brand_mail's own core/common/core.scss:1-12 strips the chip fill
+        // off the two redirect variants, so those put #02E8FF straight onto white with nothing
+        // behind it at all.
+        //
+        // `!important` REQUIRED, and it earns more than the base rule: the mixin also emits `:hover`
+        // and `:active` colours (core.scss:336/344) as NORMAL declarations at (0,2,1), so ONE
+        // important declaration on the base selector carries resting, hover, active and disabled at
+        // once - instead of four rules per variant. (0,3,1) beats the mixin's own (0,1,1) among
+        // important declarations.
+        //
+        // THE TONE IS THE PRESSED RUNG, NOT THE LINK RUNG, and that is arithmetic: a mention sits on
+        // its own `rgba(lighten($o-action, 5%), .075)` chip, and $_viin-island-link measures 4.50:1
+        // on it - exactly on the AA boundary, too thin to spend on a rounding rule. The deep rung
+        // clears every ground the chip can composite over, and reads correctly as a link-like
+        // affordance one step stronger than body text.
+        //   #005E68 on the surface 7.50:1 | on the chip 7.11:1 | on the bubbles 6.40-7.19:1
+        a.o-discuss-mention,
+        a.o_mail_redirect,
+        a.o_channel_redirect,
+        a.o_message_redirect_transformed {
+            color: $_viin-island-link-hover !important;
+        }
+
+        // --- The tiers the dark tail de-emphasises with OPACITY, not colour ---------------------
+        // These carry no colour of their own, so re-pointing `color` cannot reach them - and a
+        // computed-`color` reading reports the island tone while the pixel actually on screen is
+        // half of it. Core thins them because #EDF4F5 has contrast to spare on #111B1E; #374151 on
+        // a white island does not. Each is returned to the value LIGHT MODE already uses, so the
+        // island matches the chatter a user sees on any form view rather than inventing a third
+        // behaviour. All four competing rules are (0,1,0) with NO `!important`, so (0,3,0) wins on
+        // specificity alone - no flag needed.
+
+        // message.dark.scss:9-11 sets 50%; light mode sets NOTHING here, so light renders the author
+        // fully opaque. On the island 50% composites #374151 down to #9BA0A8 = 2.63:1. It held
+        // 4.83:1 on the dark surface, so the re-light is what broke it - this is not a pre-existing
+        // defect being adopted.
+        .o-mail-Message-author {
+            opacity: 100%;
+        }
+
+        // The quoted block above a reply. message_in_reply.dark.scss:2 halves the author (light:
+        // 75%, message_in_reply.scss:2) and :6 drives the quoted text to 50% through the token
+        // message_in_reply.scss:17 reads (light default: 65%). Restored to the light values:
+        // author 4.99:1; the quoted line lands 3.77:1, which is LIGHT MODE'S OWN figure for a
+        // deliberately de-emphasised preview - reproduced exactly, not out-tuned, because matching
+        // light mode is the contract and a better-than-light value would be an invented one.
+        .o-mail-MessageInReply-author {
+            opacity: 75%;
+        }
+
+        .o-mail-MessageInReply-core {
+            --mail-MessageInReply-messageOpacityNonHover: 65%;
+        }
+
+        // --- The two tiers the TEMPLATE thins, in BOTH schemes -----------------------------------
+        // Different origin from the rules above, and the difference decides the values. Those were
+        // dark-tail overrides, so each had a light-mode value to be restored to. These two carry
+        // their `opacity` utility in message.xml itself, so BOTH SCHEMES render them thinned and
+        // neither had a value here to be restored to. The light scheme repairs its own arm on the
+        // same surfaces (message_contrast.scss - light mode builds these bubbles from the same
+        // formula over the same white ground), so the two are aimed at the same AA floor rather
+        // than one copying the other. They diverge on the marker only: light moves it onto the
+        // metadata tier, while here the island's body tier is dark enough that thinning it is still
+        // the truer de-emphasis.
+        //
+        // The dark arm of both nodes is BUG-7 above, product-wide. What remains island-specific is
+        // the marker: BUG-7 puts it on the DARK metadata tier, which measures 2.34-2.59:1 on these
+        // light bubbles, so the island states its own colour below rather than inheriting that one.
+        //
+        // `!important` IS REQUIRED for both, the same lever as the `.text-muted` rule above and for
+        // the same reason: Bootstrap emits every utility through its utilities API with
+        // `$enable-important-utilities: true` (_variables.scss:385 -> mixins/_utilities.scss:74), so
+        // `.opacity-75` / `.opacity-50` each carry their own `!important` and no normal declaration
+        // beats them at any specificity. Among important declarations specificity decides, and both
+        // selectors below outrank the utilities' (0,1,0).
+
+        // The empty-message placeholder (message.xml:110) needs NO rule here. Its whole island fix is
+        // a colour and an opacity, and the island already supplies both from elsewhere: the colour
+        // from the `.text-muted` rule above (#5B636A, the tier every other muted marker in the body
+        // shares), the opacity from BUG-7, whose selector is unscoped and so matches inside this
+        // subtree too. An island copy could only restate BUG-7's own declaration.
+        //   blue 5.48:1 | green 5.51:1 | orange 5.85:1 | no bubble 6.11:1
+
+        // The `(edited)` marker (message.xml:152). The span carries only `o-xsmaller`, so its tone is
+        // whatever reaches it from outside, and 75% opacity IS its whole de-emphasis here. That is
+        // what rules out flattening it: at 100% it would be #374151, body copy in a smaller size.
+        // 75% is the least Bootstrap rung clearing AA on every bubble (74% is the arithmetic
+        // minimum), so it keeps a real quarter of thinning - #636E7C on the blue bubble, visibly
+        // lighter than the body text it sits inside - and at 0.65rem the size carries the rest.
+        //   blue 4.65:1 | green 4.67:1 | orange 4.84:1 | no bubble 4.96:1
+        //   (was 2.54 | 2.55 | 2.60 | 2.63)
+        //
+        // THE COLOUR IS DECLARED, NOT INHERITED, and that is what makes the pair above hold. BUG-7
+        // puts this span on the dark metadata tier product-wide; on the island's light bubbles that
+        // tier is 2.34-2.59:1, so leaving the colour to reach this span from outside would import
+        // the dark scheme's answer onto a light ground - the trap this whole block is built around,
+        // one rule further in. Stating the island's own body tier here is also the same posture as
+        // the `--btn-color` block above: self-consistent rather than dependent on what another rule
+        // happens to set. (0,4,0) beats BUG-7's (0,2,0) on specificity, so neither needs a flag.
+        //
+        // `.o-mail-Message-edited` is the stable hook rather than the inner span's utilities: the
+        // server emits that wrapper into the body (mail_thread.py `_message_update_content`) and
+        // core's JS replaces its children with this span (message.js, `editedEl.replaceChildren`),
+        // so it is present exactly when the marker is.
+        .o-mail-Message-edited .opacity-50 {
+            color: $_viin-island-text;
+            opacity: 75% !important;
+        }
+
+        // --- The icon-hover tokens the dark tail sends to WHITE ---------------------------------
+        // Both consumers fall back to `black` in light mode (message.scss:137 -> action_list.scss:26
+        // for a message action, composer.scss:82 for a composer action) and the dark tail overrides
+        // them to `white` for the dark ground (message.dark.scss:5-7, composer.dark.scss:9-11). On
+        // the lit island that makes the icon VANISH on hover - 1.00:1 on the surface, 1.11:1 on a
+        // bubble - i.e. the control disappears at the exact moment the pointer says it is
+        // actionable. The island's body-text tier is its equivalent of light mode's `black` and
+        // keeps the hover state one tone with every other island label.
+        //   #374151 on the surface 10.31:1 | on a bubble 9.25:1   (was 1.00:1 / 1.11:1)
+        .o-mail-Message-actions {
+            --mail-Message-actionIconHoveredColor: #{$_viin-island-text};
+        }
+
+        .o-mail-Composer-actions {
+            --mail-Composer-actionHoverColor: #{$_viin-island-text};
+        }
+
+        // The composer field's own outline. composer.dark.scss:5-7 thins it to 25% - right for a
+        // border whose job on #111B1E is a subtle lift, wrong on white, where it washes the field's
+        // edge out and the input loses the affordance that says "type here". Restored to Bootstrap's
+        // default, which is what light mode renders and what makes the `.o-mail-Composer` rule above
+        // actually deliver the "white fill inside the island's #d5dae8 border" it documents. Not a
+        // contrast fix - an affordance one.
+        .o-mail-Composer-bg {
+            --border-opacity: 1;
+        }
+    }
+
+    // The customer-facing composer keeps its DANGER cue on the island - the cue is the whole point
+    // of composer.scss's `:has()` rule and must not be lost to the re-light above. Same 8% $danger
+    // wash, mixed over the island surface instead of the dark field, which lands on #FBF1F1: the
+    // exact tone that file documents for LIGHT mode, so the two schemes state the same warning.
+    // composer.scss's rule is (0,4,0) - `.o-mail-Chatter-top` + `:has(.o-mail-Chatter-sendMessage
+    // .active)` + `.o-mail-Composer`; adding `.o-spreadsheet` makes this (0,5,0) and it wins on
+    // specificity, no `!important`.
+    //   composer text #374151 on #FBF1F1 = 8.74:1
+    .o-mail-Chatter-top:has(.o-mail-Chatter-sendMessage.active) .o-mail-Composer {
+        --mail-Composer-bg: #{mix($danger, $_viin-island-surface, $o-viin-composer-danger-wash)};
+    }
 }

@@ -1,0 +1,96 @@
+// The muted METADATA tier of a mail message, at a value that clears WCAG AA on every surface a
+// message is actually read on.
+//
+// THE GROUNDS THIS IS TUNED AGAINST. A message is read on the form-view chatter panel -
+// `$o-webclient-background-color` = $o-gray-100 #F8F9FA, with the Chatter root `bg-inherit` on top
+// of it (mail/static/src/chatter/web/form_renderer.scss:5-6 and that directory's chatter.xml:5) -
+// on the plain white view surface in Discuss and chat windows, and, wherever the message is
+// bubbled, on an OPAQUE bubble fill built from the WHITE view surface
+// (mail/static/src/core/common/message.scss:98-105). Bubble tints therefore do NOT follow the
+// panel, which makes the blue bubble the binding case rather than the panel: a value tuned on the
+// panel alone lands short of where the same tier is read one element away.
+//
+// WHY THIS IS NOT FIXED AT THE TOKEN. The tier arrives as `$text-muted` -> `$o-main-color-muted` =
+// `rgba($o-gray-700, $o-opacity-muted)` (web/static/src/scss/bootstrap_overridden.scss:85 ->
+// primary_variables.scss:121), which composites to 4.20:1 on the chatter panel and 4.06:1 on the
+// blue bubble. That token is NOT a text tier alone: core also spends it on states where AA does not
+// apply and where clearing it would MISREPRESENT the control - the unset priority star
+// (web/static/src/views/fields/priority/priority_field.scss:21), the unfavourited star
+// (.../boolean_favorite/boolean_favorite_field.scss:7), disabled statusbar steps
+// (.../statusbar/statusbar_field.scss:118), disabled dropdown items
+// ($dropdown-link-disabled-color, bootstrap_overridden.scss:191) and the inactive editor switch
+// (`rgba($text-muted, .4)`, html_editor/static/src/components/switch/switch.scss:2). Darkening it
+// would make an "off" affordance read as "on", and it would recompile ~380 `.text-muted` nodes
+// across ~205 core templates plus the frontend and report bundles, which derive their own
+// $text-muted separately. So the tier is re-pointed on the mail MESSAGE surface only, where it is
+// unambiguously text.
+//
+// THE VALUE is one rung down the SAME grayscale ramp core already uses, unflipped by the dark
+// palette, so a core re-tune of the ramp moves it too. It stays a de-emphasised tier: 5.80:1 on the
+// chatter panel, against the 7.76:1 the message body tier ($gray-700,
+// mail/static/src/core/common/core.scss:99-101) reads on that same ground.
+//   chatter panel #F8F9FA 5.80 | white 6.11
+//   bubbles  blue #E6F5FD 5.48 | green #E6F7F0 5.51 | orange #FFFAEB 5.85
+$o-viin-mail-muted: mix($o-gray-700, $o-gray-600, 50%) !default;   // #5B636A
+
+// LIGHT ONLY. web.assets_web_dark recompiles this whole bundle, where the ramp keeps its light
+// values and would put #5B636A on the #111B1E panel. The dark scheme reaches the same tier through
+// its own token ($o-main-color-muted -> $body-secondary-color #8EA5A8), so emitting nothing here is
+// what keeps the two schemes independent rather than racing on source order.
+@if not $o-viin-dark-bundle {
+
+    .o-mail-Message,
+    .o-mail-Scheduled-Message,
+    .o-mail-NotificationMessage {
+
+        // The timestamp, and the system-notification text that shares its tier. Core declares it at
+        // (0,1,0) with no flag (message.scss:21-22), so (0,2,0) carries it without `!important`.
+        .o-mail-Message-date {
+            color: $o-viin-mail-muted;
+        }
+
+        // The in-body markers on the same tier - the empty-message placeholder, the `Subject:` line
+        // and the two translation notices. `!important` is required, not chosen: Odoo compiles this
+        // utility from the Sass literal (web/static/src/scss/utilities_custom_backend.scss:18)
+        // through Bootstrap's utilities API, which emits `!important` under
+        // $enable-important-utilities, and no normal declaration beats an important one at any
+        // specificity. (0,2,0) wins among important ones.
+        .text-muted {
+            color: $o-viin-mail-muted !important;
+        }
+
+        // Two nodes carry an opacity utility ON TOP of that tier, which is what takes them furthest
+        // down: the placeholder to 2.68:1 and the scheduled-message timestamp to 2.73:1.
+        //
+        // BOTH HALVES ARE REQUIRED, and that is arithmetic rather than preference - do not
+        // "simplify" this to one of them. Dropping the multiplier alone leaves the OLD tier at
+        // 4.20:1 on the chatter panel and 4.06:1 on the blue bubble, so NO opacity clears AA while
+        // the tier itself is thinned; re-pointing the tier alone leaves the multiplier on it at
+        // 3.49:1. De-emphasis survives on the tier and, on the placeholder, on its italic - neither
+        // reaches body-text weight.
+        // `> i` keeps this off the `Subject:` line (an `em`) and off the failure-notification glyph,
+        // which stacks the same utility on a `text-danger` tone this rule has no business re-tuning.
+        // `!important` for the same reason as above: an opacity utility carries its own.
+        //   placeholder  panel 5.80 | blue 5.48 | green 5.51 | orange 5.85
+        //   scheduled    5.80 on the chatter panel, its only ground - never bubbled
+        .o-mail-Message-body > i.text-muted.opacity-75,
+        .o-mail-Message-date.text-muted.opacity-75 {
+            opacity: 100% !important;
+        }
+
+        // The `(edited)` marker, at 2.32:1. Unlike the two above it has NO colour tier of its own -
+        // the span carries only `o-xsmaller` - so it inherits the message body's $gray-700 and the
+        // 50% IS its whole de-emphasis, which is why the fix has to reach its colour.
+        // NO OPACITY RUNG WORKS, and this is the value that must not be "harmonised" to a rounder
+        // number later: 75%, the next Bootstrap rung, is still 3.96:1 on the blue bubble, and the
+        // arithmetic floor across these grounds is 78-81%. 100% does clear AA, but at exactly the
+        // body text's own $gray-700 - a marker told apart from the copy around it by size alone.
+        // Moving it onto the metadata tier keeps a colour step (1.34:1 against that body text) AND
+        // clears AA, and it puts the marker on the same tier as the timestamp beside it.
+        //   panel 5.80 | blue 5.48 | green 5.51 | orange 5.85
+        .o-mail-Message-edited .opacity-50 {
+            color: $o-viin-mail-muted !important;
+            opacity: 100% !important;
+        }
+    }
+}
