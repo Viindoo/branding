@@ -102,6 +102,44 @@ Editions Supported
             ('after', 'mail/static/src/core/common/composer.scss', 'viin_brand_mail/static/src/core/common/composer.scss'),
             ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
         ],
+        # viin_brand_mail's own SCSS leaks into web.assets_unit_tests_setup / web.tests_assets via
+        # web's ('include', 'web.assets_backend') (addons/web/__manifest__.py); each 'remove'
+        # strips it back out of the two TEST-ONLY bundles so core's own mail/discuss Hoot/QUnit
+        # tests measure core's own metrics, not Viindoo's. web.assets_backend itself (the real
+        # webclient) is untouched - AssetPaths.remove() operates on the accumulated per-bundle
+        # path list, not on the source bundle. A stale/renamed path here raises ValueError on
+        # module update - keep that loud, never catch it
+        # (odoo/addons/base/models/ir_asset.py AssetPaths._raise_not_found).
+        'web.assets_unit_tests_setup': [
+            ('remove', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/common/composer.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/common/core.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/common/im_status.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/common/message.scss'),
+            # 19.0-only file (the port's message-contrast fix), added after the 18.0 sweep
+            # drew this list - without it one brand stylesheet still reached core's pages.
+            ('remove', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/common/message_seen_indicator.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
+            ('remove', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
+        ],
+        # web.tests_assets is the legacy QUnit page; it includes web.assets_backend the same way
+        # web.assets_unit_tests_setup does, so it needs the identical remove list.
+        'web.tests_assets': [
+            ('remove', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/common/composer.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/common/core.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/common/im_status.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/common/message.scss'),
+            # 19.0-only file (the port's message-contrast fix), added after the 18.0 sweep
+            # drew this list - without it one brand stylesheet still reached core's pages.
+            ('remove', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/common/message_seen_indicator.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
+            ('remove', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
+        ],
     },
     'installable': True,
     'auto_install': True,
