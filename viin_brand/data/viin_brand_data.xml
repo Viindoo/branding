@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <function name="_update_viin_brand_icons" model="ir.ui.menu" />
+    </data>
+</odoo>

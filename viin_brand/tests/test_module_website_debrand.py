@@ -9,20 +9,24 @@ class TestViinBrandModuleWebsiteDebrand(TransactionCase):
     """The module-website de-brand must stay wired through viin_brand.apriori.
 
     Regression guard for a silent-fallback bug that already shipped once.
-    ``to_base._load_manifest_plus`` (loaded server-wide via
-    ``--load base,web,to_base``) overrides EVERY module's manifest ``website``
+    ``viin_brand._load_manifest_plus`` (loaded server-wide via
+    ``--load base,web,viin_brand``) overrides EVERY module's manifest ``website``
     with the Viindoo intro/doc URL taken from
     ``odoo.addons.viin_brand.apriori.modules_website`` (resolved by
-    ``to_base._get_brand_module_website``). That import lives inside a bare
+    ``viin_brand._get_brand_module_website``). That import lives inside a bare
     ``try/except Exception: pass``, so when ``viin_brand/apriori.py`` was
     mislabeled "dead" and deleted, the override did NOT crash - it silently
     returned ``False`` and every module ``website`` reverted to the stock Odoo
     default, with the whole test suite still green.
 
     These assertions make that silent regression fail loudly: apriori.py must
-    exist and carry a Viindoo URL map (never an odoo.com one), to_base must
+    exist and carry a Viindoo URL map (never an odoo.com one), viin_brand must
     actually consume it, and - end to end - an installed module's stored
     ``website`` must reflect the de-brand.
+
+    The resolver used to live in tvtmaaddons' ``to_base``; 18.0 f57498c/56b2c7252e
+    moved the whole branding mechanism into this module, so the assertions follow
+    it here.
     """
 
     def test_apriori_module_website_map_is_present_and_viindoo(self):
@@ -36,8 +40,9 @@ class TestViinBrandModuleWebsiteDebrand(TransactionCase):
         self.assertIsInstance(
             modules_website, dict,
             "viin_brand/apriori.py must define a `modules_website` dict - "
-            "to_base imports it to de-brand every module's website; a missing "
-            "file or symbol silently reverts every website to the Odoo default.",
+            "viin_brand imports it to de-brand every module's website; a "
+            "missing file or symbol silently reverts every website to the "
+            "Odoo default.",
         )
         self.assertTrue(
             modules_website,
@@ -61,36 +66,30 @@ class TestViinBrandModuleWebsiteDebrand(TransactionCase):
                 "de-brand must replace the stock odoo.com link." % (module_name, parsed.hostname),
             )
 
-    def test_to_base_consumes_apriori_module_website(self):
-        """to_base._get_brand_module_website resolves the Viindoo URL from apriori.
+    def test_viin_brand_consumes_apriori_module_website(self):
+        """viin_brand._get_brand_module_website resolves the Viindoo URL from apriori.
 
         This is the exact function that silently returned ``False`` when
         apriori.py was deleted. A green assertion here proves BOTH that
-        apriori.py exists AND that the server-wide to_base patch reads it.
+        apriori.py exists AND that this module's own resolver reads it.
         """
-        try:
-            from odoo.addons import to_base
-        except ImportError:
-            self.skipTest(
-                "to_base is not importable in this test environment; it must be "
-                "loaded server-wide (--load base,web,to_base) for the "
-                "module-website de-brand to be active."
-            )
-        website = to_base._get_brand_module_website('crm')
+        viin_brand = importlib.import_module('odoo.addons.viin_brand')
+        website = viin_brand._get_brand_module_website('crm')
         self.assertEqual(
             website, 'https://viindoo.com/intro/crm',
-            "to_base._get_brand_module_website('crm') returned %r instead of the "
-            "Viindoo intro URL. Either viin_brand/apriori.py is missing (its "
+            "viin_brand._get_brand_module_website('crm') returned %r instead of "
+            "the Viindoo intro URL. Either viin_brand/apriori.py is missing (its "
             "import in _get_brand_module_website is swallowed by a bare "
-            "`except Exception: pass`, silently returning False) or to_base no "
-            "longer consumes the apriori map." % (website,),
+            "`except Exception: pass`, silently returning False) or the resolver "
+            "no longer consumes the apriori map." % (website,),
         )
 
     def test_installed_module_website_reflects_viindoo_debrand(self):
         """End-to-end: a scanned module's ir.module.module.website is de-branded.
 
-        Proves the FULL pipeline - apriori.modules_website -> to_base
-        _load_manifest_plus (patched module._load_manifest) -> manifest scan ->
+        Proves the FULL pipeline - apriori.modules_website ->
+        viin_brand._load_manifest_plus (patched module._load_manifest) ->
+        manifest scan ->
         ir.module.module.website - not just the resolver in isolation. Defensive:
         checks every apriori-mapped module that has an ir.module.module record on
         this instance, and skips only if none are present (an addons path that
@@ -108,8 +107,9 @@ class TestViinBrandModuleWebsiteDebrand(TransactionCase):
             self.assertEqual(
                 record.website, expected_url,
                 "ir.module.module %r has website %r, expected the Viindoo "
-                "de-brand URL %r from viin_brand.apriori. The to_base "
-                "_load_manifest_plus override is not reaching the manifest scan."
+                "de-brand URL %r from viin_brand.apriori. The "
+                "viin_brand._load_manifest_plus override is not reaching the "
+                "manifest scan."
                 % (module_name, record.website, expected_url),
             )
         if not checked:

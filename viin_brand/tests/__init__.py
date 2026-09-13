@@ -4,3 +4,5 @@ from . import test_database_manager_dbname_safety
 from . import test_debrand_allowlist_sync
 from . import test_module_website_debrand
 from . import test_template_inherit_id_targets_view
+from . import test_manifest_assets_no_set_literals
+from . import test_module_icon_debrand

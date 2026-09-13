@@ -44,10 +44,12 @@ Module này sẽ thay đổi giao diện module CRM theo thương hiệu Viindoo
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    # 0.1 -> 0.1.1: the new viin_brand_digest dependency is an ir.module.module
+    # row, not a manifest value read at runtime, so it only lands on -u.
+    'version': '0.1.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['crm'],
+    'depends': ['crm', 'viin_brand_digest'],
 
     # always loaded
     'data': [
