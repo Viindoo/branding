@@ -58,6 +58,23 @@ class TestViinThemeTours(HttpCase):
 
 
 @tagged("post_install", "-at_install")
+class TestViinAppearanceMarkerCount(HttpCase):
+    """The active row in the Appearance systray renders exactly one selected-marker."""
+
+    def test_active_option_shows_exactly_one_marker_in_light_scheme(self):
+        admin = self.env.ref("base.user_admin")
+        # Clean baseline so the tour's default-scheme row cannot inherit a prior test's Dark choice.
+        admin.viin_color_scheme = "light"
+        self.start_tour("/odoo", "viin_appearance_marker_count_light_tour", login="admin")
+
+    def test_active_option_shows_exactly_one_marker_in_dark_scheme(self):
+        admin = self.env.ref("base.user_admin")
+        # Clean baseline; the tour itself drives the switch to Dark and reload.
+        admin.viin_color_scheme = "light"
+        self.start_tour("/odoo", "viin_appearance_marker_count_dark_tour", login="admin")
+
+
+@tagged("post_install", "-at_install")
 class TestViinThemeA11yTour(HttpCase):
     """T-4: keyboard accessibility of the theme shell (the skip link is the first focusable element)."""
 

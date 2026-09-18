@@ -15,7 +15,7 @@
         <t t-set-slot="content">
           <div class="o_viin_appearance_group" role="presentation">Theme</div>
           <DropdownItem t-foreach="schemes" t-as="opt" t-key="opt.value"
-              class="{ 'o_viin_appearance_option': true, active: state.scheme === opt.value }"
+              class="{ 'o_viin_appearance_option': true, active: state.scheme === opt.value, 'dropdown-item_active_noarrow': true }"
               onSelected="() => this.setScheme(opt.value)"
               attrs="{ role: 'menuitemradio', 'aria-checked': state.scheme === opt.value ? 'true' : 'false' }">
             <span class="d-flex align-items-center w-100">
@@ -29,7 +29,7 @@
 
           <div class="o_viin_appearance_group" role="presentation">Density</div>
           <DropdownItem t-foreach="densities" t-as="opt" t-key="opt.value"
-              class="{ 'o_viin_appearance_option': true, active: state.density === opt.value }"
+              class="{ 'o_viin_appearance_option': true, active: state.density === opt.value, 'dropdown-item_active_noarrow': true }"
               onSelected="() => this.setDensity(opt.value)"
               attrs="{ role: 'menuitemradio', 'aria-checked': state.density === opt.value ? 'true' : 'false' }">
             <span class="d-flex align-items-center w-100">
