@@ -10,9 +10,8 @@
 #   * composer send button             core `lighten($primary, 7.5%)` under a forced white glyph
 #   * im_status presence dot           purple, and the flat brand teal is only 2.33:1 on white
 #   * systray unread counters          $o-success #00B365 + white = 2.75:1 on the navbar
-# The design SSOT (.odoo-ai/designs/cluster-semantic-restore-2026-07-24.md, section
-# "MODULE viin_brand_mail") restores each surface on the AA-pushed ladder, so the BUSINESS RULE
-# these tests protect is a CONTRAST rule, not a hex snapshot: every glyph/label must clear the
+# This module restores each surface on the AA-pushed ladder, so the BUSINESS RULE these tests
+# protect is a CONTRAST rule, not a hex snapshot: every glyph/label must clear the
 # WCAG threshold against the surface it actually renders on. Each test therefore measures the
 # WCAG 2.x contrast ratio of the COMPILED colours (the W3C formula is an external standard, not a
 # re-implementation of any production logic) instead of only comparing literals - a hex-only test
@@ -27,8 +26,8 @@
 # viin_brand_html_editor/tests/test_asset_upgrade.py.
 #
 # WHY THE EXPECTED HEXES ARE ASSERTED THE WAY THEY ARE. Two different shapes on purpose:
-#   * where the design SSOT names a TOKEN (CHROME-BASE teal #007F8E, brand secondary #7F4282) the
-#     token is asserted as a fixed, hand-chosen design constant - the same discipline as
+#   * where a named brand TOKEN fixes the colour (CHROME-BASE teal #007F8E, brand secondary
+#     #7F4282) the token is asserted as a fixed, hand-chosen design constant - the same discipline as
 #     viin_brand_web's VIINDOO_NAVBAR_BACKGROUND_COLOR, and never by re-deriving the Sass
 #     expression inside the test (which would compare production logic against itself);
 #   * where the value is DERIVED with no named token (the systray badge green, `mix(black,
@@ -219,6 +218,14 @@ DROPDOWN_ROW_FOCUS_SURFACE = "#e4e5e6"
 WCAG_AA_NORMAL_TEXT = 4.5
 WCAG_AA_NON_TEXT = 3.0
 
+# A structural DIVIDER (a panel seam, not text or a control) has the opposite failure mode from the
+# thresholds above: it must stay PERCEPTIBLE without becoming a glare. This band governs the
+# Discuss seams - the floor keeps the line from vanishing into the panel, the ceiling keeps a
+# receding dark line from reading as a bright rule the way the untouched light-mode grey does
+# (13.3:1).
+DISCUSS_SEAM_MIN_RATIO = 1.2
+DISCUSS_SEAM_MAX_RATIO = 2.0
+
 # `background` and `background-color` are resolved as ONE property family: the `background`
 # shorthand resets background-color, and core uses both spellings across these surfaces.
 BACKGROUND_PROPS = ("background-color", "background")
@@ -259,6 +266,9 @@ DARK_BUNDLE = "web.assets_web_dark"
 # The mail-owned dark residue this item (M-1) adds. Reaches the dark bundle ONLY through the explicit
 # manifest entry (core's dark glob is web/mail-only), so its wiring is guarded structurally.
 DARK_SURFACE_SOURCE = "viin_brand_mail/static/src/scss/mail_dark.scss"
+# The Discuss-chrome identity fix, reaching the dark bundle through its own explicit manifest entry
+# for the same reason (core's dark glob never sees this module).
+DARK_DISCUSS_NAVBAR_SOURCE = "viin_brand_mail/static/src/scss/discuss_navbar.dark.scss"
 # A translucent-alpha wash in a compiled `rgba(r, g, b, a)` value (a < 1). The dark rotting-card
 # defect is exactly this: core's `rgba(255, 201, 201, .3)` literal composites to a muddy near-neutral
 # over the dark card and loses the danger read, so the fix must paint a SOLID tint instead.
@@ -266,6 +276,16 @@ _RGBA_ALPHA_RE = re.compile(r"rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*([0-9.]+%?
 # A `var(--token[, fallback])` reference, so a compiled colour that is a custom-property lookup can be
 # resolved through core's own :root emission of that token.
 _VAR_REF_RE = re.compile(r"var\(\s*--([\w-]+)\s*(?:,[^)]*)?\)")
+# Bootstrap's OWN two-custom-property shape for every `border-<theme-colour>` / `text-<theme-colour>`
+# / `bg-<theme-colour>` utility (lib/bootstrap/scss/_functions.scss `rgba-css-var()`, consumed by
+# `$utilities-border-colors` in _maps.scss): `rgba(var(--<name>-rgb), var(--border-opacity))`. This
+# is NOT a bare `var(--token)` reference - `_VAR_REF_RE` above never matches it - because Bootstrap
+# composes the RGB channels and the opacity slot from TWO separate custom properties instead of one.
+# `.border-secondary` is exactly this shape, and it is the value every Discuss seam below still
+# carries absent a per-element fix.
+_UTILITY_RGB_VAR_RE = re.compile(
+    r"rgba?\(\s*var\(\s*--([\w-]+)\s*\)\s*,\s*var\(\s*--[\w-]+\s*\)\s*\)"
+)
 
 # A single "selectors { body }" rule in the compiled CSS. [^{}] keeps each match to one non-nested
 # rule, so rules wrapped in @media are still captured individually.
@@ -652,8 +672,8 @@ IDLE_SWATCH_CLASSES = IDLE_GLYPH_CLASSES | {"me-1"}
 # $o-viin-dark-control-bg, brand_variables.scss keys `.btn-primary` off the chrome teal), so the two
 # halves of every button come from two different schemes and collide. Measured live on a dark 19.0
 # webclient at 1440px, alpha-composited. The two panel-surface rows were taken while the comments
-# panel still carried a `bg-view` utility, which `viin_spreadsheet` 3c6dcc617 has since removed -
-# they are recorded as the observation that motivated these guards, NOT as the current surface:
+# panel still carried a `bg-view` utility that a later revision has since removed - they are
+# recorded as the observation that motivated these guards, NOT as the current surface:
 #     Log note      light-island label on the dark control tier  1.19:1
 #     Activity      light-island label on the dark control tier  1.19:1
 #     Send message  light-island label on the chrome teal        2.17:1
@@ -667,7 +687,7 @@ IDLE_SWATCH_CLASSES = IDLE_GLYPH_CLASSES | {"me-1"}
 # different-but-equally-unreadable shade.
 #
 # WHY NO HOOT/JS TEST AND NO MODULE DEPENDENCY. Hoot loads only the LIGHT bundle, so the collision
-# is invisible to it. And nothing here needs `spreadsheet` or `viin_spreadsheet` INSTALLED: the
+# is invisible to it. And nothing here needs `spreadsheet` or any of its extensions INSTALLED: the
 # assertions read OUR compiled `web.assets_web_dark`, where the ancestor chain is only a list of
 # class strings handed to the cluster's cascade resolver, and the one core value that is read comes
 # off the addons path with `file_open` (which resolves a source file, not an installed module) - the
@@ -735,25 +755,27 @@ def _opaque_rgb(value):
 
 # --- Element models, transcribed from the templates that render the embedded comments Chatter -----
 # `.o-spreadsheet` and `.o-sidePanel` are the o_spreadsheet engine's own chrome; the three
-# `o_viin_spreadsheet_all_comments*` layers are viin_spreadsheet's comments panel
-# (static/src/bundle/comments/all_comments_panel.xml), whose item wraps the thread wrapper which
-# renders `<Chatter/>`. The Chatter's own three layers are core's
-# mail/static/src/chatter/web/chatter.xml:5-8. None of those modules is imported or depended on -
-# the resolver only ever sees these class strings.
+# COMMENTS-PANEL layers model the business module's own wrapper layers around the embedded Chatter
+# (a panel, an item, and a thread wrapper that renders `<Chatter/>`), transcribed from their
+# CORE-ONLY utility classes rather than from any selector that module invented - no branding file
+# or fixture may name a business-invented selector, class set, template or module name, so this
+# model keys ONLY on the Bootstrap utilities the wrapper also carries (`p-3`, `border-bottom`,
+# `pb-2`, `mb-2`, `mt-2`), never on the module's own class. The
+# Chatter's own three layers are core's mail/static/src/chatter/web/chatter.xml:5-8. None of these
+# modules is imported or depended on - the resolver only ever sees these class strings, and every
+# one of them is a class core or Bootstrap already ships.
 WEBCLIENT_ANCESTORS = frozenset({"o_web_client", "o_action_manager"})
 SPREADSHEET_ISLAND_ROOT = frozenset({"o-spreadsheet"}) | WEBCLIENT_ANCESTORS
 SPREADSHEET_SIDE_PANEL = frozenset({"o-sidePanel"})
-# The panel root carries NO background utility. `viin_spreadsheet` 3c6dcc617 removed the `bg-view`
-# a prior change had added here: measured on a live dark instance it left the composer contrast
-# unchanged while regressing six other side-panel elements, because the o-spreadsheet engine
-# hardcodes a light-mode text colour on its own side panel that Odoo's dark recompile cannot reach.
-# So this layer paints nothing and the engine's `.o-sidePanel` shows through - which is also why
-# this module now declares no rule naming a `viin_spreadsheet` class at all.
-SPREADSHEET_COMMENTS_PANEL = frozenset({"o_viin_spreadsheet_all_comments", "p-3"})
-SPREADSHEET_COMMENTS_ITEM = frozenset({
-    "o_viin_spreadsheet_all_comments_item", "border-bottom", "pb-2", "mb-2",
-})
-SPREADSHEET_COMMENTS_THREAD = frozenset({"o_viin_spreadsheet_all_comments_thread", "mt-2"})
+# The panel root carries NO background utility. A later revision removed the `bg-view` a prior
+# change had added here: measured on a live dark instance it left the composer contrast unchanged
+# while regressing six other side-panel elements, because the o-spreadsheet engine hardcodes a
+# light-mode text colour on its own side panel that Odoo's dark recompile cannot reach. So this
+# layer paints nothing and the engine's `.o-sidePanel` shows through - which is also why this
+# module now declares no rule naming any business-module class at all.
+SPREADSHEET_COMMENTS_PANEL = frozenset({"p-3"})
+SPREADSHEET_COMMENTS_ITEM = frozenset({"border-bottom", "pb-2", "mb-2"})
+SPREADSHEET_COMMENTS_THREAD = frozenset({"mt-2"})
 CHATTER_ROOT_CLASSES = frozenset({
     "o-mail-Chatter", "w-100", "h-100", "flex-grow-1", "d-flex", "flex-column", "bg-inherit",
 })
@@ -1181,6 +1203,68 @@ ISLAND_EDITED_MARKER_LAYERS = _edited_marker_layers(ISLAND_MESSAGE_LAYERS)
 # in order to be actionable: "the o-blue bubble" and "layer 9 of the chain" send a reader to
 # different files.
 Backdrop = collections.namedtuple("Backdrop", "painter depth value rgb")
+
+# The four Discuss panel dividers, each an element the CORE template stamps with a bare Bootstrap
+# `border-secondary` utility class and nothing else - no viin_brand_mail rule targets any of these
+# four classes for a border colour (grepped: only `.o-mail-DiscussSidebar`, a DIFFERENT element, has
+# one, and that fix is out of scope here - see the sidebar precedent test above). `element_class` is
+# the element's own semantic class (the one a per-element fix would most plausibly target);
+# `border_utility` is the directional utility the SAME element also carries, kept in the model
+# alongside `.border-secondary` even though it never contributes a `*-color` declaration itself
+# (Bootstrap's `.border-<side>` utilities set the WIDTH/STYLE/COLOR shorthand, not a `-color`
+# longhand - `_BORDER_COLOR_RE` never matches it), so a reader can see the element carries both
+# classes without the model silently picking one.
+DiscussSeam = collections.namedtuple("DiscussSeam", "label element_class border_utility source")
+
+DISCUSS_DARK_SEAMS = (
+    DiscussSeam(
+        "the Discuss root's top rule (desktop layout only)",
+        ".o-mail-Discuss", ".border-top",
+        "mail/static/src/core/public_web/discuss.xml - `t-att-class` branch for `!ui.isSmall`",
+    ),
+    DiscussSeam(
+        "the Discuss content header's bottom rule",
+        ".o-mail-DiscussContent-header", ".border-bottom",
+        "mail/static/src/core/public_web/discuss_content.xml",
+    ),
+    DiscussSeam(
+        # Covers BOTH render sites: mail/static/src/discuss/call/common/meeting.xml's in-meeting
+        # side panel reuses this exact class verbatim (`border-start border-secondary`), so one
+        # compiled-CSS assertion on the class proves both - a selector rename could in principle
+        # reach one call site and not the other, which is why this is noted rather than assumed.
+        "the Discuss/meeting side panel's start rule",
+        ".o-mail-DiscussContent-panelContainer", ".border-start",
+        "mail/static/src/core/public_web/discuss_content.xml and "
+        "mail/static/src/discuss/call/common/meeting.xml (same class, reused verbatim)",
+    ),
+)
+
+# --- THE WEBCLIENT NAVBAR, WITH AND WITHOUT DISCUSS OPEN ---------------------------------------
+# `.o_mail_discuss` is the ONE class that separates the two contexts: core adds it to the body while
+# Discuss is the open app and keys its Discuss-only dark rules on it
+# (mail/static/src/core/public_web/discuss.dark.scss, `.o_web_client.o_mail_discuss`). Modelling the
+# SAME element under both bodies lets a guard ask what opening Discuss CHANGES, instead of pinning
+# the colour either context happens to resolve to - so a later navbar re-tune moves both sides at
+# once and is never a false alarm.
+WEBCLIENT_BODY = frozenset({"o_web_client"})
+DISCUSS_WEBCLIENT_BODY = WEBCLIENT_BODY | {"o_mail_discuss"}
+
+# The two navbar surfaces whose paint must not depend on which app is open, innermost ancestors
+# first. The menu entry is here for two reasons and not as decoration: core paints it from
+# `var(--NavBar-entry-backgroundColor, #{$o-navbar-background})`
+# (web/static/src/webclient/navbar/navbar.scss), the exact variable core mail re-points for Discuss;
+# and `%-main-navbar-entry-base` (web/static/src/webclient/navbar/navbar.variables.scss) gives it
+# `height: calc(var(--o-navbar-height) - #{$o-navbar-padding-v * 2})` - with `$o-navbar-padding-v: 0`
+# the full BORDER-box height - so an entry whose fill differs from the bar's paints ITS colour
+# across the bar's own 1px bottom rule and chops that rule into dashes.
+NAVBAR_CHROME_SURFACES = (
+    ("the navbar itself", frozenset({"o_main_navbar"}), ()),
+    (
+        "a navbar menu entry",
+        frozenset({"o_nav_entry"}),
+        (frozenset({"o_menu_sections"}), frozenset({"o_main_navbar"})),
+    ),
+)
 
 
 @tagged("post_install", "-at_install")
@@ -2701,6 +2785,28 @@ class MailContrastCompileTest(TransactionCase):
         """The dark-bundle reading of :meth:`_resolve_scheme_colour`."""
         return self._resolve_scheme_colour(css, value, DARK_BUNDLE, label)
 
+    def _resolve_seam_border_rgb(self, css, value, label):
+        """Resolve a compiled border-color to RGB, ALSO covering Bootstrap's two-var utility shape.
+
+        :meth:`_resolve_dark_colour` follows a single bare ``var(--token)`` reference - the shape
+        every OTHER guard in this file resolves. A bare Bootstrap `border-<colour>` utility (what
+        every Discuss seam below still carries, absent a per-element fix) never compiles to that
+        shape: `.border-secondary` is `rgba(var(--secondary-rgb), var(--border-opacity))` -
+        `_UTILITY_RGB_VAR_RE` above. Falling through to :meth:`_resolve_dark_colour` for anything
+        else means a per-element fix (a dedicated rule resolving to `var(--border-color)` or a plain
+        hex, the same shape the sidebar border fix already uses) is read by the SAME path every other
+        guard here uses - this helper only adds the ONE shape nothing else covers.
+
+        The opacity slot is not read: Bootstrap's own `local-vars: ("border-opacity": 1)` pins it to
+        fully opaque on this exact rule (lib/bootstrap/scss/_utilities.scss "border-color" group), so
+        treating the resolved RGB as opaque matches what a browser paints without re-deriving that
+        pin."""
+        match = _UTILITY_RGB_VAR_RE.fullmatch(value.strip())
+        if match is None:
+            return self._resolve_dark_colour(css, value, label)[1]
+        triplet = self._dark_root_token(css, match.group(1), label)
+        return self._assert_rgb("rgb(%s)" % triplet, label)
+
     def test_dark_rotting_kanban_card_stays_a_readable_solid_danger_surface(self):
         """The overdue/rotting kanban card must paint a SOLID red danger tint readable under text.
 
@@ -2818,13 +2924,14 @@ class MailContrastCompileTest(TransactionCase):
         )
 
     def test_dark_surface_residue_is_wired_into_the_dark_bundle(self):
-        """The mail-owned dark residue must stay explicitly contributed to web.assets_web_dark.
+        """This module's dark-only SCSS must stay explicitly contributed to web.assets_web_dark.
 
-        Core's dark tail glob is web/mail-only (never this module), so mail_dark.scss reaches the dark
-        bundle ONLY through this manifest entry. If it is dropped, both surfaces above silently revert
-        to their core dark values - a translucent muddy rotting card and a ~2.1:1 timestamp. Read
-        straight from the module's own __manifest__.py so the wiring is protected structurally, even
-        on a database where the dark bundle is not compiled by another test."""
+        Core's dark tail glob is web/mail-only (never this module), so each file below reaches the
+        dark bundle ONLY through its own manifest entry. Drop mail_dark.scss and both surfaces above
+        silently revert to their core dark values - a translucent muddy rotting card and a ~2.1:1
+        timestamp; drop discuss_navbar.dark.scss and Discuss goes back to a navbar no other app
+        wears. Read straight from the module's own __manifest__.py so the wiring is protected
+        structurally, even on a database where the dark bundle is not compiled by another test."""
         with open(MANIFEST, "r", encoding="utf-8") as manifest_file:
             assets = ast.literal_eval(manifest_file.read()).get("assets", {})
         injected = _injected_sources(assets, DARK_BUNDLE)
@@ -2832,6 +2939,12 @@ class MailContrastCompileTest(TransactionCase):
             DARK_SURFACE_SOURCE, injected,
             "%s is not injected into %s; the mail-owned dark surfaces it restores would render in "
             "core's un-flipped dark values." % (DARK_SURFACE_SOURCE, DARK_BUNDLE),
+        )
+        self.assertIn(
+            DARK_DISCUSS_NAVBAR_SOURCE, injected,
+            "%s is not injected into %s; Discuss would go back to wearing core's own flat chat "
+            "surface as its navbar while every other app wears the themed one."
+            % (DARK_DISCUSS_NAVBAR_SOURCE, DARK_BUNDLE),
         )
 
     # ==============================================================================================
@@ -3047,6 +3160,151 @@ class MailContrastCompileTest(TransactionCase):
             % (panel_value, ratio, WCAG_AA_NORMAL_TEXT),
         )
 
+    def test_dark_discuss_panel_seams_recede_instead_of_glaring(self):
+        """Every Discuss panel seam must be a QUIET dark divider, not a bright light-mode hairline.
+
+        THE DEFECT. Backend Bootstrap `$secondary` is `$gray-300` = #DEE2E6
+        (bootstrap_overridden.scss:32), and dark_palette.scss never redefines `$secondary` itself -
+        only its derived text/bg/border-subtle triad (dark_palette.scss, "Bootstrap's native
+        `secondary` semantic ladder" block). So the bare `.border-secondary` utility every seam below
+        carries - Bootstrap's `rgba-css-var()` shape, `rgba(var(--secondary-rgb), var(--border-opacity))`
+        (lib/bootstrap/scss/_utilities.scss "border-color" group) - still resolves #DEE2E6 in this
+        DARK bundle: live-measured 13.30:1 against the dark panel, a seam so bright it reads as a bug,
+        not a design line.
+
+        THE RULE, not a hex snapshot. Each seam's border must resolve into a BAND against the dark
+        panel background: perceptible (`>= DISCUSS_SEAM_MIN_RATIO`) so the line still exists, but
+        receding (`<= DISCUSS_SEAM_MAX_RATIO`) so it never glares the way the untouched #DEE2E6 does.
+        Both the border and the panel are resolved through core's OWN `:root` emission
+        (:meth:`_resolve_seam_border_rgb`, :meth:`_dark_root_token`) rather than compared to a pinned
+        hex, so a later palette re-tune that still satisfies the RULE is not a false alarm - unlike
+        the sidebar border precedent above, whose fix already anchors on one fixed SSOT hex because
+        that surface's rule is exact scheme-parity, not a perceptibility band.
+
+        OUT OF SCOPE, DELIBERATELY NOT MODELLED HERE: `.o-mail-DiscussSidebar`'s own border-end
+        already resolves through `var(--border-color)` - proven by
+        :meth:`test_dark_discuss_sidebar_border_is_scheme_aware_not_a_fixed_light_gray` above -
+        fixed separately from the seam guards below. WOULD FAIL IF REVERTED: dropping any seam's
+        fix leaves `.border-secondary` the last writer for that seam, and #DEE2E6 on the dark panel
+        is far above `DISCUSS_SEAM_MAX_RATIO`."""
+        css = self._compiled_css(DARK_BUNDLE)
+        panel_rgb = self._assert_rgb(
+            self._dark_root_token(css, "body-bg", "dark Discuss panel"), "dark Discuss panel",
+        )
+        for seam in DISCUSS_DARK_SEAMS:
+            with self.subTest(seam=seam.label):
+                bodies = _bodies_matching(
+                    css,
+                    lambda selector, seam=seam: _selector_subject(selector) in (
+                        seam.element_class, seam.border_utility, ".border-secondary",
+                    ),
+                    ANY_ANCESTORS,
+                )
+                self.assertTrue(
+                    bodies,
+                    "No compiled rule styles %s (%s) or the `.border-secondary` utility it carries in "
+                    "%s - core's own template (%s) is included via web.assets_web, so an empty match "
+                    "means the dark bundle did not build." % (
+                        seam.label, seam.element_class, DARK_BUNDLE, seam.source,
+                    ),
+                )
+                borders = _declared_values(bodies, _BORDER_COLOR_RE)
+                self.assertTrue(
+                    borders,
+                    "%s (%s) declares no border colour in %s - neither its own rule nor the "
+                    "`.border-secondary` utility it carries painted one; the seam would render with "
+                    "no visible border at all." % (seam.label, seam.element_class, DARK_BUNDLE),
+                )
+                border_rgb = self._resolve_seam_border_rgb(css, borders[-1], seam.label)
+                ratio = _contrast_ratio(border_rgb, panel_rgb)
+                self.assertGreaterEqual(
+                    ratio, DISCUSS_SEAM_MIN_RATIO,
+                    "%s border resolved to rgb%r, only %.2f:1 against the dark panel - it has faded "
+                    "into the background instead of staying a perceptible divider (needs >= %.1f:1)."
+                    % (seam.label, border_rgb, ratio, DISCUSS_SEAM_MIN_RATIO),
+                )
+                self.assertLessEqual(
+                    ratio, DISCUSS_SEAM_MAX_RATIO,
+                    "%s border resolved to rgb%r, %.2f:1 against the dark panel - that is a glaring "
+                    "light-mode hairline, not a receding dark divider (needs <= %.1f:1). Absent the "
+                    "fix this is Bootstrap's untouched `.border-secondary` (#DEE2E6, ~13.3:1)."
+                    % (seam.label, border_rgb, ratio, DISCUSS_SEAM_MAX_RATIO),
+                )
+
+    def test_dark_discuss_navbar_is_the_webclients_own_not_a_discuss_only_repaint(self):
+        """Opening Discuss must not repaint the navbar into a surface no other app wears.
+
+        THE DEFECT. Core mail's dark tail repaints the Discuss CHROME onto one flat surface:
+        mail/static/src/core/public_web/discuss.dark.scss declares
+        `--mail-Discuss-surface-dark: #{mix($white, $o-webclient-background-color, 15%)}`, paints
+        `.o_web_client.o_mail_discuss .o_main_navbar` with it, and re-points
+        `--NavBar-entry-backgroundColor` at the same value. It never touches the bar's
+        `border-bottom`, which core web still paints from `$o-navbar-border-bottom`
+        (web/static/src/webclient/navbar/navbar.variables.scss) - so under a theme whose navbar
+        carries the brand colour, Discuss alone rendered a grey bar with grey menu entries under a
+        brand-coloured rule, live-measured #303638 against every other app's #007F8E.
+
+        AND THE RULE READ AS BROKEN, not merely mismatched. Navbar entries are the full BORDER-box
+        height (see :data:`NAVBAR_CHROME_SURFACES`), so each one paints its own fill across the 1px
+        border row. Everywhere else that overpaint is invisible because the entry fill IS the bar
+        fill; with the bar repainted to another surface it chopped the rule into dashes - which is
+        the shape the defect was reported as.
+
+        THE RULE, not a hex snapshot. The bar and a menu entry are each resolved TWICE from the same
+        compiled dark bundle - once under the Discuss body, once under a plain webclient body - and
+        the two must agree. Nothing here pins what that colour is, so a navbar re-tune moves both
+        sides together and stays green; a Discuss-only repaint of either surface, by core or by this
+        module, goes RED. The third assertion states the no-chopped-rule property locally: inside
+        Discuss the entry fill must equal the bar fill, so the border row reads exactly as it does in
+        every other app.
+
+        WOULD FAIL IF REVERTED: dropping this module's discuss_navbar.dark.scss leaves core's
+        Discuss-only declarations the last writers and both comparisons report two different
+        colours."""
+        css = self._compiled_css(DARK_BUNDLE)
+        # The class core's Discuss-only rules key on is part of the contract this guard rests on -
+        # a rename there would leave the models above stale and the guard comparing two identical
+        # plain-webclient chains, green for the wrong reason.
+        self._assert_core_source_contains(
+            "mail/static/src/core/public_web/discuss.dark.scss",
+            (".o_web_client.o_mail_discuss", ".o_main_navbar"),
+            "Core mail no longer scopes its Discuss chrome on `.o_web_client.o_mail_discuss`, so "
+            "the two contexts this guard compares are no longer the two contexts that render.",
+        )
+        painted = {}
+        for label, element_classes, inner_layers in NAVBAR_CHROME_SURFACES:
+            with self.subTest(surface=label):
+                resolved = {}
+                for where, body in (
+                    ("with Discuss open", DISCUSS_WEBCLIENT_BODY),
+                    ("in every other app", WEBCLIENT_BODY),
+                ):
+                    chain = _element_chain(element_classes, list(inner_layers) + [body])
+                    resolved[where] = self._resolve_colour(
+                        css, chain, BACKGROUND_PROPS, "%s %s" % (label, where),
+                    )
+                painted[label] = resolved["with Discuss open"]
+                discuss_value, discuss_rgb = resolved["with Discuss open"]
+                other_value, other_rgb = resolved["in every other app"]
+                self.assertEqual(
+                    discuss_rgb, other_rgb,
+                    "%s resolves to %s (rgb%r) with Discuss open but to %s (rgb%r) in every other "
+                    "app. The webclient navbar is app-independent chrome: one app repainting it "
+                    "leaves that app looking like a different product, and leaves the bar's own "
+                    "border rule - painted from $o-navbar-border-bottom, which no Discuss rule "
+                    "follows - sitting on a surface it was never derived from."
+                    % (label, discuss_value, discuss_rgb, other_value, other_rgb),
+                )
+        entry_value, entry_rgb = painted["a navbar menu entry"]
+        bar_value, bar_rgb = painted["the navbar itself"]
+        self.assertEqual(
+            entry_rgb, bar_rgb,
+            "With Discuss open a navbar menu entry fills %s (rgb%r) while the bar behind it fills "
+            "%s (rgb%r). The entry is the full border-box height of the bar, so it paints that "
+            "difference straight across the bar's 1px bottom rule and the rule renders as dashes."
+            % (entry_value, entry_rgb, bar_value, bar_rgb),
+        )
+
     # ==============================================================================================
     # 14. Dark mode - surfaces the first pass MISSED (PR #658 review-fix, live mobile+dark sweep)
     # ==============================================================================================
@@ -3246,7 +3504,8 @@ class MailContrastCompileTest(TransactionCase):
     # 14. Dark mode - the spreadsheet LIGHT ISLAND (the embedded comments Chatter)
     # ==============================================================================================
     # See the "spreadsheet LIGHT ISLAND" element-model section above for the collision these two
-    # guards protect against and for why neither needs `spreadsheet` or `viin_spreadsheet` installed.
+    # guards protect against and for why neither needs `spreadsheet` or any of its extensions
+    # installed.
 
     def _island_forced_button_text(self):
         """Return ``(value, rgb)`` of the label core forces on every `.btn` inside `.o-spreadsheet`.
@@ -3467,9 +3726,9 @@ class MailContrastCompileTest(TransactionCase):
         transparent control in the panel - the cell-address toggle, Resolve, the Chatter's own
         link-style topbar actions - has none, so it renders core's forced light-island label directly
         on whatever the stack behind it paints. When measured (1.70:1 live) that was the comments
-        panel's own `bg-view`, which the dark recompile drove to the dark view surface;
-        `viin_spreadsheet` 3c6dcc617 has since removed it, so the panel paints nothing and the walk
-        continues outwards. WHICH layer wins is exactly what this guard refuses to pin. Re-lighting
+        panel's own `bg-view`, which the dark recompile drove to the dark view surface; a later
+        revision has since removed it, so the panel paints nothing and the walk continues outwards.
+        WHICH layer wins is exactly what this guard refuses to pin. Re-lighting
         the buttons would leave every one of those controls exactly as unreadable, which is why this
         is asserted separately and can fail on its own.
 

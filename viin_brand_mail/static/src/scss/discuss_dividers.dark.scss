@@ -1,0 +1,53 @@
+// Discuss panel seams - RECEDE in dark mode instead of glaring.
+//
+// THE DEFECT. Three core `mail` Discuss surfaces each carry a bare `.border-secondary` utility
+// alongside their own directional `.border-<side>` class: the Discuss app root's top rule
+// (mail/static/src/core/public_web/discuss.xml, desktop-only branch of `t-att-class`), the
+// content header's bottom rule (mail/static/src/core/public_web/discuss_content.xml) and the
+// Discuss-embedded / in-meeting side panel's start rule (same file, and reused verbatim by
+// mail/static/src/discuss/call/common/meeting.xml). Odoo's dark recompile
+// (viin_brand_web/static/src/scss/dark_palette.scss) never redefines Bootstrap's own `$secondary`
+// itself - only the DERIVED `-text-emphasis` / `-bg-subtle` / `-border-subtle` triad ("Bootstrap's
+// native secondary semantic ladder" block) - so `$secondary` stays `$gray-300` = #DEE2E6
+// (web/static/src/scss/bootstrap_overridden.scss) and every `.border-secondary` above still
+// compiles `rgba(var(--secondary-rgb), var(--border-opacity)) !important` = #DEE2E6 in THIS dark
+// bundle: a light-mode hairline reading ~13.3:1 against the dark panel, a bug rather than a line.
+//
+// THE FIX. Each seam is re-pointed onto the recompiled dark `$border-color` (#25383C, declared in
+// dark_palette.scss), landing ~1.42:1 against the dark panel background ($body-bg #111B1E) -
+// perceptible enough that the seam still separates its zones, quiet enough that it recedes rather
+// than glares.
+//
+// WHY A PHYSICAL LONGHAND, NOT THE `border-color` SHORTHAND. Only the one side each element's own
+// `.border-<side>` utility gives non-zero width to is ever visible, so only that longhand needs
+// re-pointing: `border-top-color` (root), `border-bottom-color` (header),
+// `border-left-color` (panel - Bootstrap's `border-start` utility compiles to the physical
+// `border-left` in this vendored Bootstrap, lib/bootstrap/scss/_utilities.scss). Mirrors, without
+// duplicating, this module's own `.o-mail-DiscussSidebar` border-end -> `border-right-color` fix
+// (see OUT OF SCOPE below).
+//
+// WHY `!important`. `.border-secondary` is emitted `!important`
+// ($enable-important-utilities: true, lib/bootstrap/scss/_variables.scss) - a normal declaration
+// cannot beat an important one at any specificity. Both the utility and each rule below are
+// single-class (0,1,0); this file is a PLAIN APPEND to `web.assets_web_dark` (see manifest), so it
+// compiles after core's own utilities and wins on source order among important declarations.
+//
+// OUT OF SCOPE. `.o-mail-DiscussSidebar`'s own border-end is a PRIOR, unrelated fix
+// (this module's discuss_sidebar.scss, already scheme-aware via `var(--border-color)`) and is
+// deliberately not touched or duplicated here.
+//
+// LIGHT MODE IS UNTOUCHED - this file is contributed to web.assets_web_dark only.
+
+.o-mail-Discuss {
+    border-top-color: $border-color !important;
+}
+
+.o-mail-DiscussContent-header {
+    border-bottom-color: $border-color !important;
+}
+
+// Covers both render sites: the Discuss-embedded panel (member list / pinned messages /
+// settings) and the in-meeting side panel share this exact class verbatim.
+.o-mail-DiscussContent-panelContainer {
+    border-left-color: $border-color !important;
+}

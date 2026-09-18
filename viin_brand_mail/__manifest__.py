@@ -89,6 +89,25 @@ Editions Supported
         # static/src/scss/mail_dark.scss.
         'web.assets_web_dark': [
             'viin_brand_mail/static/src/scss/mail_dark.scss',
+            # Discuss panel seams (root/header/panel-or-meeting-side-panel borders): a SEPARATE
+            # plain APPEND, after mail_dark.scss, for the same source-order reason that file's own
+            # header documents - it must also win against a core utility, here
+            # `.border-secondary`, which Bootstrap emits `!important`
+            # ($enable-important-utilities: true, lib/bootstrap/scss/_variables.scss). A normal
+            # declaration cannot beat an important one at any specificity, so this file's own
+            # rules carry `!important` too; both sides are single-class (0,1,0), so the later
+            # source position (this plain append, after core's own utilities) decides the winner.
+            # Kept in its own file rather than folded into mail_dark.scss so that file - BUG-6's -
+            # stays byte-unchanged. See static/src/scss/discuss_dividers.dark.scss.
+            'viin_brand_mail/static/src/scss/discuss_dividers.dark.scss',
+            # Discuss chrome identity: core mail's dark tail repaints the Discuss navbar (and the
+            # menu-entry background variable) onto its own flat chat surface, leaving that one app
+            # with a navbar unlike every other one and the inherited border rule chopped into
+            # dashes by the entries painting over it. A third plain APPEND, after the two files
+            # above, for the same source-order reason - core's rules are same-specificity and not
+            # `!important`, so landing later is the whole mechanism. See
+            # static/src/scss/discuss_navbar.dark.scss.
+            'viin_brand_mail/static/src/scss/discuss_navbar.dark.scss',
         ],
         'mail.assets_public': [
             ('after', 'mail/static/src/core/common/chat_window.scss', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
