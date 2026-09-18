@@ -73,6 +73,24 @@ from .test_brand_color_compile import (
 from .test_brand_ssot import BRAND_VARIABLES_SCSS, _resolve_scss_hex
 
 BACKEND_BUNDLE = "web.assets_backend"
+# Same directory as BRAND_VARIABLES_SCSS - read with the SAME _resolve_scss_hex resolver, for the
+# `secondary` ladder tokens dark_palette.scss aliases (test_dark_secondary_ladder_moves_together_*).
+DARK_PALETTE_SCSS = os.path.join(os.path.dirname(BRAND_VARIABLES_SCSS), "dark_palette.scss")
+
+
+def dark_palette_var(var_name):
+    """Return the hex ``var_name`` resolves to in dark_palette.scss, READ from the module's own
+    dark-token SSOT (never re-literalised here). Module-level (no ``self``) so any test file in
+    this cluster can import and call it directly instead of duplicating the resolution."""
+    with open(DARK_PALETTE_SCSS, encoding="utf-8") as scss_file:
+        value = _resolve_scss_hex(scss_file.read(), var_name)
+    if value is None:
+        raise AssertionError(
+            "%s must be declared in %s - callers read their expected dark colour from this SSOT "
+            "rather than re-literalising it." % (var_name, os.path.basename(DARK_PALETTE_SCSS))
+        )
+    return value.lower()
+
 
 # --- The ladder, in the normalised form the resolver returns -------------------------------------
 # A fixed, hand-chosen design constant asserted as a literal - NOT derived by re-computing a Sass
@@ -1365,6 +1383,33 @@ class BrandCascadeCompileTest(TransactionCase):
             "purple surface in this cluster." % os.path.basename(BRAND_VARIABLES_SCSS),
         )
         return value.lower()
+
+    def _dark_palette_var(self, var_name):
+        """TestCase-bound alias of the module-level ``dark_palette_var`` (kept for this class's
+        own existing call sites) - the dark-arm analogue of _brand_secondary_ssot, for tokens
+        dark_palette.scss owns rather than brand_variables.scss."""
+        return dark_palette_var(var_name)
+
+    def _resolve_secondary_own_band(self, css, element, surface):
+        """Resolve the ``(text, background)`` colours a `*-secondary` Bootstrap variant paints on
+        ITSELF - both properties are declared on ``element`` (`.alert`/`.list-group-item`) and
+        re-pointed by its `-secondary` modifier class on the SAME element (no ancestor involved);
+        only the `:root`-declared custom-property fallback (_resolve_colour_value) is needed to
+        follow `var(--secondary-text-emphasis)` / `var(--secondary-bg-subtle)` to their root value."""
+        text = self._effective_label_colour(css, [element], surface)
+        raw_background = _winning_declaration(css, element, BACKGROUND_PROPS)
+        self.assertIsNotNone(
+            raw_background,
+            "No compiled background declaration applies to %s - the surface is unstyled, so its "
+            "own subtle band cannot be verified." % surface,
+        )
+        background = self._resolve_colour_value(css, [element], raw_background)
+        self.assertIsNotNone(
+            background,
+            "%s resolves background %r to no colour - the subtle-band token was dropped or core "
+            "moved the surface to a different lever." % (surface, raw_background),
+        )
+        return text, background
 
     def _resolve_colour(self, css, chain, prop_names, surface):
         """Resolve a property to a normalised colour, failing loudly when nothing paints it."""
@@ -4732,6 +4777,122 @@ class BrandCascadeCompileTest(TransactionCase):
                 "%s renders its label %s on the chip %s at %.2f:1 - below the WCAG AA normal-text "
                 "threshold of %.1f:1." % (label, text, pill, ratio, WCAG_AA_NORMAL_TEXT),
             )
+
+    # ----------------------------------------------------------------------------------------
+    # `secondary` semantic ladder (Bootstrap's *-secondary theme-color family - the linked
+    # $secondary-text-emphasis / $secondary-bg-subtle / $secondary-border-subtle ladder every
+    # `.text-secondary-emphasis` / `.alert-secondary` / `.list-group-item-secondary` surface reads.
+    # NOT $o-brand-secondary (the Viindoo brand purple identity token), which is covered elsewhere
+    # in this file (test_stat_value_renders_brand_secondary_purple_with_a_teal_icon and friends).
+    # ----------------------------------------------------------------------------------------
+    def test_dark_text_secondary_emphasis_clears_wcag_aa_on_control_panel_ground(self):
+        """A bare `.text-secondary-emphasis` label (Discuss's "Saved" status pill) must be readable
+        on the dark control-panel ground it actually renders on - not merely on the light "subtle"
+        band Bootstrap designed it to sit on.
+
+        Core compiles `.text-secondary-emphasis { color: var(--secondary-text-emphasis) }`
+        (Bootstrap's `_utilities.scss` "text-color" utility - Odoo overrides `$variable-prefix` to
+        '', so the compiled custom property carries no `bs-` prefix). Absent a dark override,
+        `--secondary-text-emphasis` is Bootstrap's stock `shade-color($secondary, 60%)` - a
+        DARKENED shade of a LIGHT grey ($secondary stays Odoo's backend `$gray-300` #DEE2E6 in
+        every bundle; dark_palette.scss never touches `$secondary` itself). A grey darkened for a
+        light card is not legible on this module's dark panel.
+
+        WOULD FAIL IF REVERTED: dropping the `$secondary-text-emphasis` alias from
+        dark_palette.scss restores that stock darkened-light-grey, well under WCAG AA against the
+        dark control-panel ground."""
+        element = {
+            "classes": frozenset({"text-secondary-emphasis"}),
+            "ancestors": frozenset(),
+            "prev_sibling": frozenset(),
+        }
+        dark_css = self._compiled_css(DARK_BUNDLE)
+        emphasis = self._effective_label_colour(
+            dark_css, [element], "dark `.text-secondary-emphasis`",
+        )
+        ratio = _contrast_ratio(emphasis, DARK_BODY_BG)
+        self.assertGreaterEqual(
+            ratio, WCAG_AA_NORMAL_TEXT,
+            "`.text-secondary-emphasis` resolves %s in %s - %.2f:1 on the dark control-panel "
+            "ground %s, below WCAG AA %.1f:1. `$secondary-text-emphasis` still resolves through "
+            "Bootstrap's stock `shade-color($secondary, 60%%)` default; dark_palette.scss must "
+            "alias it onto the module's own dark secondary-text token."
+            % (emphasis, DARK_BUNDLE, ratio, DARK_BODY_BG, WCAG_AA_NORMAL_TEXT),
+        )
+
+    def test_dark_secondary_ladder_moves_together_for_alert_and_list_group_item(self):
+        """`.alert-secondary` and `.list-group-item-secondary` must both repaint onto the SAME
+        dark secondary-ladder tokens dark_palette.scss aliases - not merely clear AA on their own
+        band by Bootstrap's stock-ladder luck, and not drift onto two DIFFERENT values.
+
+        Bootstrap wires BOTH variants to the identical root custom properties
+        (`--secondary-text-emphasis` / `--secondary-bg-subtle` - `_alert.scss` "alert-modifiers" /
+        `_list-group.scss` "list-group-modifiers"), so an own-band AA check ALONE is not sensitive
+        to this fix: Bootstrap's stock ladder pairs a light `tint-color()` band with a darkened
+        `shade-color()` label, which is internally AA-consistent REGARDLESS of the module's overall
+        dark theme - it would clear AA even with the alias missing entirely. What actually
+        distinguishes "fixed" from "not yet fixed" is WHICH values that pair resolves to: the
+        design commits the ladder to the tokens dark_palette.scss ALREADY declares for other dark
+        surfaces ($body-secondary-color / $body-tertiary-bg), so this asserts BOTH consumers
+        resolve to those EXACT tokens - which also catches a PARTIAL fix (only one consumer
+        re-pointed, or the two landing on different values), since both checks anchor on the same
+        SSOT read, and a direct cross-consumer equality check closes the same gap independently of
+        that SSOT read.
+
+        WOULD FAIL IF REVERTED: dropping the three-line alias leaves `--secondary-text-emphasis` /
+        `--secondary-bg-subtle` on Bootstrap's stock values, which never equal
+        $body-secondary-color / $body-tertiary-bg."""
+        dark_css = self._compiled_css(DARK_BUNDLE)
+        expected_text = self._dark_palette_var("$body-secondary-color")
+        expected_bg = self._dark_palette_var("$body-tertiary-bg")
+
+        alert = {
+            "classes": frozenset({"alert", "alert-secondary"}),
+            "ancestors": frozenset(), "prev_sibling": frozenset(),
+        }
+        list_item = {
+            "classes": frozenset({"list-group-item", "list-group-item-secondary"}),
+            "ancestors": frozenset(), "prev_sibling": frozenset(),
+        }
+        alert_text, alert_bg = self._resolve_secondary_own_band(
+            dark_css, alert, "dark `.alert-secondary`",
+        )
+        item_text, item_bg = self._resolve_secondary_own_band(
+            dark_css, list_item, "dark `.list-group-item-secondary`",
+        )
+
+        for label, text, background in (
+            ("`.alert-secondary`", alert_text, alert_bg),
+            ("`.list-group-item-secondary`", item_text, item_bg),
+        ):
+            ratio = _contrast_ratio(text, background)
+            self.assertGreaterEqual(
+                ratio, WCAG_AA_NORMAL_TEXT,
+                "dark %s resolves text %s on its own band %s - %.2f:1, below WCAG AA %.1f:1."
+                % (label, text, background, ratio, WCAG_AA_NORMAL_TEXT),
+            )
+            self.assertEqual(
+                text, expected_text,
+                "dark %s resolves its text-emphasis to %s, not dark_palette.scss's own "
+                "$body-secondary-color %s - `$secondary-text-emphasis` is still Bootstrap's stock "
+                "shade-of-a-light-grey default, never aliased to the module's dark token."
+                % (label, text, expected_text),
+            )
+            self.assertEqual(
+                background, expected_bg,
+                "dark %s resolves its subtle band to %s, not dark_palette.scss's own "
+                "$body-tertiary-bg %s - `$secondary-bg-subtle` is still Bootstrap's stock "
+                "tint-of-a-light-grey default, never aliased to the module's dark token."
+                % (label, background, expected_bg),
+            )
+
+        self.assertEqual(
+            alert_bg, item_bg,
+            "`.alert-secondary` and `.list-group-item-secondary` resolve DIFFERENT subtle "
+            "backgrounds (%s vs %s) even though both key off the SAME root `--secondary-bg-subtle` "
+            "custom property - the three ladder values must move together as one alias, never "
+            "independently." % (alert_bg, item_bg),
+        )
 
     # ----------------------------------------------------------------------------------------
     # The resolver's own selector semantics

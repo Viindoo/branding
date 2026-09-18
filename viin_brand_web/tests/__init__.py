@@ -16,3 +16,5 @@ from . import test_debrand_render
 from . import test_debrand_layout
 from . import test_owl_extension_self_shadow
 from . import test_hoot_tag_buffer_guard
+from . import test_pivot_dark_compile
+from . import test_scheme_cookie_first_load

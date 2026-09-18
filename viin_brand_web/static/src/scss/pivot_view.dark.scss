@@ -1,0 +1,35 @@
+// Pivot header hover band - dark arm of web.assets_backend_lazy_dark.
+//
+// THE DEFECT
+// -----------------------------------------------------------------------------------------------
+// web/static/src/views/pivot/pivot_view.scss paints .o_pivot_measure_row, .o_pivot_origin_row,
+// .o_pivot_header_cell_closed and .o_pivot_header_cell_opened with
+// `@include o-hover-text-color($body-color, $headings-color)` for TEXT - a semantic Sass-var pair
+// this bundle's own dark_palette.scss contribution already re-points - but paints the `:hover`
+// BACKGROUND from a compile-time grayscale-map lookup, `map-get($grays, "200") !important`, that
+// no semantic Sass var routes through. Nothing in this lazy bundle redefines `$grays`, so the
+// hover band stays the light `#E9ECEF` regardless of the dark surface/text overrides: a hard
+// light flash against the dark panel.
+//
+// This band reuses dark_palette.scss's own "raised" rung ($body-tertiary-bg) - the tier its
+// ladder already reserves for list/kanban/settings-header hover surfaces - instead of inventing
+// a fifth tone for the same purpose. dark_palette.scss and this file are separate manifest
+// entries in the SAME web.assets_backend_lazy_dark bundle, so the variable is always in scope
+// here for as long as both stay listed in that bundle.
+//
+// SPECIFICITY, NOT JUST SOURCE ORDER
+// -----------------------------------------------------------------------------------------------
+// Core's rule already carries `!important`; between two `!important` declarations the cascade
+// compares specificity before source order. Mirroring core's own selector chain
+// (`.o_pivot table <selector>:hover`) keeps this rule at the SAME specificity as core's, so
+// appending after it in this bundle is what lets it win - a bare `.o_pivot_measure_row:hover`
+// alone would still lose to core's higher-specificity compound selector even coming later.
+.o_pivot table .o_pivot_measure_row:hover,
+.o_pivot table .o_pivot_origin_row:hover,
+.o_pivot table .o_pivot_header_cell_closed:hover,
+.o_pivot table .o_pivot_header_cell_opened:hover {
+    // dark_palette.scss raised rung ($body-tertiary-bg): ~1.07:1 off the dark panel #111B1E, a
+    // tint rather than a swap. The hover label keeps reading $headings-color, which resolves
+    // comfortably above WCAG AA on this rung once dark_palette.scss reaches this bundle.
+    background-color: $body-tertiary-bg !important;
+}

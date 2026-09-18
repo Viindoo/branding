@@ -162,6 +162,32 @@ $o-brand-secondary: $body-secondary-color;
 // 13.45:1 in dark, but a near-white "muted" text that is louder than the body copy it qualifies.)
 $o-viin-text-secondary: $body-secondary-color;
 
+// --- Bootstrap's native `secondary` semantic ladder (dark arm) ----------------------------------
+// THE DEFECT. Bootstrap derives `$secondary-text-emphasis` / `$secondary-bg-subtle` /
+// `$secondary-border-subtle` from `$secondary` itself (`shade-color($secondary, 60%)` /
+// `tint-color($secondary, 80%)` / `tint-color($secondary, 60%)`, lib/bootstrap/scss/
+// _variables.scss:326/337/348), and `$secondary` stays Odoo's own `$gray-300`
+// (bootstrap_overridden.scss:32) in every bundle - dark_palette.scss never touches `$secondary`
+// itself. None of the surface/text overrides above reaches this ladder, so it recompiled
+// UNCHANGED into web.assets_web_dark: a shade of a light grey on a tint of that same light grey,
+// still built for a white card. `.text-secondary-emphasis` (Discuss's "Saved" status pill),
+// `.alert-secondary` and `.list-group-item-secondary` all read this SAME triad - Bootstrap wires
+// all three into every `-secondary` variant together (_alert.scss "alert-modifiers",
+// _list-group.scss "list-group-modifiers") - live-measured #595a5c on the panel #111B1E = 2.54:1,
+// an AA failure.
+//
+// WHY THESE EXACT THREE, AND WHY THEY MOVE TOGETHER. Each rung is aliased onto the dark tier this
+// file already declares for the SAME role elsewhere - the muted-text tier
+// ($body-secondary-color, declared above), the raised-surface tier ($body-tertiary-bg) and the
+// border tier ($border-color) - no new hex, no new custom property (ODOO-AI-ETHOS #11 SSOT). They
+// move as ONE triad, never a subset: Bootstrap reads all three together for every `-secondary`
+// consumer, so re-pointing only one would pair a fixed rung with the stock light rungs it was
+// never designed to sit next to. Fixed: #8EA5A8 is 6.75:1 on the panel #111B1E (was 2.54:1) and
+// 6.29:1 on its own subtle band #152225.
+$secondary-text-emphasis: $body-secondary-color;
+$secondary-bg-subtle: $body-tertiary-bg;
+$secondary-border-subtle: $border-color;
+
 // --- Content links (C-6 dark arm) -------------------------------------------------------------
 // :root --link-color is emitted from $link-color (= $o-main-link-color). The light AA teal
 // #007F8E measures only 3.69:1 on #111B1E; the dark arm lifts it to a lighter teal. The teal
