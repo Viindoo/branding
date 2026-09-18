@@ -1,0 +1,23 @@
+// dashboard_action.scss's own light rules compile into this same bundle (unlike the engine's
+// runtime-injected chrome), so a same-specificity override placed after them in source order
+// already wins here - no extra selector weight or `!important` needed.
+
+.o_spreadsheet_dashboard_action {
+    // App-shell dark band - the same token viin_brand_spreadsheet reuses for its own chrome.
+    background-color: $o-webclient-background-color;
+
+    // CE gives the dashboard's renderer no border; the page's border lever draws the seam between
+    // the dark shell and the light sheet it hosts. Scoped to this action: `.o_renderer` is also
+    // every core list, kanban, graph and hierarchy renderer.
+    .o_renderer {
+        border: 1px solid $border-color;
+    }
+}
+
+.o_spreadsheet_dashboard_search_panel {
+    li:hover:not(.active) {
+        // Core's own hover fill is a fixed palette-ramp value, never re-pointed by the dark
+        // palette - reuse the dark CONTROL tier instead so the label stays readable on hover.
+        background-color: $o-viin-dark-control-bg;
+    }
+}
