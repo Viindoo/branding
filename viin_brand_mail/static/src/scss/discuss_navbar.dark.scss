@@ -1,0 +1,50 @@
+// Discuss wears the webclient's own navbar in dark mode.
+//
+// THE DEFECT. Core `mail` repaints the Discuss CHROME onto one flat surface in the dark bundle:
+// mail/static/src/core/public_web/discuss.dark.scss declares
+// `--mail-Discuss-surface-dark: #{mix($white, $o-webclient-background-color, 15%)}`, paints
+// `.o_web_client.o_mail_discuss .o_main_navbar` with it, and re-points
+// `--NavBar-entry-backgroundColor` - the variable web/static/src/webclient/navbar/navbar.scss
+// reads for `.o_menu_sections .o_nav_entry, .dropdown-toggle`, whose own fallback is
+// `$o-navbar-background` - at the same value. It never touches the navbar's `border-bottom`,
+// which core web still paints from `$o-navbar-border-bottom`
+// (web/static/src/webclient/navbar/navbar.variables.scss). On stock Odoo the repainted bar and
+// that inherited rule sit close enough to pass unnoticed; under a theme whose navbar carries the
+// brand colour they do not, so Discuss - alone among every app - showed a grey navbar with grey
+// menu entries under a brand-coloured rule.
+//
+// The rule also read as BROKEN rather than merely mismatched. Every navbar entry is
+// `height: calc(var(--o-navbar-height) - #{$o-navbar-padding-v * 2})` plus
+// `background-color: inherit` (navbar.variables.scss, `%-main-navbar-entry-base`), i.e. the full
+// BORDER-box height with `$o-navbar-padding-v: 0`, so each entry paints its own background across
+// the 1px border row. Everywhere else that overpaint is invisible - the entry background IS the
+// navbar background and the rule sits one shade from both - but with the bar repainted to a
+// different surface it chopped the rule into dashes.
+//
+// THE FIX. Put both halves core moved back where the rest of the webclient keeps them: the bar
+// onto `$o-navbar-background` - the same Sass variable core web's own `.o_main_navbar` reads - and
+// the entry variable onto that same variable, which is precisely the FALLBACK core's own
+// `var(--NavBar-entry-backgroundColor, #{$o-navbar-background})` uses wherever nothing has pinned
+// it. Both values therefore come from one declaration point rather than a literal, so a theme
+// re-tuning the navbar moves Discuss with every other app, in one step.
+//
+// STILL CORE'S, DELIBERATELY. The Discuss BODY surfaces - sidebar, content header, side panels -
+// keep `--mail-Discuss-surface-dark`. They are the chat application; only the webclient chrome
+// above them is in scope here.
+//
+// SPECIFICITY / ORDER. Core's rule is `.o_web_client.o_mail_discuss .o_main_navbar` (0,3,0) and
+// its variable declaration `.o_web_client.o_mail_discuss` (0,2,0); each rule below matches that
+// exactly and neither side is `!important`, so source order decides - and this file is a plain
+// APPEND to web.assets_web_dark (see manifest), landing after core's own dark tail.
+//
+// LIGHT MODE IS UNTOUCHED: core's repaint is dark-only (its light discuss.scss sets only
+// `--ControlPanel-border-bottom`), so there is nothing to undo there and this file is contributed
+// to web.assets_web_dark alone.
+
+.o_web_client.o_mail_discuss {
+    --NavBar-entry-backgroundColor: #{$o-navbar-background};
+
+    .o_main_navbar {
+        background-color: $o-navbar-background;
+    }
+}
