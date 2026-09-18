@@ -1,0 +1,105 @@
+// Most of the engine's own dark-chrome rules are plain static SCSS compiled into
+// `web.assets_backend` (o_spreadsheet.scss), none of it carrying `!important` - this file also
+// never uses `!important`, relying on selector specificity that matches or exceeds theirs, e.g.
+// the toolbar icon override below excludes `.active` so the engine's own higher-specificity
+// hover/active chip still applies where intended. On an EQUAL-specificity tie, whichever
+// stylesheet is LATER in the DOM wins: this module's own dark bundle (`web.assets_web_dark`)
+// loads after `web.assets_backend`, which is what lets a tied override here win - not
+// `!important` or a runtime injection. The exception is `.o-selection-statistic:hover`
+// (o_spreadsheet.js): an OWL `css` tagged template appended to `document.head` at runtime,
+// carrying `!important` - a genuinely different mechanism that always wins any tie regardless of
+// load order; this file does not attempt to override it.
+.o-spreadsheet .o-spreadsheet-topbar-wrapper {
+    border-bottom: 1px solid $border-color;
+    background-color: $o-webclient-background-color;
+    color: $body-color;
+
+    .o-spreadsheet-topbar {
+        background-color: $o-webclient-background-color;
+
+        .o-topbar-top {
+            border-bottom-color: $border-color;
+        }
+    }
+
+    .o-topbar-divider {
+        border-right-color: $border-color;
+    }
+
+    .o-topbar-menu {
+        color: $body-color;
+    }
+
+    // The engine's own hover/active chip already pairs a light background with a light-on-chip
+    // icon colour at higher specificity, so excluding `.active` here leaves that pairing intact.
+    .o-hoverable-button:not(.active) .o-icon {
+        color: $body-color;
+    }
+
+    // The formula-bar composer keeps the engine's own forced white background (`bg-white`
+    // `!important` in o_spreadsheet_extended.dark.scss) - a light island that must not inherit
+    // this wrapper's dark `color` above.
+    .o-topbar-composer {
+        color: $os-text-body;
+    }
+}
+
+// Core's own mobile glow (o_spreadsheet.scss) compiles to `.o-spreadsheet.o-spreadsheet-mobile
+// .o-spreadsheet-topbar-wrapper` - the `.o-spreadsheet-mobile` modifier lands on the ancestor
+// `.o-spreadsheet` element, never on the wrapper itself, so the block above can never reach it by
+// nesting. This needs its own selector at the same specificity, winning the tie via the load
+// order the file header explains.
+.o-spreadsheet.o-spreadsheet-mobile .o-spreadsheet-topbar-wrapper {
+    box-shadow: none;
+}
+
+.o-spreadsheet .o-spreadsheet-bottombar-wrapper {
+    border-top: 1px solid $border-color;
+    background-color: $o-webclient-background-color;
+    color: $body-color;
+    box-shadow: none;
+
+    .o-spreadsheet-bottom-bar {
+        background-color: $o-webclient-background-color;
+        border-top-color: $border-color;
+
+        // The active sheet pill sets its own `color`, which blocks inheritance from reaching
+        // its .o-sheet-name child - that label needs the explicit override below instead.
+        .o-sheet.active {
+            background-color: $o-viin-dark-control-bg;
+        }
+    }
+
+    .o-sheet-name {
+        color: $body-color;
+    }
+
+    // The mobile small-bottom-bar composer and ribbon menu keep the engine's own white
+    // background - light islands that must not inherit this wrapper's dark `color` above.
+    .o-small-composer {
+        color: $os-text-body;
+    }
+
+    .o-menu {
+        color: $os-text-body;
+    }
+
+    // Core's own light border (o_spreadsheet.scss) compiles to `.o-spreadsheet
+    // .o-spreadsheet-small-bottom-bar .bottom-bar-menu` - nesting it here instead reaches one
+    // class deeper, winning outright regardless of load order.
+    .o-spreadsheet-small-bottom-bar .bottom-bar-menu {
+        border-top-color: $border-color;
+        border-bottom-color: $border-color;
+    }
+}
+
+// Bootstrap's own `.btn-link` seeds its pressed-state ink from the dark-tuned link colour,
+// unreadable against a light-island ground (e.g. a Chatter mounted in the side panel, or the
+// engine's own popovers) - re-pointed here to the same tone the island already forces onto every
+// `.btn` label at rest. Scoped to `.o-sidePanel`/`.o-popover` only: the engine's own
+// "Irregularity map" strip renders a `.btn-link` directly on this dark chrome, outside every
+// light island, where it is left to whatever the untouched cascade already governs it as.
+.o-spreadsheet .o-sidePanel .btn-link,
+.o-spreadsheet .o-popover .btn-link {
+    --btn-active-color: #{$os-text-body};
+}
