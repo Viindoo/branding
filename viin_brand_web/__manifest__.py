@@ -86,6 +86,21 @@ Editions Supported
             # so it is listed explicitly here and never leaks into the light bundle.
             'viin_brand_web/static/src/scss/dark_secondary_surfaces.dark.scss',
         ],
+        # core declares web.assets_backend_lazy_dark as a bare
+        # ('include', 'web.assets_backend_lazy') (web/__manifest__.py) - the pivot/graph views
+        # loaded through it never receive this module's dark palette, so their text and header
+        # hover band still compile the light-mode literals. Same anchor as this module's own
+        # web.assets_web_dark contribution above: dark_palette.scss lands ('before',
+        # primary_variables.scss), which web.assets_backend_lazy's own chain
+        # (_assets_helpers -> _assets_primary_variables) already carries, so every Sass var this
+        # bundle's SCSS reads recompiles dark before consumption. pivot_view.dark.scss is a plain
+        # tail append covering the one hover surface (a compile-time grayscale literal) dark_palette.scss's
+        # var overrides cannot reach - see that file for the rationale.
+        'web.assets_backend_lazy_dark': [
+            ('before', 'web/static/src/scss/primary_variables.scss',
+             'viin_brand_web/static/src/scss/dark_palette.scss'),
+            'viin_brand_web/static/src/scss/pivot_view.dark.scss',
+        ],
         # C-5 (PR #658): re-point the FRONTEND $theme-colors['primary'] to the AA teal AFTER
         # pre_variables.scss (where html_editor's palette-derived aubergine otherwise wins) and
         # before Bootstrap emits :root. web is a dependency, so the anchor is installability-safe.
