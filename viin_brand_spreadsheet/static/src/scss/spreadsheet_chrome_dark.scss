@@ -1,0 +1,4 @@
+// The engine's desktop topbar/bottombar surfaces are baked JS literals this variable cannot
+// reach (spreadsheet_chrome_dark.dark.scss handles those); only the mobile small-bottom-bar and
+// ribbon menu still read it at compile time.
+$background-gray-color: $o-webclient-background-color;
