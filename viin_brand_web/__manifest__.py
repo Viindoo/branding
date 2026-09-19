@@ -85,6 +85,27 @@ Editions Supported
             # source order; NOT auto-globbed (core's *.dark.scss glob only covers web/static/src/**),
             # so it is listed explicitly here and never leaks into the light bundle.
             'viin_brand_web/static/src/scss/dark_secondary_surfaces.dark.scss',
+            # Module-independence W3 relocation, unit 1 of 4: dark arm of the relocated
+            # notebook.scss above (travels with its light sibling, C1). Same plain-APPEND
+            # reasoning as dark_secondary_surfaces.dark.scss just above - it lands after the
+            # web.assets_web include (which already carries the anchored light notebook.scss), so
+            # its equal-specificity active-tab rule wins on source order without needing its own
+            # anchor; NOT auto-globbed, so it is listed explicitly here.
+            'viin_brand_web/static/src/core/notebook/notebook.dark.scss',
+            # Module-independence W3 relocation, unit 2 of 4: dark arm of the relocated
+            # selection_box.scss above (travels with its light sibling, C1). Same plain-APPEND
+            # reasoning as notebook.dark.scss just above - it lands after the web.assets_web include
+            # (which already carries the anchored light selection_box.scss), so its
+            # equal-specificity foreground-teal rule wins on source order without needing its own
+            # anchor; NOT auto-globbed, so it is listed explicitly here.
+            'viin_brand_web/static/src/views/view_components/selection_box.dark.scss',
+            # Module-independence W3 relocation, unit 3 of 4: dark arm of the relocated view.scss
+            # below (travels with its light sibling, C1). Same plain-APPEND reasoning as
+            # selection_box.dark.scss just above - it lands after the web.assets_web include (which
+            # already carries the anchored light view.scss), so its equal-specificity foreground-teal
+            # rule wins on source order without needing its own anchor; NOT auto-globbed, so it is
+            # listed explicitly here.
+            'viin_brand_web/static/src/views/view.dark.scss',
         ],
         # core declares web.assets_backend_lazy_dark as a bare
         # ('include', 'web.assets_backend_lazy') (web/__manifest__.py) - the pivot/graph views
@@ -141,7 +162,7 @@ Editions Supported
             # dark arm #7FE0EA via dark_palette.scss) applied on :focus-visible to core interactive
             # elements. Appended so it wins core's focus styles on equal-specificity source order.
             'viin_brand_web/static/src/scss/focus_ring.scss',
-            # C-2 (PR #658): native color-scheme correctness (relocated from the theme's scheme.scss).
+            # C-2 (PR #658): native color-scheme correctness.
             # Scheme-invariant base fix for core's invalid `bright` color-scheme ident; owned by the
             # base so dark mode is correct even without the redesign theme.
             'viin_brand_web/static/src/scss/color_scheme.scss',
@@ -203,6 +224,76 @@ Editions Supported
             'viin_brand_web/static/src/views/fields/statusbar/statusbar_steps.js',
             'viin_brand_web/static/src/views/fields/statusbar/statusbar_steps.xml',
             'viin_brand_web/static/src/views/fields/statusbar/statusbar_steps.scss',
+            # Module-independence W3 relocation, unit 1 of 4: ten core-surface RULE overrides
+            # moved here from viin_backend_theme (command_palette, dialog, dropdown, notebook,
+            # notification, popover, tooltip, block_ui, control_panel, loading_indicator) - each
+            # restyles a NAMED core web widget, so viin_brand_web (Owners = {web}, already the
+            # core-web-surface owner via brand_cascade.scss / link_tier.scss / focus_ring.scss /
+            # color_scheme.scss) is the correct owner per the C1 surface test + minimality, not
+            # viin_backend_theme, whose own declared purpose (dark mode, nav rail, home menu,
+            # mobile) survives their absence. ANCHORED, not appended (C2): each file's selector is
+            # equal-or-higher specificity against the SAME-NAMED core file it restyles, so it must
+            # win on SOURCE POSITION; the explicit anchor makes a core rename fail LOUD via
+            # ir_asset.AssetPaths.index() instead of silently mis-ordering the cascade. None of the
+            # ten declares a Sass variable another file reads (all consume $o-viin-chrome-base /
+            # -deep from brand_variables.scss, already compiled earlier via
+            # web._assets_primary_variables), so each anchor only needs to land right after its
+            # own core file.
+            ('after', 'web/static/src/core/commands/command_palette.scss',
+             'viin_brand_web/static/src/core/commands/command_palette.scss'),
+            ('after', 'web/static/src/core/dialog/dialog.scss',
+             'viin_brand_web/static/src/core/dialog/dialog.scss'),
+            ('after', 'web/static/src/core/dropdown/dropdown.scss',
+             'viin_brand_web/static/src/core/dropdown/dropdown.scss'),
+            ('after', 'web/static/src/core/notebook/notebook.scss',
+             'viin_brand_web/static/src/core/notebook/notebook.scss'),
+            ('after', 'web/static/src/core/notifications/notification.scss',
+             'viin_brand_web/static/src/core/notifications/notification.scss'),
+            ('after', 'web/static/src/core/popover/popover.scss',
+             'viin_brand_web/static/src/core/popover/popover.scss'),
+            ('after', 'web/static/src/core/tooltip/tooltip.scss',
+             'viin_brand_web/static/src/core/tooltip/tooltip.scss'),
+            ('after', 'web/static/src/core/ui/block_ui.scss',
+             'viin_brand_web/static/src/core/ui/block_ui.scss'),
+            ('after', 'web/static/src/search/control_panel/control_panel.scss',
+             'viin_brand_web/static/src/search/control_panel/control_panel.scss'),
+            ('after', 'web/static/src/webclient/loading_indicator/loading_indicator.scss',
+             'viin_brand_web/static/src/webclient/loading_indicator/loading_indicator.scss'),
+            # Module-independence W3 relocation, unit 2 of 4: three more core-surface RULE overrides
+            # moved here from viin_backend_theme (kanban_record, list_renderer, selection_box) - same
+            # C1 surface-test + minimality reasoning as unit 1 above, viin_brand_web already the
+            # core-web-surface owner. ANCHORED, not appended (C2): each selector is equal-or-higher
+            # specificity against the SAME-NAMED core file it restyles, so it must win on SOURCE
+            # POSITION; the explicit anchor makes a core rename fail LOUD via
+            # ir_asset.AssetPaths.index() instead of silently mis-ordering the cascade. None of the
+            # three declares a Sass variable another file reads (all consume $o-viin-chrome-base /
+            # -deep from brand_variables.scss, already compiled via web._assets_primary_variables),
+            # so each anchor only needs to land right after its own core file.
+            ('after', 'web/static/src/views/kanban/kanban_record.scss',
+             'viin_brand_web/static/src/views/kanban/kanban_record.scss'),
+            ('after', 'web/static/src/views/list/list_renderer.scss',
+             'viin_brand_web/static/src/views/list/list_renderer.scss'),
+            ('after', 'web/static/src/views/view_components/selection_box.scss',
+             'viin_brand_web/static/src/views/view_components/selection_box.scss'),
+            # selection_box.xml is a QWeb t-inherit of core's web.SelectionBox component template
+            # (not SCSS) - it only needs to share a bundle with the component it extends, matching
+            # this module's own error_dialogs.xml / upgrade_dialog.xml precedent above (both plain
+            # appends carrying a t-inherit). No ordering conflict exists to anchor against.
+            'viin_brand_web/static/src/views/view_components/selection_box.xml',
+            # Module-independence W3 relocation, unit 3 of 4 ("the nocontent rename"): the empty-state
+            # helper restyle moved here from viin_backend_theme (same C1 surface-test + minimality
+            # reasoning as units 1-2). RENAMED, not just moved: the file overrides `.o_view_nocontent`
+            # / `.o_nocontent_help`, both defined in core's FLAT `web/static/src/views/view.scss`
+            # (lines 14, 22) - there is no core file named `view_components/nocontent_helper.scss`, so
+            # the old path invented one and misled every reader about what it overrides. The new path
+            # drops the `view_components/` layer and lands at the SAME flat name as its core target,
+            # matching the exact-filename precedent every other relocated file in units 1-2 already
+            # set. ANCHORED, not appended (C2): its selectors are equal-or-higher specificity against
+            # core's view.scss, so it must win on SOURCE POSITION; the explicit anchor makes a core
+            # rename fail LOUD via ir_asset.AssetPaths.index() instead of silently mis-ordering the
+            # cascade.
+            ('after', 'web/static/src/views/view.scss',
+             'viin_brand_web/static/src/views/view.scss'),
         ],
         'web.assets_unit_tests': [
             'viin_brand_web/static/tests/dialog_debrand.test.js',

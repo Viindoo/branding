@@ -5,9 +5,11 @@
 // COLORS: theme-aware native Bootstrap runtime props ONLY. Odoo compiles Bootstrap with
 // $variable-prefix:'' (bootstrap_overridden.scss:51), so the runtime props are UNPREFIXED
 // (--secondary-bg / --body-bg / --body-color / --secondary-color / --border-color), NOT --bs-*.
-// scheme.scss flips them under [data-bs-theme="dark"]. The only brand accent is the viin_brand
-// $o-brand-primary teal on tile hover/focus. NO teal-gradient banner (it diverged from the mockup),
-// NO --viin-* custom properties, NO var() into a Sass color function.
+// Their dark values come from the recompiled web.assets_web_dark bundle
+// (viin_brand_web/static/src/scss/dark_palette.scss), not a runtime attribute flip. The only
+// brand accent is the viin_brand $o-brand-primary teal on tile hover/focus. NO teal-gradient
+// banner (it diverged from the mockup), NO --viin-* custom properties, NO var() into a Sass
+// color function.
 //
 // NO RADIUS ANYWHERE (owner revision 2026-08-03 "bo hết"). The search box, the "/" hint chip, the
 // app tiles and the app icons used to pin $o-border-radius-lg / -sm / base. Those were already
