@@ -4,7 +4,7 @@
 // TOKEN + scoped restyle of .o_popover. Bootstrap paints the popover + its arrow from COMPILE-TIME
 // hex ($popover-bg / $popover-border-color / $popover-header-bg) which would not flip in dark;
 // re-point each Bootstrap runtime custom property (UNPREFIXED - Odoo sets $variable-prefix: '') at
-// the scheme-aware props scheme.scss flips (--body-bg / --tertiary-bg / --body-color /
+// the scheme-aware props (--body-bg / --tertiary-bg / --body-color /
 // --emphasis-color / --border-color). Re-pointing --popover-bg / --popover-border-color also
 // recolours the popover arrow (Bootstrap draws it from those props), so no separate arrow rule is
 // needed. COLOUR ONLY - the corner radius is core's and is NOT re-declared here (owner revision

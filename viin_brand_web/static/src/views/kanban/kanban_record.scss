@@ -3,8 +3,8 @@
 //
 // TOKEN + scoped restyle of .o_kanban_record only. Core paints the card surface + border from
 // COMPILE-TIME hex ($o-view-background-color / $border-color, web/.../kanban_record.scss), so those
-// would stay light in dark mode; re-point them at the native UNPREFIXED runtime props scheme.scss
-// flips (--body-bg / --border-color) so cards follow dark mode for free. Shadow + hover-lift use
+// would stay light in dark mode; re-point them at the native UNPREFIXED runtime props
+// (--body-bg / --border-color) so cards follow dark mode for free. Shadow + hover-lift use
 // color-mix over transparent (composites on either scheme) against --emphasis-color / the cluster
 // AA teal ($o-viin-chrome-base). NO --viin-* custom properties; NO var() inside a Sass colour
 // function; NO hardcoded themeable hex.

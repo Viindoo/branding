@@ -1,22 +1,27 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Viindoo Backend Theme",
-    'summary': "Viindoo backend redesign: dark mode, vertical rail, home menu, mobile - additive on the branding base",
+    'name': "Viindoo Backend Shell",
+    'summary': "Backend navigation, personalisation, typography and accessibility - inventions, never repaints",
     'description': """
-Viindoo Backend Theme (viin_backend_theme)
-==========================================
-A PURELY ADDITIVE Odoo 19 backend redesign layer on top of the Viindoo branding base
-(``viin_brand_web`` + ``viin_brand_mail``), which already own the de-brand and the AA teal
-chrome cascade. This theme adds ONLY what the base does not:
+Viindoo Backend Shell (viin_backend_theme)
+===========================================
+The backend SHELL layer on top of the Viindoo branding base (``viin_brand_web`` +
+``viin_brand_mail``), which already own the de-brand and the AA teal chrome cascade. Every
+capability here is an INVENTION Odoo 19 CE does not ship - none of it repaints an existing core
+surface:
 
-* an instant, no-reload dark mode (native ``[data-bs-theme]`` on Bootstrap's own ``--bs-*``);
-* the always-dark vertical navigation rail and the flat "Applications" home menu (later waves);
-* a mobile bottom navigation and a density toggle (later waves);
-* Montserrat / Roboto typography.
+* the flat "Applications" home menu, and the apps-menu icon repurposed into its launcher
+  (navigation);
+* a density toggle and an appearance systray for the light/dark scheme switch, backed by a
+  dedicated personalisation service (personalisation);
+* Montserrat / Roboto typography, with the rich-text editor reverted to core's portable font
+  stack so an outgoing mail body is never inlined with a face the recipient does not have
+  (typography);
+* a "Skip to main content" bypass-blocks link (accessibility);
+* a pure-CSS loading skeleton (perceived-performance affordance).
 
-It re-declares NO brand hex and re-implements NONE of the base cascade: the brand-primary SSOT is
-read from ``viin_brand_web``. There is ZERO ``--viin-*`` parallel token system - Viindoo supplies
-values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
+It re-declares NO brand hex and owns NO color cascade: the AA teal chrome and the dark-mode
+recompile live in ``viin_brand_web``, read from its brand-primary SSOT.
 """,
     'author': "Viindoo",
     'website': "https://viindoo.com",
@@ -29,7 +34,9 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
     # the OCA `web_responsive`, both dropped from the repo). `old_technical_name` carries the old
     # module's install state over to this one on upgrade - the standard Viindoo module-rename key.
     'old_technical_name': 'to_backend_theme',
-    # viin_brand reached transitively via viin_brand_web; mail chrome (chat window etc.) via viin_brand_mail.
+    # viin_brand reached transitively via viin_brand_web. mail reached via viin_brand_mail
+    # (which depends on mail): discuss_onboarding_patch.js patches mail's Discuss tour, and
+    # home_menu.js reads mail.activity for the header's activity count.
     'depends': ['web', 'viin_brand_web', 'viin_brand_mail'],
     # Server QWeb inherit on web.webclient_bootstrap (theme-owned): the density boot stamp
     # (data-viin-density on <html> for FOUC-free first render) + the pinch-to-zoom viewport override
@@ -42,7 +49,7 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
     'assets': {
         # Loads BEFORE core primary_variables.scss, and AFTER viin_brand_web's brand_variables.scss
         # (a dependency, so it is earlier in this same bundle) - so $o-brand-primary is already defined
-        # when this file reads it. Adds ONLY the dark-surface rebinds + typography the base lacks.
+        # when this file reads it. Adds ONLY the typography the base lacks.
         'web._assets_primary_variables': [
             ('before', 'web/static/src/scss/primary_variables.scss',
              'viin_backend_theme/static/src/scss/primary_variables.scss'),
@@ -70,12 +77,6 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
             # editor's headings back on core's portable system stack. Pure cascade, no variable
             # override, so it cannot affect backend chrome.
             'viin_backend_theme/static/src/scss/editor_content_font.scss',
-            # C-2 (PR #658): the no-reload dark layer (scheme.scss runtime [data-bs-theme] var flip +
-            # the 426-line dark_surfaces.scss allow-list) is RETIRED. Dark now recompiles through
-            # viin_brand_web/static/src/scss/dark_palette.scss on web.assets_web_dark (Option A
-            # Layer 1), so core's own rules recompile dark-correct with no allow-list and no
-            # !important war. The color-scheme correctness fix from scheme.scss moved to the base
-            # (viin_brand_web/static/src/scss/color_scheme.scss).
             # W4 unit-b - density size rules ([data-viin-density] attribute-scoped, 44px/34px rows;
             # NO custom property, NO color). Attribute stamped by W4a boot + flipped by viin_theme.
             'viin_backend_theme/static/src/scss/density.scss',
@@ -104,11 +105,6 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
             'viin_backend_theme/static/src/webclient/discuss_onboarding_patch.js',
             'viin_backend_theme/static/src/home_menu/home_menu.js',
             'viin_backend_theme/static/src/home_menu/home_menu.xml',
-            # W3 unit-1 - form-view chrome (LAYOUT + native/cluster levers only, ZERO --viin-*):
-            # D5 control panel, D11 notebook tabs.
-            # SCSS reads $o-* / cluster teal from web._assets_backend_helpers (top of this bundle),
-            # so file order here is irrelevant to compilation.
-            #
             # OWNER REVERT 2026-08-03 - TWO form-view surfaces went back to Odoo CE:
             #  * D6 statusbar->stepper (statusbar_field.{js,xml,scss,dark.scss}) is GONE. The owner
             #    wants core's ARROW/chevron statusbar back ("Cho state tren form view tao van muon
@@ -123,39 +119,13 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
             #    above value, inside the bordered box) is restored; the Viindoo purple stat TEXT
             #    stays, owned by viin_brand_web's --o-stat-text-color (light-only).
             # Guarded by tests/test_theme_core_chrome_untouched.py.
-            'viin_backend_theme/static/src/search/control_panel/control_panel.scss',
-            'viin_backend_theme/static/src/core/notebook/notebook.scss',
-            # W3 unit-2 - list + kanban chrome (LAYOUT + native/cluster levers only, ZERO --viin-*,
-            # NO JS patch): D10 list chrome + bulk-selection bar, D9 kanban card. SCSS reads $o-* /
-            # cluster teal from web._assets_backend_helpers (top of this bundle), so file order here
-            # is irrelevant to compilation.
-            'viin_backend_theme/static/src/views/kanban/kanban_record.scss',
-            'viin_backend_theme/static/src/views/list/list_renderer.scss',
-            'viin_backend_theme/static/src/views/view_components/selection_box.scss',
-            # D10 - bulk bar t-inherit (adds the .o_viin_selection_bar hook the scss above tints).
-            'viin_backend_theme/static/src/views/view_components/selection_box.xml',
-            # W3 unit-4 - overlays + loading/skeleton + empty states (LAYOUT + native/cluster
-            # levers only, ZERO Viindoo custom properties, NO JS patch on the overlay components -
-            # TDD §4b upgrade-safety NF2). SCSS reads $o-* / cluster teal ($o-viin-chrome-base /
-            # -deep) from web._assets_backend_helpers (top of this bundle) and the scheme-aware
-            # UNPREFIXED runtime props scheme.scss flips, so file order here is irrelevant to
-            # compilation.
-            # D12 overlays (SCSS-only restyle of dialog/dropdown/popover/tooltip/notification/
-            # command-palette surfaces, borders, radius + teal accents).
-            'viin_backend_theme/static/src/core/dialog/dialog.scss',
-            'viin_backend_theme/static/src/core/dropdown/dropdown.scss',
-            'viin_backend_theme/static/src/core/popover/popover.scss',
-            'viin_backend_theme/static/src/core/tooltip/tooltip.scss',
-            'viin_backend_theme/static/src/core/notifications/notification.scss',
-            'viin_backend_theme/static/src/core/commands/command_palette.scss',
-            # D15 loading / skeleton (loading-indicator de-brand teal, brand-tinted BlockUI scrim,
-            # reusable pure-CSS skeleton shimmer; ViinSkeleton OWL component deferred - see report).
-            'viin_backend_theme/static/src/webclient/loading_indicator/loading_indicator.scss',
-            'viin_backend_theme/static/src/core/ui/block_ui.scss',
+            # W3 unit-4 - skeleton (LAYOUT-only, ZERO Viindoo custom properties, TDD §4b
+            # upgrade-safety NF2). Reads only the scheme-aware runtime props (--tertiary-bg /
+            # --emphasis-color), so it needs no $o-* Sass helper and file order here is
+            # irrelevant to compilation.
+            # D15 skeleton (reusable pure-CSS skeleton shimmer; ViinSkeleton OWL component
+            # deferred - see report).
             'viin_backend_theme/static/src/skeleton/skeleton.scss',
-            # D14 empty states (token-only restyle of the core nocontent helper; own SVG set
-            # deferred as a separate asset task).
-            'viin_backend_theme/static/src/views/view_components/nocontent_helper.scss',
             # W4 unit-b - frontend dark-mode UX + appearance systray. NEW components + a service (NO new
             # patch()); all colors ride native unprefixed runtime props / $o-brand teal - ZERO --viin-*
             # custom properties.
@@ -170,21 +140,6 @@ values to native Odoo ``$o-*`` / Bootstrap ``--bs-*`` levers only.
             'viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.scss',
             'viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js',
             'viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.xml',
-        ],
-        # T-3 (PR #658): dark arms for the theme's OWN widget surfaces that paint the AA teal
-        # ($o-viin-chrome-base #007F8E) as FOREGROUND text - only 3.69:1 on the dark panel. These
-        # .dark.scss files re-point ONLY that foreground teal to the base dark-mode teal
-        # (--link-color) and are contributed EXPLICITLY to the recompiled dark bundle. They are NOT
-        # auto-globbed: core's `web/static/src/**/*.dark.scss` glob (web/__manifest__.py) only covers
-        # core's own tree, so a theme dark file must be listed here. A plain append lands AFTER the
-        # web.assets_web include, so it wins on source order at equal specificity; being absent from
-        # web.assets_backend, it never leaks the dark teal into light mode.
-        # (statusbar_field.dark.scss was removed with the D6 stepper revert above - core's arrow
-        # statusbar needs no dark arm from us: viin_brand_web's dark bundle recompiles it.)
-        'web.assets_web_dark': [
-            'viin_backend_theme/static/src/views/view_components/nocontent_helper.dark.scss',
-            'viin_backend_theme/static/src/views/view_components/selection_box.dark.scss',
-            'viin_backend_theme/static/src/core/notebook/notebook.dark.scss',
         ],
         # W5 - JS unit (Hoot) test files. The production JS/XML under test rides web.assets_backend
         # (included by web.assets_unit_tests_setup), so the viin_theme service + StatusBarField patch

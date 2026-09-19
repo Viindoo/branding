@@ -5,7 +5,7 @@
 // TOKEN + scoped restyle of .o_list_renderer / .o_list_table. Core drives the header + cell surface
 // and borders from COMPILE-TIME hex (--ListRenderer-thead-bg-color = $o-webclient-background-color;
 // --table-bg / --table-border-color = $o-view-background-color / $border-color), which would not flip
-// in dark; re-point each at the native UNPREFIXED runtime props scheme.scss flips (--tertiary-bg /
+// in dark; re-point each at the native UNPREFIXED runtime props (--tertiary-bg /
 // --body-bg / --border-color). Row DECORATION colours (decoration-danger / -warning / -success /
 // -info / -muted) render as Bootstrap .text-* utilities (web/.../views/utils.js
 // getClassNameFromDecoration), so they already ride the cluster semantic retint - the single SSOT -
