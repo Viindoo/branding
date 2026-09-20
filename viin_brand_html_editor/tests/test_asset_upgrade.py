@@ -160,6 +160,124 @@ class HtmlEditorManifestUpgradeGuardTest(TransactionCase):
         )
 
 
+# ==================================================================================================
+# Minimal cascade + WCAG contrast machinery for the button-colour behavioral guard below.
+#
+# Scaled down from viin_brand_web/tests/test_brand_cascade_compile.py's general element-cascade
+# resolver (that resolver models arbitrary DOM ancestor chains for arbitrary elements). This guard
+# only ever asks the cascade about ONE element - a button carrying the literal classes 'btn',
+# 'btn-fill-primary' and 'btn-primary' (Bootstrap 5.3's custom-property button pattern: base
+# structural declarations on '.btn', per-variant colour tokens on '.btn-<variant>') - so candidate
+# rules are found by an EXACT selector match against that fixed 3-class set rather than by a general
+# element matcher. Every candidate selector is therefore a single bare class, so CSS specificity is
+# constant (one class each) across the whole candidate set and drops out of the cascade key
+# entirely; only importance, then source order, then declaration order decide the winner - which is
+# what the CSS spec itself does once specificity ties. viin_brand_html_editor's tests must not
+# import viin_brand_web's test tree, so this is a self-contained adaptation, not a shared import.
+# ==================================================================================================
+_RULE_RE = re.compile(r"([^{}]+)\{([^{}]*)\}")
+_COMMENT_RE = re.compile(r"/\*.*?\*/", re.DOTALL)
+_VAR_RE = re.compile(r"^var\(\s*(--[\w-]+)\s*(?:,\s*(.*))?\)$", re.DOTALL)
+_HEX_RE = re.compile(r"#[0-9A-Fa-f]{3,8}\b")
+_FUNC_RGB_RE = re.compile(r"\brgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)", re.IGNORECASE)
+
+# The classes the button element actually carries: the base structural class plus both of this
+# module's colour-variant classes (the theme's fill alias and Bootstrap's own 'primary' name).
+BUTTON_CLASS_SELECTORS = frozenset({".btn", ".btn-fill-primary", ".btn-primary"})
+
+
+def _iter_rules(css):
+    """Yield (order, selector, body) for every selector of every compiled rule, in source order."""
+    for order, (selector_group, body) in enumerate(_RULE_RE.findall(css)):
+        for selector in _COMMENT_RE.sub("", selector_group).split(","):
+            selector = selector.strip()
+            if selector:
+                yield order, selector, body
+
+
+def _declarations(body, prop_names):
+    """Return [(value, is_important), ...] for prop_names, in declaration order."""
+    found = []
+    for declaration in body.split(";"):
+        name, separator, value = declaration.partition(":")
+        if not separator or name.strip() not in prop_names:
+            continue
+        value = value.strip()
+        important = value.lower().endswith("!important")
+        if important:
+            value = value[: -len("!important")].rstrip()
+        found.append((value, important))
+    return found
+
+
+def _normalize_colour(value):
+    """Return value's first colour as a lower-case #rrggbb string, or None."""
+    hex_match = _HEX_RE.search(value)
+    if hex_match:
+        digits = hex_match.group(0)[1:].lower()
+        if len(digits) == 3:
+            digits = "".join(digit * 2 for digit in digits)
+        return "#" + digits[:6]
+    func_match = _FUNC_RGB_RE.search(value)
+    if func_match:
+        channels = tuple(max(0, min(255, int(round(float(group))))) for group in func_match.groups())
+        return "#%02x%02x%02x" % channels
+    return None
+
+
+def _winning_declaration_for_button(css, prop_names):
+    """Cascade winner of prop_names among rules whose selector is exactly one of
+    BUTTON_CLASS_SELECTORS. See the module comment above for why specificity is safely omitted from
+    the key here: (importance, source order, declaration order)."""
+    best_key, best_value = None, None
+    for order, selector, body in _iter_rules(css):
+        if selector not in BUTTON_CLASS_SELECTORS:
+            continue
+        for decl_order, (value, important) in enumerate(_declarations(body, prop_names)):
+            key = (important, order, decl_order)
+            if best_key is None or key > best_key:
+                best_key, best_value = key, value
+    return best_value
+
+
+def _resolve_button_colour(css, prop_name):
+    """Resolve prop_name's actually-winning colour on the button element, following var(--x)
+    references into BUTTON_CLASS_SELECTORS' own custom-property declarations. Bootstrap 5.3 ships
+    button colour as '.btn { color: var(--btn-color) }' / '{ background-color: var(--btn-bg) }',
+    with the custom property itself declared on the variant class - the chain is followed rather
+    than assumed, so a rename of either the property or the custom-property token is still read
+    correctly from whatever the bundle actually compiled."""
+    value = _winning_declaration_for_button(css, (prop_name,))
+    depth = 6
+    while value is not None and depth > 0:
+        var_match = _VAR_RE.match(value.strip())
+        if not var_match:
+            break
+        name, fallback = var_match.group(1), var_match.group(2)
+        resolved = _winning_declaration_for_button(css, (name,))
+        value = resolved if resolved is not None else fallback
+        depth -= 1
+    return _normalize_colour(value) if value else None
+
+
+def _relative_luminance(hex_colour):
+    """Relative luminance per WCAG 2.1 (sRGB linearisation, gamma 2.4, ITU-R BT.709 coefficients) -
+    transcribed from the specification, not from any product formula, so a readability assertion
+    built on it can never degenerate into comparing production logic against itself."""
+    channels = []
+    for offset in (1, 3, 5):
+        srgb = int(hex_colour[offset:offset + 2], 16) / 255.0
+        channels.append(srgb / 12.92 if srgb <= 0.03928 else ((srgb + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
+
+
+def _contrast_ratio(hex_a, hex_b):
+    """Contrast ratio between two #rrggbb colours, per WCAG 2.1 SC 1.4.3."""
+    lum_a, lum_b = _relative_luminance(hex_a), _relative_luminance(hex_b)
+    lighter, darker = max(lum_a, lum_b), min(lum_a, lum_b)
+    return (lighter + 0.05) / (darker + 0.05)
+
+
 @tagged("post_install", "-at_install")
 class HtmlEditorDebrandBehaviorTest(TransactionCase):
     """Once installed on 19.0, the module compiles cleanly into web.assets_frontend and its
@@ -188,44 +306,35 @@ class HtmlEditorDebrandBehaviorTest(TransactionCase):
         )
 
     def test_primary_button_debrand_override_reaches_frontend_css(self):
-        """Rule (j): the module's distinctive grouped override '.btn-fill-primary, .btn-primary'
-        forcing white text with !important survives into the compiled frontend CSS. Bootstrap 5.3
-        ALSO emits this same grouped selector via its own '--btn-*' CSS-variable block (with NO
-        !important), so the test iterates every occurrence of the grouping to locate THIS module's
-        own override block - identified by a white color (#fff/#ffffff) AND !important together in
-        the SAME declaration block - rather than assuming the grouping itself is unique."""
+        """Rule (j): the button text/background pair '.btn-fill-primary'/'.btn-primary' actually
+        paints, resolved through the real compiled-CSS cascade (importance, then source order -
+        Bootstrap 5.3 also emits this same grouped selector via its own '--btn-*' CSS-variable
+        block with no !important, so a first-match reader is not enough), clears WCAG AA contrast
+        (>= 4.5:1 for normal text). Protects readability itself rather than the specific hex this
+        module currently forces, so a legitimate recolour of the override that still clears
+        contrast must stay green."""
         bundle = self.env["ir.qweb"]._get_asset_bundle(FRONTEND_BUNDLE, css=True, js=False)
         attachments = bundle.css()
         css_text = attachments[0].raw.decode() if attachments else ""
         self.assertTrue(css_text, "compiled frontend CSS is empty")
 
-        # Minification-robust: strip ALL whitespace + lowercase, then locate the grouped selector.
-        compact = re.sub(r"\s+", "", css_text).lower()
-        grouped_selector = ".btn-fill-primary,.btn-primary"
-        self.assertIn(
-            grouped_selector, compact,
-            "the module's distinctive grouped selector '.btn-fill-primary, .btn-primary' is absent "
-            "from the compiled frontend CSS - the de-brand override did not reach web.assets_frontend",
+        text_colour = _resolve_button_colour(css_text, "color")
+        background_colour = _resolve_button_colour(css_text, "background-color")
+        self.assertIsNotNone(
+            text_colour,
+            "no winning 'color' declaration resolves for '.btn-fill-primary'/'.btn-primary' in the "
+            "compiled frontend CSS",
+        )
+        self.assertIsNotNone(
+            background_colour,
+            "no winning 'background-color' declaration resolves for '.btn-fill-primary'/"
+            "'.btn-primary' in the compiled frontend CSS",
         )
 
-        # Locate THIS module's override block among ALL grouped-selector occurrences.
-        # Bootstrap 5.3 emits the SAME '.btn-fill-primary,.btn-primary' grouping as a '--btn-*'
-        # CSS-variable block with NO '!important', so a first-hit str.find() locator lands on the
-        # WRONG block; iterate ALL occurrences to find THIS module's own override block, then assert
-        # at least one carries BOTH a white color and !important in the same declaration block.
-        override_found = False
-        for match in re.finditer(re.escape(grouped_selector), compact):
-            pos = match.start()
-            brace = compact.find("}", pos)
-            block = compact[pos: brace + 1] if brace != -1 else compact[pos:]
-            if ("#fff" in block or "#ffffff" in block) and "!important" in block:
-                override_found = True
-                break
-        self.assertTrue(
-            override_found,
-            "no compiled '.btn-fill-primary,.btn-primary' declaration block forces a WHITE color "
-            "(#fff/#ffffff) with !important - this module's own de-brand override "
-            "'.btn-fill-primary,.btn-primary{color:#fff!important}' did not reach web.assets_frontend. "
-            "Bootstrap 5.3 also groups '.btn-fill-primary,.btn-primary' as a '--btn-*' CSS-variable "
-            "block with no !important, so its mere presence does NOT satisfy this rule.",
+        ratio = _contrast_ratio(text_colour, background_colour)
+        self.assertGreaterEqual(
+            ratio, 4.5,
+            "'.btn-fill-primary'/'.btn-primary' text %s against its own resolved background %s "
+            "clears only %.2f:1 - WCAG AA normal text requires >= 4.5:1"
+            % (text_colour, background_colour, ratio),
         )
