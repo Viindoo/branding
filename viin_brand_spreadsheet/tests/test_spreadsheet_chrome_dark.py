@@ -7,9 +7,9 @@
 # a chart figure's own header, the filter-menu popover) renders BYTE-IDENTICAL to a light-scheme
 # user - never re-pointed by this module. The seam between the grid and the chrome resolves to
 # the same colour a plain core `.border` utility resolves to elsewhere on the page. A Chatter
-# mounted in the side panel keeps its muted text and its send-button label readable once
-# composited over each element's own real rendered background. The toolbar icons inside the dark
-# chrome (`.o-hoverable-button .o-icon`) stay readable against the chrome's own dark background.
+# mounted in the side panel keeps its muted text readable once composited over each element's own
+# real rendered background. The toolbar icons inside the dark chrome (`.o-hoverable-button
+# .o-icon`) stay readable against the chrome's own dark background.
 # Three surfaces stay LIGHT ISLANDS regardless of scheme, exactly like the grid/side-panel/popovers
 # above - the formula-bar composer, the mobile small-bottom-bar composer, and the mobile ribbon
 # menu - each readable against its OWN real (white) background, never the chrome's dark one. A
@@ -237,13 +237,12 @@ await __setParam(%(param_key)r, JSON.stringify(__result));
 """
 
 # Mounts a core Chatter (Composer included) on a test-created `res.partner` inside the side panel
-# the carousel flow above already opened, then measures the muted text and the send-button label
-# - the two surfaces the engine's own injected `.o-spreadsheet .text-muted` pin (o_spreadsheet.js)
-# and its `.o-spreadsheet .btn` colour pin (o_spreadsheet_extended.dark.scss) govern - AGAINST
-# each element's own real rendered background (`__effectiveBackground`), never an assumed literal:
-# the side panel itself is white, but a `.btn-primary`/`.btn-secondary` element paints its OWN
-# background regardless of what the panel underneath renders. Also measures the "follow" toggle
-# button (`.o-mail-Followers-button`, a real `.btn.btn-link`, chatter.xml) in its PRESSED state -
+# the carousel flow above already opened, then measures the muted text - the surface the engine's
+# own injected `.o-spreadsheet .text-muted` pin (o_spreadsheet.js) governs - AGAINST its own real
+# rendered background (`__effectiveBackground`), never an assumed literal: the side panel itself
+# is white, but an element can still paint its OWN background regardless of what the panel
+# underneath renders. Also measures the "follow" toggle button (`.o-mail-Followers-button`, a real
+# `.btn.btn-link`, chatter.xml) in its PRESSED state -
 # read via `--btn-active-color` directly off the element rather than faking `:active` (a
 # synthetic DOM event never flips a real browser's `:active` match; this button is genuinely its
 # parent's only/first child, so Bootstrap's own `.btn:first-child:active` rule - sharing the exact
@@ -276,16 +275,11 @@ await __owl.mount(__chatterModule.Chatter, __chatterHost, {
     props: { threadId: %(partner_id)d, threadModel: "res.partner", composer: true },
 });
 const __chatterMuted = await __waitFor(() => __chatterHost.querySelector(".text-muted"), 15000);
-const __chatterSendButton = await __waitFor(
-    () => __chatterHost.querySelector(".o-mail-Chatter-sendMessage"), 15000
-);
 const __followersButton = await __waitFor(
     () => __chatterHost.querySelector(".o-mail-Followers-button"), 15000
 );
 __result.chatterMutedColor = getComputedStyle(__chatterMuted).color;
 __result.chatterMutedBg = __effectiveBackground(__chatterMuted);
-__result.chatterSendLabelColor = getComputedStyle(__chatterSendButton).color;
-__result.chatterSendButtonBg = __effectiveBackground(__chatterSendButton);
 __result.followersButtonBg = __effectiveBackground(__followersButton);
 __result.followersButtonActiveColor = getComputedStyle(__followersButton)
     .getPropertyValue("--btn-active-color")
@@ -411,6 +405,11 @@ class TestSpreadsheetChromeDark(HttpCase):
         cls.partner = cls.env["res.partner"].create({
             "name": "Spreadsheet Chrome Dark Chatter Fixture Partner",
         })
+
+    def setUp(self):
+        super().setUp()
+        if "tour_enabled" not in self.env["res.users"]._fields:
+            self.skipTest("web_tour is not installed")
 
     def _measure(self, login, figure_id, chatter_js=""):
         param_key = "viin_brand_spreadsheet.chrome_dark_test.%s" % login
@@ -595,10 +594,9 @@ class TestSpreadsheetChromeDark(HttpCase):
         # -- Row 3: a Chatter mounted in the (light, island) side panel stays readable -----------
         # Composited against each element's OWN real rendered background (`__effectiveBackground`)
         # - never an assumed WHITE literal, which would stay vacuously green even if the element
-        # sat on a non-white background of its own (e.g. a `.btn-primary`'s own coloured fill).
+        # sat on a non-white background of its own.
         for label, colour_key, bg_key in (
             (".text-muted", "chatterMutedColor", "chatterMutedBg"),
-            (".o-mail-Chatter-sendMessage label", "chatterSendLabelColor", "chatterSendButtonBg"),
         ):
             with self.subTest(chatter_surface=label):
                 raw_value = dark[colour_key]

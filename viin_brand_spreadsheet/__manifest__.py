@@ -47,7 +47,7 @@ mọi popover vẫn sáng như một tài liệu.
     'version': '0.1.0',
 
     # any module necessary for this one to work correctly
-    'depends': ['spreadsheet', 'viin_brand_web'],
+    'depends': ['spreadsheet', 'viin_brand_mail'],
 
     # always loaded
     # 'data': [
