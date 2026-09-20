@@ -3,11 +3,11 @@
 #
 # WHY THIS FILE REPLACES test_w1_substrate.py (RETIRED).
 # -----------------------------------------------------------------------------------------------
-# test_w1_substrate.py asserted the CONTENT of static/src/scss/dark_surfaces.scss and scheme.scss -
+# test_w1_substrate.py asserted the CONTENT of static/src/scss/dark_surfaces.scss -
 # ~40 source-text assertions protecting the RETIRED no-reload `[data-bs-theme]` allow-list dark
-# engine. PR #658 C-2 DELETED both files and re-based dark mode on the RECOMPILED web.assets_web_dark
+# engine. PR #658 C-2 DELETED that file and re-based dark mode on the RECOMPILED web.assets_web_dark
 # bundle owned by viin_brand_web (dark_palette.scss, Option A Layer 1), so those assertions now
-# (a) read files that no longer exist and (b) snapshot an architecture that was deliberately removed.
+# (a) read a file that no longer exists and (b) snapshot an architecture that was deliberately removed.
 # Keeping them would red every correct step of the re-architecture, so they are gone. What survived
 # as genuine BEHAVIOUR is folded here, plus the NEW Option-A contract the theme now owns:
 #   * KEPT  - the backend bundle still compiles to a healthy stylesheet (an aborted compile = an
