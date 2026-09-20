@@ -260,6 +260,11 @@ class TestDashboardDark(HttpCase):
             "view_id": cls.core_list_view.id,
         })
 
+    def setUp(self):
+        super().setUp()
+        if "tour_enabled" not in self.env["res.users"]._fields:
+            self.skipTest("web_tour is not installed")
+
     def _measure(self, login):
         param_key = "viin_brand_spreadsheet_dashboard.dark_test.%s" % login
         code = _wrap(_MEASURE_DASHBOARD_JS % {
