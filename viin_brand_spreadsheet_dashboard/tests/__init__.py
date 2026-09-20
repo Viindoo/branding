@@ -1,2 +1,3 @@
 # Part of Viindoo. See LICENSE file for full copyright and licensing details.
 from . import test_dashboard_dark
+from . import test_bundle_compile
