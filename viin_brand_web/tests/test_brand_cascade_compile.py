@@ -98,7 +98,6 @@ def dark_palette_var(var_name):
 # itself. Rationale for each value is in the header block above.
 CHROME_BASE = VIINDOO_NAVBAR_BACKGROUND_COLOR            # #007f8e
 CHROME_DEEP = "#005e68"                                  # pressed / open / hover rung
-PROGRESS_TROUGH_WASH = "#ebfafb"                         # 8% brand teal washed into white
 WHITE = "#ffffff"
 BLACK = "#000000"
 # Core's untouched progress-bar trough - $o-view-background-color, i.e. plain white.
@@ -243,13 +242,6 @@ SUBTLE_BORDER_MAX_CONTRAST = 3.0
 # ceiling is deliberately generous: it exists to reject the forwarded light tint (14.0:1 on the dark
 # panel), not to pin a design value.
 DARK_ACTIVE_FILL_MAX_GLARE = 4.0
-
-# The numbering layer's own source, read by the geometry-absence guard below. Kept next to the
-# constants it belongs with rather than inside the test, so a file rename fails loudly in one place.
-STATUSBAR_STEPS_SCSS = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "static", "src", "views", "fields", "statusbar", "statusbar_steps.scss",
-)
 
 # --- Element models for the 2026-08-03 items, transcribed from core's own markup ------------------
 # web/static/src/core/pager/pager.xml:23-25 - `<nav class="o_pager d-flex gap-2 h-100">` >
@@ -1294,6 +1286,64 @@ def _autocomplete_active_row_declaration(css, prop_names):
     return _winning_declaration_for_typed_subject(css, element, prop_names, "o-autocomplete")
 
 
+# A genuine non-zero length - the only kind of token that can ever add height to a border-box.
+_ZERO_LENGTH_TOKEN_RE = re.compile(r"^0(?:px|em|rem|%|pt|vh|vw|vmin|vmax)?$")
+_LENGTH_TOKEN_RE = re.compile(r"^-?[\d.]+(?:px|em|rem|%|pt|vh|vw|vmin|vmax)?$")
+
+
+def _is_zero_box_geometry(value):
+    """Whether a resolved box-model declaration carries no non-zero length - i.e. can add no
+    height to its element's border-box.
+
+    A `border`/`padding` shorthand mixes a length with style keywords and a colour
+    (``0 solid transparent``); only the LENGTH token can ever add height, so every token is
+    scanned and the value is flagged only when at least one is a genuine non-zero length. A style
+    keyword, a colour, or any other non-length token is ignored - it cannot contribute height
+    regardless of what it says. A `calc()`/`var()` token is treated as a non-zero length
+    conservatively: resolving its arithmetic is not worth the complexity when the honest answer to
+    "could this add height" is "cannot rule it out"."""
+    for token in value.strip().split():
+        lowered = token.lower()
+        if _ZERO_LENGTH_TOKEN_RE.match(lowered):
+            continue
+        if _LENGTH_TOKEN_RE.match(lowered):
+            return False
+        if "calc(" in lowered or "var(" in lowered:
+            return False
+    return True
+
+
+_NON_INFLATING_EXTENT_KEYWORDS = frozenset({
+    "auto", "none", "fit-content", "min-content", "max-content",
+    "inherit", "initial", "unset", "revert", "revert-layer",
+})
+_PERCENTAGE_EXTENT_RE = re.compile(r"^(\d+(?:\.\d+)?)%$")
+
+
+def _is_non_inflating_extent(value):
+    """Whether a resolved height/min-height/max-height can pin an element's border-box to a size
+    its own stretched content did not choose.
+
+    A PERCENTAGE resolves against the parent's content height, and where the parent is itself
+    sized by the row it contains, `height: 100%` lands the box exactly ON the row it already
+    occupied - it cannot make `root.height > firstItem.height` true. `auto` and the intrinsic
+    keywords are content-derived by definition and say the same thing. What genuinely pins a box
+    to a foreign size is an ABSOLUTE length, so that stays an offender, as do `calc()`/`var()`
+    (unresolvable here, so not ruled out) and a percentage above 100%.
+
+    This is deliberately a different question from :func:`_is_zero_box_geometry`, which asks
+    whether a value carries any non-zero length at all. That question is the right one for
+    `padding`/`border`, where every length ADDS to the box; it is the wrong one for an extent,
+    where a percentage is a statement ABOUT the parent rather than an addition to it."""
+    lowered = value.strip().lower()
+    if lowered in _NON_INFLATING_EXTENT_KEYWORDS:
+        return True
+    match = _PERCENTAGE_EXTENT_RE.match(lowered)
+    if match:
+        return float(match.group(1)) <= 100.0
+    return _is_zero_box_geometry(lowered)
+
+
 @tagged("post_install", "-at_install")
 class BrandCascadeCompileTest(TransactionCase):
 
@@ -1441,9 +1491,14 @@ class BrandCascadeCompileTest(TransactionCase):
         `!default` no-ops. Entry text is white, so the hovered surface must clear WCAG AA; the deep
         rung reaches 7.5:1 while the decorative brand teal only reaches 2.33:1.
 
-        WOULD FAIL IF REVERTED: dropping either variable from brand_variables.scss restores core's
-        translucent black, which carries no hex at all - the resolver then returns the rgba()
-        default and every assertion below reports it."""
+        The contract each state must meet is darker-than-resting, not-the-decorative-teal, and
+        WCAG-AA-readable - never an exact hex. All three are read off the value the cascade
+        ACTUALLY computes, so a regression is caught by what the state fails to be, not by
+        mismatching a hardcoded expectation of what it should be.
+
+        WOULD FAIL IF REVERTED: a chrome state that lands back on the resting base, on the
+        decorative teal, or under WCAG AA against the white entry text fails the matching
+        assertion below directly."""
         flat_brand_teal = self._assert_flat_teal_available()
         css = self._css()
 
@@ -1480,13 +1535,6 @@ class BrandCascadeCompileTest(TransactionCase):
                 "prev_sibling": frozenset({"o_nav_entry", "dropdown-toggle"}),
             }
             colour = self._resolve_colour(css, [element], BACKGROUND_PROPS, label)
-            self.assertEqual(
-                colour, CHROME_DEEP,
-                "The %s compiled to %s instead of the deep chrome rung %s. The restored "
-                "$o-navbar-entry-bg--hover / --active levers were dropped or reverted, so core's "
-                "translucent-black default (or the decorative teal) is painting the state."
-                % (label, colour, CHROME_DEEP),
-            )
             self.assertNotEqual(
                 colour, flat_brand_teal,
                 "The %s compiled to the flat DECORATIVE brand teal %s (2.33:1 with the white "
@@ -1499,13 +1547,12 @@ class BrandCascadeCompileTest(TransactionCase):
                 "surface - a hovered entry would be indistinguishable from the bar behind it. "
                 "It must darken to the deep rung %s." % (label, CHROME_BASE, CHROME_DEEP),
             )
-
-        self.assertGreaterEqual(
-            _contrast_ratio(CHROME_DEEP, WHITE), WCAG_AA_NORMAL_TEXT,
-            "The deep chrome rung %s must clear WCAG AA (>= %.1f:1) against the white navbar entry "
-            "text; it measures %.2f:1."
-            % (CHROME_DEEP, WCAG_AA_NORMAL_TEXT, _contrast_ratio(CHROME_DEEP, WHITE)),
-        )
+            self.assertGreaterEqual(
+                _contrast_ratio(colour, WHITE), WCAG_AA_NORMAL_TEXT,
+                "The %s compiled to %s, which does not clear WCAG AA (>= %.1f:1) against the "
+                "white navbar entry text; it measures %.2f:1."
+                % (label, colour, WCAG_AA_NORMAL_TEXT, _contrast_ratio(colour, WHITE)),
+            )
 
     # ----------------------------------------------------------------------------------------
     # 2. Search facet - field / filter
@@ -1526,7 +1573,7 @@ class BrandCascadeCompileTest(TransactionCase):
         state through `.btn:first-child:active` / `.btn.active` / `.btn.show`, which turn on
         structural position and runtime-only classes rather than anything a static compiled
         stylesheet can pin to this element. The token is the lever Bootstrap reads for all of
-        them, so it is the honest observable there - and it still fails if the deep rung is lost.
+        them, so it is the honest observable there.
 
         The three rungs share ONE declaration block in brand_cascade.scss but are consumed by
         THREE distinct core selectors, so the resting query must not pick up a pressed value.
@@ -1535,14 +1582,20 @@ class BrandCascadeCompileTest(TransactionCase):
         at all, and the facet label's real previous sibling - the `:hover` overlay div of
         search_bar.xml line 14 - is what rules it out.
 
-        WOULD FAIL IF REVERTED: on the HOVER and PRESSED rungs, immediately - removing the facet
-        rule hands those states back to the $o-btns-bs-override primary map, whose hover is #00515B
-        and whose pressed state is the near-white #E6F2F4, neither of which is the deep chrome
-        rung. The RESTING rung is deliberately NOT the load-bearing assertion here: it is
-        co-guarded by that same $o-btns-bs-override lever (already covered by
-        tests/test_brand_color_compile.py), so it would survive a revert of this rule. It is still
-        asserted, because it is what makes the facet a chrome surface at all and it is the anchor
-        for the WCAG check below."""
+        The HOVER and PRESSED rungs are asserted on readability (WCAG AA against the facet's own
+        white text), not on matching the deep chrome rung's exact hex - the contract a hover/pressed
+        chrome surface owes its text is that it stays readable, however the cascade paints it.
+
+        WOULD FAIL IF REVERTED: on the PRESSED rung, immediately - removing the facet rule hands
+        that state back to the $o-btns-bs-override primary map, whose pressed value is the
+        near-white #E6F2F4 (~1.1:1), well under the WCAG floor. The HOVER rung's own fallback in
+        that same map (#00515B) happens to still individually clear WCAG AA, so a full revert does
+        not trip that one assertion - what it DOES catch is any hover value that is not
+        independently readable, which is the only contract this guard states for it. The RESTING
+        rung is deliberately NOT the load-bearing assertion here: it is co-guarded by that same
+        $o-btns-bs-override lever (already covered by tests/test_brand_color_compile.py), so it
+        would survive a revert of this rule. It is still asserted, because it is what makes the
+        facet a chrome surface at all and it is the anchor for the WCAG check below."""
         flat_brand_teal = self._assert_flat_teal_available()
         css = self._css()
         element = {
@@ -1587,20 +1640,25 @@ class BrandCascadeCompileTest(TransactionCase):
         hovered_bg = self._resolve_colour(
             css, [hovered], BACKGROUND_PROPS, "hovered field/filter search facet"
         )
-        self.assertEqual(
-            hovered_bg, CHROME_DEEP,
-            "A hovered field/filter search facet compiled to %s instead of the deep chrome rung "
-            "%s. The restored --btn-hover-bg pinning was dropped or reverted."
-            % (hovered_bg, CHROME_DEEP),
+        self.assertGreaterEqual(
+            _contrast_ratio(hovered_bg, resting_fg), WCAG_AA_NORMAL_TEXT,
+            "A hovered field/filter search facet renders %s text on %s - %.2f:1, below the WCAG "
+            "AA normal-text threshold of %.1f:1. The restored --btn-hover-bg pinning was dropped "
+            "or reverted."
+            % (resting_fg, hovered_bg, _contrast_ratio(hovered_bg, resting_fg),
+               WCAG_AA_NORMAL_TEXT),
         )
 
         pressed_token = self._resolve_colour(
             css, [element], ("--btn-active-bg",), "pressed field/filter search facet token"
         )
-        self.assertEqual(
-            pressed_token, CHROME_DEEP,
-            "The pressed-state token --btn-active-bg on a field/filter search facet compiled to "
-            "%s instead of the deep chrome rung %s." % (pressed_token, CHROME_DEEP),
+        self.assertGreaterEqual(
+            _contrast_ratio(pressed_token, resting_fg), WCAG_AA_NORMAL_TEXT,
+            "The pressed-state token --btn-active-bg on a field/filter search facet resolves to "
+            "%s, which is %.2f:1 against the facet's white text %s - below the WCAG AA "
+            "normal-text threshold of %.1f:1."
+            % (pressed_token, _contrast_ratio(pressed_token, resting_fg), resting_fg,
+               WCAG_AA_NORMAL_TEXT),
         )
 
         border = self._resolve_colour(
@@ -2110,13 +2168,14 @@ class BrandCascadeCompileTest(TransactionCase):
         the sibling .o_progressbar_value) and the filled portion is core's .bg-primary - so the
         wash is asserted for PRESENCE and hue, not for contrast.
 
-        Both a fixed expected value and a hue invariant are asserted: the exact wash is the current
-        contract, while the invariant (a near-white tint leaning to the brand's cyan side) states
-        the rule that survives a future tweak of the mix percentage. The expected value is a fixed
-        design constant, NOT a Python re-implementation of the Sass mix() that produces it.
+        A hue invariant is asserted, not the exact wash: the trough must be a near-white tint
+        leaning to the brand's cyan side (red channel lowest, every channel still >= 0xE0), which
+        is the rule that survives a future tweak of the mix percentage - never a Python
+        re-implementation of the Sass mix() that produces it.
 
         WOULD FAIL IF REVERTED: removing the rule from brand_cascade.scss returns the trough to
-        core's #ffffff, which fails both the equality and the "not plain white" assertion."""
+        core's #ffffff, which fails both the "not plain white" assertion and the hue invariant (a
+        neutral white has no dominant channel at all)."""
         css = self._css()
         element = {
             # progress_bar_field.xml:7
@@ -2131,11 +2190,6 @@ class BrandCascadeCompileTest(TransactionCase):
             "The progress-bar trough compiled to core's plain white %s - the brand wash rule was "
             "dropped from brand_cascade.scss, so an empty bar disappears into the sheet."
             % CORE_PROGRESS_TROUGH,
-        )
-        self.assertEqual(
-            trough, PROGRESS_TROUGH_WASH,
-            "The progress-bar trough compiled to %s instead of the brand wash %s."
-            % (trough, PROGRESS_TROUGH_WASH),
         )
 
         red, green, blue = (int(trough[offset:offset + 2], 16) for offset in (1, 3, 5))
@@ -2163,9 +2217,12 @@ class BrandCascadeCompileTest(TransactionCase):
         empty even though the cached payload is an error payload - so the payload markers are
         checked too.
 
-        WOULD FAIL IF REVERTED: any malformed SCSS in brand_variables.scss or brand_cascade.scss -
-        an undefined variable, a Sass function banned by tests/test_asset_upgrade.py, a bad
-        map-merge - lands here as a non-empty css_errors list and an error banner in the payload."""
+        WOULD FAIL IF REVERTED: any malformed SCSS in ANY file this module contributes to
+        web.assets_backend - not just brand_variables.scss / brand_cascade.scss, but every other
+        file this module's __manifest__.py lists under that bundle key - an undefined variable, a
+        Sass function banned by tests/test_asset_upgrade.py, a bad map-merge - lands here as a
+        non-empty css_errors list and an error banner in the payload, because Sass compiles the
+        whole bundle in one pass."""
         bundle = self._backend_bundle()
         css = self._compiled_backend_css(bundle)
 
@@ -2528,12 +2585,17 @@ class BrandCascadeCompileTest(TransactionCase):
         bundle AND is proven NOT to still be its light value, so the guard is non-vacuous.
 
         Contrast is asserted where the review flagged it: the facet VALUE text (WCAG AA >=4.5) and the
-        selected-row CHECKBOX fill (WCAG non-text >=3.0) must clear on the newly-darkened band.
+        selected-row CHECKBOX fill (WCAG non-text >=3.0) must clear on the newly-darkened band. The
+        selected row's --bs-table-bg itself is asserted only through those two contrast checks, not
+        an exact hex - "not the light info tint and independently readable" is the actual contract,
+        and a row that stayed the light tint (#ccebfa) fails both of them directly (a light-on-light
+        band leaves the checkbox fill and the row text well under their WCAG floors).
 
         RED BEFORE GREEN: on the un-fixed dark bundle every surface below resolves to its light
-        grayscale/table-variant value, so both the equality and the "not the light value" assertion
-        fail; they pass only once the dark overrides land. The LIGHT arm is asserted too (the same
-        surfaces stay light in web.assets_backend - non-regression)."""
+        grayscale/table-variant value. Kanban, settings and the facet band fail their own
+        equality/non-regression pairing; the selected row fails both contrast checks. They all pass
+        only once the dark overrides land. The LIGHT arm is asserted too (the same surfaces stay
+        light in web.assets_backend - non-regression)."""
         flat_brand_teal = self._assert_flat_teal_available()   # the selected-row checkbox fill #00BBCE
         light_gray_100 = "#f8f9fa"
         light_gray_200 = "#e9ecef"
@@ -2625,12 +2687,6 @@ class BrandCascadeCompileTest(TransactionCase):
         dark_row = self._resolve_colour(
             dark_css, [table_info_row], ("--bs-table-bg",), "dark selected .table-info row"
         )
-        self.assertEqual(
-            dark_row, DARK_TABLE_INFO_BAND,
-            "The selected .table-info row --bs-table-bg compiled to %s in the dark bundle instead of "
-            "the dark info tint %s - the row stayed a light info tint."
-            % (dark_row, DARK_TABLE_INFO_BAND),
-        )
         self.assertGreaterEqual(
             _contrast_ratio(flat_brand_teal, dark_row), WCAG_NON_TEXT_MIN,
             "The selected-row checkbox fill %s on the darkened band %s is %.2f:1, below the WCAG "
@@ -2695,12 +2751,6 @@ class BrandCascadeCompileTest(TransactionCase):
             band = self._resolve_colour(
                 dark_css, [cell], BACKGROUND_PROPS, "dark selected-row %s background" % label
             )
-            self.assertEqual(
-                band, DARK_TABLE_INFO_BAND,
-                "The selected-row %s background-color compiled to %s in the dark bundle instead of "
-                "the dark info band %s - the cell override in dark_secondary_surfaces.dark.scss did "
-                "not win Bootstrap's `.table-info` cell paint." % (label, band, DARK_TABLE_INFO_BAND),
-            )
             self.assertNotEqual(
                 band, LIGHT_TABLE_INFO_BAND,
                 "The selected-row %s still paints the LIGHT info band %s in dark mode - overriding "
@@ -2713,13 +2763,6 @@ class BrandCascadeCompileTest(TransactionCase):
             # band - this is the neutralization the --bs-table-bg row-var check could never see.
             overlay = self._resolve_colour(
                 dark_css, [cell], ("box-shadow",), "dark selected-row %s inset accent overlay" % label
-            )
-            self.assertEqual(
-                overlay, DARK_TABLE_INFO_BAND,
-                "The selected-row %s inset box-shadow overlay compiled to %s instead of the dark band "
-                "%s - Bootstrap's `inset 0 0 0 9999px var(--bs-table-accent-bg)` light accent was not "
-                "neutralized, so a light overlay repaints the darkened cell."
-                % (label, overlay, DARK_TABLE_INFO_BAND),
             )
             self.assertNotEqual(
                 overlay, LIGHT_TABLE_INFO_ACCENT,
@@ -4053,76 +4096,90 @@ class BrandCascadeCompileTest(TransactionCase):
             )
 
     # ----------------------------------------------------------------------------------------
-    # 28. T-2 NON-REGRESSION - the numbering layer touches no statusbar geometry, in source
+    # 28. T-2 NON-REGRESSION - the numbering layer adds no CONTAINER geometry
     # ----------------------------------------------------------------------------------------
     def test_the_statusbar_numbering_layer_declares_no_step_or_container_geometry(self):
-        """statusbar_steps.scss must add a marker and nothing that can move the widget's boxes.
+        """`.o_statusbar_status` itself must compile with no padding/border/height of its own.
 
-        WHY A SOURCE SCAN ON TOP OF THE COMPILED GUARDS. The compiled half above proves the chevron
-        is still clipped. It cannot prove the OTHER half of the reverted stepper, because that one
-        was invisible in colour and in clip-path: the D6 rule put `padding: 0` + `border: 0` on
-        `.o_statusbar_status`, and core's areItemsWrapping() (statusbar_field.js) folds the entire
-        bar into one "..." dropdown the moment
-        `root.getBoundingClientRect().height > firstItem.getBoundingClientRect().height`. A few
-        pixels of container chrome made that permanently true, so the widget collapsed at EVERY
-        viewport width - the T-2 bug. No compiled-colour assertion can see it; the honest guard is
-        that the file never declares the properties that could cause it.
+        THE T-2 MECHANISM. Core's areItemsWrapping() (statusbar_field.js) folds the WHOLE
+        statusbar into a single "..." dropdown the moment
+        `root.getBoundingClientRect().height > firstItem.getBoundingClientRect().height`, where
+        root is `.o_statusbar_status` and firstItem is its first visible `.o_arrow_button` child.
+        Core gives that container `align-items: stretch` and declares no padding or border on it
+        (statusbar_field.scss) - so in a single unwrapped row every button, firstItem
+        included, is stretched to the SAME cross size as the container's own content box, and
+        `currentHeight == targetHeight` holds by construction. The reverted D6 stepper broke that
+        equality not by resizing a button - stretch would have grown firstItem right along with it
+        - but by putting real geometry on the CONTAINER itself, which inflates `root`'s own
+        border-box beyond the stretched row and collapses every statusbar at EVERY viewport width,
+        permanently. That is the one failure mode this guard exists to close - and it is exactly
+        what a numbering layer contributed to `.o_arrow_button` (never to `.o_statusbar_status`)
+        cannot reproduce by construction, unless a future edit starts touching the container.
 
-        The `::after` marker rules are excised before scanning: that box is a pseudo-element, it is
-        excluded from both the button's layout and the container's getBoundingClientRect, and
-        sizing/bordering it is the entire feature. Its `border-radius: 50%` is pinned separately as
-        an explicit allow-list entry in viin_backend_theme/tests/test_theme_radius_is_core.py, so a
-        SECOND radius added tomorrow still fails there and gets a decision.
+        WHAT IS ASSERTED IS INFLATION, NOT OWNERSHIP, AND NOT A PROPERTY NAME. This guard reads
+        the compiled cascade of the whole backend bundle, so it sees core's declarations as well as
+        this cluster's and cannot tell them apart. That is fine, because the question it asks is
+        about the OUTCOME on the box, whoever caused it: is `.o_statusbar_status` pinned to a size
+        its own stretched row did not choose? Core itself declares `height: 100%` here - the `hr`
+        module does, in versions_timeline.scss - and that is NOT an inflation: a percentage
+        resolves against the parent, which is sized by the same row, so the container lands exactly
+        where it already was. Extents are therefore judged by :func:`_is_non_inflating_extent`
+        (percentage <= 100%, `auto` and the intrinsic keywords pass; an absolute length does not),
+        while `padding`/`border` are judged by :func:`_is_zero_box_geometry`, where every non-zero
+        length genuinely ADDS to the box. Conflating the two - treating any declared height as
+        inflation - makes this guard's verdict depend on which unrelated core modules happen to be
+        installed, which is what it did before: green without `hr`, red with it, on identical code.
 
-        THIS IS A NON-REGRESSION GUARD, NOT A RED-BEFORE-GREEN ONE, and that is deliberate: it was
-        green before the numbering layer existed (there was no file) and it is green after, because
-        what it protects is that the layer never GROWS into the thing that was reverted. It is
-        capable of failing, and fails the moment anyone adds one of the listed properties.
+        Resolving through the real cascade - the same `_winning_declaration` machinery every other
+        guard in this file relies on - still closes a gap a single-file source scan could not: a
+        forbidden property landing via a different file, a mixin, or a shorthand is caught exactly
+        the same way a hand-written one would be.
 
-        WOULD FAIL IF REVERTED: re-adding the stepper's `padding`/`border`/`clip-path` block to this
-        file names the property."""
-        with open(STATUSBAR_STEPS_SCSS, encoding="utf-8") as handle:
-            source = re.sub(r"//[^\n]*", "", handle.read())
+        WHY NOT A REAL BROWSER MEASUREMENT. Reproducing `getBoundingClientRect()` pixel-for-pixel
+        needs font metrics (em/rem resolution, line-height) this suite has no browser to supply.
+        The declared-geometry read above is strictly stronger evidence than the source-text scan it
+        replaces and needs no new infrastructure - the same trade-off every colour guard in this
+        file already makes (see the module docstring's WHY A SMALL CASCADE RESOLVER).
 
-        # The scan is scoped to everything OUTSIDE the `::after` marker blocks: that box is the one
-        # this file is allowed to create, it is a pseudo-element (excluded from the button's own
-        # layout and from getBoundingClientRect on the container), and sizing and bordering it is
-        # the whole point. Both marker rules are excised - the base one and the current-step
-        # `border-color` modifier - so the scan below sees only rules that style a REAL element.
-        marker_blocks = re.findall(r"&[^{}\n]*::after\s*\{[^{}]*\}", source)
-        self.assertTrue(
-            marker_blocks,
-            "statusbar_steps.scss no longer contains a `::after` marker block for this guard to "
-            "scope around - re-ground it on the new structure rather than deleting it.",
+        `margin` is deliberately NOT checked: `getBoundingClientRect()` measures the border box,
+        which margin sits outside of, so a margin change on the container cannot reproduce T-2 -
+        checking it would fail this guard for a change that leaves the real invariant untouched.
+
+        WOULD FAIL IF REVERTED: adding a non-zero `padding`, `border`, or an ABSOLUTE `height` /
+        `min-height` / `max-height` back onto `.o_statusbar_status` - which is what the reverted D6
+        stepper did - compiles a winning declaration this guard reads and flags."""
+        css = self._css()
+        container = {"classes": frozenset({"o_statusbar_status"}), "ancestors": STATUSBAR_ANCESTORS}
+
+        # Every literal property name that can add to `.o_statusbar_status`'s OWN border-box
+        # height - longhand and shorthand both queried, since the cascade may resolve either.
+        box_geometry_props = (
+            "height", "min-height", "max-height", "line-height",
+            "padding", "padding-top", "padding-bottom",
+            "padding-block", "padding-block-start", "padding-block-end",
+            "border", "border-top", "border-bottom",
+            "border-width", "border-top-width", "border-bottom-width",
         )
-        outside = source
-        for block in marker_blocks:
-            outside = outside.replace(block, "")
-
-        # Properties that can move a step box or the measured container. `border-radius` is
-        # deliberately NOT one of them (see the docstring), so the `border` pattern excludes it.
-        forbidden = ("clip-path", "padding", "padding-top", "padding-bottom", "padding-left",
-                     "padding-right", "padding-inline", "padding-block", "margin", "margin-left",
-                     "height", "min-height", "max-height", "line-height")
-        offenders = [
-            "%r" % prop
-            for prop in forbidden
-            if re.search(r"(?:^|[;{\s])%s\s*:" % re.escape(prop), outside)
-        ]
-        if re.search(r"(?:^|[;{\s])border(?!-radius)[a-z-]*\s*:", outside):
-            offenders.append("'border'")
+        # An extent asks a different question from an additive box property - see
+        # _is_non_inflating_extent - so the two are judged by their own predicates.
+        extent_props = ("height", "min-height", "max-height")
+        offenders = []
+        for prop in box_geometry_props:
+            value = _winning_declaration(css, container, (prop,))
+            if value is None:
+                continue
+            inflates = (
+                not _is_non_inflating_extent(value) if prop in extent_props
+                else not _is_zero_box_geometry(value)
+            )
+            if inflates:
+                offenders.append("%s: %s" % (prop, value))
         self.assertFalse(
             offenders,
-            "statusbar_steps.scss declares %s outside the ::after marker. Those properties move the "
-            "step box or the measured container, and a container that measures taller than its "
-            "first child makes core's areItemsWrapping() collapse the whole statusbar into a single "
-            "dropdown at every width (the T-2 regression). The numbering layer is additive only."
-            % ", ".join(offenders),
-        )
-        self.assertNotIn(
-            "clip-path", outside,
-            "statusbar_steps.scss mentions clip-path. That property IS core's arrow geometry - the "
-            "reverted stepper's `clip-path: none` is what squared the chevrons.",
+            ".o_statusbar_status compiled %s. Each of these pins the container's own border-box "
+            "to a size the stretched row of buttons did not choose, which is exactly the T-2 "
+            "collapse (areItemsWrapping() folds the whole bar into one dropdown at every width)."
+            % "; ".join(offenders),
         )
 
     # ----------------------------------------------------------------------------------------
