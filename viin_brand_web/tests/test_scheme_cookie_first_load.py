@@ -354,6 +354,8 @@ class TestPivotGraphFreshContextReadability(HttpCase):
 
     def setUp(self):
         super().setUp()
+        if "tour_enabled" not in self.env["res.users"]._fields:
+            self.skipTest("web_tour is not installed")
         # Isolate B0 from a SECOND, independent client-side cookie writer: viin_backend_theme's
         # own viinThemeService (viin_backend_theme/static/src/webclient/viin_theme_service.js)
         # ALSO sets the `color_scheme` cookie on every webclient boot, unconditionally, once its

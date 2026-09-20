@@ -311,6 +311,32 @@ $o-component-active-color: $body-color;
 // SC 1.4.11 (>= 3:1) on #111B1E; the light bundle keeps #005E68 (7.5:1 on white).
 $o-viin-focus: #7FE0EA;
 
+// --- Bootstrap baked-icon ink (WCAG SC 1.4.11 non-text, >= 3:1) ---------------------------------
+// Five more Bootstrap scalars bake their colour into a compile-time SVG data-URI or CSS custom
+// property, unreachable from every surface/text override above, so each recompiled UNCHANGED into
+// the dark bundle at Bootstrap's own literal or an un-dark-corrected derivation - measured
+// composited against the panel #111B1E, all five below the 3:1 floor:
+//   $btn-close-color:             $black                    (bootstrap/_variables.scss:1708) 1.11:1
+//   $form-switch-color:           rgba($black, .25)          (:975)                           1.06:1
+//   $form-select-indicator-color: $gray-800                  (:1014)                          1.52:1
+//   $form-switch-focus-color:     $input-focus-border-color  (:982)                           2.53:1
+//   $accordion-icon-active-color: $primary-text-emphasis     (:1393)                          1.28:1
+// The first three re-point at $body-color, mirroring core's OWN frontend fix for the identical
+// trio (`$input-color: $body-color`, then `$form-switch-color`/`$form-select-indicator-color:
+// $input-color`, bootstrap_overridden_frontend.scss:83,92,95) - a fix core already wrote and never
+// carried to the backend dark bundle. The resting accordion chevron
+// ($accordion-icon-color: $body-color, _variables.scss:1392) already recompiles correctly and
+// stays untouched; only its `:not(.collapsed)` sibling needs a value here.
+$btn-close-color: $body-color;                    // 4.83:1 at the stock .5 close-button opacity
+$form-switch-color: $body-color;                  // opaque fill now, 15.72:1
+$form-select-indicator-color: $body-color;        // 15.72:1
+// The switch's FOCUS ring and the accordion's ACTIVE chevron both mark "this control has the
+// user's attention right now" - reusing the focus-ring and active-component teal already declared
+// above keeps that meaning distinguishable from a resting-state control instead of flattening
+// every one of these inks onto the same value.
+$form-switch-focus-color: $o-viin-focus;          // 11.47:1
+$accordion-icon-active-color: $o-main-link-color; // 9.88:1
+
 // --- Mobile burger / app-menu sidebar (PR #658 batch 3) -----------------------------------------
 // The LAST unthemed light island in dark mode. Core's burger_menu.variables.scss hardcodes the panel
 // WHITE ($o-burger-base-bg: $o-white, :3), the topbar $o-gray-100 #F8F9FA (:6), the entry text

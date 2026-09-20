@@ -7,9 +7,8 @@
 // NO --viin-* custom properties; NO hardcoded themeable hex.
 
 .o_notebook:not(.vertical) {
-    // PR #658 item 5: the `.o_notebook_headers .nav` theme baseline (background-color + border-bottom)
-    // was removed - the notebook header reverts to core's own surface. Only the active/hover tab
-    // underline below (and its dark arm in notebook.dark.scss) is theme-owned.
+    // The notebook header keeps core's own surface: no background-color, no border-bottom here.
+    // Only the active/hover tab underline below - and its dark arm in notebook.dark.scss - is ours.
     .nav-link {
         border: 0;
         border-bottom: 2px solid transparent;

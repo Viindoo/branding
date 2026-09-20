@@ -13,6 +13,11 @@ class TestAboutDebrand(HttpCase):
     block shows 'Viindoo' and no longer shows the stock 'Odoo' / 'Odoo S.A.' brand strings.
     """
 
+    def setUp(self):
+        super().setUp()
+        if "tour_enabled" not in self.env["res.users"]._fields:
+            self.skipTest("web_tour is not installed")
+
     def test_about_section_shows_viindoo_brand_not_odoo(self):
         # Runs the viin_brand_web_about_debrand tour against General Settings as admin.
         # Tour completion == every assertion (branded present, Odoo absent) held; a missing

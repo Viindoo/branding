@@ -70,6 +70,19 @@ class FrontendPrimaryCompileTest(TransactionCase):
         Read from the COMPILED web.assets_frontend bundle (the observable a login page renders), not
         the SCSS source. The AA teal #007F8E clears WCAG AA on white (4.74:1); the flat brand teal
         #00BBCE fails (2.33:1)."""
+        # web.assets_frontend only compiles at all when html_editor is installed: html_editor is
+        # the sole definer of increase-contrast(), which
+        # web/static/src/scss/bootstrap_review_frontend.scss calls unconditionally in its
+        # @each $theme-colors loop. Without it the bundle fails to compile and serves the
+        # "## CSS error message ##" fallback banner instead of a real :root block, so there is no
+        # --primary value to check.
+        if not self.env["ir.module.module"].search_count(
+            [("name", "=", "html_editor"), ("state", "=", "installed")]
+        ):
+            self.skipTest(
+                "html_editor is not installed - web.assets_frontend cannot compile, so there is "
+                "no compiled --primary to check."
+            )
         self.assertIsNotNone(
             VIINDOO_THEME_COLOR,
             "VIINDOO_THEME_COLOR must be defined in "
