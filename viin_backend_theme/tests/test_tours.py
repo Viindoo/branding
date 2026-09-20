@@ -12,8 +12,15 @@ from odoo.tests import HttpCase, tagged
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 
 
+class _WebTourCapabilityGuard:
+    def setUp(self):
+        super().setUp()
+        if "tour_enabled" not in self.env["res.users"]._fields:
+            self.skipTest("web_tour is not installed")
+
+
 @tagged("post_install", "-at_install")
-class TestViinThemeTours(HttpCase):
+class TestViinThemeTours(_WebTourCapabilityGuard, HttpCase):
     """Appearance (dark persist+reload, density persistence) and the flat home menu."""
 
     def test_dark_toggle_persists_to_pref_and_reloads(self):
@@ -58,7 +65,7 @@ class TestViinThemeTours(HttpCase):
 
 
 @tagged("post_install", "-at_install")
-class TestViinAppearanceMarkerCount(HttpCase):
+class TestViinAppearanceMarkerCount(_WebTourCapabilityGuard, HttpCase):
     """The active row in the Appearance systray renders exactly one selected-marker."""
 
     def test_active_option_shows_exactly_one_marker_in_light_scheme(self):
@@ -75,7 +82,7 @@ class TestViinAppearanceMarkerCount(HttpCase):
 
 
 @tagged("post_install", "-at_install")
-class TestViinThemeA11yTour(HttpCase):
+class TestViinThemeA11yTour(_WebTourCapabilityGuard, HttpCase):
     """T-4: keyboard accessibility of the theme shell (the skip link is the first focusable element)."""
 
     def test_skip_link_is_first_focusable(self):
@@ -98,7 +105,7 @@ class TestViinThemeA11yTour(HttpCase):
 
 
 @tagged("post_install", "-at_install")
-class TestViinAppsMenuHome(HttpCase):
+class TestViinAppsMenuHome(_WebTourCapabilityGuard, HttpCase):
     """PR #658 item 1: the navbar apps icon is the SOLE app switcher - no rail, no bottom-nav, and it
     opens the flat home menu. Preserves the B1 assertion the deleted viin_rail_appnav_tour owned."""
 
@@ -141,7 +148,7 @@ class TestViinAppsMenuHome(HttpCase):
 
 
 @tagged("post_install", "-at_install")
-class TestViinHomeReorder(HttpCase):
+class TestViinHomeReorder(_WebTourCapabilityGuard, HttpCase):
     """PR #658 item 7: a drag reorders two home-menu tiles AND the new order persists across a reload."""
 
     def test_home_tiles_reorder_by_drag_and_persist_across_reload(self):
@@ -172,7 +179,7 @@ class TestViinHomeReorder(HttpCase):
 
 
 @tagged("post_install", "-at_install")
-class TestViinClickbotHomeMenu(HttpCaseWithUserDemo):
+class TestViinClickbotHomeMenu(_WebTourCapabilityGuard, HttpCaseWithUserDemo):
     """R1 (PR #658): core's clickbot walks apps via the theme home menu, not the removed dropdown."""
 
     @classmethod
@@ -196,8 +203,7 @@ class TestViinClickbotHomeMenu(HttpCaseWithUserDemo):
         ``.o_navbar_apps_menu button``, enumerates/clicks ``.o_viin_home_menu .o_app[data-menu-xmlid]``
         tiles, settles on pending RPCs + the OWL scheduler, and asserts no ``.o_error_dialog`` per app.
         Mirrors core web:TestMenusDemoLight.test_01_click_apps_menus_as_demo on the themed build."""
-        if "tour_enabled" in self.env["res.users"]._fields:
-            self.user_demo.tour_enabled = False
+        self.user_demo.tour_enabled = False
         # If website is present but the demo user is not a designer, landing on the website dashboard
         # redirects to ``/`` and crashes the crawl (same guard as core TestMenusDemoLight).
         group_website_designer = self.env.ref(
@@ -219,7 +225,7 @@ class TestViinClickbotHomeMenu(HttpCaseWithUserDemo):
 
 
 @tagged("post_install", "-at_install")
-class TestViinDiscussOnboarding(HttpCase):
+class TestViinDiscussOnboarding(_WebTourCapabilityGuard, HttpCase):
     """R2 (PR #658): the Discuss onboarding reaches Discuss from the flat home-menu landing."""
 
     def test_discuss_onboarding_reaches_discuss_from_themed_landing(self):

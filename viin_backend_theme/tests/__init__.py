@@ -4,7 +4,7 @@
 # the always-installed viin_brand_web, so it owns their behaviour test. Nothing
 # theme-specific remained in that file, so it was deleted here rather than trimmed.
 # test_w1_substrate was RETIRED (PR #658 review-fix): it asserted the CONTENT of the now-deleted
-# no-reload dark_surfaces.scss / scheme.scss (C-2 re-based dark on the recompiled web.assets_web_dark
+# no-reload dark_surfaces.scss (C-2 re-based dark on the recompiled web.assets_web_dark
 # bundle). Its surviving real behaviour + the NEW Option-A widget-dark contracts (T-3 stepper marker
 # AA, T-4 rail focus ring) live in test_theme_dark_widgets.
 # test_theme_button_radius was SUPERSEDED by test_theme_radius_is_core (owner revision 2026-08-03).
@@ -34,4 +34,4 @@ from . import test_home_menu_background
 from . import test_theme_radius_is_core
 from . import test_home_app_order
 from . import test_tours
-from . import test_manifest_depends
+from . import test_bundle_compile
