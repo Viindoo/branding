@@ -1,1 +1,1 @@
-from . import test_manifest_depends
+from . import test_bundle_compile
