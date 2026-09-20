@@ -38,7 +38,7 @@ Editions Supported
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['im_livechat'],
+    'depends': ['im_livechat', 'viin_brand_mail'],
 
     # always loaded
     'demo': [
@@ -60,6 +60,12 @@ Editions Supported
         # rationale.
         'im_livechat.embed_assets_unit_tests': [
             'viin_brand_im_livechat/static/tests/embed/livechat_button_debrand.test.js',
+        ],
+        'im_livechat.assets_embed_core': [
+            ('after', 'mail/static/src/core/common/chat_window.scss', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
+            ('after', 'mail/static/src/core/common/im_status.scss', 'viin_brand_mail/static/src/core/common/im_status.scss'),
+            ('after', 'mail/static/src/core/common/composer.scss', 'viin_brand_mail/static/src/core/common/composer.scss'),
+            ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
         ],
     },
     'data': [
