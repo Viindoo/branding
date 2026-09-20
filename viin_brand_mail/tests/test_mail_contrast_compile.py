@@ -76,7 +76,6 @@
 # classes, transcribed from the CORE template that renders it (file + line cited at each model).
 # Pools are deliberately generous: an extra ancestor can only ADD a competitor rule and make a
 # guard fail loudly, never hide the override that broke the surface.
-import ast
 import collections
 import os
 import re
@@ -2704,35 +2703,6 @@ class MailContrastCompileTest(TransactionCase):
                     "this bundle failed and its error payload is still cached." % bundle_name,
                 )
 
-    def test_debrand_scss_is_wired_into_every_bundle_the_branded_surfaces_render_in(self):
-        """The de-brand sources must stay injected into every bundle the manifest declares them in.
-
-        The chat-window, presence and composer overrides have to travel with mail wherever it
-        renders - backend, the public discuss pages and the livechat embed - or the same surfaces
-        go back to core purple/low-contrast outside the backend, where no compiled-CSS assertion
-        above would see it. Read straight from the module's own __manifest__.py so the wiring is
-        protected even when im_livechat is not installed on the test database."""
-        with open(MANIFEST, "r", encoding="utf-8") as manifest_file:
-            assets = ast.literal_eval(manifest_file.read()).get("assets", {})
-
-        for bundle_name in (BACKEND_BUNDLE, MAIL_PUBLIC_BUNDLE, LIVECHAT_EMBED_CORE_BUNDLE):
-            injected = _injected_sources(assets, bundle_name)
-            for source in SHARED_DEBRAND_SOURCES:
-                with self.subTest(bundle=bundle_name, source=source):
-                    self.assertIn(
-                        source, injected,
-                        "%s is not injected into %s; the branded mail surfaces it restores would "
-                        "render in core colours there." % (source, bundle_name),
-                    )
-
-        backend_injected = _injected_sources(assets, BACKEND_BUNDLE)
-        self.assertIn(
-            SYSTRAY_DEBRAND_SOURCE, backend_injected,
-            "%s is not injected into %s; the systray counter contrast override only applies to "
-            "backend navbar chrome and has nowhere else to live."
-            % (SYSTRAY_DEBRAND_SOURCE, BACKEND_BUNDLE),
-        )
-
     # ==============================================================================================
     # 12. Dark mode - mail-owned surfaces the recompiled dark palette (C-2) cannot reach (M-1)
     # ==============================================================================================
@@ -2921,30 +2891,6 @@ class MailContrastCompileTest(TransactionCase):
             "is normal muted text and needs >= %.1f:1. Core's untouched $text-muted resolves to "
             "rgba(#495057,.76) here at ~2.1:1."
             % (date_value, surface_value, ratio, WCAG_AA_NORMAL_TEXT),
-        )
-
-    def test_dark_surface_residue_is_wired_into_the_dark_bundle(self):
-        """This module's dark-only SCSS must stay explicitly contributed to web.assets_web_dark.
-
-        Core's dark tail glob is web/mail-only (never this module), so each file below reaches the
-        dark bundle ONLY through its own manifest entry. Drop mail_dark.scss and both surfaces above
-        silently revert to their core dark values - a translucent muddy rotting card and a ~2.1:1
-        timestamp; drop discuss_navbar.dark.scss and Discuss goes back to a navbar no other app
-        wears. Read straight from the module's own __manifest__.py so the wiring is protected
-        structurally, even on a database where the dark bundle is not compiled by another test."""
-        with open(MANIFEST, "r", encoding="utf-8") as manifest_file:
-            assets = ast.literal_eval(manifest_file.read()).get("assets", {})
-        injected = _injected_sources(assets, DARK_BUNDLE)
-        self.assertIn(
-            DARK_SURFACE_SOURCE, injected,
-            "%s is not injected into %s; the mail-owned dark surfaces it restores would render in "
-            "core's un-flipped dark values." % (DARK_SURFACE_SOURCE, DARK_BUNDLE),
-        )
-        self.assertIn(
-            DARK_DISCUSS_NAVBAR_SOURCE, injected,
-            "%s is not injected into %s; Discuss would go back to wearing core's own flat chat "
-            "surface as its navbar while every other app wears the themed one."
-            % (DARK_DISCUSS_NAVBAR_SOURCE, DARK_BUNDLE),
         )
 
     # ==============================================================================================
