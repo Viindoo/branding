@@ -115,12 +115,6 @@ Editions Supported
             ('after', 'mail/static/src/core/common/composer.scss', 'viin_brand_mail/static/src/core/common/composer.scss'),
             ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
         ],
-        'im_livechat.assets_embed_core': [
-            ('after', 'mail/static/src/core/common/chat_window.scss', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
-            ('after', 'mail/static/src/core/common/im_status.scss', 'viin_brand_mail/static/src/core/common/im_status.scss'),
-            ('after', 'mail/static/src/core/common/composer.scss', 'viin_brand_mail/static/src/core/common/composer.scss'),
-            ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
-        ],
         # viin_brand_mail's own SCSS leaks into web.assets_unit_tests_setup / web.tests_assets via
         # web's ('include', 'web.assets_backend') (addons/web/__manifest__.py); each 'remove'
         # strips it back out of the two TEST-ONLY bundles so core's own mail/discuss Hoot/QUnit
