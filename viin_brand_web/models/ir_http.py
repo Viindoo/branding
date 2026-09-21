@@ -17,14 +17,17 @@ class IrHttp(models.AbstractModel):
         return context
 
     def color_scheme(self):
-        # Resolution order (dark mode): request `color_scheme` cookie > stored user
-        # preference (explicit light/dark) > super() as the final fallback. 'auto' is NOT
-        # forced here; it falls through to super() so the client / OS decides. Always
-        # returns a value (never a missing return - find_override_point anti-pattern).
-        scheme = request.httprequest.cookies.get('color_scheme') if request else None
-        if scheme in ('light', 'dark'):
-            return scheme
+        # Resolution order (dark mode): the user's own explicit light/dark preference, then the
+        # `color_scheme` cookie, then super() as the final fallback. The cookie ranks BELOW an
+        # explicit preference because it is per-BROWSER while the preference is per-USER - ranked
+        # above it, a cookie left behind by one user decides another user's render. It ranks ABOVE
+        # super() because 'auto' is the one case the server cannot resolve on its own: only the
+        # client knows the OS preference, and it caches that resolution in this same cookie.
+        # Always returns a value (never a missing return - find_override_point anti-pattern).
         user_scheme = self.env.user.viin_color_scheme
         if user_scheme in ('light', 'dark'):
             return user_scheme
+        scheme = request.httprequest.cookies.get('color_scheme') if request else None
+        if scheme in ('light', 'dark'):
+            return scheme
         return super().color_scheme()
