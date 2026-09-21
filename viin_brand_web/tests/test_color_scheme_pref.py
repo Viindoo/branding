@@ -14,11 +14,14 @@
 #     security surface of the dark-mode feature (no ir.model.access / ir.rule / sudo), so the SELF
 #     scope is exactly what must be asserted - a regression that widened it (e.g. adding the field to
 #     a group-write path) would silently let any user flip other users' UI.
-#  3. ir.http.color_scheme() resolution order: request `color_scheme` cookie (explicit light/dark)
-#     > stored res.users.viin_color_scheme (explicit light/dark) > super() as the final fallback.
-#     'auto' is NEVER forced server-side - it falls through to super() so the client / OS decides.
-#     The method always returns a value (never a missing return). The cookie branch is exercised by
-#     patching the module-level `request` (the method reads request.httprequest.cookies).
+#  3. ir.http.color_scheme() resolution order: the user's own explicit light/dark
+#     res.users.viin_color_scheme > the request `color_scheme` cookie > super() as the final
+#     fallback. The cookie ranks BELOW an explicit preference because it is per-BROWSER while the
+#     preference is per-USER. It ranks ABOVE super() only so that 'auto' works: the server cannot
+#     read the OS, so the client resolves 'auto' and caches the effective light|dark in that same
+#     cookie. 'auto' is still never FORCED server-side - with no cached resolution it falls to
+#     super(). The method always returns a value (never a missing return). The cookie branch is
+#     exercised by patching the module-level `request` (it reads request.httprequest.cookies).
 from unittest.mock import patch
 
 from odoo.tests.common import TransactionCase, new_test_user, tagged
@@ -71,26 +74,43 @@ class TestViinColorSchemePref(TransactionCase):
         with self.assertRaises(AccessError):
             self.user_b.with_user(self.user_a).write({"viin_color_scheme": "dark"})
 
-    def test_color_scheme_cookie_overrides_everything(self):
-        """An explicit `color_scheme` cookie wins over the stored preference and over super().
+    def test_explicit_preference_outranks_a_browser_cookie(self):
+        """A user's own explicit light/dark preference decides, even against a contrary cookie.
 
-        The cookie is the per-request choice the toggle sets before a reload; it must beat the
-        persisted preference so a just-changed scheme takes effect on the next request."""
+        The preference is per-USER; the `color_scheme` cookie is per-BROWSER and outlives the
+        session that wrote it. Were the cookie to win, whoever used a shared browser last would
+        choose the scheme for whoever logs in next, for that cookie's whole lifetime."""
         ir_http = self.env["ir.http"]
-        # Stored preference is the OPPOSITE of the cookie, proving the cookie wins.
         self.env.user.viin_color_scheme = "light"
         with patch(_IR_HTTP_MODULE + ".request", _FakeHttpRequest({"color_scheme": "dark"})):
             self.assertEqual(
-                ir_http.color_scheme(), "dark",
-                "A `color_scheme=dark` cookie must resolve to 'dark' even when the stored "
-                "preference is 'light'.",
+                ir_http.color_scheme(), "light",
+                "A stored 'light' preference must survive a contrary `color_scheme=dark` cookie.",
             )
         self.env.user.viin_color_scheme = "dark"
         with patch(_IR_HTTP_MODULE + ".request", _FakeHttpRequest({"color_scheme": "light"})):
             self.assertEqual(
+                ir_http.color_scheme(), "dark",
+                "A stored 'dark' preference must survive a contrary `color_scheme=light` cookie.",
+            )
+
+    def test_auto_resolves_from_the_client_cached_cookie(self):
+        """Under 'auto' the cookie decides - it is the only place the OS resolution exists.
+
+        The server cannot read the device preference. The client resolves 'auto' via matchMedia
+        and caches the effective light|dark in the same `color_scheme` cookie, so for 'auto' -
+        and only for 'auto' - that cookie is what the server must honour."""
+        ir_http = self.env["ir.http"]
+        self.env.user.viin_color_scheme = "auto"
+        with patch(_IR_HTTP_MODULE + ".request", _FakeHttpRequest({"color_scheme": "dark"})):
+            self.assertEqual(
+                ir_http.color_scheme(), "dark",
+                "With preference 'auto', a cached `color_scheme=dark` must resolve to 'dark'.",
+            )
+        with patch(_IR_HTTP_MODULE + ".request", _FakeHttpRequest({"color_scheme": "light"})):
+            self.assertEqual(
                 ir_http.color_scheme(), "light",
-                "A `color_scheme=light` cookie must resolve to 'light' even when the stored "
-                "preference is 'dark'.",
+                "With preference 'auto', a cached `color_scheme=light` must resolve to 'light'.",
             )
 
     def test_color_scheme_falls_back_to_stored_preference_without_cookie(self):
@@ -104,11 +124,11 @@ class TestViinColorSchemePref(TransactionCase):
             self.assertEqual(ir_http.color_scheme(), "light")
 
     def test_color_scheme_auto_defers_to_super_light(self):
-        """'auto' (and any unset value) must fall through to super() - never forced dark server-side.
+        """'auto' with no cached resolution falls through to super() - never forced server-side.
 
-        The server keeps rendering core's default ('light') for 'auto'; the client / OS then decides
-        via the boot reflection. This is the invariant that keeps 'auto' a CLIENT decision, so a
-        regression that resolved 'auto' to 'dark' on the server would be caught here."""
+        Until the client has resolved the OS and cached it in the cookie, the server has nothing
+        to go on and keeps rendering core's default ('light'). This is the invariant that keeps
+        'auto' a CLIENT decision, so a regression that guessed 'dark' server-side is caught here."""
         ir_http = self.env["ir.http"]
         with patch(_IR_HTTP_MODULE + ".request", None):
             self.env.user.viin_color_scheme = "auto"

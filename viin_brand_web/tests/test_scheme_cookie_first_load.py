@@ -255,47 +255,45 @@ class TestSchemeCookieResponseWrite(HttpCase):
             "the ACTING user's own response.",
         )
 
-    def test_response_cookie_is_expired_when_a_user_switches_their_own_preference_to_auto(self):
-        """Switching one's OWN `viin_color_scheme` to `auto` ("System") must expire any stale
-        `color_scheme` response cookie in that SAME response - otherwise a user who is currently
-        pinned `light` or `dark` from an earlier explicit choice keeps that stale cookie for up to
-        its own year-long expiry even though they just asked the client/OS to decide instead.
-        `color_scheme()` resolves the request cookie BEFORE the stored preference, so a stale
-        cookie left in place would silently override the very choice this write just made."""
+    def test_switching_to_auto_leaves_the_client_cached_resolution_alone(self):
+        """Switching one's OWN `viin_color_scheme` to `auto` ("System") must NOT touch the
+        `color_scheme` cookie.
+
+        Under 'auto' that cookie is the only place the resolved scheme exists: the server cannot
+        read the device preference, so the client resolves it, writes the effective light|dark
+        there, and only then issues this write. Expiring it here would discard the answer for the
+        reload that immediately follows - the server would serve core's 'light' whatever the
+        device says - and would also blank the value core's own dark-mode clients read (graph
+        colours, the colour picker, the ace editor, the pdf.js viewer)."""
         user = new_test_user(
-            self.env, login='viin_scheme_cookie_auto_reset', groups='base.group_user',
+            self.env, login='viin_scheme_cookie_auto_keep', groups='base.group_user',
             viin_color_scheme='dark',
         )
         self.authenticate(user.login, user.login)
 
-        # Arrange: reach the pre-condition a real user hits - an earlier explicit choice already
-        # pinned the browser to a stale `dark` cookie (the mechanism the sibling test above
-        # protects; reused here only to reach that state, not re-asserted as this test's point).
+        # Arrange: the browser already carries a resolved scheme, which is the state a real
+        # setScheme('auto') reaches before awaiting this write.
         pinned = self._rpc_write('res.users', user.id, {'viin_color_scheme': 'dark'})
         self.assertEqual(
             pinned.cookies.get('color_scheme'), 'dark',
-            "premise broken: the earlier explicit write never pinned the browser to a stale dark "
-            "cookie, so switching to auto afterwards would prove nothing about expiring one.",
+            "premise broken: the browser was never carrying a resolved scheme, so this test "
+            "could not observe whether switching to auto preserves one.",
         )
 
         response = self._rpc_write('res.users', user.id, {'viin_color_scheme': 'auto'})
-        # `response.cookies` (a `requests` cookie jar) already drops an expired cookie once
-        # processed, and `response.headers` collapses repeated same-name headers down to the LAST
-        # one seen - neither tells us whether an EXPIRING Set-Cookie was actually sent. Read the
-        # raw header list instead, the way `FutureResponse.set_cookie` (odoo/http.py) emits it.
-        set_cookie_headers = response.raw.headers.getlist('Set-Cookie')
-        scheme_headers = [h for h in set_cookie_headers if h.lower().startswith('color_scheme=')]
-        self.assertTrue(
+        # `response.cookies` drops an expired cookie once processed, and `response.headers`
+        # collapses repeated same-name headers down to the last one seen - neither would reveal an
+        # EXPIRING Set-Cookie. Read the raw header list, the way `FutureResponse.set_cookie`
+        # (odoo/http.py) emits it.
+        scheme_headers = [
+            header for header in response.raw.headers.getlist('Set-Cookie')
+            if header.lower().startswith('color_scheme=')
+        ]
+        self.assertFalse(
             scheme_headers,
-            "switching viin_color_scheme to auto must still emit a color_scheme Set-Cookie header "
-            "(an expiring one) in this same response - none was sent at all, so the browser keeps "
-            "the stale dark cookie it already has.",
-        )
-        self.assertTrue(
-            any('max-age=0' in header.lower() for header in scheme_headers),
-            "the color_scheme Set-Cookie header emitted for the switch to auto must carry "
-            "Max-Age=0 so the browser discards the stale cookie immediately, instead of merely "
-            "overwriting it with another year-long value: got %r" % scheme_headers,
+            "switching viin_color_scheme to auto must emit no color_scheme Set-Cookie at all - "
+            "the imminent reload depends on the resolution already cached there: got %r"
+            % scheme_headers,
         )
 
 

@@ -28,17 +28,15 @@ class ResUsers(models.Model):
         return super().SELF_WRITEABLE_FIELDS + ['viin_color_scheme']
 
     def write(self, vals):
-        # Keeps the color_scheme cookie converging on the CURRENT user's own preference change
-        # (see ir.http.color_scheme()'s cookie > preference precedence) instead of leaving it
-        # stuck on whatever an earlier session already wrote, for up to that cookie's own
-        # year-long expiry. Scoped to self.env.user's own record so writing someone else's
-        # preference never bleeds into the acting user's response. Switching to 'auto' expires
-        # the cookie outright instead of writing a value, since the client/OS decides from there.
+        # Keeps the color_scheme cookie converging on the CURRENT user's own preference change.
+        # Scoped to self.env.user's own record so writing someone else's preference never bleeds
+        # into the acting user's response. 'auto' is left ALONE rather than expired: that cookie
+        # is core's client-side source of truth for dark mode - core reads it for graph colours,
+        # the colour picker, the ace editor and the pdf.js viewer - so it must always hold a
+        # resolved light|dark. Under 'auto' the client is what resolves the OS and writes the
+        # effective value there, and that resolution is the only copy anything else has.
         res = super().write(vals)
         scheme = vals.get('viin_color_scheme')
-        if request and self.env.user in self:
-            if scheme in ('light', 'dark'):
-                request.future_response.set_cookie('color_scheme', scheme)
-            elif scheme == 'auto':
-                request.future_response.set_cookie('color_scheme', '', max_age=0)
+        if request and self.env.user in self and scheme in ('light', 'dark'):
+            request.future_response.set_cookie('color_scheme', scheme)
         return res
