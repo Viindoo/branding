@@ -30,8 +30,9 @@ import { browser } from "@web/core/browser/browser";
 //
 // GROUNDED (OSM 19.0 + core source): service-test shape from
 // web/static/tests/webclient/reload_company_service.test.js (makeMockEnv + getService +
-// defineModels); browser.location mocked via patchWithCleanup(browser.location, { reload })
-// (web/static/tests/core/debug/debug_manager.test.js:206); cookie + matchMedia test-isolated
+// defineModels); browser.location mocked via patchWithCleanup(browser.location, { reload }), the
+// same pattern web/static/tests/core/debug/debug_manager.test.js uses for its "can regenerate
+// assets bundles" test; cookie + matchMedia test-isolated
 // (@odoo/hoot mock window). This ADAPTS the retired instant-apply guards: the old "flips the html
 // root to dark" / "live OS re-paint on toggle" assertions snapshotted the no-reload architecture
 // C-2 removed, so they are dropped rather than translated.

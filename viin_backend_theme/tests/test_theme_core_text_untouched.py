@@ -139,10 +139,10 @@ EMOJI_FALLBACK_FONTS = (
 #
 # AND IT IS PUBLISHED THROUGH AN INDIRECTION, which is worth stating because the first version of
 # this guard missed it and failed on a value carrying no font names at all. Bootstrap emits
-# `--body-font-family: #{inspect($font-family-base)}` (lib/bootstrap/scss/_root.scss:53) while
+# `--body-font-family: #{inspect($font-family-base)}` (lib/bootstrap/scss/_root.scss) while
 # `$font-family-base` itself defaults to `var(--font-sans-serif)`, and the LITERAL list lands in
-# `--font-sans-serif` (_root.scss:44, fed from `$font-family-sans-serif`, which Odoo feeds from
-# `$o-font-family-sans-serif` - bootstrap_overridden.scss:117). So the guard starts at the property
+# `--font-sans-serif` (_root.scss, fed from `$font-family-sans-serif`, which Odoo feeds from
+# `$o-font-family-sans-serif` - bootstrap_overridden.scss). So the guard starts at the property
 # `body` actually reads and FOLLOWS the chain, rather than hardcoding whichever link currently
 # happens to hold the list. A chain it cannot resolve is reported, never skipped.
 _FONT_CUSTOM_PROPERTY_RE = r"--%s\s*:\s*([^;}]+)"
@@ -354,7 +354,7 @@ class TestCoreTextRendersUntransformed(TransactionCase):
         """D2 scoped the brand heading font OUT of the editor - it must still be IN the backend.
 
         This is the blast-radius half of owner decision D2. `$o-headings-font-family` feeds core's
-        `bootstrap_overridden.scss:133` -> `$headings-font-family` -> every backend `h1..h6`, AND the
+        `bootstrap_overridden.scss` -> `$headings-font-family` -> every backend `h1..h6`, AND the
         theme's own `.o_viin_home_greeting` reads it by name (home_menu.scss). Two mistakes would be
         invisible without this test: dropping the override "to fix the mail font" (Montserrat gone
         from the whole backend), or writing the editor reset broadly enough to reach the greeting.
@@ -420,7 +420,7 @@ class TestCoreTextRendersUntransformed(TransactionCase):
                 body_stack,
                 "%s publishes no resolvable `--body-font-family`, so the backend body font cannot "
                 "be verified. Bootstrap emits it from $font-family-base, which normally forwards to "
-                "`--font-sans-serif` (lib/bootstrap/scss/_root.scss:44,53); if core changed that "
+                "`--font-sans-serif` (lib/bootstrap/scss/_root.scss); if core changed that "
                 "chain, re-ground this guard rather than deleting it." % bundle_name,
             )
             stacks = {
@@ -440,7 +440,8 @@ class TestCoreTextRendersUntransformed(TransactionCase):
                     "In %s, %s does not name %r:\n  %s\nThat is Odoo's own fallback face for "
                     "characters a user's system font lacks or renders unreadably, and it is spliced "
                     "in by `o-add-unicode-support-font()` - which this declaration must go through, "
-                    "exactly as core's own does (web/static/src/scss/primary_variables.scss:114,117)."
+                    "exactly as core's own does (web/static/src/scss/primary_variables.scss, "
+                    "$o-font-family-sans-serif / $o-headings-font-family)."
                     % (bundle_name, description, UNICODE_SUPPORT_FONT, stack),
                 )
                 for emoji_font in EMOJI_FALLBACK_FONTS:
@@ -457,7 +458,7 @@ class TestCoreTextRendersUntransformed(TransactionCase):
 
         `.o_command_category` is NOT the category label. Core renders it as the WRAPPER div that
         holds every command row of that category, and puts the label in its first-child `<span>`
-        (web/static/src/core/commands/command_palette.xml:25-26, where the span already carries core's
+        (web/static/src/core/commands/command_palette.xml, where the span already carries core's
         own `text-uppercase fw-bold text-muted smaller` utilities). A rule written against the wrapper
         therefore INHERITS onto `.o_command`, `.o_command_name` and `.o_command_hotkey` - which is why
         the palette's rows rendered at 11px, muted, bold and letter-spaced. That is a defect a user

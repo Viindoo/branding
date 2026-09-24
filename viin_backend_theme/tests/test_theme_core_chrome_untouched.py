@@ -74,7 +74,7 @@ APPS_MENU_XML = os.path.join(STATIC_SRC, "webclient", "apps_menu_home.xml")
 BUNDLES = (BACKEND_BUNDLE, DARK_BUNDLE)
 
 # --- element models -------------------------------------------------------------------------
-# navbar.xml:4-8 - <header class="o_navbar"> > <nav class="o_main_navbar d-print-none"> >
+# navbar.xml - <header class="o_navbar"> > <nav class="o_main_navbar d-print-none"> >
 # <div class="o_navbar_apps_menu"> > our repurposed button (apps_menu_home.xml).
 NAVBAR_ANCESTORS = frozenset({"o_web_client", "o_navbar", "o_main_navbar", "o_navbar_apps_menu"})
 APPS_BUTTON_HOOK = "o_viin_apps_home"
@@ -83,7 +83,7 @@ NAVBAR = {
     "ancestors": frozenset({"o_web_client", "o_navbar"}),
     "prev_sibling": frozenset(),
 }
-# button_box.xml:5 + form_compiler.js:157-164, transcribed the same way viin_brand_web does.
+# button_box.xml + form_compiler.js, transcribed the same way viin_brand_web does.
 BUTTONBOX = {
     "classes": frozenset({
         "o-form-buttonbox", "d-print-none", "position-relative", "d-flex", "w-md-auto",
@@ -217,7 +217,7 @@ class TestCoreChromeIsUntouched(TransactionCase):
 
         Core builds the arrow purely with `clip-path: polygon(...)` on
         `.o_field_statusbar > .o_statusbar_status > .o_arrow_button:not(.d-none)`
-        (web/static/src/views/fields/statusbar/statusbar_field.scss:35-48) plus a matching ::before
+        (web/static/src/views/fields/statusbar/statusbar_field.scss) plus a matching ::before
         notch. The D6 stepper's very first declaration was `clip-path: none`, which is precisely and
         only how a chevron becomes the rectangle the owner reported - so the two halves of this test
         are the complete behaviour: the polygon is still compiled, and nothing anywhere unsets it.
@@ -263,7 +263,7 @@ class TestCoreChromeIsUntouched(TransactionCase):
         ROOT CAUSE OF THE BLACK ICON, restated as the thing this measures. Core paints every navbar
         entry from `%-main-navbar-entry-base`, whose `o-hover-text-color()` emits
         `color: var(--NavBar-entry-color, #{$o-navbar-entry-color})`
-        (web/static/src/webclient/navbar/navbar.variables.scss:34-50). Nothing in the addons path
+        (web/static/src/webclient/navbar/navbar.variables.scss). Nothing in the addons path
         declares --NavBar-entry-color, so the Sass fallback wins - and viin_brand_web pins
         `$o-navbar-entry-color: #FFFFFF`. Replacing core's <Dropdown> dropped the `dropdown-toggle`
         class that selects that rule, and the `text-reset` we substituted resolved `inherit` up to

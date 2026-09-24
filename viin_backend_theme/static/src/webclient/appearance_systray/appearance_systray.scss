@@ -9,7 +9,8 @@
 // is the HYPERLINK colour and turns brand-secondary PURPLE in light mode. A scheme toggle and a
 // density option are CONTROLS, not hyperlinks - under the COLOUR LAW (brand_variables.scss) teal =
 // ACT - so they are re-anchored onto `$o-main-link-color`, the interactive-teal Sass token that
-// link_tier.scss keeps scheme-split (#007F8E light, #4FD4E2 dark via dark_palette.scss:157). It is
+// link_tier.scss keeps scheme-split (#007F8E light, #4FD4E2 dark via `$o-main-link-color` in
+// dark_palette.scss). It is
 // in scope here through web._assets_backend_helpers, resolves per BUNDLE exactly as the runtime prop
 // used to resolve per scheme, and compiles to the SAME two values - so this is value-preserving.
 

@@ -9,7 +9,7 @@
 // ================================================================================================
 // CORE'S CONTRACT FOR THIS BUTTON IS "OPEN A LIST, DO NOT NAVIGATE". `.o_navbar_apps_menu`'s trigger
 // is a core <Dropdown> toggle: it opens a popover and leaves the current controller mounted.
-// `web_tour/static/src/tour_utils.js:36-43` turns that into `stepUtils.showAppsMenuItem()`, and
+// web_tour/static/src/tour_utils.js turns that into `stepUtils.showAppsMenuItem()`, and
 // **57 core tour files** are built on it in two shapes:
 //   1. click the apps button, then click `a[data-menu-xmlid="<app>"]` to open an app;
 //   2. click the apps button as HARMLESS BOILERPLATE and keep working on the SAME view.
@@ -87,6 +87,10 @@ patch(NavBar.prototype, {
     /**
      * The apps icon TOGGLES (owner request 2026-08-03: "bấm app icon lần nữa thì nó lại về lại view
      * cũ"). One control both leaves and returns.
+     *
+     * `ViinHomeMenu` owns its own search-box focus - it pre-focuses on mount on both render shapes
+     * it supports (see `onMounted` in home_menu.js), so this call passes no autofocus prop of its
+     * own; there is nothing left for this site to opt in or out of.
      */
     openHomeMenu() {
         if (this.viinHomeOverlay) {
@@ -103,9 +107,6 @@ patch(NavBar.prototype, {
         this.viinHomeOverlay = this.viinOverlayService.add(
             ViinHomeMenu,
             {
-                // A deliberate open focuses the search box; the boot landing does not, so the
-                // skip-link keeps the first-Tab position (WCAG 2.4.1).
-                autofocusSearch: true,
                 close: (options) => this.closeViinHomeOverlay(options),
             },
             { onRemove: () => (this.viinHomeOverlay = null) }
@@ -137,11 +138,12 @@ patch(NavBar.prototype, {
      * `viinHomeOverlay`, not here - this asks only about the boot landing.)
      *
      * Reads `actionService.currentController.action.tag` and NOT `actionService.currentAction`:
-     * the latter is an ASYNC getter (action_service.js:335 `async function _getCurrentAction`) that
+     * the latter is an ASYNC getter (action_service.js's `async function _getCurrentAction`) that
      * hands back a Promise and, for a virtual controller, round-trips an RPC - so `.tag` on it is
      * always undefined and it cannot answer a synchronous click handler. `currentController` is the
-     * plain sync getter (:324-327) over the top of the controller stack, and a client action's
-     * controller carries the preprocessed action verbatim, `tag` included (:1296-1316).
+     * plain sync `_getCurrentController()` getter over the top of the controller stack, and a
+     * client action's controller carries the preprocessed action verbatim, `tag` included
+     * (action_service.js's `_executeClientAction()`).
      *
      * @returns {boolean}
      */
@@ -160,20 +162,20 @@ patch(NavBar.prototype, {
      * URL; the webclient is a single-page app whose view state lives in the action service's
      * controller stack, so a raw history step can land on a URL the stack no longer matches and
      * leave the two out of sync. `actionService.restore()` is the action manager's own re-entry
-     * point: with no argument it targets the PENULTIMATE controller (action_service.js:1719-1725),
-     * re-mounts it through `_updateUI` (which also rewrites the URL) and truncates the stack so the
-     * home-menu entry is dropped instead of accumulating. This is verbatim the mechanism core itself
-     * uses for "go back one controller" - `controller.config.historyBack` restores the penultimate
-     * controller and only falls back to the default-app bus event when there is none
-     * (action_service.js:914-920).
+     * point: with no argument it targets the PENULTIMATE controller (action_service.js's
+     * `restore()`), re-mounts it through `_updateUI` (which also rewrites the URL) and truncates
+     * the stack so the home-menu entry is dropped instead of accumulating. This is verbatim the
+     * mechanism core itself uses for "go back one controller" - `controller.config.historyBack`
+     * (action_service.js) restores the penultimate controller and only falls back to the
+     * default-app bus event when there is none.
      *
      * EDGE CASES.
      *  - Fresh boot landing leaves the home menu ALONE on the stack, so there is nothing to go back
      *    to: restore() raises ControllerNotFoundError and we stay put.
      *  - The controller below is ITSELF a home menu: loop until a different action surfaces.
      *  - restore() can legitimately do nothing when the outgoing view refuses to leave
-     *    (clearUncommittedChanges returns false, action_service.js:1731-1734). The jsId guard below
-     *    detects that no-op and stops, so the loop can never spin.
+     *    (clearUncommittedChanges returns false inside action_service.js's `restore()`). The jsId
+     *    guard below detects that no-op and stops, so the loop can never spin.
      */
     async closeHomeMenu() {
         let previousJsId = this.actionService.currentController?.jsId;

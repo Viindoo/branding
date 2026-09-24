@@ -1,58 +1,29 @@
-# The cluster owns exactly ONE deliberate corner-radius override - owner decision D5's square-corners
-# token - and ZERO others; every other surface renders Odoo CE's native radius.
+# The cluster owns ZERO deliberate corner-radius overrides; every surface in it renders Odoo CE's
+# native radius.
 #
 # THE BEHAVIOUR UNDER GUARD (owner revision 2026-08-03, "viec override bo tron dang duoc dien ra o
 # nhieu cho, hay ra soat ky de bo het" - the radius overriding is happening in many places, audit
 # thoroughly and remove them all). The theme used to raise the whole Bootstrap radius map
 # ($border-radius 0.5rem / -sm 0.375rem / -lg 0.75rem, the "D13" scale) and then re-inject that
-# inflated value into a dozen individual components. The owner asked for all of it gone, so the rule
-# this file protects is a CLUSTER-WIDE INVARIANT, not a single value:
+# inflated value into a dozen individual components. A later ruling, owner decision D5, kept ONE
+# deliberate base-rung exception - a restored pre-19 brand-identity token,
+# `$o-border-radius: 0 !default;` in viin_brand_web/static/src/scss/brand_variables.scss - while
+# -sm/-lg and everything else stayed on core's own scale. Commit 52f233e ("remove border-radius
+# override and link override") has since deleted that token outright, so D5 no longer exists as a
+# live declaration anywhere in the cluster. The rule this file protects is once again the plain
+# original one, with no exception left to carve out of it: NO source file in the cluster declares a
+# corner radius at all, except the pinned shape-critical circles below.
 #
-#   (A) the compiled radius TOKENS equal core's, so every Bootstrap surface inherits Odoo CE's scale -
-#       except the BASE-routed tokens, which equal the D5 override instead (square corners, base rung
-#       only; -sm/-lg are untouched and still equal core's scale exactly);
-#   (B) each component that Bootstrap routes through a runtime radius property resolves to that same
-#       expected value (D5's override for base, core's own scale for -sm/-lg), so no file re-points
-#       one of them behind the tokens' back;
-#   (C) no source file in the cluster declares a radius at all, except the pinned shape-critical
-#       circles and the single D5 base-rung token, so the invariant cannot be reopened by a SECOND,
-#       undocumented override.
+# WHY THE SOURCE SCAN, NOT A COMPILED-CSS CHECK. A rule that writes `border-radius` DIRECTLY on a
+# component (`.o_kanban_record`, `.o_loading_indicator`, the retired `999px` pills, the home menu
+# tiles) never touches a Bootstrap token and would be invisible to a check of the compiled bundle -
+# which is exactly how the previous pass' audit list grew to a dozen files before the owner asked
+# for a sweep. Reading the authored SOURCE instead catches that class of regression directly, and
+# it turns RED the moment anyone re-adds a radius anywhere in the cluster outside the allow-list.
 #
-# OWNER DECISION D5 (square corners, base rung only). viin_brand_web's D4 restore
-# (static/src/scss/brand_variables.scss:351, `$o-border-radius: 0 !default;`) put back a pre-19
-# brand-identity token that a prior SCSS restructure had silently dropped. This file's ORIGINAL
-# invariant (2026-08-03, "bo het") predates that restore and read any `$o-border-radius` assignment
-# as exactly the regression it was written to catch - the two directly contradicted each other. The
-# owner has since ruled D5: the restore is correct and stays, so THIS FILE's invariant is what
-# updates - a single, SSOT-pinned base-rung exception, tracked dynamically (never hardcoded) so it
-# cannot silently drift from its own source line. -sm / -lg are NOT part of D5 and still must equal
-# core's own scale exactly, as before.
-#
-# WHY ALL THREE, AND WHY (C) IS NOT REDUNDANT. (A) and (B) only see properties Bootstrap itself
-# emits. A rule like `.o_kanban_record { border-radius: 0.5rem }` writes the property DIRECTLY on a
-# component and is invisible to both - which is exactly how the previous pass' audit list grew to a
-# dozen files. (C) is the only assertion that catches it, and it is the one that turns RED the moment
-# anyone re-adds a radius anywhere in the cluster outside the pinned D5 line and the shape-critical
-# circles. Conversely (C) alone would pass if the D13 Sass scale came back through a *core* variable
-# name in a file this scan cannot attribute, so (A)/(B) hold the compiled side. Together they are
-# two-sided.
-#
-# WHY COMPILED CSS AND NOT ONLY THE SASS SOURCE, for (A)/(B). The observable is what the bundle
-# emits. Bootstrap 5.3 gives most components no radius value of their own - it forwards the global
-# one as a runtime custom property (e.g. `$dropdown-border-radius: var(--#{$prefix}border-radius)`,
-# lib/bootstrap/scss/_variables.scss:1246) and Odoo sets `$variable-prefix: ''` - so a component can
-# silently follow a raised global with nobody having written a component rule. Only the compiled
-# value shows what a surface actually renders. BOTH bundles are checked: web.assets_web_dark is a
-# full RECOMPILE (viin_brand_web/static/src/scss/dark_palette.scss), so it can drift on its own.
-#
-# THE EXPECTED VALUES: CORE'S OWN SCALE FOR -sm/-lg, THE CLUSTER'S D5 OVERRIDE FOR base - BOTH READ
-# FROM THEIR SOURCE, NEVER HARDCODED. `$o-border-radius-sm` / `-lg` stay `o-to-rem(3px|6px)` in
-# web/static/src/scss/primary_variables.scss:219-220 and are what core's own
-# bootstrap_overridden.scss:100-101 feeds `$border-radius-sm` / `-lg` with; they are parsed out of
-# that core file at test time. The BASE rung is different under D5: viin_brand_web's own
-# brand_variables.scss:351 (`$o-border-radius: 0 !default;`) is now base's ground truth, so this
-# guard reads IT dynamically too, instead of hardcoding "0" - if the owner ever retunes the D5 value,
-# this test and the source-scan's exact-pin (below) both move together instead of silently diverging.
+# SASS VARIABLES ARE SCANNED TOO, not just CSS declarations: the original D13 regression entered as
+# `$border-radius: 0.5rem`, which emits no `border-radius:` text at all in the file that causes it.
+# It is also how the now-removed D5 token was caught and pinned here for as long as it existed.
 #
 # SHAPE-CRITICAL EXCEPTIONS, and why an allow-list rather than a looser regex. A declaration
 # survives the sweep only when the radius IS the element's identity rather than a rounding taste -
@@ -66,74 +37,11 @@
 # load-bearing, and re-adding that THEME file would fail the sweep. The numbering affordance the
 # owner did ask back for was re-implemented on the same day as an additive marker in
 # viin_brand_web - no pill, no clip-path, no container chrome - and is listed on its own path.)
-#
-# OWNER DECISION D5 IS PINNED THE SAME WAY, BUT IS NOT A SHAPE EXCEPTION. The circles above survive
-# because the radius IS the element's identity; D5 (`$o-border-radius: 0 !default;`,
-# viin_brand_web/static/src/scss/brand_variables.scss:351) survives for a DIFFERENT reason - it is
-# a deliberate Viindoo brand-identity choice (square corners) the owner ruled affirmatively KEEPS,
-# not a rounding taste this file exists to police. It is pinned with the same EXACT (path,
-# declaration) discipline - a single base-rung Sass token, not a broad allow - so a SECOND radius
-# declaration anywhere else in the cluster still fails and gets an explicit decision, same as a
-# fourth circle would.
 import os
 import re
 
 from odoo.modules.module import get_module_path
 from odoo.tests.common import TransactionCase, tagged
-
-# Both compiled bundles: the backend, and the dark bundle (a full recompile, so it can drift alone).
-BUNDLES = ("web.assets_backend", "web.assets_web_dark")
-
-# web/static/src/scss/primary_variables.scss - the Odoo radius scale core's Bootstrap map reads.
-CORE_RADIUS_SOURCE = "web/static/src/scss/primary_variables.scss"
-# ... and the file that proves core still FEEDS $border-radius* from that scale, so an Odoo change
-# that decouples them makes this guard RED rather than silently vacuous.
-CORE_BOOTSTRAP_SOURCE = "web/static/src/scss/bootstrap_overridden.scss"
-
-# Owner decision D5's single base-rung override (square corners) - the ONE line this file's
-# invariant now excludes from "the cluster owns no radius". Read dynamically (never hardcoded) so a
-# future D5 retune keeps this guard and the source-scan allow-list below in sync with each other.
-CLUSTER_OVERRIDE_SOURCE = ("viin_brand_web", "static/src/scss/brand_variables.scss")
-# `$o-border-radius: <value> !default;` - the same declaration the allow-list entry below pins.
-_CLUSTER_OVERRIDE_RE = re.compile(r"\$o-border-radius:\s*([^;!]+?)\s*!default")
-
-# `$o-border-radius: o-to-rem(4px) !default;` -> the px operand. o-to-rem() is core's own px->rem
-# helper (web/static/src/scss/functions.scss:30), which divides by a fixed 16.
-_CORE_SCALE_RE = {
-    "base": re.compile(r"\$o-border-radius:\s*o-to-rem\(\s*(\d+(?:\.\d+)?)px\s*\)"),
-    "sm": re.compile(r"\$o-border-radius-sm:\s*o-to-rem\(\s*(\d+(?:\.\d+)?)px\s*\)"),
-    "lg": re.compile(r"\$o-border-radius-lg:\s*o-to-rem\(\s*(\d+(?:\.\d+)?)px\s*\)"),
-}
-_ROOT_FONT_SIZE_PX = 16.0
-
-# Which core token each compiled custom property must resolve to. Grounded per property, not assumed:
-#   --border-radius / -sm / -lg  core bootstrap_overridden.scss:99-101 ($o-border-radius*)
-#   --modal-border-radius        core bootstrap_overridden.scss:265 ($modal-content-border-radius: $border-radius)
-#   --popover-border-radius      core bootstrap_overridden.scss:243 ($popover-border-radius: $border-radius)
-#   --dropdown-border-radius     Bootstrap _variables.scss:1246 (var(--border-radius))
-#   --tooltip-border-radius      Bootstrap _variables.scss:1408 (var(--border-radius))
-#   --card-border-radius         Bootstrap _variables.scss (var(--border-radius))
-#   --badge / --alert            Bootstrap _variables.scss (var(--border-radius))
-EXPECTED_TOKEN = {
-    "--border-radius": "base",
-    "--border-radius-sm": "sm",
-    "--border-radius-lg": "lg",
-    "--card-border-radius": "base",
-    "--modal-border-radius": "base",
-    "--dropdown-border-radius": "base",
-    "--popover-border-radius": "base",
-    "--tooltip-border-radius": "base",
-    "--badge-border-radius": "base",
-    "--alert-border-radius": "base",
-}
-
-# `.btn` is the property the owner complained about first and is a special case: Bootstrap emits the
-# SAME `--btn-border-radius` name from three rules (.btn / .btn-sm / .btn-lg) with three different
-# source values, so the assertion is on the resolved SET. Core's expectation: the base and -lg sizes
-# sit on the base token (core pins `$btn-border-radius-lg: $border-radius`, bootstrap_overridden.scss:176)
-# and -sm on the small one - i.e. nothing outside core's own scale.
-BTN_RADIUS_PROPERTY = "--btn-border-radius"
-BTN_EXPECTED_TOKENS = {"base", "sm"}
 
 # The cluster this invariant covers. Modules absent from the addons path are skipped, not failed, so
 # the guard survives a repackaging; a module that IS present is always scanned, installed or not.
@@ -172,13 +80,6 @@ ALLOWED_RADIUS_DECLARATIONS = {
     # WITH it; this one is the numbering affordance ALONE, which is the part the owner asked back.
     ("viin_brand_web", "static/src/views/fields/statusbar/statusbar_steps.scss"):
         {"border-radius:50%"},
-    # OWNER DECISION D5 (square corners, base rung only): the ONE deliberate radius declaration this
-    # cluster now ships. `$o-border-radius: 0 !default;` restores a pre-19 brand-identity token (D4)
-    # the owner has ruled KEEPS - it is a single SSOT-pinned base-rung Sass token, not a component
-    # override, and not a reopening of the dozen-file "bo het" regression this file's header
-    # describes: -sm / -lg stay untouched, and this is the ONLY entry pinned to this file, so a
-    # second declaration added here tomorrow still fails and gets its own explicit decision.
-    ("viin_brand_web", "static/src/scss/brand_variables.scss"): {"$o-border-radius:0!default"},
 }
 
 # A radius declaration in authored source: a CSS/custom property `(-*)border-radius:` or a Sass
@@ -194,20 +95,6 @@ _SCSS_LINE_COMMENT_RE = re.compile(r"//[^\n]*")
 _BLOCK_COMMENT_RE = re.compile(r"/\*.*?\*/", re.DOTALL)
 _XML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 
-# A custom-property declaration, anchored so `--border-radius` never matches inside
-# `--btn-border-radius` or `--Attachment-Image-border-radius`.
-_LENGTH_RE = re.compile(r"^(-?\d*\.?\d+)(rem|px)$")
-# A unitless zero is a valid CSS length and is what core actually emits for the un-rounded corners
-# of a radius shorthand (`purchase/.../purchase_dashboard.scss:5`: `#{$r} #{$r} 0 0`). It carries no
-# unit, so `_LENGTH_RE` cannot match it - without this the shorthand branch of `_resolve` reads a
-# CORE shape as unparseable (that is what kept runbot 223607 red).
-_ZERO_RE = re.compile(r"^-?0*\.?0+$")
-_VAR_HOP_RE = re.compile(r"^var\(\s*(--border-radius(?:-sm|-lg)?)\s*\)$")
-
-
-def _declaration_re(prop):
-    return re.compile(r"(?<![-\w])" + re.escape(prop) + r"\s*:\s*([^;}]+)")
-
 
 def _strip_comments(text, path):
     text = _BLOCK_COMMENT_RE.sub("", text)
@@ -218,52 +105,37 @@ def _strip_comments(text, path):
 
 @tagged("post_install", "-at_install")
 class TestThemeRadiusIsCore(TransactionCase):
-    """Every surface renders Odoo CE's native radius, except the single D5 square-corners token.
+    """Every surface renders Odoo CE's native radius; the cluster declares no override of its own.
 
-    OWNER DECISION D5: the cluster deliberately keeps ONE base-rung radius override (square
-    corners); -sm/-lg and everything else stay on core's own scale. See the module header for the
-    full D4-vs-original-invariant lineage.
+    Owner decision D5's base-rung exception (`$o-border-radius: 0 !default;` in
+    viin_brand_web/static/src/scss/brand_variables.scss) was removed in commit 52f233e, so no
+    declaration anywhere in the cluster is exempted any more except the shape-critical circles
+    pinned in ALLOWED_RADIUS_DECLARATIONS. See the module header for the full lineage.
     """
 
-    # --- helpers -----------------------------------------------------------------------------
-
-    def _compiled_css(self, bundle_name):
-        bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=True, js=False)
-        attachments = bundle.css() or self.env["ir.attachment"]
-        css = "".join(
-            (attachment.raw or b"").decode("utf-8", "replace") for attachment in attachments
-        )
-        self.assertTrue(
-            css.strip(),
-            "%s compiled to empty CSS - the bundle did not build, so no radius can be verified."
-            % bundle_name,
-        )
-        return css
-
     def test_the_cluster_declares_no_radius_of_its_own(self):
-        """No cluster source file declares a corner radius, except the shape-critical circles and
-        owner decision D5's single square-corners token.
+        """No cluster source file declares a corner radius, except the shape-critical circles
+        pinned in ALLOWED_RADIUS_DECLARATIONS.
 
-        OWNER DECISION D5: `$o-border-radius: 0 !default;` (viin_brand_web/static/src/scss/
-        brand_variables.scss:351) is pinned in ALLOWED_RADIUS_DECLARATIONS by its EXACT normalized
-        text, the same discipline as the shape-critical circles - not a reopening of the sweep below,
-        and not a loosened rule: any OTHER radius declaration anywhere in the cluster still fails.
+        Owner decision D5's base-rung square-corners token was removed in commit 52f233e, so this
+        invariant no longer carves out any exception beyond the shape-critical circles: any radius
+        declaration found anywhere else in the cluster fails, full stop.
 
-        THE ASSERTION THE COMPILED ONES CANNOT MAKE. A rule that writes `border-radius` DIRECTLY on a
-        component (`.o_kanban_record`, `.o_loading_indicator`, the retired `999px` pills, the home
-        menu tiles) never touches a Bootstrap token, so the bundle-level guards above stay green
-        while the surface is visibly rounder than core. That is precisely how the override count grew
-        to a dozen files before the owner asked for a sweep. This scan is the only thing that keeps
-        it at the D5-plus-circles baseline.
+        THE ASSERTION A COMPILED-CSS CHECK CANNOT MAKE. A rule that writes `border-radius` DIRECTLY
+        on a component (`.o_kanban_record`, `.o_loading_indicator`, the retired `999px` pills, the
+        home menu tiles) never touches a Bootstrap token, so a check of the compiled bundle would
+        stay green while the surface is visibly rounder than core. That is precisely how the
+        override count grew to a dozen files before the owner asked for a sweep. This scan is the
+        only thing that keeps the cluster at the shape-critical-only baseline.
 
         SASS VARIABLES ARE SCANNED TOO, not just CSS declarations: the original D13 regression
-        entered as `$border-radius: 0.5rem`, which emits no `border-radius:` text at all in the file
-        that causes it. It is also how D5's own base-rung token is caught and pinned here.
+        entered as `$border-radius: 0.5rem`, which emits no `border-radius:` text at all in the
+        file that causes it.
 
-        RED BEFORE GREEN: re-adding any single removed line - e.g. `border-radius: $border-radius` to
-        views/kanban/kanban_record.scss - names the file, the line number and the declaration. A
-        SECOND radius line added to brand_variables.scss (or a change to the D5 line's text that no
-        longer matches the pinned exact string) goes RED the same way."""
+        RED BEFORE GREEN: re-adding any single removed line - e.g. `border-radius: $border-radius`
+        to views/kanban/kanban_record.scss - names the file, the line number and the declaration.
+        A radius declaration re-added to brand_variables.scss, or anywhere else in the cluster,
+        goes RED the same way."""
         offenders = []
         scanned_modules = []
         for module in CLUSTER_MODULES:
@@ -302,13 +174,14 @@ class TestThemeRadiusIsCore(TransactionCase):
         )
         self.assertFalse(
             offenders,
-            "The cluster is supposed to own exactly ONE corner-radius declaration - owner decision "
-            "D5's square-corners token in %s - and ZERO others, so every other surface renders "
-            "Odoo CE's native radius (owner revision 2026-08-03, 'bo het', narrowed by the later D5 "
-            "ruling), but %d declaration(s) were found beyond the allow-list:\n  %s\n\nDelete them - "
-            "do NOT replace one override with another, and do not widen the allow-list unless the "
-            "declaration is genuinely SHAPE-critical (a circle that would otherwise become a square) "
-            "or is itself owner decision D5, in which case add it to ALLOWED_RADIUS_DECLARATIONS "
-            "with the reasoning, the way the 50%% skeleton avatar and the D5 token are handled."
-            % ("/".join(CLUSTER_OVERRIDE_SOURCE), len(offenders), "\n  ".join(offenders)),
+            "The cluster is supposed to own ZERO corner-radius declarations, so every surface "
+            "renders Odoo CE's native radius (owner revision 2026-08-03, 'bo het'; the D5 "
+            "square-corners exception this rule once carved out of that sweep was itself removed "
+            "in commit 52f233e), but %d declaration(s) were found beyond the allow-list:\n  %s\n\n"
+            "Delete them - do NOT replace one override with another, and do not widen the "
+            "allow-list unless the declaration is genuinely SHAPE-critical (a circle that would "
+            "otherwise become a square) or is a new, deliberate, owner-approved override, in which "
+            "case add it to ALLOWED_RADIUS_DECLARATIONS with the reasoning, the way the 50%% "
+            "skeleton avatar is handled."
+            % (len(offenders), "\n  ".join(offenders)),
         )

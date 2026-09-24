@@ -24,8 +24,9 @@
 // overridden by this theme WITHOUT `!default` and loaded `('before', web/.../primary_variables.scss)`
 // in web._assets_primary_variables, so core's own `!default` declaration no-ops and its value is
 // unreachable from any file in the bundle - there is no variable left holding it. The expression
-// below is therefore core's declaration transcribed CHARACTER FOR CHARACTER
-// (web/static/src/scss/primary_variables.scss:117), including the nested-list form: `$o-system-fonts`
+// below is therefore core's `$o-headings-font-family` declaration
+// (web/static/src/scss/primary_variables.scss) transcribed CHARACTER FOR CHARACTER, including the
+// nested-list form: `$o-system-fonts`
 // is itself a comma list, so `o-add-unicode-support-font()` sees a two-element list, its
 // `== sans-serif` test never matches, and no support font is spliced in. Reproducing the shape - not
 // just the fonts - is what makes the compiled value identical to core's.

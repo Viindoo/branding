@@ -26,9 +26,8 @@
             <i class="fa fa-search o_viin_home_search_icon" aria-hidden="true"/>
             <input type="text" class="o_viin_home_search_input" t-ref="search"
                    placeholder="Search apps, records, actions..." aria-label="Search applications"
-                   autocomplete="off" spellcheck="false"
+                   autocomplete="off" spellcheck="false" data-allow-hotkeys="true"
                    t-on-input="onSearchInput" t-on-keydown="onSearchKeydown"/>
-            <span class="o_viin_home_search_hint" aria-hidden="true">&#8984;K</span>
           </div>
         </header>
 
@@ -61,7 +60,8 @@
                  t-att-data-viin-saved-order="state.savedOrder">
               <t t-foreach="filteredApps" t-as="app" t-key="app.id">
                 <!-- A TILE IS AN ANCHOR, exactly as core renders its own apps-menu entries: core's
-                     DropdownItem picks its tag from the presence of `href` (dropdown_item.xml:6), so
+                     DropdownItem picks its tag from the presence of `href` (its `t-tag` expression in
+                     dropdown_item.xml), so
                      `a[data-menu-xmlid="<app xmlid>"]` is the selector core's own tours resolve after
                      clicking the apps button - `stepUtils.showAppsMenuItem()` then
                      `a[data-menu-xmlid="base.menu_administration"]` in 57 core tour files. A <button>

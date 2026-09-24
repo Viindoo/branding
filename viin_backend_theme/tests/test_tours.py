@@ -63,6 +63,11 @@ class TestViinThemeTours(_WebTourCapabilityGuard, HttpCase):
         """The flat home menu filters by fuzzy search and launches the highlighted app via the keyboard."""
         self.start_tour("/odoo", "viin_home_menu_tour", login="admin")
 
+    def test_home_menu_typeahead_focuses_search_on_first_keystroke(self):
+        """Typing a printable character on the boot-landing home menu must reach the search box
+        without the user clicking it first - the first keystroke must never be swallowed."""
+        self.start_tour("/odoo", "viin_home_typeahead_tour", login="admin")
+
 
 @tagged("post_install", "-at_install")
 class TestViinAppearanceMarkerCount(_WebTourCapabilityGuard, HttpCase):
@@ -83,13 +88,19 @@ class TestViinAppearanceMarkerCount(_WebTourCapabilityGuard, HttpCase):
 
 @tagged("post_install", "-at_install")
 class TestViinThemeA11yTour(_WebTourCapabilityGuard, HttpCase):
-    """T-4: keyboard accessibility of the theme shell (the skip link is the first focusable element)."""
+    """T-4: keyboard accessibility of the theme shell (the skip link stays reachable and working)."""
 
-    def test_skip_link_is_first_focusable(self):
-        """A skip-to-content link is the first focusable element on the page - WCAG 2.4.1 bypass
-        blocks. (The rail roving-tabindex arm was removed with the vertical rail in PR #658 item 1; the
-        flat home menu is now the sole app switcher, so there is no rail to make one Tab stop.)"""
-        self.start_tour("/odoo", "viin_a11y_skip_link_tour", login="admin")
+    def test_skip_link_is_keyboard_reachable_from_prefocused_search(self):
+        """A skip-to-content link stays present, keyboard-reachable, and functional - WCAG 2.4.1
+        bypass blocks - even though it is no longer the first Tab stop.
+
+        The "first focusable element" guarantee this test used to encode was deliberately withdrawn:
+        ViinHomeMenu now pre-focuses its search input on mount, by product decision, so the user can
+        land on the screen and start typing immediately with no click first. That decision wins over
+        the old first-Tab-stop guarantee, but the skip link itself was not touched, so what remains
+        true is still worth protecting: it exists in the DOM, Shift+Tab from the pre-focused search
+        input still reaches it, and activating it still moves focus into the main content region."""
+        self.start_tour("/odoo", "viin_a11y_skip_link_keyboard_reachable_tour", login="admin")
 
     def test_home_tiles_are_announced_as_links(self):
         """A home-menu app tile keeps its own `link` role - nothing overrides it.

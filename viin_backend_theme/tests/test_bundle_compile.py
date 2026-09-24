@@ -3,21 +3,21 @@
 # resolves and compiles cleanly." Odoo validates NEITHER at install time, verified against
 # odoo/addons/base/models/:
 #   * a ('before'/'after'/'replace', anchor, source) directive resolves its ANCHOR through
-#     AssetPaths.index() (ir_asset.py:396), called from _process_path (ir_asset.py:229) on every
-#     _get_asset_paths() run (ir_asset.py:129) - a renamed/removed anchor makes it raise
-#     ValueError("File(s) ... not found in bundle ...") (ir_asset.py:431, _raise_not_found). This
+#     AssetPaths.index() (ir_asset.py), called from _process_path (ir_asset.py) on every
+#     _get_asset_paths() run (ir_asset.py) - a renamed/removed anchor makes it raise
+#     ValueError("File(s) ... not found in bundle ...") (ir_asset.py, _raise_not_found). This
 #     only happens when a bundle is actually RESOLVED - no `ir_asset` symbol is referenced anywhere
 #     in odoo/modules/loading.py or odoo/modules/registry.py, so -i/-u never triggers it;
 #   * a CONTRIBUTED file that is missing or malformed surfaces only when its own content is
-#     fetched: WebAsset._fetch_content (assetsbundle.py:774) raises AssetNotFound on a missing
-#     file, which StylesheetAsset._fetch_content (assetsbundle.py:935-958) catches and appends to
+#     fetched: WebAsset._fetch_content (assetsbundle.py) raises AssetNotFound on a missing
+#     file, which StylesheetAsset._fetch_content (assetsbundle.py) catches and appends to
 #     `bundle.css_errors` instead of raising - a genuine Sass fault (undefined variable/function,
 #     bad map-merge) lands in that same list;
 #   * for a JS asset the same AssetNotFound is instead SWALLOWED into an embedded
-#     `console.error(...)` string (JavascriptAsset.generate_error, assetsbundle.py:806-808) rather
+#     `console.error(...)` string (JavascriptAsset.generate_error, assetsbundle.py) rather
 #     than raised or recorded in any list - so a bare `bundle.js()` call that merely "does not
 #     raise" is a vacuous check for a missing JS file; a real JS syntax fault still raises
-#     uncaught, from the ES-module transpile step (JavascriptAsset.content, assetsbundle.py:822).
+#     uncaught, from the ES-module transpile step (JavascriptAsset.content, assetsbundle.py).
 # A module with a dangling anchor or a broken SCSS/JS contribution therefore installs clean and
 # only explodes - or silently degrades - the first time a browser actually asks for the bundle.
 # This file is that compile, for every bundle in this module's __manifest__.py `assets` key.
@@ -34,7 +34,7 @@
 # probe, not of this module - so it would be a broken measurement, not a guard. Its anchor is
 # exercised for real every time `web.assets_backend` (guarded below) compiles, since that bundle
 # includes `web._assets_helpers`, which in turn includes `_assets_primary_variables`
-# (web/__manifest__.py:50,383,391).
+# (web/__manifest__.py).
 import re
 
 from odoo.tests.common import TransactionCase, tagged
@@ -56,12 +56,12 @@ JS_BUNDLES = (
 
 # The realistic failure shape for one of THIS module's own bare-append entries, traced against
 # odoo/addons/base/models/: a literal (non-wildcard) missing path falls through _get_paths()
-# (ir_asset.py:361-362) with full_path=None, so WebAsset.stat() (assetsbundle.py:744-751) never
+# (ir_asset.py) with full_path=None, so WebAsset.stat() (assetsbundle.py) never
 # finds a filename, tries an ir.attachment lookup that ALSO misses, and raises
 # AssetNotFound("Could not find %s" % self.name). AssetNotFound is NOT an IOError (it subclasses
-# AssetError(Exception), assetsbundle.py:31-35), so _fetch_content()'s `except IOError:` branch
-# (:786, "File %s does not exist.") is NOT what actually fires here - it falls to the bare
-# `except:` (:787-788) and re-raises AssetError('Could not get content for %s.' % self.name)
+# AssetError(Exception), assetsbundle.py), so _fetch_content()'s `except IOError:` branch
+# ("File %s does not exist.") is NOT what actually fires here - it falls to the bare
+# `except:` and re-raises AssetError('Could not get content for %s.' % self.name)
 # instead. So a bare "does not exist" phrase-check would not even match THIS module's own
 # realistic missing-file case, on top of false-reding on unrelated content elsewhere in the bundle
 # (web.assets_unit_tests / web.assets_tests also carry core's OWN files, e.g.
@@ -70,7 +70,7 @@ JS_BUNDLES = (
 #
 # The robust, message-agnostic signal is the wrapping every failure message ALWAYS goes through,
 # regardless of which AssetError subclass or wording was raised: WebAsset.generate_error
-# (assetsbundle.py:726-728) always renders `f'{msg!r} in file {self.url!r}'` - so
+# (assetsbundle.py) always renders `f'{msg!r} in file {self.url!r}'` - so
 # "in file '<this asset's own path>'" is guaranteed present for THIS module's own failure and
 # absent for anyone else's, independent of the specific message text.
 _MODULE_PATH_PREFIX = "viin_backend_theme/"
@@ -87,7 +87,7 @@ class BundleCompileTest(TransactionCase):
         WOULD FAIL IF: the `('before', 'web/static/src/scss/primary_variables.scss',
         'viin_backend_theme/static/src/scss/primary_variables.scss')` anchor this module declares
         for `web._assets_primary_variables` is renamed or removed by a future core upgrade -
-        AssetPaths.index() raises ValueError (ir_asset.py:396/431) the moment web.assets_backend
+        AssetPaths.index() raises ValueError (ir_asset.py) the moment web.assets_backend
         pulls that sub-bundle in through web._assets_helpers, before this test's own assertions
         run; or a Sass fault in any of the 8 files this module lists under web.assets_backend
         (fonts.scss, editor_content_font.scss, density.scss, apps_menu_home.scss, skip_link.scss,
@@ -98,7 +98,7 @@ class BundleCompileTest(TransactionCase):
         viin_brand_mail/tests/test_mail_contrast_compile.py) - because `.css()` returns early on an
         already-cached attachment WITHOUT repopulating `css_errors`, so a bundle that failed on an
         EARLIER compile would otherwise read green here while still serving the fallback
-        stylesheet (assetsbundle.py:496-511, the literal "## CSS error message ##" /
+        stylesheet (AssetsBundle.css(), the literal "## CSS error message ##" /
         "css_error_message" / "A css error occured" markers it bakes into that payload).
         """
         for bundle_name in CSS_BUNDLES:
@@ -132,15 +132,15 @@ class BundleCompileTest(TransactionCase):
         the 6 tour files under `static/tests/tours/` (web.assets_tests) is deleted or renamed
         without updating the module's own glob contribution - a literal missing path resolves to
         `AssetNotFound("Could not find %s" % name)` from `WebAsset.stat()`'s failed ir.attachment
-        fallback (assetsbundle.py:744-751), re-raised as `AssetError('Could not get content for
-        %s.' % name)` by `_fetch_content()`'s catch-all (:787-788, since AssetNotFound is not an
-        IOError), then swallowed into an embedded `console.error("'Could not get content for
+        fallback (`WebAsset.stat()`), re-raised as `AssetError('Could not get content for
+        %s.' % name)` by `_fetch_content()`'s bare `except:` catch-all, since AssetNotFound is not an
+        IOError, then swallowed into an embedded `console.error("'Could not get content for
         viin_backend_theme/...' in file 'viin_backend_theme/...'")` string
-        (assetsbundle.py:726-728+806-808) rather than raised - which is why this test
+        (WebAsset/JavascriptAsset `generate_error`) rather than raised - which is why this test
         regex-matches the compiled output for `in file '<this module's own path>'` (the one thing
         every such failure message is always wrapped in) instead of merely checking the build did
         not raise; OR a genuine JS syntax fault in one of those files, which DOES raise uncaught
-        from the ES-module transpile step (assetsbundle.py:822) when the bundle is built.
+        from the ES-module transpile step (`JavascriptAsset.content`) when the bundle is built.
 
         The match is deliberately scoped to `in file '<viin_backend_theme/...>'` (see the
         module-level `_MISSING_OWN_ASSET_RE` docstring) rather than any bare English phrase: both

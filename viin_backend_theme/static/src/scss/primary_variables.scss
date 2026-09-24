@@ -16,7 +16,8 @@
 // land these stacks fall back to the system UI font. The @font-face rules live in fonts.scss.
 //
 // BOTH STACKS GO THROUGH o-add-unicode-support-font(), BECAUSE CORE PUTS BOTH OF ITS OWN THROUGH IT
-// (web/static/src/scss/primary_variables.scss:114,117). Replacing the two declarations here had
+// (core's `$o-font-family-sans-serif` and `$o-headings-font-family` in
+// web/static/src/scss/primary_variables.scss). Replacing the two declarations here had
 // quietly dropped that wrapper from both, and with it the fallback a user actually notices: an
 // emoji or an uncommon script rendered as an empty box, in headings AND in body text. The headings
 // line had lost the emoji families outright as well.
