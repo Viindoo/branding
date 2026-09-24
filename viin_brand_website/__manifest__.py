@@ -54,6 +54,9 @@ Editions Supported
             'viin_brand_website/static/src/components/configurator/configurator.scss',
             'viin_brand_website/static/src/components/website_loader/website_loader.scss',
         ],
+        'web.assets_frontend': [
+            'viin_brand_website/static/src/js/frontend_to_backend_apps_btn.js',
+        ],
         'website.assets_editor': [
             'viin_brand_website/static/src/components/resource_editor/resource_editor_warning.xml',
         ],
@@ -62,6 +65,14 @@ Editions Supported
         ],
         'web.assets_tests': [
             'viin_brand_website/static/tests/tours/colorpicker_brand_override.js',
+            'viin_brand_website/static/tests/tours/frontend_to_backend_apps_btn_wiring.js',
+        ],
+        'web.assets_unit_tests': [
+            # frontend_to_backend_apps_btn.js is listed here so the Hoot suite's own `import` of
+            # it resolves; the module's separate web.assets_frontend entry (production delivery
+            # to a real website page) is added independently and is not this bundle's concern.
+            'viin_brand_website/static/src/js/frontend_to_backend_apps_btn.js',
+            'viin_brand_website/static/tests/js/frontend_to_backend_apps_btn.test.js',
         ],
     },
     'images': [
