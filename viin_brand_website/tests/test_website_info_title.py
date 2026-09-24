@@ -8,16 +8,16 @@
 # leaks "Odoo Information | <website name>", because core resolves that title from a DIFFERENT
 # view record - the OUTER wrapper `website.website_info` - and nothing in this module touches it:
 #
-#   - core website/controllers/main.py website_info() (~line 344-354) calls
+#   - core `Website.website_info()` in website/controllers/main.py calls
 #     request.render('website.website_info', values) without setting values['main_object'].
-#   - core website/models/ir_ui_view.py _render_template() (line 454-455): when 'main_object' is
+#   - core `IrUiView._render_template()` in website/models/ir_ui_view.py: when 'main_object' is
 #     absent, it defaults to the resolved ir.ui.view record for the template being rendered - i.e.
 #     the `website.website_info` view record itself.
-#   - core website/views/website_templates.xml, the website.layout title xpath (~line 106-119):
+#   - core website/views/website_templates.xml, the `website.layout` template's title xpath:
 #     `if not additional_title and main_object and 'name' in main_object: additional_title =
 #     main_object.sudo().name`, then `title = (additional_title + ' | ' if additional_title else
 #     '') + website.name`.
-#   - core website/views/website_templates.xml line 2721:
+#   - core website/views/website_templates.xml, the `website.website_info` template record:
 #     `<template id="website_info" name="Odoo Information">` - that `name=` attribute IS the
 #     ir.ui.view.name field for that record, so main_object.name == "Odoo Information", giving
 #     title == "Odoo Information | <website.name>".

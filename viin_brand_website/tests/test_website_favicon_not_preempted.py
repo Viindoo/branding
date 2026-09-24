@@ -10,7 +10,7 @@
 #     <xpath expr="//t[@t-set='x_icon']" position="replace">
 # inheriting `website.layout`. `locate_node` (odoo/tools/template_inheritance.py) resolves an
 # xpath to the FIRST document-order match in the combined arch, which is core website's own
-# producer (website/views/website_templates.xml:120 -
+# producer (the `website.layout` template in website/views/website_templates.xml -
 # `<t t-set="x_icon" t-value="website.image_url(website, 'favicon')"/>`), so the replace destroyed
 # it and hardcoded the brand path unconditionally, with no `or` guard - a customer who configured
 # their own favicon could never serve it (AC-1 below). The fix moves branding to a field default
@@ -19,13 +19,14 @@
 #
 # AC-1 grounding (Odoo 19.0 core; verified via odoo-semantic model_inspect against the checkout at
 # /home/tran-ngoc-tuan/git/odoo_19.0/addons):
-#   - website/views/website_templates.xml:120 sets `x_icon = website.image_url(website, 'favicon')`.
-#   - website/models/website.py:1782 `image_url(self, record, field, size=None)` (confirmed present
-#     via odoo-semantic model_inspect at 19.0) returns
+#   - the `website.layout` template in website/views/website_templates.xml sets
+#     `x_icon = website.image_url(website, 'favicon')`.
+#   - `Website.image_url(self, record, field, size=None)` in website/models/website.py (confirmed
+#     present via odoo-semantic model_inspect at 19.0) returns
 #       '/web/image/%s/%s/%s%s?unique=%s' % (record._name, record.id, field, size, sha)
 #     i.e. for a website with no explicit size: /web/image/website/<id>/favicon?unique=<7 hex>
 #     (sha = hashlib.sha512(str(record.write_date)...).hexdigest()[:7]).
-#   - web/views/webclient_templates.xml:23 renders it:
+#   - the `web.layout` template in web/views/webclient_templates.xml renders it:
 #       <link type="image/x-icon" rel="shortcut icon" t-att-href="x_icon or '/web/static/img/favicon.ico'"/>
 #
 # The production fix (models/website.py) is ALREADY PRESENT in this tree, so the RED proof here is
@@ -125,8 +126,8 @@ class WebsiteFaviconNotPreemptedTest(HttpCase):
         )
 
         # website.image_url()'s href shape for THIS website's own `favicon` field
-        # (website/models/website.py:1782), parametrized on this record's own id so a favicon
-        # served for a different website could not accidentally pass.
+        # (`Website.image_url` in website/models/website.py), parametrized on this record's own id
+        # so a favicon served for a different website could not accidentally pass.
         own_favicon_href_re = re.compile(
             r"^/web/image/website/%d/favicon\?unique=[0-9a-f]{7}$" % website.id
         )

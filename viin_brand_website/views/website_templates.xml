@@ -48,8 +48,12 @@
              viin_brand_common's own fallback in views/webclient_template.xml.
              Locked by tests/test_website_favicon_not_preempted.py. -->
 
+        <!-- Apps button: this module redirects it straight into the backend; core's own
+             dropdown markup on the sibling menu is deliberately left alone. -->
         <xpath expr="//a[hasclass('o_frontend_to_backend_apps_btn')]" position="attributes">
             <attribute name="title">Go to your Viindoo Apps</attribute>
+            <attribute name="data-bs-toggle"/>
+            <attribute name="href">/odoo</attribute>
         </xpath>
     </template>
 </odoo>
