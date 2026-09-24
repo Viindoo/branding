@@ -3,7 +3,7 @@
 // a full-width white search box, an "Applications" section label, then one flat dense app grid.
 //
 // COLORS: theme-aware native Bootstrap runtime props ONLY. Odoo compiles Bootstrap with
-// $variable-prefix:'' (bootstrap_overridden.scss:51), so the runtime props are UNPREFIXED
+// $variable-prefix:'' (core bootstrap_overridden.scss), so the runtime props are UNPREFIXED
 // (--secondary-bg / --body-bg / --body-color / --secondary-color / --border-color), NOT --bs-*.
 // Their dark values come from the recompiled web.assets_web_dark bundle
 // (viin_brand_web/static/src/scss/dark_palette.scss), not a runtime attribute flip. The only
@@ -26,9 +26,9 @@
 //     backgrounds - graph_background.png and form_sheetbg.png - and neither is a home/app-drawer
 //     surface. CE has no app drawer at all (it is an Enterprise feature); the single home-menu token
 //     left in core 19.0 is the bare class name `.o_home_menu_background` in
-//     web/static/src/core/bottom_sheet/bottom_sheet.scss:212, with no asset behind it.
+//     web/static/src/core/bottom_sheet/bottom_sheet.scss, with no asset behind it.
 //  2. THE IMAGE THE PREVIOUS VIINDOO VERSIONS USED IS NOT OURS. Recovered from this repo's history:
-//     origin/19.0 to_backend_theme/static/src/components/apps_menu/apps_menu.scss:3 set
+//     origin/19.0 to_backend_theme/static/src/components/apps_menu/apps_menu.scss set
 //       --app-menu-background: url("/web_responsive/static/src/img/home-menu-bg-overlay.svg"),
 //                              linear-gradient(to bottom, $brand-primary-dark,
 //                                              desaturate(lighten($brand-primary-dark, 20%), 15));
@@ -118,7 +118,7 @@
     // IT STOPS AT THE NAVBAR, DELIBERATELY. Covering the navbar would bury the very button that
     // toggles the panel back off, which is the owner's 2026-08-03 round trip ("bam app icon lan nua
     // thi no lai ve lai view cu"). `$o-navbar-height` is core's own variable
-    // (web/.../navbar/navbar.variables.scss:3), reached through web._assets_backend_helpers, so the
+    // (web/.../navbar/navbar.variables.scss), reached through web._assets_backend_helpers, so the
     // panel follows the navbar if core ever retunes it. The result on screen is pixel-identical to
     // what the full-page client action produced, because that action filled exactly this box.
     //
@@ -188,15 +188,6 @@
 
                 &::placeholder { color: var(--secondary-color); }
             }
-
-            .o_viin_home_search_hint {
-                flex: 0 0 auto;
-                padding: 0.1rem 0.4rem;
-                border: $border-width solid var(--border-color);
-                color: var(--secondary-color);
-                font-size: 0.75rem;
-                line-height: 1.2;
-            }
         }
     }
 
@@ -205,8 +196,9 @@
     // (static/src/scss/brand_variables.scss) a section label is not an action - it is the STRUCTURE
     // the app grid is organised into - so it carries the brand SECONDARY purple, matching the
     // group-by search facet and the list group header. This is the lowest-risk purple in the
-    // cluster: the class is theme-owned (home_menu.xml:32), no core rule targets it, so no
-    // !important and no token re-point is needed - a plain `color` on a (0,2,0) selector.
+    // cluster: the class is theme-owned (`.o_viin_home_section_label` in home_menu.xml), no core
+    // rule targets it, so no !important and no token re-point is needed - a plain `color` on a
+    // (0,2,0) selector.
     //   light  #7F4282 on the --secondary-bg band #E9ECEF = 5.90:1
     // (It was var(--secondary-color), the muted-grey tier - readable but semantically silent.)
     //

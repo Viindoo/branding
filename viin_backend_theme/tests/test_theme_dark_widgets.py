@@ -69,10 +69,10 @@ STATIC_SRC = os.path.join(MODULE_DIR, "static", "src")
 BACKEND_BUNDLE = "web.assets_backend"
 
 # Element ancestor pools (class-only), transcribed from the theme's own templates.
-# home_menu.xml:10-32 - `.o_viin_home_menu` > `.o_viin_home_content` > `.o_viin_home_body` >
+# home_menu.xml - `.o_viin_home_menu` > `.o_viin_home_content` > `.o_viin_home_body` >
 # `<div class="o_viin_home_section_label">Applications</div>`. The menu ROOT is modelled separately
 # because it is the element that declares the page band the label renders on
-# (`background-color: var(--secondary-bg)`, home_menu.scss:15).
+# (`background-color: var(--secondary-bg)`, home_menu.scss).
 HOME_MENU_ROOT_CLASSES = frozenset({"o_viin_home_menu"})
 HOME_MENU_ROOT_ANCESTORS = frozenset({"o_web_client", "o_action_manager"})
 HOME_SECTION_LABEL_CLASSES = frozenset({"o_viin_home_section_label"})

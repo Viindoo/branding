@@ -8,7 +8,7 @@
 # asset (web/static/img/ has only graph_background.png and form_sheetbg.png, and CE has no app
 # drawer at all), and the image the PREVIOUS Viindoo versions used -
 # web_responsive/static/src/img/home-menu-bg-overlay.svg, referenced by
-# to_backend_theme/.../apps_menu/apps_menu.scss:3 on origin/19.0 - is an OCA LGPL-3 asset belonging
+# to_backend_theme/.../apps_menu/apps_menu.scss on origin/19.0 - is an OCA LGPL-3 asset belonging
 # to a module this very PR deletes, so it cannot be re-added to an OPL-1 module. The backdrop is
 # therefore re-DRAWN from the cluster's own brand tokens as layered CSS gradients: original work,
 # zero image payload, and scheme-aware for free.

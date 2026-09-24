@@ -60,8 +60,8 @@ recompile live in ``viin_brand_web``, read from its brand-primary SSOT.
         # is what made every button, card, input, modal, dropdown, popover, tooltip, alert and badge
         # rounder than Odoo CE, so the file was deleted rather than re-tuned: the cluster now owns
         # ZERO radius overrides and every surface inherits core's own scale
-        # ($o-border-radius / -sm / -lg, web/static/src/scss/primary_variables.scss:218-220, fed into
-        # $border-radius* by core bootstrap_overridden.scss:99-101). Guarded by
+        # ($o-border-radius / -sm / -lg in web/static/src/scss/primary_variables.scss, fed into
+        # $border-radius* by core bootstrap_overridden.scss). Guarded by
         # tests/test_theme_radius_is_core.py - re-adding any radius declaration turns it RED.
         # C-5 (PR #658): the frontend (login) $primary de-brand lives in viin_brand_web (the web
         # de-brand owner), which re-points $theme-colors['primary'] to the AA teal on
@@ -94,7 +94,8 @@ recompile live in ``viin_brand_web``, read from its brand-primary SSOT.
             'viin_backend_theme/static/src/webclient/apps_menu_home.js',
             'viin_backend_theme/static/src/webclient/apps_menu_home.xml',
             'viin_backend_theme/static/src/webclient/webclient_patch.js',
-            # T-4 (PR #658): t-inherit web.WebClient to prepend the skip-link as the first focusable node.
+            # T-4 (PR #658): t-inherit web.WebClient to prepend the skip-link (home_menu.js's header
+            # covers why it is no longer the shell's first Tab stop).
             'viin_backend_theme/static/src/webclient/webclient.xml',
             # PR #658 test-infra/onboarding adaptations to the theme's app-switcher repurpose + flat
             # home-menu landing (both must affect real runtime AND the HttpCase suites, so they ride

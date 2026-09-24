@@ -12,13 +12,26 @@
 // append at the end in default sequence and are never hidden - the feature is purely additive to the
 // keyboard/click paths above.
 //
-// T-4 (PR #658): the search box autofocuses ONLY when the home menu is opened by an explicit user
-// action - the `autofocusSearch` prop on the overlay arm, or viin_home_focus_search in the doAction
-// context on the client-action arm. It does NOT autofocus on the BOOT landing
-// (WebClient._loadDefaultApp -> doAction with no flag): there the FIRST focusable element must remain
-// the "Skip to main content" bypass-blocks link (WCAG 2.4.1), and an autofocus would steal that
-// first-Tab position. Auto-moving focus on load is itself a WCAG 3.2 concern, so gating it on a
-// deliberate open is the correct behaviour.
+// SEARCH-FIRST FOCUS: `onMounted` pre-focuses ViinHomeMenu's search box on mount, in both render
+// shapes, whenever `hasTouch` reports no touch support - a deliberate product decision: land on the
+// screen, type, and searching starts immediately, with no click first. Recovering a keystroke that
+// arrives once focus has moved elsewhere (`onWindowKeydown`) needs the box to already hold focus so
+// a composition-based IME session can attach to it and so the browser's native keydown appends
+// rather than overwrites - guarded by `static/tests/viin_home_typeahead.test.js`.
+//
+// COST, ACCEPTED: pre-focusing the search box means it, not the shell's `.o_viin_skip_link`
+// bypass-blocks link (WCAG 2.4.1), receives the page's very first Tab. The skip link stays present,
+// reachable by Shift-Tab from the search box or by landmark/heading screen-reader navigation, and
+// activating it still moves focus into the main action region (`skipToMainContent`,
+// webclient_patch.js) - only its place as the FIRST stop is given up, on purpose, for the
+// search-first goal above. The search input's `aria-label` (home_menu.xml) covers the resulting
+// gap: a screen-reader user landing there on mount is told what the field is, not left with no
+// orientation at all. `data-allow-hotkeys="true"` (home_menu.xml) keeps core's global hotkeys
+// reachable while the box holds focus by default (`@web/core/hotkeys/hotkey_service.js`
+// `shouldProtectEditable`). `role="combobox"` was evaluated and rejected: it implies
+// `aria-expanded`/`aria-controls`/`aria-activedescendant` wiring a popup listbox this markup does
+// not have - the grid is always visible, never a popup - so the implicit textbox role plus the
+// `aria-label` describes this input correctly and a bare `role="combobox"` would not.
 //
 // D3 MECHANISM CHANGE, 2026-08-17 (owner decision D3) - THIS COMPONENT NOW HAS TWO MOUNT POINTS.
 // It used to be reachable ONLY as a full-page client action, which meant the navbar apps button had
@@ -36,9 +49,17 @@
 // tab, right-click copies the link, and a screen reader announces a link to a page. Nothing about
 // the rendered tile changes.
 
-import { Component, useState, useRef, useExternalListener, onWillStart } from "@odoo/owl";
+import {
+    Component,
+    useState,
+    useRef,
+    useExternalListener,
+    onMounted,
+    onWillStart,
+} from "@odoo/owl";
 import { registry } from "@web/core/registry";
-import { useService, useAutofocus } from "@web/core/utils/hooks";
+import { hasTouch } from "@web/core/browser/feature_detection";
+import { useService } from "@web/core/utils/hooks";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { useSortable } from "@web/core/utils/sortable_owl";
 import { fuzzyLookup } from "@web/core/utils/search";
@@ -65,22 +86,33 @@ export class ViinHomeMenu extends Component {
         ...standardActionServiceProps,
         action: { type: Object, optional: true },
         close: { type: Function, optional: true },
-        autofocusSearch: { type: Boolean, optional: true },
     };
 
     setup() {
         this.menuService = useService("menu");
         this.orm = useService("orm");
+        this.ui = useService("ui");
         this.gridRef = useRef("grid");
-        // Autofocus only on a user-triggered open (see the T-4 note in the file header); the boot
-        // landing leaves the skip-link as the first focusable element. Both flags are stable for the
-        // component's life, so the conditional hook calls at setup are safe.
-        const focusSearch = this.isOverlay
-            ? this.props.autofocusSearch
-            : this.props.action?.context?.viin_home_focus_search;
-        if (focusSearch) {
-            useAutofocus({ refName: "search" });
-        }
+        this.searchRef = useRef("search");
+        // Pre-focus the search box the moment this component mounts, in EITHER render shape - see
+        // the file header for the full WCAG/IME reasoning. Skipped on a touch device: an
+        // unrequested virtual keyboard popping on a screen the user has not touched yet is worse
+        // than leaving it unfocused.
+        onMounted(() => {
+            if (!hasTouch()) {
+                this._focusSearchInput();
+            }
+        });
+        // Type-to-search RECOVERY: a printable keystroke with nothing editable focused must move
+        // focus back into the search box, in EITHER render shape, so this is unconditional rather
+        // than gated on isOverlay - the FIRST keystroke on mount is already covered by the pre-focus
+        // above; this listener only recovers focus after it was lost. useHotkey cannot express "any
+        // printable character" - core's AUTHORIZED_KEYS (hotkey_service.js) excludes most printable
+        // punctuation - so this listens directly and mirrors that same file's IME-composition check,
+        // its targetIsEditable/shouldProtectEditable rule (an already-focused editable, including
+        // the search box itself, keeps its own native typing untouched), and its `ui.activeElement`
+        // UI-layering check (a Dialog or other higher layer owns the keystroke instead).
+        useExternalListener(window, "keydown", this.onWindowKeydown);
         if (this.isOverlay) {
             // DISMISSAL, borrowed verbatim from what core's own apps DROPDOWN does - because the
             // contract this overlay restores is core's: clicking the apps button must not navigate,
@@ -90,7 +122,7 @@ export class ViinHomeMenu extends Component {
             // In a real session that is a click on the navbar; under a tour it is the next step's
             // click on the controller below, which is exactly the behaviour that leaves the DOM
             // clean for the rest of the tour instead of stranding a full-screen panel over it.
-            useExternalListener(document, "pointerdown", this.onOutsidePointerDown.bind(this), {
+            useExternalListener(document, "pointerdown", this.onOutsidePointerDown, {
                 capture: true,
             });
             // Escape dismisses and hands focus back to the button that opened it - a non-modal
@@ -318,6 +350,43 @@ export class ViinHomeMenu extends Component {
         this.props.close?.();
     }
 
+    /** Focus the search input; a no-op when it is not rendered (defensive against a mount-timing
+     *  or unmount race). */
+    _focusSearchInput() {
+        this.searchRef.el?.focus({ preventScroll: true });
+    }
+
+    /** Move focus into the search box, unless a guard says otherwise: mid-IME composition, a
+     *  higher UI layer open, an accelerator modifier held, not a single printable character, or an
+     *  editable target already owns the keystroke. Reads `ev.key` only to check that guard; it
+     *  never WRITES into the search box - no `input.value` assignment, no injecting `ev.key` -
+     *  so the browser's own keydown default action delivers the character natively once focus has
+     *  moved, which is what makes a recovered keystroke APPEND to content already in the box
+     *  instead of overwriting it. */
+    onWindowKeydown(ev) {
+        if (ev.isComposing || ev.keyCode === 229) {
+            return;
+        }
+        if (this.ui.activeElement !== document) {
+            return;
+        }
+        if (ev.ctrlKey || ev.altKey || ev.metaKey) {
+            return;
+        }
+        if (typeof ev.key !== "string" || ev.key.length !== 1) {
+            return;
+        }
+        const target = ev.target;
+        const targetIsEditable =
+            target instanceof HTMLElement &&
+            (/input|textarea/i.test(target.tagName) || target.isContentEditable) &&
+            !target.matches("input[type=checkbox], input[type=radio]");
+        if (targetIsEditable) {
+            return;
+        }
+        this._focusSearchInput();
+    }
+
     onSearchInput(ev) {
         this.state.query = ev.target.value;
         this.state.focusIndex = -1; // reset highlight when the result set changes
@@ -368,8 +437,15 @@ export class ViinHomeMenu extends Component {
                 break;
             case "Enter": {
                 ev.preventDefault();
-                const target = this.filteredApps[current >= 0 ? current : 0];
-                this.launch(target);
+                // An explicit arrow-highlight always wins, typed or not (rule: highlighted tile
+                // opens regardless of query). Otherwise, only a non-empty query has a match worth
+                // opening (rule: type-then-Enter opens the first match); an empty query with
+                // nothing highlighted opens nothing (rule: no selection, no launch).
+                if (current >= 0) {
+                    this.launch(this.filteredApps[current]);
+                } else if (this.state.query.trim()) {
+                    this.launch(this.filteredApps[0]);
+                }
                 break;
             }
         }

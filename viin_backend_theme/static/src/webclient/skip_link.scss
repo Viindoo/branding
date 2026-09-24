@@ -1,8 +1,9 @@
 // T-4 (PR #658 review-fix) - "Skip to main content" bypass-blocks link (WCAG SC 2.4.1).
 //
-// The link (webclient.xml, prepended as the FIRST focusable element) is visually hidden until it
-// receives keyboard focus, then slides into view at the top-inline-start corner. It uses the native
-// scheme-aware runtime props (--body-bg / --link-color) so it reads correctly in light AND dark, and
+// The link (webclient.xml, prepended to the shell) is visually hidden until it receives keyboard
+// focus, then slides into view at the top-inline-start corner. No longer the shell's first Tab
+// stop - home_menu.js's header covers why. It uses the native scheme-aware runtime props
+// (--body-bg / --link-color) so it reads correctly in light AND dark, and
 // the shared base focus token (--o-viin-focus, viin_brand_web/focus_ring.scss) for its ring. NO
 // --viin-* parallel token; NO hardcoded themeable hex; NO radius declaration (owner revision
 // 2026-08-03 "bo hết" - the cluster owns zero radius overrides, so this link is square-cornered).

@@ -21,9 +21,10 @@
        OWNER REVERT 2026-08-03 - THE ICON IS WHITE AGAIN, PAINTED BY CORE, NOT BY US.
        ("app icon hien co mau den. Tao muon cho nay khong override gi de no trang nhu cu.")
        ROOT CAUSE. Core's own trigger is a bare <button> that the OWL Dropdown component decorates
-       with `o-dropdown dropdown-toggle` at run time (web/.../core/dropdown/dropdown.js:278), and
+       with `o-dropdown dropdown-toggle` at run time (Dropdown.setTargetElement() in
+       web/.../core/dropdown/dropdown.js), and
        core styles `.o_main_navbar .o_nav_entry, .dropdown-toggle:not(.o-dropdown-toggle-custo)`
-       with the `%-main-navbar-entry-base` placeholder (web/.../navbar/navbar.variables.scss:34-50),
+       with the `%-main-navbar-entry-base` placeholder (web/.../navbar/navbar.variables.scss),
        whose `o-hover-text-color()` emits a `color` reading the NavBar-entry-color custom property
        with `$o-navbar-entry-color` as its fallback - white, because viin_brand_web pins
        `$o-navbar-entry-color: #FFFFFF`. Replacing the <Dropdown> dropped that class, so the button
@@ -33,8 +34,8 @@
        (whose own colour property also defaults to the body colour) would have done the same.
        THE FIX IS SUBTRACTIVE. `text-reset` and `btn` are gone and NO colour is declared anywhere;
        instead the button carries core's own `o_nav_entry` - the semantic class core provides for a
-       navbar entry that is NOT a dropdown (same pattern as core's burger toggle,
-       web/.../burger_menu/burger_menu.xml:8). That single class makes core's navbar cascade paint
+       navbar entry that is NOT a dropdown (same pattern as web.BurgerMenu's toggle `<button>` in
+       web/.../burger_menu/burger_menu.xml). That single class makes core's navbar cascade paint
        it, so the icon is white in BOTH schemes for free, and the entry-base placeholder also
        restores the flex/align-items/height that keeps it on the navbar row - the alignment
        apps_menu_home.scss used to hand-replicate. `dropdown-toggle` is deliberately NOT used: it

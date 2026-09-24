@@ -6,7 +6,7 @@
 // stock passes). The theme repurposed `.o_navbar_apps_menu`'s inner core <Dropdown> (apps_menu_home.xml)
 // with a plain button that opens the ONE home menu, so core's clickbot community path
 // (web/static/src/webclient/clickbot/clickbot.js) finds no `.o_navbar_apps_menu .dropdown-toggle`
-// (the class core's Dropdown pushes - dropdown.js:278) and throws
+// (the class core's Dropdown.setTargetElement() pushes, in dropdown.js) and throws
 // `No element "apps menu toggle button" found`; its `.o-dropdown--menu .o_app` / `.dropdown-item`
 // selectors are likewise gone.
 //

@@ -32,7 +32,7 @@
 // viin_brand_web + viin_brand_mail + viin_backend_theme install, and the sibling
 // viin_home_menu_tour (static/tests/tours/viin_appearance_tour.js) already launches it the same way,
 // so this tour adds no new install-scope assumption. Its form carries the stable core root class
-// `.o_base_settings_view` (web/static/src/webclient/settings_form_view/settings_form_view.scss:9,39),
+// `.o_base_settings_view` (web/static/src/webclient/settings_form_view/settings_form_view.scss),
 // which is a far stronger "this exact view came back" marker than a generic .o_form_view.
 //
 // GROUNDED (OSM 19.0 + core source): the apps trigger every core app-switch tour clicks is
@@ -68,6 +68,13 @@ registry.category("web_tour.tours").add("viin_apps_menu_toggle_tour", {
                 "the flat home menu is shown, as the non-navigating overlay arm " +
                 "(.o_viin_home_overlay), with its app tiles present",
             trigger: ".o_viin_home_menu.o_viin_home_overlay a.o_app[data-menu-xmlid]",
+        },
+        {
+            content:
+                "REGRESSION GUARD: opening the overlay via the apps icon (a deliberate user " +
+                "action) must land focus in the search box - the user must never have to click " +
+                "the search box after opening the overlay.",
+            trigger: ".o_viin_home_menu .o_viin_home_search_input:focus",
         },
         {
             content:

@@ -164,9 +164,3 @@ msgstr "hoạt động đến hạn hôm nay"
 #: code:addons/viin_backend_theme/static/src/home_menu/home_menu.js:0
 msgid "activity due today"
 msgstr "hoạt động đến hạn hôm nay"
-
-#. module: viin_backend_theme
-#. odoo-javascript
-#: code:addons/viin_backend_theme/static/src/home_menu/home_menu.xml:0
-msgid "⌘K"
-msgstr "⌘K"

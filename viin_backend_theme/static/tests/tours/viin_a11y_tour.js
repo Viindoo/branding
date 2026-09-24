@@ -1,34 +1,86 @@
 /** @odoo-module **/
 
-// T-4 (PR #658 review-fix) - keyboard accessibility of the theme shell. Driven by tests/test_tours.py.
+// T-4 (PR #658 review-fix), retargeted for the home-menu pre-focus product decision. Driven by
+// tests/test_tours.py.
 //
-// BYPASS BLOCKS (WCAG 2.4.1). A "Skip to main content" link is the FIRST focusable element on the
-// page: from a fresh load the very first Tab lands on it. Without the skip link the first Tab lands on
-// some other chrome control -> `.o_viin_skip_link:focus` never appears -> RED.
+// BYPASS BLOCKS (WCAG 2.4.1) - narrowed guarantee. The "Skip to main content" link (webclient.xml)
+// is NO LONGER the first Tab stop on a fresh `/odoo` load: ViinHomeMenu now pre-focuses its search
+// input on mount, by deliberate product decision ("user lands on the screen, types, and the menu
+// search starts immediately" wins over the old first-Tab-stop guarantee). That change withdrew ONLY
+// the "first focusable element" claim - the skip link itself was not touched and still does its job.
+// What remains true and is guarded here:
+//   1. `.o_viin_skip_link` still exists in the DOM on every `/odoo` load.
+//   2. it is still reachable by keyboard, backward, from the now-focused search input (Shift+Tab) -
+//      it precedes the search input in DOM order (prepended before the NavBar/ActionContainer block),
+//      so a bounded walk of repeated Shift+Tab presses must land on it. The walk is bounded rather
+//      than a single hard-coded press because the exact number of NavBar stops in between is not
+//      this test's concern - a future unrelated navbar change must not silently break this guard by
+//      changing that count.
+//   3. activating it (`skipToMainContent`, webclient_patch.js) still moves keyboard focus into the
+//      main content region (`.o_action_manager`) - it still does its real job, not just exists.
 //
-// (The rail roving-tabindex contract that used to live here was removed with the vertical rail in
-// PR #658 item 1 - the flat home menu is now the sole app switcher, so there is no rail to make one
-// Tab stop. The skip-link-first contract is unchanged and still guards the shell's focus order.)
-//
-// GROUNDED (OSM 19.0 + core source): registry path web_tour.tours + {url, steps: () => [...]}; the
-// run vocabulary ("press <Key>") and `:focus` triggers are the v19 forms (web_tour tour_step; core
-// home-menu/user-switch tours use `run: "press <Key>"`).
+// GROUNDED (OSM 19.0 + core source): registry path web_tour.tours + {url, steps: () => [...]};
+// `TourHelpers.prototype.press` (web_tour tour_helpers_hoot.js) forwards to hoot-dom's `press()`,
+// whose own `Tab`/`Shift+Tab` handling calls `getNextFocusableElement`/`getPreviousFocusableElement`
+// to walk the REAL tab order - the same mechanism the previous version of this tour already relied on
+// for its single `press Tab` step.
 
 import { registry } from "@web/core/registry";
 
 const tours = registry.category("web_tour.tours");
 
-tours.add("viin_a11y_skip_link_tour", {
+tours.add("viin_a11y_skip_link_keyboard_reachable_tour", {
     url: "/odoo",
     steps: () => [
         {
-            content: "from a fresh load, move focus with the very first Tab",
-            trigger: "body",
-            run: "press Tab",
+            content: "the skip-to-main-content link exists in the DOM on a fresh /odoo load (WCAG 2.4.1 bypass blocks)",
+            trigger: ".o_viin_skip_link",
         },
         {
-            content: "the FIRST focusable element is the skip-to-main-content link (WCAG 2.4.1)",
+            content:
+                "the boot landing has already pre-focused the search input on mount (product " +
+                "decision: land, type, search starts immediately) - that is where the backward " +
+                "keyboard walk below starts from",
+            trigger: ".o_viin_home_search_input:focus",
+        },
+        {
+            content:
+                "the skip link precedes the pre-focused search input in DOM order, so walking " +
+                "Shift+Tab backward from it must still reach the skip link - bounded so an " +
+                "unrelated future navbar change cannot silently disable this guard by changing how " +
+                "many stops sit in between",
+            trigger: "body",
+            run: async (helpers) => {
+                const MAX_SHIFT_TABS = 30;
+                for (let i = 0; i < MAX_SHIFT_TABS; i++) {
+                    if (document.activeElement?.matches?.(".o_viin_skip_link")) {
+                        return;
+                    }
+                    await helpers.press("Shift+Tab");
+                }
+                if (!document.activeElement?.matches?.(".o_viin_skip_link")) {
+                    throw new Error(
+                        `Shift+Tab from the pre-focused search input did not reach ` +
+                            `.o_viin_skip_link within ${MAX_SHIFT_TABS} presses - it is no longer ` +
+                            `keyboard-reachable backward from the search input.`
+                    );
+                }
+            },
+        },
+        {
+            content: "the backward walk actually landed on the skip link",
             trigger: ".o_viin_skip_link:focus",
+        },
+        {
+            content:
+                "activating the skip link still does its real job: it moves keyboard focus into " +
+                "the main content region, not just that the element exists and is reachable",
+            trigger: ".o_viin_skip_link",
+            run: "click",
+        },
+        {
+            content: "focus landed on the main action region after activation (skipToMainContent)",
+            trigger: ".o_action_manager:focus",
         },
     ],
 });

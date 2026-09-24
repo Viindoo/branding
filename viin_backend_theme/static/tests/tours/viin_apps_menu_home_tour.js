@@ -47,7 +47,8 @@ registry.category("web_tour.tours").add("viin_apps_menu_home_tour", {
             content:
                 "the ONE flat home menu exposes its app tiles as ANCHORS carrying an href - the " +
                 "exact `a[data-menu-xmlid=\"<app>\"]` shape core renders (a DropdownItem with an " +
-                "href becomes an <a>, dropdown_item.xml:6) and that 57 core tours click at their " +
+                "href becomes an <a>, per its `t-tag` expression in dropdown_item.xml) and " +
+                "that 57 core tours click at their " +
                 "second step. A <button> here is what failed runbot batch 223955 RC-1.",
             trigger: ".o_viin_home_menu a.o_app[data-menu-xmlid][href]",
         },

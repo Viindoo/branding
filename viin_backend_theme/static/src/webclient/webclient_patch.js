@@ -3,7 +3,7 @@
 // P1 - WebClient landing (TDD §4b P1; fidelity amendment 2026-07-18 M4).
 //
 // v19 `WebClient.loadRouterState()` calls `_loadDefaultApp()` whenever no action is resolved from the
-// URL (webclient.js:137-140), and the same method backs the "WEBCLIENT:LOAD_DEFAULT_APP" bus event.
+// URL (webclient.js), and the same method backs the "WEBCLIENT:LOAD_DEFAULT_APP" bus event.
 // The stock implementation selects the first root app; we override it to land on the flat
 // "Applications" home menu (D3) instead. This is the CORRECT v19 hook - the amendment's M4 recorded
 // that the earlier build patched a non-existent `_loadDefaultApp` on the prototype, which is exactly
@@ -25,8 +25,8 @@
 // unaffected either way - this file simply must not re-state where that de-brand lives.
 //
 // T-4 (PR #658 review-fix): skipToMainContent backs the "Skip to main content" bypass-blocks link
-// (WCAG 2.4.1) that webclient.xml prepends as the FIRST focusable element in the shell - it moves
-// keyboard focus straight into the action region, past the navbar + rail chrome.
+// (WCAG 2.4.1, webclient.xml) - it moves keyboard focus straight into the action region, past the
+// navbar + rail chrome. No longer the shell's first Tab stop; home_menu.js's header covers why.
 
 import { WebClient } from "@web/webclient/webclient";
 import { patch } from "@web/core/utils/patch";
