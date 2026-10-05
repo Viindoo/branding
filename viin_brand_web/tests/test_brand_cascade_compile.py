@@ -1063,6 +1063,51 @@ def _selector_scope_applies(selector, ancestors):
     return True
 
 
+def _custom_property_scope_reaches(selector, pool):
+    """Whether a custom property DECLARED by a rule with ``selector`` is in scope on an element
+    whose own classes and every styling ancestor's classes lie in ``pool``.
+
+    The question a "core must not DECLARE this hook" guard actually asks. A custom property
+    INHERITS, so a declaration reaches the element from the element itself, from any ancestor, or
+    from `:root`/`html`/`body` - which is why the SUBJECT compound is held to the same pool as the
+    ancestors (a `.o_main_navbar` or `.o_menu_sections` subject is an ancestor of the entry), and
+    why a subject with no class at all (`:root`) counts as reaching it. What does NOT reach it is a
+    rule scoped to a context the element is not in: `viin_customizer` re-themes ITS OWN dark top
+    bar through `.customizer_container .customizer_navbar .o_main_navbar { --NavBar-entry-*: ... }`,
+    and that declaration never applies to the regular web client navbar.
+
+    THE RULE. Every compound on the ancestor chain - subject included - must carry positive classes
+    that are a subset of ``pool``; a compound linked to the next one by a sibling combinator
+    (``+``/``~``) is a SIBLING, not on the chain, and is skipped.
+
+    WHY NOT :func:`_selector_scope_applies`. Its ancestor rule REJECTS a compound gated on a state
+    pseudo-class, which is right when resolving a resting element's value and wrong here: an
+    existence guard over the hover/active hooks must still see `.o_main_navbar:hover .o_nav_entry
+    { --hook: ... }`. State and structural pseudo-classes, @media context, attribute/id tokens and
+    combinator kind are therefore all ignored. Each of those can only ADMIT a rule, never exclude
+    one a browser would apply - so the guard fails loudly rather than passes silently."""
+    compounds = _split_compounds(selector)
+    for position, (_combinator, compound) in enumerate(compounds):
+        if position + 1 < len(compounds) and compounds[position + 1][0] in ("+", "~"):
+            continue                                  # sibling of the chain, not on it
+        if not _compound_classes(compound) <= pool:
+            return False
+    return True
+
+
+def _custom_property_declarations_reaching(css, prop_name, pool):
+    """Return ``[(selector, value), ...]`` for every compiled declaration of ``prop_name`` whose
+    rule :func:`_custom_property_scope_reaches` an element whose classes and ancestors lie in
+    ``pool``."""
+    found = []
+    for _order, selector, body in _iter_rules(css):
+        if not _custom_property_scope_reaches(selector, pool):
+            continue
+        for value, _important in _declarations(body, (prop_name,)):
+            found.append((selector, value))
+    return found
+
+
 def _matches_element(selector, element):
     """Whether ``selector``'s SUBJECT (its right-most compound) matches the modelled element.
 
@@ -1502,21 +1547,6 @@ class BrandCascadeCompileTest(TransactionCase):
         flat_brand_teal = self._assert_flat_teal_available()
         css = self._css()
 
-        # The two hooks core reads are never DECLARED anywhere in the bundle, only read, so the
-        # var() fallback - which is what the restored variables feed - is genuinely load-bearing.
-        # If a later core release starts declaring them, the fallback stops rendering and this
-        # guard must be re-grounded rather than silently passing on a dead token.
-        navbar_state_hooks = (
-            "--NavBar-entry-backgroundColor--hover", "--NavBar-entry-backgroundColor--active",
-        )
-        for hook in navbar_state_hooks:
-            self.assertNotIn(
-                hook + ":", css.replace(" ", ""),
-                "Core now DECLARES %s, so the compiled var() fallback that carries the restored "
-                "chrome rung no longer renders. Re-ground this guard against the new lever."
-                % hook,
-            )
-
         # Every navbar chrome state, as a real element inside .o_menu_sections.
         states_under_test = (
             ("hovered menu entry", {"o_nav_entry"}, frozenset({"hover"})),
@@ -1527,6 +1557,36 @@ class BrandCascadeCompileTest(TransactionCase):
             # core renders inside .o_menu_sections (navbar.xml, web.NavBar.SectionsMenu.MoreDropdown).
             ("open section/overflow dropdown", {"dropdown", "show", "dropdown-toggle"}, frozenset()),
         )
+
+        # The two hooks core reads are never DECLARED where the regular navbar entries inherit
+        # them, only read, so the var() fallback - which is what the restored variables feed - is
+        # genuinely load-bearing. If a later core release starts declaring them on that chain
+        # (`:root`, `.o_main_navbar`, `.o_menu_sections`, the entry itself), the fallback stops
+        # rendering and this guard must be re-grounded rather than silently passing on a dead
+        # token. The resolution below cannot catch that by itself: it walks only the entry, so a
+        # `.o_main_navbar` declaration inherited from above would be invisible to it.
+        # Scoped, not bundle-wide: a declaration under a context the regular navbar is not in -
+        # `viin_customizer`'s `.customizer_navbar .o_main_navbar`, which themes only the
+        # Customizer's own dark top bar - never reaches these entries, and a raw substring scan
+        # reported it as core re-declaring the hook.
+        navbar_chain_pool = NAVBAR_ANCESTORS.union(
+            *(classes for _label, classes, _states in states_under_test)
+        )
+        navbar_state_hooks = (
+            "--NavBar-entry-backgroundColor--hover", "--NavBar-entry-backgroundColor--active",
+        )
+        for hook in navbar_state_hooks:
+            declarations = _custom_property_declarations_reaching(css, hook, navbar_chain_pool)
+            self.assertFalse(
+                declarations,
+                "%s is now DECLARED where the regular navbar entries inherit it (%s), so the "
+                "compiled var() fallback that carries the restored chrome rung no longer renders "
+                "there. Re-ground this guard against the new lever."
+                % (hook, "; ".join(
+                    "%s { %s: %s }" % (selector, hook, value) for selector, value in declarations
+                )),
+            )
+
         for label, classes, states in states_under_test:
             element = {
                 "classes": frozenset(classes),
