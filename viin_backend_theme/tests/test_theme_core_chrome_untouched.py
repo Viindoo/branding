@@ -263,11 +263,14 @@ class TestCoreChromeIsUntouched(TransactionCase):
         ROOT CAUSE OF THE BLACK ICON, restated as the thing this measures. Core paints every navbar
         entry from `%-main-navbar-entry-base`, whose `o-hover-text-color()` emits
         `color: var(--NavBar-entry-color, #{$o-navbar-entry-color})`
-        (web/static/src/webclient/navbar/navbar.variables.scss). Nothing in the addons path
-        declares --NavBar-entry-color, so the Sass fallback wins - and viin_brand_web pins
-        `$o-navbar-entry-color: #FFFFFF`. Replacing core's <Dropdown> dropped the `dropdown-toggle`
-        class that selects that rule, and the `text-reset` we substituted resolved `inherit` up to
-        the body colour. Giving the button core's own `o_nav_entry` class puts it back on that rule.
+        (web/static/src/webclient/navbar/navbar.variables.scss). No rule that reaches the regular
+        navbar declares --NavBar-entry-color, so the Sass fallback wins there - and viin_brand_web
+        pins `$o-navbar-entry-color: #FFFFFF`. viin_customizer does declare it, but only under
+        `.customizer_container .customizer_navbar .o_main_navbar` to theme its own top bar; the
+        regular navbar never sits in that scope, and the cascade resolver below excludes it because
+        those classes are not in the NAVBAR / NAVBAR_ANCESTORS models. Replacing core's <Dropdown>
+        dropped the `dropdown-toggle` class that selects that rule, and the `text-reset` we
+        substituted resolved `inherit` up to the body colour. Giving the button core's own `o_nav_entry` class puts it back on that rule.
 
         THE EXPECTED VALUE IS READ FROM THE TOKEN SSOT, not literalised: if the brand ever re-tints
         the navbar entry, this guard follows it instead of going stale. Both bundles are checked -
