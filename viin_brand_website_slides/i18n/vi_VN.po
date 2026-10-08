@@ -18,4 +18,4 @@ msgstr ""
 #. module: viin_brand_website_slides
 #: model:ir.model,name:viin_brand_website_slides.model_slide_channel
 msgid "Course"
-msgstr "Khoá học"
+msgstr "Khóa học"
