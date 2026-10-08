@@ -53,7 +53,7 @@ msgstr "Tên bí danh"
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__alias_model_id
 msgid "Aliased Model"
-msgstr "Bí danh model"
+msgstr "Mô hình bí danh"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_mail__auto_delete
@@ -64,7 +64,7 @@ msgstr "Tự động xóa"
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__keys
 msgid "Browser keys"
-msgstr "Key trình duyệt"
+msgstr "Khóa trình duyệt"
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_res_config_settings
@@ -74,12 +74,12 @@ msgstr "Thiết lập cấu hình"
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__auto_delete
 msgid "Delete Emails"
-msgstr "Xoá Email"
+msgstr "Xóa email"
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_alias
 msgid "Email Aliases"
-msgstr "Bí danh email"
+msgstr "Bí danh Email"
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_alias_domain
@@ -89,17 +89,17 @@ msgstr "Miền email"
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_template
 msgid "Email Templates"
-msgstr "Mẫu Email"
+msgstr "Mẫu email"
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_thread
 msgid "Email Thread"
-msgstr "Luồng Email"
+msgstr "Luồng email"
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_compose_message
 msgid "Email composition wizard"
-msgstr "Đồ thuật soạn thảo email"
+msgstr "Công cụ soạn email"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_alias_domain__name
@@ -192,8 +192,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.viindoo.com>"
 msgstr ""
-"Tên của bí danh email, vd 'vieclam' nếu bạn muốn bắt thông điệp gửi đến địa "
-"chỉ email <vieclam@vidu.viindoo.com>"
+"Tên của bí danh email, vd 'vieclam' nếu bạn muốn nhận email gửi đến địa chỉ "
+"email <vieclam@vidu.viindoo.com>"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_mail__auto_delete
@@ -204,8 +204,8 @@ msgid ""
 "storage space of your Viindoo database."
 msgstr ""
 "Lựa chọn này sẽ xóa vĩnh viễn mọi dấu vết của email sau khi nó được gửi, bao"
-" gồm cả từ menu Kỹ thuật trong Cài đặt, để bảo quản không gian lưu trữ của "
-"cơ sở dữ liệu Viindoo của bạn."
+" gồm cả từ menu Kỹ thuật trong Thiết lập, để bảo quản không gian lưu trữ của"
+" cơ sở dữ liệu Viindoo của bạn."
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_compose_message__auto_delete
@@ -215,8 +215,8 @@ msgid ""
 " storage space of your Viindoo database."
 msgstr ""
 "Lựa chọn này sẽ xóa vĩnh viễn mọi dấu vết của email sau khi nó được gửi, bao"
-" gồm cả từ menu Kỹ thuật trong Cài đặt, để bảo quản không gian lưu trữ của "
-"cơ sở dữ liệu Viindoo của bạn."
+" gồm cả từ menu Kỹ thuật trong Thiết lập, để bảo quản không gian lưu trữ của"
+" cơ sở dữ liệu Viindoo của bạn."
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_res_users
@@ -231,8 +231,8 @@ msgid ""
 "email server (@mycompany.viindoo.com)."
 msgstr ""
 "Sử dụng máy chủ email của riêng bạn là bắt buộc để gửi/nhận email trong các "
-"phiên bản Cộng đồng và Doanh nghiệp. Người dùng trực tuyến đã được hưởng lợi"
-" từ máy chủ email sẵn sàng sử dụng (@tencongty.viindoo.com)."
+"phiên bản Community và Enterprise. Người dùng trực tuyến đã được hưởng lợi "
+"từ máy chủ email sẵn sàng sử dụng (@tencongty.viindoo.com)."
 
 #. module: viin_brand_mail
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail.mail_notification_layout

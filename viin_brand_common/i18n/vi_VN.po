@@ -76,7 +76,7 @@ msgstr "Bộ lọc TỪ"
 #. module: viin_brand_common
 #: model:ir.model,name:viin_brand_common.model_ir_mail_server
 msgid "Mail Server"
-msgstr "Máy chủ gửi thư"
+msgstr "Máy chủ thư"
 
 #. module: viin_brand_common
 #. odoo-javascript

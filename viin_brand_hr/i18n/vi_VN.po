@@ -23,7 +23,7 @@ msgid ""
 "                    leaves, recruitments, etc."
 msgstr ""
 "Cấu trúc phòng ban của phần mềm được sử dụng để quản lý tất cả các tài liệu\n"
-"                    liên quan đến nhân viên theo phòng ban: chi tiêu, chấm công,\n"
+"                    liên quan đến nhân viên theo phòng ban: chi phí, bảng giờ công,\n"
 "                    nghỉ, tuyển dụng, v.v."
 
 #. module: hr
@@ -34,7 +34,7 @@ msgid ""
 "                time off, recruitments, etc."
 msgstr ""
 "Cấu trúc phòng ban của phần mềm được sử dụng để quản lý tất cả các tài liệu\n"
-"                    liên quan đến nhân viên theo phòng ban: chi tiêu, chấm công,\n"
+"                    liên quan đến nhân viên theo phòng ban: chi phí, bảng giờ công,\n"
 "                    nghỉ, tuyển dụng, v.v."
 
 #. module: hr

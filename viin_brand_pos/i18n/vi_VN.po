@@ -34,8 +34,8 @@ msgid ""
 "Meanwhile connection is back, Viindoo Point of Sale will operate limited "
 "operations. Check your connection or continue with limited functionalities"
 msgstr ""
-"Trong khi chờ kết nối trở lại, Điểm bán lẻ sẽ vẫn hoạt động nhưng bị hạn chế"
-" một số tính năng. Kiểm tra kết nối của bạn hoặc tiếp tục dùng"
+"Trong khi chờ kết nối trở lại, Điểm bán hàng sẽ vẫn hoạt động nhưng bị hạn "
+"chế một số tính năng. Kiểm tra kết nối của bạn hoặc tiếp tục dùng"
 
 #. module: viin_brand_pos
 #. odoo-javascript

@@ -50,7 +50,7 @@ msgstr ""
 #. module: viin_brand_mail_bot
 #: model:ir.model,name:viin_brand_mail_bot.model_mail_bot
 msgid "Mail Bot"
-msgstr ""
+msgstr "Mail Bot"
 
 #. module: viin_brand_mail_bot
 #. odoo-python
