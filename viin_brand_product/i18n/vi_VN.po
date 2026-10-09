@@ -18,4 +18,4 @@ msgstr ""
 #. module: viin_brand_product
 #: model_terms:ir.ui.view,arch_db:viin_brand_product.product_variant_easy_edit_view
 msgid "e.g. Viindoo Subscription"
-msgstr "ví dụ. Đăng ký Viindoo"
+msgstr "VD: Gói đăng ký Viindoo"
