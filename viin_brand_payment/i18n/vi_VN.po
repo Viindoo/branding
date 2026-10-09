@@ -18,7 +18,7 @@ msgstr ""
 #. module: viin_brand_payment
 #: model:ir.model.fields,field_description:viin_brand_payment.field_payment_provider__capture_manually
 msgid "Capture Amount Manually"
-msgstr "Ghi số tiền theo cách thủ công"
+msgstr "Thu tiền thủ công"
 
 #. module: viin_brand_payment
 #: model:ir.model.fields,help:viin_brand_payment.field_payment_provider__capture_manually
@@ -50,7 +50,7 @@ msgstr "Phương thức thanh toán"
 #. module: viin_brand_payment
 #: model:ir.model,name:viin_brand_payment.model_payment_provider
 msgid "Payment Provider"
-msgstr "Nhà cung cấp dịch vụ thanh toán"
+msgstr "Cổng thanh toán"
 
 #. module: viin_brand_payment
 #: model:ir.model.fields,field_description:viin_brand_payment.field_payment_method__support_refund

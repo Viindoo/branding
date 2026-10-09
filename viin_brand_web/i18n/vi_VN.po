@@ -166,8 +166,7 @@ msgstr "Ok"
 msgid ""
 "Push notifications have been blocked. Go to your browser settings to allow "
 "them."
-msgstr ""
-"Thông báo đẩy đã bị chặn. Vào cài đặt trình duyệt của bạn để cho phép chúng."
+msgstr "Thông báo đẩy đã bị chặn. Đi tới thiết lập trình duyệt để cho phép."
 
 #. module: viin_brand_web
 #. odoo-javascript
@@ -191,7 +190,7 @@ msgstr "Hệ thống"
 #. odoo-javascript
 #: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
 msgid "System Client Error"
-msgstr "Lỗi Hệ thống Client"
+msgstr "Lỗi phía máy khách hệ thống"
 
 #. module: viin_brand_web
 #. odoo-javascript
@@ -203,13 +202,13 @@ msgstr "System Enterprise"
 #. odoo-javascript
 #: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
 msgid "System Error"
-msgstr "Lỗi Hệ thống"
+msgstr "Lỗi hệ thống"
 
 #. module: viin_brand_web
 #. odoo-javascript
 #: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
 msgid "System Network Error"
-msgstr "Lỗi Hệ thống mạng"
+msgstr "Lỗi mạng hệ thống"
 
 #. module: viin_brand_web
 #. odoo-javascript
@@ -253,7 +252,7 @@ msgstr "Cảnh báo"
 #. module: viin_brand_web
 #: model_terms:ir.ui.view,arch_db:viin_brand_web.webclient_offline
 msgid "You are offline"
-msgstr "Bạn đang Ngoại tuyến"
+msgstr "Bạn đang ngoại tuyến"
 
 #. module: viin_brand_web
 #. odoo-javascript

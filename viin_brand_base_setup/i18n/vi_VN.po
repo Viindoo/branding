@@ -41,7 +41,7 @@ msgid ""
 "e.g.: 'notification@viindoo.com' or 'viindoo.com'"
 msgstr ""
 "Danh sách các địa chỉ hoặc tên miền được phân tách bằng dấu phẩy mà máy chủ này có thể được sử dụng.\n"
-"VD: \"notification@odoo.com\" hoặc \"odoo.com\""
+"VD: 'notification@viindoo.com' hoặc 'viindoo.com'"
 
 #. module: viin_brand_base_setup
 #: model:ir.model.fields,field_description:viin_brand_base_setup.field_ir_mail_server__display_name

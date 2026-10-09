@@ -55,7 +55,7 @@ msgid ""
 "opening entry."
 msgstr ""
 "Ngày kể từ khi kế toán được quản lý bởi Viindoo. Nó là ngày của bút toán đầu"
-" kì."
+" kỳ."
 
 #. module: viin_brand_account
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_financial_year_op__display_name
@@ -108,8 +108,8 @@ msgid ""
 "Batch Deposit: Collect several customer checks at once generating and submitting a batch deposit to your bank. Module account_batch_payment is necessary.\n"
 "SEPA Direct Debit: Get paid in the SEPA zone thanks to a mandate your partner will have granted to you. Module account_sepa is necessary.\n"
 msgstr ""
-"Hướng dẫn: Nhận thanh toán bằng bất kỳ phương thức nào ngoài Viindoo.\n"
-"Nhà cung cấp thanh toán: Mỗi nhà cung cấp thanh toán có phương thức thanh toán riêng của mình. Yêu cầu giao dịch trên/đến thẻ nhờ vào một mã thông báo thanh toán đã được đối tác lưu lại khi mua hàng hoặc đăng ký trực tuyến.\n"
+"Thủ công: Nhận thanh toán bằng bất kỳ phương thức nào ngoài Viindoo.\n"
+"Cổng thanh toán: Mỗi cổng thanh toán có phương thức thanh toán riêng của mình. Yêu cầu giao dịch trên/đến thẻ nhờ vào một token thanh toán đã được đối tác lưu lại khi mua hàng hoặc đăng ký trực tuyến.\n"
 "Gửi kết hợp lô: Thu nạp cùng lúc nhiều séc của khách hàng và tạo và gửi một kết hợp lô nạp tiền vào ngân hàng của bạn. Mô-đun account_batch_payment là bắt buộc.\n"
 "Trực tiếp SEPA: Nhận thanh toán trong khu vực SEPA nhờ vào một giấy ủy quyền mà đối tác của bạn sẽ đã cấp cho bạn. Mô-đun account_sepa là bắt buộc."
 
@@ -120,7 +120,7 @@ msgid ""
 "Check: Pay bills by check and print it from the system.\n"
 "SEPA Credit Transfer: Pay in the SEPA zone by submitting a SEPA Credit Transfer file to your bank. Module account_sepa is necessary.\n"
 msgstr ""
-"Hướng dẫn: Thanh toán bằng bất kỳ phương thức nào ngoài Viindoo.\n"
+"Thủ công: Thanh toán bằng bất kỳ phương thức nào ngoài Viindoo.\n"
 "Séc: Thanh toán hóa đơn bằng séc và in nó từ Viindoo.\n"
 "Chuyển khoản tín dụng SEPA: Thanh toán trong khu vực SEPA bằng cách gửi một tệp Chuyển khoản tín dụng SEPA tới ngân hàng của bạn. Mô-đun account_sepa là bắt buộc."
 
@@ -160,7 +160,7 @@ msgstr "Phương thức chi tiền"
 #. module: viin_brand_account
 #: model:ir.model,name:viin_brand_account.model_account_payment_register
 msgid "Pay"
-msgstr "Ghi nhận thanh toán"
+msgstr "Thanh toán"
 
 #. module: viin_brand_account
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_payment__payment_method_line_id

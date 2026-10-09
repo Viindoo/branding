@@ -68,7 +68,7 @@ msgid ""
 msgstr ""
 "Xin chào,\n"
 "                                                <br/><br/>\n"
-"                                                Tháng này Viindoo ra mắt dashboard CRM mới, báo cáo pivot nhanh hơn trên mọi phân hệ, và các tích hợp mới giúp đội ngũ của bạn chốt đơn hiệu quả hơn — tất cả ngay trong Viindoo. Chúng tôi cũng chào đón 47 khách hàng mới và phát hành bộ playbook dành cho doanh nghiệp SME, tải miễn phí bên dưới.\n"
+"                                                Tháng này Viindoo ra mắt dashboard CRM mới, báo cáo pivot nhanh hơn trên mọi phân hệ, và các tích hợp mới giúp đội ngũ của bạn chốt đơn hiệu quả hơn - tất cả ngay trong Viindoo. Chúng tôi cũng chào đón 47 khách hàng mới và phát hành bộ playbook dành cho doanh nghiệp SME, tải miễn phí bên dưới.\n"
 "                                                <br/><br/>\n"
 "                                                Tò mò xem điều gì sắp ra mắt? Tham gia buổi giới thiệu trực tiếp ngày 15 để biết các đội ngũ như Phương Nam Foods đã rút ngắn chu trình đơn hàng 40% với Viindoo như thế nào."
 

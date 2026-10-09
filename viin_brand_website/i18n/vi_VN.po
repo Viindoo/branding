@@ -29,12 +29,12 @@ msgstr ""
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.s_call_to_action
 msgid "50,000+ companies run Viindoo to grow their businesses."
-msgstr "50,000+ công ty sử dụng Viindoo để phát triển hoạt động kinh doanh của họ."
+msgstr "50.000+ công ty sử dụng Viindoo để phát triển hoạt động kinh doanh của họ."
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.s_cta_box
 msgid "50,000+ companies run Viindoo<br/>to grow their businesses."
-msgstr "50,000+ công ty sử dụng Viindoo<br/> để phát triển hoạt động kinh doanh của họ."
+msgstr "50.000+ công ty sử dụng Viindoo<br/> để phát triển hoạt động kinh doanh của họ."
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.s_cta_mockups

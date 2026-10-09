@@ -28,12 +28,12 @@ msgid ""
 "            the stock operations like the manufacturing orders\n"
 "            consumptions, inventories, etc."
 msgstr ""
-"Định nghĩa các vị trí của bạn để phản ánh cấu trúc và cách tổ chức\n"
-"            kho hàng của bạn. Hệ thống có thể quản lý các vị trí vật lý\n"
-"            (kho, kệ, giá, thùng, v.v.), các vị trí đối tác (vd: khách hàng,\n"
-"            nhà cung cấp) và các vị trí ảo để làm đối ứng cho các nghiệp vụ\n"
-"            kho như tiêu thụ nguyên vật liệu, tạo ra thành phẩm, biến hàng hóa\n"
-"            thành phế liệu, kiểm kho, v.v."
+"Xác định các vị trí của bạn để phản ánh cấu trúc và tổ chức\n"
+"            kho. Hệ thống có thể quản lý các vị trí thực\n"
+"            (kho, kệ, ngăn,...), các vị trí đối tác (khách hàng,\n"
+"            nhà cung cấp) và các vị trí ảo là đối ứng của\n"
+"            các nghiệp vụ kho như tiêu hao của lệnh sản xuất,\n"
+"            kiểm kê,..."
 
 #. module: stock
 #: model_terms:ir.actions.act_window,help:stock.action_location_form
@@ -116,8 +116,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the delivery"
 " slip of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu ô này, Odoo sẽ tự động in phiếu giao hàng của phiếu xuất kho "
-"khi nó được xác thực."
+"Nếu đánh dấu ô này, hệ thống sẽ tự động in phiếu giao hàng của phiếu kho khi "
+"phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_lot_labels
@@ -125,8 +125,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the lot/SN "
 "labels of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in nhãn số lô/sê-ri của phiếu "
-"xuất kho khi nó được xác thực."
+"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn số lô/sê-ri của phiếu "
+"kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_package_label
@@ -134,8 +134,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the package "
 "label when \"Put in Pack\" button is used."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in nhãn kiện hàng khi nút \"Đóng "
-"hàng thành kiện\" được sử dụng."
+"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn kiện hàng khi nút "
+"\"Đóng kiện\" được sử dụng."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_packages
@@ -143,8 +143,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the packages"
 " and their contents of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in các kiện hàng và thành phần "
-"của chúng trong phiếu xuất kho khi nó được xác thực."
+"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in các kiện hàng và thành "
+"phần của chúng trong phiếu kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_product_labels
@@ -152,8 +152,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the product "
 "labels of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in nhãn sản phẩm của phiếu xuất "
-"kho khi nó được xác thực."
+"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn sản phẩm của phiếu "
+"kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_reception_report_labels
@@ -161,8 +161,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the "
 "reception report labels of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in nhãn báo cáo nhập kho của "
-"phiếu xuất kho khi nó được xác thực."
+"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn báo cáo nhập kho của "
+"phiếu kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_reception_report
@@ -170,8 +170,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the "
 "reception report of a picking when it is validated and has assigned moves."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in báo cáo nhập kho của phiếu "
-"xuất kho khi nó được xác thực và có điều chuyển đã chỉ định."
+"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in báo cáo nhập kho của phiếu "
+"kho khi phiếu kho được xác nhận và có dịch chuyển đã giữ hàng."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_return_slip
@@ -179,8 +179,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the return "
 "slip of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động in phiếu trả hàng của phiếu xuất "
-"kho khi nó được xác thực."
+"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in phiếu trả hàng của phiếu "
+"kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
@@ -188,13 +188,13 @@ msgid ""
 "If this checkbox is ticked, the system will automatically show the reception"
 " report (if there are moves to allocate to) when validating."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, Odoo sẽ tự động hiển thị báo cáo nhập kho (nếu có"
-" các điều chuyển cần phân bổ) khi xác nhận."
+"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động hiển thị báo cáo nhập kho "
+"(nếu có các dịch chuyển cần phân bổ) khi xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model,name:viin_brand_stock.model_stock_picking_type
 msgid "Picking Type"
-msgstr "Kiểu lấy hàng"
+msgstr "Loại nghiệp vụ"
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
