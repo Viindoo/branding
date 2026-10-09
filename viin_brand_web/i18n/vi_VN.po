@@ -96,7 +96,7 @@ msgstr "Tài liệu"
 #. odoo-javascript
 #: code:addons/viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml:0
 msgid "GNU LGPL Licensed"
-msgstr "Chứng nhận GNU LGPL"
+msgstr "Giấy phép GNU LGPL"
 
 #. module: viin_brand_web
 #. odoo-javascript

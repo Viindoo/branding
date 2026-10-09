@@ -18,7 +18,7 @@ msgstr ""
 #. module: viin_brand_website_slides
 #: model:ir.model,name:viin_brand_website_slides.model_slide_channel
 msgid "Course"
-msgstr "Khoá học"
+msgstr "Khóa học"
 
 #. module: viin_brand_website_slides
 #: model:ir.model.fields,field_description:viin_brand_website_slides.field_slide_channel__display_name

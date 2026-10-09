@@ -96,9 +96,9 @@ msgid ""
 "first outgoing mail server available (based on their sequencing) as it does "
 "for normal mails."
 msgstr ""
-"Sử dụng một máy chủ thư cụ thể ưu tiên. Nếu không, Odoo sẽ sử dụng máy chủ "
-"gửi thư đầu tiên khả dụng (dựa trên trình tự của chúng) như đối với các thư "
-"thông thường."
+"Sử dụng một máy chủ thư cụ thể ưu tiên. Nếu không, Viindoo sẽ sử dụng máy "
+"chủ gửi thư đầu tiên khả dụng (dựa trên trình tự của chúng) như đối với các "
+"thư thông thường."
 
 #. module: mass_mailing
 #: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailing_lists

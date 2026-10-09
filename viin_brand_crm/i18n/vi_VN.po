@@ -41,10 +41,10 @@ msgid ""
 " top-right map icon? A lot of screens in system can be turned into a map: "
 "tasks, contacts, delivery orders, etc."
 msgstr ""
-"Bạn có biết rằng bạn có thể chuyển danh sách các cơ hội thành chế độ xem bản"
-" đồ bằng cách sử dụng biểu tượng bản đồ trên cùng bên phải không? Rất nhiều "
-"màn hình trong hệ thống có thể được biến thành bản đồ: nhiệm vụ, danh bạ, lệnh "
-"giao hàng, v.v."
+"Bạn có biết rằng bạn có thể chuyển danh sách các cơ hội thành chế độ xem bản "
+"đồ bằng cách sử dụng biểu tượng bản đồ trên cùng bên phải không? Rất nhiều "
+"màn hình trong hệ thống có thể được biến thành bản đồ: nhiệm vụ, danh bạ, "
+"phiếu xuất kho, v.v."
 
 #. module: crm
 #: model_terms:digest.tip,tip_description:crm.digest_tip_crm_4
