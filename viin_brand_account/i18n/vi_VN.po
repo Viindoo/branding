@@ -21,8 +21,8 @@ msgid ""
 ". The journal entries need to be computed by Viindoo before being posted in "
 "your company's currency."
 msgstr ""
-". Bút toán cần được tính bởi hệ thống trước khi thực hiện việc vào sổ theo "
-"tiền tệ của công ty."
+". Bút toán cần được tính bởi hệ thống trước khi ghi sổ theo tiền tệ của công "
+"ty."
 
 #. module: viin_brand_account
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_journal__alias_id
@@ -78,17 +78,17 @@ msgstr ""
 #. module: viin_brand_account
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
 msgid "In order to validate this bill, you must"
-msgstr "Để xác nhận hoá đơn này, bạn phải"
+msgstr "Để xác nhận hóa đơn mua hàng này, bạn phải"
 
 #. module: viin_brand_account
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
 msgid "In order to validate this invoice, you must"
-msgstr "Để xác nhận hoá đơn này, bạn phải"
+msgstr "Để xác nhận hóa đơn này, bạn phải"
 
 #. module: viin_brand_account
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_journal__inbound_payment_method_line_ids
 msgid "Inbound Payment Methods"
-msgstr "Phương thức thanh toán thu tiền"
+msgstr "Phương thức thanh toán nhận về"
 
 #. module: viin_brand_account
 #: model:ir.model,name:viin_brand_account.model_account_journal
@@ -135,9 +135,9 @@ msgid ""
 "SEPA Credit Transfer: Pay in the SEPA zone by submitting a SEPA Credit Transfer file to your bank. Module account_sepa is necessary.\n"
 "SEPA Direct Debit: Get paid in the SEPA zone thanks to a mandate your partner will have granted to you. Module account_sepa is necessary.\n"
 msgstr ""
-"Hướng dẫn: Thanh toán hoặc nhận thanh toán bằng bất kỳ phương thức nào ngoài Viindoo.\n"
-"Nhà cung cấp thanh toán: Mỗi nhà cung cấp thanh toán có phương thức thanh toán riêng của mình. Yêu cầu một giao dịch trên/đến thẻ nhờ vào mã thông báo thanh toán được lưu trữ bởi đối tác khi mua hàng hoặc đăng ký trực tuyến.\n"
-"Séc: Thanh toán hóa đơn bằng séc và in từ Viindoo.\n"
+"Thủ công: Thanh toán hoặc nhận thanh toán bằng bất kỳ phương thức nào ngoài Viindoo.\n"
+"Cổng thanh toán: Mỗi cổng thanh toán có phương thức thanh toán riêng của mình. Yêu cầu một giao dịch trên/đến thẻ nhờ vào mã thông báo thanh toán được lưu trữ bởi đối tác khi mua hàng hoặc đăng ký trực tuyến.\n"
+"Séc: Thanh toán hóa đơn mua hàng bằng séc và in từ Viindoo.\n"
 "Gửi kết hợp lô: Thu thập nhiều séc từ khách hàng cùng một lúc, tạo và gửi một lô nạp tiền vào ngân hàng của bạn. Mô-đun account_batch_payment là bắt buộc.\n"
 "Chuyển khoản tín dụng SEPA: Thanh toán trong khu vực SEPA bằng cách gửi một tệp Chuyển khoản tín dụng SEPA tới ngân hàng của bạn. Mô-đun account_sepa là bắt buộc.\n"
 "Trực tiếp SEPA: Nhận thanh toán trong khu vực SEPA nhờ vào một giấy ủy quyền mà đối tác của bạn đã cấp cho bạn. Mô-đun account_sepa là bắt buộc."
@@ -150,12 +150,12 @@ msgstr "Số dư đầu kỳ của năm tài chính"
 #. module: viin_brand_account
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_financial_year_op__opening_date
 msgid "Opening Date"
-msgstr "Ngày Đầu kỳ"
+msgstr "Ngày mở"
 
 #. module: viin_brand_account
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_journal__outbound_payment_method_line_ids
 msgid "Outbound Payment Methods"
-msgstr "Phương thức thanh toán đi"
+msgstr "Phương thức chi tiền"
 
 #. module: viin_brand_account
 #: model:ir.model,name:viin_brand_account.model_account_payment_register
@@ -192,7 +192,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_bank_statement_line__quick_edit_total_amount
 #: model:ir.model.fields,field_description:viin_brand_account.field_account_move__quick_edit_total_amount
 msgid "Total (Tax inc.)"
-msgstr "Tổng cộng (Kèm thuế)"
+msgstr "Tổng (Bao gồm thuế)"
 
 #. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_bank_statement_line__quick_edit_total_amount
@@ -201,8 +201,8 @@ msgid ""
 "Use this field to encode the total amount of the invoice.\n"
 "System will automatically create one invoice line with default values to match it."
 msgstr ""
-"Sử dụng trường này để mã hóa tổng số tiền của hóa đơn.Hệ thống sẽ tự động "
-"tạo một dòng hóa đơn với các giá trị mặc định để phù hợp với nó."
+"Sử dụng trường này để ghi nhận tổng số tiền của hóa đơn.\n"
+"Hệ thống sẽ tự động tạo một dòng hóa đơn với các giá trị mặc định để phù hợp với nó."
 
 #. module: viin_brand_account
 #: model:ir.model.fields,help:viin_brand_account.field_account_journal__invoice_reference_model
@@ -216,7 +216,7 @@ msgstr ""
 #. module: viin_brand_account
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form
 msgid "activate the currency of the bill"
-msgstr "kích hoạt đơn vị tiền tệ của hóa đơn"
+msgstr "kích hoạt đơn vị tiền tệ của hóa đơn mua hàng"
 
 #. module: viin_brand_account
 #: model_terms:ir.ui.view,arch_db:viin_brand_account.view_move_form

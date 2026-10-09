@@ -22,7 +22,7 @@ msgstr ""
 msgid ""
 "Snap pictures of your receipts and let <span><b>Viindoo</b></span><br> "
 "automatically create expenses for you."
-msgstr "Chụp ảnh hóa đơn và để <span><b>Viindoo</b></span><br> tự động tạo chi tiêu giúp bạn."
+msgstr "Chụp ảnh hóa đơn và để <span><b>Viindoo</b></span><br> tự động tạo chi phí giúp bạn."
 
 #. module: hr_expense
 #: model_terms:digest.tip,tip_description:hr_expense.digest_tip_hr_expense_0

@@ -38,12 +38,12 @@ msgstr "Màu nền của nút"
 #. module: viin_brand_im_livechat
 #: model:ir.model.fields,help:viin_brand_im_livechat.field_im_livechat_channel__button_background_color
 msgid "Default background color of the Livechat button"
-msgstr "Màu nền mặc định cho nút Chat trực tuyến"
+msgstr "Màu nền mặc định của nút Trò chuyện trực tiếp"
 
 #. module: viin_brand_im_livechat
 #: model:ir.model.fields,help:viin_brand_im_livechat.field_im_livechat_channel__header_background_color
 msgid "Default background color of the channel header once open"
-msgstr "Màu nền mặc định cho header của kênh khi nó được mở ra"
+msgstr "Màu nền mặc định của header kênh khi mở"
 
 #. module: viin_brand_im_livechat
 #: model:ir.model.fields,field_description:viin_brand_im_livechat.field_im_livechat_channel__display_name
@@ -58,7 +58,7 @@ msgstr "DÀNH CHO WEBSITE XÂY DỰNG BẰNG VIINDOO"
 #. module: viin_brand_im_livechat
 #: model:ir.model.fields,field_description:viin_brand_im_livechat.field_im_livechat_channel__header_background_color
 msgid "Header Background Color"
-msgstr "Màu nền Header"
+msgstr "Màu nền header"
 
 #. module: viin_brand_im_livechat
 #: model:ir.model.fields,field_description:viin_brand_im_livechat.field_im_livechat_channel__id
@@ -68,7 +68,7 @@ msgstr "ID"
 #. module: viin_brand_im_livechat
 #: model:ir.model,name:viin_brand_im_livechat.model_im_livechat_channel
 msgid "Livechat Channel"
-msgstr "Kênh Chat Trực tuyến"
+msgstr "Kênh trò chuyện trực tiếp"
 
 #. module: viin_brand_im_livechat
 #: model_terms:ir.ui.view,arch_db:viin_brand_im_livechat.livechat_email_template
@@ -94,8 +94,9 @@ msgid ""
 "                        response, start your sentence with ':' and select\n"
 "                        the template."
 msgstr ""
-"Sửa dụng các câu trả lời mẫu để định nghĩa các mẫu tin nhắn\n "
-"                         ở\n "
-"                         ứng dụng chat trực tuyến. Để sử dụng câu trả lời mẫu\n"
+"Sử dụng các câu trả lời mẫu để định nghĩa các mẫu tin nhắn\n"
+"                          ở\n"
+"                          ứng dụng chat trực tuyến. Để sử dụng câu trả lời "
+"mẫu\n"
 "                         khi chat, hãy bắt đầu gõ ':' (hai chấm) và chọn\n"
 "                         mẫu sổ ra."

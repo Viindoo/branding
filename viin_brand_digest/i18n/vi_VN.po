@@ -19,7 +19,7 @@ msgstr ""
 #. module: viin_brand_digest
 #: model:ir.model.fields,field_description:viin_brand_digest.field_digest_tip__active
 msgid "Active"
-msgstr "Hiệu lực"
+msgstr "Đang hoạt động"
 
 #. module: viin_brand_digest
 #: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_tip_view_form
@@ -30,7 +30,7 @@ msgstr "Đã lưu trữ"
 #. module: viin_brand_digest
 #: model:ir.model,name:viin_brand_digest.model_digest_tip
 msgid "Digest Tips"
-msgstr "Mẹo tổng kết"
+msgstr "Mẹo tóm tắt"
 
 #. module: viin_brand_digest
 #: model:ir.model.fields,field_description:viin_brand_digest.field_digest_tip__display_name
