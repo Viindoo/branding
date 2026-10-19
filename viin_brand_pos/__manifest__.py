@@ -17,7 +17,7 @@ This module will change color in navigate bar, button and logo following Viindoo
 Editions Supported
 ==================
 1. Community Edition
-2. Enterprise Edition
+2. Viindoo Cloud
 
     """,
 
@@ -30,7 +30,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
 Ấn bản được Hỗ trợ
 ==================
 1. Ấn bản Community
-2. Ấn bản Enterprise
+2. Viindoo Cloud
 
 """,
 
@@ -44,7 +44,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
 
     # any module necessary for this one to work correctly
     'depends': ['viin_brand_common', 'point_of_sale'],
@@ -52,6 +52,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     # always loaded
     'data': [
         'views/pos_assets_index.xml',
+        'views/res_config_settings_views.xml',
     ],
     'assets': {
         'point_of_sale._assets_pos': [
@@ -63,6 +64,12 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             'viin_brand_pos/static/src/app/navbar/navbar.xml',
             'viin_brand_pos/static/src/app/navbar/navbar.js',
             ('after', 'point_of_sale/static/src/app/errors/error_handlers.js', 'viin_brand_pos/static/src/app/popups/offline_error_popup.js'),
+            ('after', 'point_of_sale/static/src/app/errors/error_handlers.js', 'viin_brand_pos/static/src/app/popups/rpc_error_popup.js'),
+            'viin_brand_pos/static/src/app/printer/base_printer.js',
+        ],
+        'point_of_sale.customer_display_assets': [
+            'viin_brand_pos/static/src/customer_display/odoo_logo.xml',
+            'viin_brand_pos/static/src/customer_display/customer_display_data_service.js',
         ],
         'point_of_sale.assets_prod': [
             'viin_brand_pos/static/src/css/**/*',

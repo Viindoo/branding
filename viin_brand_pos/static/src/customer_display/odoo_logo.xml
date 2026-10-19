@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="point_of_sale.OdooLogo" t-inherit-mode="extension">
+        <xpath expr="//div" position="replace" mode="inner">
+            <img t-if="props.monochrome" src="/viin_brand_pos/static/src/img/Viindoo-logo-inverted.svg" t-att-alt="'Viindoo'" class="w-100 ms-1"/>
+            <img t-else="" src="/viin_brand_pos/static/src/img/viindoo-logo.svg" t-att-alt="'Viindoo'" class="w-100 ms-1"/>
+        </xpath>
+    </t>
+</templates>
