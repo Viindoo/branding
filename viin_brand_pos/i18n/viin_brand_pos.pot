@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-24 09:31+0000\n"
-"PO-Revision-Date: 2025-09-24 09:31+0000\n"
+"POT-Creation-Date: 2026-10-19 02:33+0000\n"
+"PO-Revision-Date: 2026-10-19 02:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_pos
+#: model:ir.model,name:viin_brand_pos.model_res_company
+msgid "Companies"
+msgstr ""
 
 #. module: viin_brand_pos
 #. odoo-javascript
@@ -23,8 +28,27 @@ msgstr ""
 
 #. module: viin_brand_pos
 #. odoo-javascript
+#: code:addons/viin_brand_pos/static/src/app/printer/base_printer.js:0
+msgid "Connection to the printer failed"
+msgstr ""
+
+#. module: viin_brand_pos
+#. odoo-javascript
 #: code:addons/viin_brand_pos/static/src/app/popups/offline_error_popup.js:0
 msgid "Continue with limited functionality"
+msgstr ""
+
+#. module: viin_brand_pos
+#: model:ir.model,name:viin_brand_pos.model_ir_http
+msgid "HTTP Routing"
+msgstr ""
+
+#. module: viin_brand_pos
+#. odoo-javascript
+#: code:addons/viin_brand_pos/static/src/customer_display/customer_display_data_service.js:0
+msgid ""
+"Make sure the IoT Box is switched on and connected to the network, then "
+"restart the IoT Box."
 msgstr ""
 
 #. module: viin_brand_pos
@@ -36,7 +60,63 @@ msgid ""
 msgstr ""
 
 #. module: viin_brand_pos
+#: model:ir.model.fields,field_description:viin_brand_pos.field_pos_config__sequence_id
+msgid "Order IDs Sequence"
+msgstr ""
+
+#. module: viin_brand_pos
+#: model:ir.model.fields,field_description:viin_brand_pos.field_pos_config__sequence_line_id
+msgid "Order Line IDs Sequence"
+msgstr ""
+
+#. module: viin_brand_pos
+#. odoo-javascript
+#: code:addons/viin_brand_pos/static/src/app/printer/base_printer.js:0
+msgid ""
+"Please check if the printer is still connected. \n"
+"Some browsers don't allow HTTP calls from websites to devices in the network (for security reasons). If this is the case, ask your administrator to set up a self-signed certificate for the ePOS printer and a secure connection (HTTPS) between the Point of Sale and the printer. "
+msgstr ""
+
+#. module: viin_brand_pos
+#: model:ir.model,name:viin_brand_pos.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr ""
+
+#. module: viin_brand_pos
 #. odoo-javascript
 #: code:addons/viin_brand_pos/static/src/app/screens/receipt/order_receipt.xml:0
 msgid "Powered by Viindoo"
+msgstr ""
+
+#. module: viin_brand_pos
+#: model:ir.model.fields,help:viin_brand_pos.field_res_company__point_of_sale_use_ticket_qr_code
+#: model_terms:ir.ui.view,arch_db:viin_brand_pos.res_config_settings_view_form
+msgid ""
+"Print information on the receipt to allow the customer to easily access the "
+"invoice anytime, from the customer portal."
+msgstr ""
+
+#. module: viin_brand_pos
+#: model:ir.model.fields,field_description:viin_brand_pos.field_res_company__point_of_sale_use_ticket_qr_code
+msgid "Self-service invoicing"
+msgstr ""
+
+#. module: viin_brand_pos
+#. odoo-javascript
+#: code:addons/viin_brand_pos/static/src/app/popups/rpc_error_popup.js:0
+msgid "Server Error"
+msgstr ""
+
+#. module: viin_brand_pos
+#: model:ir.model.fields,help:viin_brand_pos.field_pos_config__sequence_line_id
+msgid ""
+"This sequence is automatically created by the system but you can change it "
+"to customize the reference numbers of your orders lines."
+msgstr ""
+
+#. module: viin_brand_pos
+#: model:ir.model.fields,help:viin_brand_pos.field_pos_config__sequence_id
+msgid ""
+"This sequence is automatically created by the system but you can change it "
+"to customize the reference numbers of your orders."
 msgstr ""

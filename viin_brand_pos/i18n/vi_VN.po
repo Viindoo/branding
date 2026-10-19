@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-24 09:32+0000\n"
-"PO-Revision-Date: 2025-09-24 09:32+0000\n"
+"POT-Creation-Date: 2026-10-19 02:33+0000\n"
+"PO-Revision-Date: 2026-10-19 02:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_pos
+#: model:ir.model,name:viin_brand_pos.model_res_company
+msgid "Companies"
+msgstr "Công ty"
 
 #. module: viin_brand_pos
 #. odoo-javascript
@@ -23,9 +28,29 @@ msgstr "Mất kết nối"
 
 #. module: viin_brand_pos
 #. odoo-javascript
+#: code:addons/viin_brand_pos/static/src/app/printer/base_printer.js:0
+msgid "Connection to the printer failed"
+msgstr "Kết nối với máy in không thành công"
+
+#. module: viin_brand_pos
+#. odoo-javascript
 #: code:addons/viin_brand_pos/static/src/app/popups/offline_error_popup.js:0
 msgid "Continue with limited functionality"
 msgstr "tiếp tục với chức năng giới hạn"
+
+#. module: viin_brand_pos
+#: model:ir.model,name:viin_brand_pos.model_ir_http
+msgid "HTTP Routing"
+msgstr "Định tuyến HTTP"
+
+#. module: viin_brand_pos
+#. odoo-javascript
+#: code:addons/viin_brand_pos/static/src/customer_display/customer_display_data_service.js:0
+msgid ""
+"Make sure the IoT Box is switched on and connected to the network, then "
+"restart the IoT Box."
+msgstr ""
+"Hãy bảo đảm hộp IoT đã được bật và kết nối mạng, rồi khởi động lại hộp IoT."
 
 #. module: viin_brand_pos
 #. odoo-javascript
@@ -38,7 +63,65 @@ msgstr ""
 "chế một số tính năng. Kiểm tra kết nối của bạn hoặc tiếp tục dùng"
 
 #. module: viin_brand_pos
+#: model:ir.model.fields,field_description:viin_brand_pos.field_pos_config__sequence_id
+msgid "Order IDs Sequence"
+msgstr "Thứ tự ID đơn hàng"
+
+#. module: viin_brand_pos
+#: model:ir.model.fields,field_description:viin_brand_pos.field_pos_config__sequence_line_id
+msgid "Order Line IDs Sequence"
+msgstr "Thứ tự ID dòng đơn hàng"
+
+#. module: viin_brand_pos
+#. odoo-javascript
+#: code:addons/viin_brand_pos/static/src/app/printer/base_printer.js:0
+msgid ""
+"Please check if the printer is still connected. \n"
+"Some browsers don't allow HTTP calls from websites to devices in the network (for security reasons). If this is the case, ask your administrator to set up a self-signed certificate for the ePOS printer and a secure connection (HTTPS) between the Point of Sale and the printer. "
+msgstr ""
+"Vui lòng kiểm tra xem máy in còn được kết nối hay không.\n"
+"Một số trình duyệt không cho phép gọi HTTP từ trang web đến thiết bị trong mạng (vì lý do bảo mật). Nếu đúng như vậy, hãy nhờ quản trị viên thiết lập chứng chỉ tự ký cho máy in ePOS và kết nối an toàn (HTTPS) giữa Điểm bán hàng và máy in. "
+
+#. module: viin_brand_pos
+#: model:ir.model,name:viin_brand_pos.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "Cấu hình POS"
+
+#. module: viin_brand_pos
 #. odoo-javascript
 #: code:addons/viin_brand_pos/static/src/app/screens/receipt/order_receipt.xml:0
 msgid "Powered by Viindoo"
 msgstr "Phần mềm Viindoo"
+
+#. module: viin_brand_pos
+#: model:ir.model.fields,help:viin_brand_pos.field_res_company__point_of_sale_use_ticket_qr_code
+#: model_terms:ir.ui.view,arch_db:viin_brand_pos.res_config_settings_view_form
+msgid ""
+"Print information on the receipt to allow the customer to easily access the "
+"invoice anytime, from the customer portal."
+msgstr "In thông tin trên phiếu tính tiền để khách hàng có thể dễ dàng truy cập hóa đơn bất cứ lúc nào, từ cổng thông tin khách hàng"
+
+#. module: viin_brand_pos
+#: model:ir.model.fields,field_description:viin_brand_pos.field_res_company__point_of_sale_use_ticket_qr_code
+msgid "Self-service invoicing"
+msgstr "Hóa đơn tự phục vụ"
+
+#. module: viin_brand_pos
+#. odoo-javascript
+#: code:addons/viin_brand_pos/static/src/app/popups/rpc_error_popup.js:0
+msgid "Server Error"
+msgstr "Lỗi máy chủ"
+
+#. module: viin_brand_pos
+#: model:ir.model.fields,help:viin_brand_pos.field_pos_config__sequence_line_id
+msgid ""
+"This sequence is automatically created by the system but you can change it "
+"to customize the reference numbers of your orders lines."
+msgstr "Thứ tự này được tạo tự động bởi hệ thống nhưng bạn có thể thay đổi nó để tùy chỉnh số tham chiếu của các dòng đơn hàng của bạn."
+
+#. module: viin_brand_pos
+#: model:ir.model.fields,help:viin_brand_pos.field_pos_config__sequence_id
+msgid ""
+"This sequence is automatically created by the system but you can change it "
+"to customize the reference numbers of your orders."
+msgstr "Trình tự này được tạo tự động bởi hệ thống nhưng bạn có thể thay đổi để tùy chỉnh số tham chiếu cho đơn hàng của bạn."
