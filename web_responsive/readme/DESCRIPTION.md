@@ -42,6 +42,11 @@ comfortably
 
 - Big inputs on form in edit mode
 
+- Apps menu toggle (grid icon) at the left of the navbar opens a sidebar
+  sliding in from the left edge; its "All Apps" button opens the
+  full-screen app menu with search; tapping the icon again while the
+  app menu is open closes the app menu.
+
 **Features for desktop computers**:
 
 - Keyboard shortcuts for easier navigation, **using \`Alt + Shift +

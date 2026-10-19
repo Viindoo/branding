@@ -9,7 +9,7 @@
 {
     "name": "Web Responsive",
     "summary": "Responsive web client, community-supported",
-    "version": "18.0.1.0.15",
+    "version": "18.0.1.0.16",
     "category": "Website",
     "website": "https://github.com/OCA/web",
     "author": "LasLabs, Tecnativa, ITerra, Onestein, "
@@ -107,6 +107,7 @@
         # mode).
         "web.assets_unit_tests": [
             "/web_responsive/static/tests/apps_menu.test.js",
+            "/web_responsive/static/tests/apps_menu_mobile.test.js",
             "/web_responsive/static/tests/apps_menu_search.test.js",
             "/web_responsive/static/tests/webclient.test.js",
         ],

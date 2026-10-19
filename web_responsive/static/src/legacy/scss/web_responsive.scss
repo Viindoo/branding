@@ -255,11 +255,17 @@ $chatter_zone_width: 35% !important;
 @include media-breakpoint-down(md) {
     .o_main_navbar {
         .o_breadcrumb {
-            // Reproduces the untouched build's own natural (proven-readable) breadcrumb width
-            // instead of a guessed number. `!important` is required to win over `.min-w-0`,
-            // which is itself `!important` ($enable-important-utilities: true,
-            // bootstrap/scss/_variables.scss) - same specificity, so only `!important` wins.
-            min-width: 182px !important;
+            // A floor, not a target: the breadcrumb takes whatever the toggle and the systray
+            // leave and the title ellipsizes. Kept low enough that a 360px phone still has room
+            // for the toggle, this floor and a systray with the admin icons plus the user-menu
+            // avatar, so the avatar is never pushed off the right edge. `!important` is required
+            // to win over `.min-w-0`, which is itself `!important`
+            // ($enable-important-utilities: true, bootstrap/scss/_variables.scss) - same
+            // specificity, so only `!important` wins.
+            min-width: 96px !important;
+            // The title gives way first (ellipsis); the systray, and the user-menu avatar in
+            // it, only shrinks once the breadcrumb has hit that floor.
+            flex-shrink: 1000;
         }
 
         .o_menu_systray {
