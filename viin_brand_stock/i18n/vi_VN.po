@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* stock
+# 	* viin_brand_stock
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-25 07:48+0000\n"
-"PO-Revision-Date: 2025-09-25 07:48+0000\n"
+"POT-Creation-Date: 2026-10-19 02:33+0000\n"
+"PO-Revision-Date: 2026-10-19 02:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,44 +15,151 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: stock
-#: model_terms:ir.actions.act_window,help:stock.action_location_form
-msgid ""
-"Define your locations to reflect your warehouse structure and\n"
-"            organization. The system is able to manage physical locations\n"
-"            (warehouses, shelves, bin, etc), partner locations (customers,\n"
-"            vendors) and virtual locations which are the counterpart of\n"
-"            the stock operations like the manufacturing orders\n"
-"            consumptions, inventories, etc."
-msgstr ""
-"Định nghĩa các vị trí của bạn để phản ánh cấu trúc và cách tổ chức\n"
-"            kho hàng của bạn. Hệ thống có thể quản lý các vị trí vật lý\n"
-"            (kho, kệ, giá, thùng, v.v.), các vị trí đối tác (vd: khách hàng,\n"
-"            nhà cung cấp) và các vị trí ảo để làm đối ứng cho các nghiệp vụ\n"
-"            kho như tiêu thụ nguyên vật liệu, tạo ra thành phẩm, biến hàng hóa\n"
-"            thành phế liệu, kiểm kho, v.v."
+#. module: viin_brand_stock
+#: model_terms:ir.ui.view,arch_db:viin_brand_stock.view_picking_type_form
+msgid "A PDF preview opens by default when these documents are printed."
+msgstr "Bản xem trước PDF sẽ được mở theo mặc định khi in các tài liệu này."
 
-#. module: stock
-#: model_terms:ir.actions.act_window,help:stock.action_location_form
-msgid ""
-"Every stock operation in Viindoo moves the products from one\n"
-"            location to another one.  For instance, if you receive products\n"
-"            from a vendor, the system will move products from the Vendor\n"
-"            location to the Stock location. Each report can be performed on\n"
-"            physical, partner or virtual locations."
-msgstr ""
-"Mọi nghiệp vụ kho trong Viindoo là dịch chuyển hàng hóa từ vị trí này\n"
-"            sang vị trí khác. Ví dụ, nếu bạn nhận hàng từ một nhà cung cấp,\n"
-"            hệ thống sẽ dịch chuyển hàng hóa từ Vị trí nhà cung cấp sang Vị trí\n"
-"            tồn kho. Từng báo cáo có thể được lập cho từng vị trí vật lý, vị\n"
-"            trí đối tác hay vị trí ảo."
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_delivery_slip
+msgid "Auto Print Delivery Slip"
+msgstr "Tự động in phiếu giao hàng"
 
-#. module: stock
-#: model_terms:ir.actions.act_window,help:stock.action_orderpoint
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_lot_labels
+msgid "Auto Print Lot/SN Labels"
+msgstr "Tự động in nhãn số lô/sê-ri"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_package_label
+msgid "Auto Print Package Label"
+msgstr "Tự động in nhãn kiện hàng"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_packages
+msgid "Auto Print Packages"
+msgstr "Tự động in kiện hàng"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_product_labels
+msgid "Auto Print Product Labels"
+msgstr "Tự động in nhãn sản phẩm"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_reception_report
+msgid "Auto Print Reception Report"
+msgstr "Tự động in báo cáo nhập kho"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_reception_report_labels
+msgid "Auto Print Reception Report Labels"
+msgstr "Tự động in nhãn báo cáo nhập kho"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_return_slip
+msgid "Auto Print Return Slip"
+msgstr "Tự động in phiếu trả hàng"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_delivery_slip
 msgid ""
-"Define a minimum stock rule so that system creates automatically requests for "
-"quotations or confirmed manufacturing orders to resupply your stock."
-msgstr ""
-"Định nghĩa một quy tắc tồn kho tối thiểu để hệ thống tự động tạo các yêu "
-"cầu báo giá hoặc các lệnh sản xuất được xác nhận để tái cung ứng cho "
-"kho của bạn."
+"If this checkbox is ticked, the system will automatically print the delivery"
+" slip of a picking when it is validated."
+msgstr "Nếu đánh dấu ô này, hệ thống sẽ tự động in phiếu giao hàng của phiếu kho khi phiếu kho được xác nhận."
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_lot_labels
+msgid ""
+"If this checkbox is ticked, the system will automatically print the lot/SN "
+"labels of a picking when it is validated."
+msgstr "Nếu đánh dấu ô này, hệ thống sẽ tự động in nhãn số lô/sê-ri của phiếu kho khi phiếu kho được xác nhận."
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_package_label
+msgid ""
+"If this checkbox is ticked, the system will automatically print the package "
+"label when \"Put in Pack\" button is used."
+msgstr "Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn kiện hàng khi nút \"Đóng kiện\" được sử dụng."
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_packages
+msgid ""
+"If this checkbox is ticked, the system will automatically print the packages"
+" and their contents of a picking when it is validated."
+msgstr "Nếu đánh dấu ô này, hệ thống sẽ tự động in các kiện hàng và thành phần của chúng trong phiếu kho khi phiếu kho được xác nhận."
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_product_labels
+msgid ""
+"If this checkbox is ticked, the system will automatically print the product "
+"labels of a picking when it is validated."
+msgstr "Nếu đánh dấu ô này, hệ thống sẽ tự động in nhãn sản phẩm của phiếu kho khi phiếu kho được xác nhận."
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_reception_report_labels
+msgid ""
+"If this checkbox is ticked, the system will automatically print the "
+"reception report labels of a picking when it is validated."
+msgstr "Nếu đánh dấu ô này, hệ thống sẽ tự động in nhãn báo cáo nhập kho của phiếu kho khi phiếu kho được xác nhận."
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_reception_report
+msgid ""
+"If this checkbox is ticked, the system will automatically print the "
+"reception report of a picking when it is validated and has assigned moves."
+msgstr "Nếu đánh dấu ô này, hệ thống sẽ tự động in báo cáo nhập kho của phiếu kho khi phiếu kho được xác nhận và có dịch chuyển đã giữ hàng."
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_return_slip
+msgid ""
+"If this checkbox is ticked, the system will automatically print the return "
+"slip of a picking when it is validated."
+msgstr "Nếu đánh dấu ô này, hệ thống sẽ tự động in phiếu trả hàng của phiếu kho khi phiếu kho được xác nhận."
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
+msgid ""
+"If this checkbox is ticked, the system will automatically show the reception"
+" report (if there are moves to allocate to) when validating."
+msgstr "Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động hiển thị báo cáo nhập kho (nếu có các dịch chuyển cần phân bổ) khi xác nhận."
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_warehouse_orderpoint__product_max_qty
+msgid "Max Quantity"
+msgstr "Số lượng tối đa"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_warehouse_orderpoint__product_min_qty
+msgid "Min Quantity"
+msgstr "Số lượng tối thiểu"
+
+#. module: viin_brand_stock
+#: model:ir.model,name:viin_brand_stock.model_stock_warehouse_orderpoint
+msgid "Minimum Inventory Rule"
+msgstr "Quy tắc tồn kho tối thiểu"
+
+#. module: viin_brand_stock
+#: model:ir.model,name:viin_brand_stock.model_stock_picking_type
+msgid "Picking Type"
+msgstr "Loại nghiệp vụ"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
+msgid "Show Reception Report at Validation"
+msgstr "Hiển thị báo cáo nhập kho khi xác nhận"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_warehouse_orderpoint__product_min_qty
+msgid ""
+"When the virtual stock goes below the Min Quantity specified for this field,"
+" the system generates a procurement to bring the forecasted quantity above "
+"of this Min Quantity."
+msgstr "Khi tồn kho ảo xuống dưới số lượng tối thiểu được chỉ định cho trường này, hệ thống sẽ tạo một yêu cầu cung ứng để đưa số lượng dự kiến lên trên số lượng tối thiểu này."
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_warehouse_orderpoint__product_max_qty
+msgid ""
+"When the virtual stock goes below the Min Quantity, the system generates a "
+"procurement to bring the forecasted quantity up to (or near to) the Max "
+"Quantity specified for this field (or to Min Quantity, whichever is bigger)."
+msgstr "Khi tồn kho ảo xuống dưới số lượng tối thiểu, hệ thống sẽ tạo một yêu cầu cung ứng để đưa số lượng dự kiến lên đến (hoặc gần đến) số lượng tối đa được chỉ định cho trường này (hoặc đến số lượng tối thiểu, tùy theo giá trị nào lớn hơn)."
