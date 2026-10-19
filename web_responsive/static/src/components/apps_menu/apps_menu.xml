@@ -29,8 +29,10 @@
                     class="o_menu_toggle border-0"
                     t-att-class="{'hasImage': currentApp?.webIconData}"
                     accesskey="h"
+                    title="Apps"
+                    aria-label="Apps"
                     t-ref="menuApps"
-                    t-on-click.prevent="_openAppMenuSidebar"
+                    t-on-click.prevent="onMenuToggleClick"
                 >
                     <t t-call="web.NavBar.AppsMenu.Sidebar" />
                 </a>
@@ -82,14 +84,8 @@
 
     <!-- Apps Menu Sidebar -->
     <t t-inherit="web.NavBar.AppsMenu.Sidebar" t-inherit-mode="extension">
-        <xpath expr="//i[hasclass('fa fa-bars')]" position="replace">
-            <!-- Remove the burger menu icon -->
-        </xpath>
-
-        <xpath expr="//div[hasclass('o_app_menu_sidebar')]" position="attributes">
-            <attribute
-                name="class"
-            >o_app_menu_sidebar position-fixed top-0 bottom-0 start-100 d-flex flex-column flex-nowrap</attribute>
+        <xpath expr="//i[hasclass('fa-bars')]" position="attributes">
+            <attribute name="class">fa fa-th-large fs-4</attribute>
         </xpath>
     </t>
 
@@ -98,18 +94,6 @@
         <!-- Add cursor pointer to menu items -->
         <xpath expr="//li[@t-on-click]" position="attributes">
             <attribute name="class">cursor-pointer</attribute>
-        </xpath>
-    </t>
-
-    <!-- Burger Menu -->
-    <t t-inherit="web.BurgerMenu" t-inherit-mode="extension">
-        <xpath expr="//button[hasclass('o_mobile_menu_toggle')]" position="after">
-            <button
-                class="o_mobile_menu_toggle o_nav_entry o-no-caret d-md-none border-0 pe-3"
-                t-on-click.prevent="_openAppMenuSidebarMobile"
-            >
-                <i class="oi oi-panel-right" />
-            </button>
         </xpath>
     </t>
 </templates>

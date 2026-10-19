@@ -72,6 +72,7 @@ export class AppsMenuScreen extends Component {
      * True when the menu is the only thing on screen. As an overlay there is no breadcrumb
      * trail to read, so the question is whether the action service holds a controller at all -
      * which is exactly the boot case (_loadDefaultApp opening straight into the Home Menu).
+     * Keep in step with the service's own coversNothing() below and AppsMenuAction's getter.
      */
     get coversNothing() {
         return !this.env.services.action.currentController;
@@ -123,6 +124,8 @@ export class AppsMenuAction extends AppsMenuScreen {
     static displayName = _t("Home");
     static target = "current";
 
+    // Keep in step with the service's coversNothing(). Reads this controller's own env, not the
+    // action service, so a nested action manager (customizer) answers for its own stack.
     get coversNothing() {
         return !this.env.config.breadcrumbs.length;
     }
@@ -221,6 +224,19 @@ export const appsMenuService = {
             },
             isOpening() {
                 return isOpening;
+            },
+            /**
+             * True when there is no screen behind the menu to return to (e.g. the menu is the
+             * boot screen), whether it is presented as an overlay or as the "menu" action. Keep in
+             * step with the coversNothing getters of AppsMenuScreen / AppsMenuAction /
+             * AppsMenuOverlay, which answer the same question from inside the screen.
+             */
+            coversNothing() {
+                const controller = env.services.action.currentController;
+                return (
+                    !controller ||
+                    (controller.action?.tag === "menu" && !controller.config.breadcrumbs.length)
+                );
             },
             toggleMenu(openState) {
                 return mutex.exec(async () => {

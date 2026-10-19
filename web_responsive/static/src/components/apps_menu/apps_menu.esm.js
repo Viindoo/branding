@@ -15,7 +15,6 @@ import {patch} from "@web/core/utils/patch";
 import {router} from "@web/core/browser/router";
 import {session} from "@web/session";
 import {useHotkey} from "@web/core/hotkeys/hotkey_hook";
-import {BurgerMenu} from "@web/webclient/burger_menu/burger_menu";
 
 
 export class AppsMenu extends Component {
@@ -132,31 +131,27 @@ export class AppsMenu extends Component {
     }
 }
 
-// Add this patch after the WebClient patch
 patch(NavBar.prototype, {
-    setup() {
-        super.setup();
-
-        useBus(this.env.bus, "APP_MENU:TOGGLE_SIDEBAR", () => {
-            this._openAppMenuSidebar();
-        });
+    // On a small screen the toggle opens the sidebar, except while the full-screen app grid is
+    // open over a screen: there it dismisses the grid, like the desktop grid button does. A grid
+    // with nothing behind it (boot screen) has nowhere to go back to, so the sidebar opens.
+    onMenuToggleClick() {
+        const appsMenu = this.appsMenuService;
+        if (appsMenu?.isOpening() && !appsMenu.coversNothing()) {
+            return appsMenu.toggleMenu();
+        }
+        return this._openAppMenuSidebar();
     },
 
-    openAppMenu() {
-        this.env.bus.trigger("APP_MENU:OPEN_APP_MENU");
+    // The sidebar's "All Apps" button leads to the same full-screen app grid (with its search box)
+    // as the desktop button, instead of core's inline app list inside the sidebar.
+    onAllAppsBtnClick() {
+        if (!this.appsMenuService) {
+            return super.onAllAppsBtnClick(...arguments);
+        }
         this._closeAppMenuSidebar();
+        return this.appsMenuService.toggleMenu(true);
     },
 });
 
 Object.assign(NavBar.components, {AppsMenu, AppMenuItem, AppsMenuSearchBar});
-
-// Add this patch after the WebClient patch
-patch(BurgerMenu.prototype, {
-    setup() {
-        super.setup();
-    },
-
-    _openAppMenuSidebarMobile() {
-        this.env.bus.trigger("APP_MENU:TOGGLE_SIDEBAR");
-    },
-});
