@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 02:12+0000\n"
-"PO-Revision-Date: 2026-10-20 02:12+0000\n"
+"POT-Creation-Date: 2026-10-20 03:42+0000\n"
+"PO-Revision-Date: 2026-10-20 03:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -73,6 +73,11 @@ msgid "Bill of Material"
 msgstr "Định mức nguyên vật liệu"
 
 #. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_routing_workcenter__cost_mode
+msgid "Cost based on"
+msgstr "Chi phí dựa trên"
+
+#. module: viin_brand_mrp
 #: model:ir.model.fields,help:viin_brand_mrp.field_mrp_bom__allow_operation_dependencies
 msgid ""
 "Create operation level dependencies that will influence both planning and "
@@ -86,7 +91,19 @@ msgstr ""
 "bắt đầu cùng lúc."
 
 #. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_mrp_routing_workcenter__cost_mode
+msgid ""
+"Determines the way the system calculates the cost of the operation:\n"
+"- Based on Actual time: the cost will be calculated based on tracked time and real employee costs.\n"
+"- Based on Estimated time: the cost will be calculated based on estimated time and costs."
+msgstr ""
+"Xác định cách hệ thống tính toán chi phí của công đoạn:\n"
+"- Dựa trên thời gian thực tế: chi phí sẽ được tính toán dựa trên thời gian theo dõi và chi phí thực tế của nhân viên.\n"
+"- Dựa trên thời gian ước tính: chi phí sẽ được tính toán dựa trên chi phí và thời gian ước tính."
+
+#. module: viin_brand_mrp
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__display_name
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_routing_workcenter__display_name
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__display_name
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__display_name
 msgid "Display Name"
@@ -94,6 +111,7 @@ msgstr "Tên hiển thị"
 
 #. module: viin_brand_mrp
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__id
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_routing_workcenter__id
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__id
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__id
 msgid "ID"
@@ -172,3 +190,8 @@ msgid ""
 msgstr ""
 "Khi được kích hoạt, tiêu hao của thành phần đó chỉ được ghi nhận thủ công.\n"
 "Nếu không được kích hoạt nhưng tiêu hao của bất kỳ thành phần nào được chỉnh sửa thủ công trên lệnh sản xuất, hệ thống cũng coi đó là ghi tiêu hao thủ công."
+
+#. module: viin_brand_mrp
+#: model:ir.model,name:viin_brand_mrp.model_mrp_routing_workcenter
+msgid "Work Center Usage"
+msgstr "Công đoạn"

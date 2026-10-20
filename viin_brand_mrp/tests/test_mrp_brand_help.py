@@ -87,3 +87,21 @@ class TestPickingTypeMrpPrintNote(TransactionCase):
             BRAND_TERM, " ".join(notes[0].itertext()),
             "the Manufacturing print note on the Operation Type form must not name Odoo",
         )
+
+
+@tagged("post_install", "-at_install")
+class TestRoutingWorkcenterCostModeHelp(TransactionCase):
+
+    def test_operation_cost_mode_help_does_not_name_odoo(self):
+        help_text = self.env["mrp.routing.workcenter"].fields_get(
+            ["cost_mode"], attributes=["help"])["cost_mode"]["help"]
+        self.assertNotIn(
+            BRAND_TERM, help_text,
+            "the Cost based on help of a BoM operation must not name Odoo",
+        )
+
+    def test_operation_cost_mode_keeps_core_choices_and_default(self):
+        operation = self.env["mrp.routing.workcenter"]
+        info = operation.fields_get(["cost_mode"], attributes=["selection"])["cost_mode"]
+        self.assertEqual({value for value, _label in info["selection"]}, {"actual", "estimated"})
+        self.assertEqual(operation.default_get(["cost_mode"])["cost_mode"], "actual")
