@@ -6,7 +6,8 @@ from odoo.tests.common import TransactionCase, tagged
 # The Inventory help texts this module owns must not name the Odoo product.
 BRAND_TERM = "Odoo"
 PDF_PREVIEW_FRAGMENT = "PDF preview"
-AUTO_PRINT_FIELDS = [
+OPERATION_TYPE_HELP_FIELDS = [
+    "use_create_lots",
     "auto_show_reception_report",
     "auto_print_delivery_slip",
     "auto_print_return_slip",
@@ -64,15 +65,29 @@ class TestPickingTypeFormNote(TransactionCase):
 
 
 @tagged("post_install", "-at_install")
-class TestPickingTypeAutoPrintHelp(TransactionCase):
+class TestPickingTypeHelp(TransactionCase):
 
-    def test_auto_print_help_texts_do_not_name_odoo(self):
-        field_info = self.env["stock.picking.type"].fields_get(AUTO_PRINT_FIELDS, attributes=["help"])
-        for name in AUTO_PRINT_FIELDS:
+    def test_operation_type_help_texts_do_not_name_odoo(self):
+        field_info = self.env["stock.picking.type"].fields_get(OPERATION_TYPE_HELP_FIELDS, attributes=["help"])
+        for name in OPERATION_TYPE_HELP_FIELDS:
             with self.subTest(field=name):
                 self.assertNotIn(
                     BRAND_TERM, field_info[name]["help"],
                     "the help of an Operation Type auto-print option must not name Odoo",
+                )
+
+
+@tagged("post_install", "-at_install")
+class TestPickingLotCreationHelp(TransactionCase):
+
+    def test_lot_creation_help_on_transfer_and_move_line_does_not_name_odoo(self):
+        for model, name in [("stock.picking", "use_create_lots"),
+                            ("stock.move.line", "picking_type_use_create_lots")]:
+            with self.subTest(model=model, field=name):
+                help_text = self.env[model].fields_get([name], attributes=["help"])[name]["help"]
+                self.assertNotIn(
+                    BRAND_TERM, help_text,
+                    "the lot-creation help on a Transfer or move line must not name Odoo",
                 )
 
 
