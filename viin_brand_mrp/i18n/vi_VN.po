@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 16:26+0000\n"
-"PO-Revision-Date: 2026-08-07 16:26+0000\n"
+"POT-Creation-Date: 2026-10-20 03:42+0000\n"
+"PO-Revision-Date: 2026-10-20 03:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -38,6 +38,11 @@ msgid "Tip: Use tablets in the shop to control manufacturing"
 msgstr "Mẹo: Sử dụng máy tính bảng tại xưởng để kiểm soát quá trình sản xuất"
 
 #. module: viin_brand_mrp
+#: model_terms:ir.ui.view,arch_db:viin_brand_mrp.view_picking_type_form_inherit_mrp
+msgid "A PDF preview opens by default when these documents are printed."
+msgstr "Bản xem trước PDF sẽ được mở theo mặc định khi in các tài liệu này."
+
+#. module: viin_brand_mrp
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report
 msgid "Auto Print Allocation Report"
 msgstr "Tự động in báo cáo phân bổ"
@@ -63,14 +68,54 @@ msgid "Auto Print Produced Product Labels"
 msgstr "Tự động in nhãn sản phẩm đã sản xuất"
 
 #. module: viin_brand_mrp
+#: model:ir.model,name:viin_brand_mrp.model_mrp_bom
+msgid "Bill of Material"
+msgstr "Định mức nguyên vật liệu"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_routing_workcenter__cost_mode
+msgid "Cost based on"
+msgstr "Chi phí dựa trên"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_mrp_bom__allow_operation_dependencies
+msgid ""
+"Create operation level dependencies that will influence both planning and "
+"the status of work orders upon MO confirmation. If this feature is ticked, "
+"and nothing is specified, the system will assume that all operations can be "
+"started simultaneously."
+msgstr ""
+"Tạo phụ thuộc ở cấp công đoạn, ảnh hưởng đến cả việc lập kế hoạch và trạng "
+"thái của lệnh công đoạn khi xác nhận lệnh SX. Nếu tính năng này được chọn và"
+" không có gì được chỉ định, hệ thống sẽ cho rằng mọi công đoạn đều có thể "
+"bắt đầu cùng lúc."
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_mrp_routing_workcenter__cost_mode
+msgid ""
+"Determines the way the system calculates the cost of the operation:\n"
+"- Based on Actual time: the cost will be calculated based on tracked time and real employee costs.\n"
+"- Based on Estimated time: the cost will be calculated based on estimated time and costs."
+msgstr ""
+"Xác định cách hệ thống tính toán chi phí của công đoạn:\n"
+"- Dựa trên thời gian thực tế: chi phí sẽ được tính toán dựa trên thời gian theo dõi và chi phí thực tế của nhân viên.\n"
+"- Dựa trên thời gian ước tính: chi phí sẽ được tính toán dựa trên chi phí và thời gian ước tính."
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__display_name
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_routing_workcenter__display_name
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__display_name
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__display_name
 msgid "Display Name"
 msgstr "Tên hiển thị"
 
 #. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__id
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_routing_workcenter__id
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__id
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: viin_brand_mrp
 #: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report_labels
@@ -118,6 +163,35 @@ msgstr ""
 "lệnh hoàn thành."
 
 #. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__manual_consumption
+msgid "Manual Consumption"
+msgstr "Ghi tiêu hao thủ công"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__allow_operation_dependencies
+msgid "Operation Dependencies"
+msgstr "Phụ thuộc giữa các công đoạn"
+
+#. module: viin_brand_mrp
 #: model:ir.model,name:viin_brand_mrp.model_stock_picking_type
 msgid "Picking Type"
 msgstr "Loại nghiệp vụ"
+
+#. module: viin_brand_mrp
+#: model:ir.model,name:viin_brand_mrp.model_stock_move
+msgid "Stock Move"
+msgstr "Dịch chuyển kho"
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_move__manual_consumption
+msgid ""
+"When activated, then the registration of consumption for that component is recorded manually exclusively.\n"
+"If not activated, and any of the components consumption is edited manually on the manufacturing order, the system assumes manual consumption also."
+msgstr ""
+"Khi được kích hoạt, tiêu hao của thành phần đó chỉ được ghi nhận thủ công.\n"
+"Nếu không được kích hoạt nhưng tiêu hao của bất kỳ thành phần nào được chỉnh sửa thủ công trên lệnh sản xuất, hệ thống cũng coi đó là ghi tiêu hao thủ công."
+
+#. module: viin_brand_mrp
+#: model:ir.model,name:viin_brand_mrp.model_mrp_routing_workcenter
+msgid "Work Center Usage"
+msgstr "Công đoạn"

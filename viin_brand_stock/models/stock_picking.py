@@ -4,6 +4,8 @@ from odoo import fields, models
 class StockPickingType(models.Model):
     _inherit = 'stock.picking.type'
 
+    use_create_lots = fields.Boolean(
+        help="If this checkbox is ticked only, the system will suppose you want to create new Lots/Serial Numbers, so you can provide them in a text field.")
     auto_show_reception_report = fields.Boolean(
         help="If this checkbox is ticked, the system will automatically show the reception report (if there are moves to allocate to) when validating.")
     auto_print_delivery_slip = fields.Boolean(
@@ -22,3 +24,10 @@ class StockPickingType(models.Model):
         help="If this checkbox is ticked, the system will automatically print the packages and their contents of a picking when it is validated.")
     auto_print_package_label = fields.Boolean(
         help="If this checkbox is ticked, the system will automatically print the package label when \"Put in Pack\" button is used.")
+
+
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+
+    use_create_lots = fields.Boolean(
+        help="If this checkbox is ticked only, the system will suppose you want to create new Lots/Serial Numbers, so you can provide them in a text field.")

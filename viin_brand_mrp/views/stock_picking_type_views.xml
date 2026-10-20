@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The core text sends the user to the Odoo IoT App and Odoo's documentation. -->
+    <record id="view_picking_type_form_inherit_mrp" model="ir.ui.view">
+        <field name="name">stock.picking.type.form.inherit.mrp.viin.brand</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="mrp.view_picking_type_form_inherit_mrp"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='mrp_hardware']//div[@colspan='2'][widget[@name='documentation_link']]" position="replace">
+                <div colspan="2">
+                    A PDF preview opens by default when these documents are printed.
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

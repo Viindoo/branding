@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 16:26+0000\n"
-"PO-Revision-Date: 2026-08-07 16:26+0000\n"
+"POT-Creation-Date: 2026-10-20 03:42+0000\n"
+"PO-Revision-Date: 2026-10-20 03:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -61,6 +61,11 @@ msgstr ""
 "kho của bạn."
 
 #. module: viin_brand_stock
+#: model_terms:ir.ui.view,arch_db:viin_brand_stock.view_picking_type_form
+msgid "A PDF preview opens by default when these documents are printed."
+msgstr "Bản xem trước PDF sẽ được mở theo mặc định khi in các tài liệu này."
+
+#. module: viin_brand_stock
 #: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_delivery_slip
 msgid "Auto Print Delivery Slip"
 msgstr "Tự động in phiếu giao hàng"
@@ -101,14 +106,36 @@ msgid "Auto Print Return Slip"
 msgstr "Tự động in phiếu trả hàng"
 
 #. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_move_line__picking_type_use_create_lots
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking__use_create_lots
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__use_create_lots
+msgid "Create New Lots/Serial Numbers"
+msgstr "Tạo số lô/sê-ri mới"
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_move_line__display_name
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking__display_name
 #: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__display_name
 msgid "Display Name"
 msgstr "Tên hiển thị"
 
 #. module: viin_brand_stock
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_move_line__id
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking__id
 #: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
+
+#. module: viin_brand_stock
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_move_line__picking_type_use_create_lots
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking__use_create_lots
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__use_create_lots
+msgid ""
+"If this checkbox is ticked only, the system will suppose you want to create "
+"new Lots/Serial Numbers, so you can provide them in a text field."
+msgstr ""
+"Nếu chỉ chọn ô này, hệ thống sẽ tin rằng bạn muốn tạo số lô/sê-ri mới, để "
+"bạn có thể điền chúng trong một trường văn bản."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_delivery_slip
@@ -116,8 +143,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the delivery"
 " slip of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu ô này, hệ thống sẽ tự động in phiếu giao hàng của phiếu kho khi "
-"phiếu kho được xác nhận."
+"Nếu đánh dấu ô này, hệ thống sẽ tự động in phiếu giao hàng của phiếu kho khi"
+" phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_lot_labels
@@ -125,8 +152,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the lot/SN "
 "labels of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn số lô/sê-ri của phiếu "
-"kho khi phiếu kho được xác nhận."
+"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn số lô/sê-ri của phiếu"
+" kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_package_label
@@ -170,8 +197,8 @@ msgid ""
 "If this checkbox is ticked, the system will automatically print the "
 "reception report of a picking when it is validated and has assigned moves."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in báo cáo nhập kho của phiếu "
-"kho khi phiếu kho được xác nhận và có dịch chuyển đã giữ hàng."
+"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in báo cáo nhập kho của phiếu"
+" kho khi phiếu kho được xác nhận và có dịch chuyển đã giữ hàng."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_return_slip
@@ -197,6 +224,16 @@ msgid "Picking Type"
 msgstr "Loại nghiệp vụ"
 
 #. module: viin_brand_stock
+#: model:ir.model,name:viin_brand_stock.model_stock_move_line
+msgid "Product Moves (Stock Move Line)"
+msgstr "Dịch chuyển sản phẩm (Chi tiết dịch chuyển)"
+
+#. module: viin_brand_stock
 #: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
 msgid "Show Reception Report at Validation"
 msgstr "Hiển thị báo cáo nhập kho khi xác nhận"
+
+#. module: viin_brand_stock
+#: model:ir.model,name:viin_brand_stock.model_stock_picking
+msgid "Transfer"
+msgstr "Phiếu kho"

@@ -25,7 +25,7 @@
           <div class="o_viin_home_search d-flex align-items-center">
             <i class="fa fa-search o_viin_home_search_icon" aria-hidden="true"/>
             <input type="text" class="o_viin_home_search_input" t-ref="search"
-                   placeholder="Search apps, records, actions..." aria-label="Search applications"
+                   placeholder="Search apps and menus..." aria-label="Search applications"
                    autocomplete="off" spellcheck="false" data-allow-hotkeys="true"
                    t-on-input="onSearchInput" t-on-keydown="onSearchKeydown"/>
           </div>
@@ -101,9 +101,26 @@
               </t>
             </div>
           </t>
-          <div t-else="" class="o_viin_home_empty d-flex flex-column align-items-center justify-content-center text-muted">
+          <t t-if="menuMatches.length">
+            <!-- Menu items found by the same search box (an app's sub-menus, shown under their app). A
+                 plain list of links under the tiles: it needs no keyboard model of its own - Tab
+                 walks the links, and Enter in the box opens the first one when no app matches. -->
+            <div class="o_viin_home_section_label">Menu items</div>
+            <ul class="o_viin_home_menu_items list-unstyled">
+              <li t-foreach="menuMatches" t-as="item" t-key="item.menu.id">
+                <a class="o_viin_home_menu_item d-flex flex-column"
+                   t-att-href="getMenuHref(item.menu)"
+                   t-att-data-menu-id="item.menu.id"
+                   t-on-click="(ev) => this.onMenuItemClick(ev, item.menu)">
+                  <span class="o_viin_home_menu_item_name" t-esc="item.name"/>
+                  <small class="o_viin_home_menu_item_path text-muted" t-esc="item.path"/>
+                </a>
+              </li>
+            </ul>
+          </t>
+          <div t-if="!filteredApps.length and !menuMatches.length" class="o_viin_home_empty d-flex flex-column align-items-center justify-content-center text-muted">
             <i class="fa fa-search fa-2x mb-2" aria-hidden="true"/>
-            <p>No applications match your search.</p>
+            <p>Nothing matches your search.</p>
           </div>
         </div>
 

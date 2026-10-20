@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="point_of_sale.PosConfigLnaChecklist" t-inherit-mode="extension">
+        <xpath expr="//label[@for='lna_epson']" position="replace" mode="inner">
+            I use an Epson printer (Check supported printers in the documentation)
+        </xpath>
+    </t>
+
+</templates>

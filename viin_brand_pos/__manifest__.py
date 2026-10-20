@@ -17,7 +17,7 @@ This module will change color in navigate bar, button and logo following Viindoo
 Editions Supported
 ==================
 1. Community Edition
-2. Enterprise Edition
+2. Viindoo Cloud
 
     """,
 
@@ -30,7 +30,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
 Ấn bản được Hỗ trợ
 ==================
 1. Ấn bản Community
-2. Ấn bản Enterprise
+2. Viindoo Cloud
 
 """,
 
@@ -44,7 +44,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
 
     # any module necessary for this one to work correctly
     'depends': ['viin_brand_web', 'point_of_sale'],
@@ -52,6 +52,8 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     # always loaded
     'data': [
         'views/pos_assets_index.xml',
+        'views/res_config_settings_views.xml',
+        'views/report_saledetails_views.xml',
     ],
     'assets': {
         'point_of_sale._assets_pos': [
@@ -84,6 +86,42 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             'viin_brand_pos/static/src/app/components/odoo_logo/odoo_logo.xml',
             'viin_brand_pos/static/src/app/navbar/navbar.js',
             ('after', 'point_of_sale/static/src/app/utils/error_handlers.js', 'viin_brand_pos/static/src/app/popups/offline_error_popup.js'),
+            ('after', 'point_of_sale/static/src/app/utils/error_handlers.js', 'viin_brand_pos/static/src/app/popups/rpc_error_popup.js'),
+            # Core also builds the "Odoo Server Error" dialog outside the registry handler:
+            # exported handleRPCError (payment validation) and the cash move deletion.
+            'viin_brand_pos/static/src/app/utils/order_payment_validation.js',
+            'viin_brand_pos/static/src/app/components/popups/cash_move_popup/cash_move_list_popup/cash_move_list_popup.js',
+            # The POS bundles are built from web._assets_core and never include web.assets_backend,
+            # where viin_brand_web ships its error-dialog de-brand (the "Odoo Error" /
+            # "Odoo Client Error" / "Odoo Network Error" headings, "Odoo Warning" fallbacks and the
+            # session-expired dialog). Reuse those two files instead of copying them: they only
+            # touch classes and templates of web/static/src/core/errors, which this bundle holds.
+            'viin_brand_web/static/src/core/errors/error_dialogs.js',
+            'viin_brand_web/static/src/core/errors/error_dialogs.xml',
+            # What viin_brand_web's backend patches do not reach here: default Dialog title and the
+            # generic error dialog's technical details.
+            'viin_brand_pos/static/src/app/errors/dialog_default_title.js',
+            'viin_brand_pos/static/src/app/errors/error_dialogs.js',
+            'viin_brand_pos/static/src/app/screens/product_screen/product_screen.js',
+            'viin_brand_pos/static/src/app/services/report_service.js',
+        ],
+        'point_of_sale.customer_display_assets': [
+            # The public customer display page bundles its own subset of point_of_sale
+            # (core's OdooLogo component and template included), not _assets_pos, so the
+            # Viindoo logo extension and the IoT notice patch must be listed here as well.
+            'viin_brand_pos/static/src/app/components/odoo_logo/odoo_logo.xml',
+            'viin_brand_pos/static/src/customer_display/iot_notice.js',
+            'viin_brand_pos/static/src/customer_display/customer_display_data_service.js',
+            # Same error-dialog de-brand as the POS bundle above (this bundle is built from
+            # web._assets_core too).
+            'viin_brand_web/static/src/core/errors/error_dialogs.js',
+            'viin_brand_web/static/src/core/errors/error_dialogs.xml',
+            'viin_brand_pos/static/src/app/errors/dialog_default_title.js',
+            'viin_brand_pos/static/src/app/errors/error_dialogs.js',
+        ],
+        'web.assets_backend': [
+            # The printer checklist widget of the POS configuration form lives in the backend.
+            'viin_brand_pos/static/src/backend/lna_checklist/lna_checklist.xml',
         ],
         'point_of_sale.assets_prod': [
             'viin_brand_pos/static/src/css/**/*',
@@ -95,6 +133,16 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             # ViinBrandPosSaverScreenLogoTour's own header comment.
             'viin_brand_pos/static/tests/tours/**/*',
         ],
+        'web.assets_unit_tests_setup': [
+            # The unit-test bundle merges the POS bundle with web.assets_backend, which no real page
+            # does. Two files only make sense on one side of that merge:
+            # - viin_brand_web's own dialog.js checks that the default Dialog title still holds the
+            #   brand and console.errors when this module's POS-only patch got there first;
+            # - core's backend lna_checklist template is removed from this bundle by point_of_sale
+            #   (`remove` of src/backend/**), so an extension of it has no parent here.
+            ('remove', 'viin_brand_pos/static/src/app/errors/dialog_default_title.js'),
+            ('remove', 'viin_brand_pos/static/src/backend/lna_checklist/lna_checklist.xml'),
+        ],
         'web.assets_unit_tests': [
             # navbar_favicon_guard.test.js mounts the REAL point_of_sale Navbar via
             # setupPosEnv()/mountWithCleanup() (point_of_sale's own web.assets_unit_tests_setup
@@ -104,6 +152,11 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             # This entry is harmless redundancy (Odoo's module loader no-ops a duplicate define()).
             'viin_brand_pos/static/src/app/navbar/navbar.js',
             'viin_brand_pos/static/tests/navbar_favicon_guard.test.js',
+            # The IoT notice swap lives in its own file because core's customer display service
+            # is not part of the POS unit test bundle (point_of_sale removes customer_display/**).
+            'viin_brand_pos/static/src/customer_display/iot_notice.js',
+            'viin_brand_pos/static/tests/pos_error_debrand.test.js',
+            'viin_brand_pos/static/tests/pos_core_wording_debrand.test.js',
         ],
     },
     'installable': True,

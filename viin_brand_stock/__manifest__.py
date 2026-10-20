@@ -17,7 +17,7 @@ This module will change color navigate bar, button and logo,v.v in Stock followi
 Editions Supported
 ==================
 1. Community Edition
-2. Enterprise Edition
+2. Viindoo Cloud
 
     """,
 
@@ -30,7 +30,7 @@ Module này sẽ thay đổi giao diện các module Stock theo thương hiệu 
 Ấn bản được Hỗ trợ
 ==================
 1. Ấn bản Community
-2. Ấn bản Enterprise
+2. Viindoo Cloud
 
 """,
 
@@ -44,7 +44,7 @@ Module này sẽ thay đổi giao diện các module Stock theo thương hiệu 
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
 
     # any module necessary for this one to work correctly
     'depends': ['stock', 'viin_brand_digest'],
@@ -54,6 +54,7 @@ Module này sẽ thay đổi giao diện các module Stock theo thương hiệu 
         'data/digest_data.xml',
         'views/stock_orderpoint_views.xml',
         'views/stock_location_views.xml',
+        'views/stock_picking_type_views.xml',
     ],
     'installable': True,
     'auto_install': True,

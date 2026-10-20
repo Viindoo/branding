@@ -35,13 +35,14 @@ for it to be built - never at module install:
   all (only ``Sass``/``Scss``/``Less`` StylesheetAsset subclasses reach the compiler,
   :577-579), so a plain-CSS syntax typo is NOT caught here; also noted below.
 
-This module contributes to four bundles (``__manifest__.py``'s ``assets`` key), verified against
+This module contributes to five bundles (``__manifest__.py``'s ``assets`` key), verified against
 that file directly rather than assumed:
 
 * ``point_of_sale._assets_pos`` - two SCSS anchors (``pos_variables.scss`` after
   ``viin_brand_web``'s ``brand_variables.scss``; ``style.scss`` after ``point_of_sale``'s
   ``pos.scss``), four bare XML templates, ``navbar.js``, and one JS anchor
-  (``offline_error_popup.js`` after ``point_of_sale``'s ``error_handlers.js``). Despite the
+  (``offline_error_popup.js`` and ``rpc_error_popup.js`` after ``point_of_sale``'s
+  ``error_handlers.js``). Despite the
   leading underscore marking it "private" (never served on its own page), it is NOT a bare-helper
   bundle like ``web._assets_primary_variables`` (whose own Sass functions live in a SIBLING bundle
   it never includes, so resolving it in isolation raises an unconditional "undefined function"
@@ -67,12 +68,17 @@ that file directly rather than assumed:
   catches a decode/fetch fault in that file (:958) but NOT a silent rename/deletion (glob just
   drops it) NOR a plain-CSS syntax typo (no Sass validation applies to ``.css``) - stated plainly
   rather than papered over.
+* ``point_of_sale.customer_display_assets`` - the public customer display page's own bundle:
+  two LITERAL (non-glob) appends, the Viindoo ``odoo_logo.xml`` template extension and the IoT
+  notice patch ``customer_display_data_service.js``. Literal paths, so a deletion of either DOES
+  produce the missing-content marker; a template extension whose base template is not in the
+  bundle fails at runtime only and is guarded by test_pos_brand_help.py instead.
 * ``web.assets_tests`` - one GLOB append, no anchor (``static/tests/tours/**/*``, currently
   ``saver_screen_logo_tour.js``). Same glob caveat as above: a rename/deletion is a silent drop,
   not caught here. What IS caught: a genuine JS syntax fault in that tour file breaking the ES
   transpile step for the WHOLE bundle - a real, everyday hazard, since this bundle is shared by
   every module's tours in the same database.
-* ``web.assets_unit_tests`` - two LITERAL (non-glob) appends: ``navbar.js`` (redundant re-declare
+* ``web.assets_unit_tests`` - literal (non-glob) appends: ``navbar.js`` (redundant re-declare
   of the same file already in ``_assets_pos`` - the manifest's own comment calls this "harmless
   redundancy") and ``navbar_favicon_guard.test.js`` (this module's own Hoot unit test). Being
   literal paths, NOT globs, a deletion of either DOES produce the missing-content marker (the
@@ -95,6 +101,7 @@ CSS_BUNDLES = (
 # because it is a mixed bundle: its SCSS half is asserted above, its JS/XML half here.
 JS_BUNDLES = (
     "point_of_sale._assets_pos",
+    "point_of_sale.customer_display_assets",
     "web.assets_tests",
     "web.assets_unit_tests",
 )
@@ -176,8 +183,8 @@ class BundleCompileTest(TransactionCase):
     def test_js_bundles_build_with_no_missing_or_malformed_asset(self):
         """point_of_sale._assets_pos / web.assets_tests / web.assets_unit_tests build clean JS.
 
-        WOULD FAIL IF: the 'after' JS anchor (offline_error_popup.js after point_of_sale's
-        error_handlers.js) is renamed or removed - same uncaught ValueError as the CSS case,
+        WOULD FAIL IF: the 'after' JS anchor (offline_error_popup.js / rpc_error_popup.js after
+        point_of_sale's error_handlers.js) is renamed or removed - same uncaught ValueError as the CSS case,
         since anchor resolution happens before the css/js split - or navbar.js /
         navbar_favicon_guard.test.js (LITERAL, non-glob entries) is deleted, embedding a swallowed
         console.error that NAMES that path; or any of the four XML templates in

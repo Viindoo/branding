@@ -62,7 +62,8 @@
 import { onWillUnmount } from "@odoo/owl";
 import { NavBar } from "@web/webclient/navbar/navbar";
 import { patch } from "@web/core/utils/patch";
-import { useService } from "@web/core/utils/hooks";
+import { useBus, useService } from "@web/core/utils/hooks";
+import { routerBus } from "@web/core/browser/router";
 import { ControllerNotFoundError } from "@web/webclient/actions/action_service";
 import { ViinHomeMenu } from "../home_menu/home_menu";
 
@@ -70,7 +71,10 @@ import { ViinHomeMenu } from "../home_menu/home_menu";
 // (webclient_patch.js) and nothing else.
 export const VIIN_HOME_ACTION = "viin_home_menu";
 
-const APPS_BUTTON_SELECTOR = ".o_navbar_apps_menu .o_viin_apps_home";
+// The control that toggles the home menu: the desktop apps button, or - on a small screen, where
+// core renders `a.o_menu_toggle` instead - that anchor. Exactly one of the two exists at a time.
+// (home_menu.js's APPS_MENU_SELECTOR is the matching "this pointerdown is the toggle's own" area.)
+const APPS_BUTTON_SELECTOR = ".o_navbar_apps_menu .o_viin_apps_home, .o_menu_toggle";
 
 patch(NavBar.prototype, {
     setup() {
@@ -82,6 +86,14 @@ patch(NavBar.prototype, {
         // A navbar that is destroyed with the panel up (a reload, a fullscreen action) must not
         // strand it in the overlay container.
         onWillUnmount(() => this.closeViinHomeOverlay());
+        // The screen behind the panel changed (a route change, or another action mounted): the
+        // handle must not outlive it, or a panel that mounts late would cover the new screen.
+        useBus(routerBus, "ROUTE_CHANGE", () => this.closeViinHomeOverlay());
+        useBus(this.env.bus, "ACTION_MANAGER:UI-UPDATED", ({ detail: mode }) => {
+            if (mode !== "new") {
+                this.closeViinHomeOverlay();
+            }
+        });
     },
 
     /**
@@ -111,6 +123,55 @@ patch(NavBar.prototype, {
             },
             { onRemove: () => (this.viinHomeOverlay = null) }
         );
+    },
+
+    /**
+     * Small screens: the toggle (`a.o_menu_toggle`, core's `_openAppMenuSidebar`) reaches the SAME
+     * home menu the desktop button does, with the same "is something behind it" rule - no second
+     * predicate. Gated on the home menu being involved at all, so with nothing of ours open the
+     * toggle is core's sidebar toggle, untouched (also after the sidebar is already open: a second
+     * tap closes it).
+     *  - overlay up (a screen is behind it): put the overlay away, back to that screen, no sidebar;
+     *  - boot landing up: `closeHomeMenu()` restores the screen behind it if there is one; when
+     *    nothing is behind it the home menu stays and the sidebar opens over it (no blank page).
+     */
+    async _openAppMenuSidebar() {
+        if (this.viinHomeOverlay) {
+            // A handle with no panel on screen is a stale one: drop it and carry on, so the tap is
+            // never swallowed by a panel nobody can see.
+            const isShown = Boolean(document.querySelector(".o_viin_home_overlay"));
+            this.closeViinHomeOverlay({ restoreFocus: isShown });
+            if (isShown) {
+                return;
+            }
+        }
+        if (this.isHomeMenuDisplayed()) {
+            await this.closeHomeMenu();
+            if (!this.isHomeMenuDisplayed()) {
+                return; // returned to the screen that was behind the landing
+            }
+        }
+        return super._openAppMenuSidebar(...arguments);
+    },
+
+    /**
+     * Small screens: the sidebar's "All Apps" button opens the full-screen home menu with its
+     * search box instead of core's inline app list. Desktop has no sidebar and keeps core's handler.
+     * When the home menu already IS the screen, or no screen has loaded yet (boot landing), there is
+     * nothing to open: the sidebar just steps aside - `openHomeMenu()` would hand a displayed
+     * landing back to the screen below it.
+     */
+    onAllAppsBtnClick() {
+        if (!this.ui.isSmall) {
+            return super.onAllAppsBtnClick(...arguments);
+        }
+        this._closeAppMenuSidebar();
+        // Only over a real screen: while the boot landing is still loading there is no controller
+        // yet, and a panel opened over nothing would mount late on top of whatever loads next.
+        const hasScreen = Boolean(this.actionService.currentController);
+        if (hasScreen && !this.viinHomeOverlay && !this.isHomeMenuDisplayed()) {
+            this.openHomeMenu();
+        }
     },
 
     /**

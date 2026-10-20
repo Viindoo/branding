@@ -59,21 +59,31 @@ import {
 } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { hasTouch } from "@web/core/browser/feature_detection";
-import { useService } from "@web/core/utils/hooks";
+import { useBus, useService } from "@web/core/utils/hooks";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { useSortable } from "@web/core/utils/sortable_owl";
+import { normalize } from "@web/core/l10n/utils";
 import { fuzzyLookup } from "@web/core/utils/search";
 import { _t } from "@web/core/l10n/translation";
 import { user } from "@web/core/user";
+import { routerBus } from "@web/core/browser/router";
 import { NavBar } from "@web/webclient/navbar/navbar";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { getAppIconUrl } from "../webclient/app_icons";
 
 // The navbar chrome the OVERLAY arm must not treat as "outside" - clicking the apps button is the
 // toggle, and it must reach its own handler with the overlay still open (a pointerdown-close here
-// would close it a beat before the click re-opened it, i.e. the toggle would never shut).
-const APPS_MENU_SELECTOR = ".o_navbar_apps_menu";
+// would close it a beat before the click re-opened it, i.e. the toggle would never shut). On a small
+// screen core renders the toggle as `a.o_menu_toggle` instead of `.o_navbar_apps_menu`.
+const APPS_MENU_SELECTOR = ".o_navbar_apps_menu, .o_menu_toggle";
 const OVERLAY_ROOT_SELECTOR = ".o_viin_home_overlay";
+
+const { DateTime } = luxon;
+
+// Menu items are searched from this many characters: a single letter fuzzy-matches nearly every
+// menu entry, which is noise rather than a result (apps are still searched from one character).
+const MENU_SEARCH_MIN_LENGTH = 2;
+const MENU_SEARCH_MAX_RESULTS = 15;
 
 export class ViinHomeMenu extends Component {
     static template = "viin_backend_theme.ViinHomeMenu";
@@ -131,6 +141,12 @@ export class ViinHomeMenu extends Component {
             useHotkey("escape", () => this.props.close({ restoreFocus: true }), {
                 bypassEditableProtection: true,
             });
+            // The browser's Back/Forward (popstate -> ROUTE_CHANGE) re-points the webclient at another
+            // page BEHIND this overlay: the URL and the navbar's app name change while the panel
+            // stays up, so the screen says one thing and the address bar another. Nothing of
+            // ours navigates while the overlay is open, so any route change means the user left
+            // it - put it away and let them see the page the URL now names.
+            useBus(routerBus, "ROUTE_CHANGE", () => this.props.close());
         }
         this.state = useState({
             query: "",
@@ -293,6 +309,58 @@ export class ViinHomeMenu extends Component {
         return fuzzyLookup(query, this.apps, (app) => app.name);
     }
 
+    /**
+     * Every menu entry that opens something (an action), under its app - the pool the search box
+     * draws "menu items" from. Apps themselves are the tiles, so they are not repeated here.
+     * Read once: the menu tree does not change while this screen is up.
+     */
+    get menuItems() {
+        if (!this._menuItems) {
+            const items = [];
+            const walk = (menu, trail) => {
+                for (const child of menu.childrenTree || []) {
+                    if (child.actionID) {
+                        const path = trail.join(" / ");
+                        items.push({
+                            menu: child,
+                            name: child.name,
+                            path,
+                            nameKey: normalize(child.name),
+                            pathKey: normalize(`${child.name} ${path}`),
+                        });
+                    }
+                    walk(child, [...trail, child.name]);
+                }
+            };
+            for (const app of this.menuService.getApps()) {
+                walk(this.menuService.getMenuAsTree(app.id), [app.name]);
+            }
+            this._menuItems = items;
+        }
+        return this._menuItems;
+    }
+
+    /** Menu entries (sub-menus) matching the query - found by typing, with no Ctrl+K, so it works
+     *  on a touch screen as well. */
+    get menuMatches() {
+        const query = this.state.query.trim();
+        if (query.length < MENU_SEARCH_MIN_LENGTH) {
+            return [];
+        }
+        // Every typed word must appear (case- and accent-insensitively) in the entry's name or its
+        // app path. Not the apps' letters-in-order fuzzy match: across a few hundred menu entries
+        // that matches nearly anything ("tag" finds "Tai khoan ngan hang"). Entries whose OWN name
+        // holds all the words come before those matched only through their path.
+        const words = normalize(query).split(/\s+/).filter(Boolean);
+        const hits = this.menuItems.filter((item) => words.every((w) => item.pathKey.includes(w)));
+        const rank = (item) => (words.every((w) => item.nameKey.includes(w)) ? 0 : 1);
+        return hits
+            .map((item, index) => ({ item, index }))
+            .sort((a, b) => rank(a.item) - rank(b.item) || a.index - b.index)
+            .slice(0, MENU_SEARCH_MAX_RESULTS)
+            .map((entry) => entry.item);
+    }
+
     get greeting() {
         const hour = new Date().getHours();
         if (hour < 12) {
@@ -308,13 +376,11 @@ export class ViinHomeMenu extends Component {
         return user.name;
     }
 
-    /** Mockup subtitle date, e.g. "Wednesday, July 16" - locale-aware via the native Intl date API. */
+    /** Mockup subtitle date, e.g. "Wednesday, July 16" - in the USER's language: luxon's default
+     *  locale is the one Odoo's localization service sets from the user's lang, whereas the browser's
+     *  own locale (what `toLocaleDateString(undefined)` reads) is unrelated to it. */
     get dateLabel() {
-        return new Date().toLocaleDateString(undefined, {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-        });
+        return DateTime.now().toLocaleString({ weekday: "long", month: "long", day: "numeric" });
     }
 
     /** Pluralized activities label for the subtitle. */
@@ -340,6 +406,16 @@ export class ViinHomeMenu extends Component {
         this.launch(app);
     }
 
+    /** Same rule as `onTileClick`, for a menu-item result. */
+    onMenuItemClick(ev, menu) {
+        if (ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) {
+            return;
+        }
+        ev.preventDefault();
+        this.launch(menu);
+    }
+
+    /** Open an app tile or a menu-item result: both go through the menu service. */
     launch(app) {
         if (!app) {
             return;
@@ -444,7 +520,8 @@ export class ViinHomeMenu extends Component {
                 if (current >= 0) {
                     this.launch(this.filteredApps[current]);
                 } else if (this.state.query.trim()) {
-                    this.launch(this.filteredApps[0]);
+                    // The first app match; with no app matching, the first menu-item match.
+                    this.launch(this.filteredApps[0] || this.menuMatches[0]?.menu);
                 }
                 break;
             }
