@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 21:16+0000\n"
-"PO-Revision-Date: 2026-08-07 21:16+0000\n"
+"POT-Creation-Date: 2026-10-20 02:12+0000\n"
+"PO-Revision-Date: 2026-10-20 02:12+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_mrp
+#: model_terms:ir.ui.view,arch_db:viin_brand_mrp.view_picking_type_form_inherit_mrp
+msgid "A PDF preview opens by default when these documents are printed."
+msgstr ""
 
 #. module: viin_brand_mrp
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report
@@ -41,11 +46,29 @@ msgid "Auto Print Produced Product Labels"
 msgstr ""
 
 #. module: viin_brand_mrp
+#: model:ir.model,name:viin_brand_mrp.model_mrp_bom
+msgid "Bill of Material"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_mrp_bom__allow_operation_dependencies
+msgid ""
+"Create operation level dependencies that will influence both planning and "
+"the status of work orders upon MO confirmation. If this feature is ticked, "
+"and nothing is specified, the system will assume that all operations can be "
+"started simultaneously."
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__display_name
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__display_name
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__id
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__id
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__id
 msgid "ID"
 msgstr ""
@@ -86,6 +109,28 @@ msgid ""
 msgstr ""
 
 #. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__manual_consumption
+msgid "Manual Consumption"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__allow_operation_dependencies
+msgid "Operation Dependencies"
+msgstr ""
+
+#. module: viin_brand_mrp
 #: model:ir.model,name:viin_brand_mrp.model_stock_picking_type
 msgid "Picking Type"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model,name:viin_brand_mrp.model_stock_move
+msgid "Stock Move"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.model.fields,help:viin_brand_mrp.field_stock_move__manual_consumption
+msgid ""
+"When activated, then the registration of consumption for that component is recorded manually exclusively.\n"
+"If not activated, and any of the components consumption is edited manually on the manufacturing order, the system assumes manual consumption also."
 msgstr ""

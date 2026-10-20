@@ -17,7 +17,7 @@ This module will change color in navigate bar, button and logo following Viindoo
 Editions Supported
 ==================
 1. Community Edition
-2. Enterprise Edition
+2. Viindoo Cloud
 
     """,
 
@@ -30,7 +30,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
 Ấn bản được Hỗ trợ
 ==================
 1. Ấn bản Community
-2. Ấn bản Enterprise
+2. Viindoo Cloud
 
 """,
 
@@ -44,7 +44,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
 
     # any module necessary for this one to work correctly
     'depends': ['viin_brand_web', 'point_of_sale'],
@@ -52,6 +52,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     # always loaded
     'data': [
         'views/pos_assets_index.xml',
+        'views/res_config_settings_views.xml',
     ],
     'assets': {
         'point_of_sale._assets_pos': [
@@ -84,6 +85,19 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             'viin_brand_pos/static/src/app/components/odoo_logo/odoo_logo.xml',
             'viin_brand_pos/static/src/app/navbar/navbar.js',
             ('after', 'point_of_sale/static/src/app/utils/error_handlers.js', 'viin_brand_pos/static/src/app/popups/offline_error_popup.js'),
+            ('after', 'point_of_sale/static/src/app/utils/error_handlers.js', 'viin_brand_pos/static/src/app/popups/rpc_error_popup.js'),
+            # Core also builds the "Odoo Server Error" dialog outside the registry handler:
+            # exported handleRPCError (payment validation) and the cash move deletion.
+            'viin_brand_pos/static/src/app/utils/order_payment_validation.js',
+            'viin_brand_pos/static/src/app/components/popups/cash_move_popup/cash_move_list_popup/cash_move_list_popup.js',
+        ],
+        'point_of_sale.customer_display_assets': [
+            # The public customer display page bundles its own subset of point_of_sale
+            # (core's OdooLogo component and template included), not _assets_pos, so the
+            # Viindoo logo extension and the IoT notice patch must be listed here as well.
+            'viin_brand_pos/static/src/app/components/odoo_logo/odoo_logo.xml',
+            'viin_brand_pos/static/src/customer_display/iot_notice.js',
+            'viin_brand_pos/static/src/customer_display/customer_display_data_service.js',
         ],
         'point_of_sale.assets_prod': [
             'viin_brand_pos/static/src/css/**/*',
@@ -104,6 +118,10 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             # This entry is harmless redundancy (Odoo's module loader no-ops a duplicate define()).
             'viin_brand_pos/static/src/app/navbar/navbar.js',
             'viin_brand_pos/static/tests/navbar_favicon_guard.test.js',
+            # The IoT notice swap lives in its own file because core's customer display service
+            # is not part of the POS unit test bundle (point_of_sale removes customer_display/**).
+            'viin_brand_pos/static/src/customer_display/iot_notice.js',
+            'viin_brand_pos/static/tests/pos_error_debrand.test.js',
         ],
     },
     'installable': True,

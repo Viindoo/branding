@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 16:25+0000\n"
-"PO-Revision-Date: 2026-08-07 16:25+0000\n"
+"POT-Creation-Date: 2026-10-20 02:12+0000\n"
+"PO-Revision-Date: 2026-10-20 02:12+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -29,6 +29,12 @@ msgstr "Ứng dụng"
 
 #. module: viin_backend_theme
 #. odoo-javascript
+#: code:addons/viin_backend_theme/static/src/webclient/apps_menu_home.xml:0
+msgid "Apps"
+msgstr "Ứng dụng"
+
+#. module: viin_backend_theme
+#. odoo-javascript
 #: code:addons/viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js:0
 msgid "Comfortable"
 msgstr "Thoải mái"
@@ -39,9 +45,9 @@ msgid ""
 "Comma-separated application root-menu xmlids giving this user's preferred "
 "home-menu tile order. Empty falls back to the default application sequence."
 msgstr ""
-"Danh sách xmlid menu gốc của ứng dụng, phân tách bằng dấu phẩy, thể hiện "
-"thứ tự sắp xếp ưu tiên của người dùng trên màn hình chính. Để trống sẽ áp "
-"dụng thứ tự ứng dụng mặc định."
+"Danh sách xmlid menu gốc của ứng dụng, phân tách bằng dấu phẩy, thể hiện thứ"
+" tự sắp xếp ưu tiên của người dùng trên màn hình chính. Để trống sẽ áp dụng "
+"thứ tự ứng dụng mặc định."
 
 #. module: viin_backend_theme
 #. odoo-javascript
@@ -98,7 +104,7 @@ msgstr "Menu Chính"
 #. module: viin_backend_theme
 #: model:ir.model.fields,field_description:viin_backend_theme.field_res_users__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: viin_backend_theme
 #. odoo-javascript

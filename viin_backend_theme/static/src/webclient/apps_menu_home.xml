@@ -48,6 +48,13 @@
         <i class="oi oi-apps"/>
       </button>
     </xpath>
+    <!-- Small screen: the toggle anchor keeps core's fa-bars icon (owner decision) but is the ONLY
+         label an assistive-technology user gets, so it carries a name. Both attributes are
+         translatable template attributes. -->
+    <xpath expr="//a[hasclass('o_menu_toggle')]" position="attributes">
+      <attribute name="title">Apps</attribute>
+      <attribute name="aria-label">Apps</attribute>
+    </xpath>
   </t>
 
 </templates>

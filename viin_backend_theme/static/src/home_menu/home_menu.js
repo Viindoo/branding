@@ -71,8 +71,9 @@ import { getAppIconUrl } from "../webclient/app_icons";
 
 // The navbar chrome the OVERLAY arm must not treat as "outside" - clicking the apps button is the
 // toggle, and it must reach its own handler with the overlay still open (a pointerdown-close here
-// would close it a beat before the click re-opened it, i.e. the toggle would never shut).
-const APPS_MENU_SELECTOR = ".o_navbar_apps_menu";
+// would close it a beat before the click re-opened it, i.e. the toggle would never shut). On a small
+// screen core renders the toggle as `a.o_menu_toggle` instead of `.o_navbar_apps_menu`.
+const APPS_MENU_SELECTOR = ".o_navbar_apps_menu, .o_menu_toggle";
 const OVERLAY_ROOT_SELECTOR = ".o_viin_home_overlay";
 
 export class ViinHomeMenu extends Component {
