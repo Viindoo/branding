@@ -94,3 +94,68 @@ class TestCustomerDisplayRender(HttpCase):
             })().catch((error) => console.error(error.message));
         """ % {"msgid": json.dumps(IOT_NOTICE), "expected": json.dumps(expected)}
         self.browser_js(url, code, cookies={"frontend_lang": "vi_VN"}, timeout=120)
+
+    def test_customer_display_error_dialogs_do_not_name_odoo(self):
+        """The customer display bundle (web._assets_core only) gets the error-dialog de-brand."""
+        config = self.env["pos.config"].create({"name": "Customer display shop"})
+        url = "/pos_customer_display/%s/test-device?access_token=%s" % (config.id, config.access_token)
+        code = """
+            (async () => {
+                for (let i = 0; i < 150 && !document.querySelector(".o_customer_display"); i++) {
+                    await new Promise((resolve) => setTimeout(resolve, 100));
+                }
+                if (!document.querySelector(".o_customer_display")) {
+                    throw new Error("the customer display did not mount");
+                }
+                const dialogs = odoo.loader.modules.get("@web/core/errors/error_dialogs");
+                const { Dialog } = odoo.loader.modules.get("@web/core/dialog/dialog");
+                const titles = {
+                    ErrorDialog: String(dialogs.ErrorDialog.title),
+                    ClientErrorDialog: String(dialogs.ClientErrorDialog.title),
+                    NetworkErrorDialog: String(dialogs.NetworkErrorDialog.title),
+                    DefaultDialog: String(Dialog.defaultProps.title),
+                };
+                for (const [name, title] of Object.entries(titles)) {
+                    if (title.includes("Odoo")) {
+                        throw new Error(name + " title still names Odoo: " + title);
+                    }
+                }
+                console.log("test successful");
+            })().catch((error) => console.error(error.message));
+        """
+        self.browser_js(url, code, timeout=120)
+
+
+@tagged("post_install", "-at_install")
+class TestBackendTemplatesDebrand(HttpCase):
+
+    def test_printer_checklist_of_the_pos_configuration_form_does_not_name_odoo(self):
+        code = """
+            (async () => {
+                for (let i = 0; i < 150; i++) {
+                    const templates = odoo.loader.modules.get("@web/core/templates");
+                    if (templates) {
+                        try {
+                            const template = templates.getTemplate("point_of_sale.PosConfigLnaChecklist");
+                            if (template) {
+                                if (template.textContent.includes("Odoo")) {
+                                    throw new Error("the printer checklist still names Odoo");
+                                }
+                                if (!template.textContent.includes("I use an Epson printer")) {
+                                    throw new Error("the Epson checklist item is missing");
+                                }
+                                console.log("test successful");
+                                return;
+                            }
+                        } catch (error) {
+                            if (error.message.includes("printer checklist") || error.message.includes("Epson")) {
+                                throw error;
+                            }
+                        }
+                    }
+                    await new Promise((resolve) => setTimeout(resolve, 100));
+                }
+                throw new Error("the printer checklist template never became available");
+            })().catch((error) => console.error(error.message));
+        """
+        self.browser_js("/odoo", code, login="admin", timeout=120)

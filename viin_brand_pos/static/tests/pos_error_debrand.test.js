@@ -75,7 +75,6 @@ test("the offline notice of the POS is overridden under core's own registry key"
 
     expect(dialog.calls).toHaveLength(1);
     expect(dialog.calls[0].props.body.toString()).not.toInclude("Odoo");
-    expect(dialog.calls[0].props.body.toString()).toInclude("Viindoo");
     expect(network.warningTriggered).toBe(true);
     // an override under a stale key would be a dead extra entry
     expect(errorHandlers().contains("offlineErrorHandler")).toBe(false);

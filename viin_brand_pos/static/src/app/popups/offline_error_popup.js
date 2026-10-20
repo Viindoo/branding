@@ -26,7 +26,7 @@ function offlineErrorHandlerOverride(env, error, originalError) {
             env.services.dialog.add(AlertDialog, {
                 title: _t("Connection Lost"),
                 body: _t(
-                    "Meanwhile connection is back, Viindoo Point of Sale will operate limited operations. Check your connection or continue with limited functionalities"
+                    "Until the connection is back, Viindoo Point of Sale keeps working with limited features. Check your connection or continue with limited functionality."
                 ),
                 confirmLabel: _t("Continue with limited functionality"),
             });

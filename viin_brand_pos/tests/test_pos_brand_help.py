@@ -72,3 +72,45 @@ class TestCustomerDisplayAssets(TransactionCase):
                         "database, then restart the IoT Box.")
         with file_open("point_of_sale/static/src/customer_display/customer_display_data_service.js") as f:
             self.assertIn(core_message, f.read())
+
+
+@tagged("post_install", "-at_install")
+class TestPosBundlesDebrandCoreWording(TransactionCase):
+    """The POS bundles never include web.assets_backend: the de-brand files must be listed in them."""
+
+    BRAND_FILES = [
+        "viin_brand_web/static/src/core/errors/error_dialogs.js",
+        "viin_brand_web/static/src/core/errors/error_dialogs.xml",
+        "viin_brand_pos/static/src/app/errors/error_dialogs.js",
+    ]
+
+    def _paths(self, bundle):
+        return [path.lstrip("/") for path, _full, _bundle, _mtime in
+                self.env["ir.asset"]._get_asset_paths(bundle=bundle, assets_params={})]
+
+    def test_pos_bundle_carries_the_error_dialog_debrand_and_core_wording_patches(self):
+        paths = self._paths("point_of_sale._assets_pos")
+        for path in self.BRAND_FILES + [
+            "viin_brand_pos/static/src/app/screens/product_screen/product_screen.js",
+            "viin_brand_pos/static/src/app/services/report_service.js",
+        ]:
+            with self.subTest(file=path):
+                self.assertIn(path, paths)
+
+    def test_customer_display_bundle_carries_the_error_dialog_debrand(self):
+        paths = self._paths("point_of_sale.customer_display_assets")
+        for path in self.BRAND_FILES:
+            with self.subTest(file=path):
+                self.assertIn(path, paths)
+
+    def test_backend_bundle_carries_the_printer_checklist_extension(self):
+        self.assertIn(
+            "viin_brand_pos/static/src/backend/lna_checklist/lna_checklist.xml",
+            self._paths("web.assets_backend"),
+        )
+
+    def test_sales_details_report_title_fallback_does_not_name_odoo(self):
+        arch = self.env.ref("point_of_sale.pos_daily_sales_report_layout")._get_combined_arch()
+        titles = arch.xpath("//title")
+        self.assertEqual(len(titles), 1)
+        self.assertNotIn(BRAND_TERM, etree.tostring(titles[0], encoding="unicode"))

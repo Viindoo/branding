@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The layout falls back to the literal 'Odoo Report' as the HTML title of the Sales Details
+         report when the report gives no title. -->
+    <template id="pos_daily_sales_report_layout" inherit_id="point_of_sale.pos_daily_sales_report_layout">
+        <xpath expr="//head/title" position="replace">
+            <title><t t-if="title" t-esc="title"/><t t-else="">Report</t></title>
+        </xpath>
+    </template>
+</odoo>
