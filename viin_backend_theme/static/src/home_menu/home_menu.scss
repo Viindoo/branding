@@ -275,6 +275,22 @@
         }
     }
 
+    // Menu-item results under the tiles: one row per entry, the entry's name over its app path.
+    .o_viin_home_menu_items {
+        margin-block-end: $o-spacer;
+
+        .o_viin_home_menu_item {
+            padding: ($o-spacer * 0.5) ($o-spacer * 0.75);
+            color: var(--body-color);
+            text-decoration: none;
+
+            &:hover,
+            &:focus-visible {
+                background-color: var(--tertiary-bg);
+            }
+        }
+    }
+
     .o_viin_home_empty {
         min-height: 40vh;
     }

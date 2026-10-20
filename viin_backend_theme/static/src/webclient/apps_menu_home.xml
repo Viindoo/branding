@@ -44,7 +44,7 @@
   <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension">
     <xpath expr="//div[hasclass('o_navbar_apps_menu')]/Dropdown" position="replace">
       <button type="button" class="o_nav_entry o_viin_apps_home border-0"
-              data-hotkey="h" title="Home Menu" t-on-click="() => this.openHomeMenu()">
+              data-hotkey="h" title="Apps" aria-label="Apps" t-on-click="() => this.openHomeMenu()">
         <i class="oi oi-apps"/>
       </button>
     </xpath>
