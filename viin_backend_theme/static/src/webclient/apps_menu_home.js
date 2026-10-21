@@ -86,14 +86,10 @@ patch(NavBar.prototype, {
         // A navbar that is destroyed with the panel up (a reload, a fullscreen action) must not
         // strand it in the overlay container.
         onWillUnmount(() => this.closeViinHomeOverlay());
-        // The screen behind the panel changed (a route change, or another action mounted): the
-        // handle must not outlive it, or a panel that mounts late would cover the new screen.
+        // The route changed under the panel: the handle must not outlive it, or a panel that mounts
+        // late would cover the new screen. A screen that merely finishes loading (the app reloading
+        // behind a panel the user just opened) is not a route change and must leave the panel up.
         useBus(routerBus, "ROUTE_CHANGE", () => this.closeViinHomeOverlay());
-        useBus(this.env.bus, "ACTION_MANAGER:UI-UPDATED", ({ detail: mode }) => {
-            if (mode !== "new") {
-                this.closeViinHomeOverlay();
-            }
-        });
     },
 
     /**

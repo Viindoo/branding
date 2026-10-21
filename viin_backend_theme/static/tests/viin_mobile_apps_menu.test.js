@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { after, animationFrame, describe, expect, test } from "@odoo/hoot";
+import { animationFrame, describe, expect, test } from "@odoo/hoot";
 import { Deferred } from "@odoo/hoot-mock";
 import { queryAll } from "@odoo/hoot-dom";
 import {
@@ -232,40 +232,6 @@ describe("mobile apps menu", () => {
         await contains(".o_menu_toggle").click();
         expect(queryAll(".o_app_menu_sidebar", IN_BODY)).toHaveCount(1, {
             message: "the next tap on the toggle opens the sidebar",
-        });
-    });
-
-    test.tags("mobile");
-    test("an app menu panel requested before any screen existed does not outlive the screen that loads", async () => {
-        patchWithCleanup(transitionConfig, { disabled: true });
-        const landingReady = new Deferred();
-        onRpc("mail.activity", "search_count", async () => {
-            await landingReady;
-            return 0;
-        });
-        onRpc("res.users", "read", () => [{ viin_home_app_order: false }]);
-        redirect("/odoo");
-        await mountWebClient();
-        // Force the panel open while nothing is loaded yet, as a missing "is there a screen" check would.
-        let pretendScreen = true;
-        const action = getService("action");
-        const realScreen = Object.getOwnPropertyDescriptor(action, "currentController");
-        Object.defineProperty(action, "currentController", {
-            configurable: true,
-            get: () => (pretendScreen ? { action: { tag: "pretend" } } : undefined),
-        });
-        after(() => Object.defineProperty(action, "currentController", realScreen));
-        await contains(".o_menu_toggle").click();
-        await tapAllApps();
-        pretendScreen = false;
-
-        landingReady.resolve();
-        await animationFrame();
-        await animationFrame();
-        await contains(".o_menu_toggle").click();
-
-        expect(queryAll(".o_app_menu_sidebar", IN_BODY)).toHaveCount(1, {
-            message: "the toggle opens the sidebar instead of being swallowed by a dead panel",
         });
     });
 
