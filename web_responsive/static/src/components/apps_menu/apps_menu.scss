@@ -26,10 +26,15 @@
 @mixin full-screen-dropdown {
     border: none;
     box-shadow: none;
-    height: 100%;
-    max-height: calc(var(--vh100, 100vh) - #{$o-navbar-height});
-    max-height: calc(100dvh - #{$o-navbar-height});
     position: fixed;
+    // Stretch from `top` (set by each user of the mixin) to the bottom edge of the layout
+    // viewport. The previous `height: 100%` + `max-height: calc(100vh - $o-navbar-height)` pair
+    // assumed the navbar is the topmost thing on screen: with anything rendered above it (the
+    // neutralize banner of a test/UAT database, core's web.neutralize_banner template, is 24px
+    // tall) the box overflowed the viewport by that much and its last rows were unreachable.
+    // `bottom: 0` on a fixed box also tracks the mobile URL bar on its own, which is what the
+    // `--vh100` / `100dvh` fallbacks used to approximate.
+    bottom: 0;
     margin: 0;
     width: 100vw;
     z-index: 1000;
@@ -81,11 +86,15 @@
 
 .app-menu-container {
     @include full-screen-dropdown();
-    // The menu is rendered through the overlay service now, not as a client action inside
-    // .o_action_manager, so it can no longer inherit "just below the navbar" from its position in
-    // the document flow - a `position: fixed` box with `top: auto` would land wherever its static
-    // position happened to be. Pin it explicitly; this matches the height the mixin already
-    // reserves for the navbar.
+    // The menu is rendered through the overlay service, not as a client action inside
+    // .o_action_manager, so it cannot inherit "just below the navbar" from its position in the
+    // document flow - a `position: fixed` box with `top: auto` would land wherever its static
+    // position happened to be. The real offset is measured from the navbar's own bottom edge and
+    // set inline by AppsMenu.containerStyle (apps_menu.esm.js): the navbar is NOT always at the
+    // top of the viewport - core's web.neutralize_banner (active on every neutralized test/UAT
+    // database) renders a 24px banner above it, and a fixed `top: $o-navbar-height` then covered
+    // the lower half of the navbar. This value is only the fallback for a render without that
+    // inline style.
     top: $o-navbar-height;
     overflow: auto;
     background-clip: border-box;
