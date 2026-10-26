@@ -44,6 +44,29 @@
         or (variable-exists('o-color-palette-name') and $o-color-palette-name != 'base-1');
     @if $-website-colors and map-get($theme-colors, 'primary') {
         $primary: map-get($theme-colors, 'primary') !global;
+        // Same scope for the brand secondary button that brand_palette_reset.scss (R-3) writes into
+        // the stock base-1 palette: a customized website keeps Odoo's defaults for the keys its owner
+        // did not set. Written into base-1, the two keys reach the website as palette defaults the
+        // user palette overrides one by one, so a website that set its own o-cc1-btn-secondary (toaxe:
+        // white) but not the border got the brand purple border and a purple outline button in its
+        // header, where every version up to 18.0 bordered the button with its own colour. Unsetting
+        // them here, after the maps that read them are built, is the earliest safe point: the user
+        // palette file and brand_palette_reset.scss are both tail appends of
+        // web._assets_primary_variables and may land in either order. The three consumers are
+        // re-derived: $o-color-palette (o-color()), $colors (html_editor.common.scss) and the
+        // Bootstrap button maps (web/static/src/scss/bootstrap_review_frontend.scss).
+        @if variable-exists('o-user-color-palette') and variable-exists('o-color-palette') and variable-exists('colors') {
+            @each $-key in ('o-cc1-btn-secondary', 'o-cc1-btn-secondary-border') {
+                @if not map-has-key($o-user-color-palette, $-key) {
+                    $o-color-palette: map-merge($o-color-palette, ($-key: null)) !global;
+                    $colors: map-merge($colors, ($-key: null)) !global;
+                }
+            }
+            @if variable-exists('o-btn-bg-colors') {
+                $o-btn-bg-colors: map-merge($o-btn-bg-colors, ('secondary': o-color('o-cc1-btn-secondary'))) !global;
+                $o-btn-border-colors: map-merge($o-btn-border-colors, ('secondary': o-color('o-cc1-btn-secondary-border'))) !global;
+            }
+        }
     } @else {
         $theme-colors: map-merge($theme-colors, ('primary': $primary)) !global;
     }
