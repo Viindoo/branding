@@ -52,7 +52,7 @@
     <!-- Apps menu -->
     <t t-name="web_responsive.AppsMenu">
         <div class="o_grid_apps_menu" t-att-data-theme="theme">
-            <div t-if="state.open" class="app-menu-container">
+            <div t-if="state.open" class="app-menu-container" t-att-style="containerStyle">
                 <t t-slot="search_bar" />
                 <div class="o-app-menu-list">
                     <t t-slot="default" />

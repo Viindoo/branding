@@ -6,7 +6,7 @@
  * Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import { Component, useState, useRef } from "@odoo/owl";
+import { Component, useState, useRef, useExternalListener } from "@odoo/owl";
 import { useBus, useService } from "@web/core/utils/hooks";
 import {AppMenuItem} from "@web_responsive/components/apps_menu_item/apps_menu_item.esm";
 import {AppsMenuSearchBar} from "@web_responsive/components/menu_searchbar/searchbar.esm";
@@ -60,7 +60,28 @@ export class AppsMenu extends Component {
         useBus(this.env.bus, "APPS_MENU:TOGGLE", ({ detail: open }) => {
             this.setOpenState(open);
         });
+        // containerStyle (below) is computed at render time from the navbar's current geometry;
+        // the only thing that moves the navbar without a re-render of this component is the
+        // viewport itself (a banner above the navbar wrapping onto more lines, mobile rotation).
+        useExternalListener(window, "resize", () => this.render());
         this._setupKeyNavigation();
+    }
+
+    /**
+     * Inline style of `.app-menu-container`: pins the fixed-position menu to the navbar's actual
+     * bottom edge instead of the `$o-navbar-height` constant apps_menu.scss falls back to. The
+     * navbar is not always at the top of the viewport: core's web.neutralize_banner template
+     * (active on every neutralized test/UAT database) renders a banner ABOVE it in body's flex
+     * column, so a constant `top` covered the lower part of the navbar. Measured from the DOM
+     * rather than from a known banner height so any other element placed above the navbar is
+     * handled the same way. No navbar at all (fullscreen action) means the menu starts at 0.
+     *
+     * @returns {String}
+     */
+    get containerStyle() {
+        const navbar = document.querySelector(".o_web_client header.o_navbar");
+        const top = navbar ? Math.max(0, Math.round(navbar.getBoundingClientRect().bottom)) : 0;
+        return `top: ${top}px;`;
     }
 
     setOpenState(open_state) {
