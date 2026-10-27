@@ -36,12 +36,16 @@
 // $primary follows it too (links, focus, active states). The stock palette keeps the AA teal.
 // Customized = the website's own color/theme palette carries any value (website's
 // $o-has-customized-colors / $o-has-customized-13-0-color-system), or a palette other than the stock
-// 'base-1' is selected. The variables only exist with website installed: a plain [web + brand]
-// install takes the first branch as before.
+// 'base-1' is selected. The selected palette is $o-original-color-palette-name: by the time this file
+// compiles, website's secondary_variables.scss has renamed the active one $o-color-palette-name:
+// 'user-palette' on EVERY website, the stock one included, so that name says nothing (testing it made
+// every website "customized" and repainted the login of a stock website with base-1's aubergine).
+// The variables only exist with website installed: a plain [web + brand] install takes the second
+// branch as before.
 @if variable-exists('theme-colors') {
     $-website-colors: (variable-exists('o-has-customized-colors') and $o-has-customized-colors)
         or (variable-exists('o-has-customized-13-0-color-system') and $o-has-customized-13-0-color-system)
-        or (variable-exists('o-color-palette-name') and $o-color-palette-name != 'base-1');
+        or (variable-exists('o-original-color-palette-name') and $o-original-color-palette-name != 'base-1');
     @if $-website-colors and map-get($theme-colors, 'primary') {
         $primary: map-get($theme-colors, 'primary') !global;
         // Same scope for the brand secondary button that brand_palette_reset.scss (R-3) writes into
