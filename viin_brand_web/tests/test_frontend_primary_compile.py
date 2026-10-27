@@ -121,6 +121,71 @@ class FrontendPrimaryCompileTest(TransactionCase):
             % (frontend_primary, _contrast_ratio(frontend_primary, WHITE), WCAG_AA_NORMAL_TEXT),
         )
 
+    def _website_frontend_css(self, website):
+        """web.assets_frontend as ``website`` serves it (its own customized files included)."""
+        bundle = self.env["ir.qweb"].with_context(website_id=website.id)._get_asset_bundle(
+            FRONTEND_BUNDLE, css=True, js=False
+        )
+        css = "".join(
+            (attachment.raw or b"").decode("utf-8", "replace")
+            for attachment in (bundle.css() or self.env["ir.attachment"])
+        )
+        self.assertTrue(css.strip(), "web.assets_frontend of website %s compiled to empty CSS" % website.id)
+        return css
+
+    def _rule_prop(self, css, selector, prop):
+        """The last value of the custom property ``--<prop>`` declared on ``selector`` rules."""
+        pattern = re.compile(r"--%s\s*:\s*([^;}]+)" % re.escape(prop))
+        values = [
+            match.group(1).strip().lower()
+            for _order, sel, body in _iter_rules(css) if sel == selector
+            for match in pattern.finditer(body)
+        ]
+        return _normalize_colour(values[-1]) if values else None
+
+    def test_customized_website_palette_keeps_its_own_primary(self):
+        """A website whose owner customized its colors keeps its palette's primary and its own
+        secondary button colors; a stock website keeps the AA teal.
+
+        toaxe 14.0 -> 19.0 (2026-10-26): the customer's navy o-color-1 #4A6A90 drove every button,
+        link and .bg-primary block up to 18.0; on 19.0 frontend_primary.scss re-pointed
+        $theme-colors['primary'] to the AA teal on every website and brand_palette_reset.scss (R-3)
+        gave its header's secondary button (white, no border of its own) the brand purple border.
+        WOULD FAIL IF REVERTED: drop the customized-website branch of frontend_primary.scss and the
+        customized website compiles --primary to the teal again; test the renamed palette
+        ($o-color-palette-name is 'user-palette' on every website) instead of the original one and
+        the STOCK website loses the teal."""
+        installed = set(self.env["ir.module.module"].search(
+            [("name", "in", ("website", "html_editor")), ("state", "=", "installed")]
+        ).mapped("name"))
+        if installed != {"website", "html_editor"}:
+            self.skipTest("website and html_editor are needed for a website palette to compile")
+        website = self.env["website"].search([], order="id", limit=1)
+        expected_teal = VIINDOO_AA_INTERACTIVE_COLOR
+
+        stock_css = self._website_frontend_css(website)
+        self.assertEqual(
+            self._rule_prop(stock_css, ":root", "primary"), expected_teal,
+            "A website with the stock palette must keep the AA teal as its frontend primary.",
+        )
+
+        navy, white = "#4a6a90", "#ffffff"
+        self.env["website.assets"].with_context(website_id=website.id).make_scss_customization(
+            "/website/static/src/scss/options/colors/user_color_palette.scss",
+            {"o-color-1": navy.upper(), "o-color-5": white.upper(), "o-cc1-btn-secondary": "'o-color-5'"},
+        )
+        custom_css = self._website_frontend_css(website)
+        self.assertEqual(
+            self._rule_prop(custom_css, ":root", "primary"), navy,
+            "A website whose owner customized its palette must keep the palette's primary (its "
+            "o-color-1), not the Viindoo teal.",
+        )
+        self.assertEqual(
+            self._rule_prop(custom_css, ".btn-secondary", "btn-border-color"), white,
+            "A customized website that set its own CC1 secondary button but not its border must get "
+            "Odoo's default border (the button colour), not the brand purple of the stock palette.",
+        )
+
     def test_frontend_primary_is_an_overridable_default_not_a_hard_override(self):
         """The base's frontend $primary must be set with `!default` so website themes can win.
 
