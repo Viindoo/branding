@@ -48,6 +48,9 @@ Editions Supported
             'viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml',
             'viin_brand_web/static/src/core/webclient/settings_form_view/widgets/mobile_apps_funnel.xml',
         ],
+        'web.assets_unit_tests': [
+            'viin_brand_web/static/tests/dialog_title.test.js',
+        ],
     },
     'images': [
         # 'static/description/main_screenshot.png'
