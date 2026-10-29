@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 02:24+0000\n"
-"PO-Revision-Date: 2026-09-18 02:24+0000\n"
+"POT-Creation-Date: 2026-10-29 14:09+0000\n"
+"PO-Revision-Date: 2026-10-29 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,27 +27,9 @@ msgid "<span>Viindoo</span>"
 msgstr ""
 
 #. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "Access to all Enterprise Apps"
-msgstr ""
-
-#. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "And more"
-msgstr ""
-
-#. module: viin_brand_web
 #: model:ir.model.fields,help:viin_brand_web.field_res_users__viin_color_scheme
 msgid ""
 "Backend appearance: Light, Dark, or System (follow the device preference)."
-msgstr ""
-
-#. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "Bugfixes guarantee"
 msgstr ""
 
 #. module: viin_brand_web
@@ -97,12 +79,6 @@ msgid "GNU LGPL Licensed"
 msgstr ""
 
 #. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "Get this feature and much more with System Enterprise!"
-msgstr ""
-
-#. module: viin_brand_web
 #: model:ir.model,name:viin_brand_web.model_ir_http
 msgid "HTTP Routing"
 msgstr ""
@@ -125,20 +101,8 @@ msgstr ""
 
 #. module: viin_brand_web
 #. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "Mobile support"
-msgstr ""
-
-#. module: viin_brand_web
-#. odoo-javascript
 #: code:addons/viin_brand_web/static/src/webclient/user_menu_item.js:0
 msgid "My Viindoo.com account"
-msgstr ""
-
-#. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "New design"
 msgstr ""
 
 #. module: viin_brand_web
@@ -185,36 +149,6 @@ msgid "System"
 msgstr ""
 
 #. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
-msgid "System Client Error"
-msgstr ""
-
-#. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "System Enterprise"
-msgstr ""
-
-#. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
-msgid "System Error"
-msgstr ""
-
-#. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
-msgid "System Network Error"
-msgstr ""
-
-#. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml:0
-msgid "Upgrade to future versions"
-msgstr ""
-
-#. module: viin_brand_web
 #: model:ir.model,name:viin_brand_web.model_res_users
 msgid "User"
 msgstr ""
@@ -230,6 +164,30 @@ msgid "Viindoo"
 msgstr ""
 
 #. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Client Error"
+msgstr ""
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Error"
+msgstr ""
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Network Error"
+msgstr ""
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Warning"
+msgstr ""
+
+#. module: viin_brand_web
 #: model_terms:ir.ui.view,arch_db:viin_brand_web.webclient_offline
 msgid "Viindoo logo"
 msgstr ""
@@ -239,12 +197,6 @@ msgstr ""
 #: code:addons/viin_brand_web/static/src/core/install_scoped_app/install_scoped_app.xml:0
 #: code:addons/viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml:0
 msgid "Viindoo."
-msgstr ""
-
-#. module: viin_brand_web
-#. odoo-javascript
-#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.js:0
-msgid "Warning"
 msgstr ""
 
 #. module: viin_brand_web

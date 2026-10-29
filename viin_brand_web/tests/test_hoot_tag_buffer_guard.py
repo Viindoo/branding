@@ -16,10 +16,7 @@
 # `documentation_link_debrand.test.js`, inherited the leaked `["desktop"]` tag and then asked for
 # `headless` on top of it. Hoot's mutually-exclusive desktop/mobile/headless tag rule
 # (`start.hoot.js:29-46`, enforced `tag.js:96-104`) threw on the conflict, aborting the whole Hoot
-# dry run before 5 other suites ever executed. A second file, `upgrade_dialog_debrand.test.js`, has
-# the SAME bug latently - it leaks onto `error_dialogs_debrand`, which happens to also want
-# `desktop`, so nothing throws today, but `upgrade_dialog_debrand` itself has been running UNTAGGED,
-# silently wrong.
+# dry run before 5 other suites ever executed.
 import glob
 import os
 import re

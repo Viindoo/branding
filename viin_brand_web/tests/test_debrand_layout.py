@@ -15,10 +15,9 @@
 # The two LOGIN guards are scoped to the no-website path this cluster owns: when `website` is
 # co-installed (possibly transitively) it takes over /web/login rendering with its own page title
 # and configurable favicon, superseding this cluster's render vars. That case belongs to
-# viin_brand_website, which is not yet upgraded to 19.0 (installable=False) and is DEFERRED by
-# product-owner decision. The two login tests skip when `website` is installed (see
-# DebrandHeadRenderTest._skip_login_if_website_installed) so a co-installed `website` cannot raise a
-# FALSE red; the backend title/favicon guard runs unconditionally and keeps that coverage.
+# viin_brand_website. The two login tests skip when `website` is installed (see
+# DebrandHeadRenderTest._skip_login_if_website_installed); the backend title/favicon guard runs
+# unconditionally.
 import re
 
 from odoo.tests.common import HttpCase, tagged
@@ -60,31 +59,18 @@ class DebrandHeadRenderTest(HttpCase):
         return None
 
     def _skip_login_if_website_installed(self):
-        """Skip the /web/login de-brand guards when `website` is co-installed - NOT hidden breakage.
+        """Skip the /web/login de-brand guards when `website` is co-installed.
 
-        When `website` is installed it takes over /web/login rendering: its login_layout
-        (web.website.login_layout, priority 20) swaps web.frontend_layout for website.layout, which
-        recomputes the page <title> from the site name (e.g. 'Login | My Website') and serves the
-        website-configured favicon - overriding this cluster's `title` / `x_icon` render vars at
-        render time. De-branding the login page for the website case is OWNED by viin_brand_website,
-        which is not yet upgraded to 19.0 (installable=False) and is DEFERRED by product-owner
-        decision - this cluster deliberately does not pull `website` into its scope. So these two
-        tests are honest for the scope this cluster actually owns (the no-website path) and must not
-        emit a false red merely because `website` happens to be co-installed transitively.
-
-        Coverage is not lost under `website`: the no-website assertions below still verify
-        title=='Viindoo' and the exact Viindoo favicon, and test_backend_page_title_is_viindoo (the
-        /odoo surface, which `website` does not take over) still guards the title/x_icon render-var
-        de-brand unconditionally.
-
-        Idiom mirrors odoo/addons/account/tests/test_account_journal_dashboard.py:14-16 (skip when a
-        named module IS installed, via ir.module.module search + .state == 'installed')."""
+        `website` takes over /web/login rendering: its login_layout swaps web.frontend_layout for
+        website.layout, which recomputes the page <title> from the site name and serves the
+        website-configured favicon, overriding this cluster's `title` / `x_icon` render vars. The
+        website login de-brand is owned by viin_brand_website, so these two tests cover only the
+        no-website path. test_backend_page_title_is_viindoo, on the /odoo surface that `website`
+        does not take over, still guards the render-var de-brand unconditionally."""
         if self.env["ir.module.module"].search([("name", "=", "website")]).state == "installed":
             self.skipTest(
-                "website is installed: it supersedes the web.frontend_layout -> web.layout login "
-                "path this cluster de-brands (its own page title + configurable favicon). The "
-                "website login de-brand is owned by viin_brand_website, which is not yet upgraded to "
-                "19.0 (installable=False) and is DEFERRED - see _skip_login_if_website_installed."
+                "website is installed: it takes over the /web/login render, including the page "
+                "title and favicon; that de-brand is owned by viin_brand_website."
             )
 
     def test_backend_page_title_is_viindoo(self):
@@ -119,8 +105,7 @@ class DebrandHeadRenderTest(HttpCase):
         'Viindoo'.
 
         Scoped to the no-website path this cluster owns: skipped when `website` is co-installed
-        (that login path is owned by the deferred viin_brand_website) - see
-        _skip_login_if_website_installed."""
+        (viin_brand_website owns that login path)."""
         self._skip_login_if_website_installed()
         response = self.url_open("/web/login")
         self.assertEqual(
@@ -146,8 +131,7 @@ class DebrandHeadRenderTest(HttpCase):
         the re-homing (the login page bypasses web.webclient_bootstrap).
 
         Scoped to the no-website path this cluster owns: skipped when `website` is co-installed
-        (that login favicon is served by the deferred viin_brand_website) - see
-        _skip_login_if_website_installed."""
+        (viin_brand_website owns that login path)."""
         self._skip_login_if_website_installed()
         response = self.url_open("/web/login")
         self.assertEqual(response.status_code, 200, "login page must render")

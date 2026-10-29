@@ -1,38 +1,25 @@
 /** @odoo-module **/
 
 import { Dialog } from "@web/core/dialog/dialog";
-// Load-bearing import, not decoration: naming this module as a dependency makes the loader
-// guarantee its factory - and therefore its `{ ...Dialog.defaultProps }` snapshot - has already
-// run before we rewrite anything (web/static/src/module_loader.js:143-151, :210-215).
+// Load-bearing import: it makes the loader run ActionDialog's factory, and therefore its
+// `{ ...Dialog.defaultProps }` snapshot, before this module rewrites anything.
 import { ActionDialog } from "@web/webclient/actions/action_dialog";
 
-// De-brand the default backend Dialog title: a dialog opened without an explicit `title` prop
-// must fall back to the "System" wordmark, never the stock Odoo one. Owner decision D3 (2026):
-// unify the Dialog/ActionDialog title wordmark with the error/crash-dialog family
-// (viin_brand_web/static/src/core/errors/error_dialogs.js), which already uses "System".
+// A dialog opened without an explicit `title` falls back to the Viindoo wordmark, never the
+// stock Odoo one.
 //
-// Core ships that fallback as a plain string literal in a static class field:
-//     static defaultProps = { ... title: "Odoo" ... }
-// -> odoo/addons/web/static/src/core/dialog/dialog.js:68 (19.0)
+// Rewriting the base class alone is not enough: ActionDialog copies the defaults into its own
+// object at class-definition time and OWL applies `constructor.defaultProps` at render, so that
+// snapshot keeps whatever the base held while `web`'s assets ran (`web` always sorts before this
+// module). The snapshot is reachable - an act_window with target="new" and no `name` never sets a
+// title prop - so each snapshot is rewritten.
 //
-// Rewriting the base class alone is NOT enough. ActionDialog copies the defaults into its own
-// object at class-definition time (action_dialog.js:17-20), and OWL applies
-// `component.constructor.defaultProps` at render (web/static/lib/owl/owl.js:2600) - so it keeps
-// whatever the base held while `web`'s assets ran, and `web` is always ordered before ours by the
-// topological asset sort (odoo/addons/base/models/ir_asset.py:306). That snapshot is reachable:
-// an act_window with target="new" and no `name` never sets a title prop
-// (web/static/src/webclient/actions/action_service.js:1069-1071). So each snapshot is rewritten.
-//
-// We mutate shared statics at import time, so we assert the precondition instead of assuming it.
-// Core could turn a value into something we cannot safely rewrite (a lazy `_t(...)` object, a
-// getter, or nothing at all); blindly calling a string method on it would throw an opaque
-// TypeError from deep inside the asset bundle, and silently skipping would ship un-debranded UI.
-// We do neither: we rewrite only what we can prove is rewritable, and report the rest.
+// These are shared statics mutated at import time, so the precondition is asserted instead of
+// assumed: core could turn the value into something that cannot be safely rewritten (a lazy
+// `_t(...)` object, a getter, nothing). Only a provably rewritable value is rewritten; the rest
+// is reported loudly rather than skipped silently or thrown from inside the asset bundle.
 const ODOO_WORDMARK = "Odoo";
-// Value is "System" per owner decision D3 - the identifier keeps its original name (naming is out
-// of scope for D3; only the replacement VALUE changes) so it now names a value it no longer holds
-// literally; do not "helpfully" restore "Viindoo" here.
-const VIINDOO_WORDMARK = "System";
+const VIINDOO_WORDMARK = "Viindoo";
 
 // Every class carrying its OWN default title. If core adds another class that snapshots
 // Dialog.defaultProps, add it here and mirror it in static/tests/action_dialog_debrand.test.js.
@@ -55,19 +42,13 @@ for (const [label, target] of DEBRAND_TARGETS) {
     }
     const coreTitle = defaultProps?.title;
     if (typeof coreTitle === "string" && coreTitle.includes(ODOO_WORDMARK)) {
-        // Literal wordmark substitution rather than a regex: the precondition above already
-        // guarantees the shape, so a regex buys nothing and only invites a future loosening
-        // (e.g. /odoo/gi) that would mangle unrelated substrings. Substituting the wordmark -
-        // rather than assigning "System" outright - keeps the de-brand working if core ever
-        // qualifies the literal (e.g. "Odoo 20").
+        // A literal substitution, not a regex, and not an outright assignment: it keeps working
+        // if core ever qualifies the literal (e.g. "Odoo 20") without risking a looser pattern.
         defaultProps.title = coreTitle.replaceAll(ODOO_WORDMARK, VIINDOO_WORDMARK);
     } else {
-        // console.error is the project's loud channel here: Odoo's browser test runner turns any
-        // console.error into a ChromeBrowserException with a screenshot (odoo/tests/common.py:1732),
-        // so this fails every tour/HttpCase run - while console.warn would only be logged
-        // (common.py:1817 _TO_LEVEL) and slip past CI. We deliberately do NOT throw: the module
-        // loader re-raises a factory error out of odoo.define() (module_loader.js:227), which would
-        // abort the rest of the backend bundle and brick the webclient over a branding fallback.
+        // console.error, not console.warn: Odoo's browser test runner fails every tour/HttpCase
+        // run on an error but only logs a warning. Not a throw either: a factory error aborts the
+        // rest of the backend bundle and would brick the webclient over a branding fallback.
         console.error(
             `viin_brand_web: default ${label} title was NOT de-branded. Expected ` +
                 `${label}.defaultProps.title to be a string containing "${ODOO_WORDMARK}" ` +
