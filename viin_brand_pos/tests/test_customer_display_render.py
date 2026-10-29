@@ -96,7 +96,8 @@ class TestCustomerDisplayRender(HttpCase):
         self.browser_js(url, code, cookies={"frontend_lang": "vi_VN"}, timeout=120)
 
     def test_customer_display_error_dialogs_do_not_name_odoo(self):
-        """The customer display bundle (web._assets_core only) gets the error-dialog de-brand."""
+        """The customer display bundle (web._assets_core only) gets the error-dialog de-brand
+        and the Viindoo wordmark as default dialog title."""
         config = self.env["pos.config"].create({"name": "Customer display shop"})
         url = "/pos_customer_display/%s/test-device?access_token=%s" % (config.id, config.access_token)
         code = """
@@ -119,6 +120,9 @@ class TestCustomerDisplayRender(HttpCase):
                     if (title.includes("Odoo")) {
                         throw new Error(name + " title still names Odoo: " + title);
                     }
+                }
+                if (titles.DefaultDialog !== "Viindoo") {
+                    throw new Error("the default dialog title is not the Viindoo wordmark: " + titles.DefaultDialog);
                 }
                 console.log("test successful");
             })().catch((error) => console.error(error.message));
