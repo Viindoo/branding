@@ -13,6 +13,8 @@ What it does
 ============
 This module will change color navigate bar, button and logo,v.v in Payment Provider following Viindoo's brand
 
+It also hides the Enterprise payment providers that are not available in the system from the Payment Providers list.
+
 
 Editions Supported
 ==================
@@ -25,6 +27,9 @@ Editions Supported
 Ứng dụng này làm gì
 ===================
 Module này sẽ thay đổi giao diện các module Payment Provider theo thương hiệu Viindoo
+
+Module này cũng ẩn các nhà cung cấp thanh toán Enterprise không có sẵn trong hệ thống
+khỏi danh sách Nhà cung cấp thanh toán.
 
 
 Ấn bản được Hỗ trợ
@@ -44,13 +49,14 @@ Module này sẽ thay đổi giao diện các module Payment Provider theo thư�
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.2',
 
     # any module necessary for this one to work correctly
     'depends': ['payment'],
 
     # always loaded
     'data': [
+        'data/payment_provider_data.xml',
         'views/payment_provider_views.xml',
     ],
     'installable': True,
@@ -58,4 +64,5 @@ Module này sẽ thay đổi giao diện các module Payment Provider theo thư�
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
+    'uninstall_hook': 'uninstall_hook',
 }
