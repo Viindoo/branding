@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { animationFrame, describe, expect, mockDate, queryOne, test } from "@odoo/hoot";
+import { animationFrame, describe, expect, getFixture, mockDate, queryOne, test } from "@odoo/hoot";
 import { registry } from "@web/core/registry";
 import {
     contains,
@@ -88,10 +88,10 @@ function stubHomeRpcs() {
     onRpc("res.users", "read", () => [{ viin_home_app_order: false }]);
 }
 
-async function mountHomeMenu() {
+async function mountHomeMenu(props = {}) {
     stubHomeRpcs();
     const ViinHomeMenu = registry.category("actions").get("viin_home_menu");
-    await mountWithCleanup(ViinHomeMenu, { props: {} });
+    await mountWithCleanup(ViinHomeMenu, { props });
     await animationFrame();
 }
 
@@ -236,6 +236,66 @@ describe("home menu overlay and the browser's Back button", () => {
 
         expect(".o_viin_home_menu").toHaveCount(0);
         expect(".o_action_manager .o_list_view").toHaveCount(1);
+    });
+});
+
+describe("home menu overlay position", () => {
+    // Business rule: the open app menu starts exactly where the navbar ends, whatever is rendered
+    // above the navbar (the red banner of a neutralized test database), so the navbar and the apps
+    // button that puts the menu away are never covered; with no navbar on screen it starts at the
+    // top of the window.
+    const navbarBottom = () =>
+        Math.round(queryOne("header.o_navbar").getBoundingClientRect().bottom);
+    const panelRect = () => queryOne(".o_viin_home_overlay").getBoundingClientRect();
+
+    /** Put a banner of the given height above everything, like the neutralize banner does. */
+    function addBannerAboveNavbar(height) {
+        const banner = document.createElement("div");
+        banner.style.height = `${height}px`;
+        getFixture().prepend(banner);
+        return banner;
+    }
+
+    test.tags("desktop");
+    test("the menu starts at the navbar's bottom edge and reaches the window's bottom when a banner sits above the navbar", async () => {
+        await mountOnScreen();
+        addBannerAboveNavbar(40);
+        expect(navbarBottom()).toBeGreaterThan(40, {
+            message:
+                "the banner pushes the navbar down, so its bottom is not the bare navbar height",
+        });
+
+        await contains(".o_navbar_apps_menu .o_viin_apps_home").click();
+
+        expect(".o_viin_home_overlay").toHaveCount(1);
+        expect(Math.round(panelRect().top)).toBe(navbarBottom());
+        expect(Math.round(panelRect().bottom)).toBe(window.innerHeight, {
+            message: "the last row of the menu stays reachable",
+        });
+    });
+
+    test.tags("desktop");
+    test("the menu follows the navbar when the window is resized", async () => {
+        await mountOnScreen();
+        const banner = addBannerAboveNavbar(40);
+        await contains(".o_navbar_apps_menu .o_viin_apps_home").click();
+        expect(Math.round(panelRect().top)).toBe(navbarBottom());
+
+        banner.style.height = "70px";
+        window.dispatchEvent(new Event("resize"));
+        await animationFrame();
+
+        expect(navbarBottom()).toBeGreaterThan(70);
+        expect(Math.round(panelRect().top)).toBe(navbarBottom());
+    });
+
+    test.tags("desktop");
+    test("the menu starts at the top of the window when there is no navbar", async () => {
+        await mountHomeMenu({ close: () => {} });
+
+        expect("header.o_navbar").toHaveCount(0);
+        expect(".o_viin_home_overlay").toHaveCount(1);
+        expect(Math.round(panelRect().top)).toBe(0);
     });
 });
 
