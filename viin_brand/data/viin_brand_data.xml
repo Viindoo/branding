@@ -2,5 +2,6 @@
 <odoo>
     <data>
         <function name="_update_viin_brand_icons" model="ir.ui.menu" />
+        <function name="_update_domain_for_action" model="ir.module.module" />
     </data>
 </odoo>

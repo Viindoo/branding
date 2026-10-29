@@ -385,6 +385,7 @@ def uninstall_hook(env):
     Manifest.for_addon = for_addon
     module.load_manifest = load_manifest
     IrUiMenu._compute_web_icon_data = _compute_web_icon_data
+    env['ir.module.module']._restore_domain_for_action()
 
 
 def post_load():
