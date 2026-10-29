@@ -1,7 +1,15 @@
 import { describe, expect, test } from "@odoo/hoot";
 import { queryText } from "@odoo/hoot-dom";
 import { Component, xml } from "@odoo/owl";
-import { makeDialogMockEnv, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import {
+    defineModels,
+    fields,
+    getService,
+    makeDialogMockEnv,
+    models,
+    mountWithCleanup,
+    webModels,
+} from "@web/../tests/web_test_helpers";
 
 import { Dialog } from "@web/core/dialog/dialog";
 // ActionDialog builds its own defaults with `{ ...Dialog.defaultProps, withBodyPadding: false }`
@@ -9,6 +17,7 @@ import { Dialog } from "@web/core/dialog/dialog";
 // class-definition time, and OWL applies `component.constructor.defaultProps` at render
 // (web/static/lib/owl/owl.js:2600) - so the snapshot, not the live base value, is what users see.
 import { ActionDialog } from "@web/webclient/actions/action_dialog";
+import { WebClient } from "@web/webclient/webclient";
 
 // Side-effect import of the REAL, unmodified viin_brand_web patch, exactly as production loads it.
 // The module is already in web.assets_backend (which web.assets_unit_tests_setup includes), so this
@@ -17,6 +26,18 @@ import { ActionDialog } from "@web/webclient/actions/action_dialog";
 // these tests a faithful proof of the real load order rather than an artificial one.
 import "@viin_brand_web/core/dialog/dialog";
 
+const { ResCompany, ResPartner, ResUsers } = webModels;
+
+class Shop extends models.Model {
+    name = fields.Char();
+
+    _views = {
+        form: `<form><field name="name"/></form>`,
+    };
+}
+
+defineModels([Shop, ResCompany, ResPartner, ResUsers]);
+
 describe.current.tags("desktop");
 
 // Business rule under protection: NO backend dialog may fall back to the stock Odoo wordmark once
@@ -24,6 +45,8 @@ describe.current.tags("desktop");
 // guard the rendered outcome, including the ActionDialog snapshot that the base patch cannot reach.
 // An act_window with target="new" and no `name` never sets a title prop
 // (web/static/src/webclient/actions/action_service.js:1069-1071), so this default really renders.
+// The ActionDialog case mounts the class directly; the action-service case drives the real user
+// path (doAction in a WebClient), which a direct mount cannot prove.
 
 // Expected value updated to "System" per owner decision D3 (unify the Dialog/ActionDialog title
 // wordmark with the error/crash-dialog family, which already used "System").
@@ -48,6 +71,18 @@ test("Dialog opened without a title renders the System wordmark, never Odoo", as
 
     expect("header .modal-title").toHaveText("System");
     expect(queryText("header .modal-title")).not.toInclude("Odoo");
+});
+
+test("a dialog opened by an action without a name renders the System wordmark, never Odoo", async () => {
+    await mountWithCleanup(WebClient);
+    await getService("action").doAction({
+        type: "ir.actions.act_window",
+        res_model: "shop",
+        target: "new",
+        views: [[false, "form"]],
+    });
+
+    expect(".o_technical_modal .modal-title").toHaveText("System");
 });
 
 // Cheap static sweep over every Dialog-family class known to carry its own default title. If core

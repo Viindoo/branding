@@ -135,6 +135,9 @@ export class ViinHomeMenu extends Component {
             useExternalListener(document, "pointerdown", this.onOutsidePointerDown, {
                 capture: true,
             });
+            // Whatever sits above the navbar can change height with the window (a banner wrapping
+            // onto more lines), so the top edge measured at render is measured again.
+            useExternalListener(window, "resize", () => this.render());
             // Escape dismisses and hands focus back to the button that opened it - a non-modal
             // overlay that traps the user is an accessibility defect (WCAG 2.1.2). The full-page
             // client-action arm has no trigger to return to, so it does not register this.
@@ -204,6 +207,20 @@ export class ViinHomeMenu extends Component {
     /** Rendered as the navbar's non-navigating overlay rather than as the boot-landing page? */
     get isOverlay() {
         return Boolean(this.props.close);
+    }
+
+    /**
+     * The overlay stops at the navbar's real bottom edge, not at the navbar's height: anything
+     * rendered above the navbar (the banner of a neutralized database) pushes it down, and a
+     * constant top would cover its lower part. Without a navbar the panel starts at the window top.
+     */
+    get overlayStyle() {
+        if (!this.isOverlay) {
+            return "";
+        }
+        const navbar = document.querySelector("header.o_navbar");
+        const top = navbar ? Math.max(0, Math.round(navbar.getBoundingClientRect().bottom)) : 0;
+        return `top: ${top}px`;
     }
 
     get apps() {

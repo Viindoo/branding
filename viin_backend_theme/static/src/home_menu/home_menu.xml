@@ -11,8 +11,9 @@
          markup is rendered by the overlay service above a still-mounted controller instead of as a
          full-page client action. It carries nothing but the fixed positioning that makes the panel
          fill the area under the navbar - i.e. the identical full-screen picture the client action
-         produced (home_menu.scss). -->
-    <div class="o_viin_home_menu" t-att-class="{ o_viin_home_overlay: isOverlay }">
+         produced (home_menu.scss) - and the inline top measured from the navbar's real bottom edge. -->
+    <div class="o_viin_home_menu" t-att-class="{ o_viin_home_overlay: isOverlay }"
+         t-att-style="overlayStyle">
       <div class="o_viin_home_content d-flex flex-column">
 
         <header class="o_viin_home_header d-flex flex-column">
