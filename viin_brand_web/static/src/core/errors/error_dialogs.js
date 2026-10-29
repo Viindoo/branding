@@ -11,51 +11,46 @@ import {
 } from "@web/core/errors/error_dialogs";
 import { patch } from "@web/core/utils/patch";
 
-// Patch static titles - use generic "System" instead of brand name
-ErrorDialog.title = _t("System Error");
-ClientErrorDialog.title = _t("System Client Error");
-NetworkErrorDialog.title = _t("System Network Error");
+ErrorDialog.title = _t("Viindoo Error");
+ClientErrorDialog.title = _t("Viindoo Client Error");
+NetworkErrorDialog.title = _t("Viindoo Network Error");
 
-// Patch RPCErrorDialog.inferTitle to remove "Odoo" branding, and setup() to
-// scrub the same wordmark from the technical-details body (props.message and
-// the component's own traceback field) - the raw "Odoo Server Error" string
-// core's Dispatcher.handle_error() hardcodes into every unhandled server
-// exception. props.data (the raw debug payload) is left untouched.
+// The server hardcodes "Odoo Server Error" into every unhandled exception, so the wordmark is
+// replaced in the title and in the technical-details body (message and traceback).
+// props.data, the raw debug payload, is left untouched.
 patch(RPCErrorDialog.prototype, {
     setup() {
         super.setup();
         if (this.props.message) {
-            this.props.message = this.props.message.toString().replace(/Odoo/g, "System");
+            this.props.message = this.props.message.toString().replace(/Odoo/g, "Viindoo");
         }
         if (this.traceback) {
-            this.traceback = this.traceback.toString().replace(/Odoo/g, "System");
+            this.traceback = this.traceback.toString().replace(/Odoo/g, "Viindoo");
         }
     },
     inferTitle() {
         super.inferTitle();
         if (this.title) {
-            this.title = this.title.toString().replace(/Odoo/g, "System");
+            this.title = this.title.toString().replace(/Odoo/g, "Viindoo");
         }
     },
 });
 
-// Patch WarningDialog.inferTitle fallback
 patch(WarningDialog.prototype, {
     inferTitle() {
         const title = super.inferTitle();
-        if (title === _t("Odoo Warning").toString()) {
-            return _t("Warning");
+        if (String(title) === String(_t("Odoo Warning"))) {
+            return _t("Viindoo Warning");
         }
         return title;
     },
 });
 
-// Patch RedirectWarningDialog.setup for fallback title
 patch(RedirectWarningDialog.prototype, {
     setup() {
         super.setup();
-        if (this.title === _t("Odoo Warning").toString()) {
-            this.title = _t("Warning");
+        if (String(this.title) === String(_t("Odoo Warning"))) {
+            this.title = _t("Viindoo Warning");
         }
     },
 });

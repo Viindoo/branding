@@ -1,10 +1,9 @@
-# A11y focus-ring contrast guard (PR #658 review-fix C-7; ODOO-AI-ETHOS #8; WCAG 2.1 SC 1.4.11).
+# A11y focus-ring guard (WCAG 2.1 SC 1.4.11).
 #
 # WHAT IS PROTECTED (behaviour, not code): viin_brand_web - the always-installed base - defines
 # a shared focus-ring token applied to core interactive elements on :focus-visible, and that ring
 # must be a VISIBLE indicator (WCAG SC 1.4.11 non-text contrast >= 3:1) against its surround in
-# BOTH schemes. The review found 35/44 tab stops fail >= 3:1 in dark and that form inputs show zero
-# focus change; the base owns the ring so an UNTHEMED install is accessible too (the redesign theme
+# BOTH schemes. The base owns the ring so an UNTHEMED install is accessible too (the redesign theme
 # only wires its own shell widgets on top).
 #
 # WHY COMPILED CSS, NOT SOURCE: the ring colour reaches the pixel as a custom property that resolves
@@ -32,9 +31,8 @@ from .test_brand_cascade_compile import (
     _normalize_colour,
 )
 
-# The shared focus-ring token the base defines (design C-7). Declared here as the one place the test
-# names it; if the coder ships a differently-named token, this guard fails loudly and is re-grounded
-# rather than silently passing on a dead name.
+# The shared focus-ring token the base defines. Declared here as the one place the test names it,
+# so a renamed token fails this guard loudly instead of passing on a dead name.
 FOCUS_RING_TOKEN = "o-viin-focus"
 
 # Every `--o-viin-focus: <value>` declaration, wherever it is declared (:root, .o_web_client, or a
@@ -74,9 +72,7 @@ class FocusRingCompileTest(TransactionCase):
     def test_focus_ring_token_clears_non_text_contrast_in_light_scheme(self):
         """The focus ring must clear WCAG 3:1 against the light backend surface (white).
 
-        RED BEFORE GREEN: no focus_ring.scss / --o-viin-focus token exists yet, so the token is
-        absent from web.assets_backend and this fails; it passes once the base ring lands (design
-        light value #005E68, 7.5:1 on white)."""
+        The light value is #005E68, 7.5:1 on white."""
         css = self._compiled_css(BACKEND_BUNDLE)
         ring = self._focus_ring_colour(css, BACKEND_BUNDLE)
         ratio = _contrast_ratio(ring, WHITE)
@@ -90,9 +86,7 @@ class FocusRingCompileTest(TransactionCase):
     def test_focus_ring_token_clears_non_text_contrast_in_dark_scheme(self):
         """The focus ring must clear WCAG 3:1 against the dark panel #111B1E.
 
-        RED BEFORE GREEN: web.assets_web_dark carries no --o-viin-focus dark arm yet (and no light
-        one either), so the token is absent and this fails; it passes once the dark arm lands
-        (design dark value #7FE0EA on #111B1E). This is the 35/44-dark-tab-stops regression guard."""
+        The dark value is #7FE0EA on #111B1E."""
         css = self._compiled_css(DARK_BUNDLE)
         ring = self._focus_ring_colour(css, DARK_BUNDLE)
         ratio = _contrast_ratio(ring, DARK_BODY_BG)
@@ -109,9 +103,7 @@ class FocusRingCompileTest(TransactionCase):
 
         Non-vacuity: a declared token nobody reads would let the contrast guards pass on a ring that
         never paints. The Python layer confirms the token is wired into an outline/box-shadow; the
-        per-element focus behaviour (focusing an input shows the ring) is the sibling Hoot test's job.
-
-        RED BEFORE GREEN: with no focus_ring.scss the token is neither declared nor referenced."""
+        per-element focus behaviour (focusing an input shows the ring) is the sibling Hoot test's job."""
         css = self._compiled_css(BACKEND_BUNDLE)
         self.assertIn(
             "var(--%s" % FOCUS_RING_TOKEN, css,

@@ -12,10 +12,9 @@ import {
 } from "@web/../tests/web_test_helpers";
 
 import { Dialog } from "@web/core/dialog/dialog";
-// ActionDialog builds its own defaults with `{ ...Dialog.defaultProps, withBodyPadding: false }`
-// (web/static/src/webclient/actions/action_dialog.js:17-20). That spread SNAPSHOTS the title at
-// class-definition time, and OWL applies `component.constructor.defaultProps` at render
-// (web/static/lib/owl/owl.js:2600) - so the snapshot, not the live base value, is what users see.
+// ActionDialog builds its own defaults with `{ ...Dialog.defaultProps, withBodyPadding: false }`.
+// That spread snapshots the title at class-definition time, and OWL applies
+// `constructor.defaultProps` at render - so the snapshot, not the live base value, is what users see.
 import { ActionDialog } from "@web/webclient/actions/action_dialog";
 import { WebClient } from "@web/webclient/webclient";
 
@@ -43,24 +42,21 @@ describe.current.tags("desktop");
 // Business rule under protection: NO backend dialog may fall back to the stock Odoo wordmark once
 // viin_brand_web is installed. `dialog_debrand.test.js` guards the base Dialog default; these tests
 // guard the rendered outcome, including the ActionDialog snapshot that the base patch cannot reach.
-// An act_window with target="new" and no `name` never sets a title prop
-// (web/static/src/webclient/actions/action_service.js:1069-1071), so this default really renders.
+// An act_window with target="new" and no `name` never sets a title prop, so this default really
+// renders.
 // The ActionDialog case mounts the class directly; the action-service case drives the real user
 // path (doAction in a WebClient), which a direct mount cannot prove.
 
-// Expected value updated to "System" per owner decision D3 (unify the Dialog/ActionDialog title
-// wordmark with the error/crash-dialog family, which already used "System").
-test("ActionDialog opened without a title renders the System wordmark, never Odoo", async () => {
+test("ActionDialog opened without a title renders the Viindoo wordmark, never Odoo", async () => {
     const env = await makeDialogMockEnv();
     await mountWithCleanup(ActionDialog, { env, props: { close: () => {} } });
 
     expect(".o_dialog").toHaveCount(1);
-    expect("header .modal-title").toHaveText("System");
+    expect("header .modal-title").toHaveText("Viindoo");
     expect(queryText("header .modal-title")).not.toInclude("Odoo");
 });
 
-// Expected value updated to "System" per owner decision D3 (same rationale as above).
-test("Dialog opened without a title renders the System wordmark, never Odoo", async () => {
+test("Dialog opened without a title renders the Viindoo wordmark, never Odoo", async () => {
     class Parent extends Component {
         static components = { Dialog };
         static template = xml`<Dialog>Content</Dialog>`;
@@ -69,11 +65,11 @@ test("Dialog opened without a title renders the System wordmark, never Odoo", as
     await makeDialogMockEnv();
     await mountWithCleanup(Parent);
 
-    expect("header .modal-title").toHaveText("System");
+    expect("header .modal-title").toHaveText("Viindoo");
     expect(queryText("header .modal-title")).not.toInclude("Odoo");
 });
 
-test("a dialog opened by an action without a name renders the System wordmark, never Odoo", async () => {
+test("a dialog opened by an action without a name renders the Viindoo wordmark, never Odoo", async () => {
     await mountWithCleanup(WebClient);
     await getService("action").doAction({
         type: "ir.actions.act_window",
@@ -82,7 +78,7 @@ test("a dialog opened by an action without a name renders the System wordmark, n
         views: [[false, "form"]],
     });
 
-    expect(".o_technical_modal .modal-title").toHaveText("System");
+    expect(".o_technical_modal .modal-title").toHaveText("Viindoo");
 });
 
 // Cheap static sweep over every Dialog-family class known to carry its own default title. If core

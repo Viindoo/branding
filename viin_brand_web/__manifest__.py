@@ -35,7 +35,7 @@ Editions Supported
     # Check https://github.com/Viindoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.2',
 
     # viin_brand is needed because the moved views/webclient_template.xml (brand_promotion_message
     # and login_layout) serves /viin_brand/static/img/viindoo_logo_tiny.png and .../favicon.ico -
@@ -61,15 +61,15 @@ Editions Supported
             # was never built. See brand_palette_reset.scss for the full rationale + compile proof.
             'viin_brand_web/static/src/scss/brand_palette_reset.scss',
         ],
-        # C-2 (PR #658): recompiled dark palette (Option A Layer 1). Positioned BEFORE core consumes
-        # the Sass vars in the independent dark recompile, so every core rule - incl. those inside
-        # color-contrast()/mix() and the compiled Bootstrap .text-*/.bg-* utilities - recompiles
-        # dark-correct. The plain name (NOT *.variables.scss / NOT *.dark.scss) avoids the auto-glob
-        # landmines; it is contributed EXPLICITLY only to this dark bundle. See dark_palette.scss.
+        # Recompiled dark palette. Positioned BEFORE core consumes the Sass vars in the independent
+        # dark recompile, so every core rule - incl. those inside color-contrast()/mix() and the
+        # compiled Bootstrap .text-*/.bg-* utilities - recompiles dark-correct. The plain name
+        # (NOT *.variables.scss / NOT *.dark.scss) avoids the auto-glob landmines; it is
+        # contributed EXPLICITLY only to this dark bundle. See dark_palette.scss.
         'web.assets_web_dark': [
             ('before', 'web/static/src/scss/primary_variables.scss',
              'viin_brand_web/static/src/scss/dark_palette.scss'),
-            # 2026-08-03: dark arm of the NEUTRAL button map ($o-btns-bs-override "secondary"),
+            # Dark arm of the NEUTRAL button map ($o-btns-bs-override "secondary"),
             # anchored AFTER core's primary_variables.scss - the earliest point where
             # $o-component-active-bg/-border/-color exist, so the map's three ACTIVE keys can be
             # forwarded verbatim and the statusbar current-arrow + control-panel custom button stay
@@ -77,11 +77,11 @@ Editions Supported
             # and the view SCSS). See dark_buttons.scss for the full rationale.
             ('after', 'web/static/src/scss/primary_variables.scss',
              'viin_brand_web/static/src/scss/dark_buttons.scss'),
-            # FIX GROUP 1 (PR #658 review-fix): Layer-2 dark residue for secondary surfaces core
-            # paints from a compile-time grayscale literal / runtime custom prop that no semantic
-            # Sass var routes through (settings sidebar+section-header, search-facet band, selected
-            # .table-info row). Kanban is handled by the dark_palette.scss $o-kanban-background var
-            # override above. Plain APPEND lands after the web.assets_web include so it wins core on
+            # Dark residue for secondary surfaces core paints from a compile-time grayscale literal /
+            # runtime custom prop that no semantic Sass var routes through (settings
+            # sidebar+section-header, search-facet band, selected .table-info row). Kanban is
+            # handled by the dark_palette.scss $o-kanban-background var override above.
+            # Plain APPEND lands after the web.assets_web include so it wins core on
             # source order; NOT auto-globbed (core's *.dark.scss glob only covers web/static/src/**),
             # so it is listed explicitly here and never leaks into the light bundle.
             'viin_brand_web/static/src/scss/dark_secondary_surfaces.dark.scss',
@@ -122,9 +122,9 @@ Editions Supported
              'viin_brand_web/static/src/scss/dark_palette.scss'),
             'viin_brand_web/static/src/scss/pivot_view.dark.scss',
         ],
-        # C-5 (PR #658): re-point the FRONTEND $theme-colors['primary'] to the AA teal AFTER
-        # pre_variables.scss (where html_editor's palette-derived aubergine otherwise wins) and
-        # before Bootstrap emits :root. web is a dependency, so the anchor is installability-safe.
+        # Re-point the FRONTEND $theme-colors['primary'] to the AA teal AFTER pre_variables.scss
+        # (where html_editor's palette-derived aubergine otherwise wins) and before Bootstrap emits
+        # :root. web is a dependency, so the anchor is installability-safe.
         # See frontend_primary.scss for the full grounded leak analysis.
         'web.assets_frontend': [
             ('after', 'web/static/src/scss/pre_variables.scss',
@@ -158,11 +158,12 @@ Editions Supported
             # web.assets_frontend, so declaring it there would repaint the login + portal links too.
             ('before', 'web/static/lib/bootstrap/scss/_variables.scss',
              'viin_brand_web/static/src/scss/link_tier.scss'),
-            # C-7 (PR #658): a11y focus-ring base. Shared --o-viin-focus token (light #005E68;
-            # dark arm #7FE0EA via dark_palette.scss) applied on :focus-visible to core interactive
-            # elements. Appended so it wins core's focus styles on equal-specificity source order.
+            # A11y focus-ring base: shared --o-viin-focus token (light #005E68; dark arm #7FE0EA via
+            # the dark palette) applied on :focus-visible to core interactive elements, except
+            # the non-current items of core's keyboard navigation. Appended so it wins core's focus
+            # styles on equal-specificity source order.
             'viin_brand_web/static/src/scss/focus_ring.scss',
-            # C-2 (PR #658): native color-scheme correctness.
+            # Native color-scheme correctness.
             # Scheme-invariant base fix for core's invalid `bright` color-scheme ident; owned by the
             # base so dark mode is correct even without the redesign theme.
             'viin_brand_web/static/src/scss/color_scheme.scss',
@@ -194,23 +195,11 @@ Editions Supported
             # side-effect module.
             'viin_brand_web/static/src/core/errors/error_dialogs.js',
             'viin_brand_web/static/src/core/errors/error_dialogs.xml',
-            # De-brand core's web.UpgradeDialog (the Enterprise-upsell dialog opened from any
-            # `upgrade_boolean` field). RELOCATED here from the retired
-            # `webclient/settings_form_view/` path (tests/test_asset_upgrade.py
-            # RETIRED_ASSET_FRAGMENTS) so it no longer needs an allow-list entry. The .js also
-            # closes PR #633 rebase verdict c2-common.md finding R-7: the template was de-branded
-            # but the primary CTA still opened odoo.com - now patched to open viindoo.com instead.
-            # Wordmark is "System" per owner decision D3. Both are plain appends, order-immune,
-            # grouped with this module's other eager core/ side-effect modules.
-            'viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.js',
-            'viin_brand_web/static/src/core/upgrade_dialog/upgrade_dialog.xml',
-            # 2026-08-17: de-brand the title SERVICE's own empty-composition fallback, relocated
-            # from the retired webclient/webclient.js (branding core-test regressions run,
-            # decisions.md "Decided without a gate" #5 - the old WebClient.setup() patch injected
-            # a PERMANENT title part that leaked into every later composed title, e.g.
-            # "Viindoo - Hello, world!" instead of "Hello, world!"). Eager side-effect module,
-            # grouped with this module's other eager core/ patches (colors.js, error_dialogs.js,
-            # upgrade_dialog.js) - order-immune once web.assets_web's include has run.
+            # De-brand the title SERVICE's own empty-composition fallback only: a permanent title
+            # part would leak into every later composed title ("Viindoo - Hello, world!" instead
+            # of "Hello, world!"). Eager side-effect module, grouped with this module's other eager
+            # core/ patches (colors.js, error_dialogs.js) - order-immune once web.assets_web's
+            # include has run.
             'viin_brand_web/static/src/core/browser/title_service.js',
             'viin_brand_web/static/src/webclient/user_menu_item.js',
             'viin_brand_web/static/src/views/widgets/**/*',
@@ -277,8 +266,8 @@ Editions Supported
              'viin_brand_web/static/src/views/view_components/selection_box.scss'),
             # selection_box.xml is a QWeb t-inherit of core's web.SelectionBox component template
             # (not SCSS) - it only needs to share a bundle with the component it extends, matching
-            # this module's own error_dialogs.xml / upgrade_dialog.xml precedent above (both plain
-            # appends carrying a t-inherit). No ordering conflict exists to anchor against.
+            # this module's own error_dialogs.xml precedent above (a plain append carrying a
+            # t-inherit). No ordering conflict exists to anchor against.
             'viin_brand_web/static/src/views/view_components/selection_box.xml',
             # Module-independence W3 relocation, unit 3 of 4 ("the nocontent rename"): the empty-state
             # helper restyle moved here from viin_backend_theme (same C1 surface-test + minimality
@@ -305,29 +294,13 @@ Editions Supported
             # sibling cannot see whether the numbers are in reading order - the statusbar's DOM
             # order is the reverse of its visual order.
             'viin_brand_web/static/tests/statusbar_steps.test.js',
-            # 2026-08-07: RED test-first guard for PR #633 rebase finding R-7 (web.UpgradeDialog
-            # de-brand is only half done) + owner decision D3 (wordmark = "System"). Protects two
-            # rules: the CTA must never open odoo.com, and the dialog copy must never carry the
-            # Odoo/Viindoo wordmark. Authored before the production fix lands - see
-            # upgrade_dialog_debrand.test.js's header for the static RED argument.
-            'viin_brand_web/static/tests/upgrade_dialog_debrand.test.js',
-            # 2026-08-08: RED test-first guard for BUG S13-1 + BUG S14-1 (rb633-accept-20260808-k4x9
-            # acceptance report) + owner decision D3 (wordmark = "System" for the whole error/crash
-            # dialog family). Protects: ClientErrorDialog/NetworkErrorDialog technical-details titles
-            # must carry the "System " prefix (error_dialogs.js:16-17 currently drop "Odoo" instead
-            # of prefixing "System"), and RPCErrorDialog's server-error message/traceback must never
-            # leak core's raw "Odoo Server Error" string (no setup() override exists yet to normalize
-            # it). Authored before the production fix lands - see error_dialogs_debrand.test.js's
-            # header for the static RED argument.
+            # The whole error/crash dialog family carries the Viindoo wordmark, and a server
+            # error's message and traceback never leak core's raw "Odoo Server Error".
             'viin_brand_web/static/tests/error_dialogs_debrand.test.js',
-            # 2026-08-17: RED test-first guard for the title-service relocation (branding
-            # core-test regressions run, decisions.md "Decided without a gate" #5). Protects two
-            # rules at once: an otherwise-empty title composition must fall back to the Viindoo
-            # de-brand (never core's stock "Odoo"), and that de-brand must never leak into a title
-            # that DOES have a composed part (the exact corruption caught by production tour
-            # website_event.tests.test_website_event.TestUi.test_website_event_pages_seo step
-            # [8/8]). Authored before the production fix lands - see
-            # title_service_debrand.test.js's header for the static RED argument.
+            # Protects two rules at once: an otherwise-empty title composition falls back to the
+            # Viindoo de-brand (never core's stock "Odoo"), and that de-brand never leaks into a
+            # title that DOES have a composed part (the corruption the website_event SEO tour
+            # caught).
             'viin_brand_web/static/tests/title_service_debrand.test.js',
         ],
         'web.assets_tests': [

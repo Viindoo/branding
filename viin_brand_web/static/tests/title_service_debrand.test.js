@@ -6,49 +6,22 @@ import { titleService } from "@web/core/browser/title_service";
 
 describe.current.tags("headless");
 
-// Business rule under protection (findings.md item 5 in this run's debug log + decisions.md
-// "Decided without a gate" #5): core's title service composes `document.title` from a
-// `titleParts` map:
+// Core's title service composes `document.title` from a `titleParts` map:
 //     const name = Object.values(titleParts).join(" - ") || "Odoo";
-//   (web/static/src/core/browser/title_service.js:38, 19.0)
-// viin_brand_web must de-brand ONLY that EMPTY-STATE FALLBACK - when no part is composed,
-// document.title must read "Viindoo", never core's stock "Odoo". That de-brand must NEVER become
-// a permanent joined PART: when a real part IS composed (the exact shape core's own
-// action_service.js uses - `env.services.title.setParts({ action: controller.displayName })`,
-// action_service.js:900, and website_builder_action.js:361-363 for the website builder's outer
-// title), `document.title` must equal that part ALONE.
+// viin_brand_web de-brands ONLY that empty-state fallback: when no part is composed,
+// document.title reads "Viindoo", never core's stock "Odoo". The brand must never become a
+// permanent joined part: when a real part is composed (the shape core's action service uses,
+// `env.services.title.setParts({ action: controller.displayName })`), document.title equals that
+// part alone. A permanent "Viindoo" part would turn every later title into
+// "Viindoo - <action title>" and break exact-match title lookups such as the website event
+// pages SEO tour.
 //
-// This is the regression pin for a real production defect: viin_brand_web/static/src/webclient/
-// webclient.js used to patch `WebClient.prototype.setup()` to call
-// `this.title.setParts({ zopenerp: "Viindoo" })` once at boot and never clear it - so
-// `titleParts` carried a permanent "Viindoo" entry alongside every later action's own title part,
-// and `Object.values(titleParts).join(" - ")` corrupted EVERY composed title afterwards into
-// "Viindoo - <action title>". Caught by production tour
-// `website_event.tests.test_website_event.TestUi.test_website_event_pages_seo` step [8/8]:
-// trigger `head:has(title:text(Hello, world!)):not(:visible)` - `:text()` is an EXACT match, not
-// `:contains()` - which failed because the outer `document.title` was
-// "Viindoo - Hello, world!" instead of the expected "Hello, world!".
+// The fix module is loaded eagerly through this module's `web.assets_backend` bundle, so
+// importing core's `titleService` is enough to observe the patched behaviour.
 //
-// RED today, confirmed by reading source (no live instance this session): as of this test,
-// `title_service.js` itself is UNPATCHED by viin_brand_web - the only existing de-brand patch
-// touches `WebClient.prototype.setup()`, a different object entirely (and is being relocated by
-// this work-item to stop the leak described above). Calling `titleService.start()` fresh below
-// therefore returns core's STOCK closure: with `titleParts` empty, `updateTitle()` computes
-// `name = "" || "Odoo"`, so `document.title === "Odoo"` - the first test's
-// `expect(document.title).toBe("Viindoo")` fails today for exactly that reason. Once the fix is
-// wired into this module's `web.assets_backend` manifest bundle (an eager entry, same convention
-// as this module's existing `core/colors/colors.js` / `core/errors/error_dialogs.js`), Hoot's
-// `ModuleSetLoader.setup()` runs it before this test module's body executes - see
-// `user_menu_debrand.test.js` / `upgrade_dialog_debrand.test.js` headers for the same mechanism -
-// so no side-effect import of the fix module is needed here; importing core's `titleService`
-// directly is enough to observe the patched behaviour once it exists.
-//
-// `titleService.start()` takes no meaningful parameters and returns a FRESH API object with its
-// own closure-local `titleParts`/`titleCounters` state per call - each test below calls it again
-// rather than sharing one instance, so tests stay independent of execution order (FIRST rule).
-// `setParts()`/`setCounters()` always call the internal `updateTitle()` after their loop, even
-// for an empty object, so `setParts({})` is a deterministic way to force a recompute of the
-// current (possibly still-empty) state without depending on a prior call having happened.
+// `titleService.start()` returns a fresh API object with its own closure-local state per call;
+// each test calls it again so tests stay independent of execution order. `setParts({})` forces
+// a recompute of the current, possibly still empty, state.
 
 test("empty title composition falls back to the Viindoo brand, never Odoo", () => {
     const title = titleService.start();
