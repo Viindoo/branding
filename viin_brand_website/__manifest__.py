@@ -35,15 +35,16 @@ Editions Supported
     # Check https://github.com/Viindoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1.2',
+    'version': '0.1.3',
 
-    # any module necessary for this one to work correctly
-    'depends': ['website'],
+    # viin_brand: owns the Apps action domain this module re-applies and the brand assets the views use
+    'depends': ['website', 'viin_brand'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'data/digest_data.xml',
+        'data/ir_module_module_data.xml',
         'views/templates.xml',
         'views/website_templates.xml',
         'views/res_config_settings_views.xml',
