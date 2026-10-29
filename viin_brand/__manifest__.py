@@ -21,6 +21,14 @@ This module change some information for Viindoo branding
   * load the module server wide (`--load=base,web,viin_brand`) so the branding
     is in place from the first module installation
 
+* Do not bother users with Enterprise-only offers
+
+  * the Apps list hides the Enterprise modules that are not available in the system
+  * the Settings page hides the options that need Enterprise or a module that cannot be installed,
+    and the blocks and apps left empty
+  * the Odoo IAP modules cannot be installed from the user interface; they still install from
+    the command line or as a dependency of another module
+
 
 Editions Supported
 ==================
@@ -31,6 +39,14 @@ Editions Supported
 
     'description_vi_VN': """
 Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu Viindoo
+
+* Không làm phiền người dùng bằng các chào mời của ấn bản Enterprise
+
+  * Danh sách Ứng dụng ẩn các mô-đun Enterprise không có sẵn trong hệ thống
+  * Trang Cài đặt ẩn các tùy chọn cần Enterprise hoặc cần mô-đun không thể cài đặt,
+    cùng các khối và ứng dụng bị bỏ trống
+  * Các mô-đun Odoo IAP không thể cài đặt từ giao diện người dùng; chúng vẫn được cài từ dòng lệnh
+    hoặc khi là phụ thuộc của mô-đun khác
 
 Ấn bản được Hỗ trợ
 ==================
@@ -45,10 +61,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    # 0.1 -> 0.2: this module now OWNS the module-icon/favicon branding mechanism
-    # (moved out of tvtmaaddons' to_base, 18.0 f57498c/56b2c7252e), so it gains
-    # models, data, views, assets and four hooks. It needs -u to take effect.
-    'version': '0.2',
+    'version': '0.3',
     # 'web': load-order dependency, NOT unused - controllers/database.py does
     # `from odoo.addons.web.controllers.database import Database` at MODULE-LOAD
     # time to subclass the database-manager controller. Do not remove.
