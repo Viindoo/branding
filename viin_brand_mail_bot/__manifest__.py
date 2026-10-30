@@ -35,8 +35,8 @@ Module này sẽ thay đổi giao diện module Mail Bot theo thương hiệu Vi
 
     'author': "Viindoo",
     'website': "https://viindoo.com/apps/modules/19.0/viin_brand_mail_bot?force_show=1",
-    'live_test_url': "https://v18demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
+    'live_test_url': "https://v19demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1.0',
