@@ -12,6 +12,9 @@
                     <li>how to develop modules for your own need,</li>
                     <li>specific questions about Viindoo service offers, etc.</li>
                 </xpath>
+                <xpath expr="//div[@id='o_website_forum_faq_heading_4']/div[hasclass('accordion-body')]/p[1]" position="replace">
+                    <p>The goal of this site is to create a relevant knowledge base that would answer questions related to Viindoo.</p>
+                </xpath>
             </field>
         </record>
     </data>
