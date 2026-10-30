@@ -1,17 +1,18 @@
 {
     'name': "Snail Mail Branding For Viindoo",
-    'name_vi_VN': "Giao diện Viindoo cho module Snail Mail",
+    'name_vi_VN': "Giao diện Viindoo cho mô-đun Snail Mail",
 
     'summary': """
-Theme branding Viindoo for module Snail Mail""",
+Removes the Odoo brand from Snail Mail messages""",
     'summary_vi_VN': """
-Giao diện brand Viindoo cho module Snail Mail
+Gỡ thương hiệu Odoo khỏi các thông báo của Snail Mail
 """,
 
     'description': """
 What it does
 ============
-This module will change color navigate bar, button and logo,v.v in Snail Mail following Viindoo's brand
+This module removes the Odoo brand from the messages of Snail Mail. The error shown when a letter
+cannot be sent because the database has no IAP account no longer names an Odoo website.
 
 
 Editions Supported
@@ -24,7 +25,8 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ===================
-Module này sẽ thay đổi giao diện các module Snail Mail theo thương hiệu Viindoo
+Mô-đun này gỡ thương hiệu Odoo khỏi các thông báo của Snail Mail. Lỗi hiển thị khi thư không gửi được
+vì cơ sở dữ liệu chưa có tài khoản IAP không còn nhắc đến website của Odoo.
 
 
 Ấn bản được Hỗ trợ
@@ -36,8 +38,8 @@ Module này sẽ thay đổi giao diện các module Snail Mail theo thương hi
 
     'author': "Viindoo",
     'website': "https://viindoo.com/apps/modules/19.0/viin_brand_snailmail?force_show=1",
-    'live_test_url': "https://v18demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v18demo-vn.viindoo.com",
+    'live_test_url': "https://v19demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
@@ -48,13 +50,8 @@ Module này sẽ thay đổi giao diện các module Snail Mail theo thương hi
 
     # any module necessary for this one to work correctly
     'depends': ['snailmail'],
-    'assets': {
-        'web.assets_backend': [
-            'viin_brand_snailmail/static/src/components/*/*.xml',
-        ],
-    },
 
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
