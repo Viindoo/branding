@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="faq_karma" inherit_id="website_forum.faq_karma">
+        <xpath expr="//div[@data-name='Item']//div[hasclass('card-body')]/p[1]" position="replace">
+            <p>The goal of this site is to create a relevant knowledge base that would answer questions related to Viindoo.</p>
+        </xpath>
+    </template>
+</odoo>
