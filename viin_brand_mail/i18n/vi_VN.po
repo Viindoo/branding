@@ -67,6 +67,11 @@ msgid "Browser keys"
 msgstr "Khóa trình duyệt"
 
 #. module: viin_brand_mail
+#: model:ir.model.fields.selection,name:viin_brand_mail.selection__res_users__notification_type__email
+msgid "By Emails"
+msgstr "Bằng email"
+
+#. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_res_company
 msgid "Companies"
 msgstr "Công ty"
@@ -138,11 +143,6 @@ msgid "HTTP Routing"
 msgstr "Định tuyến HTTP"
 
 #. module: viin_brand_mail
-#: model:ir.model.fields.selection,name:viin_brand_mail.selection__res_users__notification_type__inbox
-msgid "Handle in Viindoo"
-msgstr "Xử lý trong hệ thống"
-
-#. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_ir_http__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__id
@@ -166,6 +166,11 @@ msgid ""
 msgstr ""
 "Nếu bạn đã thiết lập một miền email catch-all được chuyển hướng đến máy chủ "
 "Viindoo, hãy nhập tên miền ở đây."
+
+#. module: viin_brand_mail
+#: model:ir.model.fields.selection,name:viin_brand_mail.selection__res_users__notification_type__inbox
+msgid "In Viindoo"
+msgstr "Trong Viindoo"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_push_device__keys
