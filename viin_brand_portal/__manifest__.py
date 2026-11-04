@@ -46,6 +46,7 @@ Module này sẽ thay đổi giao diện các module Portal theo thương hiệu
     # always loaded
     'data': [
         'views/portal_templates.xml',
+        'data/mail_template_data.xml',
     ],
     'installable': True,
     'application': False,
