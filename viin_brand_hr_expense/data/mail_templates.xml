@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template t-inherit="hr_expense.hr_expense_template_register_no_user">
+        <xpath expr="//a[@href='https://www.odoo.com']" position="replace">
+            <a target="_blank"
+                href="https://viindoo.com">Viindoo</a>
+        </xpath>
+    </template>
+</odoo>
