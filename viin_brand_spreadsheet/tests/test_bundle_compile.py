@@ -56,9 +56,10 @@ class BundleCompileTest(TransactionCase):
         WOULD FAIL IF: the `('after', 'spreadsheet/.../o_spreadsheet_variables.scss', ...)` anchor
         target this module inserts after stops existing in the bundle - `_get_asset_bundle()`
         itself raises `ValueError` before any assertion below runs (see the module comment); or
-        either contributed SCSS file (spreadsheet_chrome_dark.scss,
-        spreadsheet_chrome_dark.dark.scss) is renamed/deleted, which instead surfaces as a
-        `bundle.css_errors` entry; or either develops a genuine Sass fault.
+        any contributed SCSS file (spreadsheet_chrome_dark.scss,
+        spreadsheet_chrome_dark.dark.scss, spreadsheet_chatter_island.dark.scss) is
+        renamed/deleted, which instead surfaces as a `bundle.css_errors` entry; or any develops
+        a genuine Sass fault.
         """
         bundle, css = self._compiled_css("web.assets_web_dark")
         self.assertFalse(
@@ -70,6 +71,12 @@ class BundleCompileTest(TransactionCase):
             css,
             "web.assets_web_dark compiled without the chrome repaint from "
             "spreadsheet_chrome_dark.dark.scss.",
+        )
+        self.assertIn(
+            ".o-spreadsheet .o-mail-Chatter",
+            css,
+            "web.assets_web_dark compiled without the island rules of "
+            "spreadsheet_chatter_island.dark.scss.",
         )
 
     def test_tests_bundle_compiles_the_editor_action_tour(self):
@@ -91,7 +98,7 @@ class BundleCompileTest(TransactionCase):
             ),
             content,
             "web.assets_tests compiled with a swallowed missing-asset error embedded as a "
-            "console.error call - test_spreadsheet_editor_action.js no longer exists on disk.",
+            "console.error call - test_spreadsheet_editor_action.js does not exist on disk.",
         )
         self.assertIn(
             "viin_brand_spreadsheet_chrome_dark_test_editor",
