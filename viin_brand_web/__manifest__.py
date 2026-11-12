@@ -35,7 +35,7 @@ Editions Supported
     # Check https://github.com/Viindoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.2',
+    'version': '0.2.1',
 
     # viin_brand is needed because the moved views/webclient_template.xml (brand_promotion_message
     # and login_layout) serves /viin_brand/static/img/viindoo_logo_tiny.png and .../favicon.ico -
@@ -69,6 +69,21 @@ Editions Supported
         'web.assets_web_dark': [
             ('before', 'web/static/src/scss/primary_variables.scss',
              'viin_brand_web/static/src/scss/dark_palette.scss'),
+            # Scheme-invariant $light / $dark, listed right after the palette under the same anchor
+            # so it reads the palette's tokens. Not in the lazy bundle below, which holds no media
+            # chrome and wants both as ramp rungs. See dark_invariant_pins.scss.
+            ('before', 'web/static/src/scss/primary_variables.scss',
+             'viin_brand_web/static/src/scss/dark_invariant_pins.scss'),
+            # Dark values of Bootstrap's theme-colour tints (alert, list-group, *-subtle utilities).
+            # After _variables-dark.scss, which declares the `*-dark` tokens it reads, and before
+            # _maps.scss, which builds the tint maps from them. See dark_theme_tints.scss.
+            ('after', 'web/static/lib/bootstrap/scss/_variables-dark.scss',
+             'viin_brand_web/static/src/scss/dark_theme_tints.scss'),
+            # Label of a badge with no fill class: core's real-black `.badge` label, re-pointed at the
+            # body text tier. Anchored right after core's rule so component rules that paint their
+            # own label keep winning at equal specificity. See dark_badge_label.scss.
+            ('after', 'web/static/src/webclient/webclient.scss',
+             'viin_brand_web/static/src/scss/dark_badge_label.scss'),
             # Dark arm of the NEUTRAL button map ($o-btns-bs-override "secondary"),
             # anchored AFTER core's primary_variables.scss - the earliest point where
             # $o-component-active-bg/-border/-color exist, so the map's three ACTIVE keys can be
@@ -77,50 +92,27 @@ Editions Supported
             # and the view SCSS). See dark_buttons.scss for the full rationale.
             ('after', 'web/static/src/scss/primary_variables.scss',
              'viin_brand_web/static/src/scss/dark_buttons.scss'),
-            # Dark residue for secondary surfaces core paints from a compile-time grayscale literal /
-            # runtime custom prop that no semantic Sass var routes through (settings
-            # sidebar+section-header, search-facet band, selected .table-info row). Kanban is
-            # handled by the dark_palette.scss $o-kanban-background var override above.
-            # Plain APPEND lands after the web.assets_web include so it wins core on
-            # source order; NOT auto-globbed (core's *.dark.scss glob only covers web/static/src/**),
-            # so it is listed explicitly here and never leaks into the light bundle.
+            # Dark residue core paints from a literal white or black, a Bootstrap table variant or a
+            # colour pair that is only correct for its own markup (settings tab label, selected
+            # .table-info row, form label, .bg-white/.bg-light/.text-dark/.text-black utilities,
+            # .btn-link.btn-dark). Plain APPEND lands after the web.assets_web include so it wins
+            # core on source order; NOT auto-globbed (core's *.dark.scss glob only covers
+            # web/static/src/**), so it is listed explicitly here and never leaks into the light
+            # bundle.
             'viin_brand_web/static/src/scss/dark_secondary_surfaces.dark.scss',
-            # Module-independence W3 relocation, unit 1 of 4: dark arm of the relocated
-            # notebook.scss above (travels with its light sibling, C1). Same plain-APPEND
-            # reasoning as dark_secondary_surfaces.dark.scss just above - it lands after the
-            # web.assets_web include (which already carries the anchored light notebook.scss), so
-            # its equal-specificity active-tab rule wins on source order without needing its own
-            # anchor; NOT auto-globbed, so it is listed explicitly here.
-            'viin_brand_web/static/src/core/notebook/notebook.dark.scss',
-            # Module-independence W3 relocation, unit 2 of 4: dark arm of the relocated
-            # selection_box.scss above (travels with its light sibling, C1). Same plain-APPEND
-            # reasoning as notebook.dark.scss just above - it lands after the web.assets_web include
-            # (which already carries the anchored light selection_box.scss), so its
-            # equal-specificity foreground-teal rule wins on source order without needing its own
-            # anchor; NOT auto-globbed, so it is listed explicitly here.
-            'viin_brand_web/static/src/views/view_components/selection_box.dark.scss',
-            # Module-independence W3 relocation, unit 3 of 4: dark arm of the relocated view.scss
-            # below (travels with its light sibling, C1). Same plain-APPEND reasoning as
-            # selection_box.dark.scss just above - it lands after the web.assets_web include (which
-            # already carries the anchored light view.scss), so its equal-specificity foreground-teal
-            # rule wins on source order without needing its own anchor; NOT auto-globbed, so it is
-            # listed explicitly here.
-            'viin_brand_web/static/src/views/view.dark.scss',
         ],
         # core declares web.assets_backend_lazy_dark as a bare
         # ('include', 'web.assets_backend_lazy') (web/__manifest__.py) - the pivot/graph views
-        # loaded through it never receive this module's dark palette, so their text and header
-        # hover band still compile the light-mode literals. Same anchor as this module's own
-        # web.assets_web_dark contribution above: dark_palette.scss lands ('before',
-        # primary_variables.scss), which web.assets_backend_lazy's own chain
+        # loaded through it never receive this module's dark palette unless it is contributed here.
+        # Same anchor as this module's own web.assets_web_dark contribution above: dark_palette.scss
+        # lands ('before', primary_variables.scss), which web.assets_backend_lazy's own chain
         # (_assets_helpers -> _assets_primary_variables) already carries, so every Sass var this
-        # bundle's SCSS reads recompiles dark before consumption. pivot_view.dark.scss is a plain
-        # tail append covering the one hover surface (a compile-time grayscale literal) dark_palette.scss's
-        # var overrides cannot reach - see that file for the rationale.
+        # bundle's SCSS reads recompiles dark before consumption.
         'web.assets_backend_lazy_dark': [
             ('before', 'web/static/src/scss/primary_variables.scss',
              'viin_brand_web/static/src/scss/dark_palette.scss'),
-            'viin_brand_web/static/src/scss/pivot_view.dark.scss',
+            ('after', 'web/static/lib/bootstrap/scss/_variables-dark.scss',
+             'viin_brand_web/static/src/scss/dark_theme_tints.scss'),
         ],
         # Re-point the FRONTEND $theme-colors['primary'] to the AA teal AFTER pre_variables.scss
         # (where html_editor's palette-derived aubergine otherwise wins) and before Bootstrap emits
@@ -146,7 +138,7 @@ Editions Supported
         'web.assets_backend': [
             'viin_brand_web/static/src/core/dialog/dialog.js',
             'viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml',
-            # 2026-08-03 TEXT-LINK TIER (owner: links -> Viindoo secondary). Splits Bootstrap's
+            # TEXT-LINK TIER (links take the Viindoo secondary). Splits Bootstrap's
             # conflated link token: $link-color becomes the HYPERLINK colour (brand purple in LIGHT,
             # unchanged teal in dark), while the `.nav-link` / `.btn-link` / `.pagination` borrowers
             # are re-anchored onto the interactive teal so no BUTTON or TAB picks up purple.
@@ -203,8 +195,8 @@ Editions Supported
             'viin_brand_web/static/src/core/browser/title_service.js',
             'viin_brand_web/static/src/webclient/user_menu_item.js',
             'viin_brand_web/static/src/views/widgets/**/*',
-            # 2026-08-03: numbered steps on core's ARROW statusbar (owner: the step numbers went
-            # missing in both schemes when the D6 stepper was reverted, but the chevrons must stay).
+            # numbered steps on core's ARROW statusbar (core's chevrons stay; only the step numbers
+            # are added).
             # Additive only - a class + a `data-viin-step` attribute on core's existing button and a
             # `::after` ordinal; no DOM text, no geometry, no clip-path. Plain appends: the SCSS
             # selector (0,3,0) beats Bootstrap's `.btn` display (0,1,0) on specificity, not on
@@ -216,16 +208,17 @@ Editions Supported
             # Module-independence W3 relocation, unit 1 of 4: ten core-surface RULE overrides
             # moved here from viin_backend_theme (command_palette, dialog, dropdown, notebook,
             # notification, popover, tooltip, block_ui, control_panel, loading_indicator) - each
-            # restyles a NAMED core web widget, so viin_brand_web (Owners = {web}, already the
+            # restyles a NAMED core web widget, so viin_brand_web, already the
             # core-web-surface owner via brand_cascade.scss / link_tier.scss / focus_ring.scss /
-            # color_scheme.scss) is the correct owner per the C1 surface test + minimality, not
+            # color_scheme.scss, is the right owner (the surface test + minimality), not
             # viin_backend_theme, whose own declared purpose (dark mode, nav rail, home menu,
-            # mobile) survives their absence. ANCHORED, not appended (C2): each file's selector is
+            # mobile) survives their absence. ANCHORED, not appended: each file's selector is
             # equal-or-higher specificity against the SAME-NAMED core file it restyles, so it must
             # win on SOURCE POSITION; the explicit anchor makes a core rename fail LOUD via
             # ir_asset.AssetPaths.index() instead of silently mis-ordering the cascade. None of the
             # ten declares a Sass variable another file reads (all consume $o-viin-chrome-base /
-            # -deep from brand_variables.scss, already compiled earlier via
+            # -deep, or $o-component-active-border, from brand_variables.scss / dark_palette.scss,
+            # already compiled earlier via
             # web._assets_primary_variables), so each anchor only needs to land right after its
             # own core file.
             ('after', 'web/static/src/core/commands/command_palette.scss',
@@ -250,13 +243,14 @@ Editions Supported
              'viin_brand_web/static/src/webclient/loading_indicator/loading_indicator.scss'),
             # Module-independence W3 relocation, unit 2 of 4: three more core-surface RULE overrides
             # moved here from viin_backend_theme (kanban_record, list_renderer, selection_box) - same
-            # C1 surface-test + minimality reasoning as unit 1 above, viin_brand_web already the
-            # core-web-surface owner. ANCHORED, not appended (C2): each selector is equal-or-higher
+            # surface-test + minimality reasoning as above, viin_brand_web already the
+            # core-web-surface owner. ANCHORED, not appended: each selector is equal-or-higher
             # specificity against the SAME-NAMED core file it restyles, so it must win on SOURCE
             # POSITION; the explicit anchor makes a core rename fail LOUD via
             # ir_asset.AssetPaths.index() instead of silently mis-ordering the cascade. None of the
             # three declares a Sass variable another file reads (all consume $o-viin-chrome-base /
-            # -deep from brand_variables.scss, already compiled via web._assets_primary_variables),
+            # -deep, or $o-component-active-border, from brand_variables.scss / dark_palette.scss,
+            # already compiled via web._assets_primary_variables),
             # so each anchor only needs to land right after its own core file.
             ('after', 'web/static/src/views/kanban/kanban_record.scss',
              'viin_brand_web/static/src/views/kanban/kanban_record.scss'),
@@ -290,7 +284,7 @@ Editions Supported
             'viin_brand_web/static/tests/documentation_link_debrand.test.js',
             'viin_brand_web/static/tests/user_menu_debrand.test.js',
             'viin_brand_web/static/tests/colors_debrand.test.js',
-            # 2026-08-03: the statusbar step ORDINALS. A DOM-level guard, because the compiled-CSS
+            # the statusbar step ORDINALS. A DOM-level guard, because the compiled-CSS
             # sibling cannot see whether the numbers are in reading order - the statusbar's DOM
             # order is the reverse of its visual order.
             'viin_brand_web/static/tests/statusbar_steps.test.js',

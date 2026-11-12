@@ -5,8 +5,7 @@
 #
 # When that rule breaks the consequence is not cosmetic: Dart Sass aborts the whole bundle with
 # `Error: Undefined variable`, the bundle serves no CSS, and the entire backend/frontend UI is
-# dead. This guard was written for a live production break on 19.0 where three of Odoo's main
-# bundles failed to compile at once:
+# dead. This guard rules out the break where three of Odoo's main bundles fail to compile at once:
 #     web.assets_backend   -> Undefined variable: "$brand-primary-light"
 #     web.assets_frontend  -> Undefined variable: "$brand-primary"
 #     web.assets_web_dark  -> Undefined variable: "$brand-primary-light"
@@ -29,8 +28,8 @@
 # ---------------------------------------------
 # This repo's SCSS carries very long prose comment headers that mention variable names in
 # English (brand_variables.scss's COLOUR LAW block, pos_variables.scss's header, mail_dark.scss).
-# Counting a name inside a comment as a DEFINITION is exactly the mistake that let this bug
-# ship - it makes every broken name look defined. `_strip_scss_comments` therefore blanks `//`
+# Counting a name inside a comment as a DEFINITION is exactly the mistake this guard rules out -
+# it makes every broken name look defined. `_strip_scss_comments` therefore blanks `//`
 # and `/* */` regions BEFORE any scanning, and test_scss_comment_prose_is_never_a_definition
 # below pins that behaviour so it cannot silently regress.
 #
@@ -62,6 +61,7 @@ import glob
 import os
 import re
 
+import odoo as odoo_package
 from odoo.tests.common import TransactionCase, tagged
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -290,18 +290,18 @@ def _core_addons_roots():
     """Resolve Odoo core addons roots portably, or return () when none is available.
 
     Env override first (ODOO_SOURCE_PATH / ODOO_CORE_PATH, pointing at a checkout), otherwise the
-    core actually running this test - which is by definition the right one. Never a machine path.
+    core actually running this test (the parent of its `odoo` package directory) - which is by
+    definition the right one. Never a machine path.
     """
     checkout = os.environ.get("ODOO_SOURCE_PATH") or os.environ.get("ODOO_CORE_PATH")
     if not checkout:
-        try:
-            import odoo as odoo_package
-        except ImportError:
+        # `odoo` is a namespace package from 19.0 (no `odoo/__init__.py`, `odoo.__file__` is None):
+        # its `__path__` holds the `odoo` directory of the running core, whose parent is the checkout.
+        checkout = next(
+            (os.path.dirname(os.path.abspath(path)) for path in odoo_package.__path__), None
+        )
+        if not checkout:
             return ()
-        package_file = getattr(odoo_package, "__file__", None)
-        if not package_file:
-            return ()
-        checkout = os.path.dirname(os.path.dirname(os.path.abspath(package_file)))
     roots = []
     for relative in ("addons", os.path.join("odoo", "addons")):
         root = os.path.join(checkout, relative)

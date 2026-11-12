@@ -1,0 +1,16 @@
+// Scheme-invariant `$light` and `$dark` for the non-lazy dark bundle.
+//
+// Bootstrap gives `$light` / `$dark` no dark arm, and core uses them on media chrome in both
+// schemes: `bg-dark text-white` (file viewer previous/next circles), `bg-dark` (call preview),
+// `btn-dark` (link preview, image description), and `map-get($theme-colors, 'light')` text on a
+// `rgba(black, .4)` overlay (attachment arrows). Left to follow the dark gray ramp of
+// dark_palette.scss they would become #EDF4F5 circles under a white chevron (1.1:1).
+//
+// web.assets_web_dark only. The lazy bundle (pivot, graph, activity view) holds no media chrome and
+// reads `$light` / `$dark` as ramp rungs, so the activity status labels and counter stay readable
+// on their fills there; it does not list this file.
+//
+// Listed after dark_palette.scss under the same ('before', primary_variables.scss) anchor, so it can
+// read the palette's tokens and, with no `!default`, wins core's later `!default`.
+$light: #FFFFFF;                          // $o-white, which core declares after this file
+$dark: $o-webclient-background-color;     // #0B1315

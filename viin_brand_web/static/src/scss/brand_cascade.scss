@@ -1,7 +1,6 @@
 // Viindoo 18.0 styling-cascade restore, adapted to the CURRENT v19 selectors.
-// Design SSOT: .odoo-ai/designs/cluster-semantic-restore-2026-07-24.md, "MODULE
-// viin_brand_common". The v19 upgrade deferred this cascade to a theme that is now out of
-// scope, so the cluster restores it and becomes self-sufficient (de-brand + AA-correct with no
+// The v19 upgrade deferred this cascade to a theme that is out of
+// scope, so the cluster restores it and is self-sufficient (de-brand + AA-correct with no
 // theme installed).
 //
 // SCOPE OF THIS FILE: only the 18.0 surfaces that v19 no longer routes through an SCSS
@@ -20,13 +19,13 @@
 // TEAL = ACT (interactive / customer-facing), PURPLE = STRUCTURE (grouping / organising),
 // GOLD = saved, red/green/amber = untouched semantics. Read that block before adding a rule here.
 //
-// >>> OWNER REVISION 2026-08-03: THE PURPLE IS LIGHT-ONLY. <<<
+// THE PURPLE IS LIGHT-ONLY.
 // Every purple rule below is wrapped in `@if not $o-viin-dark-bundle`, the compile-time flag
 // brand_variables.scss declares and dark_palette.scss sets. In web.assets_web_dark those rules are
 // NOT EMITTED, so the surface renders its genuine default; where "no rule" would be unreadable or
 // semantically silent the `@else` arm emits the DEFAULT explicitly (the bright body-text tier), and
 // each such arm says why. Do NOT "simplify" a guard away by giving $o-brand-secondary a dark arm -
-// the owner reversed exactly that.
+// that would reverse the rule.
 
 // = Search bar facets
 // ============================================================================================
@@ -49,9 +48,9 @@
 // inherit, and the facet also contains .o_facet_remove (`btn btn-link text-danger`), whose red
 // must not be repainted.
 //
-// >>> OWNER DECISION 2026-07-24 - the FAVORITE facet is a DELIBERATE exception. <<<
+// the FAVORITE facet is a DELIBERATE exception.
 // 18.0 flattened every facet type to one teal chrome, which also erased the "saved filter"
-// affordance. The product owner chose to KEEP v19's native yellow favourite styling, so every
+// affordance. The product keeps v19's native yellow favourite styling, so every
 // rule below excludes `.btn-favourite` and a saved-favorite facet renders 100% core v19 -
 // base AND hover/active. Do NOT "restore" the 18.0 blanket rule: dropping the
 // :not(.btn-favourite) guards would silently repaint saved filters teal again.
@@ -71,7 +70,7 @@
     }
 
     // ------------------------------------------------------------------------------------------
-    // GROUP-BY facet = STRUCTURE, so it is the PURPLE one (owner decision 2026-08-03).
+    // GROUP-BY facet = STRUCTURE, so it is the PURPLE one.
     // ------------------------------------------------------------------------------------------
     // A field/filter facet NARROWS the record set - that is an action, so it stays on the teal
     // ladder above. A groupBy facet does not narrow anything: it re-ORGANISES what is already
@@ -112,21 +111,21 @@
     //
     // This selector deliberately matches BOTH groupBy shapes: plain `text-bg-action`, and the
     // `canOrderByCount` shape where core also adds a bare `btn` class. .btn-favourite never
-    // carries text-bg-action, so the owner exception above holds here for free.
+    // carries text-bg-action, so the exception above holds here for free.
     //
     // CONTRAST: #7F4282 under #FFFFFF is 6.99:1 (AA).
     //
-    // LIGHT ONLY (owner revision 2026-08-03). In web.assets_web_dark this rule is NOT EMITTED, so
+    // LIGHT ONLY. In web.assets_web_dark this rule is NOT EMITTED, so
     // the group-by facet renders core's own `.text-bg-action` paint: `--background-color` from
     // $o-action (= $o-brand-primary, the flat teal) with `color-contrast()` picking its own
     // foreground, which is self-contrasting by construction (~9:1). That is precisely the "fall back
-    // to the default look" the owner asked for, and emitting NOTHING is the only way to say it
+    // to the default look" rule, and emitting NOTHING is the only way to say it
     // exactly - any dark value of our own would be an accent by another name.
     @if not $o-viin-dark-bundle {
         > .o_searchview_facet_label.text-bg-action {
             --background-color: RGBA(#{to-rgb($o-brand-secondary)}, var(--bg-opacity, 1));
             // Plain $o-white: with the purple confined to light mode there is exactly ONE label
-            // colour to state, so the retired scheme-aware $o-viin-on-secondary token is gone.
+            // colour to state, so no scheme-aware label token is needed.
             --color: RGBA(#{to-rgb($o-white)}, var(--text-opacity, 1));
         }
     }
@@ -136,7 +135,7 @@
     // stretch flex row, so this adds no height. .o_facet_values is the immediate next sibling
     // of the label in web.SearchBar.Facets, so the adjacent-sibling guard keeps the favourite
     // facet frameless exactly like core - a teal frame around a yellow label would contradict
-    // the owner decision above.
+    // the decision above.
     > .o_searchview_facet_label:not(.btn-favourite) + .o_facet_values {
         border: $border-width solid $o-viin-chrome-base;
     }
@@ -164,7 +163,7 @@
 // `$brand-primary: $o-enterprise-color` (teal) but `$o-brand-primary: $o-enterprise-primary-color`
 // = #7f4282 (the brand SECONDARY purple). So the stat value was a purple accent in 18.0.
 //
-// >>> OWNER DECISION 2026-07-24: FAITHFUL-18.0 - the stat value stays PURPLE. <<<
+// FAITHFUL-18.0 - the stat value stays PURPLE.
 // Wired to the EXISTING $o-brand-secondary declared in brand_variables.scss, so no new literal
 // enters the module. #7F4282 on the stat-button surface is 6.99:1 - comfortably clears AA
 // for normal text; the surface is the form sheet itself, because core compiles stat buttons as
@@ -183,8 +182,8 @@
 // The stat button ICON is untouched: core reads it from `var(--o-stat-button-color, $primary)`
 // and $primary is already the AA teal - so icon teal + value purple, exactly the 18.0 pairing.
 //
-// >>> OWNER REVISION 2026-08-03: the FAITHFUL-18.0 purple is LIGHT-MODE ONLY. <<<
-// In dark the owner wants "no accent, default text colour", so the dark arm pins the property to
+// the FAITHFUL-18.0 purple is LIGHT-MODE ONLY.
+// In dark there is "no accent, default text colour", so the dark arm pins the property to
 // the BODY TEXT tier instead. This one cannot be left un-emitted like the facet: core's own
 // fallback is `var(--o-stat-text-color, #{$o-brand-primary})`, i.e. the flat DECORATIVE teal - an
 // accent, and the wrong one. Emitting $body-color makes the stat value read as ordinary emphasised
@@ -192,12 +191,12 @@
 // core's separate `var(--o-stat-button-color, $primary)`, so the icon/value pairing survives in both
 // schemes - only the value's HUE is dropped in dark, not the pairing.
 //
-// >>> OWNER REVISION 2026-08-03 (same day): THE LABEL JOINS THE VALUE. <<<
+// THE LABEL JOINS THE VALUE.
 // "font dung mau tim secondary" - the stat button's TEXT, not only its figure, is the Viindoo
 // purple. Core gives the label (`.o_stat_text` / `%-stat-button-text`) no colour of its own, so it
 // inherits the `btn-outline-secondary` button colour: a muted grey measured at 3.12:1 on the form
 // sheet, i.e. a REAL WCAG SC 1.4.3 failure in core's own light theme. Painting it $o-brand-secondary
-// #7F4282 (6.99:1 on the white sheet) satisfies the owner AND fixes that a11y defect in one move -
+// #7F4282 (6.99:1 on the white sheet) satisfies the brand rule AND avoids that a11y defect in one move -
 // a rare case where the brand accent is the MORE accessible choice, which is why the label is
 // re-tinted rather than merely left alone.
 //
@@ -242,27 +241,27 @@
 
 // = Debug-mode database name (user menu)
 // ============================================================================================
-// PR #658 batch 3, item 6b. With env.debug on, core shows the DB name in the navbar user-menu
+// With env.debug on, core shows the DB name in the navbar user-menu
 // toggle as `<small class="oe_topbar_name ...">...<mark class="d-block font-monospace ...">
 // <i class="fa fa-database"/>{{dbName}}</mark></small>` (web/static/src/webclient/user_menu/
 // user_menu.xml:10-14; the whole <small> is gated `d-lg-inline-block` on env.debug, and dbName =
 // session.db - user_menu.js:21). The <mark> carries Bootstrap's highlight fill
 // (--bs-highlight-bg, a pale wash) and only inherits its text colour, so the db name renders
-// dim/low-contrast on the teal navbar - the owner's "database name sinks" report. It is NOT
+// dim/low-contrast on the teal navbar. It is NOT
 // .o_debug_manager, which renders only the bug icon (debug_menu.xml:5).
 //
 // The navbar chrome is scheme-INVARIANT teal ($o-navbar-background #007F8E), so this restore is
 // scheme-invariant: it lives in web.assets_backend and is inherited unchanged by web.assets_web_dark.
 // Drop the <mark> highlight fill so the text sits directly on the teal bar, and force it to the
 // OPAQUE brand white - #FFFFFF is 4.74:1 on #007F8E (WCAG AA), matching the opaque-white navbar
-// entry treatment (DEF-005). The sibling userName already inherits that opaque white; only the
+// entry treatment. The sibling userName already inherits that opaque white; only the
 // <mark> needs the fix.
 .o_user_menu .oe_topbar_name mark {
     background-color: transparent;
     color: $o-white;
 }
 
-// = `.text-secondary` - the invisible-text a11y landmine (2026-08-03)
+// = `.text-secondary` - the invisible-text a11y landmine
 // ============================================================================================
 // Odoo's BACKEND re-declares Bootstrap's `$secondary` as the SURFACE grey $gray-300 #DEE2E6
 // (web/static/src/scss/bootstrap_overridden.scss:32) instead of stock Bootstrap's $gray-600, and
@@ -277,7 +276,7 @@
 // items, thread panels) plus every `.bg-secondary` / `.text-bg-secondary` chip - and flips
 // `.text-bg-secondary`'s color-contrast() foreground from black to white. That is a restyle of
 // unrelated surfaces, not an a11y fix. Correcting the TEXT tier alone is the whole defect and
-// nothing else. (If the owner later wants full Bootstrap parity, it is one `$secondary` line in
+// nothing else. (Full Bootstrap parity would be one `$secondary` line in
 // brand_variables.scss - deliberately not taken here.)
 //
 // THE `!important` IS UNAVOIDABLE AND MINIMAL. Bootstrap's utility ships `!important`
@@ -293,7 +292,7 @@
 
 // = List GROUP HEADER - grouping is STRUCTURE, so the group name is purple
 // ============================================================================================
-// PR #658 item 5 (owner decision 2026-08-03). Under the colour law a group header is not an
+// Under the colour law a group header is not an
 // action; it is the STRUCTURE the records were re-organised into - the list-view counterpart of
 // the purple group-by facet above, so the two read as one idea.
 //
@@ -316,15 +315,14 @@
 // no `background`, no `!important` on any other property, no token re-point.
 // 6.99:1 on the white/#FFFFFF list surface.
 //
-// >>> OWNER REVISION 2026-08-03: purple in LIGHT only. <<<
+// purple in LIGHT only.
 // The dark arm does NOT drop the rule, it re-aims it at the body-text tier - and that is a FIX, not
-// a fallback. Core's two fold-state utilities are compile-time GRAYSCALE literals that
-// dark_palette.scss deliberately does not re-point: an OPEN group is `.text-black`
-// (`--color: RGBA(0,0,0,...)`), i.e. pure black on the #111B1E dark list surface = 1.16:1, invisible.
-// (`.text-900` has a class-wide dark re-point in dark_secondary_surfaces.dark.scss; `.text-black`
-// does not - it is a distinct utility.) So leaving this rule un-emitted in dark would hand the group
-// name back to a black-on-dark cell. Emitting the dark body tier instead satisfies the owner's
-// "default bright body text" and closes that pre-existing dark defect at the same time:
+// a fallback. Core's two fold-state utilities are `.text-900` (a gray-ramp rung, dark in the dark
+// bundle) and `.text-black`: an OPEN group is `.text-black` (`--color: RGBA(0,0,0,...)`), a real
+// black that is 1.16:1 on the #111B1E dark list surface, invisible, until
+// dark_secondary_surfaces.dark.scss re-points its `--color`. So leaving this rule un-emitted in dark
+// would hand the group name back to a black-on-dark cell. Emitting the dark body tier instead keeps
+// the group name the default bright body text:
 // #EDF4F5 on #111B1E = 15.72:1. The `!important` is still required for exactly the same reason as in
 // light - both core utilities carry it.
 .o_list_renderer .o_list_table tbody > tr.o_group_header .o_group_name {

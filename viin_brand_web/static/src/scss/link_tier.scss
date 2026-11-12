@@ -1,5 +1,4 @@
-// THE TEXT-LINK TIER (owner request 2026-08-03: "màu của text link ... override thành màu
-// secondary của Viindoo"). Backend-only. Splits ONE conflated Bootstrap token into the two
+// THE TEXT-LINK TIER (the text link takes the Viindoo secondary colour). Backend-only. Splits ONE conflated Bootstrap token into the two
 // meanings it actually carries in Odoo.
 //
 // =================================================================================================
@@ -27,8 +26,8 @@
 //   :1301-1313  $pagination-color / -hover / -focus       -> var(--link-color)   PAGERS
 //
 // Re-pointing `--link-color` alone would therefore turn the "Add Contact" `.btn-link`, every
-// Bootstrap tab and every pager purple - which the owner explicitly does NOT want ("buttons must
-// stay teal/neutral"). So the fix is not a re-point, it is a SPLIT: `$link-color` becomes the
+// Bootstrap tab and every pager purple - which must NOT happen (buttons stay
+// teal/neutral). So the fix is not a re-point, it is a SPLIT: `$link-color` becomes the
 // HYPERLINK colour, and the four borrowers are re-anchored onto the interactive-teal tier they
 // actually mean. Bootstrap exposes all of them as `!default` variables precisely so they can be
 // separated; nothing here is a cascade override.
@@ -50,7 +49,7 @@
 //     without `!important` and without touching a single core file.
 // BACKEND-ONLY is deliberate. `web._assets_primary_variables` (where brand_variables.scss lives) is
 // also pulled into `web.assets_frontend`, so putting the purple there would repaint the LOGIN page
-// and the public portal too. The owner asked about the backend text link; the public frontend keeps
+// and the public portal too. Only the backend text link changes; the public frontend keeps
 // the teal `$primary` de-brand viin_brand_web/static/src/scss/frontend_primary.scss owns.
 //
 // =================================================================================================
@@ -59,7 +58,7 @@
 // `web.assets_web_dark` recompiles this whole bundle, so a rule written here is emitted TWICE unless
 // it is told apart at compile time. That is what `$o-viin-dark-bundle` (brand_variables.scss:143,
 // forced true by dark_palette.scss) is for, and it is why the two link declarations below are
-// written as `if()` and not as bare values. Under the COLOUR LAW's 2026-08-03 revision the purple
+// written as `if()` and not as bare values. Under the COLOUR LAW the purple
 // accent EXISTS ONLY IN LIGHT MODE: in dark, links keep the #4FD4E2 teal dark_palette.scss:158
 // already sets, unchanged. Both branches of each `if()` reference variables that are defined in
 // BOTH bundles, so neither branch can raise "Undefined variable" whichever way Sass evaluates it.
@@ -100,9 +99,9 @@ $link-hover-color: if(
 // `var(--link-color)` precisely because a Sass value is resolved per BUNDLE, which is how the
 // light/dark split is expressed everywhere else in this cluster.
 //
-// TABS - Bootstrap `.nav-link`. (The form notebook does not depend on this: the theme paints its
-// own active tab with $o-viin-chrome-base in viin_backend_theme/.../notebook/notebook.scss:33 and
-// its dark arm in notebook.dark.scss. This covers every OTHER Bootstrap nav in the backend.)
+// TABS - Bootstrap `.nav-link`. (The form notebook does not depend on this: core/notebook/notebook.scss
+// paints its own active tab with $o-component-active-border in both bundles. This covers every
+// OTHER Bootstrap nav in the backend.)
 $nav-link-color: $o-main-link-color;
 $nav-link-hover-color: $o-viin-interactive-hover;
 

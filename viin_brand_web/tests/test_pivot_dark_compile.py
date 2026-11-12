@@ -1,16 +1,16 @@
 # Part of Viindoo. See LICENSE file for full copyright and licensing details.
 #
 # WHAT IS PROTECTED (behaviour, not code): once `viin_brand_web` contributes its dark palette to
-# `web.assets_backend_lazy_dark` (the bundle `web/static/src/views/view.js:348-352` loads whenever
+# `web.assets_backend_lazy_dark` (the bundle `web/static/src/views/view.js` loads whenever
 # `cookie.get("color_scheme") === "dark"` before mounting a pivot or graph view -
-# `web/__manifest__.py:144-146` declares it as a bare `('include', 'web.assets_backend_lazy')`
-# today, carrying none of the brand's dark tokens), the pivot's own text must be readable against
-# the dark panel, its header's HOVER state must read as a subtle tint rather than a hard swap, and
-# the SIBLING light lazy bundle must compile exactly as it does today.
+# `web/__manifest__.py` declares it as a bare `('include', 'web.assets_backend_lazy')`, carrying
+# none of the brand's dark tokens), the pivot's own text must be readable against the dark panel,
+# its header's HOVER state must read as a subtle tint on the dark gray ramp's rung 200 with a
+# readable label, and the SIBLING light lazy bundle must compile exactly as it does today.
 #
-# WHY THIS BUNDLE, AND WHY COMPILED CSS: `web/static/src/views/pivot/pivot_view.scss` (core, read
-# in full - it is not touched by this change) declares every colour under test via ONE Sass
-# variable each - `$body-color` for the resting header/measure/value text
+# WHY THIS BUNDLE, AND WHY COMPILED CSS: `web/static/src/views/pivot/pivot_view.scss` (core, not
+# touched by this module) declares every colour under test via ONE Sass variable each -
+# `$body-color` for the resting header/measure/value text
 # (`@include o-hover-text-color($body-color, $headings-color)` and the enable_linking value-cell
 # rule), `map-get($grays, "200")` for the hover band, and `$headings-color` for the hover label.
 # `web.assets_backend_lazy` compiles ONLY variable-declaration partials plus `graph/**` and
@@ -18,12 +18,15 @@
 # as a `var()` custom property the way the always-loaded `web.assets_backend` bundle's tokens do -
 # every value below bakes in as a LITERAL hex the moment the bundle compiles. That means the ONLY
 # way to know what colour a pivot cell actually renders in this lazy bundle is to compile it and
-# read the literal the cascade produced - a source-substring check on pivot_view.scss (core, not
-# ours) would prove nothing about whether `dark_palette.scss` ever reaches this specific bundle.
+# read the literal the cascade produced.
 #
-# GROUNDING FOR THE LIGHT-BUNDLE VALUES BELOW - measured by compiling `web.assets_backend_lazy`
-# via `ir.qweb._get_asset_bundle(..., css=True, js=False)` (the same compile-and-read method every
-# test class in this file uses):
+# DARK VALUES (literals, never re-derived through a Sass mix() in Python):
+#   resting text      #EDF4F5 on the panel #111B1E (DARK_READABLE_TEXT / DARK_BODY_BG)
+#   hover band        #1D2D31 - rung 200 of the dark gray ramp, 1.23:1 off the panel
+#   hover label       #C9D6D8 on the band, 9.57:1
+#
+# LIGHT VALUES, measured by compiling `web.assets_backend_lazy` via
+# `ir.qweb._get_asset_bundle(..., css=True, js=False)`:
 #   .o_pivot_measure_row / .o_pivot_origin_row / .o_pivot_header_cell_closed /
 #   .o_pivot_header_cell_opened      resting color: #212529     hover color: #000000
 #                                     hover background-color: #e9ecef !important
@@ -33,11 +36,7 @@
 #                                                        this state directly from that variable -
 #                                                        read live from brand_variables.scss below,
 #                                                        never re-literalised here)
-# These are asserted as the LIGHT bundle's unchanged baseline (non-regression) and as the value the
-# DARK bundle's resting text must move AWAY from, onto the design's own literal dark answer
-# (#EDF4F5 on #111B1E = 15.55:1 - DARK_READABLE_TEXT / DARK_BODY_BG, the same SSOT constants the
-# rest of this cluster's compiled-cascade suite already uses) - never re-derived via a Sass
-# darken()/mix() equivalent in Python.
+# These are asserted as the LIGHT bundle's unchanged baseline (non-regression).
 import os
 
 from odoo.tests.common import TransactionCase, tagged
@@ -51,7 +50,6 @@ from .test_brand_cascade_compile import (
     _declarations,
     _iter_rules,
     _normalize_colour,
-    dark_palette_var,
 )
 from .test_brand_ssot import BRAND_VARIABLES_SCSS, _resolve_scss_hex
 
@@ -69,10 +67,16 @@ _HEADER_SELECTORS = (
 )
 _VALUE_CELL_SELECTOR = ".o_pivot_cell_value:not(.o_empty)"
 
-# "A subtle tint, not a hard swap" (design), asserted as an UPPER bound on how far the hover
-# background may sit from the resting one - not a WCAG threshold (those are MINIMUMS), a design
-# proximity bound of the cluster's own choosing.
+# "A subtle tint, not a hard swap", asserted as an UPPER bound on how far the hover
+# background may sit from the resting one - not a WCAG threshold (those are MINIMUMS), a proximity
+# bound of the cluster's own choosing.
 HOVER_BAND_MAX_CONTRAST = 2.0
+
+# Rung 200 of the dark gray ramp (dark_palette.scss `$o-gray-200`) - the band core's pivot_view.scss
+# paints on a hovered header through `map-get($grays, "200")` - and the dark emphasis text core
+# keeps for the hover label (`$headings-color`).
+DARK_PIVOT_HOVER_BAND = "#1d2d31"
+DARK_PIVOT_HOVER_LABEL = "#c9d6d8"
 
 
 def _values_ending_with(css, suffix, prop):
@@ -174,13 +178,12 @@ class TestPivotDarkCompile(TransactionCase):
     # ------------------------------------------------------------------------------------------
     def test_pivot_header_and_value_text_reads_the_dark_body_colour(self):
         """Every resting (non-hover) pivot text surface must compile to #EDF4F5 in the dark lazy
-        bundle - 15.55:1 on the #111B1E panel. RED before the fix: today this bundle is a bare
-        include of the light one, so it still compiles the light #212529 (~1.1:1 on #111B1E)."""
+        bundle - 15.55:1 on the #111B1E panel; the light #212529 would be ~1.1:1 on it."""
         css = self._compiled_css(PIVOT_LAZY_DARK_BUNDLE)
         ratio = _contrast_ratio(DARK_READABLE_TEXT, DARK_BODY_BG)
         self.assertGreaterEqual(
             ratio, WCAG_AA_NORMAL_TEXT,
-            "sanity: the design's own DARK_READABLE_TEXT/DARK_BODY_BG pair measures only %.2f:1."
+            "sanity: the DARK_READABLE_TEXT/DARK_BODY_BG pair measures only %.2f:1."
             % ratio,
         )
         for selector in _HEADER_SELECTORS:
@@ -208,10 +211,7 @@ class TestPivotDarkCompile(TransactionCase):
     def test_pivot_header_hover_band_is_a_subtle_tint_with_a_readable_label(self):
         """The header hover background must sit close to the resting dark panel (<= 2:1) - a
         tint, not the light bundle's hard swap to #E9ECEF (a >= 9:1 jump off #111B1E) - while the
-        hover label itself stays >= 4.5:1 against whatever that band resolves to.
-
-        RED before the fix: the dark bundle still compiles the light hover band #E9ECEF, which
-        measures far more than 2:1 off the dark panel."""
+        hover label itself stays >= 4.5:1 against whatever that band resolves to."""
         css = self._compiled_css(PIVOT_LAZY_DARK_BUNDLE)
         for selector in _HEADER_SELECTORS:
             hover_suffix = selector + ":hover"
@@ -237,15 +237,17 @@ class TestPivotDarkCompile(TransactionCase):
             )
 
     # ------------------------------------------------------------------------------------------
-    # DARK: the COMPILED header hover band must equal $body-tertiary-bg's own resolved value
+    # DARK: the header hover band is rung 200 of the ramp, its label is the emphasis text on it
     # ------------------------------------------------------------------------------------------
-    def test_header_hover_band_compiles_to_the_dark_palette_raised_rung_variable(self):
-        """The dark bundle's compiled header hover-background must equal dark_palette.scss's own
-        ``$body-tertiary-bg``, read live from that file - not merely satisfy the sibling test's
-        ratio-only subtle-tint bound above. Companion assertion: this fails the moment the
-        compiled value drifts from the named SSOT variable, even while still inside that bound."""
+    def test_header_hover_band_is_ramp_rung_200_with_the_emphasis_label(self):
+        """The dark bundle's header hover background is #1D2D31 and the hover label #C9D6D8, which
+        read 9.57:1 on that band. Asserts literal values, so it fails the moment either
+        drifts, even while still inside the sibling test's looser tint and AA bounds."""
         css = self._compiled_css(PIVOT_LAZY_DARK_BUNDLE)
-        expected = dark_palette_var("$body-tertiary-bg")
+        self.assertGreaterEqual(
+            round(_contrast_ratio(DARK_PIVOT_HOVER_LABEL, DARK_PIVOT_HOVER_BAND), 1), 9.5,
+            "sanity: the hover label/band pair must measure about 9.6:1.",
+        )
         for selector in _HEADER_SELECTORS:
             hover_suffix = selector + ":hover"
             band = self._single_value(
@@ -253,10 +255,17 @@ class TestPivotDarkCompile(TransactionCase):
                 "the header hover band",
             )
             self.assertEqual(
-                _normalize_colour(band), expected,
-                "%s hover background %s does not match dark_palette.scss's own "
-                "$body-tertiary-bg %s - the hover band has drifted from its raised-rung SSOT."
-                % (hover_suffix, band, expected),
+                _normalize_colour(band), DARK_PIVOT_HOVER_BAND,
+                "%s hover background %s is not the dark gray ramp's rung 200 %s."
+                % (hover_suffix, band, DARK_PIVOT_HOVER_BAND),
+            )
+            label = self._single_value(
+                css, PIVOT_LAZY_DARK_BUNDLE, hover_suffix, "color", "the header hover label",
+            )
+            self.assertEqual(
+                _normalize_colour(label), DARK_PIVOT_HOVER_LABEL,
+                "%s hover label %s is not the dark emphasis text %s."
+                % (hover_suffix, label, DARK_PIVOT_HOVER_LABEL),
             )
 
     # ------------------------------------------------------------------------------------------

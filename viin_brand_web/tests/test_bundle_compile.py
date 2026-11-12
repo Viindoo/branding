@@ -96,11 +96,9 @@ class BundleCompileTest(TransactionCase):
         file this module's __manifest__.py lists under either bundle key populates
         bundle.css_errors. Deliberately NOT a fixed file enumeration (see
         test_brand_cascade_compile.py::test_backend_bundle_compiles_without_css_errors for the same
-        choice on web.assets_backend): this cluster's module-independence relocation work keeps
-        adding/removing dark-arm entries unit by unit, and a named list here goes stale exactly as
-        often (confirmed: notebook.dark.scss, relocated here before this docstring was last
-        touched, was already missing from the prior enumeration) - `__manifest__.py`'s own
-        per-bundle file list, not this docstring, is the one place that must stay current.
+        choice on web.assets_backend): the dark-arm entries change as the dark palette absorbs
+        rules, and a named list here would go stale - `__manifest__.py`'s own per-bundle file
+        list, not this docstring, is the one place that must stay current.
 
         Both `css_errors` and the payload markers are checked - the same two-halves idiom this
         cluster already uses in test_brand_cascade_compile.py::test_backend_bundle_compiles_without_css_errors
