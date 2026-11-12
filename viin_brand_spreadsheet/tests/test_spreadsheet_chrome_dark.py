@@ -80,7 +80,7 @@ _core_os_text_body_cache = {}
 
 def _core_os_text_body():
     """Return the hex `$os-text-body` resolves to in `CORE_SPREADSHEET_VARIABLES_SCSS`, or None
-    if the variable can no longer be found there."""
+    if the variable cannot be found there."""
     if "hex" not in _core_os_text_body_cache:
         with file_open(CORE_SPREADSHEET_VARIABLES_SCSS, "r") as core_file:
             content = core_file.read()
@@ -192,6 +192,16 @@ const __toolbarIcon = await __waitFor(
 const __topbarComposerInput = await __waitFor(
     () => __topbarWrapper.querySelector(".o-topbar-composer .o-composer"), 15000
 );
+// A topbar button another module contributes: a font-glyph icon with no colour of its own.
+const __glyphButton = document.createElement("button");
+__glyphButton.className = "o-hoverable-button border-0 bg-transparent rounded px-1 py-2";
+__glyphButton.innerHTML = '<i class="fa fa-filter"></i>';
+__topbarWrapper.appendChild(__glyphButton);
+const __glyphIcon = __glyphButton.querySelector("i");
+const __fontSizeInput = await __waitFor(() => __topbarWrapper.querySelector("input.o-font-size"), 15000);
+const __sheetIcon = await __waitFor(
+    () => __bottombarWrapper.querySelector(".o-sheet.active .o-sheet-icon"), 15000
+);
 
 const __sheetId = model.getters.getActiveSheetId();
 const __figureId = %(figure_id)r;
@@ -227,6 +237,11 @@ const __result = {
     topbarSeamColor: getComputedStyle(__topbarWrapper).borderBottomColor,
     bottombarSeamColor: getComputedStyle(__bottombarWrapper).borderTopColor,
     toolbarIconColor: getComputedStyle(__toolbarIcon).color,
+    glyphIconColor: getComputedStyle(__glyphIcon).color,
+    fontSizeInputColor: getComputedStyle(__fontSizeInput).color,
+    fontSizeInputBg: __effectiveBackground(__fontSizeInput),
+    sheetIconColor: getComputedStyle(__sheetIcon).color,
+    sheetIconBg: __effectiveBackground(__sheetIcon),
     topbarComposerBg: __effectiveBackground(__topbarComposerInput),
     topbarComposerColor: getComputedStyle(__topbarComposerInput).color,
 };
@@ -520,6 +535,25 @@ class TestSpreadsheetChromeDark(HttpCase):
                     "WCAG 1.4.11 non-text threshold %.1f:1." % (
                         surface, icon_colour, chrome_bg, ratio, WCAG_NON_TEXT_MIN,
                     ),
+                )
+
+        # -- A glyph icon another module adds to the topbar, the font-size field and the active
+        # sheet tab's caret: each reads against the fill it is painted on ---------------------------
+        for surface, colour_key, bg_key, floor in (
+            ("topbar glyph icon", "glyphIconColor", "topbarBg", WCAG_NON_TEXT_MIN),
+            ("font-size field", "fontSizeInputColor", "fontSizeInputBg", WCAG_AA_NORMAL_TEXT),
+            ("active sheet tab icon", "sheetIconColor", "sheetIconBg", WCAG_NON_TEXT_MIN),
+        ):
+            with self.subTest(surface=surface):
+                fg = _normalize_colour(dark[colour_key])
+                bg = _normalize_colour(dark[bg_key])
+                self.assertIsNotNone(fg, "%s: %r carries no readable colour" % (surface, dark[colour_key]))
+                self.assertIsNotNone(bg, "%s: %r carries no readable colour" % (surface, dark[bg_key]))
+                ratio = _contrast_ratio(fg, bg)
+                self.assertGreaterEqual(
+                    round(ratio, 2), floor,
+                    "%s %s on its dark chrome background %s measures only %.2f:1, below %.1f:1."
+                    % (surface, fg, bg, ratio, floor),
                 )
 
         # -- Formula-bar composer: a LIGHT ISLAND (CE's own forced `bg-white`) - readable against

@@ -44,7 +44,7 @@ mọi popover vẫn sáng như một tài liệu.
     # Check https://github.com/odoo/odoo/blob/19.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1.0',
+    'version': '0.1.1',
 
     # any module necessary for this one to work correctly
     'depends': ['spreadsheet', 'viin_brand_mail'],
@@ -70,6 +70,10 @@ mọi popover vẫn sáng như một tài liệu.
             ('after', 'spreadsheet/static/src/o_spreadsheet/o_spreadsheet_variables.scss',
              'viin_brand_spreadsheet/static/src/scss/spreadsheet_chrome_dark.scss'),
             'viin_brand_spreadsheet/static/src/scss/spreadsheet_chrome_dark.dark.scss',
+            # The mail Chatter embedded in the editor's side panel, on the engine's light tokens.
+            # A plain append: it lands after viin_brand_mail's mail_dark.scss, whose bubble map it
+            # reads.
+            'viin_brand_spreadsheet/static/src/scss/spreadsheet_chatter_island.dark.scss',
         ],
         'web.assets_tests': [
             'viin_brand_spreadsheet/static/tests/tours/test_spreadsheet_editor_action.js',

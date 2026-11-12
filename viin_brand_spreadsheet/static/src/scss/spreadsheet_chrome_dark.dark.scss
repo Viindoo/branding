@@ -1,14 +1,15 @@
-// Most of the engine's own dark-chrome rules are plain static SCSS compiled into
-// `web.assets_backend` (o_spreadsheet.scss), none of it carrying `!important` - this file also
-// never uses `!important`, relying on selector specificity that matches or exceeds theirs, e.g.
-// the toolbar icon override below excludes `.active` so the engine's own higher-specificity
-// hover/active chip still applies where intended. On an EQUAL-specificity tie, whichever
-// stylesheet is LATER in the DOM wins: this module's own dark bundle (`web.assets_web_dark`)
-// loads after `web.assets_backend`, which is what lets a tied override here win - not
-// `!important` or a runtime injection. The exception is `.o-selection-statistic:hover`
-// (o_spreadsheet.js): an OWL `css` tagged template appended to `document.head` at runtime,
-// carrying `!important` - a genuinely different mechanism that always wins any tie regardless of
-// load order; this file does not attempt to override it.
+// The engine's own dark-chrome rules are plain static SCSS compiled into `web.assets_backend`
+// (o_spreadsheet.scss), none of it carrying `!important`; this file never uses `!important`
+// either, relying on selector specificity that matches or exceeds theirs - e.g. the toolbar icon
+// override below excludes `.active` so the engine's own higher-specificity hover/active chip
+// still applies. On an equal-specificity tie the later stylesheet in the DOM wins, and this
+// module's dark bundle (`web.assets_web_dark`) loads after `web.assets_backend`.
+//
+// The topbar background is not static SCSS: the engine injects it at runtime from the `css`
+// template in o_spreadsheet.js (`.o-spreadsheet-topbar { background-color: #fff }`), so no Sass
+// lever reaches it and the rule below re-states it by specificity. The same file also injects
+// `.o-selection-statistic:hover` with `!important` at runtime, which always wins any tie and is
+// not overridden here.
 .o-spreadsheet .o-spreadsheet-topbar-wrapper {
     border-bottom: 1px solid $border-color;
     background-color: $o-webclient-background-color;
@@ -32,8 +33,18 @@
 
     // The engine's own hover/active chip already pairs a light background with a light-on-chip
     // icon colour at higher specificity, so excluding `.active` here leaves that pairing intact.
-    .o-hoverable-button:not(.active) .o-icon {
+    // The icon of a button another module adds to the topbar is a font glyph with no colour of
+    // its own, so it is named too.
+    .o-hoverable-button:not(.active) .o-icon,
+    .o-hoverable-button:not(.active) .fa,
+    .o-hoverable-button:not(.active) .oi {
         color: $body-color;
+    }
+
+    // Core forces `input { color: #333 !important }` inside the editor, which reads 1.49:1 on the
+    // dark topbar (the font-size field, the name box).
+    input {
+        color: $body-color !important;
     }
 
     // The formula-bar composer keeps the engine's own forced white background (`bg-white`
@@ -70,7 +81,8 @@
         }
     }
 
-    .o-sheet-name {
+    .o-sheet-name,
+    .o-sheet-icon {
         color: $body-color;
     }
 

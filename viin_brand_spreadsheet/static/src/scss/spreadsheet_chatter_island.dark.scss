@@ -1,0 +1,300 @@
+// The spreadsheet editor is a light island inside the dark app: core re-lights its subtree
+// (`color-scheme: light`, `.bg-white`, `.border*`, and `.o-spreadsheet .btn { color }`), so a mail
+// Chatter embedded in its side panel gets light labels over the dark scheme's fills. The Chatter
+// is switched to the island's light scheme here, reading the engine's own `$os-*` tokens so it
+// stays one theme with the editor around it.
+//
+// Every rule is nested under `.o-spreadsheet`: nothing here reaches the Discuss app, a form-view
+// chatter or a chat window. This file rides web.assets_web_dark only.
+//
+// `!important` appears only where the competing declaration carries its own: `.text-muted`
+// (Bootstrap utilities are emitted important), the message bubbles, `.o-discuss-text-body` (core
+// styles that bare class important in both schemes) and the mention chips (`o-mention-variant`).
+
+$o-viin-island-surface: $white;
+$o-viin-island-raised: $os-gray-100;
+$o-viin-island-text: $os-text-body;
+// Read on the message bubbles too, which are darker than the panel: the tier has to clear AA on
+// the darkest tint, not only on white.
+$o-viin-island-text-muted: mix($os-text-body, $white, 85%);
+$o-viin-island-link: $o-navbar-background;
+$o-viin-island-link-hover: $o-viin-chrome-deep;
+$o-viin-island-danger: mix($danger, $os-gray-900, 90%);
+$o-viin-island-bubble-map: (
+    'o-blue': $info,
+    'o-green': $success,
+    'o-orange': $warning,
+);
+
+// The buttons are re-pointed through Bootstrap's own `--btn-*` tokens, which `.btn` reads in every
+// state. Core forces the label of every button in the editor to the engine's body tone, so each
+// fill is a light engine tone that label reads on.
+@mixin o-viin-island-btn-secondary {
+    --btn-color: #{$o-viin-island-text};
+    --btn-bg: #{$os-gray-200};
+    --btn-border-color: #{$os-gray-200};
+
+    --btn-hover-color: #{$o-viin-island-text};
+    --btn-hover-bg: #{$os-button-hover-bg};
+    --btn-hover-border-color: #{$os-button-hover-bg};
+
+    --btn-active-color: #{$o-viin-island-text};
+    --btn-active-bg: #{$os-gray-400};
+    --btn-active-border-color: #{$os-gray-400};
+
+    --btn-disabled-color: #{$o-viin-island-text};
+    --btn-disabled-bg: #{$os-gray-100};
+    --btn-disabled-border-color: #{$os-gray-100};
+}
+
+// The call to action keeps its identity through a pale teal fill inside the full-strength teal
+// border; the engine tone behind the mix is its own light gray.
+@mixin o-viin-island-btn-primary {
+    --btn-color: #{$o-viin-island-text};
+    --btn-bg: #{mix($o-brand-primary, $os-gray-100, 20%)};
+    --btn-border-color: #{$o-viin-island-link};
+
+    --btn-hover-color: #{$o-viin-island-text};
+    --btn-hover-bg: #{mix($o-brand-primary, $os-gray-100, 35%)};
+    --btn-hover-border-color: #{$o-viin-island-link};
+
+    --btn-active-color: #{$o-viin-island-text};
+    --btn-active-bg: #{mix($o-brand-primary, $os-gray-100, 50%)};
+    --btn-active-border-color: #{$o-viin-island-link-hover};
+
+    --btn-disabled-color: #{$o-viin-island-text};
+    --btn-disabled-bg: #{$os-gray-200};
+    --btn-disabled-border-color: #{$os-gray-200};
+}
+
+// The outline variant keeps the teal border and fills with the same pale teal as the primary
+// button when it is hovered or pressed.
+@mixin o-viin-island-btn-outline-primary {
+    --btn-color: #{$o-viin-island-text};
+    --btn-border-color: #{$o-viin-island-link};
+
+    --btn-hover-color: #{$o-viin-island-text};
+    --btn-hover-bg: #{mix($o-brand-primary, $os-gray-100, 35%)};
+    --btn-hover-border-color: #{$o-viin-island-link};
+
+    --btn-active-color: #{$o-viin-island-text};
+    --btn-active-bg: #{mix($o-brand-primary, $os-gray-100, 50%)};
+    --btn-active-border-color: #{$o-viin-island-link-hover};
+
+    --btn-disabled-color: #{$o-viin-island-text};
+    --btn-disabled-bg: transparent;
+    --btn-disabled-border-color: #{$o-viin-island-link};
+}
+
+.o-spreadsheet {
+
+    // `.o-mail-Chatter` is `bg-inherit`; stating the surface at (0,2,0) does not depend on any
+    // other module keeping a background on the panel. The custom properties re-point the tiers
+    // that resolve through a token (`--secondary-color`, the link pair) instead of inheriting
+    // the dark scheme's values.
+    .o-mail-Chatter {
+        --secondary-color: #{$o-viin-island-text-muted};
+        --link-color: #{$o-viin-island-link};
+        --link-color-rgb: #{to-rgb($o-viin-island-link)};
+        --link-hover-color: #{$o-viin-island-link-hover};
+        --link-hover-color-rgb: #{to-rgb($o-viin-island-link-hover)};
+
+        background-color: $o-viin-island-surface;
+        color: $o-viin-island-text;
+    }
+
+    // The sticky topbar paints its own opaque surface and, when pinned, a gradient built from the
+    // dark view surface.
+    .o-mail-Chatter-top {
+        background-color: $o-viin-island-surface;
+
+        &.shadow-sm {
+            background-image: linear-gradient(90deg, transparent, $o-viin-island-raised, transparent);
+        }
+    }
+
+    .o-mail-Chatter {
+
+        .text-muted {
+            color: $o-viin-island-text-muted !important;
+        }
+
+        .o-mail-Message-date {
+            color: $o-viin-island-text-muted;
+        }
+
+        // The Chatter's own buttons sit at a higher specificity than the editor-wide ones below,
+        // so the composer's direct declarations do not outrank the tokens.
+        .btn-secondary {
+            @include o-viin-island-btn-secondary;
+        }
+
+        .btn-primary {
+            @include o-viin-island-btn-primary;
+        }
+
+        // The open composer toggles are painted with a direct `background-color` by this
+        // cluster's composer.scss, not through the token map (0,3,0); (0,5,0) wins.
+        .o-mail-Chatter-sendMessage.btn-primary.active {
+            background-color: mix($o-brand-primary, $os-gray-100, 50%);
+            border-color: $o-viin-island-link-hover;
+        }
+
+        .o-mail-Chatter-logNote.btn-primary.active {
+            background-color: $os-gray-400;
+            border-color: $os-gray-400;
+        }
+
+        .o-mail-Composer {
+            --mail-Composer-bg: #{$o-viin-island-surface};
+        }
+
+        // Message bubbles: core's light formula over the island surface, with the engine's
+        // darkest gray in the border mix. Core's message.dark.scss paints the bubbles with
+        // important declarations, hence the flag.
+        @each $-type, $-color in $o-viin-island-bubble-map {
+            $-bubble-bg: mix($o-viin-island-surface, $-color, 90%);
+            $-bubble-border: mix(
+                $o-viin-island-surface, mix($-color, $os-gray-900, 75%), 80%
+            );
+
+            .o-mail-Message-bubble.#{$-type} {
+                --o-message-bubble-bg: #{$-bubble-bg};
+                --o-message-bubble-border-color: #{$-bubble-border};
+                background-color: $-bubble-bg !important;
+                border-color: $-bubble-border !important;
+
+                &.o-muted {
+                    background-color: $o-viin-island-surface !important;
+                }
+            }
+
+            .o-mail-Message-bubbleTail.#{$-type} {
+                .o-mail-Message-bubbleTailBg {
+                    color: $-bubble-bg !important;
+                }
+                .o-mail-Message-bubbleTailBorder {
+                    color: $-bubble-border !important;
+                }
+            }
+        }
+
+        // The message body inherits from `.o-discuss-text-body`, a bare class core colours
+        // important; the same class is on the composer textarea.
+        .o-discuss-text-body {
+            color: $o-viin-island-text !important;
+        }
+
+        // Core's dark tail hands mentions and record links a teal lightened for a dark ground,
+        // through `o-mention-variant`, whose base `color` is important. The pressed rung is used
+        // because a mention's own chip leaves the link rung exactly on the AA boundary.
+        a.o-discuss-mention,
+        a.o_mail_redirect,
+        a.o_channel_redirect,
+        a.o_message_redirect_transformed {
+            color: $o-viin-island-link-hover !important;
+        }
+
+        // Tiers the dark tail thins with opacity instead of colour; the light values apply on
+        // the island's light ground.
+        .o-mail-Message-author {
+            opacity: 100%;
+        }
+
+        .o-mail-MessageInReply-author {
+            opacity: 75%;
+        }
+
+        .o-mail-MessageInReply-core {
+            --mail-MessageInReply-messageOpacityNonHover: 65%;
+        }
+
+        // The `(edited)` marker takes its colour from outside, and the dark tier that reaches it
+        // is unreadable on the light bubbles, so the island states its own. 75% is the lowest
+        // Bootstrap opacity rung that clears AA on every bubble; the `opacity-50` utility is
+        // important, hence the flag.
+        .o-mail-Message-edited .opacity-50 {
+            color: $o-viin-island-text;
+            opacity: 75% !important;
+        }
+
+        // The dark tail sends the icon-hover tokens to white, which vanishes on the light island.
+        .o-mail-Message-actions {
+            --mail-Message-actionIconHoveredColor: #{$o-viin-island-text};
+        }
+
+        .o-mail-Composer-actions {
+            --mail-Composer-actionHoverColor: #{$o-viin-island-text};
+        }
+
+        .o-mail-Composer-bg {
+            --border-opacity: 1;
+        }
+    }
+
+    // The customer-facing composer keeps its danger cue: the same wash composer.scss mixes over
+    // the dark field, mixed over the island surface. composer.scss's rule is (0,4,0); adding
+    // `.o-spreadsheet` wins without `!important`.
+    .o-mail-Chatter-top:has(.o-mail-Chatter-sendMessage.active) .o-mail-Composer {
+        --mail-Composer-bg: #{mix($danger, $o-viin-island-surface, $o-viin-composer-danger-wash)};
+    }
+
+    // --- Controls of the editor's side panels and of the embedded Chatter --------------------------
+    // Core forces every `.btn` label in the editor to the engine's body tone, so the Bootstrap
+    // buttons of any panel (a primary or outline toggle, for instance) take the same light fills as
+    // the Chatter's own.
+    .btn-secondary {
+        @include o-viin-island-btn-secondary;
+    }
+
+    .btn-primary {
+        @include o-viin-island-btn-primary;
+    }
+
+    .btn-outline-primary {
+        @include o-viin-island-btn-outline-primary;
+    }
+
+    // Core's dark file paints a `btn-link` that carries a semantic colour class with the dark
+    // scheme's muted tone (idle) and a dark-ground tint (hover), both important, which read 2.59:1
+    // and 1.9:1 on the white island. The island states its own muted tone and its own hover
+    // colours. The followed state of an `.active` action button keeps core's rule, which reads its
+    // colour through `--color`.
+    .btn-link.text-danger,
+    .btn-link.btn-danger {
+        color: $o-viin-island-text-muted !important;
+
+        &:hover,
+        &:focus,
+        &.focus {
+            color: $o-viin-island-danger !important;
+        }
+    }
+
+    .btn-link.text-action:not(.active),
+    .btn-link.btn-action:not(.active) {
+        color: $o-viin-island-text-muted !important;
+
+        &:hover,
+        &:focus,
+        &.focus {
+            color: $o-viin-island-link !important;
+        }
+    }
+
+    // The `--color` core's dark tail gives the followed state is a dark-ground tint of the brand
+    // teal; the island's AA teal reads on its white surface.
+    button.o-mail-Followers-button.active {
+        --color: RGBA(#{to-rgb($o-viin-island-link)}, var(--text-opacity, 1));
+    }
+
+    // `text-danger` resolves to a tint lightened for the dark ground, and the delivery-failure
+    // icon thins it again with the important `opacity-75` utility.
+    .text-danger {
+        --color: RGBA(#{to-rgb($o-viin-island-danger)}, var(--text-opacity, 1));
+
+        &.opacity-75 {
+            opacity: 100% !important;
+        }
+    }
+}
