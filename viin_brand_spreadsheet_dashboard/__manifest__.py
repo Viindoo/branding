@@ -43,7 +43,7 @@ khi vẫn giữ nguyên bảng tính bên trong.
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.0',
+    'version': '0.1.1',
 
     'depends': ['spreadsheet_dashboard', 'viin_brand_spreadsheet'],
 

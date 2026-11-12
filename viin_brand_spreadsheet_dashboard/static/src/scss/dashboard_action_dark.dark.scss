@@ -13,11 +13,3 @@
         border: 1px solid $border-color;
     }
 }
-
-.o_spreadsheet_dashboard_search_panel {
-    li:hover:not(.active) {
-        // Core's own hover fill is a fixed palette-ramp value, never re-pointed by the dark
-        // palette - reuse the dark CONTROL tier instead so the label stays readable on hover.
-        background-color: $o-viin-dark-control-bg;
-    }
-}
