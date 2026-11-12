@@ -1,37 +1,27 @@
-# Compile-cascade behaviour guards for viin_backend_theme's OWN widget surfaces (PR #658 review-fix
-# T-3; ODOO-AI-ETHOS #8: protect the BEHAVIOR, not the code).
+# Compile-cascade behaviour guards for viin_backend_theme's OWN widget surfaces (ODOO-AI-ETHOS #8:
+# protect the BEHAVIOR, not the code).
 #
-# WHY THIS FILE REPLACES test_w1_substrate.py (RETIRED).
-# -----------------------------------------------------------------------------------------------
-# test_w1_substrate.py asserted the CONTENT of static/src/scss/dark_surfaces.scss -
-# ~40 source-text assertions protecting the RETIRED no-reload `[data-bs-theme]` allow-list dark
-# engine. PR #658 C-2 DELETED that file and re-based dark mode on the RECOMPILED web.assets_web_dark
-# bundle owned by viin_brand_web (dark_palette.scss, Option A Layer 1), so those assertions now
-# (a) read a file that no longer exists and (b) snapshot an architecture that was deliberately removed.
-# Keeping them would red every correct step of the re-architecture, so they are gone. What survived
-# as genuine BEHAVIOUR is folded here, plus the NEW Option-A contract the theme now owns:
-#   * KEPT  - the backend bundle still compiles to a healthy stylesheet (an aborted compile = an
-#             unstyled webclient), and the two compile-abort landmines stay out (a var()-ified
-#             surface var feeding a Sass colour function; a '--' inside an XML comment).
-# (The T-4 always-dark rail focus-ring guard was removed with the vertical rail itself in PR #658
-# item 1 - the flat home menu is now the sole app switcher, so there is no rail surface to assert.
-# The T-3 stepper done-marker AA guard went the same way on 2026-08-03: the owner reverted the D6
-# stepper entirely and the theme no longer owns ANY statusbar surface, so there is no theme-owned
-# marker left to measure. What replaced it is the opposite assertion - "we do not touch core's
-# arrow statusbar at all" - in tests/test_theme_core_chrome_untouched.py.)
-# DROPPED as an architecture-preference snapshot (not a behaviour): the old "zero --viin-* custom
-# properties" rule - the review-fix design (C-7 focus tokens) legitimately introduces --o-viin-*
-# levers, so that guard would now red a correct implementation. See the design doc §C-2 / §T-3.
+# WHAT THIS FILE GUARDS. Dark mode is the RECOMPILED web.assets_web_dark bundle owned by
+# viin_brand_web (dark_palette.scss), not a source-text allow-list in this theme, so the guards here
+# assert compiled behaviour only:
+#   * the backend bundle compiles to a healthy stylesheet (an aborted compile = an unstyled
+#     webclient), and the two compile-abort landmines stay out (a var()-ified surface var feeding a
+#     Sass colour function; a '--' inside an XML comment);
+#   * the theme-owned widget surfaces (the home-menu section label) resolve readable colours in each
+#     bundle.
+# The theme owns no statusbar surface and no rail surface, so there is nothing to measure there; the
+# statusbar stays core's own, asserted in tests/test_theme_core_chrome_untouched.py. The theme does
+# introduce --o-viin-* levers (focus tokens), so no rule forbids custom properties.
 #
 # WHY COMPILED-CSS, NOT SOURCE SUBSTRINGS.
 # -----------------------------------------------------------------------------------------------
-# The dark widget colour is produced by SASS at compile time and, for T-3, lives in a SEPARATE bundle
+# The dark widget colour is produced by SASS at compile time and lives in a SEPARATE bundle
 # (web.assets_web_dark = `('include','web.assets_web')` + a trailing `*.dark.scss` glob) that
-# recompiles every backend rule. Only the compiled bundle shows whether the done-marker actually
+# recompiles every backend rule. Only the compiled bundle shows whether the widget actually
 # renders a readable colour on the dark panel; a source-substring check ("#4FD4E2 appears somewhere")
 # is not a behaviour assertion. So the contrast tests resolve the value a real element COMPUTES
 # through the real cascade, REUSING viin_brand_web's cascade + WCAG SSOT
-# (tests/test_brand_cascade_compile.py, whose dark arm landed with C-6) instead of re-implementing it
+# (tests/test_brand_cascade_compile.py) instead of re-implementing it
 # (ODOO-AI-ETHOS #11 SSOT). viin_backend_theme depends on viin_brand_web, so that module is always
 # installed and importable at test time; if it is ever restructured this import is the signal to
 # re-ground, not to fork a second copy of the resolver.
@@ -45,7 +35,7 @@ from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
     CHROME_DEEP,
     DARK_BUNDLE,
     DARK_MUTED_TIER,
-    RETIRED_DARK_PURPLE,
+    DARK_BUNDLE_FORBIDDEN_PURPLE,
     WCAG_AA_NORMAL_TEXT,
     _VAR_RE,
     _contrast_ratio,
@@ -79,10 +69,10 @@ HOME_SECTION_LABEL_CLASSES = frozenset({"o_viin_home_section_label"})
 HOME_SECTION_LABEL_ANCESTORS = HOME_MENU_ROOT_ANCESTORS | HOME_MENU_ROOT_CLASSES | {
     "o_viin_home_content", "o_viin_home_body", "d-flex", "flex-column", "flex-grow-1",
 }
-# The muted-grey tier the label carried before the semantic accent landed (home_menu.scss used
-# `var(--secondary-color)`). Named only so the failure message can say what a revert looks like; the
+# The muted-grey tier the label takes in the dark bundle (home_menu.scss uses
+# `var(--secondary-color)` there). Named only so the failure message can say what the default is; the
 # load-bearing assertions are "equals the $o-brand-secondary SSOT" and the measured contrast.
-PRE_ACCENT_LABEL_TOKEN = "--secondary-color"
+DEFAULT_LABEL_TOKEN = "--secondary-color"
 
 
 def _read(path):
@@ -117,7 +107,7 @@ def _root_prop(css, name):
 def _resolve_to_hex(css, value):
     """Normalise ``value`` to a ``#rrggbb`` colour, following ONE ``var()`` hop through ``:root``.
 
-    Robust to both spellings the T-3 fix may use for the dark teal foreground: a literal
+    Robust to both spellings the dark teal foreground may use: a literal
     (``color: #4fd4e2``) or the runtime prop (``color: var(--link-color)``)."""
     if value is None:
         return None
@@ -170,20 +160,16 @@ class TestThemeDarkWidgetContrast(TransactionCase):
     def test_home_menu_section_label_is_the_structure_purple_on_its_own_band(self):
         """The home-menu section label must be the STRUCTURE purple, readable on its band, both schemes.
 
-        OWNER DECISION 2026-08-03. viin_brand_web's COLOUR LAW (brand_variables.scss) reads
-        TEAL = ACT / PURPLE = META-STRUCTURE. "Applications" is a section label - it organises the
-        app grid, it is not something the user can do - so it joins the group-by search facet and
-        the list group header as a purple STRUCTURE accent. It previously read
-        `var(--secondary-color)`, the muted-grey tier: readable, but semantically silent.
-
-        >>> OWNER REVISION 2026-08-03 (same day): THE PURPLE IS LIGHT-MODE ONLY. <<<
-        The owner then ruled purple wrong on a dark canvas, so the two arms of this test assert
-        OPPOSITE things on purpose:
+        viin_brand_web's COLOUR LAW (brand_variables.scss) reads TEAL = ACT / PURPLE =
+        META-STRUCTURE. "Applications" is a section label - it organises the app grid, it is not
+        something the user can do - so it joins the group-by search facet and the list group header
+        as a purple STRUCTURE accent in LIGHT mode only. The two arms of this test assert OPPOSITE
+        things on purpose:
           light  the label IS $o-brand-secondary #7F4282 (and is not a teal);
-          dark   the label is NOT purple - it returns to exactly what it was before the accent
-                 landed, `var(--secondary-color)`, i.e. "the default look / core colours". That token
-                 flips dark-correct on its own: dark_palette.scss re-points $body-secondary-color to
-                 #8EA5A8, which Bootstrap emits as --secondary-color, giving 7.24:1 on the dark band.
+          dark   the label is NOT purple - it is `var(--secondary-color)`, i.e. "the default look /
+                 core colours". That token flips dark-correct on its own: dark_palette.scss re-points
+                 $body-secondary-color to #8EA5A8, which Bootstrap emits as --secondary-color, giving
+                 7.24:1 on the dark band.
 
         THE SURFACE IS RESOLVED, NOT ASSUMED. The label sits on the menu root's own band, which
         home_menu.scss paints `background-color: var(--secondary-bg)` - a runtime prop that flips
@@ -197,7 +183,7 @@ class TestThemeDarkWidgetContrast(TransactionCase):
         `color` declaration and there is no cascade fight and no *.dark.scss to keep in sync.
 
         This is the lowest-risk purple in the cluster: `.o_viin_home_section_label` is theme-owned
-        markup that no core rule targets, so the fix needs no `!important` and no token re-point -
+        markup that no core rule targets, so the rule needs no `!important` and no token re-point -
         which the assertions rely on only in that they expect a plain resolvable colour.
 
         WOULD FAIL IF REVERTED: restoring `var(--secondary-color)` unconditionally fails the "equals
@@ -247,29 +233,29 @@ class TestThemeDarkWidgetContrast(TransactionCase):
                     colour, expected_purple,
                     "The home-menu section label compiled %s instead of the brand secondary %s "
                     "($o-brand-secondary). A revert to the muted `var(%s)` grey looks like this."
-                    % (colour, expected_purple, PRE_ACCENT_LABEL_TOKEN),
+                    % (colour, expected_purple, DEFAULT_LABEL_TOKEN),
                 )
             else:
                 self.assertNotEqual(
                     colour, expected_purple,
                     "The home-menu section label compiled the light brand purple %s in the DARK "
-                    "bundle - 2.24:1 on the dark band. The purple accent is light-only from "
-                    "2026-08-03; wrap the declaration in `@if not $o-viin-dark-bundle`."
+                    "bundle - 2.24:1 on the dark band. The purple accent is light-only; "
+                    "wrap the declaration in `@if not $o-viin-dark-bundle`."
                     % expected_purple,
                 )
                 self.assertNotEqual(
-                    colour, RETIRED_DARK_PURPLE,
-                    "The home-menu section label compiled the RETIRED dark purple %s. The owner "
-                    "rejected a darker purple as the answer to the dark canvas - the answer is no "
-                    "purple." % RETIRED_DARK_PURPLE,
+                    colour, DARK_BUNDLE_FORBIDDEN_PURPLE,
+                    "The home-menu section label compiled the dark-tuned purple %s. A darker purple is "
+                    "not the answer to the dark canvas - the answer is no purple."
+                    % DARK_BUNDLE_FORBIDDEN_PURPLE,
                 )
                 self.assertEqual(
                     colour, DARK_MUTED_TIER,
                     "The home-menu section label compiled %s in the dark bundle instead of the "
-                    "muted tier %s that `var(%s)` resolves to there. That token IS the pre-accent "
-                    "default the owner asked the label to fall back to; anything else means a dark "
+                    "muted tier %s that `var(%s)` resolves to there. That token IS the default "
+                    "look the label falls back to in dark; anything else means a dark "
                     "accent of ours is still being emitted."
-                    % (colour, DARK_MUTED_TIER, PRE_ACCENT_LABEL_TOKEN),
+                    % (colour, DARK_MUTED_TIER, DEFAULT_LABEL_TOKEN),
                 )
 
             raw_band = _winning_declaration(css, menu_root, ("background-color", "background"))
@@ -295,8 +281,7 @@ class TestThemeDarkWidgetContrast(TransactionCase):
 
 class TestThemeCompileSafetyInvariants(BaseCase):
     """Static source guards for the two compile-abort landmines - no DB needed. These protect real
-    catastrophic BEHAVIOURS (unstyled / blank webclient), not deleted-file text, so they survive the
-    C-2 re-architecture and stay."""
+    catastrophic BEHAVIOURS (unstyled / blank webclient), not file text."""
 
     def test_surface_vars_are_never_var_ified(self):
         """primary_variables.scss must NOT var()-ify a surface var that feeds a Sass colour function.
