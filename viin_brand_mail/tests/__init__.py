@@ -1,4 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from . import test_action_panel_dark_compile
 from . import test_email_button_color_debrand
 from . import test_mail_contrast_compile
 from . import test_mail_notification_debrand
