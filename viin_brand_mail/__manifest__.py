@@ -34,7 +34,7 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1.7',
+    'version': '0.1.8',
 
     # any module necessary for this one to work correctly
     'depends': ['mail', 'viin_brand_web'],
@@ -69,7 +69,7 @@ Editions Supported
             ('after', 'mail/static/src/core/public_web/discuss_sidebar.scss', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
             ('after', 'mail/static/src/core/public_web/messaging_menu.scss', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
             ('after', 'mail/static/src/discuss/core/public_web/discuss_sidebar_categories.scss', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
-            # 2026-08-03: carry viin_brand_web's numbered statusbar steps onto mail's two
+            # Carry viin_brand_web's numbered statusbar steps onto mail's two
             # PRIMARY copies of web.StatusBarField (statusbar_duration and the CRM
             # rotting_statusbar_duration). A primary copy does not inherit extensions registered
             # after its own blockId, so each copy needs its own attributes-only extension - see the
@@ -77,37 +77,25 @@ Editions Supported
             # only set attributes, and re-setting them is idempotent).
             'viin_brand_mail/static/src/views/fields/statusbar_duration/statusbar_steps_duration.xml',
         ],
-        # M-1 (PR #658): mail-owned dark surfaces the recompiled dark palette (C-2) cannot reach -
-        # core `mail` sculpts them from the raw Bootstrap grayscale ramp / literals no overridable
-        # Sass var touches, in BOTH its light *.scss AND its own *.dark.scss tail, so they do NOT
-        # recompile dark-correct (rotting kanban card, chatter timestamp, and the Discuss sidebar /
-        # messaging-menu / conversation-header surfaces). Core's dark tail glob is web/mail-only,
-        # never this module, so this file is contributed EXPLICITLY here. A PLAIN APPEND (no anchor)
-        # lands it at the very END of web.assets_web_dark - after core's own mail *.dark.scss tail
-        # (viin_brand_mail loads after mail) - so every same-specificity override in it wins on
-        # source order, which several Discuss surfaces re-pointed by core's dark tail require. See
-        # static/src/scss/mail_dark.scss.
+        # Mail-owned dark rules for what the dark palette's levers do not reach: the rotting kanban
+        # card (a light literal in core), the opacity utilities that thin muted text a second time
+        # (important in Bootstrap), the mention list rows and the mobile tab accent. Core's dark
+        # glob covers the web and mail modules only, so the file is contributed here as a plain
+        # append, which lands after core's own mail *.dark.scss tail: a same-specificity rule wins
+        # on source order. See static/src/scss/mail_dark.scss.
         'web.assets_web_dark': [
             'viin_brand_mail/static/src/scss/mail_dark.scss',
-            # Discuss panel seams (root/header/panel-or-meeting-side-panel borders): a SEPARATE
-            # plain APPEND, after mail_dark.scss, for the same source-order reason that file's own
-            # header documents - it must also win against a core utility, here
-            # `.border-secondary`, which Bootstrap emits `!important`
-            # ($enable-important-utilities: true, lib/bootstrap/scss/_variables.scss). A normal
-            # declaration cannot beat an important one at any specificity, so this file's own
-            # rules carry `!important` too; both sides are single-class (0,1,0), so the later
-            # source position (this plain append, after core's own utilities) decides the winner.
-            # Kept in its own file rather than folded into mail_dark.scss so that file - BUG-6's -
-            # stays byte-unchanged. See static/src/scss/discuss_dividers.dark.scss.
-            'viin_brand_mail/static/src/scss/discuss_dividers.dark.scss',
             # Discuss chrome identity: core mail's dark tail repaints the Discuss navbar (and the
             # menu-entry background variable) onto its own flat chat surface, leaving that one app
             # with a navbar unlike every other one and the inherited border rule chopped into
-            # dashes by the entries painting over it. A third plain APPEND, after the two files
-            # above, for the same source-order reason - core's rules are same-specificity and not
+            # dashes by the entries painting over it. A second plain APPEND, after mail_dark.scss, for
+            # the same source-order reason - core's rules are same-specificity and not
             # `!important`, so landing later is the whole mechanism. See
             # static/src/scss/discuss_navbar.dark.scss.
             'viin_brand_mail/static/src/scss/discuss_navbar.dark.scss',
+            # Discuss action-panel form checks: core fills them with a literal `$white`. A plain
+            # APPEND after core's own action_panel.scss (equal specificity, later source wins).
+            'viin_brand_mail/static/src/scss/action_panel.dark.scss',
         ],
         'mail.assets_public': [
             ('after', 'mail/static/src/core/common/chat_window.scss', 'viin_brand_mail/static/src/core/common/chat_window.scss'),

@@ -42,7 +42,7 @@
     padding-bottom: 10px !important;
 }
 
-// = Chatter composer toggles: "Send message" vs "Log note" (2026-08-03, owner revision 1)
+// = Chatter composer toggles: "Send message" vs "Log note"
 // ================================================================================================
 // Core renders the pair as (mail/static/src/chatter/web/chatter.xml:12-25):
 //     Send message -> `btn-primary` normally, `btn-secondary` while the note composer is open,
@@ -50,16 +50,12 @@
 //     Log note     -> `btn-primary active` exactly when the NOTE composer is open, else `btn-secondary`.
 // So `.o-mail-Chatter-*.btn-primary.active` is "this composer is OPEN" for each button.
 //
-// THE BUG THIS BLOCK FIXES, AND STILL FIXES. One shared selector painted BOTH toggles the SAME
-// purple, which erased the single most consequential distinction in the chatter: a "Log note" is
-// INTERNAL, a "Send message" goes to the CUSTOMER, and while composing there was no colour telling
-// them apart. It also shipped a WCAG failure - the label was pinned to the literal `white` on a
-// purple that the dark bundle lightened to 2.90:1. The split below is what keeps both closed.
+// THE DISTINCTION THIS BLOCK KEEPS. A "Log note" is INTERNAL and a "Send message" goes to the
+// CUSTOMER, so while composing the two open toggles must not share one colour, and the label must
+// not be pinned to the literal `white`, which reads 2.90:1 on a purple the dark bundle lightens.
 //
-// >>> OWNER REVISION 2026-08-03: NO PURPLE ON "Log note". <<<
-// The intermediate fix kept the purple on Log note (faithful to origin/18.0's
-// `$o-enterprise-primary-color`). The owner reversed that: an internal-note toggle does not earn an
-// accent hue of its own. So the two are now distinguished as TEAL vs the DEFAULT NEUTRAL:
+// NO PURPLE ON "Log note": an internal-note toggle does not earn an accent hue of its own. The two
+// are distinguished as TEAL vs the DEFAULT NEUTRAL:
 //   Send message (customer-facing = ACT) -> the deep teal rung, unchanged.
 //   Log note     (internal)              -> the stock `.btn-secondary` grey, in both schemes.
 // The purple is gone from this file entirely, and with it the 2.90:1 dark label: there is no purple
@@ -89,8 +85,8 @@
 // WHY A RULE AT ALL, IF THE ANSWER IS "THE DEFAULT". Because core hands this button `btn-primary
 // active` while the note composer is open, so "do nothing" does NOT give the neutral grey - it gives
 // the PRIMARY map's active state, a near-white #E6F2F4 chip with a dark-teal #002428 label in BOTH
-// schemes. In dark that is a near-white island on the #0B1315 canvas. The owner asked for the
-// default SECONDARY button, so the fill has to be stated - and it is stated by READING
+// schemes. In dark that is a near-white island on the #0B1315 canvas. The default SECONDARY button
+// is wanted, so the fill has to be stated - and it is stated by READING
 // $o-btns-bs-override["secondary"] rather than by re-typing its colours, which is what makes it
 // genuinely "the default" and not a grey that merely looks like one today:
 //   light  core's own entry ($o-gray-300 fill / $o-gray-900 label)   #212529 on #DEE2E6 = 11.85:1
@@ -100,8 +96,8 @@
 //
 // THE RESTING KEYS, NOT THE ACTIVE ONES - deliberate. The map's `active-*` keys are core's
 // $o-component-active-* tokens, i.e. the pale teal #C6EDF1 that also paints the statusbar
-// current-stage arrow; that is an accent again, and in dark it is a pale-teal chip. The owner named
-// the RESTING dark fill (#25383C) explicitly, so the resting keys are what is forwarded.
+// current-stage arrow; that is an accent again, and in dark it is a pale-teal chip. The resting dark
+// fill (#25383C) is what is wanted, so the resting keys are what is forwarded.
 // CONSEQUENCE, called out for a live eyeball: while the NOTE composer is open both toggles are grey
 // (core turns Send message into a `.btn-secondary` in that state), so "which composer is open" is
 // carried by the composer itself - by the danger tint below being ABSENT - rather than by the
@@ -123,9 +119,9 @@ $o-viin-neutral-btn: map-get($o-btns-bs-override, "secondary") !default;
     }
 }
 
-// = The chatter composer is DANGEROUS while it is addressed to a CUSTOMER (2026-08-03, revision 4)
+// = The chatter composer is DANGEROUS while it is addressed to a CUSTOMER
 // ================================================================================================
-// WHAT ODOO 19 CE ACTUALLY DOES - grounded, because the brief asked and the answer is "nothing".
+// WHAT ODOO 19 CE ACTUALLY DOES: nothing.
 // Core does NOT tint the composer per mode. `mail/static/src/core/common/composer.js` reads
 // `props.type` in exactly four places and none of them is visual chrome: the send-button LABEL
 // ("Log" vs "Send", :411), the placeholder (:567), the message subtype (`mail.mt_note` vs
@@ -133,14 +129,14 @@ $o-viin-neutral-btn: map-get($o-btns-bs-override, "secondary") !default;
 // mode class on any element, and the one theming hook that exists - `--mail-Composer-bg`, read by
 // `.o-mail-Composer-bg { background-color: var(--mail-Composer-bg, $o-view-background-color) }`
 // (composer.scss:103) - is re-pointed ONLY by `composer.dark.scss`, i.e. per SCHEME, never per mode.
-// So the historical "note gets a warning wash" is gone in 19.0: a user composing an outbound,
-// customer-visible message sees exactly the same composer as one jotting an internal note.
+// So a user composing an outbound, customer-visible message sees exactly the same composer as one
+// jotting an internal note.
 //
 // THE CUE. Send-message mode is the risky one, so the composer AREA wears a DANGER tint: an 8%
 // $danger wash on its own resting fill plus a $danger border (and a $danger focus glow, so the cue
 // survives the moment the user actually starts typing - which is when it matters most). Log-note
 // mode is left completely untouched, so the two modes are told apart by the surface the text is
-// being typed ON, not by a button colour the user is no longer looking at.
+// being typed ON, not by a button colour the user is not looking at.
 //
 // TINT, NOT FILL. Everything here is derived from the SEMANTIC $danger token (= $o-danger #CC5252,
 // set in viin_brand_web's brand_variables.scss and forwarded by core's
@@ -155,18 +151,16 @@ $o-viin-neutral-btn: map-get($o-btns-bs-override, "secondary") !default;
 // gives Send message `active` exactly when `state.composerType === 'message'`. So
 // `.o-mail-Chatter-top:has(.o-mail-Chatter-sendMessage.active)` IS "the customer-facing composer is
 // open", with no JS patch and no template inherit. (`:has()` is already load-bearing in core's own
-// composer.scss, and this is the same shape the retired web_responsive used against this element.)
+// composer.scss, and this is the same shape web_responsive uses against this element.)
 // The scope is the CHATTER only - Discuss and chat windows are internal conversations and keep the
 // plain composer.
 $o-viin-composer-danger-wash: 8% !default;
-// The composer field's resting fill, per scheme - the surface the wash is mixed over, and the SSOT
-// the dark tail (static/src/scss/mail_dark.scss) reads for its own `--mail-Composer-bg`, so the two
-// can never drift. Light: core's own fallback. Dark: the 6%-lifted panel that file establishes,
-// because core's `composer.dark.scss` value - `mix($gray-100, $o-view-background-color)`, a mid-grey
-// #858A8C once the palette is dark - leaves the #EDF4F5 body text at 3.14:1.
+// The composer field's resting fill, per scheme - the surface the wash is mixed over. Light: core's
+// own fallback. Dark: the fill core's `composer.dark.scss` gives the field,
+// `mix($gray-100, $o-view-background-color)`, which the dark gray ramp makes a dark raised tone.
 $o-viin-composer-bg: if(
     $o-viin-dark-bundle,
-    mix($white, $o-view-background-color, 6%),
+    mix($gray-100, $o-view-background-color),
     $o-view-background-color
 ) !default;
 

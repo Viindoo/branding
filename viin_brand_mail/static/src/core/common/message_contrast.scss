@@ -25,18 +25,18 @@
 // $text-muted separately. So the tier is re-pointed on the mail MESSAGE surface only, where it is
 // unambiguously text.
 //
-// THE VALUE is one rung down the SAME grayscale ramp core already uses, unflipped by the dark
-// palette, so a core re-tune of the ramp moves it too. It stays a de-emphasised tier: 5.80:1 on the
+// THE VALUE is one rung down the SAME grayscale ramp core already uses, so a core re-tune of the
+// ramp moves it too. It stays a de-emphasised tier: 5.80:1 on the
 // chatter panel, against the 7.76:1 the message body tier ($gray-700,
 // mail/static/src/core/common/core.scss:99-101) reads on that same ground.
 //   chatter panel #F8F9FA 5.80 | white 6.11
 //   bubbles  blue #E6F5FD 5.48 | green #E6F7F0 5.51 | orange #FFFAEB 5.85
 $o-viin-mail-muted: mix($o-gray-700, $o-gray-600, 50%) !default;   // #5B636A
 
-// LIGHT ONLY. web.assets_web_dark recompiles this whole bundle, where the ramp keeps its light
-// values and would put #5B636A on the #111B1E panel. The dark scheme reaches the same tier through
-// its own token ($o-main-color-muted -> $body-secondary-color #8EA5A8), so emitting nothing here is
-// what keeps the two schemes independent rather than racing on source order.
+// LIGHT ONLY. web.assets_web_dark recompiles this whole bundle, where the ramp is the dark one and
+// the token above would be a dark tone. The dark scheme reaches the same tier through its own token
+// ($o-main-color-muted -> $body-secondary-color #8EA5A8), so emitting nothing here keeps the two
+// schemes independent rather than racing on source order.
 @if not $o-viin-dark-bundle {
 
     .o-mail-Message,

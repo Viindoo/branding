@@ -1,0 +1,7 @@
+// Discuss action panels (notification settings, member list, ...) paint their radios and checkboxes
+// from `--form-check-bg: $white` (mail discuss/core/common/action_panel.scss). `$white` stays a real
+// white in the dark bundle, so every unchecked control is a white box on the dark panel. The control
+// takes the same transparent fill as every other form check in the bundle.
+.o-mail-ActionPanel .form-check-input {
+    --form-check-bg: transparent;
+}

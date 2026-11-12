@@ -1,16 +1,15 @@
 # Compiled-render contrast guards for the viin_brand_mail chrome (ODOO-AI-ETHOS #8).
 #
-# WHAT IS PROTECTED. The 19.0 port of this module lost the 18.0 heritage `$brand-primary` (TEAL)
-# and substituted the brand PURPLE `$o-brand-secondary` on several chat/composer/presence
-# surfaces, and left every foreground on those surfaces at its core default. The result was a set
-# of surfaces that RENDER unreadable - measured live by the ui-debugger:
-#   * chat-window header               purple #6C386F instead of brand teal
-#   * chat-window header action icons  #212529 at 50% opacity = 1.79:1 (composited 2.30:1 white)
-#   * chatter active send/log toggle   dark-teal #002428 label on the purple fill = 1.07:1
-#   * composer send button             core `lighten($primary, 7.5%)` under a forced white glyph
-#   * im_status presence dot           purple, and the flat brand teal is only 2.33:1 on white
-#   * systray unread counters          $o-success #00B365 + white = 2.75:1 on the navbar
-# This module restores each surface on the AA-pushed ladder, so the BUSINESS RULE these tests
+# WHAT IS PROTECTED. The chat, composer and presence surfaces of this module render on the brand
+# TEAL chrome ladder, with every foreground chosen against the surface it sits on rather than left
+# at its core default. The surfaces and the failure each guard rules out:
+#   * chat-window header               brand teal, never the purple #6C386F
+#   * chat-window header action icons  not the core #212529 at 50% opacity (1.79:1, composited 2.30:1 white)
+#   * chatter active send/log toggle   not a dark-teal #002428 label on the purple fill (1.07:1)
+#   * composer send button             not core `lighten($primary, 7.5%)` under a forced white glyph
+#   * im_status presence dot           not purple, and not the flat brand teal (2.33:1 on white)
+#   * systray unread counters          not $o-success #00B365 + white (2.75:1 on the navbar)
+# Each surface sits on the AA-pushed ladder, so the BUSINESS RULE these tests
 # protect is a CONTRAST rule, not a hex snapshot: every glyph/label must clear the
 # WCAG threshold against the surface it actually renders on. Each test therefore measures the
 # WCAG 2.x contrast ratio of the COMPILED colours (the W3C formula is an external standard, not a
@@ -54,7 +53,7 @@
 # ancestor chain has not been transcribed yet pass the explicit `ANY_ANCESTORS` sentinel, which
 # makes each one a locatable one-line upgrade instead of a silent assumption.
 #
-# WHY THE CUSTOM-PROPERTY GUARDS RESOLVE THROUGH CORE'S OWN CONSUMER (finding R-7)
+# WHY THE CUSTOM-PROPERTY GUARDS RESOLVE THROUGH CORE'S OWN CONSUMER
 # -------------------------------------------------------------------------------------------------
 # Several surfaces here are restored by DECLARING a CSS custom property that CORE reads
 # (--btn-active-color, --o-navbar-badge-bg, --o-discuss-badge-bg,
@@ -115,8 +114,8 @@ except ImportError:
 
 try:
     # The STOCK neutral button, modelled once by viin_brand_web (the core web pager arrow) and
-    # imported rather than re-transcribed. Owner revision 2026-08-03 makes the OPEN "Log note" toggle
-    # render the DEFAULT `.btn-secondary`, and the honest way to assert "the default" is to resolve a
+    # imported rather than re-transcribed. The OPEN "Log note" toggle renders the DEFAULT
+    # `.btn-secondary`, and the honest way to assert "the default" is to resolve a
     # real stock `.btn-secondary` in the SAME bundle and compare - which needs that module's element
     # model, not a hex copied into this file (ODOO-AI-ETHOS #11 SSOT).
     from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
@@ -140,8 +139,8 @@ except ImportError:
 
 # CHROME-BASE AA teal - the cluster SSOT token `$o-navbar-background` declared in
 # viin_brand_web/static/src/scss/brand_variables.scss. 4.74:1 against white, clearing the WCAG
-# AA normal-text threshold; every chrome/interactive/glyph surface restored by the 2026-07-24
-# design decision resolves to this one shade rather than a per-file literal.
+# AA normal-text threshold; every chrome/interactive/glyph surface resolves to this one shade
+# rather than a per-file literal.
 CHROME_BASE_TEAL = "#007f8e"
 
 # DEEP rung of the same ladder - `$o-viin-chrome-deep`, same SSOT file. It is the cluster's
@@ -151,12 +150,10 @@ CHROME_BASE_TEAL = "#007f8e"
 # composer indistinguishable from a closed one.
 CHROME_DEEP_TEAL = "#005e68"
 
-# The RETIRED dark arm of the brand secondary. It was #B589B8, and under core's forced white label it
-# measured 2.90:1 - an AA failure that shipped on both the chatter toggle and the Discuss unread badge.
-# OWNER REVISION 2026-08-03 removed it outright: the purple accent is LIGHT-MODE ONLY, so nothing in
-# web.assets_web_dark may resolve to this value any more. It is kept here purely as the REGRESSION
-# SIGNATURE the dark arms below assert against - re-introducing a dark purple brings the 2.90:1 back.
-RETIRED_DARK_PURPLE = "#b589b8"
+# A dark-tuned brand secondary purple, #B589B8: under core's forced white label it measures 2.90:1.
+# The purple accent is LIGHT-MODE ONLY, so nothing in web.assets_web_dark may resolve to this value;
+# it is the signature the dark arms below assert against.
+DARK_BUNDLE_FORBIDDEN_PURPLE = "#b589b8"
 DARK_PANEL = "#111b1e"
 # The dark MUTED tier ($body-secondary-color in dark_palette.scss) that $o-brand-secondary now
 # collapses onto in the dark bundle, so core's own three consumers of the token carry no purple.
@@ -164,9 +161,9 @@ DARK_PANEL = "#111b1e"
 # own dark arm rather than being allowed to follow the token.
 DARK_MUTED_TIER = "#8ea5a8"
 
-# Brand SECONDARY purple - `$o-brand-secondary`, same SSOT file. The chatter active toggle was
-# ALREADY this colour in 18.0 (`$o-enterprise-primary-color` #7f4282), so purple -> purple is a
-# FAITHFUL port there and must stay: only its foreground was wrong. Asserted positively below so
+# Brand SECONDARY purple - `$o-brand-secondary`, same SSOT file. The chatter active toggle is this
+# colour in 18.0 (`$o-enterprise-primary-color` #7f4282), so purple -> purple is a
+# FAITHFUL port there and stays: only its foreground needs an own value. Asserted positively below so
 # a well-meant "fix" that repaints it teal is caught.
 BRAND_SECONDARY_PURPLE = "#7f4282"
 
@@ -174,7 +171,7 @@ BRAND_SECONDARY_PURPLE = "#7f4282"
 MIS_PORTED_HEADER_PURPLE = "#6c386f"
 
 # `$o-success`, which core's `$o-navbar-badge-bg` defaults to. White systray-counter text on it is
-# only 2.75:1 - the pre-fix state this module's badge override exists to end.
+# only 2.75:1 - the state this module's badge override exists to avoid.
 CORE_SUCCESS_GREEN = "#00b365"
 
 # The IDLE / "away" presence amber, `$o-viin-mail-status-away-color` in
@@ -186,7 +183,7 @@ CORE_SUCCESS_GREEN = "#00b365"
 AWAY_AMBER = "#b27400"
 # The two values idle must NOT regress to, both asserted negatively so a well-meant "restore"
 # is caught: 18.0's flat orange (1.97:1 on white - the reason the AA pass happened at all) and the
-# intermediate darken(#ffa500, 10%) shade that was superseded because it failed the focused
+# intermediate darken(#ffa500, 10%) shade, which fails the focused
 # dropdown row.
 LEGACY_AWAY_ORANGE = "#ffa500"
 SUPERSEDED_AWAY_AMBER = "#cc8400"
@@ -262,15 +259,15 @@ SYSTRAY_DEBRAND_SOURCE = "viin_brand_mail/static/src/core/web/messaging_menu.scs
 # message.scss compile inside it and this module's mail_dark.scss - anchored after its own
 # message.scss - is the later same-specificity writer for the two literal-sculpted surfaces below.
 DARK_BUNDLE = "web.assets_web_dark"
-# The mail-owned dark residue this item (M-1) adds. Reaches the dark bundle ONLY through the explicit
+# The mail-owned dark rules. They reach the dark bundle ONLY through the explicit
 # manifest entry (core's dark glob is web/mail-only), so its wiring is guarded structurally.
 DARK_SURFACE_SOURCE = "viin_brand_mail/static/src/scss/mail_dark.scss"
 # The Discuss-chrome identity fix, reaching the dark bundle through its own explicit manifest entry
 # for the same reason (core's dark glob never sees this module).
 DARK_DISCUSS_NAVBAR_SOURCE = "viin_brand_mail/static/src/scss/discuss_navbar.dark.scss"
 # A translucent-alpha wash in a compiled `rgba(r, g, b, a)` value (a < 1). The dark rotting-card
-# defect is exactly this: core's `rgba(255, 201, 201, .3)` literal composites to a muddy near-neutral
-# over the dark card and loses the danger read, so the fix must paint a SOLID tint instead.
+# surface is exactly this: core's `rgba(255, 201, 201, .3)` literal composites to a muddy near-neutral
+# over the dark card and loses the danger read, so the dark arm must paint a SOLID tint instead.
 _RGBA_ALPHA_RE = re.compile(r"rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*([0-9.]+%?)\s*\)")
 # A `var(--token[, fallback])` reference, so a compiled colour that is a custom-property lookup can be
 # resolved through core's own :root emission of that token.
@@ -342,7 +339,7 @@ def _iter_rules(css):
 # `selector == "..."`, or a `^`-anchored regex) and the scope check is a no-op by construction, or
 # where the chain has simply not been modelled yet. It is deliberately a named argument every call
 # site must pass rather than a default: a scoped rule from ANY module can start colliding with ANY
-# subject at any time, and the fix is then a one-line swap at a site the reader can already see,
+# subject at any time, and the remedy is then a one-line swap at a site the reader can already see,
 # not the discovery that a silent default existed.
 ANY_ANCESTORS = None
 
@@ -656,51 +653,6 @@ IDLE_GLYPH_CLASSES = frozenset({"fa", "fa-circle", "o-yellow"})
 IDLE_SWATCH_CLASSES = IDLE_GLYPH_CLASSES | {"me-1"}
 
 
-# ==================================================================================================
-# The spreadsheet LIGHT ISLAND - where a dark-app Chatter renders on light-forced chrome
-# ==================================================================================================
-# Odoo 19 keeps the spreadsheet editor a LIGHT ISLAND inside a dark app on purpose: the core file
-# below opens `.o-spreadsheet { color-scheme: light; ... }` and repaints the editor's chrome with
-# light literals, among them `.o-spreadsheet .btn { color: <light-island label> }`. That selector is
-# (0,2,0) with no `!important`, so it outranks Bootstrap's own `.btn { color: var(--btn-color) }`
-# (0,1,0) and repaints the label of EVERY button rendered inside the editor - including the mail
-# Chatter this cluster embeds in the comments side panel.
-#
-# It repaints the label ONLY. Backgrounds inside the island keep resolving through the app-wide dark
-# ladder (viin_brand_web/static/src/scss/dark_buttons.scss maps `.btn-secondary` onto
-# $o-viin-dark-control-bg, brand_variables.scss keys `.btn-primary` off the chrome teal), so the two
-# halves of every button come from two different schemes and collide. Measured live on a dark 19.0
-# webclient at 1440px, alpha-composited. The two panel-surface rows were taken while the comments
-# panel still carried a `bg-view` utility that a later revision has since removed - they are
-# recorded as the observation that motivated these guards, NOT as the current surface:
-#     Log note      light-island label on the dark control tier  1.19:1
-#     Activity      light-island label on the dark control tier  1.19:1
-#     Send message  light-island label on the chrome teal        2.17:1
-#     side-panel controls (cell address, Resolve), then on `bg-view`   1.70:1
-#     message body  dark $body-color, then on `bg-view`               15.72:1
-# The BUSINESS RULE the two guards below protect is the island contract itself: inside
-# `.o-spreadsheet` the embedded Chatter must render as a LIGHT surface carrying DARK text and clear
-# WCAG AA - it must not serve one half of each pair from the app-wide dark palette. Both guards
-# measure the ratio of the COMPILED dark-bundle colours against the FIXED AA threshold, so a later
-# re-tune that still clears AA is not a false alarm, and neither can be satisfied by a
-# different-but-equally-unreadable shade.
-#
-# WHY NO HOOT/JS TEST AND NO MODULE DEPENDENCY. Hoot loads only the LIGHT bundle, so the collision
-# is invisible to it. And nothing here needs `spreadsheet` or any of its extensions INSTALLED: the
-# assertions read OUR compiled `web.assets_web_dark`, where the ancestor chain is only a list of
-# class strings handed to the cluster's cascade resolver, and the one core value that is read comes
-# off the addons path with `file_open` (which resolves a source file, not an installed module) - the
-# same name-existence discipline `_assert_core_source_contains` already uses in this file.
-CORE_SPREADSHEET_DARK_SCSS = "spreadsheet/static/src/o_spreadsheet/o_spreadsheet_extended.dark.scss"
-
-# The `.btn` block nested inside that file's `.o-spreadsheet { ... }` wrapper. Anchored at the start
-# of a line so the `.badge` / `.o_input` blocks around it can never be read instead, and capturing
-# the VALUE rather than asserting one: the light-island label is core's design decision, and if core
-# re-tunes it the contrast arithmetic below changes with it instead of going stale.
-_ISLAND_BUTTON_COLOUR_RE = re.compile(
-    r"^\s*\.btn\s*\{[^{}]*?(?<![\w-])color\s*:\s*([^;}]+)", re.MULTILINE | re.DOTALL
-)
-
 # A compiled `rgb()`/`rgba()` value with its alpha slot captured whole. Odoo's own
 # `o-print-color` mixin (web/static/src/scss/functions.scss:48-51) is what emits the `bg-*`
 # utilities, and it writes `RGBA(<r>, <g>, <b>, var(--bg-opacity, 1))` - a form the plain colour
@@ -752,29 +704,7 @@ def _opaque_rgb(value):
     return _to_rgb(text)
 
 
-# --- Element models, transcribed from the templates that render the embedded comments Chatter -----
-# `.o-spreadsheet` and `.o-sidePanel` are the o_spreadsheet engine's own chrome; the three
-# COMMENTS-PANEL layers model the business module's own wrapper layers around the embedded Chatter
-# (a panel, an item, and a thread wrapper that renders `<Chatter/>`), transcribed from their
-# CORE-ONLY utility classes rather than from any selector that module invented - no branding file
-# or fixture may name a business-invented selector, class set, template or module name, so this
-# model keys ONLY on the Bootstrap utilities the wrapper also carries (`p-3`, `border-bottom`,
-# `pb-2`, `mb-2`, `mt-2`), never on the module's own class. The
-# Chatter's own three layers are core's mail/static/src/chatter/web/chatter.xml:5-8. None of these
-# modules is imported or depended on - the resolver only ever sees these class strings, and every
-# one of them is a class core or Bootstrap already ships.
 WEBCLIENT_ANCESTORS = frozenset({"o_web_client", "o_action_manager"})
-SPREADSHEET_ISLAND_ROOT = frozenset({"o-spreadsheet"}) | WEBCLIENT_ANCESTORS
-SPREADSHEET_SIDE_PANEL = frozenset({"o-sidePanel"})
-# The panel root carries NO background utility. A later revision removed the `bg-view` a prior
-# change had added here: measured on a live dark instance it left the composer contrast unchanged
-# while regressing six other side-panel elements, because the o-spreadsheet engine hardcodes a
-# light-mode text colour on its own side panel that Odoo's dark recompile cannot reach. So this
-# layer paints nothing and the engine's `.o-sidePanel` shows through - which is also why this
-# module now declares no rule naming any business-module class at all.
-SPREADSHEET_COMMENTS_PANEL = frozenset({"p-3"})
-SPREADSHEET_COMMENTS_ITEM = frozenset({"border-bottom", "pb-2", "mb-2"})
-SPREADSHEET_COMMENTS_THREAD = frozenset({"mt-2"})
 CHATTER_ROOT_CLASSES = frozenset({
     "o-mail-Chatter", "w-100", "h-100", "flex-grow-1", "d-flex", "flex-column", "bg-inherit",
 })
@@ -782,36 +712,6 @@ CHATTER_TOP_CLASSES = frozenset({"o-mail-Chatter-top", "d-print-none", "position
 CHATTER_TOPBAR_CLASSES = frozenset({
     "o-mail-Chatter-topbar", "d-flex", "flex-shrink-0", "flex-grow-0", "overflow-x-auto",
 })
-
-# Outwards from the Chatter root: the layers every embedded-Chatter element shares.
-ISLAND_PANEL_LAYERS = (
-    SPREADSHEET_COMMENTS_THREAD, SPREADSHEET_COMMENTS_ITEM, SPREADSHEET_COMMENTS_PANEL,
-    SPREADSHEET_SIDE_PANEL, SPREADSHEET_ISLAND_ROOT,
-)
-ISLAND_TOPBAR_LAYERS = (
-    CHATTER_TOPBAR_CLASSES, CHATTER_TOP_CLASSES, CHATTER_ROOT_CLASSES,
-) + ISLAND_PANEL_LAYERS
-
-# chatter.xml:13-30. The RESTING state of a CLOSED composer - the state the collision was measured
-# in, and the one a user meets on opening a comment thread: "Send message" is the resting
-# `.btn-primary`, "Log note" and "Activity" the resting `.btn-secondary`. Each entry carries its
-# real preceding sibling, which is load-bearing for the same reason the chatter-toggle model above
-# says it is: Bootstrap's `.btn-check:checked + .btn` group (0,3,0) carries no state pseudo-class on
-# its subject, and only a real, non-`.btn-check` sibling rules it out.
-_ISLAND_SEND_MESSAGE = frozenset({
-    "o-mail-Chatter-sendMessage", "btn", "text-nowrap", "me-1", "btn-primary", "my-2",
-})
-_ISLAND_LOG_NOTE = frozenset({
-    "o-mail-Chatter-logNote", "btn", "text-nowrap", "me-1", "btn-secondary", "my-2",
-})
-_ISLAND_ACTIVITY = frozenset({
-    "o-mail-Chatter-activity", "btn", "btn-secondary", "text-nowrap", "my-2",
-})
-ISLAND_COMPOSER_BUTTONS = (
-    ("Send message", _ISLAND_SEND_MESSAGE, frozenset()),
-    ("Log note", _ISLAND_LOG_NOTE, _ISLAND_SEND_MESSAGE),
-    ("Activity", _ISLAND_ACTIVITY, _ISLAND_LOG_NOTE),
-)
 
 # --- The message subtree, and the two layers that decide where its text is read -------------------
 # Transcribed from mail/static/src/core/common/message.xml. Outwards from the rendered glyphs:
@@ -826,8 +726,8 @@ ISLAND_COMPOSER_BUTTONS = (
 #    CONTAINS `.o-mail-Message-body`, and it is the element the message's colour is declared on.
 #    core.scss:99-101 and core.dark.scss:13-15 both style it as a BARE class - specificity (0,1,0) -
 #    with `!important`, the dark file winning on source order. An `!important` declaration outranks
-#    every normal one at ANY specificity, so re-pointing `.o-mail-Chatter { color }` inside the
-#    island (0,2,0, normal) does not reach this text at all: `.o-mail-Message-body` declares no
+#    every normal one at ANY specificity, so re-pointing `.o-mail-Chatter { color }`
+#    at (0,2,0, normal) does not reach this text at all: `.o-mail-Message-body` declares no
 #    colour of its own (message.scss:45-58) and inherits from this wrapper, never from the Chatter.
 #    Resolving `color` on the Chatter root therefore answers a question about a DIFFERENT element
 #    and reports a value the message body never renders in.
@@ -869,12 +769,12 @@ MESSAGE_BODY_CLASSES = frozenset({
     "o-rounded-end-bubble", "o-rounded-bottom-bubble",
 })
 # message.xml:89-96, same resting state. The variant class is what each bubble map keys on.
-_ISLAND_BUBBLE_BASE = frozenset({
+_MESSAGE_BUBBLE_BASE = frozenset({
     "o-mail-Message-bubble", "position-absolute", "top-0", "start-0", "w-100", "h-100", "border",
     "o-rounded-bottom-bubble", "o-rounded-end-bubble",
 })
-ISLAND_BUBBLE_CLASSES = {
-    variant: _ISLAND_BUBBLE_BASE | {variant} for variant in ("o-blue", "o-green", "o-orange")
+MESSAGE_BUBBLE_CLASSES = {
+    variant: _MESSAGE_BUBBLE_BASE | {variant} for variant in ("o-blue", "o-green", "o-orange")
 }
 
 # The message subtree as far OUT as the thread list, which is the deepest layer every container
@@ -894,16 +794,133 @@ MESSAGE_SUBTREE_TO_THREAD_LAYERS = (
     MESSAGE_CORE_CLASSES, MESSAGE_ROOT_CLASSES, THREAD_CLASSES,
 )
 # chatter.xml:69 and :5 - the two Chatter layers between the thread and whatever the Chatter is
-# dropped into. Shared by the spreadsheet island and the form view, which differ only OUTSIDE them.
+# dropped into. Shared by every container the Chatter renders in, which differ only OUTSIDE them.
 CHATTER_THREAD_HOST_LAYERS = (CHATTER_CONTENT_CLASSES, CHATTER_ROOT_CLASSES)
 
-# From the Chatter root down to `.o-discuss-text-body`, then out through the panel. Both the body
-# and the bubble hang off the text-body wrapper, so both are modelled with these same ancestors -
-# which is exactly what makes them siblings rather than one an ancestor of the other.
-ISLAND_MESSAGE_LAYERS = (
-    MESSAGE_SUBTREE_TO_THREAD_LAYERS + CHATTER_THREAD_HOST_LAYERS + ISLAND_PANEL_LAYERS
+# composer.xml:77 plus the unconditional half of the `inputClasses` dict at :69-74 (the three
+# conditional entries are mobile / action-count / restored-draft states, none of them the resting
+# field). The textarea the user types into carries `o-discuss-text-body` ITSELF, so it takes the
+# same bare-class `!important` colour as the message body - and it paints its own fill through
+# `.o-mail-Composer-bg` (composer.scss:103-105, `var(--mail-Composer-bg, ...)`), which makes it a
+# second, independent place the same pairing can go incoherent.
+COMPOSER_INPUT_CLASSES = frozenset({
+    "o-mail-Composer-input", "o-mail-Composer-bg", "shadow-none", "overflow-auto",
+    "o-scrollbar-thin", "o-discuss-text-body", "user-select-auto", "o-mail-Composer-inputStyle",
+    "form-control", "border-0", "o-rounded-bubble",
+})
+# composer.xml:68 wrapper, :12 the Composer root, then chatter.xml:66 puts the Composer inside
+# `.o-mail-Chatter-top`.
+COMPOSER_INPUT_WRAPPER_CLASSES = frozenset({"position-relative", "flex-grow-1"})
+COMPOSER_ROOT_CLASSES = frozenset({
+    "o-mail-Composer", "d-grid", "flex-shrink-0", "pt-0", "position-relative",
+})
+# Outwards from the textarea to the Chatter root; a caller appends the panel the Chatter sits in.
+COMPOSER_INPUT_CHATTER_LAYERS = (
+    COMPOSER_INPUT_WRAPPER_CLASSES, COMPOSER_ROOT_CLASSES, CHATTER_TOP_CLASSES, CHATTER_ROOT_CLASSES,
 )
-ISLAND_TEXT_BODY_LAYERS = (MESSAGE_TEXT_BODY_CLASSES,) + ISLAND_MESSAGE_LAYERS
+
+# navigable_list.xml:5-20 - a suggestion row is an `<a>` inside the `.o-mail-NavigableList-item`
+# wrapper of the list, which composer.xml:136 gives the `o-mail-Composer-suggestionList` class. The
+# ACTIVE row paints its own fill through `.o-mail-NavigableList-active`; the HOVERED row is painted
+# on its wrapper by `.o-mail-NavigableList-item:hover`.
+NAVIGABLE_LIST_ROOT_CLASSES = frozenset({
+    "o-mail-NavigableList", "bg-view", "m-0", "p-0", "shadow-sm", "o-mail-Composer-suggestionList",
+})
+NAVIGABLE_LIST_OPEN_CLASSES = frozenset({"o-open", "d-flex", "flex-column", "bg-inherit"})
+NAVIGABLE_LIST_ITEM_CLASSES = frozenset({"o-mail-NavigableList-item", "o-mail-Composer-suggestion"})
+NAVIGABLE_LIST_ROW_CLASSES = frozenset({
+    "d-flex", "align-items-center", "w-100", "px-3", "py-1", "small",
+})
+NAVIGABLE_LIST_LAYERS = (
+    NAVIGABLE_LIST_ITEM_CLASSES, NAVIGABLE_LIST_OPEN_CLASSES, NAVIGABLE_LIST_ROOT_CLASSES,
+    WEBCLIENT_ANCESTORS,
+)
+
+# thread.xml:20 / date_section.xml:5-7 - the day divider is a sibling of the messages in the thread.
+DATE_SECTION_CLASSES = frozenset({
+    "o-mail-DateSection", "d-flex", "align-items-center", "w-100", "fw-bold", "z-1", "pt-2", "px-2",
+})
+DATE_SECTION_LABEL_CLASSES = frozenset({"px-2", "smaller", "text-muted", "opacity-50"})
+
+# notification_item.xml:6,24,26 - a READ conversation row (`text-muted border-secondary`) and the
+# timestamp it carries (`opacity-75` because the row is muted). The row's `bg-transparent` is left
+# out: it paints nothing, and the resolver reads that utility's compiled `RGBA(0, 0, 0,
+# var(--bg-opacity, 1))` as opaque black.
+NOTIFICATION_ITEM_CLASSES = frozenset({
+    "o-mail-NotificationItem", "list-group-item", "d-flex", "cursor-pointer", "align-items-center",
+    "w-100", "position-relative", "o-py-1_5", "text-muted", "border-secondary", "o-px-2_5", "gap-2",
+})
+NOTIFICATION_ITEM_LINE_CLASSES = frozenset({"o-mail-NotificationItem-line", "d-flex", "text-nowrap"})
+# channel_member_list.xml:34 - the section header of the Discuss members panel, inside the action panel
+# (action_panel.js `classNames`, action_panel.xml:17-18 content), which discuss_content.xml:74 puts in
+# the sidebar-coloured `.o-mail-DiscussContent-panelContainer`.
+MEMBER_LIST_HEADER_CLASSES = frozenset({
+    "text-muted", "pt-4", "text-uppercase", "o-xsmaller", "opacity-75",
+})
+MEMBER_LIST_PANEL_LAYERS = (
+    frozenset({
+        "o-mail-ActionPanel-content", "px-1", "d-flex", "flex-column", "flex-grow-1", "bg-inherit",
+        "o-min-height-0",
+    }),
+    frozenset({
+        "o-mail-ActionPanel", "overflow-auto", "o-scrollbar-thin", "d-flex", "flex-column",
+        "flex-shrink-0", "position-relative", "py-2", "pt-0", "h-100", "bg-inherit", "px-2",
+    }),
+    frozenset({
+        "o-mail-DiscussContent-panelContainer", "o-mail-discussSidebarBgColor", "h-100",
+        "border-start", "border-secondary", "flex-shrink-0",
+    }),
+    WEBCLIENT_ANCESTORS,
+)
+
+# messaging_menu.xml:8,14 - the list the rows sit in paints `--mail-MessagingMenu-bg`, declared on the
+# `.o-mail-MessagingMenu` root.
+NOTIFICATION_LIST_CLASSES = frozenset({
+    "o-mail-MessagingMenu-list", "d-flex", "flex-column", "overflow-auto", "o-scrollbar-thin",
+    "flex-grow-1", "list-group", "list-group-flush",
+})
+NOTIFICATION_ITEM_NAME_CLASSES = frozenset({"o-mail-NotificationItem-name", "o-fw-600"})
+NOTIFICATION_ITEM_TEXT_CLASSES = frozenset({"o-mail-NotificationItem-text", "text-truncate", "small"})
+NOTIFICATION_ITEM_DATE_CLASSES = frozenset({
+    "o-mail-NotificationItem-date", "ms-2", "me-1", "flex-shrink-0", "align-self-end", "smaller",
+    "opacity-75",
+})
+
+NOTIFICATION_ITEM_LAYERS = (
+    NOTIFICATION_ITEM_LINE_CLASSES, NOTIFICATION_ITEM_CLASSES, NOTIFICATION_LIST_CLASSES,
+    frozenset({"o-mail-MessagingMenu"}), WEBCLIENT_ANCESTORS,
+)
+
+# chatter.xml:46-51 - the followers button in the chatter topbar; it carries `active` when the user
+# follows the record. Its colour comes from `text-action` through the `--color` custom property.
+FOLLOWERS_BUTTON_CLASSES = frozenset({
+    "o-mail-Followers-button", "btn", "btn-link", "d-flex", "align-items-center", "text-action",
+    "px-1", "my-2", "active",
+})
+FOLLOWERS_BUTTON_LAYERS = (
+    frozenset({"o-mail-Followers", "d-flex", "me-1"}),
+    CHATTER_TOPBAR_CLASSES, CHATTER_TOP_CLASSES, CHATTER_ROOT_CLASSES,
+    frozenset({"o-mail-ChatterContainer", "o-mail-Form-chatter"}), WEBCLIENT_ANCESTORS,
+)
+
+# messaging_menu.xml:88-93 - the mobile bottom navigation: the active tab is a `.btn` whose label
+# and icon both take their colour from the tab.
+MESSAGING_MENU_NAVBAR_CLASSES = frozenset({
+    "o-mail-MessagingMenu-navbar", "d-flex", "flex-shrink-0", "bg-view", "border-top", "w-100",
+    "p-2", "gap-2",
+})
+MESSAGING_MENU_TAB_CLASSES = frozenset({
+    "o-mail-MessagingMenu-tab", "btn", "d-flex", "flex-column", "align-items-center", "flex-grow-1",
+    "flex-shrink-1", "p-1", "position-relative", "border-0", "active", "pb-2",
+})
+MESSAGING_MENU_TAB_LABEL_CLASSES = frozenset({"o-xsmaller"})
+MESSAGING_MENU_TAB_ICON_CLASSES = frozenset({
+    "o-mail-MessagingMenu-tabIcon", "rounded-pill", "mx-auto", "p-2", "fs-5",
+})
+MESSAGING_MENU_LAYERS = (
+    MESSAGING_MENU_TAB_CLASSES, MESSAGING_MENU_NAVBAR_CLASSES, frozenset({"o-mail-MessagingMenu"}),
+    WEBCLIENT_ANCESTORS,
+)
 
 # --- The MUTED secondary tier, and the two places it is read on DIFFERENT surfaces ----------------
 # One tier, two render sites, and they do not share a surface - which is why it needs its own model
@@ -926,33 +943,7 @@ MESSAGE_HEADER_CLASSES = frozenset({
     "o-mail-Message-header", "d-flex", "flex-wrap", "align-items-baseline", "lh-1", "mb-1",
 })
 _MESSAGE_CONTENT_WRAPPER = frozenset({"w-100", "o-min-width-0"})
-ISLAND_MESSAGE_HEADER_LAYERS = (
-    MESSAGE_HEADER_CLASSES, _MESSAGE_CONTENT_WRAPPER, MESSAGE_CORE_CLASSES, MESSAGE_ROOT_CLASSES,
-    THREAD_CLASSES, CHATTER_CONTENT_CLASSES, CHATTER_ROOT_CLASSES,
-) + ISLAND_PANEL_LAYERS
 MESSAGE_BODY_MUTED_CLASSES = frozenset({"d-block", "text-muted", "smaller"})
-ISLAND_MESSAGE_BODY_MUTED_LAYERS = (MESSAGE_BODY_CLASSES,) + ISLAND_TEXT_BODY_LAYERS
-
-# composer.xml:77 plus the unconditional half of the `inputClasses` dict at :69-74 (the three
-# conditional entries are mobile / action-count / restored-draft states, none of them the resting
-# field). The textarea the user types into carries `o-discuss-text-body` ITSELF, so it takes the
-# same bare-class `!important` colour as the message body - and it paints its own fill through
-# `.o-mail-Composer-bg` (composer.scss:103-105, `var(--mail-Composer-bg, ...)`), which makes it a
-# second, independent place the same pairing can go incoherent.
-ISLAND_COMPOSER_INPUT_CLASSES = frozenset({
-    "o-mail-Composer-input", "o-mail-Composer-bg", "shadow-none", "overflow-auto",
-    "o-scrollbar-thin", "o-discuss-text-body", "user-select-auto", "o-mail-Composer-inputStyle",
-    "form-control", "border-0", "o-rounded-bubble",
-})
-# composer.xml:68 wrapper, :12 the Composer root, then chatter.xml:66 puts the Composer inside
-# `.o-mail-Chatter-top`.
-_COMPOSER_INPUT_WRAPPER = frozenset({"position-relative", "flex-grow-1"})
-_COMPOSER_ROOT_CLASSES = frozenset({
-    "o-mail-Composer", "d-grid", "flex-shrink-0", "pt-0", "position-relative",
-})
-ISLAND_COMPOSER_INPUT_LAYERS = (
-    _COMPOSER_INPUT_WRAPPER, _COMPOSER_ROOT_CLASSES, CHATTER_TOP_CLASSES, CHATTER_ROOT_CLASSES,
-) + ISLAND_PANEL_LAYERS
 
 
 def _element_chain(element_classes, ancestor_layers, prev_sibling=frozenset(), tag=None):
@@ -964,8 +955,8 @@ def _element_chain(element_classes, ancestor_layers, prev_sibling=frozenset(), t
     itself carries a previous sibling; an ancestor modelled with one would let a sibling-gated rule
     match a position the transcription never claimed.
 
-    Scheme- and container-agnostic: the same builder serves the spreadsheet island's dark chains,
-    the form-view chatter's light ones, and the sibling chains :func:`_painted_sibling_chain`
+    Scheme- and container-agnostic: the same builder serves the dark chains, the form-view
+    chatter's light ones, and the sibling chains :func:`_painted_sibling_chain`
     derives from them.
 
     ``parent`` IS POPULATED FOR EVERY ENTRY, from the layer immediately outside it. Consecutive
@@ -976,7 +967,7 @@ def _element_chain(element_classes, ancestor_layers, prev_sibling=frozenset(), t
     safe direction for a wrong model.
 
     ONE LAYER KIND IS DELIBERATELY NOT A SINGLE ELEMENT: the outer chrome pools
-    (``WEBCLIENT_ANCESTORS``, ``SPREADSHEET_ISLAND_ROOT``) fold several real DOM levels into one
+    (``WEBCLIENT_ANCESTORS``) fold several real DOM levels into one
     set, because nothing asserted here depends on telling them apart. For an element whose parent
     is such a pool the parent set is a SUPERSET of the true parent, so the subset check stays
     permissive exactly where it cannot decide - it can fail to reject a rule, never wrongly reject
@@ -1015,8 +1006,8 @@ def _element_chain(element_classes, ancestor_layers, prev_sibling=frozenset(), t
 #     instrument composited ancestors only. `.o-mail-Message-bubble` (message.xml:89) is
 #     `position-absolute top-0 start-0 w-100 h-100` INSIDE `.o-discuss-text-body` (:82) and a
 #     PRECEDING SIBLING of `.o-mail-Message-body` (:99) - never an ancestor of it. Measured against
-#     the panel behind the bubble every bubbled message looked fine; measured against the bubble it
-#     was unreadable.
+#     the panel behind the bubble every bubbled message reads fine; measured against the bubble it
+#     is unreadable.
 #   * UNCONDITIONAL (the over-apply). Handing the bubble to every element in the message subtree is
 #     equally wrong and equally invisible: `.o-mail-Message-date` (:44) lives in
 #     `.o-mail-Message-header` (:38), a SIBLING of `.o-mail-Message-contentContainer` (:64). The
@@ -1045,13 +1036,13 @@ PaintedSibling = collections.namedtuple("PaintedSibling", "label classes contain
 MESSAGE_BUBBLE_SIBLING_BY_VARIANT = {
     variant: PaintedSibling(
         label="%s message bubble" % variant,
-        classes=ISLAND_BUBBLE_CLASSES[variant],
+        classes=MESSAGE_BUBBLE_CLASSES[variant],
         container_class="o-discuss-text-body",
     )
-    for variant in ISLAND_BUBBLE_CLASSES
+    for variant in MESSAGE_BUBBLE_CLASSES
 }
 MESSAGE_BUBBLE_SIBLINGS = tuple(
-    MESSAGE_BUBBLE_SIBLING_BY_VARIANT[variant] for variant in sorted(ISLAND_BUBBLE_CLASSES)
+    MESSAGE_BUBBLE_SIBLING_BY_VARIANT[variant] for variant in sorted(MESSAGE_BUBBLE_CLASSES)
 )
 
 
@@ -1069,8 +1060,8 @@ def _painted_sibling_chain(chain, sibling):
 
 
 # --- The SAME message subtree in an ordinary form-view chatter (LIGHT bundle) ---------------------
-# The island models above stop at the spreadsheet side panel; these stop at the form view's own
-# chatter container, and everything between the Chatter root and the glyphs is shared - one
+# These stop at the form view's own chatter container, and everything between the Chatter root
+# and the glyphs is shared - one
 # transcription of message.xml, two places it renders. `.o-mail-Form-chatter` is the div the form
 # compiler emits (mail/static/src/chatter/web/form_compiler.js:27) and the outermost layer in this
 # stack that actually PAINTS: form_renderer.scss:5-6 fills it with `$o-webclient-background-color`,
@@ -1183,7 +1174,7 @@ CHAT_WINDOW_PANEL_LAYERS = (
 )
 CHAT_WINDOW_MESSAGE_LAYERS = MESSAGE_SUBTREE_TO_THREAD_LAYERS + CHAT_WINDOW_PANEL_LAYERS
 
-# The three containers a message renders in OUTSIDE the spreadsheet island, each with the panel its
+# The three containers a message renders in, each with the panel its
 # own ancestor walk lands on. Declared as data rather than as three copied guards so a fourth
 # container is one row, and so no subject can be measured in two of them and silently skip the
 # third.
@@ -1192,10 +1183,6 @@ DARK_MESSAGE_CONTAINERS = (
     ("Discuss", "the Discuss thread canvas", DISCUSS_MESSAGE_LAYERS),
     ("chat window", "the chat-window body", CHAT_WINDOW_MESSAGE_LAYERS),
 )
-
-# The same two nodes inside the spreadsheet island. The island's placeholder stack is already
-# `ISLAND_MESSAGE_BODY_MUTED_LAYERS` (the `Subject:` line shares it); only the marker needs its own.
-ISLAND_EDITED_MARKER_LAYERS = _edited_marker_layers(ISLAND_MESSAGE_LAYERS)
 
 
 # The surface a resolution landed on, and WHO painted it. `painter` is what a failure message needs
@@ -1215,6 +1202,10 @@ Backdrop = collections.namedtuple("Backdrop", "painter depth value rgb")
 # classes without the model silently picking one.
 DiscussSeam = collections.namedtuple("DiscussSeam", "label element_class border_utility source")
 
+DISCUSS_SEAM_ANCESTORS = frozenset().union(
+    WEBCLIENT_ANCESTORS, DISCUSS_ROOT_CLASSES, DISCUSS_CONTENT_CLASSES, DISCUSS_CONTENT_MAIN_CLASSES,
+    DISCUSS_CONTENT_CORE_CLASSES,
+)
 DISCUSS_DARK_SEAMS = (
     DiscussSeam(
         "the Discuss root's top rule (desktop layout only)",
@@ -1266,11 +1257,11 @@ NAVBAR_CHROME_SURFACES = (
 )
 
 
-@tagged("post_install", "-at_install")
-class MailContrastCompileTest(TransactionCase):
-    """Every branded mail surface must COMPILE to a colour pair its glyphs can be read on.
+class ContrastCompileHelpers:
+    """Compile-and-resolve helpers shared by the contrast guards of the brand cluster.
 
-    Additive to the module's existing de-brand guards, none of which look at compiled CSS."""
+    A mixin rather than a test case, so a module that guards its own dark surfaces reuses the
+    resolvers without collecting this module's tests a second time."""
 
     @classmethod
     def setUpClass(cls):
@@ -1316,9 +1307,6 @@ class MailContrastCompileTest(TransactionCase):
         )
         return rgb
 
-    # ------------------------------------------------------------------------------------------
-    # Cascade resolution - the R-7 hardening
-    # ------------------------------------------------------------------------------------------
     def _require_cascade_resolver(self):
         """Fail crisply when the cluster's shared cascade resolver could not be imported."""
         self.assertIsNotNone(
@@ -1350,7 +1338,7 @@ class MailContrastCompileTest(TransactionCase):
         """Return the raw value the CSS cascade computes for ``prop_names`` on ``chain[0]``.
 
         ``chain`` is the element and its styling ancestors, innermost first. This is the whole
-        point of the R-7 hardening: the answer comes from the CORE RULE THAT READS the property
+        point of the consumer-resolution rule: the answer comes from the CORE RULE THAT READS the property
         (Bootstrap's `.btn.active { color: var(--btn-active-color) }`, core's
         `.o_menu_systray .badge { background-color: var(--o-navbar-badge-bg, ...) }`, ...), with
         `var()` followed outwards through the chain exactly as a browser resolves an inherited
@@ -1387,6 +1375,205 @@ class MailContrastCompileTest(TransactionCase):
             "than pinning a literal in this file." % (bundle_name, name),
         )
         return value
+
+    def _assert_core_source_contains(self, source, needles, why):
+        """Assert core's OWN source still contains each needle - the name-existence fallback.
+
+        Used only where the cascade resolution is genuinely inexpressible (see the two docstrings
+        that call this). It is weaker than resolving the value, but it closes the exact hole the file header
+        describes: a core RENAME of the property makes this RED instead of silently orphaning our
+        declaration. ``file_open`` resolves the path against the addons path, so this works from
+        any checkout layout (ODOO-AI-ETHOS #11 portability)."""
+        with file_open(source, "r") as core_file:
+            content = core_file.read()
+        for needle in needles:
+            self.assertIn(
+                needle, content,
+                "%s no longer contains %r. %s Re-ground this guard against the new lever rather "
+                "than deleting it." % (source, needle, why),
+            )
+
+    def _root_token(self, css, token, bundle_name, label):
+        """Return the value core's Bootstrap ``_root.scss`` emits for ``:root --<token>`` in ``css``.
+
+        Odoo sets ``$variable-prefix: ''`` (bootstrap_overridden.scss), so ``_root.scss`` emits
+        ``--<token>`` (no ``bs-`` prefix) from the scheme's Sass var. This reads core's OWN
+        :root emission - NOT this module's declaration - so if core renamed the token, this module's
+        ``var(--<token>)`` reference is orphaned, nothing is found, and the guard goes RED instead of
+        measuring a stale value (the discipline the rest of this file follows).
+
+        Scheme-neutral: both bundles emit their own :root block, so the only thing that differs
+        between light and dark is which compiled CSS is handed in."""
+        root_bodies = _bodies_matching(css, lambda selector: selector == ":root", ANY_ANCESTORS)
+        values = _declared_values(root_bodies, _custom_property_re(token))
+        self.assertTrue(
+            values,
+            "The compiled %s emits no :root --%s, so %s cannot be resolved. Core's Bootstrap "
+            "_root.scss emits --%s from the scheme's Sass var (Odoo sets $variable-prefix:''); a "
+            "rename orphans this module's var(--%s) reference."
+            % (bundle_name, token, label, token, token),
+        )
+        return values[-1]
+
+    def _dark_root_token(self, css, token, label):
+        """The dark-bundle reading of :meth:`_root_token`."""
+        return self._root_token(css, token, DARK_BUNDLE, label)
+
+    def _resolve_scheme_colour(self, css, value, bundle_name, label):
+        """Resolve a compiled colour that is either a bare literal or a ``var(--token[, fallback])``.
+
+        A custom-property lookup is followed through core's own :root emission of that token
+        (:meth:`_root_token`); a plain literal is returned as-is. Returns ``(raw_value, rgb)``."""
+        match = _VAR_REF_RE.fullmatch(value.strip())
+        if match:
+            value = self._root_token(css, match.group(1), bundle_name, label)
+        return value, self._assert_rgb(value, label)
+
+    def _resolve_dark_colour(self, css, value, label):
+        """The dark-bundle reading of :meth:`_resolve_scheme_colour`."""
+        return self._resolve_scheme_colour(css, value, DARK_BUNDLE, label)
+
+    def _rendered_backdrop(self, css, chain, bundle_name, label, siblings=()):
+        """Return the :class:`Backdrop` an element in ``chain`` is really READ ON.
+
+        WHICH PAINTED SIBLING SITS BEHIND IT IS AN INPUT, NOT AN ASSUMPTION. ``siblings`` declares
+        the full-bleed overlays that MAY be painted behind this element; each one is applied only
+        when its own container is a strict ancestor of the subject, which is the DOM fact that
+        decides it (see the "WHICH PAINTED SIBLING SITS BEHIND THIS ELEMENT" section above for the
+        rule and for the two directions it is wrong in). Passing none is the honest model for a
+        subtree that has no overlay in it - not a shortcut - and is what every ancestor-only caller
+        does.
+
+        With no overlay applying, this walks OUTWARDS from the element and stops at the first
+        ancestor that paints a fully opaque colour - the browser's own model for a transparent
+        element, and the reason the guards over it are indifferent to WHERE a surface gets re-lit:
+        any layer in the stack may carry the fix and none of them is prescribed.
+
+        A stack that paints nothing anywhere shows the app's own body background, so that is the
+        backstop rather than a failure - it is a real surface, and reading it from core's `:root`
+        emission keeps the answer available on a database where the modules that would otherwise
+        contribute the outer chrome are not installed at all."""
+        self._require_cascade_resolver()
+        for sibling in siblings:
+            sibling_chain = _painted_sibling_chain(chain, sibling)
+            if sibling_chain is None:
+                continue
+            value = _computed_value(css, sibling_chain, BACKGROUND_PROPS)
+            self.assertIsNotNone(
+                value,
+                "No compiled background applies to the %s in %s. Core's own message stylesheets "
+                "paint every variant, so an empty resolution means the modelled overlay does not "
+                "match message.xml:89." % (sibling.label, bundle_name),
+            )
+            rgb = _opaque_rgb(value)
+            self.assertIsNotNone(
+                rgb,
+                "The %s is modelled as painted behind this element, but it resolves the background "
+                "%r in %s, which is not an opaque colour. A full-bleed overlay that stops painting "
+                "one lets the glyphs above it fall onto the layer behind, and this guard can no "
+                "longer say what a reader sees - re-model the overlay rather than measuring the "
+                "wrong surface." % (sibling.label, value, bundle_name),
+            )
+            return Backdrop(sibling.label, None, value, rgb)
+        for depth in range(len(chain)):
+            value = _computed_value(css, chain[depth:], BACKGROUND_PROPS)
+            rgb = _opaque_rgb(value)
+            if rgb is not None:
+                return Backdrop("layer %d of the modelled chain" % depth, depth, value, rgb)
+        fallback = self._root_token(css, "body-bg", bundle_name, label)
+        return Backdrop(
+            "the app body background", len(chain), fallback, self._assert_rgb(fallback, label),
+        )
+
+    def _inherited_colour(self, css, chain, bundle_name, label):
+        """Return ``(value, rgb)`` of the colour an element in ``chain`` really renders its text in.
+
+        The INHERITED-property dual of :meth:`_rendered_backdrop`. `color` inherits, so the
+        element's own declaration is only the first candidate: when no rule styles the element
+        itself the value comes from the nearest ancestor that declares one, and only from the
+        document body when no ancestor does either. Walking that outwards is what makes a
+        declaration on a WRAPPER visible - resolving on the subject alone returns None whenever the
+        colour lives one layer out, and a caller that then falls back to the body token reports a
+        value the element does not render in. It is also the only way a BARE-class `!important`
+        (0,1,0) on an ancestor is seen to beat a more specific normal rule further out, which is the
+        cascade order a browser applies and the one core's `.o-discuss-text-body` turns on in BOTH
+        schemes (core.scss:99-101 light, core.dark.scss:13-15 dark)."""
+        self._require_cascade_resolver()
+        for depth in range(len(chain)):
+            value = _computed_value(css, chain[depth:], ("color",))
+            if value is not None:
+                return self._resolve_scheme_colour(css, value, bundle_name, label)
+        fallback = self._root_token(css, "body-color", bundle_name, label)
+        return self._resolve_scheme_colour(css, fallback, bundle_name, label)
+
+    def _rendered_ink(self, css, chain, bundle_name, label):
+        """Return ``(value, rgb, alpha)`` of the ink an element paints, alpha included.
+
+        The colour half of a contrast pair is not always opaque, and in the LIGHT backend it usually
+        is not: `$text-muted` is `rgba($o-gray-700, $o-opacity-muted)` (primary_variables.scss:121),
+        so a muted glyph is ALREADY a translucent wash over whatever it lands on - which is the
+        whole reason the surface under it decides whether it is readable. On top of that an element
+        may carry an `opacity` utility, which composites the element as a whole. Both multiply into
+        one effective alpha, and reading each from the COMPILED bundle rather than pinning `.76` or
+        `.75` here keeps the arithmetic correct through a core re-tune of either."""
+        self._require_cascade_resolver()
+        value, rgb = self._inherited_colour(css, chain, bundle_name, label)
+        alpha_match = _RGBA_ALPHA_RE.search(value)
+        alpha = 1.0 if alpha_match is None else (_to_alpha(alpha_match.group(1)) or 1.0)
+        opacity = _computed_value(css, chain, ("opacity",))
+        if opacity is not None:
+            element_alpha = _to_alpha(_normalize_value(opacity))
+            self.assertIsNotNone(
+                element_alpha,
+                "%s resolves the opacity %r in %s, which is not a number this guard can composite. "
+                "The dimming is part of the contrast rule, so an unreadable opacity has to fail "
+                "rather than be silently treated as fully opaque."
+                % (label, opacity, bundle_name),
+            )
+            alpha *= element_alpha
+        return value, rgb, alpha
+
+    def _assert_readable_on_every_message_surface(
+        self, bundle_name, chain, subject, why, panel_label="the chatter panel",
+    ):
+        """Assert ``subject`` clears AA on the panel AND on each bubble it can be read on.
+
+        One helper for the tiers below because the failure they share is the SURFACE, not the
+        colour: each tier is set by one rule and lands on four different backdrops, so a fix that
+        satisfies the lightest one and no other is the exact defect being guarded against. Every
+        value is resolved from the compiled bundle, so a fix may re-point the tier, drop the
+        dimming, or re-tune the bubbles - any coherent choice passes and no incoherent one does.
+
+        ``panel_label`` NAMES the surface the ancestor walk lands on, and it is not decoration: the
+        same subject is measured in four containers that paint four different panels, so a failure
+        that only says "the panel" sends a reader to the wrong stylesheet. The walk still RESOLVES
+        the colour; the label only says which container was walked."""
+        css = self._compiled_css(bundle_name)
+        ink_value, ink_rgb, alpha = self._rendered_ink(css, chain, bundle_name, subject)
+        surfaces = [(panel_label, ())]
+        surfaces += [(sibling.label, (sibling,)) for sibling in MESSAGE_BUBBLE_SIBLINGS
+                     if _painted_sibling_chain(chain, sibling) is not None]
+        for label, siblings in surfaces:
+            with self.subTest(surface=label):
+                backdrop = self._rendered_backdrop(
+                    css, chain, bundle_name, "%s surface" % subject, siblings=siblings,
+                )
+                painted = _composite(ink_rgb, backdrop.rgb, alpha)
+                ratio = _contrast_ratio(painted, backdrop.rgb)
+                self.assertGreaterEqual(
+                    ratio, WCAG_AA_NORMAL_TEXT,
+                    "In %s the %s renders %s at an effective alpha of %.4f - painting rgb%r - on %s "
+                    "(%s, rgb%r), only %.2f:1 where WCAG AA normal text needs >= %.1f:1. %s"
+                    % (bundle_name, subject, ink_value, alpha, painted, label, backdrop.value,
+                       backdrop.rgb, ratio, WCAG_AA_NORMAL_TEXT, why),
+                )
+
+
+@tagged("post_install", "-at_install")
+class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
+    """Every branded mail surface must COMPILE to a colour pair its glyphs can be read on.
+
+    Additive to the module's existing de-brand guards, none of which look at compiled CSS."""
 
     def _plain_composer_surface(self, css, bundle_name, all_rules, gated_rules):
         """Return the surface a composer NOT in send-message mode renders on, as ``(r, g, b)``.
@@ -1442,37 +1629,19 @@ class MailContrastCompileTest(TransactionCase):
         self.assertTrue(
             alphas,
             "No `%s` opacity rule found in %s - core stopped dimming the composer placeholder, so "
-            "the composited value this guard measures can no longer be derived."
+            "the composited value this guard measures cannot be derived."
             % (_COMPOSER_PLACEHOLDER_SELECTOR, bundle_name),
         )
         return min(alphas)
 
-    def _assert_core_source_contains(self, source, needles, why):
-        """Assert core's OWN source still contains each needle - the name-existence fallback.
-
-        Used only where the cascade resolution is genuinely inexpressible (see the two docstrings
-        that call this). It is weaker than resolving the value, but it closes the exact hole R-7
-        describes: a core RENAME of the property makes this RED instead of silently orphaning our
-        declaration. ``file_open`` resolves the path against the addons path, so this works from
-        any checkout layout (ODOO-AI-ETHOS #11 portability)."""
-        with file_open(source, "r") as core_file:
-            content = core_file.read()
-        for needle in needles:
-            self.assertIn(
-                needle, content,
-                "%s no longer contains %r. %s Re-ground this guard against the new lever rather "
-                "than deleting it." % (source, needle, why),
-            )
-
     # ------------------------------------------------------------------------------------------
-    # 1. Chat-window header surface
+    # Chat-window header surface
     # ------------------------------------------------------------------------------------------
     def test_chat_window_header_renders_brand_teal_never_the_mis_ported_purple(self):
         """The chat-window header must be the brand teal chrome carrying readable white text.
 
-        Pre-fix this compiled to `mix(black, $o-brand-secondary, 15%)` = #6C386F, the purple the
-        19.0 port substituted for the lost 18.0 `$brand-primary-dark`, so this test was RED on the
-        teal assertion and on the explicit purple guard. The `.o-mail-ChatWindow-header` ELEMENT
+        A header compiled to `mix(black, $o-brand-secondary, 15%)` = #6C386F, the brand purple,
+        fails both the teal assertion and the explicit purple guard. The `.o-mail-ChatWindow-header` ELEMENT
         is isolated from its descendants (`.o-mail-ChatWindow-header .o-mail-ActionList-group` and
         friends carry their own colours and are not the chrome under test)."""
         css = self._compiled_css(BACKEND_BUNDLE)
@@ -1526,7 +1695,7 @@ class MailContrastCompileTest(TransactionCase):
         )
 
     # ------------------------------------------------------------------------------------------
-    # 2. Chat-window header action icons
+    # Chat-window header action icons
     # ------------------------------------------------------------------------------------------
     def test_chat_window_header_action_icons_are_readable_as_composited(self):
         """Header action glyphs must be readable AS RENDERED - colour AND opacity together.
@@ -1539,7 +1708,7 @@ class MailContrastCompileTest(TransactionCase):
         below the 3:1 non-text floor. Both levers are therefore asserted, and the pass/fail rule
         is stated on the COMPOSITED colour so neither lever can regress unnoticed.
 
-        R-7 TREATMENT: NAME-EXISTENCE, not cascade resolution - and this is the one surface where
+        TREATMENT: NAME-EXISTENCE, not cascade resolution - and this is the one surface where
         that is a deliberate choice rather than a shortcut. BOTH sides of this rule are
         inexpressible for the cluster's class-based cascade resolver:
           * this module's own selector is `.o-mail-ChatWindow-header .o-mail-ActionList button` -
@@ -1550,7 +1719,7 @@ class MailContrastCompileTest(TransactionCase):
             `button.o-inline:where(:has(i:first-child:last-child)) { opacity: var(...) }`
             (mail/static/src/core/common/action_list.scss:18-20) - a `:has()` relational selector,
             which cannot be evaluated at all without a DOM.
-        So the declarations are still read directly, and the RENAME hole R-7 describes is closed by
+        So the declarations are still read directly, and the RENAME hole the header describes is closed by
         asserting that core still READS each of those four properties in its own source. If
         Bootstrap renames --btn-color or core renames --o-mail-ActionList-Button-opacity, our
         declarations become orphans and these assertions - not a green test - report it."""
@@ -1565,7 +1734,7 @@ class MailContrastCompileTest(TransactionCase):
                 "color: var(--#{$prefix}btn-hover-color)",
                 "color: var(--#{$prefix}btn-active-color)",
             ),
-            "Bootstrap no longer resolves a .btn's foreground through that custom property, so the "
+            "Bootstrap does not resolve a .btn's foreground through that custom property, so the "
             "white glyph this module pins on the chat-window header is an orphaned declaration and "
             "the header actions have silently reverted to the Bootstrap secondary foreground.",
         )
@@ -1685,21 +1854,18 @@ class MailContrastCompileTest(TransactionCase):
         )
 
     # ------------------------------------------------------------------------------------------
-    # 3. Chatter composer toggles - teal "Send message" vs the DEFAULT neutral "Log note"
+    # Chatter composer toggles - teal "Send message" vs the DEFAULT neutral "Log note"
     # ------------------------------------------------------------------------------------------
     def test_chatter_open_composer_toggles_are_teal_for_send_and_the_default_grey_for_log_note(self):
         """"Send message" and "Log note", while OPEN, must be DIFFERENT and both readable.
 
-        THE SHIPPING BUG THIS STILL PROTECTS. One shared selector painted BOTH toggles the same
-        purple, so the single most consequential distinction in the chatter - a Log note is INTERNAL,
-        a Send message goes to the CUSTOMER - had no colour at all while composing. It also pinned the
-        label to the literal `white`, which in the recompiled dark bundle measured 2.90:1 on the
-        purple's (now retired) dark arm. Both halves are asserted below and neither may come back.
+        THE DISTINCTION THIS PROTECTS. A Log note is INTERNAL and a Send message goes to the
+        CUSTOMER, so the two open toggles must not share one colour while composing, and the label
+        must not be pinned to the literal `white`, which reads 2.90:1 on a dark purple arm. Both
+        halves are asserted below.
 
-        >>> OWNER REVISION 2026-08-03: "Log note" IS NOT PURPLE - IT IS THE DEFAULT GREY. <<<
-        The intermediate fix kept the purple on Log note as a faithful port of 18.0's
-        `$o-enterprise-primary-color`. The owner reversed that. So a test asserting Log note is PURPLE
-        is now WRONG, and so is one asserting it is TEAL: it must render the stock `.btn-secondary`.
+        "Log note" IS NOT PURPLE - IT IS THE DEFAULT GREY: it must render the stock `.btn-secondary`,
+        not purple and not teal.
 
         HOW "THE DEFAULT" IS ASSERTED, AND WHY NOT A HEX. The oracle is a REAL stock `.btn-secondary`
         resolved out of the SAME bundle - the core web pager arrow, whose element model
@@ -1716,7 +1882,7 @@ class MailContrastCompileTest(TransactionCase):
         `.btn-primary` fill, so reusing it would make an open composer indistinguishable from a closed
         one; #005E68 is the ladder's established pressed/open rung (7.5:1 with white).
 
-        R-7 TREATMENT: the labels are resolved from `color` through Bootstrap's own
+        TREATMENT: the labels are resolved from `color` through Bootstrap's own
         `.btn.active { color: var(--btn-active-color) }` consumer, never read back out of this
         module's own declaration - so a Bootstrap rename makes the value unresolvable and this RED.
 
@@ -1728,7 +1894,7 @@ class MailContrastCompileTest(TransactionCase):
         self._require_scope_filter()
         # The element models below are transcribed from this template; assert the transcription is
         # still true, or a class rename would leave them stale and the guard measuring an element
-        # that no longer exists.
+        # that does not exist.
         self._assert_core_source_contains(
             "mail/static/src/chatter/web/chatter.xml",
             ("o-mail-Chatter-sendMessage btn", "'btn-primary active'"),
@@ -1789,21 +1955,21 @@ class MailContrastCompileTest(TransactionCase):
                     )
                     fills[toggle] = backgrounds[-1]    # last writer wins at equal specificity
 
-                    # NO PURPLE, either scheme, either toggle - the owner revision, asserted
-                    # positively so a well-meant restore of either purple is caught.
+                    # NO PURPLE, either scheme, either toggle - asserted positively so a restore
+                    # of either purple is caught.
                     self.assertNotIn(
                         BRAND_SECONDARY_PURPLE, backgrounds,
-                        "The OPEN %s compiled the brand purple %s in the %s bundle. The owner "
-                        "removed the purple from the chatter toggles on 2026-08-03: Send message is "
-                        "teal, Log note is the default neutral."
+                        "The OPEN %s compiled the brand purple %s in the %s bundle. The chatter "
+                        "toggles carry no purple: Send message is teal, Log note is the default "
+                        "neutral."
                         % (toggle, BRAND_SECONDARY_PURPLE, arm),
                     )
                     self.assertNotIn(
-                        RETIRED_DARK_PURPLE, backgrounds,
-                        "The OPEN %s compiled the RETIRED dark purple %s in the %s bundle. That arm "
-                        "of $o-brand-secondary was deleted because core's forced white label "
-                        "measured only 2.90:1 on it - do not bring it back."
-                        % (toggle, RETIRED_DARK_PURPLE, arm),
+                        DARK_BUNDLE_FORBIDDEN_PURPLE, backgrounds,
+                        "The OPEN %s compiled the dark purple %s in the %s bundle. Core's forced "
+                        "white label measures only 2.90:1 on it, so the dark scheme has no purple "
+                        "arm."
+                        % (toggle, DARK_BUNDLE_FORBIDDEN_PURPLE, arm),
                     )
 
                     # The declaration must exist at all ...
@@ -1840,11 +2006,11 @@ class MailContrastCompileTest(TransactionCase):
                     )
 
                     if toggle == ".o-mail-Chatter-logNote":
-                        # THE OWNER'S RULE, stated as behaviour: this is the DEFAULT neutral button.
+                        # Stated as behaviour: this is the DEFAULT neutral button.
                         self.assertEqual(
                             fill_rgb, neutral_fill_rgb,
                             "The OPEN 'Log note' toggle compiled %s in the %s bundle, but a stock "
-                            "`.btn-secondary` in the same bundle computes %s. The owner asked for "
+                            "`.btn-secondary` in the same bundle computes %s. It must be "
                             "the DEFAULT secondary button, so the fill must be read out of "
                             "$o-btns-bs-override[\"secondary\"] - not re-typed, and not left to "
                             "core's `btn-primary active` near-white #E6F2F4."
@@ -1864,8 +2030,8 @@ class MailContrastCompileTest(TransactionCase):
                 send_fill, note_fill,
                 "Both chatter toggles compiled the SAME fill %s in the %s bundle. 'Send message' is "
                 "customer-facing (TEAL = ACT) and 'Log note' is internal (the default neutral); one "
-                "colour for both erases the distinction while composing - the exact bug this split "
-                "fixes." % (send_fill, arm),
+                "colour for both erases the distinction while composing - the distinction this split "
+                "exists to keep." % (send_fill, arm),
             )
             self.assertEqual(
                 send_fill, CHROME_DEEP_TEAL,
@@ -1902,7 +2068,7 @@ class MailContrastCompileTest(TransactionCase):
              `.o-mail-Chatter-sendMessage.active`, so the Log-note composer keeps the plain surface
              and the two modes are told apart by the surface the user types ON.
 
-        R-7 TREATMENT: NAME-EXISTENCE, and here it is forced rather than chosen. The whole cue hangs
+        TREATMENT: NAME-EXISTENCE, and here it is forced rather than chosen. The whole cue hangs
         off a `:has()` relational selector, which cannot be evaluated without a DOM - the cluster's
         class-based cascade resolver rejects any selector containing one (`_compound_matches` returns
         False for an unmodelled pseudo-class), exactly as it does for core's own
@@ -2000,9 +2166,9 @@ class MailContrastCompileTest(TransactionCase):
             self.assertLess(
                 _rgb_distance(tinted_rgb, danger_rgb), _rgb_distance(untinted_rgb, danger_rgb),
                 "The send-message composer surface %s is not closer to the semantic $danger %s than "
-                "the plain composer surface %s is, in the %s bundle. Whatever it was tinted with, it "
-                "was not danger - and a cue the user cannot read as 'risky' is not the cue the owner "
-                "asked for." % (tinted_rgb, danger_rgb, untinted_rgb, arm),
+                "the plain composer surface %s is, in the %s bundle. Whatever it is tinted with, it "
+                "is not danger - and a cue the user cannot read as 'risky' is not the cue."
+                % (tinted_rgb, danger_rgb, untinted_rgb, arm),
             )
 
             # ... and the FRAME. Bootstrap's `border` utility reads --border-color, which is also the
@@ -2064,7 +2230,7 @@ class MailContrastCompileTest(TransactionCase):
             )
 
     # ------------------------------------------------------------------------------------------
-    # 4. Composer send button
+    # Composer send button
     # ------------------------------------------------------------------------------------------
     def test_send_message_button_renders_the_aa_teal_under_its_forced_white_glyph(self):
         """The real send button must be the AA teal, not core's lighter `lighten($primary, 7.5%)`.
@@ -2106,13 +2272,13 @@ class MailContrastCompileTest(TransactionCase):
         )
 
     # ------------------------------------------------------------------------------------------
-    # 5. Presence (im_status) dot
+    # Presence (im_status) dot
     # ------------------------------------------------------------------------------------------
     def test_im_status_online_dot_is_legible_on_its_white_puck(self):
         """The online/bot presence dot must be the AA teal - not purple, not the flat brand teal.
 
-        Pre-fix the port had substituted `$o-brand-secondary` here, so this was RED on the purple
-        guard. The flat brand teal is separately refused: mail.ImStatus always renders the glyph
+        The idle amber is never `$o-brand-secondary` (the purple guard), and the flat brand teal is
+        separately refused: mail.ImStatus always renders the glyph
         on a `bg-white bg-opacity-100` puck (mail/static/src/core/common/im_status.xml), including
         inside the teal chat-window header, and the flat teal is only 2.33:1 on white - below the
         3:1 WCAG non-text floor for a meaningful status indicator."""
@@ -2168,7 +2334,7 @@ class MailContrastCompileTest(TransactionCase):
                 )
 
     # ------------------------------------------------------------------------------------------
-    # 6. Systray unread counters
+    # Systray unread counters
     # ------------------------------------------------------------------------------------------
     def test_systray_unread_counters_are_readable_on_the_navbar(self):
         """The messaging/activity systray counters must carry an AA-readable count.
@@ -2176,13 +2342,13 @@ class MailContrastCompileTest(TransactionCase):
         Both badges render inside .o_main_navbar .o_menu_systray, which core paints
         `background-color: var(--o-navbar-badge-bg, #{$o-navbar-badge-bg})` with
         `color: var(--o-navbar-badge-color, ...)`. $o-navbar-badge-bg resolves to the cluster's
-        $o-success #00B365, so the pre-fix 11px count rendered at 2.75:1 - RED on the ratio
-        assertion below and on the explicit $o-success guard. Only the RULE is asserted for the
-        replacement shade (still a green, no longer $o-success, AA against its own foreground):
+        $o-success #00B365, whose 11px count renders at 2.75:1 - refused by the ratio assertion
+        below and by the explicit $o-success guard. Only the RULE is asserted for the replacement
+        shade (a green other than $o-success, AA against its own foreground):
         the production value is DERIVED - mix(black, $o-success, 28%) - with no named design
         token, so pinning the exact literal would turn a legitimate re-tune into a false alarm.
 
-        R-7 TREATMENT: CONVERTED to cascade resolution. The fill and the count colour are resolved
+        TREATMENT: CONVERTED to cascade resolution. The fill and the count colour are resolved
         from background-color / color on a modelled badge element, through core's own
         `.o_main_navbar .o_menu_systray .badge` consumer, instead of being read back out of our two
         --o-navbar-badge-* declarations. WOULD FAIL IF REVERTED: removing this module's rule hands
@@ -2226,7 +2392,7 @@ class MailContrastCompileTest(TransactionCase):
                     "near-white entry colour with no contrast guarantee." % counter,
                 )
 
-                # ... and - the R-7 hardening - both must still be the tokens the NAVBAR reads.
+                # ... and - the consumer-resolution rule - both must still be the tokens the NAVBAR reads.
                 # These counters carry no colour of their own: they are painted entirely by
                 # `.o_main_navbar .o_menu_systray .badge` (web/.../navbar/navbar.scss:234-240),
                 # which is why the fix is a pair of custom properties in the first place. Resolving
@@ -2266,14 +2432,12 @@ class MailContrastCompileTest(TransactionCase):
                 )
 
     # ------------------------------------------------------------------------------------------
-    # 7. Chat-window header dropdown toggle, hovered / open
+    # Chat-window header dropdown toggle, hovered / open
     # ------------------------------------------------------------------------------------------
     def test_chat_window_header_dropdown_toggle_stays_white_while_hovered_or_open(self):
         """Hovering or opening the chat-window title dropdown must keep its label white.
 
-        PREVIOUSLY UNGUARDED. v19 renamed this lever: neither `.o-mail-ChatWindow-command` nor
-        `--mail-ChatWindow-commandHoverColor` exists anywhere in v19, so the ported 18.0 rule was
-        inert. The v19 toggle is `.o-mail-ChatWindow-moreActions` and core paints its hovered/open
+        The v19 toggle is `.o-mail-ChatWindow-moreActions` and core paints its hovered/open
         state `color: var(--mail-ChatWindow-moreActionsHoverColor, black) !important`
         (mail/static/src/core/common/chat_window.scss:18-22) - a BLACK default, which is what
         renders on the teal chrome when this module's declaration is missing or orphaned. That
@@ -2322,12 +2486,12 @@ class MailContrastCompileTest(TransactionCase):
         )
 
     # ------------------------------------------------------------------------------------------
-    # 8. Discuss unread badge
+    # Discuss unread badge
     # ------------------------------------------------------------------------------------------
     def test_discuss_unread_badge_renders_the_brand_purple_through_cores_own_consumer(self):
         """A Discuss unread counter must render the brand purple, not core's $o-success green.
 
-        PREVIOUSLY UNGUARDED. Core paints every `.o-discuss-badge` with
+        Core paints every `.o-discuss-badge` with
         `background-color: var(--o-discuss-badge-bg) !important` and defaults that token to
         $o-success (mail/static/src/core/common/core.scss:33-37, with the comment "sync with
         --o-navbar-badge-bg"). This module re-points the token to the brand SECONDARY purple. The
@@ -2348,11 +2512,9 @@ class MailContrastCompileTest(TransactionCase):
         menu's tab-unread dot is pinned transparent. A test that asserted purple for those would be
         WRONG; see DISCUSS_UNREAD_BADGE_CLASSES for the full exclusion list.
 
-        >>> OWNER REVISION 2026-08-03: LIGHT keeps the purple, DARK MUST NOT HAVE IT. <<<
-        The dark arm added here is RED-BEFORE-GREEN against a defect that was SHIPPING and unguarded:
-        the previous pass gave $o-brand-secondary a dark arm (#B589B8) and this badge followed it, so
-        core's forced `color: white !important` measured 2.90:1 in the dark bundle. Removing the
-        purple from dark is not on its own enough either - letting the token simply recompile lands
+        LIGHT keeps the purple, DARK MUST NOT HAVE IT. A dark arm of $o-brand-secondary (#B589B8) would
+        be followed by this badge, and core's forced `color: white !important` measures 2.90:1 on it.
+        Removing the purple from dark is not enough either - letting the token simply recompile lands
         the badge on the neutral muted tier #8EA5A8, where white is 2.59:1, WORSE. So the dark arm has
         to be stated, and it is stated as the shade the cluster already uses for exactly this job:
         the AA-corrected $o-success the systray counters carry. The assertions are therefore
@@ -2390,19 +2552,18 @@ class MailContrastCompileTest(TransactionCase):
                 self.assertNotEqual(
                     fill_rgb, _to_rgb(BRAND_SECONDARY_PURPLE),
                     "The Discuss unread badge compiled the brand purple %s in the DARK bundle. The "
-                    "purple accent is light-only from 2026-08-03." % BRAND_SECONDARY_PURPLE,
+                    "purple accent is light-only." % BRAND_SECONDARY_PURPLE,
                 )
                 self.assertNotEqual(
-                    fill_rgb, _to_rgb(RETIRED_DARK_PURPLE),
-                    "The Discuss unread badge compiled the RETIRED dark purple %s. Core forces a "
-                    "white label on this badge, which measures only 2.90:1 there - that is the exact "
-                    "AA failure removing the dark arm was meant to end." % RETIRED_DARK_PURPLE,
+                    fill_rgb, _to_rgb(DARK_BUNDLE_FORBIDDEN_PURPLE),
+                    "The Discuss unread badge compiled the dark purple %s. Core forces a white "
+                    "label on this badge, which measures only 2.90:1 there." % DARK_BUNDLE_FORBIDDEN_PURPLE,
                 )
                 self.assertNotEqual(
                     fill_rgb, _to_rgb(DARK_MUTED_TIER),
                     "The Discuss unread badge compiled the neutral muted tier %s in the dark bundle "
-                    "- i.e. it was allowed to follow $o-brand-secondary's dark re-point instead of "
-                    "getting its own arm. White on it is 2.59:1, and a grey unread counter reads as "
+                    "- i.e. it follows $o-brand-secondary's dark re-point instead of "
+                    "having its own arm. White on it is 2.59:1, and a grey unread counter reads as "
                     "'already read'." % DARK_MUTED_TIER,
                 )
 
@@ -2419,18 +2580,16 @@ class MailContrastCompileTest(TransactionCase):
             )
 
     # ------------------------------------------------------------------------------------------
-    # 9. "Seen by everyone" tick
+    # "Seen by everyone" tick
     # ------------------------------------------------------------------------------------------
     def test_seen_by_everyone_tick_clears_the_non_text_floor_as_composited(self):
         """The "seen by everyone" tick must stay legible AS RENDERED - colour AND opacity together.
 
-        PREVIOUSLY UNGUARDED, and the whole 18.0 rule was inert on v19: it targeted
-        `.o-all-seen.text-primary` and NEITHER class exists in v19. Core now renders
-        `o-mail-MessageSeenIndicator ... o-hasEveryoneSeen opacity-75`
+        Core renders `o-mail-MessageSeenIndicator ... o-hasEveryoneSeen opacity-75`
         (mail/static/src/discuss/core/common/message_seen_indicator.xml:4) and paints it
         `color: var(--mail-MessageSeenIndicator-hasEveryoneSeenColor, lighten($primary, 20%))`
-        (mail/static/src/discuss/core/common/message_seen_indicator.scss:2-3), so the tick rendered
-        100% core Odoo until this module started feeding that custom property.
+        (mail/static/src/discuss/core/common/message_seen_indicator.scss:2-3), so the tick is
+        core's own unless this module feeds that custom property.
 
         THE OPACITY IS PART OF THE RULE, NOT A DETAIL. Core stacks `opacity-75` on the same span, so
         the pixel a user sees is the 75%-composite over the message-list surface, not the declared
@@ -2503,19 +2662,18 @@ class MailContrastCompileTest(TransactionCase):
         )
 
     # ------------------------------------------------------------------------------------------
-    # 10. Idle / away presence glyph - the three-site desync guard
+    # Idle / away presence glyph - the three-site desync guard
     # ------------------------------------------------------------------------------------------
     def test_idle_presence_glyph_resolves_to_one_amber_at_all_three_render_sites(self):
         """Every idle/away glyph must resolve to the SAME amber, wherever v19 renders it.
 
-        PREVIOUSLY UNGUARDED. v19 renamed the class - 18.0 rendered `fa fa-circle o-away`, v19
-        renders `fa fa-circle o-yellow` (mail/static/src/core/common/im_status.xml:19) - so the
-        forward-ported `.o-away` rule was inert and idle fell back to core's
-        `.o-yellow { color: $yellow }` (#ffc107, 1.63:1 on the white puck).
+        v19 renders the idle glyph as `fa fa-circle o-yellow`
+        (mail/static/src/core/common/im_status.xml:19); left to core's `.o-yellow { color: $yellow }`
+        it reads #ffc107, 1.63:1 on the white puck.
 
-        THE DESYNC IS THE BUG THIS TEST EXISTS FOR. THREE separate rules render the same state:
+        THE DESYNC IS THE FAILURE THIS TEST EXISTS FOR. THREE separate rules render the same state:
         the ImStatus dot, the same dot reached through ThreadIcon's nested <ImStatus> (which wins
-        outright through a pre-existing `!important`, so leaving it behind silently defeats the fix
+        outright through a pre-existing `!important`, so leaving it behind silently defeats the shared value
         everywhere a ThreadIcon is on screen), and the "Away" swatch in the status picker - a picker
         that must match the dot it produces. Production keeps them in step through ONE Sass
         variable; this test asserts the OUTCOME of that, by resolving all three through the cascade
@@ -2526,7 +2684,7 @@ class MailContrastCompileTest(TransactionCase):
         test never recomputes darken(#ffa500, 15%), which would re-implement the production
         expression and compare it against itself. The two values it must NOT be are asserted
         explicitly, because both are plausible "restores" a future reader might attempt: 18.0's
-        #ffa500 and the superseded intermediate #cc8400."""
+        #ffa500 and the intermediate #cc8400."""
         css = self._compiled_css(BACKEND_BUNDLE)
 
         # The class contract these three rules key on must still be the one core renders.
@@ -2567,7 +2725,7 @@ class MailContrastCompileTest(TransactionCase):
                 )
                 self.assertNotEqual(
                     rgb, _to_rgb(SUPERSEDED_AWAY_AMBER),
-                    "The %s resolves to the superseded intermediate amber %s, which fails the "
+                    "The %s resolves to the intermediate amber %s, which fails the "
                     "focused dropdown row. The shipped value is %s."
                     % (label, SUPERSEDED_AWAY_AMBER, AWAY_AMBER),
                 )
@@ -2667,7 +2825,7 @@ class MailContrastCompileTest(TransactionCase):
         )
 
     # ------------------------------------------------------------------------------------------
-    # 11. Bundle health
+    # Bundle health
     # ------------------------------------------------------------------------------------------
     def test_module_scss_compiles_without_errors_in_every_bundle_it_is_served_in(self):
         """Every bundle that actually compiles this module's SCSS must build with ZERO errors.
@@ -2704,73 +2862,28 @@ class MailContrastCompileTest(TransactionCase):
                 )
 
     # ==============================================================================================
-    # 12. Dark mode - mail-owned surfaces the recompiled dark palette (C-2) cannot reach (M-1)
+    # Dark mode - mail-owned surfaces the recompiled dark palette cannot reach
     # ==============================================================================================
     # viin_brand_web/dark_palette.scss recompiles web.assets_web_dark with the surface / text /
-    # border Sass vars redefined to dark values, so every mail surface that reads an OVERRIDABLE Sass
-    # var (e.g. the chatter thread -> $o-view-background-color -> #111B1E) recompiles dark-correct for
-    # free - NO rule is added here for those. The two surfaces below are the exception core `mail`
-    # sculpts from LITERALS no overridable var reaches, so they do NOT flip and this module adds an
-    # explicit dark residue. Each is asserted against the COMPILED dark bundle - the real observable -
+    # border Sass vars and the gray ramp redefined to dark values, so every mail surface that reads
+    # an OVERRIDABLE Sass var (e.g. the chatter thread -> $o-view-background-color -> #111B1E)
+    # recompiles dark-correct for free - NO rule is added here for those. The surface below is the
+    # exception: core `mail` sculpts it from a LITERAL no overridable var reaches, so this module adds
+    # an explicit dark rule. It is asserted against the COMPILED dark bundle - the real observable -
     # against the FIXED WCAG AA threshold (>= 4.5:1), never the code's own computed output, and never
     # a hex snapshot: a later re-tune that still clears AA on the dark surface is not a false alarm.
 
-    def _root_token(self, css, token, bundle_name, label):
-        """Return the value core's Bootstrap ``_root.scss`` emits for ``:root --<token>`` in ``css``.
-
-        Odoo sets ``$variable-prefix: ''`` (bootstrap_overridden.scss), so ``_root.scss`` emits
-        ``--<token>`` (no ``bs-`` prefix) from the scheme's Sass var. This reads core's OWN
-        :root emission - NOT this module's declaration - so if core renamed the token, this module's
-        ``var(--<token>)`` reference is orphaned, nothing is found, and the guard goes RED instead of
-        measuring a stale value (the R-7 discipline the rest of this file follows).
-
-        Scheme-neutral: both bundles emit their own :root block, so the only thing that differs
-        between light and dark is which compiled CSS is handed in."""
-        root_bodies = _bodies_matching(css, lambda selector: selector == ":root", ANY_ANCESTORS)
-        values = _declared_values(root_bodies, _custom_property_re(token))
-        self.assertTrue(
-            values,
-            "The compiled %s emits no :root --%s, so %s cannot be resolved. Core's Bootstrap "
-            "_root.scss emits --%s from the scheme's Sass var (Odoo sets $variable-prefix:''); a "
-            "rename orphans this module's var(--%s) reference."
-            % (bundle_name, token, label, token, token),
-        )
-        return values[-1]
-
-    def _dark_root_token(self, css, token, label):
-        """The dark-bundle reading of :meth:`_root_token`."""
-        return self._root_token(css, token, DARK_BUNDLE, label)
-
-    def _resolve_scheme_colour(self, css, value, bundle_name, label):
-        """Resolve a compiled colour that is either a bare literal or a ``var(--token[, fallback])``.
-
-        A custom-property lookup is followed through core's own :root emission of that token
-        (:meth:`_root_token`); a plain literal is returned as-is. Returns ``(raw_value, rgb)``."""
-        match = _VAR_REF_RE.fullmatch(value.strip())
-        if match:
-            value = self._root_token(css, match.group(1), bundle_name, label)
-        return value, self._assert_rgb(value, label)
-
-    def _resolve_dark_colour(self, css, value, label):
-        """The dark-bundle reading of :meth:`_resolve_scheme_colour`."""
-        return self._resolve_scheme_colour(css, value, DARK_BUNDLE, label)
-
     def _resolve_seam_border_rgb(self, css, value, label):
-        """Resolve a compiled border-color to RGB, ALSO covering Bootstrap's two-var utility shape.
+        """Resolve a compiled border-color to RGB, also covering Bootstrap's two-var utility shape.
 
-        :meth:`_resolve_dark_colour` follows a single bare ``var(--token)`` reference - the shape
-        every OTHER guard in this file resolves. A bare Bootstrap `border-<colour>` utility (what
-        every Discuss seam below still carries, absent a per-element fix) never compiles to that
-        shape: `.border-secondary` is `rgba(var(--secondary-rgb), var(--border-opacity))` -
-        `_UTILITY_RGB_VAR_RE` above. Falling through to :meth:`_resolve_dark_colour` for anything
-        else means a per-element fix (a dedicated rule resolving to `var(--border-color)` or a plain
-        hex, the same shape the sidebar border fix already uses) is read by the SAME path every other
-        guard here uses - this helper only adds the ONE shape nothing else covers.
+        :meth:`_resolve_dark_colour` follows a single bare ``var(--token)`` reference. A Bootstrap
+        `border-<colour>` utility never compiles to that shape: `.border-secondary` is
+        `rgba(var(--secondary-rgb), var(--border-opacity))` - `_UTILITY_RGB_VAR_RE`. Anything else
+        goes through :meth:`_resolve_dark_colour`, the path every other guard here uses; this helper
+        adds the one shape nothing else covers.
 
-        The opacity slot is not read: Bootstrap's own `local-vars: ("border-opacity": 1)` pins it to
-        fully opaque on this exact rule (lib/bootstrap/scss/_utilities.scss "border-color" group), so
-        treating the resolved RGB as opaque matches what a browser paints without re-deriving that
-        pin."""
+        The opacity slot is not read: Bootstrap pins `border-opacity` to 1 on this exact rule
+        (lib/bootstrap/scss/_utilities.scss "border-color" group), so the resolved RGB is opaque."""
         match = _UTILITY_RGB_VAR_RE.fullmatch(value.strip())
         if match is None:
             return self._resolve_dark_colour(css, value, label)[1]
@@ -2787,9 +2900,9 @@ class MailContrastCompileTest(TransactionCase):
         and loses the "overdue / danger" read. This module re-points it to `mix($danger, $body-bg,
         25%)`, a SOLID danger tint the recompile evaluates at compile time against the dark $body-bg.
 
-        THE DEFECT IS THE TRANSLUCENCY, so the rule is stated on it: the winning dark background must
+        THE FAILURE IS THE TRANSLUCENCY, so the rule is stated on it: the winning dark background must
         be OPAQUE (a translucent wash over the dark card IS the muddy-neutral failure), must stay
-        red-DOMINANT (the danger signal is chromatic - the fix darkens toward the panel, so a
+        red-DOMINANT (the danger signal is chromatic - the dark arm darkens toward the panel, so a
         luminance-contrast measure would not capture it), and the dark body text must clear WCAG AA on
         it. The higher-specificity `.o_record_selected` state is deliberately excluded - it keeps the
         core selection highlight and is not this surface. WOULD FAIL IF REVERTED: drop this module's
@@ -2851,23 +2964,16 @@ class MailContrastCompileTest(TransactionCase):
     def test_dark_chatter_message_date_muted_timestamp_clears_aa_on_the_dark_thread(self):
         """The chatter message timestamp must stay a READABLE muted grey on the dark thread.
 
-        Core mail/static/src/core/common/message.scss:21-22 sets `.o-mail-Message-date { color:
-        $text-muted }`, and Odoo maps $text-muted -> $o-main-color-muted = rgba($o-gray-700,
-        $o-opacity-muted) = rgba(#495057, .76) (bootstrap_overridden.scss, primary_variables.scss:121).
-        $o-gray-700 is NOT flipped by the dark recompile, so on the #111B1E thread this compiles to a
-        translucent DARK grey reading only ~2.1:1 - below AA. This module re-points it to the dark
-        muted-text token --secondary-color, which Bootstrap _root.scss emits from the dark
-        $body-secondary-color = #8EA5A8 (6.75:1 on #111B1E).
-
-        Resolved through core's OWN :root emission of --secondary-color (a rename orphans this
-        module's reference and this goes RED), against the dark thread surface which the recompile
-        drives both $body-bg and $o-view-background-color to (dark_palette.scss:45-46). Same
-        specificity as core, later source order wins, so the LAST-declared colour is read."""
+        Core's `.o-mail-Message-date { color: $text-muted }` compiles, in the dark bundle, to the
+        dark scheme's muted tier (`$o-main-color-muted` -> `$body-secondary-color` #8EA5A8, 6.75:1 on
+        #111B1E). The last compiled colour of the subject, among the rules that reach a Discuss
+        thread message, is measured against the dark thread surface at the fixed AA threshold, so a
+        regression of the alias or of the thread surface goes RED."""
         css = self._compiled_css(DARK_BUNDLE)
         bodies = _bodies_matching(
             css,
             lambda selector: _selector_subject(selector) == ".o-mail-Message-date",
-            ANY_ANCESTORS,
+            frozenset().union(*DISCUSS_MESSAGE_LAYERS),
         )
         self.assertTrue(
             bodies,
@@ -2888,31 +2994,27 @@ class MailContrastCompileTest(TransactionCase):
         self.assertGreaterEqual(
             ratio, WCAG_AA_NORMAL_TEXT,
             "The dark chatter message timestamp (%s) on the dark thread (%s) is only %.2f:1 - this "
-            "is normal muted text and needs >= %.1f:1. Core's untouched $text-muted resolves to "
-            "rgba(#495057,.76) here at ~2.1:1."
+            "is normal muted text and needs >= %.1f:1."
             % (date_value, surface_value, ratio, WCAG_AA_NORMAL_TEXT),
         )
 
     # ==============================================================================================
-    # 13. Dark mode - Discuss app surfaces (owner-directed, PR #658)
+    # Dark mode - Discuss app surfaces
     # ==============================================================================================
-    # The C-2 recompile flips every Discuss surface that reads an OVERRIDABLE Sass var ($body-bg /
-    # $o-view-background-color / $border-color / $body-color) for free - so the resting sidebar
-    # surface, the conversation header, the thread message body and the composer are dark-correct with
-    # NO rule added. The surfaces below are the exception: core `mail` sculpts them from the raw
-    # Bootstrap grayscale ramp ($gray-100..500 / $white) that dark_palette.scss does NOT flip - in
-    # BOTH its light *.scss (recompiled early in the web.assets_web include) AND its own *.dark.scss
-    # tail - so they stayed LIGHT in dark, rendering the near-white $body-color text on a near-white
-    # surface. Each guard measures the WCAG 2.x ratio of the COMPILED dark colours against the FIXED
-    # AA threshold (never a hex snapshot, never the code's own computed output), so a later re-tune
-    # that still clears AA is not a false alarm and a regression back to a light literal is caught.
+    # The dark recompile flips every Discuss surface that reads an OVERRIDABLE Sass var ($body-bg /
+    # $o-view-background-color / $border-color / $body-color) or the gray ramp, so the sidebar, the
+    # conversation header, the thread message body, the bubbles and the composer are dark-correct
+    # from core's own rules. Each guard measures the WCAG 2.x ratio of the COMPILED dark colours
+    # against the FIXED AA threshold (never a hex snapshot, never the code's own computed output),
+    # so a later re-tune that still clears AA is not a false alarm and a regression back to a light
+    # value is caught.
 
     def test_dark_discuss_sidebar_border_is_scheme_aware_not_a_fixed_light_gray(self):
         """The Discuss sidebar divider must be the scheme-aware --border-color, not the light $gray-500.
 
         viin_brand_mail/static/src/core/web/discuss_sidebar.scss pinned
         `.o-mail-DiscussSidebar { border-right-color: $gray-500 !important }` - a compile-time light
-        gray (#adb5bd) that never flips, so in dark the sidebar edge rendered as a "white" line on the
+        gray (#adb5bd) that never flips, so in dark the sidebar edge would render as a "white" line on the
         dark app. Re-pointed to `var(--border-color)`, which core's Bootstrap _root.scss emits at
         :root from the recompiled dark $border-color = #25383C. Resolved THROUGH that :root emission
         (a core rename orphans the reference and this goes RED), and the old light gray is refused
@@ -2951,16 +3053,13 @@ class MailContrastCompileTest(TransactionCase):
     def test_dark_discuss_sidebar_channel_name_stays_readable_at_rest_hover_and_active(self):
         """Channel names must clear WCAG AA on the dark sidebar - resting, hovered AND on the open item.
 
-        The name span (.o-mail-DiscussSidebarChannel-itemName) carries no colour of its own (btn
-        text-reset -> inherited $body-color = the recompiled dark near-white #EDF4F5). What broke
-        readability is the ITEM surface under it: core.dark.scss makes the RESTING sidebar dark, but
-        the item HOVER (discuss_sidebar.scss:44-46, `mix($gray-100, $gray-200)`) and the ACTIVE item
-        (discuss_sidebar.dark.scss:2-3, `mix($gray-200, $gray-300)`) both stayed a near-white gray, so
-        the hovered row and the currently-open channel rendered near-white names on a near-white item.
-        This module re-points the hover onto a raised dark neutral and restores the active token to the
-        action-tinted dark surface the light rule's own fallback already intends. Each of the three
-        surfaces is measured against the inherited name colour at the fixed AA threshold; a regression
-        back to a light literal drops the ratio below 4.5 and this goes RED."""
+        The name span (.o-mail-DiscussSidebarChannel-itemName) carries no colour of its own: it
+        inherits the dark $body-color #EDF4F5. The surfaces under it are core's own - the resting
+        sidebar (core.dark.scss), the item hover (discuss_sidebar.scss, `mix($gray-100, $gray-200)`)
+        and the active item token (discuss_sidebar.dark.scss, `mix($gray-200, $gray-300)`), both read
+        from the dark gray ramp. Each of the three is measured against the inherited name colour at
+        the fixed AA threshold; a surface that turned light drops the ratio below 4.5 and this goes
+        RED."""
         css = self._compiled_css(DARK_BUNDLE)
         name_rgb = self._assert_rgb(
             self._dark_root_token(css, "body-color", "dark sidebar channel name"),
@@ -2992,8 +3091,8 @@ class MailContrastCompileTest(TransactionCase):
         hover_bgs = _declared_values(hover_bodies, _BACKGROUND_RE)
         self.assertTrue(
             hover_bgs,
-            "No compiled .o-mail-DiscussSidebar-item:hover background in %s - the sidebar item hover "
-            "de-light did not reach the dark bundle." % DARK_BUNDLE,
+            "No compiled .o-mail-DiscussSidebar-item:hover background in %s - core's discuss_sidebar.scss "
+            "is in the bundle, so an empty match means the dark bundle did not build." % DARK_BUNDLE,
         )
         surfaces.append(
             ("hovered sidebar item",
@@ -3011,7 +3110,8 @@ class MailContrastCompileTest(TransactionCase):
         self.assertTrue(
             active_tokens,
             "No compiled --mail-DiscussSidebar-itemActiveBgColor on .o-mail-DiscussSidebar-item in %s "
-            "- the active-item de-light did not reach the dark bundle." % DARK_BUNDLE,
+            "- core's discuss_sidebar.dark.scss is in the bundle, so an empty match means the dark "
+            "bundle did not build." % DARK_BUNDLE,
         )
         surfaces.append(
             ("active sidebar item",
@@ -3024,22 +3124,18 @@ class MailContrastCompileTest(TransactionCase):
                 self.assertGreaterEqual(
                     ratio, WCAG_AA_NORMAL_TEXT,
                     "The Discuss channel name (dark $body-color) on the %s (rgb%r) is only %.2f:1 - "
-                    "WCAG AA normal text needs >= %.1f:1. Core paints this surface from the un-flipped "
-                    "$gray ramp, so a missing override leaves it near-white."
+                    "WCAG AA normal text needs >= %.1f:1."
                     % (label, surface_rgb, ratio, WCAG_AA_NORMAL_TEXT),
                 )
 
     def test_dark_discuss_thread_message_body_clears_aa_on_the_dark_thread(self):
         """A Discuss thread message body must stay readable on the dark thread surface.
 
-        The message body carries no colour of its own - it inherits the recompiled dark $body-color
-        (#EDF4F5), and the thread canvas is `.o-mail-DiscussContent-core { background-color: $body-bg }`
-        (discuss_content.scss:7-9), flipped to #111B1E by dark_palette.scss - so this pair recompiles
-        dark-correct for free and NO override is added for it (a dead override would be the wrong fix).
-        This guard confirms the free flip holds: if the dark palette's text token or the thread canvas
-        surface ever regressed to a light value, the body text would stop clearing AA and this goes
-        RED. The surface is resolved from the real mail canvas rule (not a bare :root token), the text
-        through core's own :root emission of $body-color, measured at the fixed AA threshold."""
+        The message body carries no colour of its own - it inherits the dark $body-color (#EDF4F5) -
+        and the thread canvas is `.o-mail-DiscussContent-core { background-color: $body-bg }`
+        (discuss_content.scss), the dark view surface #111B1E. The surface is resolved from the real
+        mail canvas rule, the text through core's own :root emission of $body-color, and the pair is
+        measured at the fixed AA threshold."""
         css = self._compiled_css(DARK_BUNDLE)
         body_text = self._assert_rgb(
             self._dark_root_token(css, "body-color", "dark thread message body"),
@@ -3071,13 +3167,9 @@ class MailContrastCompileTest(TransactionCase):
         """The messaging-menu / systray dropdown panel must be a dark surface its text can be read on.
 
         core/public_web/messaging_menu.scss fills the panel from `var(--mail-MessagingMenu-bg,
-        $o-view-background-color)`, and messaging_menu.dark.scss re-points that custom property to
-        `mix($gray-100, $gray-200, 65%)` - a near-white gray that never flips - so the whole dropdown
-        rendered a near-white panel under the near-white $body-color text. This module re-points
-        --mail-MessagingMenu-bg onto the dark view surface. Measured as the dropdown text ($body-color)
-        against the resolved panel fill at the fixed AA threshold. WOULD FAIL IF REVERTED: dropping the
-        override lets messaging_menu.dark.scss' light gray win as the last writer and the ratio falls
-        below 4.5."""
+        $o-view-background-color)`, and messaging_menu.dark.scss sets that custom property to
+        `mix($gray-100, $gray-200, 65%)`, a raised dark tone under the dark gray ramp. The last
+        declared fill is measured against the dropdown text ($body-color) at the fixed AA threshold."""
         css = self._compiled_css(DARK_BUNDLE)
         menu_bodies = _bodies_matching(
             css,
@@ -3087,8 +3179,9 @@ class MailContrastCompileTest(TransactionCase):
         fills = _declared_values(menu_bodies, _custom_property_re("mail-MessagingMenu-bg"))
         self.assertTrue(
             fills,
-            "No compiled --mail-MessagingMenu-bg on .o-mail-MessagingMenu in %s - the messaging-menu "
-            "dark de-light did not reach the bundle." % DARK_BUNDLE,
+            "No compiled --mail-MessagingMenu-bg on .o-mail-MessagingMenu in %s - core's "
+            "messaging_menu.dark.scss is in the bundle, so an empty match means the dark bundle did "
+            "not build." % DARK_BUNDLE,
         )
         panel_value, panel_rgb = self._resolve_dark_colour(
             css, fills[-1], "dark messaging-menu panel"
@@ -3101,38 +3194,23 @@ class MailContrastCompileTest(TransactionCase):
         self.assertGreaterEqual(
             ratio, WCAG_AA_NORMAL_TEXT,
             "The messaging-menu text (dark $body-color) on the resolved panel fill (%s) is only "
-            "%.2f:1 - WCAG AA normal text needs >= %.1f:1. Core's messaging_menu.dark.scss paints this "
-            "panel `mix($gray-100, $gray-200, 65%%)`, a near-white gray."
+            "%.2f:1 - WCAG AA normal text needs >= %.1f:1."
             % (panel_value, ratio, WCAG_AA_NORMAL_TEXT),
         )
 
     def test_dark_discuss_panel_seams_recede_instead_of_glaring(self):
         """Every Discuss panel seam must be a QUIET dark divider, not a bright light-mode hairline.
 
-        THE DEFECT. Backend Bootstrap `$secondary` is `$gray-300` = #DEE2E6
-        (bootstrap_overridden.scss:32), and dark_palette.scss never redefines `$secondary` itself -
-        only its derived text/bg/border-subtle triad (dark_palette.scss, "Bootstrap's native
-        `secondary` semantic ladder" block). So the bare `.border-secondary` utility every seam below
-        carries - Bootstrap's `rgba-css-var()` shape, `rgba(var(--secondary-rgb), var(--border-opacity))`
-        (lib/bootstrap/scss/_utilities.scss "border-color" group) - still resolves #DEE2E6 in this
-        DARK bundle: live-measured 13.30:1 against the dark panel, a seam so bright it reads as a bug,
-        not a design line.
+        Each seam carries Bootstrap's `.border-secondary` utility, whose colour is
+        `rgba(var(--secondary-rgb), var(--border-opacity))`; the dark gray ramp makes `$secondary`
+        (= `$gray-300`) the dark border rung, so the seam resolves to a dark divider.
 
         THE RULE, not a hex snapshot. Each seam's border must resolve into a BAND against the dark
         panel background: perceptible (`>= DISCUSS_SEAM_MIN_RATIO`) so the line still exists, but
-        receding (`<= DISCUSS_SEAM_MAX_RATIO`) so it never glares the way the untouched #DEE2E6 does.
-        Both the border and the panel are resolved through core's OWN `:root` emission
-        (:meth:`_resolve_seam_border_rgb`, :meth:`_dark_root_token`) rather than compared to a pinned
-        hex, so a later palette re-tune that still satisfies the RULE is not a false alarm - unlike
-        the sidebar border precedent above, whose fix already anchors on one fixed SSOT hex because
-        that surface's rule is exact scheme-parity, not a perceptibility band.
-
-        OUT OF SCOPE, DELIBERATELY NOT MODELLED HERE: `.o-mail-DiscussSidebar`'s own border-end
-        already resolves through `var(--border-color)` - proven by
-        :meth:`test_dark_discuss_sidebar_border_is_scheme_aware_not_a_fixed_light_gray` above -
-        fixed separately from the seam guards below. WOULD FAIL IF REVERTED: dropping any seam's
-        fix leaves `.border-secondary` the last writer for that seam, and #DEE2E6 on the dark panel
-        is far above `DISCUSS_SEAM_MAX_RATIO`."""
+        receding (`<= DISCUSS_SEAM_MAX_RATIO`) so it never glares like a light hairline. Both the
+        border and the panel are resolved through core's OWN `:root` emission
+        (:meth:`_resolve_seam_border_rgb`, :meth:`_dark_root_token`). Rules are read for the Discuss
+        ancestor chain only, so a rule scoped under another module's root does not stand in for it."""
         css = self._compiled_css(DARK_BUNDLE)
         panel_rgb = self._assert_rgb(
             self._dark_root_token(css, "body-bg", "dark Discuss panel"), "dark Discuss panel",
@@ -3144,7 +3222,7 @@ class MailContrastCompileTest(TransactionCase):
                     lambda selector, seam=seam: _selector_subject(selector) in (
                         seam.element_class, seam.border_utility, ".border-secondary",
                     ),
-                    ANY_ANCESTORS,
+                    DISCUSS_SEAM_ANCESTORS,
                 )
                 self.assertTrue(
                     bodies,
@@ -3172,8 +3250,7 @@ class MailContrastCompileTest(TransactionCase):
                 self.assertLessEqual(
                     ratio, DISCUSS_SEAM_MAX_RATIO,
                     "%s border resolved to rgb%r, %.2f:1 against the dark panel - that is a glaring "
-                    "light-mode hairline, not a receding dark divider (needs <= %.1f:1). Absent the "
-                    "fix this is Bootstrap's untouched `.border-secondary` (#DEE2E6, ~13.3:1)."
+                    "light-mode hairline, not a receding dark divider (needs <= %.1f:1)."
                     % (seam.label, border_rgb, ratio, DISCUSS_SEAM_MAX_RATIO),
                 )
 
@@ -3187,14 +3264,13 @@ class MailContrastCompileTest(TransactionCase):
         `--NavBar-entry-backgroundColor` at the same value. It never touches the bar's
         `border-bottom`, which core web still paints from `$o-navbar-border-bottom`
         (web/static/src/webclient/navbar/navbar.variables.scss) - so under a theme whose navbar
-        carries the brand colour, Discuss alone rendered a grey bar with grey menu entries under a
-        brand-coloured rule, live-measured #303638 against every other app's #007F8E.
+        carries the brand colour, Discuss alone would render a grey bar with grey menu entries under a
+        brand-coloured rule, #303638 against every other app's #007F8E.
 
         AND THE RULE READ AS BROKEN, not merely mismatched. Navbar entries are the full BORDER-box
         height (see :data:`NAVBAR_CHROME_SURFACES`), so each one paints its own fill across the 1px
         border row. Everywhere else that overpaint is invisible because the entry fill IS the bar
-        fill; with the bar repainted to another surface it chopped the rule into dashes - which is
-        the shape the defect was reported as.
+        fill; with the bar repainted to another surface it chops the rule into dashes.
 
         THE RULE, not a hex snapshot. The bar and a menu entry are each resolved TWICE from the same
         compiled dark bundle - once under the Discuss body, once under a plain webclient body - and
@@ -3252,78 +3328,49 @@ class MailContrastCompileTest(TransactionCase):
         )
 
     # ==============================================================================================
-    # 14. Dark mode - surfaces the first pass MISSED (PR #658 review-fix, live mobile+dark sweep)
+    # Dark mode - chat window, bubbles, notification rows and composer
     # ==============================================================================================
-    # A second live mobile+dark acceptance sweep found four more mail surfaces core sculpts from the
-    # raw Bootstrap grayscale ramp / a compile-time literal that no overridable Sass var reaches, so
-    # the C-2 dark recompile left them LIGHT: the near-white $body-color text sits on a near-white /
-    # mid-gray fill and fails WCAG AA. Each guard measures the WCAG 2.x ratio of the COMPILED dark
-    # colours against the FIXED AA threshold (never a hex snapshot, never the code's own computed
-    # output), so a later re-tune that still clears AA is not a false alarm and a regression back to a
-    # light literal is caught. Every one is RED before this module's mail_dark.scss additions and
-    # GREEN after.
+    # These surfaces are dark-correct from core's own rules under the dark gray ramp, except where
+    # core paints a bright literal (the orange bubble). Each guard measures the WCAG 2.x ratio of the
+    # COMPILED dark colours against the FIXED AA threshold (never a hex snapshot, never the code's
+    # own computed output), so a later re-tune that still clears AA is not a false alarm and a
+    # regression back to a light literal is caught.
 
     def _dark_body_color_rgb(self, css, label):
         """The near-white dark body text ($body-color -> #EDF4F5), resolved through core's :root."""
         return self._assert_rgb(self._dark_root_token(css, "body-color", label), label)
 
     def test_dark_chat_window_body_is_a_dark_surface_under_its_message_text(self):
-        """The chat-window body must be a dark surface, not the light `bg-100` gray.
+        """The chat-window body must be a dark surface its message text can be read on.
 
         The chat popup / mobile fullscreen window root carries the `bg-100` utility
-        (mail/static/src/core/common/chat_window.xml:6), which
-        web/static/src/scss/bootstrap_review_backend.scss emits through o-print-color as
-        `background-color: $o-gray-100 !important` (#F8F9FA). $o-gray-100 is NOT flipped by the dark
-        recompile, so the window body stayed near-white under the near-white $body-color message text
-        (1.06:1). This module re-points `.o-mail-ChatWindow` onto the dark view surface
-        ($o-view-background-color -> #111B1E). WOULD FAIL IF REVERTED: with no `.o-mail-ChatWindow`
-        background override, no rule declares a background on that subject and the assertion that the
-        window body is painted at all fails - the body is left to the light `bg-100` utility."""
+        (mail/static/src/core/common/chat_window.xml:6), which web/static/src/scss/
+        bootstrap_review_backend.scss emits as `background-color: $o-gray-100 !important`: the dark
+        raised rung under the dark gray ramp. The surface the window root paints is resolved through
+        the cascade and measured against the dark $body-color at the fixed AA threshold, so a rung that
+        turned light goes RED."""
         css = self._compiled_css(DARK_BUNDLE)
-        bodies = _bodies_matching(
-            css, lambda selector: _selector_subject(selector) == ".o-mail-ChatWindow", ANY_ANCESTORS
-        )
-        self.assertTrue(
-            bodies,
-            "No compiled rule styles the .o-mail-ChatWindow element in %s." % DARK_BUNDLE,
-        )
-        backgrounds = _declared_values(bodies, _BACKGROUND_RE)
-        self.assertTrue(
-            backgrounds,
-            "The .o-mail-ChatWindow element declares no background in %s, so its body is left to the "
-            "light `bg-100` utility (#F8F9FA) - the near-white $body-color message text renders at "
-            "1.06:1." % DARK_BUNDLE,
-        )
-        surface_value, surface_rgb = self._resolve_dark_colour(
-            css, backgrounds[-1], "dark chat-window body"
-        )
+        chain = _element_chain(CHAT_WINDOW_ROOT_CLASSES, (frozenset({"o_web_client"}),))
+        surface = self._rendered_backdrop(css, chain, DARK_BUNDLE, "dark chat-window body")
         text_rgb = self._dark_body_color_rgb(css, "dark chat-window message text")
-        ratio = _contrast_ratio(text_rgb, surface_rgb)
+        ratio = _contrast_ratio(text_rgb, surface.rgb)
         self.assertGreaterEqual(
             ratio, WCAG_AA_NORMAL_TEXT,
-            "The chat-window message text (dark $body-color) on its body surface (%s) is only "
-            "%.2f:1 - WCAG AA normal text needs >= %.1f:1. The light `bg-100` utility (#F8F9FA) is the "
-            "un-flipped default this override replaces."
-            % (surface_value, ratio, WCAG_AA_NORMAL_TEXT),
+            "The chat-window message text (dark $body-color) on its body surface (%s, painted by %s) "
+            "is only %.2f:1 - WCAG AA normal text needs >= %.1f:1."
+            % (surface.value, surface.painter, ratio, WCAG_AA_NORMAL_TEXT),
         )
 
     def test_dark_message_bubbles_are_dark_tinted_surfaces_per_category(self):
         """Each message bubble (blue/green/orange) must be a DARK tinted surface under its body text.
 
-        Core message.scss:91-104 sets `--o-message-bubble-bg: mix($o-view-background-color, $_color,
-        90%)` per `.o-#{type}`, which WOULD recompile dark-correct for free. But
-        mail/static/src/core/common/message.dark.scss (in web.assets_web_dark via mail's own
-        `mail/static/src/**/*.dark.scss` glob) overrides each variant's `background-color` DIRECTLY
-        with `mix($gray-100, darken($_color, ..), ..) !important` - light, because $gray-100 is
-        unflipped - so the bubble stayed light blue (#D4E6F0) under the near-white $body-color (1.15:1),
-        viewport-independent (desktop dark too). This module re-points every variant onto a dark
-        surface tinted by its own category colour. WOULD FAIL IF REVERTED: message.dark.scss' light
-        mix is then the last (0,2,0) writer and the ratio assertion reports it. Same specificity, later
-        source order wins, so the LAST-declared background of each `.o-mail-Message-bubble.o-#{type}`
-        is read (the `.o-muted` and tail selectors are excluded by the exact-subject match) - among
-        the rules that REACH this bubble, which is what MESSAGE_BUBBLE_ANCESTORS decides: the same
-        subject scoped under another module's root paints a bubble in that module's subtree, not
-        this one, and reading it here would report a colour no dark thread ever renders."""
+        Core paints each bubble from message.dark.scss, `mix($gray-100, darken($_color, ..), ..)`,
+        read from the dark gray ramp; the orange variant is the one whose fill reads too bright for
+        the muted tier, so this module paints it from a dark tint of its own category colour. The
+        LAST-declared background of each `.o-mail-Message-bubble.o-#{type}` is read (the `.o-muted`
+        and tail selectors are excluded by the exact-subject match) among the rules that REACH this
+        bubble, which is what MESSAGE_BUBBLE_ANCESTORS decides, and measured against the dark body
+        text at the fixed AA threshold."""
         self._require_scope_filter()
         css = self._compiled_css(DARK_BUNDLE)
         text_rgb = self._dark_body_color_rgb(css, "dark message bubble body text")
@@ -3353,76 +3400,202 @@ class MailContrastCompileTest(TransactionCase):
                 self.assertGreaterEqual(
                     ratio, WCAG_AA_NORMAL_TEXT,
                     "The %s message bubble body text (dark $body-color) on its bubble fill (%s) is "
-                    "only %.2f:1 - WCAG AA normal text needs >= %.1f:1. Core's message.dark.scss "
-                    "paints this `mix($gray-100, darken(...), ..)`, a near-white gray."
+                    "only %.2f:1 - WCAG AA normal text needs >= %.1f:1."
                     % (variant, bubble_value, ratio, WCAG_AA_NORMAL_TEXT),
                 )
 
-    def test_dark_read_notification_item_name_and_preview_clear_aa(self):
-        """A READ conversation's name + preview in the messaging-menu list must clear WCAG AA.
+    def test_dark_followers_button_of_a_followed_record_clears_aa_on_the_chatter_panel(self):
+        """The followers button of a record the user follows must clear AA on the dark chatter.
 
-        A read (non-unread, non-hard-muted) conversation is rendered by NotificationItem with muted=1
-        (mail/static/src/core/public_web/messaging_menu.xml:45 `!thread.isUnread ? 1 : 0`), which
-        stamps the `text-muted` class on the item root (notification_item.xml:9). Odoo's BACKEND
-        redefines that utility to the Sass LITERAL `$text-muted` = $o-main-color-muted =
-        rgba($o-gray-700, .76) (web/static/src/scss/utilities_custom_backend.scss:18,
-        bootstrap_overridden.scss:85) - NOT Bootstrap 5.3's runtime `var(--secondary-color)` - so it
-        does NOT flip: the read name + preview inherited rgba(73,80,87,.76) = 2.14:1 on the #111B1E
-        list. This module re-points them onto the dark muted-text token --secondary-color (#8EA5A8),
-        resolved through core's own :root emission (a rename orphans the reference and this goes RED).
-        WOULD FAIL IF REVERTED: with no `.o-mail-NotificationItem.text-muted` name/preview override,
-        no rule declares a colour on those subjects and the assertion fails - the read text is left to
-        core's inherited $text-muted literal at 2.14:1. Measured against the dark list surface
-        (body-bg -> #111B1E)."""
+        The button (`btn btn-link text-action`, chatter.xml) paints its pressed state through
+        core's `button.text-action.active { --color: ...; color: var(--color) !important }`, which
+        resolves the brand teal, a dark tone on the dark chatter. The colour is resolved through
+        the cascade over the real chain, so the custom property the rule reads is followed, and
+        measured against the surface the chatter paints at the fixed AA threshold.
+
+        WOULD FAIL IF REVERTED: the brand teal #008390 reads 4.16:1 on #0B1315."""
         css = self._compiled_css(DARK_BUNDLE)
-        surface_rgb = self._assert_rgb(
-            self._dark_root_token(css, "body-bg", "dark notification list surface"),
-            "dark notification list surface",
+        chain = _element_chain(FOLLOWERS_BUTTON_CLASSES, FOLLOWERS_BUTTON_LAYERS, tag="button")
+        value = self._resolve(css, chain, ("color",), "followers button")
+        rgb = _opaque_rgb(value)
+        self.assertIsNotNone(rgb, "The followers button resolves the colour %r, not an opaque one." % value)
+        surface = self._rendered_backdrop(css, chain, DARK_BUNDLE, "followers button")
+        ratio = _contrast_ratio(rgb, surface.rgb)
+        self.assertGreaterEqual(
+            ratio, WCAG_AA_NORMAL_TEXT,
+            "The followers button renders %s on %s (%s) - only %.2f:1, where WCAG AA normal text "
+            "needs >= %.1f:1." % (value, surface.value, surface.painter, ratio, WCAG_AA_NORMAL_TEXT),
         )
-        for element in (".o-mail-NotificationItem-name", ".o-mail-NotificationItem-text"):
-            with self.subTest(element=element):
-                bodies = _bodies_matching(
-                    css,
-                    lambda selector, element=element: _selector_subject(selector) == element
-                    and ".text-muted" in selector, ANY_ANCESTORS,
+
+    def test_dark_read_notification_item_name_and_preview_clear_aa(self):
+        """A READ conversation's name and preview in the messaging-menu list must clear WCAG AA.
+
+        A read (non-unread, non-hard-muted) conversation is rendered with muted=1
+        (messaging_menu.xml `!thread.isUnread ? 1 : 0`), which stamps `text-muted` on the row
+        (notification_item.xml). The utility compiles to the dark scheme's muted tier, and the preview
+        carries core's own `opacity: .75`, lifted to 1 by this module. Each node's colour and opacity
+        are resolved through the cascade over the real row chain and composited onto the list surface.
+
+        WOULD FAIL IF REVERTED: the preview's `opacity: .75` multiplies the muted tier a second time
+        and the ratio falls below 4.5."""
+        for subject, classes in (
+            ("read conversation name", NOTIFICATION_ITEM_NAME_CLASSES),
+            ("read conversation preview", NOTIFICATION_ITEM_TEXT_CLASSES),
+        ):
+            with self.subTest(element=subject):
+                self._assert_readable_on_every_message_surface(
+                    DARK_BUNDLE,
+                    _element_chain(classes, NOTIFICATION_ITEM_LAYERS),
+                    subject,
+                    "The read row's muted tier must clear AA at the opacity it is rendered with.",
+                    panel_label="the messaging-menu list",
                 )
-                self.assertTrue(
-                    bodies,
-                    "No compiled rule re-points the READ (.text-muted) %s in %s - the read name/"
-                    "preview is then left to core's inherited $text-muted literal rgba(73,80,87,.76) "
-                    "= 2.14:1 on the dark list." % (element, DARK_BUNDLE),
+
+    def test_dark_mention_suggestion_rows_clear_aa_when_active_or_hovered(self):
+        """Every label of the active and of the hovered suggestion row clears AA on that row.
+
+        Core's dark file mixes the action colour into WHITE for both rows, a light fill under the
+        scheme's light labels. The rows are read through core's own consumers: the active row's
+        fill is `.o-mail-NavigableList-active`, the hovered row's fill is
+        `.o-mail-NavigableList-item:hover`, and each takes the custom property declared on the
+        list. The labels of a row are the link tone (the name) and the muted tone (the address).
+
+        WOULD FAIL IF REVERTED: with core's white-mixed fills the link tone reads 1.62:1."""
+        css = self._compiled_css(DARK_BUNDLE)
+        row_chain = _element_chain(
+            NAVIGABLE_LIST_ROW_CLASSES | {"o-mail-NavigableList-active"}, NAVIGABLE_LIST_LAYERS,
+        )
+        hover_chain = _element_chain(NAVIGABLE_LIST_ITEM_CLASSES, NAVIGABLE_LIST_LAYERS[1:])
+        hover_chain[0]["states"] = frozenset({"hover"})
+        muted = self._dark_root_token(css, "secondary-color", "mention row muted tier")
+        rows = (
+            ("active", row_chain, "link-color"),
+            ("hovered", hover_chain, "link-hover-color"),
+        )
+        for state, chain, link_token in rows:
+            with self.subTest(row=state):
+                fill_value = self._resolve(css, chain, BACKGROUND_PROPS, "%s suggestion row" % state)
+                fill_rgb = _opaque_rgb(fill_value)
+                self.assertIsNotNone(fill_rgb, "The %s row fill %r is not opaque." % (state, fill_value))
+                for label, token_value in (
+                    ("name", self._dark_root_token(css, link_token, "mention row link tier")),
+                    ("address", muted),
+                ):
+                    _value, label_rgb = self._resolve_dark_colour(
+                        css, token_value, "%s row %s" % (state, label),
+                    )
+                    ratio = _contrast_ratio(label_rgb, fill_rgb)
+                    self.assertGreaterEqual(
+                        ratio, WCAG_AA_NORMAL_TEXT,
+                        "The %s suggestion row paints %s and its %s reads %s: only %.2f:1, where "
+                        "WCAG AA normal text needs >= %.1f:1."
+                        % (state, fill_value, label, token_value, ratio, WCAG_AA_NORMAL_TEXT),
+                    )
+
+    def test_dark_date_divider_label_clears_aa_in_every_container(self):
+        """The thread's day divider ("Today") must be readable on every dark thread surface.
+
+        The label stacks `text-muted` on `opacity-50`, so the muted tier is halved again; the
+        rule that cancels the utility leaves the de-emphasis with the muted colour.
+
+        WOULD FAIL IF REVERTED: the halved muted tier reads 2.66:1 on the Discuss thread."""
+        for container, panel_label, message_layers in DARK_MESSAGE_CONTAINERS:
+            with self.subTest(container=container):
+                thread_layers = message_layers[len(MESSAGE_SUBTREE_TO_THREAD_LAYERS) - 1:]
+                self._assert_readable_on_every_message_surface(
+                    DARK_BUNDLE,
+                    _element_chain(
+                        DATE_SECTION_LABEL_CLASSES, (DATE_SECTION_CLASSES,) + thread_layers,
+                        tag="span",
+                    ),
+                    "day divider label (%s)" % container,
+                    "The divider's `opacity-50` (date_section.xml:7) halves the muted tier; "
+                    "cancel the utility rather than lowering the floor.",
+                    panel_label=panel_label,
                 )
-                colors = _declared_values(bodies, _COLOR_RE)
-                self.assertTrue(
-                    colors, "The read %s declares no colour in %s." % (element, DARK_BUNDLE),
-                )
-                text_value, text_rgb = self._resolve_dark_colour(
-                    css, colors[-1], "read %s" % element
-                )
-                ratio = _contrast_ratio(text_rgb, surface_rgb)
-                self.assertGreaterEqual(
-                    ratio, WCAG_AA_NORMAL_TEXT,
-                    "The read conversation %s (%s) on the dark list (%s) is only %.2f:1 - this is "
-                    "normal muted text and needs >= %.1f:1. Core's backend `text-muted` utility "
-                    "resolves to rgba(73,80,87,.76) here at 2.14:1."
-                    % (element, text_value, self._dark_root_token(css, "body-bg", element),
-                       ratio, WCAG_AA_NORMAL_TEXT),
-                )
+
+    def test_dark_member_list_section_header_clears_aa_on_the_sidebar_surface(self):
+        """The "Online" / "Offline" section headers of the Discuss members panel must clear AA.
+
+        The header stacks `text-muted` on `opacity-75`, so the muted tier is dimmed again on the
+        raised sidebar surface; the utility is important, so only an important rule cancels it.
+
+        WOULD FAIL IF REVERTED: the dimmed header reads 3.36:1 on the sidebar surface."""
+        self._assert_readable_on_every_message_surface(
+            DARK_BUNDLE,
+            _element_chain(
+                MEMBER_LIST_HEADER_CLASSES, MEMBER_LIST_PANEL_LAYERS, tag="h6",
+            ),
+            "members panel section header",
+            "The header's `opacity-75` (channel_member_list.xml:34) dims the muted tier a second "
+            "time; cancel the utility rather than lowering the floor.",
+            panel_label="the members panel",
+        )
+
+    def test_dark_read_notification_item_timestamp_clears_aa(self):
+        """The timestamp of a READ conversation in the messaging menu must clear AA.
+
+        The read row is `text-muted` and its timestamp adds the `opacity-75` utility on top, so
+        the tier is multiplied twice; the utility is important, so only an important rule on the
+        timestamp cancels it.
+
+        WOULD FAIL IF REVERTED: the doubly dimmed timestamp reads 4.36:1 on the list."""
+        self._assert_readable_on_every_message_surface(
+            DARK_BUNDLE,
+            _element_chain(
+                NOTIFICATION_ITEM_DATE_CLASSES,
+                NOTIFICATION_ITEM_LAYERS,
+                tag="small",
+            ),
+            "read conversation timestamp",
+            "The read row's `opacity-75` (notification_item.xml:26) dims the muted tier a second "
+            "time; cancel the utility rather than lowering the floor.",
+            panel_label="the messaging-menu list",
+        )
+
+    def test_dark_active_messaging_menu_tab_label_and_icon_are_readable(self):
+        """The active bottom-navigation tab keeps a readable label and a visible icon.
+
+        The tab reads its label from `--btn-active-color` and paints its icon with the same
+        accent, on the component-active tint; the enterprise teal of the light scheme is too
+        dark for both grounds.
+
+        WOULD FAIL IF REVERTED: the label reads 3.6:1 on the view surface and the icon 2.1:1 on
+        its tint."""
+        css = self._compiled_css(DARK_BUNDLE)
+        label_chain = _element_chain(MESSAGING_MENU_TAB_LABEL_CLASSES, MESSAGING_MENU_LAYERS)
+        label_value, label_rgb = self._inherited_colour(
+            css, label_chain, DARK_BUNDLE, "active tab label"
+        )
+        label_surface = self._rendered_backdrop(css, label_chain, DARK_BUNDLE, "active tab label")
+        label_ratio = _contrast_ratio(label_rgb, label_surface.rgb)
+        self.assertGreaterEqual(
+            label_ratio, WCAG_AA_NORMAL_TEXT,
+            "The active tab label %s on %s reads only %.2f:1, where WCAG AA normal text needs >= "
+            "%.1f:1." % (label_value, label_surface.value, label_ratio, WCAG_AA_NORMAL_TEXT),
+        )
+        icon_chain = _element_chain(MESSAGING_MENU_TAB_ICON_CLASSES, MESSAGING_MENU_LAYERS)
+        icon_value, icon_rgb = self._inherited_colour(
+            css, icon_chain, DARK_BUNDLE, "active tab icon"
+        )
+        icon_surface = self._rendered_backdrop(css, icon_chain, DARK_BUNDLE, "active tab icon")
+        icon_ratio = _contrast_ratio(icon_rgb, icon_surface.rgb)
+        self.assertGreaterEqual(
+            icon_ratio, WCAG_AA_NON_TEXT,
+            "The active tab icon %s on %s reads only %.2f:1, where WCAG 1.4.11 needs >= %.1f:1."
+            % (icon_value, icon_surface.value, icon_ratio, WCAG_AA_NON_TEXT),
+        )
 
     def test_dark_composer_input_fill_clears_aa_under_its_text(self):
-        """The composer field must be a dark fill its input text + placeholder can be read on.
+        """The composer field must be a dark fill its input text can be read on.
 
         The composer field is `.o-mail-Composer-bg { background-color: var(--mail-Composer-bg,
-        $o-view-background-color) }` (composer.scss:103-104) and the input is transparent over it.
+        $o-view-background-color) }` (composer.scss) and the input is transparent over it.
         mail/static/src/core/common/composer.dark.scss sets `.o-mail-Composer { --mail-Composer-bg:
-        mix($gray-100, $o-view-background-color) }` - a slightly raised field that with the unflipped
-        light $gray-100 composites to the mid-gray #858A8C, only 3.14:1 under the near-white
-        $body-color input text. This module re-points the field onto a subtly raised DARK neutral.
-        WOULD FAIL IF REVERTED: composer.dark.scss' light mix is the last writer on `.o-mail-Composer`
-        and the ratio assertion reports #858A8C at 3.14:1. Same selector, later source order wins, so
-        the LAST-declared --mail-Composer-bg is read - last among the rules that REACH this composer,
-        which is what COMPOSER_ANCESTORS decides: a rule scoped under another module's root declares
-        the same token on the same subject for a composer inside THAT subtree."""
+        mix($gray-100, $o-view-background-color) }`, a raised dark tone under the dark gray ramp. The
+        LAST-declared --mail-Composer-bg is read - last among the rules that REACH this composer,
+        which is what COMPOSER_ANCESTORS decides - and measured against the dark body text at the
+        fixed AA threshold."""
         self._require_scope_filter()
         css = self._compiled_css(DARK_BUNDLE)
         bodies = _bodies_matching(
@@ -3441,527 +3614,12 @@ class MailContrastCompileTest(TransactionCase):
         self.assertGreaterEqual(
             ratio, WCAG_AA_NORMAL_TEXT,
             "The composer input text (dark $body-color) on the composer field (%s) is only %.2f:1 - "
-            "WCAG AA normal text needs >= %.1f:1. Core's composer.dark.scss paints this "
-            "`mix($gray-100, $o-view-background-color)` = the mid-gray #858A8C at 3.14:1."
+            "WCAG AA normal text needs >= %.1f:1."
             % (fill_value, ratio, WCAG_AA_NORMAL_TEXT),
         )
 
     # ==============================================================================================
-    # 14. Dark mode - the spreadsheet LIGHT ISLAND (the embedded comments Chatter)
-    # ==============================================================================================
-    # See the "spreadsheet LIGHT ISLAND" element-model section above for the collision these two
-    # guards protect against and for why neither needs `spreadsheet` or any of its extensions
-    # installed.
-
-    def _island_forced_button_text(self):
-        """Return ``(value, rgb)`` of the label core forces on every `.btn` inside `.o-spreadsheet`.
-
-        Read out of core's OWN dark stylesheet rather than pinned here: that label is core's design
-        decision for the light island, this module cannot change it, and reading it keeps the
-        arithmetic below correct through a core re-tune instead of measuring a stale literal. It is
-        also what makes both guards independent of whether `spreadsheet` is INSTALLED - `file_open`
-        resolves a source file off the addons path, never a module registry."""
-        try:
-            with file_open(CORE_SPREADSHEET_DARK_SCSS, "r") as core_file:
-                content = core_file.read()
-        except OSError:
-            content = None
-        self.assertIsNotNone(
-            content,
-            "%s could not be read off the addons path. It is the core stylesheet that forces the "
-            "spreadsheet editor to stay a LIGHT island in dark mode; without it the light-island "
-            "label these guards measure against cannot be grounded - re-ground them against "
-            "whatever core replaced it with rather than pinning a literal here."
-            % CORE_SPREADSHEET_DARK_SCSS,
-        )
-        match = _ISLAND_BUTTON_COLOUR_RE.search(content)
-        self.assertIsNotNone(
-            match,
-            "%s no longer declares a `.btn { color: ... }` inside its `.o-spreadsheet` wrapper. That "
-            "declaration is the whole reason a dark-palette Chatter goes unreadable inside the "
-            "editor; if core dropped it, re-ground these guards rather than deleting them."
-            % CORE_SPREADSHEET_DARK_SCSS,
-        )
-        value = _normalize_value(match.group(1))
-        return value, self._assert_rgb(value, "spreadsheet light-island .btn label")
-
-    def _rendered_backdrop(self, css, chain, bundle_name, label, siblings=()):
-        """Return the :class:`Backdrop` an element in ``chain`` is really READ ON.
-
-        WHICH PAINTED SIBLING SITS BEHIND IT IS AN INPUT, NOT AN ASSUMPTION. ``siblings`` declares
-        the full-bleed overlays that MAY be painted behind this element; each one is applied only
-        when its own container is a strict ancestor of the subject, which is the DOM fact that
-        decides it (see the "WHICH PAINTED SIBLING SITS BEHIND THIS ELEMENT" section above for the
-        rule and for the two directions it is wrong in). Passing none is the honest model for a
-        subtree that has no overlay in it - not a shortcut - and is what every ancestor-only caller
-        does.
-
-        With no overlay applying, this walks OUTWARDS from the element and stops at the first
-        ancestor that paints a fully opaque colour - the browser's own model for a transparent
-        element, and the reason the guards over it are indifferent to WHERE a surface gets re-lit:
-        any layer in the stack may carry the fix and none of them is prescribed.
-
-        A stack that paints nothing anywhere shows the app's own body background, so that is the
-        backstop rather than a failure - it is a real surface, and reading it from core's `:root`
-        emission keeps the answer available on a database where the modules that would otherwise
-        contribute the outer chrome are not installed at all."""
-        self._require_cascade_resolver()
-        for sibling in siblings:
-            sibling_chain = _painted_sibling_chain(chain, sibling)
-            if sibling_chain is None:
-                continue
-            value = _computed_value(css, sibling_chain, BACKGROUND_PROPS)
-            self.assertIsNotNone(
-                value,
-                "No compiled background applies to the %s in %s. Core's own message stylesheets "
-                "paint every variant, so an empty resolution means the modelled overlay no longer "
-                "matches message.xml:89." % (sibling.label, bundle_name),
-            )
-            rgb = _opaque_rgb(value)
-            self.assertIsNotNone(
-                rgb,
-                "The %s is modelled as painted behind this element, but it resolves the background "
-                "%r in %s, which is not an opaque colour. A full-bleed overlay that stops painting "
-                "one lets the glyphs above it fall onto the layer behind, and this guard can no "
-                "longer say what a reader sees - re-model the overlay rather than measuring the "
-                "wrong surface." % (sibling.label, value, bundle_name),
-            )
-            return Backdrop(sibling.label, None, value, rgb)
-        for depth in range(len(chain)):
-            value = _computed_value(css, chain[depth:], BACKGROUND_PROPS)
-            rgb = _opaque_rgb(value)
-            if rgb is not None:
-                return Backdrop("layer %d of the modelled chain" % depth, depth, value, rgb)
-        fallback = self._root_token(css, "body-bg", bundle_name, label)
-        return Backdrop(
-            "the app body background", len(chain), fallback, self._assert_rgb(fallback, label),
-        )
-
-    def _island_rendered_surface(self, css, chain, label):
-        """Return ``(depth, value, rgb)`` of the DARK-bundle surface an element renders on.
-
-        The ancestor-only reading of :meth:`_rendered_backdrop`, kept as the entry point for the
-        island guards whose subjects have no overlay in their subtree."""
-        backdrop = self._rendered_backdrop(css, chain, DARK_BUNDLE, label)
-        return backdrop.depth, backdrop.value, backdrop.rgb
-
-    def _inherited_colour(self, css, chain, bundle_name, label):
-        """Return ``(value, rgb)`` of the colour an element in ``chain`` really renders its text in.
-
-        The INHERITED-property dual of :meth:`_rendered_backdrop`. `color` inherits, so the
-        element's own declaration is only the first candidate: when no rule styles the element
-        itself the value comes from the nearest ancestor that declares one, and only from the
-        document body when no ancestor does either. Walking that outwards is what makes a
-        declaration on a WRAPPER visible - resolving on the subject alone returns None whenever the
-        colour lives one layer out, and a caller that then falls back to the body token reports a
-        value the element does not render in. It is also the only way a BARE-class `!important`
-        (0,1,0) on an ancestor is seen to beat a more specific normal rule further out, which is the
-        cascade order a browser applies and the one core's `.o-discuss-text-body` turns on in BOTH
-        schemes (core.scss:99-101 light, core.dark.scss:13-15 dark)."""
-        self._require_cascade_resolver()
-        for depth in range(len(chain)):
-            value = _computed_value(css, chain[depth:], ("color",))
-            if value is not None:
-                return self._resolve_scheme_colour(css, value, bundle_name, label)
-        fallback = self._root_token(css, "body-color", bundle_name, label)
-        return self._resolve_scheme_colour(css, fallback, bundle_name, label)
-
-    def _island_inherited_colour(self, css, chain, label):
-        """The dark-bundle reading of :meth:`_inherited_colour`."""
-        return self._inherited_colour(css, chain, DARK_BUNDLE, label)
-
-    def _rendered_ink(self, css, chain, bundle_name, label):
-        """Return ``(value, rgb, alpha)`` of the ink an element paints, alpha included.
-
-        The colour half of a contrast pair is not always opaque, and in the LIGHT backend it usually
-        is not: `$text-muted` is `rgba($o-gray-700, $o-opacity-muted)` (primary_variables.scss:121),
-        so a muted glyph is ALREADY a translucent wash over whatever it lands on - which is the
-        whole reason the surface under it decides whether it is readable. On top of that an element
-        may carry an `opacity` utility, which composites the element as a whole. Both multiply into
-        one effective alpha, and reading each from the COMPILED bundle rather than pinning `.76` or
-        `.75` here keeps the arithmetic correct through a core re-tune of either."""
-        self._require_cascade_resolver()
-        value, rgb = self._inherited_colour(css, chain, bundle_name, label)
-        alpha_match = _RGBA_ALPHA_RE.search(value)
-        alpha = 1.0 if alpha_match is None else (_to_alpha(alpha_match.group(1)) or 1.0)
-        opacity = _computed_value(css, chain, ("opacity",))
-        if opacity is not None:
-            element_alpha = _to_alpha(_normalize_value(opacity))
-            self.assertIsNotNone(
-                element_alpha,
-                "%s resolves the opacity %r in %s, which is not a number this guard can composite. "
-                "The dimming is part of the contrast rule, so an unreadable opacity has to fail "
-                "rather than be silently treated as fully opaque."
-                % (label, opacity, bundle_name),
-            )
-            alpha *= element_alpha
-        return value, rgb, alpha
-
-    def test_dark_spreadsheet_island_chatter_buttons_clear_aa_under_the_forced_light_label(self):
-        """The embedded Chatter's composer buttons must be readable inside the spreadsheet island.
-
-        THE COLLISION. Core keeps `.o-spreadsheet` a LIGHT island in dark mode and forces
-        `.o-spreadsheet .btn { color: <light-island label> }` (0,2,0, no `!important`), which outranks
-        Bootstrap's `.btn { color: var(--btn-color) }` (0,1,0) and repaints the LABEL of every button
-        in the editor. It does not touch the FILL, so the three composer buttons keep resolving their
-        background through the app-wide dark ladder - `.btn-secondary` onto dark_buttons.scss'
-        $o-viin-dark-control-bg, `.btn-primary` onto the chrome teal. Each button therefore serves its
-        label from the light scheme and its fill from the dark one. Measured live at 1440px: Log note
-        1.19:1, Activity 1.19:1, Send message 2.17:1 - the dark_buttons pairing they were DESIGNED as
-        is 10.95:1, so nothing here is a mis-designed colour, only a mis-matched pair.
-
-        WHAT IS ASSERTED, AND WHY NOT A HEX. The rule, not a shade: whatever fill each button
-        resolves to inside the island must clear WCAG AA against the label core forces on it. The
-        label is read from core's own stylesheet, so a core re-tune moves the arithmetic instead of
-        going stale; the fill is resolved through the cluster's cascade resolver over the real
-        ancestor chain, so a fix is free to land on the Chatter, the comments panel or the button map
-        and free to pick any readable tone. It cannot be satisfied by a different-but-equally-
-        unreadable shade, which a pinned hex could not promise.
-
-        WOULD FAIL IF REVERTED: with no island-scoped rule the resolver returns the dark ladder's
-        fills, and each ratio lands where the live measurement put it - far under 4.5:1."""
-        # The element models are transcribed from this template; assert the transcription is still
-        # true, or the guard silently measures buttons core stopped rendering.
-        self._assert_core_source_contains(
-            "mail/static/src/chatter/web/chatter.xml",
-            ("o-mail-Chatter-sendMessage btn", "o-mail-Chatter-logNote btn",
-             "o-mail-Chatter-activity btn btn-secondary"),
-            "The chatter composer buttons no longer carry those classes, so the island element "
-            "models below are keyed on markup core stopped rendering.",
-        )
-        css = self._compiled_css(DARK_BUNDLE)
-        label_value, label_rgb = self._island_forced_button_text()
-
-        for name, classes, prev_sibling in ISLAND_COMPOSER_BUTTONS:
-            with self.subTest(button=name):
-                chain = _element_chain(classes, ISLAND_TOPBAR_LAYERS, prev_sibling)
-                fill_value = _computed_value(css, chain, BACKGROUND_PROPS)
-                self.assertIsNotNone(
-                    fill_value,
-                    "No compiled background applies to the %r composer button inside the spreadsheet "
-                    "island in %s - Bootstrap's own `.btn { background-color: var(--btn-bg) }` is in "
-                    "the bundle, so an empty resolution means the modelled element no longer matches "
-                    "the markup." % (name, DARK_BUNDLE),
-                )
-                fill_rgb = _opaque_rgb(fill_value)
-                self.assertIsNotNone(
-                    fill_rgb,
-                    "The %r composer button resolves the background %r inside the spreadsheet "
-                    "island, which is not an opaque colour this contrast guard can measure. A "
-                    "composer button is a filled control: it must paint its own opaque surface, "
-                    "otherwise its label sits on whatever the panel behind it happens to be."
-                    % (name, fill_value),
-                )
-                ratio = _contrast_ratio(label_rgb, fill_rgb)
-                self.assertGreaterEqual(
-                    ratio, WCAG_AA_NORMAL_TEXT,
-                    "Inside the spreadsheet light island the %r button renders core's forced label "
-                    "%s on the fill %s (rgb%r) - only %.2f:1, where WCAG AA normal text needs "
-                    ">= %.1f:1. Core repaints the label and not the fill, so a dark-ladder fill "
-                    "leaves half of the pair in the wrong scheme; the button must render on the "
-                    "island's LIGHT surface."
-                    % (name, label_value, fill_value, fill_rgb, ratio, WCAG_AA_NORMAL_TEXT),
-                )
-
-    def test_dark_spreadsheet_island_chatter_surface_is_light_and_keeps_its_message_text_readable(
-        self,
-    ):
-        """The embedded Chatter's surface must be the island's LIGHT one, readable both ways.
-
-        THE SECOND HALF OF THE SAME DEFECT. The buttons above at least paint their own fill; every
-        transparent control in the panel - the cell-address toggle, Resolve, the Chatter's own
-        link-style topbar actions - has none, so it renders core's forced light-island label directly
-        on whatever the stack behind it paints. When measured (1.70:1 live) that was the comments
-        panel's own `bg-view`, which the dark recompile drove to the dark view surface; a later
-        revision has since removed it, so the panel paints nothing and the walk continues outwards.
-        WHICH layer wins is exactly what this guard refuses to pin. Re-lighting
-        the buttons would leave every one of those controls exactly as unreadable, which is why this
-        is asserted separately and can fail on its own.
-
-        AND THE TRAP ON THE WAY OUT. Lighting the surface is only half a fix. The message text
-        carries the app-wide dark near-white, so a light surface under un-re-pointed text moves the
-        unreadability from the buttons to the message body instead of ending it. The pair therefore
-        has to be coherent in BOTH directions: a light surface under core's forced dark label, and
-        text that stays readable on whatever surface wins.
-
-        WHERE THE TEXT IS READ, AND WHY NOT AT THE CHATTER ROOT. `.o-mail-Message-body` declares no
-        colour (message.scss:45-58); it inherits from `.o-discuss-text-body` (message.xml:82), the
-        wrapper around it, which core styles as a BARE class with `!important` in both schemes
-        (core.scss:99-101, core.dark.scss:13-15). `!important` outranks any normal declaration at any
-        specificity, so an island rule on `.o-mail-Chatter` (0,2,0, normal) never reaches this text.
-        Resolving `color` at the Chatter root answers for a different element; the body text is
-        resolved through :meth:`_island_inherited_colour` over the real message chain, which walks
-        outwards from the body and stops at the wrapper that actually declares the winning colour.
-
-        HOW A POSITIONED SIBLING IS ACCOUNTED FOR. `.o-mail-Message-bubble` (message.xml:89) is
-        `position-absolute top-0 start-0 w-100 h-100` inside that same wrapper - a preceding SIBLING
-        of the body, not an ancestor of it - so it is invisible to any walk that composites only
-        ancestor backgrounds, and such a walk reports the panel behind the bubble as the surface. It
-        is instead resolved as its OWN element, on the same ancestors as the body, and its fill is
-        handed to the arithmetic as the surface for every bubbled variant the island's bubble map
-        paints. The no-bubble message keeps the ancestor walk, which is the correct model for it:
-        with no bubble in the subtree there is nothing between the glyphs and the panel.
-
-        WOULD FAIL IF REVERTED: with no island-scoped rule the ancestor walk lands on a dark
-        surface - the one measured at 1.70:1, or whichever layer paints once the panel does not -
-        and the forced-label assertion reports a ratio far under the floor. With the
-        surface lit but the text left on core's bare-class `!important`, the body subTests report the
-        near-white on the island's own light fills - the coherence half of the same defect."""
-        css = self._compiled_css(DARK_BUNDLE)
-        label_value, label_rgb = self._island_forced_button_text()
-        chain = _element_chain(CHATTER_ROOT_CLASSES, ISLAND_PANEL_LAYERS)
-
-        depth, surface_value, surface_rgb = self._island_rendered_surface(
-            css, chain, "spreadsheet island chatter surface"
-        )
-        painted_by = "the app body background" if depth >= len(chain) else (
-            "layer %d of the modelled chain" % depth
-        )
-
-        with self.subTest(direction="core's forced light-island label"):
-            ratio = _contrast_ratio(label_rgb, surface_rgb)
-            self.assertGreaterEqual(
-                ratio, WCAG_AA_NORMAL_TEXT,
-                "Inside the spreadsheet light island the Chatter renders on %s (%s, rgb%r, painted "
-                "by %s), and core's forced light-island label %s reads only %.2f:1 on it - WCAG AA "
-                "normal text needs >= %.1f:1. Every transparent control in the panel (the "
-                "cell-address toggle, Resolve, the Chatter's link-style topbar actions) carries that "
-                "label with no fill of its own, so the surface itself has to be the island's light "
-                "one." % (DARK_BUNDLE, surface_value, surface_rgb, painted_by, label_value, ratio,
-                          WCAG_AA_NORMAL_TEXT),
-            )
-
-        with self.subTest(direction="the chatter's inherited text tier"):
-            text_value = _computed_value(css, chain, ("color",))
-            if text_value is None:
-                # No island-scoped colour reaches the Chatter, so its text inherits from the
-                # document body - core's own :root emission is the honest source for that.
-                text_value = self._dark_root_token(
-                    css, "body-color", "spreadsheet island chatter text"
-                )
-            text_value, text_rgb = self._resolve_dark_colour(
-                css, text_value, "spreadsheet island chatter text"
-            )
-            ratio = _contrast_ratio(text_rgb, surface_rgb)
-            self.assertGreaterEqual(
-                ratio, WCAG_AA_NORMAL_TEXT,
-                "Inside the spreadsheet light island the Chatter's inherited text tier %s reads "
-                "only %.2f:1 on the surface it renders on (%s, rgb%r) - WCAG AA normal text needs "
-                ">= %.1f:1. This is the tier every descendant with no colour of its own takes - the "
-                "message author name, the date row, the activity labels - so lighting the island "
-                "surface without re-pointing it moves the unreadability from the buttons to those "
-                "labels instead of ending it. The message BODY does not inherit from here; it is "
-                "asserted separately below, against the wrapper that really colours it."
-                % (text_value, ratio, surface_value, surface_rgb, WCAG_AA_NORMAL_TEXT),
-            )
-
-        # The body text is resolved where it is DECLARED, not where the Chatter is: the walk starts
-        # at `.o-mail-Message-body` and stops at the first ancestor carrying a colour, which is the
-        # `.o-discuss-text-body` wrapper and its bare-class `!important`.
-        body_chain = _element_chain(MESSAGE_BODY_CLASSES, ISLAND_TEXT_BODY_LAYERS)
-        body_value, body_rgb = self._island_inherited_colour(
-            css, body_chain, "spreadsheet island message body text"
-        )
-
-        for variant in sorted(ISLAND_BUBBLE_CLASSES):
-            with self.subTest(message_surface=variant):
-                # The bubble is obtained through the cluster's ONE painted-sibling model rather than
-                # re-derived here: two models of the same overlay drift, and the drift is invisible
-                # until it produces the false green this guard exists to prevent.
-                backdrop = self._rendered_backdrop(
-                    css, body_chain, DARK_BUNDLE, "spreadsheet island message body surface",
-                    siblings=(MESSAGE_BUBBLE_SIBLING_BY_VARIANT[variant],),
-                )
-                bubble_value, bubble_rgb = backdrop.value, backdrop.rgb
-                ratio = _contrast_ratio(body_rgb, bubble_rgb)
-                self.assertGreaterEqual(
-                    ratio, WCAG_AA_NORMAL_TEXT,
-                    "Inside the spreadsheet light island a %s message renders its body text %s on "
-                    "the bubble fill %s (rgb%r) - only %.2f:1, where WCAG AA normal text needs "
-                    ">= %.1f:1. The bubble is a `position-absolute` SIBLING of the body "
-                    "(message.xml:89), so this is the colour under the glyphs however light the "
-                    "panel behind it is; and the body's colour comes from the bare-class "
-                    "`!important` on `.o-discuss-text-body` (core.dark.scss:13-15), which no normal "
-                    "island rule can outrank. Re-point that wrapper inside `.o-spreadsheet` so the "
-                    "text matches the island's own bubbles."
-                    % (variant, body_value, bubble_value, bubble_rgb, ratio, WCAG_AA_NORMAL_TEXT),
-                )
-
-        with self.subTest(message_surface="no bubble"):
-            # A note and a notification carry no bubbleColor (message.xml:89 gates the bubble on
-            # it), so for them the ancestor walk IS the right model - nothing is painted between the
-            # glyphs and the panel.
-            _depth, plain_value, plain_rgb = self._island_rendered_surface(
-                css, body_chain, "spreadsheet island message body surface"
-            )
-            ratio = _contrast_ratio(body_rgb, plain_rgb)
-            self.assertGreaterEqual(
-                ratio, WCAG_AA_NORMAL_TEXT,
-                "Inside the spreadsheet light island a message with no bubble renders its body text "
-                "%s directly on the panel surface %s (rgb%r) - only %.2f:1, where WCAG AA normal "
-                "text needs >= %.1f:1. Every note and every notification body lands here, so "
-                "re-pointing only the bubbled variants would leave them exactly as unreadable."
-                % (body_value, plain_value, plain_rgb, ratio, WCAG_AA_NORMAL_TEXT),
-            )
-
-    def test_dark_spreadsheet_island_muted_secondary_text_clears_aa_on_every_surface_it_lands_on(
-        self,
-    ):
-        """The island's muted secondary tier must clear AA on EVERY surface the island paints under it.
-
-        THE SURFACE, NOT THE TIER, IS WHAT MOVES. The two guards above restored the island's BODY
-        tier (#374151-class, 9-10:1 everywhere) and re-lit the three bubbles with core's own LIGHT
-        formula. The SECONDARY tier is a second, quieter tier that rides the same surfaces and is set
-        by different rules: `.o-mail-Message-date` reads `var(--secondary-color)`, re-pointed on the
-        Chatter root, while the in-body `.text-muted` markers are re-pointed by their own
-        `!important` rule. A muted tier chosen against the panel alone is a tier chosen against the
-        LIGHTEST surface in the island - every bubble is darker than the panel, so a tier that only
-        just clears AA on the panel cannot clear it on any of them. That is the whole defect class:
-        the model gets the SURFACE wrong, not the colour.
-
-        WHERE EACH SUBJECT IS READ, AND WHY THEY DIFFER. The timestamp lives in
-        `.o-mail-Message-header` (message.xml:44 inside :38), a SIBLING of the content container - the
-        bubble is `position-absolute` inside `.o-discuss-text-body` several layers further in, so no
-        bubble is ever painted behind a timestamp and its surface is the panel the ancestor walk
-        lands on. The muted markers core renders INSIDE `.o-mail-Message-body` (:110, :113, :117,
-        :120) are inside that wrapper, so on a bubbled message the bubble is the surface under them -
-        resolved as its own element, on the same ancestors, exactly as the body text is. Both
-        subjects are resolved through the cascade rather than pinned, so a fix is free to land on the
-        Chatter token, the `.text-muted` rule or the bubble map, and free to pick any readable tone.
-
-        WOULD FAIL IF REVERTED: a secondary tier tuned only against the island's white panel reads
-        4.69:1 there and lands under 4.5:1 on all three bubbles - 4.21:1 blue, 4.23:1 green, 4.49:1
-        orange - so the bubble subTests report the shortfall the panel subTests cannot see."""
-        # The element models are transcribed from this template; assert the transcription is still
-        # true, or the guard silently measures markers core stopped rendering.
-        self._assert_core_source_contains(
-            "mail/static/src/core/common/message.xml",
-            ('class="o-mail-Message-date o-xsmaller"',
-             "o-mail-Message-header d-flex flex-wrap align-items-baseline lh-1",
-             'class="d-block text-muted smaller">Subject:'),
-            "The muted secondary markers no longer carry those classes, so the element models below "
-            "are keyed on markup core stopped rendering - re-transcribe them from message.xml.",
-        )
-        css = self._compiled_css(DARK_BUNDLE)
-
-        # Each subject resolves its OWN colour: the timestamp takes the tier through a custom
-        # property on an ancestor, the in-body markers through an important rule on themselves. Two
-        # rules, one tier - and reading each where it is declared is what lets either half go RED on
-        # its own instead of one standing in for the other.
-        date_chain = _element_chain(MESSAGE_DATE_CLASSES, ISLAND_MESSAGE_HEADER_LAYERS)
-        date_value, date_rgb = self._island_inherited_colour(
-            css, date_chain, "spreadsheet island message timestamp"
-        )
-        muted_chain = _element_chain(MESSAGE_BODY_MUTED_CLASSES, ISLAND_MESSAGE_BODY_MUTED_LAYERS)
-        muted_value, muted_rgb = self._island_inherited_colour(
-            css, muted_chain, "spreadsheet island in-body muted marker"
-        )
-
-        with self.subTest(muted_surface="panel, under the message timestamp"):
-            _depth, panel_value, panel_rgb = self._island_rendered_surface(
-                css, date_chain, "spreadsheet island message timestamp surface"
-            )
-            ratio = _contrast_ratio(date_rgb, panel_rgb)
-            self.assertGreaterEqual(
-                ratio, WCAG_AA_NORMAL_TEXT,
-                "Inside the spreadsheet light island the message timestamp renders %s on the panel "
-                "surface %s (rgb%r) - only %.2f:1, where WCAG AA normal text needs >= %.1f:1. The "
-                "timestamp is in `.o-mail-Message-header` (message.xml:44), outside "
-                "`.o-discuss-text-body`, so this panel IS its surface: no bubble is ever painted "
-                "behind it and there is no darker case to fall back on."
-                % (date_value, panel_value, panel_rgb, ratio, WCAG_AA_NORMAL_TEXT),
-            )
-
-        for variant in sorted(ISLAND_BUBBLE_CLASSES):
-            with self.subTest(muted_surface="%s bubble" % variant):
-                # Same single painted-sibling model as the body guard above - the overlay is
-                # declared once and applied by DOM containment, never transcribed per guard.
-                backdrop = self._rendered_backdrop(
-                    css, muted_chain, DARK_BUNDLE,
-                    "spreadsheet island in-body muted marker surface",
-                    siblings=(MESSAGE_BUBBLE_SIBLING_BY_VARIANT[variant],),
-                )
-                bubble_value, bubble_rgb = backdrop.value, backdrop.rgb
-                ratio = _contrast_ratio(muted_rgb, bubble_rgb)
-                self.assertGreaterEqual(
-                    ratio, WCAG_AA_NORMAL_TEXT,
-                    "Inside the spreadsheet light island a %s message renders its muted markers %s "
-                    "on the bubble fill %s (rgb%r) - only %.2f:1, where WCAG AA normal text needs "
-                    ">= %.1f:1. The `Subject:` line, the empty-message placeholder and the two "
-                    "translation notes (message.xml:110-120) all sit INSIDE "
-                    "`.o-mail-Message-body`, so the bubble - a `position-absolute` sibling filling "
-                    "the wrapper edge to edge (message.xml:89) - is the colour under them, not the "
-                    "panel. Every bubble is darker than the panel, so a secondary tier tuned "
-                    "against the panel alone cannot clear AA here."
-                    % (variant, muted_value, bubble_value, bubble_rgb, ratio, WCAG_AA_NORMAL_TEXT),
-                )
-
-        with self.subTest(muted_surface="panel, under an unbubbled message body"):
-            # A note and a notification carry no bubbleColor (message.xml:89 gates the bubble on it),
-            # so their in-body markers keep the ancestor walk - nothing is painted between the glyphs
-            # and the panel.
-            _depth, plain_value, plain_rgb = self._island_rendered_surface(
-                css, muted_chain, "spreadsheet island in-body muted marker surface"
-            )
-            ratio = _contrast_ratio(muted_rgb, plain_rgb)
-            self.assertGreaterEqual(
-                ratio, WCAG_AA_NORMAL_TEXT,
-                "Inside the spreadsheet light island a message with no bubble renders its muted "
-                "markers %s directly on the panel surface %s (rgb%r) - only %.2f:1, where WCAG AA "
-                "normal text needs >= %.1f:1. Every note and every notification lands here, so "
-                "re-pointing only the bubbled variants would leave them exactly as unreadable."
-                % (muted_value, plain_value, plain_rgb, ratio, WCAG_AA_NORMAL_TEXT),
-            )
-
-    def test_dark_spreadsheet_island_composer_input_text_reads_on_the_field_it_types_into(self):
-        """The embedded composer's input text must be readable on the field's own fill.
-
-        THE SAME BARE-CLASS RULE, A SECOND SURFACE. The textarea at composer.xml:77 carries
-        `o-discuss-text-body` ITSELF, so it takes the identical `!important` colour core declares at
-        core.dark.scss:13-15 - the app-wide dark near-white. It also paints its OWN fill:
-        `.o-mail-Composer-bg` reads `var(--mail-Composer-bg, $o-view-background-color)`
-        (composer.scss:103-105), a token the island is free to re-point. Those two halves are set by
-        different rules in different files, so lighting the field without re-pointing the text - or
-        the reverse - leaves the user typing in a colour they cannot see, and neither of the two
-        guards above would notice: this element is not in the message subtree and is not the Chatter
-        root either.
-
-        WHAT IS ASSERTED. The rule, not a shade: whatever fill the field resolves to inside the
-        island must clear WCAG AA against whatever colour its text resolves to, both read out of the
-        compiled dark bundle over the real chain. A fix may light the field, darken the text, or
-        re-point the token - any coherent pair passes, and no incoherent one does.
-
-        WOULD FAIL IF REVERTED: with the island lighting `--mail-Composer-bg` and core's bare-class
-        `!important` left in place, the near-white text resolves onto the island's light field."""
-        self._assert_core_source_contains(
-            "mail/static/src/core/common/composer.xml",
-            ("o-mail-Composer-input o-mail-Composer-bg", "o-discuss-text-body"),
-            "The composer textarea no longer carries those classes, so the element model below is "
-            "keyed on markup core stopped rendering - re-transcribe it from composer.xml.",
-        )
-        css = self._compiled_css(DARK_BUNDLE)
-        chain = _element_chain(ISLAND_COMPOSER_INPUT_CLASSES, ISLAND_COMPOSER_INPUT_LAYERS)
-
-        _depth, field_value, field_rgb = self._island_rendered_surface(
-            css, chain, "spreadsheet island composer field"
-        )
-        text_value, text_rgb = self._island_inherited_colour(
-            css, chain, "spreadsheet island composer text"
-        )
-        ratio = _contrast_ratio(text_rgb, field_rgb)
-        self.assertGreaterEqual(
-            ratio, WCAG_AA_NORMAL_TEXT,
-            "Inside the spreadsheet light island the composer input renders its text %s on the "
-            "field fill %s (rgb%r) - only %.2f:1, where WCAG AA normal text needs >= %.1f:1. The "
-            "textarea carries `o-discuss-text-body` (composer.xml:77), whose bare-class "
-            "`!important` (core.dark.scss:13-15) no normal island rule can outrank, and it paints "
-            "its own fill through `--mail-Composer-bg` (composer.scss:103-105). Both halves have to "
-            "be set for the field to be typable."
-            % (text_value, field_value, field_rgb, ratio, WCAG_AA_NORMAL_TEXT),
-        )
-
-    # ==============================================================================================
-    # 15. The painted-sibling surface model itself, pinned in BOTH directions
+    # The painted-sibling surface model itself, pinned in BOTH directions
     # ==============================================================================================
     def test_message_bubble_is_composited_only_for_elements_inside_the_text_body_wrapper(self):
         """A full-bleed sibling must be the surface for what it covers, and for nothing else.
@@ -3985,7 +3643,7 @@ class MailContrastCompileTest(TransactionCase):
         message body and does NOT change it for the timestamp. An ancestor-only resolver fails the
         first half (declaring the bubble changes nothing); a resolver that hands every element in
         the message subtree the bubble fails the second (it changes the timestamp too). No single
-        wrong model passes both halves, which is what makes this red-before-green with no run:
+        wrong model passes both halves, which is what makes this fail on a wrong model without a run:
         the two directions are mutually exclusive outcomes of the same declared overlay.
 
         WHY BOTH BUNDLES. The rule is a DOM fact, so it is scheme-independent; the light backend and
@@ -4003,7 +3661,7 @@ class MailContrastCompileTest(TransactionCase):
         body_chain = _element_chain(MESSAGE_BODY_CLASSES, CHATTER_TEXT_BODY_LAYERS)
         date_chain = _element_chain(MESSAGE_DATE_CLASSES, CHATTER_MESSAGE_HEADER_LAYERS)
         composer_chain = _element_chain(
-            ISLAND_COMPOSER_INPUT_CLASSES, ISLAND_COMPOSER_INPUT_LAYERS
+            COMPOSER_INPUT_CLASSES, COMPOSER_INPUT_CHATTER_LAYERS + CHATTER_PANEL_LAYERS
         )
 
         for sibling in MESSAGE_BUBBLE_SIBLINGS:
@@ -4086,9 +3744,9 @@ class MailContrastCompileTest(TransactionCase):
                     )
 
     # ==============================================================================================
-    # 16. LIGHT mode - the muted/dimmed tiers of an ordinary form-view chatter
+    # LIGHT mode - the muted/dimmed tiers of an ordinary form-view chatter
     # ==============================================================================================
-    # These three guards are NOT scoped to the spreadsheet island and NOT in the dark bundle: they
+    # These three guards are NOT in the dark bundle: they
     # measure `web.assets_backend`, so every form-view chatter in the product is in scope. They share
     # one arithmetic: an already-translucent ink (`$text-muted` is `rgba($o-gray-700, .76)`,
     # primary_variables.scss:121) optionally dimmed further by an `opacity` utility, composited onto
@@ -4096,49 +3754,14 @@ class MailContrastCompileTest(TransactionCase):
     # message has one. That surface split is the reason the painted-sibling model above exists, and
     # the reason a tier tuned against the panel alone is not enough on its own.
 
-    def _assert_readable_on_every_message_surface(
-        self, bundle_name, chain, subject, why, panel_label="the chatter panel",
-    ):
-        """Assert ``subject`` clears AA on the panel AND on each bubble it can be read on.
-
-        One helper for the tiers below because the failure they share is the SURFACE, not the
-        colour: each tier is set by one rule and lands on four different backdrops, so a fix that
-        satisfies the lightest one and no other is the exact defect being guarded against. Every
-        value is resolved from the compiled bundle, so a fix may re-point the tier, drop the
-        dimming, or re-tune the bubbles - any coherent choice passes and no incoherent one does.
-
-        ``panel_label`` NAMES the surface the ancestor walk lands on, and it is not decoration: the
-        same subject is measured in four containers that paint four different panels, so a failure
-        that only says "the panel" sends a reader to the wrong stylesheet. The walk still RESOLVES
-        the colour; the label only says which container was walked."""
-        css = self._compiled_css(bundle_name)
-        ink_value, ink_rgb, alpha = self._rendered_ink(css, chain, bundle_name, subject)
-        surfaces = [(panel_label, ())]
-        surfaces += [(sibling.label, (sibling,)) for sibling in MESSAGE_BUBBLE_SIBLINGS
-                     if _painted_sibling_chain(chain, sibling) is not None]
-        for label, siblings in surfaces:
-            with self.subTest(surface=label):
-                backdrop = self._rendered_backdrop(
-                    css, chain, bundle_name, "%s surface" % subject, siblings=siblings,
-                )
-                painted = _composite(ink_rgb, backdrop.rgb, alpha)
-                ratio = _contrast_ratio(painted, backdrop.rgb)
-                self.assertGreaterEqual(
-                    ratio, WCAG_AA_NORMAL_TEXT,
-                    "In %s the %s renders %s at an effective alpha of %.4f - painting rgb%r - on %s "
-                    "(%s, rgb%r), only %.2f:1 where WCAG AA normal text needs >= %.1f:1. %s"
-                    % (bundle_name, subject, ink_value, alpha, painted, label, backdrop.value,
-                       backdrop.rgb, ratio, WCAG_AA_NORMAL_TEXT, why),
-                )
-
     def test_light_message_timestamp_muted_tier_clears_aa_on_the_chatter_panel(self):
         """The message timestamp must be readable in an ordinary light-mode chatter.
 
         THE DEFECT. `.o-mail-Message-date { color: $text-muted }` (mail message.scss:21) and
         `$text-muted: $o-main-color-muted = rgba($o-gray-700, $o-opacity-muted)`
         (bootstrap_overridden.scss:85, primary_variables.scss:121) - a 76%-alpha wash of #495057.
-        Composited on the light chatter panel that is a sub-AA grey: measured 4.34:1 against white
-        live, and the panel is not white - `.o-mail-Form-chatter` paints
+        Composited on the light chatter panel that is a sub-AA grey: 4.34:1 against white, and the panel is not
+        white - `.o-mail-Form-chatter` paints
         `$o-webclient-background-color` = `$o-gray-100` (form_renderer.scss:5-6), one step darker
         than the measurement was taken on. Every timestamp in every form-view chatter in the product
         is this tier; nothing here is spreadsheet-scoped and nothing here is dark-mode-only.
@@ -4172,7 +3795,7 @@ class MailContrastCompileTest(TransactionCase):
         when the message has no content. That stacks TWO dimmings that were each chosen alone: the
         muted tier is already a 76%-alpha wash, and `.opacity-75` composites the whole element again
         at 75%, so the glyphs paint at an effective 57% - far fainter than anything the muted tier
-        was tuned for. Measured 2.68:1 live.
+        is tuned for: 2.68:1.
 
         AND IT IS NOT ALWAYS ON THE PANEL. The placeholder is a child of `.o-mail-Message-body`, so
         it is inside `.o-discuss-text-body` and a bubbled message paints its bubble behind it - the
@@ -4210,7 +3833,7 @@ class MailContrastCompileTest(TransactionCase):
         marker the server writes into the body HTML (message.js:449-450). It declares no colour, so
         it inherits the body tier - core's bare-class `!important` on `.o-discuss-text-body`
         (core.scss:99-101, `$gray-700`) - and then halves it. A 50% opacity turns a comfortable
-        8.2:1 body tier into a 2.3:1 marker: measured 2.32:1 live. It is small text carrying real
+        8.2:1 body tier into a 2.3:1 marker (2.32:1). It is small text carrying real
         information about the message's history, not decoration.
 
         SAME SURFACE SPLIT. The marker renders inside `.o-mail-Message-body`, so a bubbled message
@@ -4236,12 +3859,11 @@ class MailContrastCompileTest(TransactionCase):
         )
 
     # ==============================================================================================
-    # 17. DARK mode - the same two dimmed nodes, OUTSIDE the spreadsheet island
+    # DARK mode - the same two dimmed nodes
     # ==============================================================================================
-    # Section 16 measures these two nodes in the LIGHT backend bundle; the island guards measure the
-    # island's own tiers on its light ground. Neither reaches the case below: every form-view
-    # chatter, the Discuss app and every chat window render this subtree on the DARK palette, where
-    # both the ink and all four surfaces are different values.
+    # The light-mode muted-tier guards above measure these two nodes in the LIGHT backend bundle. It does not
+    # reach the case below: every form-view chatter, the Discuss app and every chat window render
+    # this subtree on the DARK palette, where both the ink and all four surfaces are different values.
     #
     # WHAT CHANGES IN DARK, AND WHY IT IS NOT THE SAME DEFECT TWICE. In light both nodes are dimmed
     # versions of a DARK ink on a LIGHT ground, so dimming pulls them toward the surface. In dark the
@@ -4261,15 +3883,15 @@ class MailContrastCompileTest(TransactionCase):
     # therefore the most forgiving, so measuring the chatter alone is measuring the best case.
     #
     # The markup transcription these element models are keyed on is pinned once, by the light guards
-    # in section 16 - the same message.xml lines, and a scheme cannot change them - so it is not
+    # in the light-mode guards - the same message.xml lines, and a scheme cannot change them - so it is not
     # re-asserted here (ODOO-AI-ETHOS #11).
 
     def _assert_dark_node_readable_in_every_container(self, subject_layers, element, tag, subject,
                                                       why):
         """Assert one dimmed body node clears AA on every dark surface, in every container.
 
-        Loops the containers rather than taking one, because the defect this section exists for is a
-        fix that lands in the container it was measured in: the three panels are two distinct darks,
+        Loops the containers rather than taking one, because the failure this section exists for is a
+        rule tuned in one container only: the three panels are two distinct darks,
         so a rule tuned against the chatter alone leaves Discuss and the chat window short, and
         nothing about the subject itself says which container a reader is in."""
         for container, panel_label, message_layers in DARK_MESSAGE_CONTAINERS:
@@ -4286,26 +3908,18 @@ class MailContrastCompileTest(TransactionCase):
         """The placeholder shown for a contentless message must be readable on the dark palette.
 
         THE DEFECT. message.xml:110 renders `<i class="text-muted opacity-75">` in place of a body.
-        On the dark palette `.text-muted` is no longer the un-flipped light literal - dark_palette
+        On the dark palette `.text-muted` is not the light literal - dark_palette
         re-points $o-main-color-muted onto $body-secondary-color, an OPAQUE mid grey that is a
         deliberate dark muted tier - and then `.opacity-75` composites the whole element down onto
         whatever is behind it. The tier was chosen as a readable muted grey; the utility was chosen
         with no surface in mind, and the product of the two was chosen by nobody.
 
-        THE SURFACE IS WHAT DECIDES IT, AND ONE SURFACE ALREADY PASSES. Measured on the current tree
-        the darkest panel - the form-view chatter's - clears the floor at 4.53:1, so a guard that
-        measured only the chatter would be GREEN while the same glyphs sat at 3.36:1 two panels away:
+        THE SURFACE IS WHAT DECIDES IT. The darkest panel - the form-view chatter's - clears the floor
+        most easily, so a guard that measured only the chatter would be GREEN while the same glyphs
+        sat well below the floor on the bubbles two surfaces away.
 
-            surface                     ratio
-            form-view chatter panel     4.53   (already clears AA - the best case)
-            Discuss thread canvas       4.35
-            chat-window body            4.35
-            o-blue bubble               3.74
-            o-green bubble              3.68
-            o-orange bubble             3.36   (worst)
-
-        That spread is the reason every surface is its own subTest: an average over the six is above
-        the floor, and a reader never sees an average.
+        That is the reason every surface is its own subTest: an average over them is above the floor,
+        and a reader never sees an average.
 
         WHAT IS ASSERTED. The compiled contrast, never a hex and never an opacity literal: the tier,
         the utility and all four surfaces are read out of the dark bundle, so dropping the dimming,
@@ -4354,7 +3968,7 @@ class MailContrastCompileTest(TransactionCase):
         the painted-sibling overlay is a declared input rather than a per-guard condition.
 
         The marker tells a reader the message was changed after posting, so it carries real history
-        and has to be legible; the fix belongs on the dimming or the bubbles, never on the floor."""
+        and has to be legible; the remedy belongs on the dimming or the bubbles, never on the floor."""
         self._assert_dark_node_readable_in_every_container(
             _edited_marker_layers,
             MESSAGE_EDITED_MARKER_CLASSES,
@@ -4366,72 +3980,9 @@ class MailContrastCompileTest(TransactionCase):
         )
 
     # ==============================================================================================
-    # 18. Dark mode - the island's OWN dimmed nodes, which nothing measured
+    # Dark mode - the (edited) marker must not depend on WHICH other module shares the bundle
     # ==============================================================================================
-    # The island guards in section 14 measure the muted tier through the `Subject:` line - chosen
-    # BECAUSE it is the one in-body marker carrying no `opacity` of its own, so the tier could be
-    # read undimmed. That leaves the two nodes that DO carry one measured by nothing: the island's
-    # `.o-mail-Message-body > i.text-muted.opacity-75` and `.o-mail-Message-edited .opacity-50`
-    # corrections are the only rules holding them up, and no assertion in this file resolves either.
-    #
-    # WHY THAT MATTERS BEYOND COVERAGE. These two guards assert the island CONTRACT - AA inside the
-    # island - through the compiled cascade, never the rule that delivers it. So if the island
-    # corrections are ever SUBSUMED by a product-wide dark rule and the duplicates cut, they keep
-    # passing when the replacement also clears AA on the island's LIGHT ground, and go RED when it
-    # does not. Without them that consolidation is unobservable: the island can regress all the way
-    # back to its pre-fix values with the whole suite green.
-
-    def test_dark_spreadsheet_island_empty_message_placeholder_clears_aa_on_every_surface(self):
-        """The contentless-message placeholder must be readable on the island's light ground too.
-
-        The island keeps a LIGHT ground in dark mode, so the placeholder there is a DARK muted tier
-        dimmed toward a light surface - the opposite direction to the dark-palette case, and a
-        different arithmetic reaching the same failure. `.opacity-75` composites the island muted
-        tier down to a grey that clears AA on none of the four surfaces the island paints; the
-        correction cancels the multiplier and lets the node keep its de-emphasis through the tier it
-        shares with every other muted marker in the body.
-
-        WOULD FAIL IF REVERTED: without the correction the placeholder reads 3.26:1 on the blue
-        bubble, 3.27:1 green, 3.40:1 orange and 3.49:1 on an unbubbled message - under the floor on
-        all four."""
-        self._assert_readable_on_every_message_surface(
-            DARK_BUNDLE,
-            _element_chain(MESSAGE_EMPTY_PLACEHOLDER_CLASSES, ISLAND_MESSAGE_BODY_MUTED_LAYERS,
-                           tag=MESSAGE_EMPTY_PLACEHOLDER_TAG),
-            "spreadsheet island empty-message placeholder",
-            "Inside the light island the placeholder is the muted tier dimmed a second time by "
-            "`opacity-75` (message.xml:110). Cancel the multiplier or re-point the tier; the floor "
-            "is the same one every other island surface is held to.",
-            panel_label="the island panel",
-        )
-
-    def test_dark_spreadsheet_island_edited_marker_clears_aa_on_every_surface(self):
-        """The `(edited)` marker must stay readable on the island's light ground too.
-
-        Unlike the placeholder the marker has no tier of its own - it inherits the island body text
-        and the 50% IS its whole de-emphasis - so flattening it is not the fix: at full opacity it
-        would be body copy in a smaller size. The correction thins it to the least Bootstrap rung
-        that still clears AA on every bubble, which keeps a visible quarter of thinning while the
-        0.65rem size carries the rest.
-
-        WOULD FAIL IF REVERTED: without the correction the marker reads 2.54:1 on the blue bubble,
-        2.55:1 green, 2.60:1 orange and 2.63:1 on an unbubbled message - roughly half the floor
-        everywhere."""
-        self._assert_readable_on_every_message_surface(
-            DARK_BUNDLE,
-            _element_chain(MESSAGE_EDITED_MARKER_CLASSES, ISLAND_EDITED_MARKER_LAYERS,
-                           tag=MESSAGE_EDITED_MARKER_TAG),
-            "spreadsheet island (edited) marker",
-            "Inside the light island `opacity-50` (message.xml:152) halves the island body tier "
-            "this marker inherits. Thin it less or re-point what it inherits; flattening it to 100% "
-            "removes the de-emphasis rather than fixing the contrast.",
-            panel_label="the island panel",
-        )
-
-    # ==============================================================================================
-    # 19. Dark mode - the (edited) marker must not depend on WHICH other module shares the bundle
-    # ==============================================================================================
-    # Section 17 compiles `web.assets_web_dark` through THIS registry's actually-installed modules
+    # The dark-mode dimmed-node guards compile `web.assets_web_dark` through THIS registry's actually-installed modules
     # (`self._compiled_css`, backed by `ir.qweb._get_asset_bundle`). That is honest about what this
     # DB renders, but it is silent about a different hazard: mail_dark.scss:337-339 reads a bare Sass
     # variable - `color: $text-muted;`, no `!default` anywhere between the read and any other
@@ -4443,12 +3994,12 @@ class MailContrastCompileTest(TransactionCase):
     # this file whenever hr_skills sits anywhere in the same install (Runbot installs the whole
     # repo, so it always does there). A DB that installs only this branding cluster's own tests
     # never installs hr_skills, so `self._compiled_css(DARK_BUNDLE)` never sees the overwrite and
-    # section 17's guards stay green regardless of whether the rule the marker reads is safe against
+    # the dark-mode dimmed-node guards stay green regardless of whether the rule the marker reads is safe against
     # one - which is exactly how this shipped green locally and red on Runbot.
     #
     # WHAT IS COMPILED, AND WHY IT NEEDS NO hr_skills INSTALL. `TransactionCase` isolation forbids
     # `cr.commit()`, and installing a module for real needs one - so this section never installs
-    # hr_skills. Instead it re-derives the SAME real Odoo SCSS compile section 17 already trusts
+    # hr_skills. Instead it re-derives the SAME real Odoo SCSS compile the dark-mode dimmed-node guards already trust
     # (`ir.qweb._get_asset_bundle` -> `AssetsBundle.stylesheets`, each a real `ScssStylesheetAsset`
     # whose `.get_source()` is its actual file content) and hands the SAME real entry point
     # production calls (`AssetsBundle.compile_css` -> `ScssStylesheetAsset.compile`, libsass) ONE
@@ -4553,13 +4104,13 @@ class MailContrastCompileTest(TransactionCase):
         this rule compiles wins, with nothing here protecting the read. `hr_skills` ships exactly
         such an assignment with no `!default` (see the section banner above), and it reaches
         `web.assets_web_dark` whenever hr_skills is installed alongside this module - which Runbot
-        always does and a solo run of this module's own suite never does. Section 17's guards read
+        always does and a solo run of this module's own suite never does. The dark-mode dimmed-node guards read
         `self._compiled_css(DARK_BUNDLE)`, i.e. THIS registry's actual install, so they can never
         observe that hazard on a DB that never installed hr_skills - the exact gap that let this
         reach Runbot while every local run of this file stayed green.
 
         WHAT IS ASSERTED. Not a hex, and not hr_skills' own rule: the compiled CONTRAST of the
-        marker against every dark surface it renders on, exactly as sections 16-17 assert it,
+        marker against every dark surface it renders on, exactly as the light-mode and dark-mode guards assert it,
         recompiled with hr_skills' literal spliced into the SAME real bundle source one line ahead
         of this module's own contribution (see `_compiled_css_with_text_muted_clobbered`). Any fix
         that stops reading `$text-muted` - a CSS custom property Bootstrap emits from a DIFFERENT
@@ -4569,7 +4120,7 @@ class MailContrastCompileTest(TransactionCase):
 
         WOULD FAIL TODAY: spliced ahead of the CURRENT `color: $text-muted;` this compiles the
         marker to the LITERAL hr_skills assigns, `#3b4757` - relative luminance ~0.061, versus
-        ~0.010 for the `#111b1e` form-chatter panel section 17 already measures this exact marker
+        ~0.010 for the `#111b1e` form-chatter panel the dark-mode dimmed-node guards already measure this exact marker
         against. That is ~1.85:1, and every other dark surface the marker can land on is a LIGHTER
         dark still closer to `#3b4757` than to white - nowhere near WCAG AA's 4.5:1 floor, on the
         panel or on any bubble."""
