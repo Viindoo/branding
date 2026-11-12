@@ -5,8 +5,8 @@
 # (`.o_spreadsheet_dashboard_action`) repainted as Viindoo's dark app band, while the SHEET
 # (the o-spreadsheet canvas grid rendered inside `.o_renderer`) stays exactly what a
 # light-scheme user sees, with a visible seam at the boundary between the two, and the
-# sidebar's dashboard-list hover state keeps its label readable rather than landing on the
-# core stylesheet's near-white palette-ramp hover fill. A light-scheme user sees the CE
+# sidebar's dashboard-list hover state keeps its label at the dark-scheme contrast of the
+# pinned values below. A light-scheme user sees the CE
 # default in every respect - this module's SCSS compiles only into `web.assets_web_dark`.
 # The seam rule itself must stay SCOPED to `.o_spreadsheet_dashboard_action` - a dark-scheme
 # user's `.o_renderer` anywhere ELSE in the app (any core list/kanban/graph/hierarchy view,
@@ -32,7 +32,6 @@ from odoo.tests import HttpCase, new_test_user, tagged
 from odoo.tools.misc import file_open
 
 from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
-    WCAG_AA_NORMAL_TEXT,
     _alpha_of,
     _composite_over,
     _contrast_ratio,
@@ -47,6 +46,12 @@ from odoo.addons.viin_brand_web.tests.test_brand_ssot import _resolve_scss_hex
 # `dashboard_action.scss` - the sheet's target colour is simply "stay exactly this", in both
 # schemes.
 WHITE = "#ffffff"
+
+# Pinned values for the dark scheme: the dashboard-list row under the pointer
+# (`li:hover:not(.active)`) and the WCAG contrast of its label (#EDF4F5 on that fill, 14.65:1,
+# stated to one decimal).
+DARK_HOVER_BG = "#152225"
+DARK_HOVER_LABEL_CONTRAST = 14.6
 
 _JS_HELPERS = """
 async function __setParam(key, value) {
@@ -197,11 +202,10 @@ class TestDashboardDark(HttpCase):
         # viin_backend_theme's home-menu band, the kanban canvas, the settings sidebar) instead of
         # a second hardcoded literal.
         cls.DARK_APP_BAND = dark_palette_var("$o-webclient-background-color")
-        # web/static/src/scss/primary_variables.scss `$o-gray-100` (`!default`, never re-pointed
-        # by `viin_brand_web`'s dark_palette.scss) - the fixed palette-ramp fill the sidebar's
-        # `li:hover:not(.active)` rule reads today (dashboard_action.scss reads it directly, no
-        # map indirection). Asserted as the LIGHT bundle's own non-regression value; the dark
-        # bundle must resolve its hover fill to something that keeps the label readable instead.
+        # web/static/src/scss/primary_variables.scss `$o-gray-100` (`!default`) - the palette-ramp
+        # fill core's `li:hover:not(.active)` rule reads (dashboard_action.scss reads it directly,
+        # no map indirection). Asserted as the LIGHT bundle's own value; the dark bundle's hover
+        # fill is asserted against DARK_HOVER_BG.
         # `file_open` resolves this core path against the addons path, so it works from any
         # checkout layout, portably - the same technique viin_brand_mail/tests/
         # test_mail_contrast_compile.py already uses to read a core spreadsheet SCSS file.
@@ -365,19 +369,21 @@ class TestDashboardDark(HttpCase):
             )
             dark_hover_bg_raw = dark["hoverBg"]
             dark_hover_bg = _normalize_colour(dark_hover_bg_raw)
-            self.assertIsNotNone(
-                dark_hover_bg, "sidebar hover fill: %r carries no readable colour" % dark_hover_bg_raw,
+            self.assertEqual(
+                dark_hover_bg, DARK_HOVER_BG,
+                "a dark-scheme user's sidebar dashboard row under the pointer resolves to %s, not "
+                "the pinned %s." % (dark_hover_bg_raw, DARK_HOVER_BG),
             )
             label_colour_raw = dark["labelColor"]
             label_colour = _normalize_colour(label_colour_raw)
             self.assertIsNotNone(label_colour, "sidebar label: %r carries no readable colour" % label_colour_raw)
             composited_label = _composite_over(label_colour, dark_hover_bg, _alpha_of(label_colour_raw))
             ratio = _contrast_ratio(composited_label, dark_hover_bg)
-            self.assertGreaterEqual(
-                round(ratio, 2), WCAG_AA_NORMAL_TEXT,
-                "the sidebar dashboard-list label %s on its own hover fill %s measures only "
-                "%.2f:1, below the WCAG AA normal-text threshold %.1f:1." % (
-                    composited_label, dark_hover_bg, ratio, WCAG_AA_NORMAL_TEXT,
+            self.assertEqual(
+                round(ratio, 1), DARK_HOVER_LABEL_CONTRAST,
+                "the sidebar dashboard-list label %s on its hover fill %s measures %.2f:1, not the "
+                "pinned %.1f:1." % (
+                    composited_label, dark_hover_bg, ratio, DARK_HOVER_LABEL_CONTRAST,
                 ),
             )
 
