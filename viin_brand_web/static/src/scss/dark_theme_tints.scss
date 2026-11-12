@@ -1,0 +1,30 @@
+// Dark values of Bootstrap's theme-colour tints.
+//
+// `$X-text-emphasis`, `$X-bg-subtle` and `$X-border-subtle` are tuned for a white page: a pale tint
+// under a dark shade. They feed `.alert-*`, `.list-group-item-*`, `.bg-*-subtle`, `.text-*-emphasis`
+// and `.border-*-subtle`, so on a dark panel an alert is a light band. Bootstrap ships the dark
+// counterparts of the same tokens in `_variables-dark.scss` (`$X-*-dark`); this file points the
+// tokens at them for the dark bundles, for every theme colour whose dark counterpart is a
+// shade/tint of the colour itself. `secondary` is mapped by dark_palette.scss and `light` / `dark`
+// are scheme-invariant, so they are left out.
+//
+// Listed in the dark bundles only, right after `_variables-dark.scss` and before `_maps.scss`,
+// which builds `$theme-colors-bg-subtle` and its siblings from these tokens. No `!default`: the
+// values must win over the light tokens declared earlier by `_variables.scss`.
+$primary-text-emphasis: $primary-text-emphasis-dark;
+$success-text-emphasis: $success-text-emphasis-dark;
+$info-text-emphasis: $info-text-emphasis-dark;
+$warning-text-emphasis: $warning-text-emphasis-dark;
+$danger-text-emphasis: $danger-text-emphasis-dark;
+
+$primary-bg-subtle: $primary-bg-subtle-dark;
+$success-bg-subtle: $success-bg-subtle-dark;
+$info-bg-subtle: $info-bg-subtle-dark;
+$warning-bg-subtle: $warning-bg-subtle-dark;
+$danger-bg-subtle: $danger-bg-subtle-dark;
+
+$primary-border-subtle: $primary-border-subtle-dark;
+$success-border-subtle: $success-border-subtle-dark;
+$info-border-subtle: $info-border-subtle-dark;
+$warning-border-subtle: $warning-border-subtle-dark;
+$danger-border-subtle: $danger-border-subtle-dark;

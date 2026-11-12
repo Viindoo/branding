@@ -1,0 +1,14 @@
+// Label of a badge that carries no fill class.
+//
+// Core paints every `.badge` label with the real `$o-black` (webclient.scss `.badge { color: $o-black }`),
+// which assumes the pill sits on a light page or on a light chip. A bare pill (no `bg-*`, `text-*`
+// or `o_badge_color_*` class: the language pill of a user card, for one) sits straight on the dark
+// panel, so in the dark bundle it takes the body text tier.
+//
+// The selector has the specificity of core's own `.badge` rule (`:where()` adds none) and this file
+// is listed right after core's webclient.scss, so every component rule that paints its own label on
+// its own fill (the systray and Discuss counters, for one) keeps winning over this one exactly as it
+// wins over core's.
+.badge:where(:not([class*="bg-"]):not([class*="text-"]):not([class*="o_badge_color"])) {
+    color: #{$body-color};
+}

@@ -12,7 +12,7 @@
 // --- Viindoo brand identity --------------------------------------------------
 $o-brand-primary: #00BBCE !default;    // Viindoo brand primary (teal) = VIINDOO_THEME_COLOR
 // LIGHT-MODE VALUE. dark_palette.scss re-points this token for web.assets_web_dark - see the
-// COLOUR LAW below: the purple accent is light-only from 2026-08-03.
+// COLOUR LAW below: the purple accent is light-only.
 $o-brand-secondary: #7F4282 !default;  // Viindoo brand secondary (purple); real v19 hook
 
 // --- Odoo brand-colour FAMILY: re-established, ALL forced to the brand teal ---------------
@@ -28,7 +28,7 @@ $o-brand-secondary: #7F4282 !default;  // Viindoo brand secondary (purple); real
 // navbar compiles to Odoo purple/aubergine. Setting all THREE family members to the brand teal
 // makes every resolution path - core `$o-brand-odoo: $o-community-color`, the portal
 // `$o-brand-odoo: $o-enterprise-color` clobber, and every direct family use - compile to teal.
-// SSOT (C-8): aliased to the single $o-brand-primary declaration above, never re-literalised.
+// SSOT: aliased to the single $o-brand-primary declaration above, never re-literalised.
 $o-community-color: $o-brand-primary !default;   // core default #71639e -> Viindoo teal
 $o-enterprise-color: $o-brand-primary !default;  // core default #714B67 -> Viindoo teal (pre-19 also set #00bbce)
 $o-brand-odoo: $o-brand-primary !default;        // family head consumed by the navbar + direct core uses
@@ -43,7 +43,7 @@ $o-info: #0099E6 !default;
 $o-warning: #FFCC32 !default;
 $o-danger: #CC5252 !default;
 
-// --- Backend navbar surface (2026-07-24 AA-contrast decision) -------------------------------
+// --- Backend navbar surface -------------------------------
 // Native Odoo navbar-background hook: web/static/src/webclient/navbar/navbar.variables.scss
 // declares `$o-navbar-background: $o-brand-odoo !default;`, consumed by
 // web/static/src/webclient/navbar/navbar.scss's `.o_main_navbar { background: $o-navbar-background; }`.
@@ -51,13 +51,11 @@ $o-danger: #CC5252 !default;
 // web._assets_primary_variables) makes core's later `!default` a no-op, so this value wins.
 // Darkened relative to the brand identity teal ($o-brand-primary/$o-brand-odoo stay #00BBCE -
 // brand identity is NOT changed) so white nav text clears WCAG AA normal-text contrast
-// (>= 4.5:1): the flat brand teal is only 2.33:1, this token reaches 4.74:1. Same shade already
-// established as the "AA text/links" token in the approved P3 theme design doc
-// (.odoo-ai/designs/viin-backend-theme-2026-07-17.md) - reused for SSOT/consistency rather than
+// (>= 4.5:1): the flat brand teal is only 2.33:1, this token reaches 4.74:1. Reused for SSOT/consistency rather than
 // inventing a second, nearly-identical dark-teal shade.
 $o-navbar-background: #007F8E !default;
 
-// --- Primary INTERACTIVE / text tier (2026-07-24 AA-contrast decision) ----------------------
+// --- Primary INTERACTIVE / text tier ----------------------
 // Native levers, not a cascade override: core web maps the primary-interactive tier off two
 // brand-derived variables, BOTH declared with `!default`, in files that compile AFTER this one
 // within the SCSS chain (this file is prepended to web._assets_primary_variables, which is
@@ -66,18 +64,19 @@ $o-navbar-background: #007F8E !default;
 //   web/static/src/scss/bootstrap_overridden.scss:31  $primary: $o-brand-primary !default;
 //   web/static/src/scss/primary_variables.scss:123    $o-main-link-color: <5%-darkened $o-brand-primary> !default;
 // So `$primary` feeds the compiled root --primary token (and other $primary-derived surfaces),
-// while `$o-main-link-color` feeds --link-color (and its --link-color-rgb triplet 0,127,142).
-// These interactive surfaces carry white / near-white text, so they must clear WCAG AA
-// normal-text contrast (>= 4.5:1): the flat brand teal #00BBCE is only 2.33:1, this darker teal
+// while `$o-main-link-color` feeds --link-color (and its --link-color-rgb triplet 127,66,130).
+// The interactive surfaces carry white / near-white text, so they must clear WCAG AA normal-text
+// contrast (>= 4.5:1): the flat brand teal #00BBCE is only 2.33:1, the darker teal $primary takes
 // reaches 4.74:1. It is the SAME AA teal already set for $o-navbar-background above - one
 // dark-teal shade reused for SSOT/consistency, not a second nearly-identical hex. Brand IDENTITY
 // is NOT changed ($o-brand-primary/$o-brand-odoo stay #00BBCE), so the flat brand teal still
-// renders on decorative brand surfaces - only the interactive/text tier darkens.
-// SSOT (C-8): both aliased to the single #007F8E declaration ($o-navbar-background above).
+// renders on decorative brand surfaces - only the interactive tier darkens. Hyperlink TEXT is the
+// brand purple #7f4282 in the light bundle (dark_palette.scss gives the dark bundle its own link teal).
+// SSOT: $primary is aliased to the single #007F8E declaration ($o-navbar-background above).
 $primary: $o-navbar-background !default;             // interactive surface: root --primary + $primary-derived
-$o-main-link-color: #7f4282 !default;   // interactive text: --link-color (+ --link-color-rgb 0,127,142)
+$o-main-link-color: #7f4282 !default;   // hyperlink text: --link-color (+ --link-color-rgb 127,66,130)
 
-// --- Primary BUTTON surface (2026-07-24 AA-contrast decision) -------------------------------
+// --- Primary BUTTON surface -------------------------------
 // The primary BUTTON is a SEPARATE core lever from $primary: web/static/src/scss/
 // primary_variables.scss:231-272 seeds `$o-btns-bs-override` (default ()) then reassigns it
 // `map-merge((core "primary"/"secondary"/"light" maps), $o-btns-bs-override)`. Core's "primary"
@@ -92,7 +91,7 @@ $o-main-link-color: #7f4282 !default;   // interactive text: --link-color (+ --l
 // so the state shades are the pre-computed equivalents on the AA base #007F8E: hover = 10%/20%
 // darker (#00515B / #002428), active bg = 10% #007F8E mixed into white (#E6F2F4). Brand IDENTITY
 // $o-brand-primary stays #00BBCE; only the interactive button surface darkens to the AA teal.
-// SSOT (C-8): the three AA-base entries alias the single #007F8E declaration
+// SSOT: the three AA-base entries alias the single #007F8E declaration
 // ($o-navbar-background). The hover/active SHADES stay literal - they are pre-computed equivalents
 // (Sass colour helpers are banned in this file by tests/test_asset_upgrade.py) and are NOT the
 // brand hex itself: hover = 10%/20% darker (#00515B / #002428), active bg = 10% teal into white
@@ -111,7 +110,7 @@ $o-btns-bs-override: (
     ),
 ) !default;
 
-// --- AA chrome ladder: the hover / pressed rung (2026-07-24 semantic restore) ---------------
+// --- AA chrome ladder: the hover / pressed rung ---------------
 // 18.0 shipped a TWO-STEP darkened-teal chrome cascade derived at compile time from the flat
 // brand teal (origin/18.0 viin_brand_common/static/src/scss/primary_variables.scss):
 //   $brand-primary-dark   = the flat teal darkened by 10% -> #008D9B
@@ -126,7 +125,7 @@ $o-btns-bs-override: (
 $o-viin-chrome-base: $o-navbar-background !default;  // alias: one #007F8E literal, declared above
 $o-viin-chrome-deep: #005E68 !default;               // pressed / open / active rung, 7.5:1 on white
 
-// --- Which bundle am I compiling into? (compile-time scheme flag, 2026-08-03) ----------------
+// --- Which bundle am I compiling into? (compile-time scheme flag) --------------
 // FALSE in every LIGHT compilation (web.assets_backend, mail.assets_public,
 // im_livechat.assets_embed_external, web.assets_frontend); dark_palette.scss sets it TRUE, without
 // `!default`, so it forces regardless of which of the two `before primary_variables.scss` anchors
@@ -135,15 +134,15 @@ $o-viin-chrome-deep: #005E68 !default;               // pressed / open / active 
 // WHY A COMPILE-TIME FLAG AND NOT A SECOND SET OF TOKENS. web.assets_web_dark RECOMPILES the whole
 // light bundle, so a rule written in brand_cascade.scss / home_menu.scss / the mail SCSS is emitted
 // into BOTH schemes and there is no way to express "this accent exists in light only" through a
-// colour token alone - a token can only carry a DIFFERENT colour, never NO rule. The owner's
-// 2026-08-03 ruling (purple is light-only, dark falls back to the DEFAULT look) needs exactly the
+// colour token alone - a token can only carry a DIFFERENT colour, never NO rule. The
+// rule (purple is light-only, dark falls back to the DEFAULT look) needs exactly the
 // latter for the group-by facet, whose dark default is core's own `.text-bg-action` paint. Guarding
 // those rules with `@if not $o-viin-dark-bundle` emits nothing at all in dark, so the surface is
 // provably core-default rather than "overridden with something core-ish".
 $o-viin-dark-bundle: false !default;
 
 // =============================================================================================
-// THE VIINDOO COLOUR LAW (owner decision 2026-08-03, revised same day) - what each hue MEANS
+// THE VIINDOO COLOUR LAW - what each hue MEANS
 // =============================================================================================
 // Every rule in this cluster that paints a brand hue MUST be classifiable under exactly one of
 // these four clauses. A surface that cannot be classified does not get a brand hue at all.
@@ -155,19 +154,17 @@ $o-viin-dark-bundle: false !default;
 //                              Ladder: $o-brand-primary (decorative) -> $o-viin-chrome-base
 //                              (4.74:1, carries white) -> $o-viin-chrome-deep (7.5:1, pressed).
 //                              Scheme-INVARIANT: teal chrome is the same in light and dark.
-//                              >>> OWNER REVISION 2026-08-03 (second): HYPERLINKS LEFT THIS CLAUSE.
-//                              This clause used to read "Buttons, links, submit". The owner moved
-//                              the TEXT LINK to the purple clause below ("tao muốn override nó
-//                              thành màu secondary của Viindoo"), so a real <a> hyperlink is no
-//                              longer teal in light mode. Everything else in this clause is
-//                              unchanged - and that is the whole point of the split: a `.btn-link`
+//                              HYPERLINKS ARE NOT IN THIS CLAUSE.
+//                              The TEXT LINK belongs to the purple clause below, so a real <a>
+//                              hyperlink is not teal in light mode. That is the whole point of
+//                              the split: a `.btn-link`
 //                              and a Bootstrap tab BORROW Bootstrap's link token without being
 //                              links, so they are explicitly re-anchored back onto this teal tier
 //                              in static/src/scss/link_tier.scss. Read that file before touching
 //                              anything named $link-*, $nav-link-*, $btn-link-* or $pagination-*.
 //   PURPLE = STRUCTURE         Never a BUTTON. It marks ORGANISATIONAL affordances: the group-by
 //            + TEXT LINKS,     facet, list group headers, home-menu section labels, the stat
-//            AND LIGHT-ONLY.   value - and, since the 2026-08-03 owner revision, the TEXT LINK
+//            AND LIGHT-ONLY.   value - and the TEXT LINK
 //                              itself (the `a` reboot tier, `.o_form_uri` many2one record links,
 //                              "Add a line", "Create"/"Search More", calendar "+N more").
 //                              Token: $o-brand-secondary #7F4282 - 6.99:1 on the white form sheet,
@@ -176,15 +173,15 @@ $o-viin-dark-bundle: false !default;
 //                              on. Hover is Bootstrap's own shade of the SAME token (#592E5B,
 //                              10.68:1) - never a second literal.
 //                              NOTE THE TENSION, DELIBERATELY: a hyperlink IS an action, so this
-//                              is the one clause where the owner chose brand recognition over the
+//                              is the one clause where brand recognition wins over the
 //                              strict act/structure reading. The boundary that IS enforced is
 //                              "purple never paints a BUTTON, a tab or a pager".
-//                              >>> OWNER REVISION 2026-08-03: THE PURPLE EXISTS ONLY IN LIGHT
+//                              THE PURPLE EXISTS ONLY IN LIGHT
 //                              MODE. In web.assets_web_dark there is NO purple accent anywhere:
 //                              every surface above falls back to its DEFAULT look - the bright
-//                              body-text tier for text, core's own paint for a fill. The owner
-//                              found the purple wrong on a dark canvas, and a "dark arm of the
-//                              accent" (the retired #B589B8) is therefore not wanted: an accent
+//                              body-text tier for text, core's own paint for a fill. The
+//                              purple does not belong on a dark canvas, and a "dark arm of the
+//                              accent" is therefore not wanted: an accent
 //                              that must be re-hued to survive the background is not carrying
 //                              meaning, it is fighting the surface. Mechanically this is the
 //                              $o-viin-dark-bundle guard above, plus a dark re-point of
@@ -192,23 +189,22 @@ $o-viin-dark-bundle: false !default;
 //                              THREE CORE rules which read the token directly and are therefore
 //                              out of reach of any guard of ours.
 //   GOLD   = SAVED.            The favourite / saved-filter affordance. Core's own
-//                              $o-main-favorite-color, deliberately left native (owner decision
-//                              2026-07-24) - see brand_cascade.scss.
+//                              $o-main-favorite-color, deliberately left native - see brand_cascade.scss.
 //   RED / GREEN / AMBER        = untouched Bootstrap/Odoo semantics (danger / success / warning).
 //                              Never repurposed as brand DECORATION - but DO reach for them when a
 //                              surface genuinely carries that meaning: the chatter composer wears a
 //                              $danger tint while it is addressed to a CUSTOMER (viin_brand_mail
 //                              composer.scss), because sending outward really is the risky act.
 //
-// The law exists because teal and purple were previously applied by accident of porting rather
+// The law exists because teal and purple would otherwise be applied by accident of porting rather
 // than by meaning: the chatter painted BOTH "Log note" (internal) and "Send message"
 // (customer-facing) the same purple, so the single most consequential distinction in the chatter
 // was invisible. That is now carried by the composer's danger tint plus a teal/grey button split -
-// and the Log-note button itself is back to the DEFAULT neutral (owner revision 2026-08-03): a
+// and the Log-note button itself is back to the DEFAULT neutral: a
 // toggle that opens an internal note is not worth an accent hue of its own.
 // Read this block before adding any rule that paints $o-brand-secondary.
 
-// --- Navbar entry states (2026-07-24 semantic restore) --------------------------------------
+// --- Navbar entry states --------------------------------------
 // Native levers, NOT a cascade override. Core declares both with `!default` in
 // web/static/src/webclient/navbar/navbar.variables.scss (lines 16 and 19), a file that compiles
 // AFTER this one inside web._assets_primary_variables (core's bundle is
@@ -228,7 +224,7 @@ $o-viin-dark-bundle: false !default;
 $o-navbar-entry-bg--hover: $o-viin-chrome-deep !default;
 $o-navbar-entry-bg--active: $o-viin-chrome-deep !default;
 
-// --- Navbar entry text OPACITY (DEF-005, C-3 - scheme-invariant) ----------------------------
+// --- Navbar entry text OPACITY (scheme-invariant) ----------------------------
 // Core paints the resting entry text `color: var(--NavBar-entry-color, #{$o-navbar-entry-color})`
 // and declares `$o-navbar-entry-color: rgba($o-white, .9) !default`
 // (web/.../webclient/navbar/navbar.variables.scss:13, which compiles AFTER this file). At .9
@@ -239,7 +235,7 @@ $o-navbar-entry-bg--active: $o-viin-chrome-deep !default;
 // scope here.
 $o-navbar-entry-color: #FFFFFF !default;
 
-// --- Component ACTIVE border (2026-07-24 semantic restore) ----------------------------------
+// --- Component ACTIVE border ----------------------------------
 // One native lever restores TWO 18.0 surfaces, because v19 core routes both through the same
 // variable (declared `$o-component-active-border: $o-action !default;` in
 // web/static/src/scss/primary_variables.scss:134, which compiles after this file):
@@ -261,7 +257,7 @@ $o-navbar-entry-color: #FFFFFF !default;
 // darkens, from the 2.33:1 decorative teal to the 4.74:1 chrome base.
 $o-component-active-border: $o-viin-chrome-base !default;
 
-// --- Readable `.text-secondary` TEXT tier (2026-08-03 a11y fix) -----------------------------
+// --- Readable `.text-secondary` TEXT tier -----------------------------
 // DEFECT. Stock Bootstrap declares `$secondary: $gray-600` (#6C757D), but Odoo's BACKEND
 // re-declares it as `$secondary: $gray-300` (#DEE2E6) in web/static/src/scss/bootstrap_overridden.scss:32
 // - a SURFACE grey, chosen so `.bg-secondary` / `.border-secondary` read as a light chip/hairline.
@@ -289,10 +285,10 @@ $o-component-active-border: $o-viin-chrome-base !default;
 // yet in scope in this file, whose `!default`s must land before Bootstrap consumes them.
 $o-viin-text-secondary: #6C757D !default;
 
-// --- Brand BODY FONT: the theme-ABSENT fallback (R-1 restore, owner decision D4) -------------
-// RESTORED TOKEN. The pre-19 layer that a251e97 retired carried
+// --- Brand BODY FONT: the theme-ABSENT fallback (restored token) -------------
+// RESTORED TOKEN. The pre-19 layer carried
 //   $font-family-sans-serif: o-add-unicode-support-font((Roboto, "Lucida Grande", ...), 1)
-// in the deleted static/src/scss/bootstrap_overridden.scss. Nothing on 19.0 replaced it, so the
+// in the pre-19 static/src/scss/bootstrap_overridden.scss. Nothing on 19.0 replaces it, so the
 // Viindoo body font had come to depend entirely on viin_backend_theme being installed.
 //
 // NATIVE LEVER, not $font-family-sans-serif directly. Core web routes the whole Bootstrap type
@@ -311,9 +307,9 @@ $o-viin-text-secondary: #6C757D !default;
 // insert 'Odoo Unicode Support Noto' at position 1, i.e. AHEAD of Roboto, so glyphs Roboto lacks
 // still resolve; the function's unconditional `or $-part == sans-serif` clause also re-appends it
 // before the generic family, which is core's own behaviour and harmless (a repeated family name in
-// a font stack is simply never reached). Same call the retired file used - faithful, not re-derived.
+// a font stack is simply never reached). Same call the pre-19 layer used - faithful, not re-derived.
 //
-// BACKEND-ONLY, which is exactly the deleted file's original scope: the FRONTEND builds its own
+// BACKEND-ONLY, which is exactly that layer's original scope: the FRONTEND builds its own
 // stack straight from $o-system-fonts and never reads this token
 // (web/static/src/scss/bootstrap_overridden_frontend.scss:50 - verified to carry no
 // $o-font-family-sans-serif reference at all), so the website/portal typeface is untouched.

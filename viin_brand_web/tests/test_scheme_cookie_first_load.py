@@ -7,9 +7,9 @@
 #   B0 - `ir.http`'s webclient-rendering hook must WRITE the resolved `color_scheme` onto the
 #   RESPONSE (`request.future_response.set_cookie('color_scheme', <scheme>)`) whenever it differs
 #   from the request's own incoming cookie value, and must NOT re-emit it once the two already
-#   match. `color_scheme()`'s own resolution precedence (cookie > stored preference > super()) is
-#   UNCHANGED by this - that precedence is guarded by tests/test_color_scheme_pref.py, which stays
-#   untouched.
+#   match. `color_scheme()` resolves stored preference > cookie > super(): a stored light/dark
+#   `viin_color_scheme` wins over the `color_scheme` cookie, and the cookie wins over super() for an
+#   'auto' preference. That precedence is guarded by tests/test_color_scheme_pref.py.
 #
 #   The reachability problem B0 fixes: `web/static/src/views/view.js:348-352` decides whether to
 #   `loadBundle("web.assets_backend_lazy_dark")` or the light sibling by reading
