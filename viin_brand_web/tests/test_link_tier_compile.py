@@ -60,12 +60,13 @@ MODULE_DIR = os.path.dirname(_HERE)
 LINK_TIER_SCSS = os.path.join(MODULE_DIR, "static", "src", "scss", "link_tier.scss")
 
 # Backend surfaces a hyperlink actually renders on, and the AA threshold it must clear on each.
-# White = the form sheet (where .o_form_uri many2one links live); #f8f9fa = --body-bg, the list /
-# card surface; #e9ecef = --secondary-bg, the app band behind the home menu. Fixed design constants
-# transcribed from the compiled palette, NOT recomputed from production Sass.
+# White = the view surface: form sheet, list cell, kanban card, dialog and popover (where
+# .o_form_uri many2one links live); #f8f9fa = --body-bg, the app canvas under them (kanban canvas,
+# chatter panel, dropdown menu); #e9ecef = --secondary-bg, the app band behind the home menu. Fixed
+# design constants transcribed from the compiled palette, NOT recomputed from production Sass.
 LINK_SURFACES = {
     "form sheet (white)": "#ffffff",
-    "--body-bg list surface": "#f8f9fa",
+    "--body-bg app canvas": "#f8f9fa",
     "--secondary-bg app band": "#e9ecef",
 }
 

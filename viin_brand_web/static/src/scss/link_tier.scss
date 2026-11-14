@@ -75,8 +75,9 @@
 $o-viin-interactive-hover: shade-color($o-main-link-color, $link-shade-percentage) !default;
 
 // --- The HYPERLINK tier: brand secondary in light, unchanged teal in dark ------------------------
-// $o-brand-secondary #7F4282 measures 6.99:1 on the white form sheet, 6.63:1 on the --body-bg
-// #F8F9FA list surface and 5.90:1 on the --secondary-bg #E9ECEF app band - AA on all three. The
+// $o-brand-secondary #7F4282 measures 6.99:1 on the white view surface (form sheet, list cell,
+// kanban card), 6.63:1 on the --body-bg #F8F9FA app canvas (kanban canvas, chatter panel) and
+// 5.90:1 on the --secondary-bg #E9ECEF app band - AA on all three. The
 // hover rung reuses Bootstrap's own shade formula on the SAME token (no second literal enters the
 // module): shade-color(#7F4282, 30%) = #592E5B, 10.68:1 on white.
 // This feeds :root --link-color / --link-color-rgb / --link-hover-color, hence the `a` reboot rule,

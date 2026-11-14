@@ -17,4 +17,5 @@ from . import test_owl_extension_self_shadow
 from . import test_pivot_dark_compile
 from . import test_scheme_cookie_first_load
 from . import test_scss_variable_closure
+from . import test_surface_text_contrast_compile
 from . import test_webmanifest

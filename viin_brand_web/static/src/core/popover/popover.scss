@@ -4,8 +4,11 @@
 // TOKEN + scoped restyle of .o_popover. Bootstrap paints the popover + its arrow from COMPILE-TIME
 // hex ($popover-bg / $popover-border-color / $popover-header-bg) which would not flip in dark;
 // re-point each Bootstrap runtime custom property (UNPREFIXED - Odoo sets $variable-prefix: '') at
-// the scheme-aware props (--body-bg / --tertiary-bg / --body-color /
-// --emphasis-color / --border-color). Re-pointing --popover-bg / --popover-border-color also
+// the scheme-aware props (--tertiary-bg / --body-color / --emphasis-color / --border-color), and the
+// popover SURFACE at the view tier ($o-view-background-color: white in light, the panel tier in the
+// recompiled dark bundle - core's `$white` is not recompiled) - not at --body-bg, the app-shell grey
+// in light, which the text of a popover body (muted and contextual text) is not tuned against.
+// Re-pointing --popover-bg / --popover-border-color also
 // recolours the popover arrow (Bootstrap draws it from those props), so no separate arrow rule is
 // needed. COLOUR ONLY - the corner radius is core's and is NOT re-declared here (owner revision
 // 2026-08-03): core already pins `$popover-border-radius: $border-radius`
@@ -14,7 +17,7 @@
 // properties; no var() inside a Sass colour function; no hardcoded themeable hex.
 
 .o_popover {
-    --popover-bg: var(--body-bg);
+    --popover-bg: #{$o-view-background-color};
     --popover-border-color: var(--border-color);
     --popover-header-bg: var(--tertiary-bg);
     --popover-header-color: var(--emphasis-color);

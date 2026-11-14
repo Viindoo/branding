@@ -35,7 +35,7 @@ Editions Supported
     # Check https://github.com/Viindoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.2.1',
+    'version': '0.2.2',
 
     # viin_brand is needed because the moved views/webclient_template.xml (brand_promotion_message
     # and login_layout) serves /viin_brand/static/img/viindoo_logo_tiny.png and .../favicon.ico -

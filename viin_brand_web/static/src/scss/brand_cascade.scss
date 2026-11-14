@@ -290,6 +290,42 @@
     color: $o-viin-text-secondary !important;
 }
 
+// = Label of a semantic fill (`.text-bg-info`, `.btn-danger`, ...)
+// ============================================================================================
+// Bootstrap picks the label of `.text-bg-<theme colour>` and `.btn-<theme colour>` with
+// `color-contrast($fill)`, and Odoo lowers `$min-contrast-ratio` to 3
+// (web/static/src/scss/bootstrap_overridden.scss), so white is chosen on any fill it reaches 3:1
+// on. The brand info and danger fills sit between that floor and AA, so their small white labels
+// fall under 4.5:1. The fills are brand colours and do not move: the LABEL is re-chosen per theme
+// colour by the same function at the AA threshold. A fill whose label already clears it emits no
+// rule, so core's own pairs stay as core compiles them, and a re-tuned fill re-picks its label in
+// both schemes (the dark bundle recompiles this file against its own map).
+//
+// The badge takes one declaration, `!important` for the reason the `.text-secondary` rule above
+// spells out. The button re-emits `button-variant()` with the label passed for every state: its
+// hover and active fills derive from the label, and the default would re-run color-contrast() at
+// the 3:1 floor on the tinted fill and bring white back. `:not(.btn-link)` leaves a link-styled
+// button that carries the colour class to whatever core resolves for it.
+@each $-name, $-fill in $theme-colors {
+    @if color-contrast($-fill) != color-contrast($-fill, $min-contrast-ratio: 4.5) {
+        $-label: color-contrast($-fill, $min-contrast-ratio: 4.5);
+
+        .text-bg-#{$-name} {
+            color: $-label !important;
+        }
+
+        @if $-name != "light" and $-name != "dark" {
+            .btn-#{$-name}:not(.btn-link) {
+                @include button-variant(
+                    $-fill, $-fill,
+                    $color: $-label, $hover-color: $-label, $active-color: $-label,
+                    $disabled-color: $-label
+                );
+            }
+        }
+    }
+}
+
 // = List GROUP HEADER - grouping is STRUCTURE, so the group name is purple
 // ============================================================================================
 // Under the colour law a group header is not an

@@ -1,10 +1,11 @@
 // D9 - kanban card (mockup-13 CRM pipeline): a clean, elevated card with an additive hover-lift.
 // Column headers, progressbars and record tags stay cluster/native - not fought.
 //
-// TOKEN + scoped restyle of .o_kanban_record only. Core paints the card surface + border from
-// COMPILE-TIME hex ($o-view-background-color / $border-color, web/.../kanban_record.scss), so those
-// would stay light in dark mode; re-point them at the native UNPREFIXED runtime props
-// (--body-bg / --border-color) so cards follow dark mode for free. Shadow + hover-lift use
+// TOKEN + scoped restyle of .o_kanban_record only. The card surface and border are core's own
+// ($o-view-background-color / $border-color, web/.../kanban_record.scss): white in light, the panel
+// tier in the recompiled dark bundle. The surface is deliberately not re-pointed at --body-bg, the
+// app-shell grey in light, which is also the kanban canvas tier - the card would lose its raised
+// look and the muted and deadline text on it would fall below WCAG AA. Shadow + hover-lift use
 // color-mix over transparent (composites on either scheme) against --emphasis-color / the cluster
 // AA teal ($o-viin-chrome-base). NO --viin-* custom properties; NO var() inside a Sass colour
 // function; NO hardcoded themeable hex.
@@ -14,11 +15,6 @@
 // square-cornered exactly like core. The tile SEPARATION below is not a radius decision and stays.
 
 .o_kanban_record:not(.o_kanban_ghost) {
-    // Surface + border on the scheme-aware runtime props (core uses a compile-time hex that would
-    // not flip in dark).
-    background-color: var(--body-bg);
-    border-color: var(--border-color);
-
     // Separate the cards into distinct tiles (mockup-13). Core stacks them with a -1px overlap,
     // which fights the shadow.
     margin-bottom: map-get($spacers, 2);
