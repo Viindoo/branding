@@ -314,6 +314,17 @@ $o-component-active-bg: mix($o-main-link-color, $body-tertiary-bg, 20%);
 $o-component-active-border: $o-main-link-color;
 $o-component-active-color: $body-color;
 
+// --- Faded-label tier ---------------------------------------------------------------------------
+// Two core mechanisms fade a form label to say "not editable here": the empty / readonly / false
+// label rule (`opacity: .66`, form_controller.scss) and Bootstrap's disabled form-check label
+// (`opacity: $form-check-label-disabled-opacity`), which is what a read-only radio or checkbox
+// label renders. On the dark panel Bootstrap's default fade leaves the muted label tier (the label
+// colour of the mobile form) under AA. One value serves both mechanisms so a faded label means one
+// thing in this bundle; it stays visibly dimmer than a live label and keeps AA on both label tiers
+// over the panel. dark_secondary_surfaces.dark.scss reads the token for the first mechanism.
+$o-viin-dark-faded-label-opacity: 0.85;
+$form-check-label-disabled-opacity: $o-viin-dark-faded-label-opacity;
+
 // --- A11y focus ring dark arm -----------------------------------------------------------
 // focus_ring.scss (web.assets_backend, included in this dark bundle) declares
 // `$o-viin-focus: #005E68 !default;` and emits `--o-viin-focus`. Setting it here FIRST (no

@@ -5,10 +5,16 @@
 // or `o_badge_color_*` class: the language pill of a user card, for one) sits straight on the dark
 // panel, so in the dark bundle it takes the body text tier.
 //
+// `text-bg-default` is the same bare pill: the label-selection field widget renders a value its
+// `classes` option maps to `default` with that class, and no core or Bootstrap rule paints a fill or
+// a label for it (core adds only an outline, webclient.scss `.badge`). It is listed beside the generic arm because the
+// generic arm excludes every class that contains `text-`.
+//
 // The selector has the specificity of core's own `.badge` rule (`:where()` adds none) and this file
 // is listed right after core's webclient.scss, so every component rule that paints its own label on
 // its own fill (the systray and Discuss counters, for one) keeps winning over this one exactly as it
 // wins over core's.
-.badge:where(:not([class*="bg-"]):not([class*="text-"]):not([class*="o_badge_color"])) {
+.badge:where(:not([class*="bg-"]):not([class*="text-"]):not([class*="o_badge_color"])),
+.badge:where(.text-bg-default) {
     color: #{$body-color};
 }

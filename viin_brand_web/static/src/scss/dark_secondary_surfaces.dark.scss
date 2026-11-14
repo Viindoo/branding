@@ -102,12 +102,12 @@ button.text-primary.active {
     // Core fades empty/readonly/false labels with `.o_form_view .o_form_label.o_form_label_{empty,
     // false,readonly} { opacity: 0.66 }` (form_controller.scss). On the #EDF4F5 base that
     // composites to #A2AAAC (7.41:1 over #111B1E) but reads a full step dimmer than a filled label;
-    // 0.85 composites to #CCD3D5 (11.54:1) and closes the gap. Same (0,3,0) specificity as core's
-    // fade rule; dark-tail source order wins.
+    // the faded-label tier of dark_palette.scss (0.85) composites to #CCD3D5 (11.54:1) and closes
+    // the gap. Same (0,3,0) specificity as core's fade rule; dark-tail source order wins.
     &.o_form_label_empty,
     &.o_form_label_false,
     &.o_form_label_readonly {
-        opacity: 0.85;
+        opacity: $o-viin-dark-faded-label-opacity;
     }
 }
 

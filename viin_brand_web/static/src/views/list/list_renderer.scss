@@ -2,11 +2,14 @@
 // column headers on a subtle raised header surface, hairline row separators, a subtle row hover,
 // and a brand-teal wash on bulk-selected rows.
 //
-// TOKEN + scoped restyle of .o_list_renderer / .o_list_table. Core drives the header + cell surface
-// and borders from COMPILE-TIME hex (--ListRenderer-thead-bg-color = $o-webclient-background-color;
-// --table-bg / --table-border-color = $o-view-background-color / $border-color), which would not flip
-// in dark; re-point each at the native UNPREFIXED runtime props (--tertiary-bg /
-// --body-bg / --border-color). Row DECORATION colours (decoration-danger / -warning / -success /
+// TOKEN + scoped restyle of .o_list_renderer / .o_list_table. The CELL surface is core's own:
+// `--table-bg: $o-view-background-color` (white in light, the panel tier of the recompiled dark
+// bundle), the tier every text token of the theme is tuned against - it is deliberately not
+// re-pointed at --body-bg, which is the app-shell grey in light and would put the row text of a
+// decorated row (text-info, text-danger, text-warning, text-muted) below WCAG AA. Core drives the
+// header surface and the header border from COMPILE-TIME hex (--ListRenderer-thead-bg-color =
+// $o-webclient-background-color); re-point each at the native UNPREFIXED runtime props
+// (--tertiary-bg / --border-color). Row DECORATION colours (decoration-danger / -warning / -success /
 // -info / -muted) render as Bootstrap .text-* utilities (web/.../views/utils.js
 // getClassNameFromDecoration), so they already ride the cluster semantic retint - the single SSOT -
 // and are deliberately NOT touched here. Selection checkboxes already read $primary (cluster teal) -
@@ -20,8 +23,7 @@
     --ListRenderer-thead-border-end-color: var(--border-color);
 
     .o_list_table {
-        // Cell surface + all internal borders on the scheme-aware runtime props.
-        --table-bg: var(--body-bg);
+        // All internal borders on the scheme-aware runtime prop (the cell surface stays core's).
         --table-border-color: var(--border-color);
 
         // Column headers: muted, letter-spaced - the D10 list signature (mockup-03/10/32) minus the
