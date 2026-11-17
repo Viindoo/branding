@@ -55,7 +55,7 @@ Module này sẽ thay đổi giao diện module Base import theo thương hiệu
             'viin_brand_base_import/static/src/import_data_content/import_data_content.xml',
             ]
     },
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

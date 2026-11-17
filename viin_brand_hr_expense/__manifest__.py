@@ -61,7 +61,7 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
             'viin_brand_hr_expense/static/src/components/qrcode_action/qrcode_action.xml',
         ],
     },
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

@@ -61,7 +61,7 @@ Mô-đun không thay đổi màu sắc, nút bấm hay logo.
         'data/forum_demo.xml',
     ],
     'post_init_hook': 'post_init_hook',
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

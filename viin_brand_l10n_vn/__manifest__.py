@@ -41,7 +41,7 @@ Editions Supported
         'views/res_bank_views.xml'
     ],
     'auto_install': True,
-    'installable': True,
+    'installable': False,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

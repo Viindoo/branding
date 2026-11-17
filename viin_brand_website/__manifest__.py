@@ -79,7 +79,7 @@ Editions Supported
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     # Brands websites that already existed when this module landed - a field
     # default cannot reach them. See __init__._brand_untouched_favicons.

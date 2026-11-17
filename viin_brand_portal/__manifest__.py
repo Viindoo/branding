@@ -48,7 +48,7 @@ Module này sẽ thay đổi giao diện các module Portal theo thương hiệu
         'views/portal_templates.xml',
     ],
     'post_init_hook': '_post_init_hook',
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

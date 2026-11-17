@@ -42,7 +42,7 @@ Editions Supported
     'data': [
         'views/mail_plugin_login.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 9.9,
     'currency': 'EUR',

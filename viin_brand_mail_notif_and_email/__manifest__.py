@@ -45,7 +45,7 @@ Module cầu nối giữa ``viin_brand_mail`` và ``to_mail_notif_and_email``. C
     # any module necessary for this one to work correctly
     'depends': ['viin_brand_mail', 'to_mail_notif_and_email'],
 
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'license': 'OPL-1',
 }

@@ -54,7 +54,7 @@ Module này sẽ thay đổi giao diện các module Manufacturing theo thương
         'data/digest_data.xml',
         'views/stock_picking_type_views.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

@@ -53,7 +53,7 @@ Module này sẽ thay đổi giao diện module Events theo thương hiệu Viin
     'demo': [
         'data/event_demo.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

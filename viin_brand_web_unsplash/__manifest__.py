@@ -55,7 +55,7 @@ Module này sẽ thay đổi giao diện cuả Unsplash Image Library theo thư�
             'viin_brand_web_unsplash/static/src/components/media_dialog/*.xml',
         ],
     },
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

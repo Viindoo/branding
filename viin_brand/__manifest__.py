@@ -88,7 +88,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
     'post_load': 'post_load',
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 9.9,
     'currency': 'EUR',

@@ -54,7 +54,7 @@ Module này sẽ thay đổi giao diện module Two-Factor Authentication By Mai
         'data/mail_template_data.xml',
         'views/templates.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

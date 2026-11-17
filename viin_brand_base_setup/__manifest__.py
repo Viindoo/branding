@@ -55,7 +55,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
         'views/res_partner_views.xml',
         'views/res_config_settings_views.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

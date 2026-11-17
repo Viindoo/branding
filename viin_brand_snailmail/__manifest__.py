@@ -51,7 +51,7 @@ vì cơ sở dữ liệu chưa có tài khoản IAP không còn nhắc đến we
     # any module necessary for this one to work correctly
     'depends': ['snailmail'],
 
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

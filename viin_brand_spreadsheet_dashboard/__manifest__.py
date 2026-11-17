@@ -59,7 +59,7 @@ khi vẫn giữ nguyên bảng tính bên trong.
     'task_ids': [
         ],
 
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

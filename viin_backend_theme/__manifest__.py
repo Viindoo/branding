@@ -27,7 +27,7 @@ recompile live in ``viin_brand_web``, read from its brand-primary SSOT.
     'website': "https://viindoo.com",
     'category': 'Hidden',        # not an app - a theme layer
     'version': '0.1.1',          # short-form, no series prefix (Viindoo Standard/Internal profile)
-    'installable': True,
+    'installable': False,
     'auto_install': True,        # the de-branded redesign is the unconditional default on every Viindoo 19 DB
     'license': 'OPL-1',
     # This module supersedes the legacy Viindoo backend theme `to_backend_theme` (which depended on
