@@ -43,7 +43,7 @@ Module này sẽ thay đổi giao diện module Mail Bot theo thương hiệu Vi
 
     # any module necessary for this one to work correctly
     'depends': ['mail_bot'],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

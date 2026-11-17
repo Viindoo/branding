@@ -159,7 +159,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             'viin_brand_pos/static/tests/pos_core_wording_debrand.test.js',
         ],
     },
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

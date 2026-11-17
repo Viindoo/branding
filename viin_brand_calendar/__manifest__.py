@@ -49,7 +49,7 @@ Module này sẽ thay đổi giao diện module Calendar theo thương hiệu Vi
         'data/mail_template_data.xml',
     ],
     'post_init_hook': '_post_init_hook',
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

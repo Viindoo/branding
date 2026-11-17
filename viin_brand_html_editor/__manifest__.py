@@ -37,7 +37,7 @@ Editions Supported
             ('after', 'html_editor/static/src/scss/html_editor.common.scss', 'viin_brand_html_editor/static/src/scss/viin_brand_html_editor.common.scss'),
         ],
     },
-    'installable': True,
+    'installable': False,
     'auto_install': ['html_editor'],
     'price': 0.0,
     'currency': 'EUR',

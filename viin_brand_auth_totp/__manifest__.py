@@ -53,7 +53,7 @@ Module này sẽ thay đổi giao diện module Two-Factor Authentication theo t
     'data': [
         'views/templates.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

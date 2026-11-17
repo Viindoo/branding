@@ -51,7 +51,7 @@ Module này sẽ thay đổi giao diện các module Social Media theo thương 
     'demo': [
         'demo/res_company_demo.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

@@ -59,7 +59,7 @@ Module này cũng ẩn các thiết lập Odoo IAP của CRM
         'data/digest_data.xml',
         'views/crm_lead_views.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

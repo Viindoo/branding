@@ -53,7 +53,7 @@ Module này sẽ thay đổi giao diện các module Sales theo thương hiệu 
     'data': [
         'data/digest_data.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

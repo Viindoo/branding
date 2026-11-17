@@ -56,7 +56,7 @@ Module này sẽ thay đổi giao diện các module Stock theo thương hiệu 
         'views/stock_location_views.xml',
         'views/stock_picking_type_views.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

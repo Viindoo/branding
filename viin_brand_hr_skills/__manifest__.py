@@ -43,7 +43,7 @@ Module này sẽ thay đổi giao diện module Skills Management theo thương 
     'data': [
         'views/hr_views.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

@@ -50,7 +50,7 @@ mở ra chào mời ấn bản Enterprise. Giá trị đã lưu vẫn giữ hàn
     # viin_brand_pos: the branding of Point Of Sale this module completes
     'depends': ['viin_brand_pos', 'pos_self_order'],
 
-    'installable': True,
+    'installable': False,
     # Bridge module: installed together with the two modules it bridges.
     'auto_install': True,
     'price': 0.0,

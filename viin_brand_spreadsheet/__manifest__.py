@@ -92,7 +92,7 @@ mọi popover vẫn sáng như một tài liệu.
         # 1292, 1294,
         ],
 
-    'installable': True,
+    'installable': False,
     # If this module is a bridge module that integrates 2 or more other modules,
     # auto_install must be set to True.
     # In case this module is a module that provides additional functions / features,

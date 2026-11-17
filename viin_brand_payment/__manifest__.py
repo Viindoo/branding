@@ -59,7 +59,7 @@ khỏi danh sách Nhà cung cấp thanh toán.
         'data/payment_provider_data.xml',
         'views/payment_provider_views.xml',
     ],
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

@@ -57,7 +57,7 @@ Mô-đun này thay thế thương hiệu Odoo bằng Viindoo trong các mẫu em
         'data/auth_signup_templates_email.xml',
     ],
     'post_init_hook': '_post_init_hook',
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

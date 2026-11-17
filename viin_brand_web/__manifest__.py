@@ -304,7 +304,7 @@ Editions Supported
     'images': [
         # 'static/description/main_screenshot.png'
         ],
-    'installable': True,
+    'installable': False,
     'post_load': 'post_load',
     'auto_install': True,
     'price': 9.9,

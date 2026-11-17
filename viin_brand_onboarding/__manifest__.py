@@ -69,7 +69,7 @@ Editions Supported
             ('after', '/onboarding/static/src/scss/onboarding.scss', '/viin_brand_onboarding/static/src/scss/onboarding.scss'),
         ],
     },
-    'installable': True,
+    'installable': False,
     'price': 9.9,
     'currency': 'EUR',
     'license': 'OPL-1',
