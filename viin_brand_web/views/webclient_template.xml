@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
+	<!-- Default title and favicon of every page web.layout renders and whose caller sets none, such as
+	     the portal pages (/my/...), as 15.0 viin_brand_common did. They are render variables placed
+	     after the first <meta>: before web.layout's <title> and shortcut-icon link, but after what
+	     website's layout computes at the top of <head>, so a website keeps its own title and favicon.
+	     Neither <title> nor the typed icon link is located: core's test proxy of web.layout
+	     (web.WebSuite.test_check_suite) has neither. -->
+	<template id="web_layout" inherit_id="web.layout" name="Viindoo Web layout">
+		<xpath expr="//head/meta[1]" position="after">
+			<t t-set="title" t-value="title or 'Viindoo'"/>
+			<t t-set="x_icon" t-value="x_icon or '/viin_brand/static/img/favicon.ico'"/>
+		</xpath>
+	</template>
+
 	<template id="brand_promotion_message" inherit_id="web.brand_promotion_message" name="Viindoo Brand Promotion Message">
 		<xpath expr="//t[@t-set='odoo_logo']/a" position="attributes">
 			<attribute name="t-attf-href">https://viindoo.com?utm_source=db&amp;utm_medium=#{_utm_medium}</attribute>
