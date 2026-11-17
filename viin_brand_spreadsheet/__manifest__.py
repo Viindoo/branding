@@ -33,7 +33,7 @@ mọi popover vẫn sáng như một tài liệu.
     """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/app/19.0/viin_brand_spreadsheet",
+    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_spreadsheet",
     'live_test_url': "https://v19demo-int.viindoo.com",
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     # 'demo_video_url': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
