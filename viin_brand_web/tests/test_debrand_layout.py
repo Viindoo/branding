@@ -2,9 +2,11 @@
 #
 # viin_brand_web de-brands web.layout's <title> and shortcut-icon <link> by setting the `title` /
 # `x_icon` QWeb variables in web.layout's CALLERS - web.webclient_bootstrap (backend) and
-# web.login_layout (login) - never by editing web.layout's own <title>/<link> nodes directly.
-# DebrandHeadRenderTest below asserts the OBSERVABLE result: the backend and login pages render the
-# Viindoo <title> and the Viindoo favicon, never core's fallback.
+# web.login_layout (login) - never by editing web.layout's own <title>/<link> nodes directly. A page
+# whose caller sets neither (the portal) gets the same two variables as defaults from the module's
+# extension of web.layout, which sets them after the first <meta> of <head>.
+# DebrandHeadRenderTest below asserts the OBSERVABLE result: the backend, login and portal pages
+# render the Viindoo <title> and the Viindoo favicon, never core's fallback.
 #
 # The login surface needs its own guard because it renders through a DIFFERENT caller
 # (web.frontend_layout -> web.layout) that does not pass through web.webclient_bootstrap - a title
@@ -144,3 +146,24 @@ class DebrandHeadRenderTest(HttpCase):
             "login page favicon must be the Viindoo asset %s, not %s (got %r)"
             % (VIINDOO_FAVICON_HREF, CORE_FAVICON_HREF, favicon),
         )
+
+    def _skip_portal_unless_rendered_by_web_layout(self):
+        """Skip unless `portal` serves /my through web.frontend_layout, i.e. without `website`, which
+        renders the portal pages with the website's own title and favicon."""
+        modules = self.env["ir.module.module"]
+        if modules.search([("name", "=", "portal")]).state != "installed":
+            self.skipTest("portal is not installed: there is no /my page")
+        if modules.search([("name", "=", "website")]).state == "installed":
+            self.skipTest("website is installed: the portal pages carry the website's title and favicon")
+
+    def test_portal_page_title_and_favicon_are_viindoo(self):
+        """A portal page (/my) sets no title or favicon of its own: web.layout's defaults must be Viindoo's.
+
+        Its caller is web.frontend_layout, neither the login layout nor the backend bootstrap: without a
+        default on web.layout itself the portal fell back to core's 'Odoo' title and Odoo favicon."""
+        self._skip_portal_unless_rendered_by_web_layout()
+        self.authenticate("admin", "admin")
+        response = self.url_open("/my")
+        self.assertEqual(response.status_code, 200, "the portal home must render for an authenticated admin")
+        self.assertEqual(self._html_title(response.text), VIINDOO_BRAND_NAME)
+        self.assertEqual(self._favicon_href(response.text), VIINDOO_FAVICON_HREF)
