@@ -5,7 +5,6 @@ from odoo.tests.common import TransactionCase, tagged
 
 # The Manufacturing help texts this module owns must not name the Odoo product.
 BRAND_TERM = "Odoo"
-PDF_PREVIEW_FRAGMENT = "PDF preview"
 AUTO_PRINT_FIELDS = [
     "auto_print_done_production_order",
     "auto_print_done_mrp_product_labels",
@@ -78,7 +77,7 @@ class TestPickingTypeMrpPrintNote(TransactionCase):
 
     def test_mrp_print_note_says_pdf_preview_without_odoo(self):
         page = self._mrp_hardware_page()
-        notes = page.xpath(f".//div[@colspan='2'][contains(., '{PDF_PREVIEW_FRAGMENT}')]")
+        notes = page.xpath(".//div[@colspan='2'][contains(., 'PDF preview')]")
         self.assertEqual(
             len(notes), 1,
             "the Manufacturing Hardware page must carry exactly one PDF preview note",
