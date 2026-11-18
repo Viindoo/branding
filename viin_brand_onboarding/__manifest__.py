@@ -35,7 +35,7 @@ Editions Supported
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1',
-    'depends': ['viin_brand_web', 'onboarding'],
+    'depends': ['viin_brand', 'onboarding'],
     'assets': {
         # Brand SCSS leaks into web.assets_unit_tests_setup / web.tests_assets because both bundles
         # carry ('include', 'web.assets_backend') (addons/web/__manifest__.py), so core's own

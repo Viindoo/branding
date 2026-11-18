@@ -1,7 +1,5 @@
-# modules_website: module -> Viindoo intro/doc URL. Consumed by to_base's _load_manifest_plus
-# (_get_brand_module_website) to override each module's `website` manifest field on a branded install.
-# Do NOT delete: to_base imports odoo.addons.viin_brand.apriori.modules_website; a missing file
-# silently reverts every module website to the Odoo default (see tests/ guard).
+# Maps a module to its Viindoo introduction page. `viin_brand` sets the `website` of the module's
+# manifest to it.
 modules_website = {
     'account': 'https://viindoo.com/intro/invoicing',
     'board': 'https://viindoo.com/intro/dashboards',

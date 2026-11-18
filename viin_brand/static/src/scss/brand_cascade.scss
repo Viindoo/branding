@@ -1,0 +1,218 @@
+// Viindoo styling cascade for the surfaces core does not route through an SCSS variable.
+// Everything core still drives from a variable is a native `!default` lever in
+// brand_variables.scss (navbar entry states, the statusbar current-arrow border and the selected
+// settings-tab indicator via $o-component-active-border).
+//
+// Colour ladder, declared once in brand_variables.scss and never re-literalised here:
+//   $o-viin-chrome-base   = $o-navbar-background #007F8E - 4.74:1, carries white text
+//   $o-viin-chrome-deep   = #005E68                      - 7.5:1, hover / pressed / open
+//   $o-brand-primary      = #00BBCE                      - decorative only, never under white text
+//   $o-brand-secondary    = #7F4282                      - the structure accent, light mode only
+//
+// Every rule obeys the colour law in brand_variables.scss (teal = act, purple = structure, gold =
+// saved, red/green/amber = untouched semantics); read it before adding a rule here.
+//
+// Every purple rule is wrapped in `@if not $o-viin-dark-bundle`, so web.assets_web_dark does not
+// emit it and the surface renders its default; where "no rule" would be unreadable the `@else`
+// arm emits the default explicitly. Giving $o-brand-secondary a dark arm instead would reverse the
+// rule.
+
+// Core renders each facet as a two-part pill and branches the label class by facet type:
+//   field / filter -> `btn btn-primary`   (already the AA teal, via $o-btns-bs-override)
+//   groupBy        -> `text-bg-action`    ($o-action, the flat decorative teal)
+//   favorite       -> `btn btn-favourite` ($o-main-favorite-color gold)
+// and gives .o_facet_values no border. One uniform brand chrome for the whole facet is set by
+// pinning the Bootstrap button custom properties the .btn variants already read (Odoo sets
+// $variable-prefix to the empty string, so the tokens are --btn-*, not --bs-btn-*), plus one rule
+// for the groupBy variant, which is not a button.
+//
+// The tokens are set on the label element, never on .o_searchview_facet: custom properties
+// inherit, and the facet also contains .o_facet_remove (`btn btn-link text-danger`), whose red
+// must not be repainted.
+//
+// The favorite facet is a deliberate exception that keeps core's yellow "saved filter" styling:
+// every rule excludes `.btn-favourite`, and dropping a `:not(.btn-favourite)` guard would repaint
+// saved filters teal.
+.o_searchview_facet {
+    // field / filter facets (`btn btn-primary`), and the groupBy variant when core also gives it
+    // `btn` (only when env.searchModel.canOrderByCount is true).
+    > .o_searchview_facet_label.btn:not(.btn-favourite) {
+        --btn-bg: #{$o-viin-chrome-base};
+        --btn-border-color: #{$o-viin-chrome-base};
+        --btn-color: #{$o-white};
+        --btn-hover-bg: #{$o-viin-chrome-deep};
+        --btn-hover-border-color: #{$o-viin-chrome-deep};
+        --btn-hover-color: #{$o-white};
+        --btn-active-bg: #{$o-viin-chrome-deep};
+        --btn-active-border-color: #{$o-viin-chrome-deep};
+        --btn-active-color: #{$o-white};
+    }
+
+    // Group-by facet = structure, so it is the purple one. A field/filter facet narrows the record
+    // set (an action, teal); a groupBy facet re-organises it.
+    //
+    // The discriminator is `.text-bg-action`, which core's template sets on `facet.type ==
+    // 'groupBy'`. `.o_facet_with_domain` is only a proxy (it keys on facet.domain, not the type),
+    // and `.text-bg-action` is a positive match that cannot leak onto the favourite facet. It
+    // matches both groupBy shapes: plain `text-bg-action`, and the `canOrderByCount` shape where
+    // core adds a bare `btn`.
+    //
+    // Core generates `.text-bg-action` through the o-print-color mixin, which ships
+    //     --background-color / background-color: var(--background-color) !important
+    //     --color            / color:            var(--color)            !important
+    // Importance beats specificity, so a plain `background-color` or `color` here would be dead,
+    // and an `!important` of our own is not wanted. Instead this feeds the custom properties core's
+    // `!important` rule reads: they carry no `!important`, so this selector (0,3,0) wins them and
+    // core's rule resolves to our value. The value mirrors core's shape so the `--bg-opacity` /
+    // `--text-opacity` utilities keep working.
+    //
+    // Contrast: #7F4282 under #FFFFFF is 6.99:1 (AA).
+    //
+    // Light only: in web.assets_web_dark the rule is not emitted, so the facet keeps core's own
+    // `.text-bg-action` paint, which picks a self-contrasting label through `color-contrast()`.
+    // Any dark value of our own would be an accent by another name.
+    @if not $o-viin-dark-bundle {
+        > .o_searchview_facet_label.text-bg-action {
+            --background-color: RGBA(#{to-rgb($o-brand-secondary)}, var(--bg-opacity, 1));
+            // Plain $o-white: with the purple confined to light mode there is one label colour.
+            --color: RGBA(#{to-rgb($o-white)}, var(--text-opacity, 1));
+        }
+    }
+
+    // The border around the facet values, on the AA base so the facet reads as one branded unit.
+    // box-sizing is border-box throughout the backend and the facet is a stretch flex row, so this
+    // adds no height. The adjacent-sibling guard keeps the favourite facet frameless.
+    > .o_searchview_facet_label:not(.btn-favourite) + .o_facet_values {
+        border: $border-width solid $o-viin-chrome-base;
+    }
+
+    // The group-by facet's frame follows its label onto the purple, so the pill reads as one unit.
+    // Both rules are (0,4,0), so this one wins on source order and must stay after the one above.
+    // It is guarded by the same flag as the label: in dark the label keeps core's teal paint, and
+    // the generic teal frame above stands.
+    @if not $o-viin-dark-bundle {
+        > .o_searchview_facet_label.text-bg-action + .o_facet_values {
+            border-color: $o-brand-secondary;
+        }
+    }
+}
+
+// The stat value is purple in the light bundle. Core reads its colour from
+// `%-stat-button-value { color: var(--o-stat-text-color, #{$o-brand-primary}); }`, whose fallback
+// is the flat decorative teal (2.33:1), so the property core already reads is overridden rather
+// than the rule. The value uses $o-brand-secondary (6.99:1 on the stat-button surface, the form
+// sheet, since core compiles stat buttons as `btn-outline-secondary`, a transparent background).
+//
+// The rule stays at .o-form-buttonbox (0,1,0) so core's
+// `.o_bottom_sheet .o-form-buttonbox { --o-stat-text-color: currentColor; }` (0,2,0) still wins
+// inside the mobile bottom sheet. The stat button icon is untouched: core reads it from
+// `var(--o-stat-button-color, $primary)` and $primary is already the AA teal.
+//
+// In dark the property is pinned to the body text tier instead of being left un-emitted, because
+// core's fallback is the decorative teal, an accent and the wrong one. The value then reads as
+// ordinary emphasised figures (#EDF4F5 on #111B1E = 15.72:1) and the icon keeps its teal.
+//
+// The label (`.o_stat_text`) gets no colour of its own from core and inherits the
+// `btn-outline-secondary` grey (3.12:1 on the form sheet, below WCAG SC 1.4.3). It reads the same
+// property as the value, so label and value cannot drift, the dark arm governs both, and core's
+// bottom-sheet exception applies to both. The `currentColor` fallback degrades to core's look if
+// core drops the property.
+.o-form-buttonbox {
+    @if $o-viin-dark-bundle {
+        --o-stat-text-color: #{$body-color};
+    } @else {
+        --o-stat-text-color: #{$o-brand-secondary};
+    }
+
+    .o_stat_text {
+        color: var(--o-stat-text-color, currentColor);
+    }
+}
+
+// The progress track takes an 8% wash of the brand primary instead of core's plain white
+// (`.o_progressbar .o_progress { background-color: $o-view-background-color; }`). It is decoration
+// only: the track carries no text and the fill is core's `.bg-primary`, already the AA teal.
+.o_progressbar {
+    .o_progress {
+        background-color: mix($o-brand-primary, $o-view-background-color, 8%);
+    }
+}
+
+// With debug on, core shows the database name in the navbar user-menu toggle inside a
+// `<mark class="d-block font-monospace">` that carries Bootstrap's pale highlight fill and only
+// inherits its text colour, so the name is low-contrast on the teal navbar. The fill is dropped and
+// the text is the opaque white (#FFFFFF is 4.74:1 on #007F8E), like the navbar entries. The navbar
+// chrome is scheme-invariant teal, so the rule is scheme-invariant too.
+.o_user_menu .oe_topbar_name mark {
+    background-color: transparent;
+    color: $o-white;
+}
+
+// Odoo's backend re-declares `$secondary` as the surface grey $gray-300 (#DEE2E6), and Bootstrap
+// derives the `.text-secondary` utility from the same token, giving 1.30:1 on white. brand_variables.scss
+// explains why only the text tier is corrected, through $o-viin-text-secondary, and not
+// `$secondary` itself.
+//
+// The `!important` is required: Bootstrap's utility ships `!important`, which beats specificity.
+// Re-pointing `--secondary-rgb` instead would also repaint `.bg-secondary` / `.border-secondary`,
+// which read the same custom property.
+//   light  #6C757D on #FFFFFF = 4.69:1 ; dark  #8EA5A8 on #111B1E = 6.75:1 (the token has a dark arm).
+.text-secondary {
+    color: $o-viin-text-secondary !important;
+}
+
+// Bootstrap picks the label of `.text-bg-<theme colour>` and `.btn-<theme colour>` with
+// `color-contrast($fill)`, and Odoo lowers `$min-contrast-ratio` to 3, so white is chosen on any
+// fill it reaches 3:1 on. The brand info and danger fills sit between that floor and AA, so their
+// small white labels fall under 4.5:1. The fills do not move: the label is re-chosen per theme
+// colour by the same function at the AA threshold. A fill whose label already clears it emits no
+// rule, and a re-tuned fill re-picks its label in both schemes (the dark bundle recompiles this
+// file against its own map).
+//
+// The badge takes one `!important` declaration, for the reason the `.text-secondary` rule gives.
+// The button re-emits `button-variant()` with the label passed for every state: its hover and
+// active fills derive from the label, and the default would re-run color-contrast() at the 3:1
+// floor on the tinted fill and bring white back. `:not(.btn-link)` leaves a link-styled button
+// that carries the colour class to whatever core resolves for it.
+@each $-name, $-fill in $theme-colors {
+    @if color-contrast($-fill) != color-contrast($-fill, $min-contrast-ratio: 4.5) {
+        $-label: color-contrast($-fill, $min-contrast-ratio: 4.5);
+
+        .text-bg-#{$-name} {
+            color: $-label !important;
+        }
+
+        @if $-name != "light" and $-name != "dark" {
+            .btn-#{$-name}:not(.btn-link) {
+                @include button-variant(
+                    $-fill, $-fill,
+                    $color: $-label, $hover-color: $-label, $active-color: $-label,
+                    $disabled-color: $-label
+                );
+            }
+        }
+    }
+}
+
+// A group header is the structure the records were re-organised into, the list-view counterpart of
+// the purple group-by facet above. Core renders the name cell as
+// `<th class="o_group_name fs-6 fw-bold {{!group.isFolded ? 'text-black' : 'text-body'}}">`.
+//
+// `!important` is required: the cell always carries `.text-black` (open; core's o-print-color
+// mixin emits `color: var(--color) !important`) or `.text-body` (folded; Bootstrap's `!important`
+// utility), and importance beats specificity. The two resolve through different levers (`--color`
+// is shared by every o-print-color utility, `--body-color-rgb` by the whole body text tier), so
+// re-pointing a token would leak outside this cell. One `color` declaration on the group-name cell
+// does it. Light: #7F4282 is 6.99:1 on the white list surface.
+//
+// In dark the rule is re-aimed at the body text tier rather than dropped: an open group is
+// `.text-black`, a real black at 1.16:1 on the #111B1E dark list surface (until
+// dark_secondary_surfaces.dark.scss re-points its `--color`), so leaving the rule un-emitted would
+// hand the name back to a black-on-dark cell. #EDF4F5 on #111B1E = 15.72:1.
+.o_list_renderer .o_list_table tbody > tr.o_group_header .o_group_name {
+    @if $o-viin-dark-bundle {
+        color: $body-color !important;
+    } @else {
+        color: $o-brand-secondary !important;
+    }
+}

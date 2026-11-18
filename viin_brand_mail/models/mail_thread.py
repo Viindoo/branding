@@ -32,5 +32,5 @@ class MailThread(models.AbstractModel):
         # size-correct swap; viin_brand_mail hard-depends on viin_brand_web.
         icon = (payload.get('options') or {}).get('icon') or ''
         if 'odoo-icon-192x192.png' in icon:
-            payload['options']['icon'] = '/viin_brand_web/static/img/viindoo-icon-192x192.png'
+            payload['options']['icon'] = '/viin_brand/static/img/viindoo-icon-192x192.png'
         return payload

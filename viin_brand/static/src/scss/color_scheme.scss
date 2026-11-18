@@ -1,0 +1,25 @@
+// Native color-scheme correctness.
+//
+// Core paints `.o_web_client { color-scheme: $o-webclient-color-scheme }`, and the variable
+// defaults to the invalid custom-ident `bright`, which is treated as `normal`. The web-client
+// subtree then never opts into the dark UA scheme, which skews light-dark(), native scrollbars,
+// form controls, date pickers and getComputedStyle. The fix is scheme-invariant and independent of
+// the dark bundle, so it lives in the always-installed base. It tracks the app toggle
+// (data-bs-theme), not Bootstrap's `light dark`, which would follow the OS preference and desync
+// native chrome from the app's chosen scheme. (0,2,0) beats core's `.o_web_client` (0,1,0).
+:root,
+:root[data-bs-theme="light"] {
+    color-scheme: light;
+}
+
+[data-bs-theme="dark"] {
+    color-scheme: dark;
+}
+
+[data-bs-theme="light"] .o_web_client {
+    color-scheme: light;
+}
+
+[data-bs-theme="dark"] .o_web_client {
+    color-scheme: dark;
+}

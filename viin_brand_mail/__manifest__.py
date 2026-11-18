@@ -37,7 +37,7 @@ Editions Supported
     'version': '0.1.8',
 
     # any module necessary for this one to work correctly
-    'depends': ['mail', 'viin_brand_web'],
+    'depends': ['mail', 'viin_brand'],
 
     # always loaded
     'data': [

@@ -1,0 +1,67 @@
+// Frontend $primary de-brand: the public/login primary is the AA teal.
+//
+// Compiled web.assets_frontend emits `:root { --primary: #714B67 }` (the enterprise aubergine)
+// where web.assets_backend emits the AA teal. Bootstrap's _root.scss emits `--primary` from
+// $theme-colors['primary'], not from the $primary variable. On the backend, html_editor sets
+// $prevent-backend-colors-alteration and map-removes 'primary', so pre_variables.scss rebuilds it
+// from $primary (teal). On the frontend that flag is absent, so html_editor keeps
+// $theme-colors['primary'] = o-color('o-cc1-btn-primary') (the base-1 aubergine that
+// brand_palette_reset deliberately keeps for content swatches) and the login CTA and links leak
+// aubergine. `$primary: #007F8E !default` alone (brand_variables.scss) fixes the variable, not the
+// emitted `--primary`.
+//
+// After pre_variables.scss has finalised $theme-colors and before Bootstrap builds its maps and
+// emits :root, only the 'primary' theme colour is re-pointed to $primary (the base AA teal, set
+// `!default` so a downstream website theme can still win by assigning $primary earlier). Content
+// o-colors (o-color-1..5 and the .text-o-color-* / .bg-o-color-* swatches) are a separate map and
+// stay untouched. The file rides web.assets_frontend only, contributed via
+// ('after', 'web/static/src/scss/pre_variables.scss', ...); web is a hard dependency, so the anchor
+// is installability-safe.
+//
+// A website with colours of its own keeps them. On a website whose owner picked or customized a
+// palette, html_editor has already made $theme-colors['primary'] the palette's own primary, and
+// forcing the teal would repaint the customer's `.btn-primary`, links and `.bg-primary` blocks with
+// the Viindoo chrome colour. A customized website therefore keeps its palette's primary and, as
+// html_editor intends (bootstrap_overridden.scss `$primary: map-get($theme-colors, 'primary')
+// !default`, defeated here by brand_variables' earlier `!default`), Bootstrap's $primary follows it
+// (links, focus, active states). The stock palette keeps the AA teal.
+//
+// Customized means the website's own colour/theme palette carries any value (website's
+// $o-has-customized-colors / $o-has-customized-13-0-color-system), or a palette other than the
+// stock 'base-1' is selected. The selected palette is $o-original-color-palette-name: by the time
+// this file compiles, website's secondary_variables.scss has renamed the active one
+// $o-color-palette-name: 'user-palette' on every website, the stock one included, so that name says
+// nothing. The variables only exist with website installed; a plain [web + brand] install takes the
+// second branch.
+@if variable-exists('theme-colors') {
+    $-website-colors: (variable-exists('o-has-customized-colors') and $o-has-customized-colors)
+        or (variable-exists('o-has-customized-13-0-color-system') and $o-has-customized-13-0-color-system)
+        or (variable-exists('o-original-color-palette-name') and $o-original-color-palette-name != 'base-1');
+    @if $-website-colors and map-get($theme-colors, 'primary') {
+        $primary: map-get($theme-colors, 'primary') !global;
+        // The brand secondary button that brand_palette_reset.scss writes into the stock base-1
+        // palette gets the same scope: a customized website keeps Odoo's defaults for the keys its
+        // owner did not set. Written into base-1, the two keys reach the website as palette defaults
+        // that the user palette overrides one by one, so a website that set its own
+        // o-cc1-btn-secondary but not the border would get the brand purple border. Unsetting them
+        // here, after the maps that read them are built, is the earliest safe point, since the user
+        // palette file and brand_palette_reset.scss are both tail appends of
+        // web._assets_primary_variables and may land in either order. The three consumers are
+        // re-derived: $o-color-palette (o-color()), $colors (html_editor.common.scss) and the
+        // Bootstrap button maps (bootstrap_review_frontend.scss).
+        @if variable-exists('o-user-color-palette') and variable-exists('o-color-palette') and variable-exists('colors') {
+            @each $-key in ('o-cc1-btn-secondary', 'o-cc1-btn-secondary-border') {
+                @if not map-has-key($o-user-color-palette, $-key) {
+                    $o-color-palette: map-merge($o-color-palette, ($-key: null)) !global;
+                    $colors: map-merge($colors, ($-key: null)) !global;
+                }
+            }
+            @if variable-exists('o-btn-bg-colors') {
+                $o-btn-bg-colors: map-merge($o-btn-bg-colors, ('secondary': o-color('o-cc1-btn-secondary'))) !global;
+                $o-btn-border-colors: map-merge($o-btn-border-colors, ('secondary': o-color('o-cc1-btn-secondary-border'))) !global;
+            }
+        }
+    } @else {
+        $theme-colors: map-merge($theme-colors, ('primary': $primary)) !global;
+    }
+}

@@ -45,7 +45,7 @@ import json
 from odoo.tests import HttpCase, new_test_user, tagged
 from odoo.tools.misc import file_open
 
-from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     WCAG_AA_NORMAL_TEXT,
     WCAG_NON_TEXT_MIN,
     _alpha_of,
@@ -54,7 +54,7 @@ from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
     _normalize_colour,
     _relative_luminance,
 )
-from odoo.addons.viin_brand_web.tests.test_brand_ssot import _resolve_scss_hex
+from odoo.addons.viin_brand.tests.test_brand_ssot import _resolve_scss_hex
 
 # The bare registry TAG the test-only client action self-registers under
 # (static/tests/tours/test_spreadsheet_editor_action.js `VIIN_TEST_SPREADSHEET_EDITOR_ACTION_TAG`)

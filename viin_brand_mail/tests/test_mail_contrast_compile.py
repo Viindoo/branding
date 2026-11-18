@@ -86,7 +86,7 @@ try:
     # The flat brand-identity teal, read from the module cluster's single Python SSOT (never
     # hardcoded-and-compared-to-itself). Imported defensively so a missing constant yields a crisp
     # per-test failure rather than breaking collection of the whole tests package.
-    from odoo.addons.viin_brand_web.controllers.webmanifest import VIINDOO_THEME_COLOR
+    from odoo.addons.viin_brand.controllers.webmanifest import VIINDOO_THEME_COLOR
 except ImportError:
     VIINDOO_THEME_COLOR = None
 
@@ -104,7 +104,7 @@ try:
     # ancestors carry these classes", which is what makes a last-writer read honest in a bundle
     # that contains scoped rules. Imported for the same reason as the resolver - one ancestor model
     # for the whole cluster, never a second copy that can drift from it.
-    from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+    from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
         _computed_value,
         _selector_scope_applies,
         _winning_declaration,
@@ -118,7 +118,7 @@ try:
     # `.btn-secondary`, and the honest way to assert "the default" is to resolve a
     # real stock `.btn-secondary` in the SAME bundle and compare - which needs that module's element
     # model, not a hex copied into this file (ODOO-AI-ETHOS #11 SSOT).
-    from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+    from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
         PAGER_ANCESTORS,
         PAGER_PREVIOUS_CLASSES,
     )

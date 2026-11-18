@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+  <!-- Numbered steps on core's arrow statusbar. Attributes only: the button keeps its
+       `t-esc="item.label"`, and statusbar_steps.scss draws the digit from `attr(data-viin-step)`.
+
+       1. No DOM text change: core's suite and the sale / crm tours assert statusbar button text
+          exactly, and a `<span>` holding the digit would append to `button.textContent`.
+       2. No load-order dependency on mail: `mail.StatusBarDurationField` is a primary-mode copy
+          of `web.StatusBarField` that receives every extension of the parent with a lower
+          block id, and mail's own xpath targets `//*[@t-esc='item.label']`. Adding an attribute
+          is safe in either load order and idempotent when a copy is extended again.
+       3. No geometry change: core's areItemsWrapping() folds the whole bar into one dropdown when
+          the root measures taller than its first child, so nothing may inflate the container.
+
+       The marker is generated content, so assistive technology does not announce it; the
+       radiogroup already conveys the position (role="radio" + aria-current="step"). -->
+  <t t-inherit="web.StatusBarField" t-inherit-mode="extension">
+    <xpath expr="//button[@role='radio']" position="attributes">
+      <attribute name="class" add="o_viin_numbered_step" separator=" "/>
+      <attribute name="t-att-data-viin-step">viinStepNumber(item)</attribute>
+    </xpath>
+  </t>
+
+</templates>

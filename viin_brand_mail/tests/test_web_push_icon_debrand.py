@@ -53,7 +53,7 @@ class TestWebPushIconDebrand(TransactionCase):
         payload = self.partner._notify_by_web_push_prepare_payload(message)
         self.assertEqual(
             payload["options"]["icon"],
-            "/viin_brand_web/static/img/viindoo-icon-192x192.png",
+            "/viin_brand/static/img/viindoo-icon-192x192.png",
             "Anonymous web-push notifications must show the Viindoo app icon, "
             "not the Odoo default mascot",
         )
@@ -88,7 +88,7 @@ class TestWebPushIconDebrand(TransactionCase):
         payload = self.partner._notify_by_web_push_prepare_payload(message)
         self.assertEqual(
             payload["options"]["icon"],
-            "/viin_brand_web/static/img/viindoo-icon-192x192.png",
+            "/viin_brand/static/img/viindoo-icon-192x192.png",
             "The de-brand must apply regardless of test_enable - the production "
             "code path must have exactly one shape",
         )

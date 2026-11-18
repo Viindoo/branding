@@ -10,8 +10,7 @@ class ResConfigSettings(models.TransientModel):
 
     @api.model
     def get_viin_brand_modules_icon(self, modules):
-        # we cannot import outside the class due to the import order in the module's __init__.py
-        # i.e. models are imported prior to assigning the `get_viin_brand_module_icon()` to the `get_module_icon()`
+        # imported here: the models load before `get_module_icon` is replaced by the Viindoo resolver
         from odoo.modules.module import get_module_icon
         from .. import check_viin_brand_module_icon
         result = []

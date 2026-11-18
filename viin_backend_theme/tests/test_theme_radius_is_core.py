@@ -48,7 +48,6 @@ from odoo.tests.common import TransactionCase, tagged
 CLUSTER_MODULES = (
     "viin_backend_theme",
     "viin_brand_mail",
-    "viin_brand_web",
     "viin_brand_html_editor",
     "viin_brand",
 )
@@ -65,7 +64,7 @@ ALLOWED_RADIUS_DECLARATIONS = {
     # this inline rule is not overriding anything - it is the only styling source on that page, and
     # .25rem is already exactly core's $o-border-radius. Deleting it would square the button, i.e.
     # move FURTHER from Odoo CE rather than closer, which is the opposite of this file's rule.
-    ("viin_brand_web", "views/webclient_template.xml"): {"border-radius:.25rem"},
+    ("viin_brand", "views/webclient_templates.xml"): {"border-radius:.25rem"},
     # The statusbar STEP-NUMBER marker (owner request 2026-08-03: the step numbers came back on
     # core's arrow steps). `50%` on a `::after` box whose entire content is a single digit: the
     # circle IS the marker - squared, it stops reading as a step badge and becomes a stray number
@@ -78,7 +77,7 @@ ALLOWED_RADIUS_DECLARATIONS = {
     # This is the successor to the D6 stepper's `.o_viin_step_marker` entry the header describes.
     # That one came with a whole pill restyle (clip-path: none, container padding) and was reverted
     # WITH it; this one is the numbering affordance ALONE, which is the part the owner asked back.
-    ("viin_brand_web", "static/src/views/fields/statusbar/statusbar_steps.scss"):
+    ("viin_brand", "static/src/views/fields/statusbar/statusbar_steps.scss"):
         {"border-radius:50%"},
 }
 

@@ -37,7 +37,7 @@ recompile live in ``viin_brand_web``, read from its brand-primary SSOT.
     # viin_brand reached transitively via viin_brand_web. mail reached via viin_brand_mail
     # (which depends on mail): discuss_onboarding_patch.js patches mail's Discuss tour, and
     # home_menu.js reads mail.activity for the header's activity count.
-    'depends': ['web', 'viin_brand_web', 'viin_brand_mail'],
+    'depends': ['web', 'viin_brand', 'viin_brand_mail'],
     # Server QWeb inherit on web.webclient_bootstrap (theme-owned): the density boot stamp
     # (data-viin-density on <html> for FOUC-free first render) + the pinch-to-zoom viewport override
     # (WCAG SC 1.4.4). This is a SERVER template rendered at boot, so it loads via 'data', not an OWL
