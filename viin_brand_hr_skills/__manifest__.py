@@ -34,12 +34,10 @@ Module này sẽ thay đổi giao diện module Skills Management theo thương 
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
 
-    # any module necessary for this one to work correctly
     'depends': ['hr_skills'],
 
-    # always loaded
     'data': [
         'views/hr_views.xml',
     ],
