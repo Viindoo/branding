@@ -40,12 +40,4 @@
         </xpath>
     </template>
 
-    <!-- NOTE: "Website info page" (show_website_info) and "Go to your Odoo Apps" button title
-         (layout) de-brand overrides used to live here as separate <template> records sharing the
-         SAME local id as the ones already declared in views/website_templates.xml - a same-module
-         xmlid collision (viin_brand_website.show_website_info / viin_brand_website.layout) that
-         silently overwrote the earlier file's arch_db (favicon/meta-generator override, "Viindoo
-         Version" label) with no install-time error. Both overrides have been merged as additional
-         <xpath> children of the existing templates in views/website_templates.xml instead. -->
-
 </odoo>
