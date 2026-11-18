@@ -1,0 +1,37 @@
+// Notebook tabs: active and hover tab underline in brand teal.
+//
+// Horizontal notebook only (the vertical variant keeps core chrome). The accent reads
+// $o-component-active-border, core's "current component" colour: the AA teal #007F8E in light
+// (brand_variables.scss) and the light-on-dark teal #4FD4E2 in dark (dark_palette.scss), so the
+// label clears 4.5:1 on either panel. Neutral tab text and the header baseline read the native
+// unprefixed runtime props (--secondary-color / --body-color / --border-color / --body-bg) so tabs
+// stay correct in dark mode.
+
+.o_notebook:not(.vertical) {
+    // The notebook header keeps core's own surface: no background-color, no border-bottom here.
+    // Only the active/hover tab underline and label below are ours.
+    .nav-link {
+        border: 0;
+        border-bottom: 2px solid transparent;
+        color: var(--secondary-color);
+        font-weight: $font-weight-medium;
+
+        &:hover {
+            border-color: transparent;
+            border-bottom-color: color-mix(in srgb, #{$o-component-active-border} 45%, transparent);
+            color: var(--body-color);
+        }
+
+        &.active {
+            &,
+            &:hover,
+            &:focus,
+            &:active {
+                border-color: transparent;
+                border-bottom-color: $o-component-active-border;
+                background-color: transparent;
+                color: $o-component-active-border;
+            }
+        }
+    }
+}

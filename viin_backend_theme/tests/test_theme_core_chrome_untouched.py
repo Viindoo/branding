@@ -46,7 +46,7 @@ import re
 
 from odoo.tests.common import BaseCase, TransactionCase, tagged
 
-from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     BACKEND_BUNDLE,
     BUTTONBOX_ANCESTORS,
     CHROME_BASE,
@@ -60,7 +60,7 @@ from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
     _normalize_colour,
     _winning_declaration,
 )
-from odoo.addons.viin_brand_web.tests.test_brand_ssot import (
+from odoo.addons.viin_brand.tests.test_brand_ssot import (
     BRAND_VARIABLES_SCSS,
     _resolve_scss_hex,
 )

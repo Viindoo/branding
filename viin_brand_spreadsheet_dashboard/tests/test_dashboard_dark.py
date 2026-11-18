@@ -31,7 +31,7 @@ import json
 from odoo.tests import HttpCase, new_test_user, tagged
 from odoo.tools.misc import file_open
 
-from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     _alpha_of,
     _composite_over,
     _contrast_ratio,
@@ -40,7 +40,7 @@ from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
 )
 # Same resolver `test_brand_ssot.py` and `test_brand_cascade_compile.py` already own - reused
 # here (rather than re-implemented) to read the LIGHT bundle's own core SSOT below.
-from odoo.addons.viin_brand_web.tests.test_brand_ssot import _resolve_scss_hex
+from odoo.addons.viin_brand.tests.test_brand_ssot import _resolve_scss_hex
 
 # CE's own literal for both plain `background-color: white` declarations in
 # `dashboard_action.scss` - the sheet's target colour is simply "stay exactly this", in both

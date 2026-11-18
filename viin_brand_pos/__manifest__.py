@@ -47,7 +47,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     'version': '0.1.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['viin_brand_web', 'point_of_sale'],
+    'depends': ['viin_brand', 'point_of_sale'],
 
     # always loaded
     'data': [
@@ -77,7 +77,7 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             # bootstrap_overridden.scss, only reachable via later entries) is to anchor the new
             # POS-local bridge file 'after' brand_variables.scss's own (already-wired) position.
             # See static/src/scss/pos_variables.scss for the five variable bindings this repairs.
-            ('after', 'viin_brand_web/static/src/scss/brand_variables.scss',
+            ('after', 'viin_brand/static/src/scss/brand_variables.scss',
              'viin_brand_pos/static/src/scss/pos_variables.scss'),
             ('after', 'point_of_sale/static/src/scss/pos.scss', 'viin_brand_pos/static/src/scss/style.scss'),
             'viin_brand_pos/static/src/app/screens/receipt/order_receipt.xml',
@@ -96,8 +96,8 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             # "Odoo Client Error" / "Odoo Network Error" headings, "Odoo Warning" fallbacks and the
             # session-expired dialog). Reuse those two files instead of copying them: they only
             # touch classes and templates of web/static/src/core/errors, which this bundle holds.
-            'viin_brand_web/static/src/core/errors/error_dialogs.js',
-            'viin_brand_web/static/src/core/errors/error_dialogs.xml',
+            'viin_brand/static/src/core/errors/error_dialogs.js',
+            'viin_brand/static/src/core/errors/error_dialogs.xml',
             # What viin_brand_web's backend patches do not reach here: default Dialog title and the
             # generic error dialog's technical details.
             'viin_brand_pos/static/src/app/errors/dialog_default_title.js',
@@ -114,8 +114,8 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             'viin_brand_pos/static/src/customer_display/customer_display_data_service.js',
             # Same error-dialog de-brand as the POS bundle above (this bundle is built from
             # web._assets_core too).
-            'viin_brand_web/static/src/core/errors/error_dialogs.js',
-            'viin_brand_web/static/src/core/errors/error_dialogs.xml',
+            'viin_brand/static/src/core/errors/error_dialogs.js',
+            'viin_brand/static/src/core/errors/error_dialogs.xml',
             'viin_brand_pos/static/src/app/errors/dialog_default_title.js',
             'viin_brand_pos/static/src/app/errors/error_dialogs.js',
         ],

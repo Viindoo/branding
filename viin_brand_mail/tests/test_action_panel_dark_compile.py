@@ -9,7 +9,7 @@ import re
 
 from odoo.tests.common import TransactionCase, tagged
 
-from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     BACKEND_BUNDLE,
     DARK_BUNDLE,
     _declarations,

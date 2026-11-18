@@ -56,7 +56,7 @@ import re
 from odoo.modules.module import get_module_path
 from odoo.tests.common import BaseCase, TransactionCase, tagged
 
-from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     BACKEND_BUNDLE,
     DARK_BUNDLE,
     _declarations,

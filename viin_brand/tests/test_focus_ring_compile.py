@@ -1,0 +1,105 @@
+# A11y focus-ring guard (WCAG 2.1 SC 1.4.11).
+#
+# viin_brand defines a shared focus-ring token applied to core interactive elements on
+# :focus-visible, and that ring must be a visible indicator (WCAG SC 1.4.11 non-text contrast
+# >= 3:1) against its surround in both schemes, so an unthemed install is accessible too.
+#
+# The ring colour is a custom property that resolves per bundle - the light value in
+# web.assets_backend and the dark arm in web.assets_web_dark - so the token is read out of each
+# compiled bundle and its contrast measured against the surface it rings; a source-substring check
+# would stay green after the token was renamed or dropped from one bundle.
+#
+# A focus ring is a non-text UI-component boundary, governed by SC 1.4.11 (3:1), not the
+# normal-text SC 1.4.3 (4.5:1). The threshold is WCAG_NON_TEXT_MIN in
+# tests/test_brand_cascade_compile.py.
+import re
+
+from odoo.tests.common import TransactionCase, tagged
+
+# WCAG helpers and surface constants are owned by the cascade suite.
+from .test_brand_cascade_compile import (
+    BACKEND_BUNDLE,
+    DARK_BODY_BG,
+    DARK_BUNDLE,
+    WCAG_NON_TEXT_MIN,
+    WHITE,
+    _contrast_ratio,
+    _normalize_colour,
+)
+
+FOCUS_RING_TOKEN = "o-viin-focus"
+
+# Every `--o-viin-focus: <value>` declaration, wherever it is declared (:root, .o_web_client, or a
+# :focus-visible rule). The `\s*:` guard keeps `--o-viin-focus` from matching a longer sibling.
+_FOCUS_DECL_RE = re.compile(r"--%s\s*:\s*([^;}]+)" % re.escape(FOCUS_RING_TOKEN))
+
+
+@tagged("post_install", "-at_install")
+class FocusRingCompileTest(TransactionCase):
+
+    def _compiled_css(self, bundle_name):
+        """Compile an asset bundle by name and return its CSS payload as decoded text."""
+        bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=True, js=False)
+        attachments = bundle.css() or self.env["ir.attachment"]
+        css = "".join(
+            (attachment.raw or b"").decode("utf-8", "replace") for attachment in attachments
+        )
+        self.assertTrue(
+            css.strip(),
+            "%s compiled to empty CSS - the bundle did not build, so the focus-ring token cannot "
+            "be verified." % bundle_name,
+        )
+        return css
+
+    def _focus_ring_colour(self, css, bundle_name):
+        """Return the effective focus-ring colour declared in ``css``, failing loudly when absent."""
+        hexes = [c for c in (_normalize_colour(v) for v in _FOCUS_DECL_RE.findall(css)) if c]
+        self.assertTrue(
+            hexes,
+            "No --%s focus-ring token resolves to a colour in the %s bundle. The base a11y focus "
+            "ring (focus_ring.scss) is missing from this bundle, so interactive elements have no "
+            "visible >= 3:1 focus indicator there." % (FOCUS_RING_TOKEN, bundle_name),
+        )
+        # Equal-scope declarations: the last in source order is the effective one.
+        return hexes[-1]
+
+    def test_focus_ring_token_clears_non_text_contrast_in_light_scheme(self):
+        """The focus ring must clear WCAG 3:1 against the light backend surface (white).
+
+        The light value is #005E68, 7.5:1 on white."""
+        css = self._compiled_css(BACKEND_BUNDLE)
+        ring = self._focus_ring_colour(css, BACKEND_BUNDLE)
+        ratio = _contrast_ratio(ring, WHITE)
+        self.assertGreaterEqual(
+            ratio, WCAG_NON_TEXT_MIN,
+            "The focus ring --%s=%s clears only %.2f:1 against the light surface %s, below the WCAG "
+            "SC 1.4.11 non-text threshold of %.1f:1 - the ring is not a visible focus indicator in "
+            "light mode." % (FOCUS_RING_TOKEN, ring, ratio, WHITE, WCAG_NON_TEXT_MIN),
+        )
+
+    def test_focus_ring_token_clears_non_text_contrast_in_dark_scheme(self):
+        """The focus ring must clear WCAG 3:1 against the dark panel #111B1E.
+
+        The dark value is #7FE0EA on #111B1E."""
+        css = self._compiled_css(DARK_BUNDLE)
+        ring = self._focus_ring_colour(css, DARK_BUNDLE)
+        ratio = _contrast_ratio(ring, DARK_BODY_BG)
+        self.assertGreaterEqual(
+            ratio, WCAG_NON_TEXT_MIN,
+            "The focus ring --%s=%s clears only %.2f:1 against the dark panel %s, below the WCAG SC "
+            "1.4.11 non-text threshold of %.1f:1 - focus is invisible in dark mode."
+            % (FOCUS_RING_TOKEN, ring, ratio, DARK_BODY_BG, WCAG_NON_TEXT_MIN),
+        )
+
+    def test_focus_ring_token_is_actually_applied_to_interactive_elements(self):
+        """The ring token must be REFERENCED (via var()) so it is a real outline, not a dead token.
+
+        A declared token nobody reads would let the contrast guards pass on a ring that never
+        paints."""
+        css = self._compiled_css(BACKEND_BUNDLE)
+        self.assertIn(
+            "var(--%s" % FOCUS_RING_TOKEN, css,
+            "The focus-ring token --%s is never referenced via var() in web.assets_backend, so no "
+            "interactive element actually renders the ring. focus_ring.scss must apply it (e.g. "
+            "`outline: 2px solid var(--%s)`) on :focus-visible." % (FOCUS_RING_TOKEN, FOCUS_RING_TOKEN),
+        )

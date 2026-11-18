@@ -36,7 +36,7 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.3',
+    'version': '0.3.1',
     # Renamed to viin_brand_base_setup for 19.0: wave 1 of this module-boundary refactor moved
     # this module's entire web-client half into viin_brand_web, leaving only the base/base_setup
     # de-brand behind. `old_technical_name` is a truthful marker of that rename plus the to_base

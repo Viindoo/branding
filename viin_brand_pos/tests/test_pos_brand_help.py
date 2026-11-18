@@ -79,8 +79,8 @@ class TestPosBundlesDebrandCoreWording(TransactionCase):
     """The POS bundles never include web.assets_backend: the de-brand files must be listed in them."""
 
     BRAND_FILES = [
-        "viin_brand_web/static/src/core/errors/error_dialogs.js",
-        "viin_brand_web/static/src/core/errors/error_dialogs.xml",
+        "viin_brand/static/src/core/errors/error_dialogs.js",
+        "viin_brand/static/src/core/errors/error_dialogs.xml",
         "viin_brand_pos/static/src/app/errors/error_dialogs.js",
     ]
 

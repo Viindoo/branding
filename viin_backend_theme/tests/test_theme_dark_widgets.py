@@ -30,7 +30,7 @@ import re
 
 from odoo.tests.common import BaseCase, TransactionCase, tagged
 
-from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     CHROME_BASE,
     CHROME_DEEP,
     DARK_BUNDLE,
@@ -46,7 +46,7 @@ from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
 # The brand-secondary purple is declared ONLY in SCSS (there is no Python constant for it, unlike
 # the brand primary), so the expected value is READ from viin_brand_web's token SSOT with that
 # module's own resolver rather than re-literalised here (ODOO-AI-ETHOS #11).
-from odoo.addons.viin_brand_web.tests.test_brand_ssot import (
+from odoo.addons.viin_brand.tests.test_brand_ssot import (
     BRAND_VARIABLES_SCSS,
     _resolve_scss_hex,
 )

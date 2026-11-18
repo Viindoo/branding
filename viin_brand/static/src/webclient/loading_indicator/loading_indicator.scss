@@ -1,0 +1,14 @@
+// Loading indicator (the "Loading N / M" pill, bottom-right). Core paints it with the Odoo purple,
+// `.o_loading_indicator { background-color: $o-brand-odoo; color: white; ... }`, a visible Odoo tell.
+// It is re-pointed to the AA teal ($o-viin-chrome-base #007F8E, 4.74:1, which carries white text;
+// the decorative $o-brand-primary #00BBCE would fail AA under white text and must not be used
+// here). Position, z-index and the fade transition are core's and untouched (same selector,
+// additive override, later load order in web.assets_backend); only the fill, padding and a
+// scheme-aware elevation change. No radius: core declares none on `.o_loading_indicator`.
+
+.o_loading_indicator {
+    padding: 4px 10px;
+    background-color: $o-viin-chrome-base;
+    color: $o-white;
+    box-shadow: 0 0.25rem 0.75rem color-mix(in srgb, var(--emphasis-color) 24%, transparent);
+}
