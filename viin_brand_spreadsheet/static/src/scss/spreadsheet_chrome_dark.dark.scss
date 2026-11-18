@@ -1,15 +1,7 @@
-// The engine's own dark-chrome rules are plain static SCSS compiled into `web.assets_backend`
-// (o_spreadsheet.scss), none of it carrying `!important`; this file never uses `!important`
-// either, relying on selector specificity that matches or exceeds theirs - e.g. the toolbar icon
-// override below excludes `.active` so the engine's own higher-specificity hover/active chip
-// still applies. On an equal-specificity tie the later stylesheet in the DOM wins, and this
-// module's dark bundle (`web.assets_web_dark`) loads after `web.assets_backend`.
-//
-// The topbar background is not static SCSS: the engine injects it at runtime from the `css`
-// template in o_spreadsheet.js (`.o-spreadsheet-topbar { background-color: #fff }`), so no Sass
-// lever reaches it and the rule below re-states it by specificity. The same file also injects
-// `.o-selection-statistic:hover` with `!important` at runtime, which always wins any tie and is
-// not overridden here.
+// The engine's dark-chrome rules carry no `!important`; these overrides win by selector
+// specificity, and on a tie by loading after web.assets_backend.
+// The topbar background is injected at runtime by the engine, so only a selector reaches it; its
+// `.o-selection-statistic:hover` rule is `!important` and is left alone.
 .o-spreadsheet .o-spreadsheet-topbar-wrapper {
     border-bottom: 1px solid $border-color;
     background-color: $o-webclient-background-color;
@@ -55,11 +47,8 @@
     }
 }
 
-// Core's own mobile glow (o_spreadsheet.scss) compiles to `.o-spreadsheet.o-spreadsheet-mobile
-// .o-spreadsheet-topbar-wrapper` - the `.o-spreadsheet-mobile` modifier lands on the ancestor
-// `.o-spreadsheet` element, never on the wrapper itself, so the block above can never reach it by
-// nesting. This needs its own selector at the same specificity, winning the tie via the load
-// order the file header explains.
+// `.o-spreadsheet-mobile` sits on the ancestor `.o-spreadsheet`, so the block above cannot reach
+// the engine's mobile glow by nesting.
 .o-spreadsheet.o-spreadsheet-mobile .o-spreadsheet-topbar-wrapper {
     box-shadow: none;
 }
@@ -96,21 +85,16 @@
         color: $os-text-body;
     }
 
-    // Core's own light border (o_spreadsheet.scss) compiles to `.o-spreadsheet
-    // .o-spreadsheet-small-bottom-bar .bottom-bar-menu` - nesting it here instead reaches one
-    // class deeper, winning outright regardless of load order.
+    // Nested here, one class deeper than the engine's light border, so it wins regardless of load order.
     .o-spreadsheet-small-bottom-bar .bottom-bar-menu {
         border-top-color: $border-color;
         border-bottom-color: $border-color;
     }
 }
 
-// Bootstrap's own `.btn-link` seeds its pressed-state ink from the dark-tuned link colour,
-// unreadable against a light-island ground (e.g. a Chatter mounted in the side panel, or the
-// engine's own popovers) - re-pointed here to the same tone the island already forces onto every
-// `.btn` label at rest. Scoped to `.o-sidePanel`/`.o-popover` only: the engine's own
-// "Irregularity map" strip renders a `.btn-link` directly on this dark chrome, outside every
-// light island, where it is left to whatever the untouched cascade already governs it as.
+// `.btn-link` seeds its pressed ink from the dark-tuned link colour, unreadable on a light island
+// (a Chatter in the side panel, the engine's popovers). Scoped to those islands: a `.btn-link`
+// on the dark chrome itself keeps the untouched cascade.
 .o-spreadsheet .o-sidePanel .btn-link,
 .o-spreadsheet .o-popover .btn-link {
     --btn-active-color: #{$os-text-body};
