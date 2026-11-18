@@ -1,46 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-  <!-- Apps-menu repurpose (PR #658 item 1, relocated from navbar_rail.xml). Keep the visible + enabled
-       `.o_navbar_apps_menu` button (core app-switch tours click it first), but replace core's inner
-       <Dropdown> second app list with a plain button that opens the ONE flat home menu (ViinHomeMenu).
-       Replacing only the inner <Dropdown> (not the div) keeps the override additive and reversible;
-       data-hotkey="h" preserves the core Home-Menu accesskey.
+  <!-- Keeps the visible, enabled `.o_navbar_apps_menu` button (core app-switch tours click it
+       first) and replaces core's inner <Dropdown>, which renders a second complete app list, with a
+       plain button that opens the one flat home menu (ViinHomeMenu); two controls with the same
+       function must not appear on one screen. data-hotkey="h" preserves the core Home-Menu accesskey.
 
-       WHY CORE'S <Dropdown> IS STILL REPLACED, AFTER THE 2026-08-17 MECHANISM CHANGE. It renders a
-       SECOND, complete app list. Leaving it in place beside the theme's home menu would put two
-       controls with the same function on one screen, which is precisely what the owner ruled out
-       ("lam thua nut khien 2 nut cung xuat hien voi cung chuc nang tren giao dien chi de phuc vu
-       test"). What changed on 2026-08-17 is only what the surviving button DOES: openHomeMenu() no
-       longer runs a full-page doAction that unmounts the current controller - it opens the same home
-       menu as a NON-NAVIGATING overlay above it, which is core's own contract for this button and
-       what all 57 core tours built on stepUtils.showAppsMenuItem() depend on. See apps_menu_home.js
-       for the full rationale and for the Dropdown-content-slot design that was evaluated and
-       rejected.
-
-       OWNER REVERT 2026-08-03 - THE ICON IS WHITE AGAIN, PAINTED BY CORE, NOT BY US.
-       ("app icon hien co mau den. Tao muon cho nay khong override gi de no trang nhu cu.")
-       ROOT CAUSE. Core's own trigger is a bare <button> that the OWL Dropdown component decorates
-       with `o-dropdown dropdown-toggle` at run time (Dropdown.setTargetElement() in
-       web/.../core/dropdown/dropdown.js), and
-       core styles `.o_main_navbar .o_nav_entry, .dropdown-toggle:not(.o-dropdown-toggle-custo)`
-       with the `%-main-navbar-entry-base` placeholder (web/.../navbar/navbar.variables.scss),
-       whose `o-hover-text-color()` emits a `color` reading the NavBar-entry-color custom property
-       with `$o-navbar-entry-color` as its fallback - white, because viin_brand_web pins
-       `$o-navbar-entry-color: #FFFFFF`. Replacing the <Dropdown> dropped that class, so the button
-       matched NO navbar entry rule; the `text-reset` we added then forced `color: inherit
-       !important`, which walks up past .o_navbar_apps_menu and .o_main_navbar (neither declares a
-       colour) to the body colour - #212529, i.e. BLACK on the teal navbar. Bootstrap's plain `.btn`
-       (whose own colour property also defaults to the body colour) would have done the same.
-       THE FIX IS SUBTRACTIVE. `text-reset` and `btn` are gone and NO colour is declared anywhere;
-       instead the button carries core's own `o_nav_entry` - the semantic class core provides for a
-       navbar entry that is NOT a dropdown (same pattern as web.BurgerMenu's toggle `<button>` in
-       web/.../burger_menu/burger_menu.xml). That single class makes core's navbar cascade paint
-       it, so the icon is white in BOTH schemes for free, and the entry-base placeholder also
-       restores the flex/align-items/height that keeps it on the navbar row - the alignment
-       apps_menu_home.scss used to hand-replicate. `dropdown-toggle` is deliberately NOT used: it
-       would satisfy clickbot_home_menu.js's `isThemedShell()` discriminator and send core's
-       clickbot down its removed-dropdown path. -->
+       The button carries core's `o_nav_entry` class, so core's navbar cascade paints its icon (white
+       via `$o-navbar-entry-color`) and keeps it on the navbar row; the stylesheet declares no
+       colour. `text-reset` or `btn` would resolve the colour to the body colour (black on the navbar).
+       `dropdown-toggle` is deliberately absent: it would satisfy clickbot_home_menu.js's
+       `isThemedShell()` and send core's clickbot down its dropdown path. -->
   <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension">
     <xpath expr="//div[hasclass('o_navbar_apps_menu')]/Dropdown" position="replace">
       <button type="button" class="o_nav_entry o_viin_apps_home border-0"
@@ -48,9 +18,8 @@
         <i class="oi oi-apps"/>
       </button>
     </xpath>
-    <!-- Small screen: the toggle anchor keeps core's fa-bars icon (owner decision) but is the ONLY
-         label an assistive-technology user gets, so it carries a name. Both attributes are
-         translatable template attributes. -->
+    <!-- The small-screen toggle anchor is the only label an assistive-technology user gets, so it
+         carries a translatable name. -->
     <xpath expr="//a[hasclass('o_menu_toggle')]" position="attributes">
       <attribute name="title">Apps</attribute>
       <attribute name="aria-label">Apps</attribute>

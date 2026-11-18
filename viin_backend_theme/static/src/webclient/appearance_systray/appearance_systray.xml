@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-  <!-- W4 unit-b appearance systray (mockup-25 moon icon). Core Dropdown/DropdownItem give keyboard
-       nav + focus management for free; role=menuitemradio + aria-checked expose the current choice
-       to assistive tech. Every change is delegated to the viin_theme service. -->
+  <!-- Core Dropdown/DropdownItem give keyboard navigation and focus management;
+       role=menuitemradio + aria-checked expose the current choice to assistive tech. Every change
+       is delegated to the viin_theme service. -->
   <t t-name="viin_backend_theme.ViinAppearanceSystray">
     <div class="o_viin_appearance d-flex align-items-center">
       <Dropdown>

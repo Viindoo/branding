@@ -1,51 +1,31 @@
 /** @odoo-module **/
 
-// R1 (PR #658) - make core's clickbot navigate apps via the theme's flat home menu.
-//
-// PROBLEM (proven: TestMenusDemoLight.test_01_click_apps_menus_as_demo fails on the themed build,
-// stock passes). The theme repurposed `.o_navbar_apps_menu`'s inner core <Dropdown> (apps_menu_home.xml)
-// with a plain button that opens the ONE home menu, so core's clickbot community path
+// Make core's clickbot navigate apps through the theme's flat home menu. The theme replaces the
+// inner <Dropdown> of `.o_navbar_apps_menu` (apps_menu_home.xml), so core's clickbot community path
 // (web/static/src/webclient/clickbot/clickbot.js) finds no `.o_navbar_apps_menu .dropdown-toggle`
-// (the class core's Dropdown.setTargetElement() pushes, in dropdown.js) and throws
-// `No element "apps menu toggle button" found`; its `.o-dropdown--menu .o_app` / `.dropdown-item`
-// selectors are likewise gone.
+// and throws `No element "apps menu toggle button" found`; its `.o-dropdown--menu .o_app` /
+// `.dropdown-item` selectors are gone as well.
 //
-// PATCHABILITY (grounded, OSM 19.0 + core source). clickbot.js exposes ONLY `window.clickEverywhere`;
-// its app-enumeration functions (ensureAppsMenu / getNextApp / testApp) are module-private CLOSURES -
-// not exported, not on a class prototype, not in a registry - so an OWL `patch()` cannot reach them.
-// The one honest module-side seam is `window.clickEverywhere`, which the LAZY `web.assets_clickbot`
-// bundle assigns at run time (loaded on demand by clickbot_loader.startClickEverywhere). This eager
-// web.assets_backend file therefore installs an accessor on `window.clickEverywhere` to capture that
-// late assignment (the core function) and hand callers a theme-aware wrapper instead.
+// clickbot.js exposes only `window.clickEverywhere`; its app-enumeration functions are module-private
+// closures, so an OWL `patch()` cannot reach them. The seam is `window.clickEverywhere`, which the
+// lazy `web.assets_clickbot` bundle assigns at run time: this eager web.assets_backend file installs
+// an accessor on it to capture that assignment (the core function) and hand callers a theme-aware
+// wrapper.
 //
-// STILL NEEDED AFTER THE D3 MECHANISM CHANGE (2026-08-17), and here is the honest check of that.
-// The apps button no longer navigates - it opens the home menu as an overlay above the current
-// controller - but core's <Dropdown> is still REPLACED (leaving it would put a second, complete app
-// list on the navbar beside ours, which the owner ruled out). So core's clickbot still finds no
-// `.o_navbar_apps_menu .dropdown-toggle` and still throws without this wrapper; deleting it would
-// re-break web:TestMenusDemoLight on the themed build. The wrapper needed no change for D3: it drives
-// the SAME selectors, and the tiles it enumerates are simply <a> now instead of <button>, which
-// `.o_app[data-menu-xmlid]` matches either way.
-//
-// BEHAVIOUR. When the theme apps-menu is active (core's `.dropdown-toggle` is gone), the wrapper walks
-// apps through the home menu: click `.o_navbar_apps_menu button` to open the ONE home menu, then
-// enumerate/click `.o_viin_home_menu .o_app[data-menu-xmlid]` tiles (home_menu.xml), faithfully
-// reproducing the clickbot's observable contract - settle on pending RPCs + the OWL scheduler, close
-// modals, and throw on `.o_error_dialog` (so a broken app still fails the test). For FULL mode it
-// pre-marks the opened app "tested" and hands drilling back to the untouched core clickbot, which then
-// reuses its own menu/view/filter crawl on theme-safe selectors (`.o_menu_sections`,
-// `.o_cp_switch_buttons`) without re-opening via the removed dropdown. On any non-themed shell
-// (theme-free / enterprise / scoped app) it delegates verbatim to core - so the theme-free path is
-// untouched.
+// On the themed shell (core's `.dropdown-toggle` is gone) the wrapper clicks the apps button to
+// open the home menu, then enumerates and clicks the `.o_viin_home_menu .o_app[data-menu-xmlid]`
+// tiles (home_menu.xml), keeping the clickbot's observable contract: settle on pending RPCs and the
+// OWL scheduler, close modals, throw on `.o_error_dialog`. In FULL mode it pre-marks the opened app
+// "tested" and hands drilling back to the core clickbot, which crawls menus, views and filters on
+// theme-safe selectors. On any non-themed shell (theme-free, enterprise, scoped app) it delegates
+// verbatim to core.
 
 import { App } from "@odoo/owl";
 import { browser } from "@web/core/browser/browser";
 import { rpcBus } from "@web/core/network/rpc";
 
-// Core's public success contract (clickbot.js SUCCESS_SIGNAL) + blacklist, duplicated as literals
-// (NOT imported) so this eager backend file never force-loads the lazy clickbot module.
-const SUCCESS_SIGNAL = "clickbot test succeeded";
-const MOUSE_EVENTS = ["mouseover", "mouseenter", "mousedown", "mouseup", "click"];
+// Core's blacklist (clickbot.js), duplicated rather than imported so this eager backend file never
+// force-loads the lazy clickbot module.
 const BLACKLISTED_MENUS = [
     "base.menu_theme_store",
     "base.menu_third_party",
@@ -58,9 +38,7 @@ const BLACKLISTED_MENUS = [
 
 const HOME_TILE = ".o_viin_home_menu .o_app[data-menu-xmlid]";
 const APPS_BUTTON = ".o_navbar_apps_menu button";
-const CORE_TOGGLE = ".o_navbar_apps_menu .dropdown-toggle";
 
-// --- settle / error tracking (mirrors clickbot.js waitForCondition) -----------------------------
 let calledRPC = {};
 let errorRPC;
 
@@ -111,7 +89,7 @@ async function triggerClick(target, description) {
         throw new Error(`No element "${description}" found.`);
     }
     browser.console.log(`Clicking on: ${description}`);
-    for (const type of MOUSE_EVENTS) {
+    for (const type of ["mouseover", "mouseenter", "mousedown", "mouseup", "click"]) {
         target.dispatchEvent(
             new MouseEvent(type, { bubbles: true, cancelable: true, view: window })
         );
@@ -131,7 +109,6 @@ async function waitForCondition(stopCondition) {
     }
 }
 
-// --- home-menu navigation -----------------------------------------------------------------------
 async function ensureHomeMenuOpen() {
     if (document.querySelector(HOME_TILE)) {
         return; // themed /odoo already landed on the home menu, or it is still open
@@ -152,11 +129,9 @@ async function openApp(xmlid) {
     const tile = document.querySelector(`.o_viin_home_menu .o_app[data-menu-xmlid="${xmlid}"]`);
     let isModal = false;
     await triggerClick(tile, `home-menu app tile "${xmlid}"`);
-    // Settle: a modal opened, or the home menu went away - AND no pending RPC / OWL scheduler task
-    // remains (waitForCondition), so an async render error still surfaces. "Went away" covers both
-    // arms since D3: the boot-landing client action is REPLACED by the app, and the navbar overlay
-    // CLOSES itself the moment a tile is chosen (home_menu.js `launch`). Either way HOME_TILE stops
-    // matching, which is what this condition reads.
+    // Settle: a modal opened, or the home menu went away (the boot-landing client action is replaced
+    // by the app; the navbar overlay closes itself when a tile is chosen) - and no pending RPC or OWL
+    // scheduler task remains, so an async render error still surfaces.
     await waitForCondition(() => {
         if (document.querySelector(".o_dialog:not(.o_error_dialog)")) {
             isModal = true;
@@ -174,7 +149,7 @@ async function openApp(xmlid) {
 }
 
 // FULL-mode drilling is delegated to the untouched core clickbot: pre-mark the app tested so core
-// skips its (removed) dropdown open and drills only its theme-safe menu/view/filter selectors.
+// skips opening the dropdown and drills only its theme-safe menu/view/filter selectors.
 function drillState(xmlid) {
     return {
         light: false,
@@ -214,7 +189,8 @@ async function viinClickEverywhere(xmlId, light, core) {
         }
         browser.console.log(`Test took ${(performance.now() - startTime) / 1000} seconds`);
         browser.console.log(`Successfully tested ${tested} apps`);
-        browser.console.log(SUCCESS_SIGNAL);
+        // Core's success signal, a literal so this file does not import the lazy clickbot module.
+        browser.console.log("clickbot test succeeded");
     } catch (err) {
         browser.console.log(`Test took ${(performance.now() - startTime) / 1000} seconds`);
         browser.console.error(err || "test failed");
@@ -224,12 +200,13 @@ async function viinClickEverywhere(xmlId, light, core) {
     }
 }
 
-// --- install the accessor seam on window.clickEverywhere ----------------------------------------
-// themed = core's apps-menu <Dropdown> toggle is gone (the theme replaced it with the home-menu
-// button). The presence of the button plus the absence of `.dropdown-toggle` is the exact signal
-// that broke the community clickbot path, so it is the right discriminator.
+// Themed means core's apps-menu <Dropdown> toggle is gone: the home-menu button is present and
+// `.dropdown-toggle` is absent, which is exactly what breaks the community clickbot path.
 function isThemedShell() {
-    return Boolean(document.querySelector(APPS_BUTTON)) && !document.querySelector(CORE_TOGGLE);
+    return (
+        Boolean(document.querySelector(APPS_BUTTON)) &&
+        !document.querySelector(".o_navbar_apps_menu .dropdown-toggle")
+    );
 }
 
 let coreClickEverywhere = null;

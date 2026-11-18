@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-  <!-- D3 flat "Applications" home menu (client action tag "viin_home_menu"). Mockup-faithful
-       (mockup-02-home-appdrawer / mockup-25-mobile-home): LIGHT page, LEFT-aligned greeting + date
-       subtitle, full-width search, an "Applications" section label, then one dense flat grid (no
-       category sections), responsive 6-col to 2-col. Colors are theme-aware native Bootstrap runtime
-       props (light/dark) + the viin_brand teal accent; NO teal-gradient banner (diverged from mockup). -->
+  <!-- Flat "Applications" home menu (client action tag "viin_home_menu"): greeting, date subtitle,
+       search box, then one dense app grid. -->
   <t t-name="viin_backend_theme.ViinHomeMenu">
-    <!-- `o_viin_home_overlay` is added ONLY on the navbar arm (props.close is set), where this same
-         markup is rendered by the overlay service above a still-mounted controller instead of as a
-         full-page client action. It carries nothing but the fixed positioning that makes the panel
-         fill the area under the navbar - i.e. the identical full-screen picture the client action
-         produced (home_menu.scss) - and the inline top measured from the navbar's real bottom edge. -->
+    <!-- `o_viin_home_overlay` is set only on the navbar arm (props.close is set), where the overlay
+         service renders this markup above a still-mounted controller; it only adds the fixed
+         positioning and the inline top measured from the navbar's bottom edge (home_menu.scss). -->
     <div class="o_viin_home_menu" t-att-class="{ o_viin_home_overlay: isOverlay }"
          t-att-style="overlayStyle">
       <div class="o_viin_home_content d-flex flex-column">
@@ -35,59 +30,19 @@
         <div class="o_viin_home_body flex-grow-1">
           <t t-if="filteredApps.length">
             <div class="o_viin_home_section_label">Applications</div>
-            <!-- NO `role="list"` HERE, AND NO `role="listitem"` ON THE TILES (2026-08-17).
-                 An explicit ARIA role REPLACES an element's own role - it does not add to it - so
-                 `role="listitem"` on a tile told assistive technology "this is an item in a list"
-                 INSTEAD of "this is a link", and a screen-reader user was never told the thing they
-                 were sitting on could be followed. It also dropped the tiles out of links
-                 navigation, which is how many screen-reader users move around a page of links.
-                 That was already wrong when the tiles were <button>s; it got worse the moment they
-                 became real links, since the role being suppressed was now an accurate and useful
-                 one.
-                 The grid's `role="list"` had to go with it: ARIA requires a `list` to own
-                 `listitem` children, so keeping the container role while removing the child roles
-                 would leave a malformed list announcing zero items - a different defect, not a fix.
-                 The alternative shape - keep both roles and wrap every tile in its own
-                 `<div role="listitem">` - was REJECTED: the tiles are direct CSS-grid children and
-                 the drag-reorder hook keys on them, so a wrapper breaks the layout and the sortable
-                 unless it is neutralised with `display: contents`, which has its own history of
-                 dropping elements out of the accessibility tree. That trades a known defect for an
-                 unpredictable one, and it adds markup that exists only to carry a role.
-                 Nothing else read these roles: the a11y tour, the arrow-key grid navigation (which
-                 keys on `[data-index]` and the computed column count) and the sortable
-                 (`.o_viin_home_app`) are all role-independent. Guarded by
-                 static/tests/tours/viin_a11y_tour.js. -->
+            <!-- The grid and its tiles carry no `role="list"` / `role="listitem"`: an explicit ARIA
+                 role replaces the element's own, so `listitem` would hide that each tile is a link,
+                 and `list` without `listitem` children is malformed. Wrapping every tile in a
+                 listitem div is not an option: the tiles are direct grid children keyed by the
+                 drag-reorder hook. -->
             <div class="o_viin_home_grid" t-ref="grid"
                  t-att-data-viin-saved-order="state.savedOrder">
               <t t-foreach="filteredApps" t-as="app" t-key="app.id">
-                <!-- A TILE IS AN ANCHOR, exactly as core renders its own apps-menu entries: core's
-                     DropdownItem picks its tag from the presence of `href` (its `t-tag` expression in
-                     dropdown_item.xml), so
-                     `a[data-menu-xmlid="<app xmlid>"]` is the selector core's own tours resolve after
-                     clicking the apps button - `stepUtils.showAppsMenuItem()` then
-                     `a[data-menu-xmlid="base.menu_administration"]` in 57 core tour files. A <button>
-                     could never match that, which is the RC-1 failure on runbot batch 223955.
-
-                     It is also simply the better element, independently of any test: middle-click
-                     opens the app in a new tab, right-click offers "copy link address", and a screen
-                     reader announces "link, <App name>" and lists the tile under links navigation -
-                     which is only true because the tile carries NO explicit role to suppress that
-                     one (see the note on the grid above). The href comes from CORE's own helper
-                     (NavBar.prototype.getMenuItemHref via getMenuHref) so there is exactly one
-                     definition of a backend app URL.
-
-                     NOTHING VISIBLE CHANGES: the class list, the icon, the label, the focus marker,
-                     the drag hook and `title` are byte-for-byte what the <button> carried;
-                     home_menu.scss adds `text-decoration: none` so the link inherits the tile's own
-                     typography rather than the browser's link styling. `.o_app` still carries no
-                     global SCSS - it is a pure JS/tour hook - and app.xmlid is still the app's
-                     root-menu xmlid, the identical value core's dropdown emits.
-
-                     A DRAG IS NOT A CLICK: core's own draggable hook calls preventDefault on the
-                     pointerdown that starts a drag (so the browser never begins a native link drag)
-                     and preventDefault + stopPropagation on the click that would follow a drop
-                     (draggable_hook_builder.js), so press-drag reorder keeps working unchanged and
-                     a dropped tile never navigates. -->
+                <!-- A tile is an anchor, as core renders its own apps-menu entries: core tours resolve
+                     `a[data-menu-xmlid="<app xmlid>"]`, which a <button> never matches. The href
+                     comes from core's NavBar helper (getMenuHref), the single definition of a
+                     backend app URL. Core's draggable hook cancels the click that follows a drop,
+                     so a dropped tile never navigates. -->
                 <a class="o_app o_viin_home_app d-flex flex-column align-items-center"
                    t-att-href="getMenuHref(app)"
                    t-att-class="{ o_viin_home_app_focus: app_index === state.focusIndex }"
@@ -103,9 +58,8 @@
             </div>
           </t>
           <t t-if="menuMatches.length">
-            <!-- Menu items found by the same search box (an app's sub-menus, shown under their app). A
-                 plain list of links under the tiles: it needs no keyboard model of its own - Tab
-                 walks the links, and Enter in the box opens the first one when no app matches. -->
+            <!-- Menu items found by the same search box, shown under the tiles as a plain list of
+                 links; Enter in the box opens the first one when no app matches. -->
             <div class="o_viin_home_section_label">Menu items</div>
             <ul class="o_viin_home_menu_items list-unstyled">
               <li t-foreach="menuMatches" t-as="item" t-key="item.menu.id">

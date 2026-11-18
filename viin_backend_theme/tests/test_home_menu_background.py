@@ -1,40 +1,3 @@
-# Compiled-cascade guard for THE APP-DASHBOARD BACKGROUND (owner request 2026-08-03: "Ở trên app
-# dashboard, tao muốn có cái background như ở các phiên bản trước đã từng có").
-#
-# WHAT SHIPPED, AND WHY THERE IS NO IMAGE FILE TO ASSERT ON
-# =================================================================================================
-# The investigation behind the implementation is recorded in full at the top of
-# static/src/home_menu/home_menu.scss. In short: Odoo 19 CE core ships NO home/app-drawer background
-# asset (web/static/img/ has only graph_background.png and form_sheetbg.png, and CE has no app
-# drawer at all), and the image the PREVIOUS Viindoo versions used -
-# web_responsive/static/src/img/home-menu-bg-overlay.svg, referenced by
-# to_backend_theme/.../apps_menu/apps_menu.scss on origin/19.0 - is an OCA LGPL-3 asset belonging
-# to a module this very PR deletes, so it cannot be re-added to an OPL-1 module. The backdrop is
-# therefore re-DRAWN from the cluster's own brand tokens as layered CSS gradients: original work,
-# zero image payload, and scheme-aware for free.
-#
-# WHAT THIS FILE PROTECTS - THE TWO WAYS THIS FEATURE CAN GO WRONG
-# =================================================================================================
-#  1. IT SILENTLY DISAPPEARS. A refactor of home_menu.scss, or a `background:` shorthand added later
-#     in the cascade, drops the layers and the dashboard is a flat grey page again with nobody
-#     noticing. Guarded by resolving the winning `background-image` on the menu root in BOTH
-#     compiled bundles and requiring real gradient layers built from the brand token.
-#  2. IT MAKES THE PAGE UNREADABLE. This is the real risk and the reason the tints are low single
-#     digits: the app-tile labels are safe by construction (they sit on OPAQUE cards), but the
-#     greeting, the date subtitle and the purple "APPLICATIONS" label are painted DIRECTLY on this
-#     backdrop, so every gradient layer eats into their contrast. Guarded by compositing the layers
-#     the bundle ACTUALLY declares - worst case, all of them overlapping - and re-measuring the
-#     section label and the tile label against WCAG AA on the result.
-#
-# WHY THE COMPOSITE IS COMPUTED HERE RATHER THAN HARDCODED
-# =================================================================================================
-# Hardcoding "the backdrop is #c8e5ea" would go stale the moment a percentage is re-tuned, and would
-# assert a colour instead of the property that matters (readability). Instead the test PARSES the
-# compiled `color-mix(in srgb, <hex> <pct>%, transparent)` layers out of the bundle and alpha-
-# composites them with the standard source-over formula the cluster already owns
-# (viin_brand_web _composite_over). That formula is EXTERNAL (W3C), not production logic, so this
-# is not the test re-implementing the feature and comparing it against itself - it reads what
-# shipped and applies the spec to it.
 import os
 import re
 
@@ -48,9 +11,6 @@ from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     _normalize_colour,
     _winning_declaration,
 )
-# Reuse this module's own :root reader and var() resolver rather than forking a second copy
-# (ODOO-AI-ETHOS #11) - they already model exactly the "colour that resolves through a :root custom
-# property" case every surface below hits.
 from .test_theme_dark_widgets import (
     BACKEND_BUNDLE,
     HOME_MENU_ROOT_ANCESTORS,
@@ -60,36 +20,31 @@ from .test_theme_dark_widgets import (
     _resolve_to_hex,
 )
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-MODULE_DIR = os.path.dirname(_HERE)
-HOME_MENU_SCSS = os.path.join(MODULE_DIR, "static", "src", "home_menu", "home_menu.scss")
-
-# An app TILE and its label, transcribed from home_menu.xml -
-# `.o_viin_home_grid` > `<a class="o_app o_viin_home_app ..." href="...">` > `<span class="o_viin_home_app_name">`.
-# (The tile became an anchor on 2026-08-17 so core's app-switch tours can resolve
-# `a[data-menu-xmlid="<app>"]`, exactly as core renders its own apps menu. The CLASS list is
-# byte-for-byte what the previous <button> carried, which is why this contrast model is unaffected -
-# the cascade resolver keys on classes, and none of them changed.)
+# An app tile and its label, from home_menu.xml: `.o_viin_home_grid` > `a.o_app.o_viin_home_app`
+# > `span.o_viin_home_app_name`. The cascade resolver keys on classes.
 HOME_TILE_CLASSES = frozenset({"o_app", "o_viin_home_app", "d-flex", "flex-column", "align-items-center"})
 HOME_TILE_ANCESTORS = HOME_SECTION_LABEL_ANCESTORS | {"o_viin_home_grid"}
 HOME_TILE_LABEL_CLASSES = frozenset({"o_viin_home_app_name"})
 HOME_TILE_LABEL_ANCESTORS = HOME_TILE_ANCESTORS | HOME_TILE_CLASSES
 
 # One translucent backdrop layer as the compiled bundle spells it, e.g.
-# `color-mix(in srgb, #00BBCE 7%, transparent)`. Anything mixed toward `transparent` is an alpha
-# layer over the page band; a layer mixed toward an opaque colour would not be, hence the explicit
-# `transparent` in the pattern.
+# `color-mix(in srgb, #00BBCE 7%, transparent)`. Mixing toward `transparent` makes it an alpha layer
+# over the page band.
 _COLOR_MIX_LAYER_RE = re.compile(
     r"color-mix\(\s*in\s+srgb\s*,\s*(#[0-9A-Fa-f]{3,8})\s+([\d.]+)%\s*,\s*transparent\s*\)",
     re.IGNORECASE,
 )
-# A gradient function of any kind - what proves the backdrop is DRAWN rather than absent.
-_GRADIENT_RE = re.compile(r"(linear|radial|conic)-gradient\(", re.IGNORECASE)
 
 
 @tagged("post_install", "-at_install")
 class TestHomeMenuBackground(TransactionCase):
-    """The app dashboard has a brand backdrop, and it did not cost the page its readability."""
+    """The app dashboard has a brand-token gradient backdrop that keeps the page readable.
+
+    The backdrop is drawn from the brand tokens as layered CSS gradients, with no image asset. Its
+    tints stay low because the greeting, the date subtitle and the section label are painted
+    directly on it. The worst-case composite is computed from the layers the bundle declares, so
+    the contrast checks follow any re-tuned percentage.
+    """
 
     def _compiled_css(self, bundle_name):
         bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=True, js=False)
@@ -117,12 +72,12 @@ class TestHomeMenuBackground(TransactionCase):
         }
 
     def _backdrop(self, css):
-        """Return ``(background_image_value, composited_worst_case_surface_hex)`` for the menu root.
+        """Return the menu root's backdrop.
 
-        The worst case is every declared alpha layer stacked on the page band, which is what the
-        header text sits on where the facets overlap. Compositing in declaration order is the
-        conservative reading: order does not change the final alpha, and all layers share one hue
-        family here, so the result is the darkest/most saturated pixel the header can land on."""
+        :return: ``(background_image_value, composited_worst_case_surface_hex)``; the surface is
+            every declared alpha layer stacked on the page band, i.e. the darkest pixel the header
+            text can land on.
+        """
         image = _winning_declaration(css, self._menu_root(), ("background-image",))
         band = _resolve_to_hex(
             css, _winning_declaration(css, self._menu_root(), ("background-color", "background"))
@@ -140,16 +95,13 @@ class TestHomeMenuBackground(TransactionCase):
         return image, surface
 
     def test_the_app_dashboard_has_a_brand_backdrop_in_both_schemes(self):
-        """`.o_viin_home_menu` must paint a brand-derived gradient backdrop in light AND dark.
+        """`.o_viin_home_menu` paints a brand-derived gradient backdrop in light AND dark.
 
-        RED before this feature: home_menu.scss declared only `background-color: var(--secondary-bg)`
-        and no `background-image` at all, so the dashboard was a flat grey page - which is exactly
-        what the owner asked to change.
-
-        The assertion is deliberately structural (gradient layers, built from a `color-mix` of a
-        brand token) rather than a hardcoded colour list: re-tuning a percentage or an angle is a
-        design decision, whereas LOSING the backdrop, or hardcoding a non-token hex into it, are
-        the regressions worth failing on."""
+        The assertion is structural (gradient layers built from a `color-mix` of a brand token), not
+        a hardcoded colour list: re-tuning a percentage or an angle is a design decision, losing the
+        backdrop or hardcoding a non-token hex into it is the regression.
+        """
+        gradient_re = re.compile(r"(linear|radial|conic)-gradient\(", re.IGNORECASE)
         for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
             css = self._compiled_css(bundle_name)
             image = _winning_declaration(css, self._menu_root(), ("background-image",))
@@ -159,7 +111,7 @@ class TestHomeMenuBackground(TransactionCase):
                 "backdrop is gone." % (arm, image),
             )
             self.assertTrue(
-                _GRADIENT_RE.search(image),
+                gradient_re.search(image),
                 "[%s] the home-menu background-image %r contains no gradient layer." % (arm, image),
             )
             layers = _COLOR_MIX_LAYER_RE.findall(image)
@@ -167,19 +119,15 @@ class TestHomeMenuBackground(TransactionCase):
                 layers,
                 "[%s] the backdrop declares no `color-mix(... , transparent)` layer (%r). The "
                 "backdrop must be derived from a brand token so it tracks the palette; a literal "
-                "hex or an image URL here means it no longer does." % (arm, image),
+                "hex or an image URL here means it does not." % (arm, image),
             )
 
     def test_the_backdrop_keeps_the_header_text_wcag_aa(self):
-        """The purple "APPLICATIONS" label must still clear WCAG AA over the new backdrop.
+        """The purple "APPLICATIONS" label clears WCAG AA over the composited backdrop.
 
-        This is the constraint that sets the tint percentages. The section label is the WORST case
-        of the three texts painted directly on the backdrop: the greeting is near-black body text
-        with an enormous margin, whereas the label is a mid-tone purple that started at 5.90:1 on
-        the bare #E9ECEF band - so it is the one that runs out of room first. Measured against the
-        fully-composited worst-case surface, not the bare band.
-
-        Raising a tint percentage until this reds is the signal to stop, not to relax the test."""
+        The label is the tightest of the texts painted directly on the backdrop, so it sets the tint
+        percentages. Raising a tint until this fails is the signal to stop, not to relax the test.
+        """
         for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
             css = self._compiled_css(bundle_name)
             _image, surface = self._backdrop(css)
@@ -209,13 +157,11 @@ class TestHomeMenuBackground(TransactionCase):
             )
 
     def test_the_backdrop_keeps_the_app_tile_labels_wcag_aa(self):
-        """App-tile labels must stay AA - the tiles are opaque cards, and must remain so.
+        """App-tile labels stay AA because the tiles are opaque cards the backdrop never reaches.
 
-        The tile carries its own `background-color: var(--body-bg)`, so the backdrop never reaches
-        the label. That is a DESIGN GUARANTEE rather than a happy accident, and this test is what
-        makes it one: if a later change makes the tiles translucent (to "let the background show
-        through"), the resolved tile background stops being an opaque token and the labels start
-        reading against the gradient - which this measures."""
+        If the tiles turn translucent, their resolved background stops being an opaque token and the
+        labels are measured against the gradient.
+        """
         for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
             css = self._compiled_css(bundle_name)
             tile = {
@@ -255,30 +201,30 @@ class TestHomeMenuBackground(TransactionCase):
             )
 
     def test_the_backdrop_adds_no_image_asset(self):
-        """The backdrop must stay payload-free - no url() into an image, no inlined data: URI.
+        """The backdrop stays payload-free: no `url()` into an image and no inlined `data:` URI.
 
-        Recorded as a behaviour because the tempting "fix" for a future fidelity complaint is to
-        drop the recovered OCA SVG back in (licence conflict - see the file header of
-        home_menu.scss) or to inline a data: URI (bundle bloat, and it defeats the scheme-awareness
-        the gradient layers get for free). Either shows up here."""
+        The backdrop is drawn from brand tokens, which keeps it scheme-aware and free of image
+        licences.
+        """
         for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
             css = self._compiled_css(bundle_name)
             image = _winning_declaration(css, self._menu_root(), ("background-image",)) or ""
             self.assertNotIn(
                 "url(", image.lower(),
                 "[%s] the home-menu backdrop references an image asset (%r). It is drawn from brand "
-                "tokens on purpose: core 19.0 ships no such image and the previous theme's overlay "
-                "is OCA LGPL-3, which cannot enter this OPL-1 module." % (arm, image),
+                "tokens on purpose: core 19.0 ships no such image and a third-party overlay "
+                "cannot enter this OPL-1 module." % (arm, image),
             )
 
     def test_home_menu_scss_declares_no_new_border_radius(self):
-        """The cluster ships ZERO radius overrides (owner 2026-08-03 "bo hết") - adding a backdrop
-        must not have smuggled one in.
+        """home_menu.scss declares no `border-radius`: the cluster ships no radius overrides.
 
-        tests/test_theme_radius_is_core.py owns the cluster-wide guard; this is a targeted repeat on
-        the one file this change touched, so a radius slipped in beside the gradient is attributed
-        to the right edit."""
-        with open(HOME_MENU_SCSS, "r", encoding="utf-8") as handle:
+        Targeted repeat of the cluster-wide guard in test_theme_radius_is_core, so a radius slipped
+        in beside the gradient is attributed to this file.
+        """
+        module_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        home_menu_scss = os.path.join(module_dir, "static", "src", "home_menu", "home_menu.scss")
+        with open(home_menu_scss, "r", encoding="utf-8") as handle:
             source = handle.read()
         source = re.sub(r"/\*.*?\*/", "", source, flags=re.DOTALL)
         source = re.sub(r"//[^\n]*", "", source)
