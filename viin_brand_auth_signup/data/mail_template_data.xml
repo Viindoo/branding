@@ -182,11 +182,7 @@
         </field>
     </record>
 
-    <!-- Override: Portal User Invite template branding (auth_signup.portal_set_password_email,
-         the live portal-invite mail per portal/wizard/portal_wizard.py::_send_email and
-         auth_signup/models/res_users.py; the old portal.mail_template_data_portal_welcome
-         xmlid this used to live at no longer exists at 19.0 - portal ships no mail.template
-         records of its own, see addons/portal/data/mail_templates.xml) -->
+    <!-- Override: Portal User Invite template branding (auth_signup.portal_set_password_email) -->
     <record id="auth_signup.portal_set_password_email" model="mail.template">
         <field name="name">Settings: New Portal User Invite</field>
         <field name="model_id" ref="base.model_res_users"/>
