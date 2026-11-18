@@ -34,16 +34,11 @@ Module này sẽ thay đổi giao diện module Calendar theo thương hiệu Vi
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
-    # any module necessary for this one to work correctly
     'depends': ['calendar'],
 
-    # always loaded
     'data': [
         'views/calendar_views.xml',
         'data/mail_template_data.xml',
