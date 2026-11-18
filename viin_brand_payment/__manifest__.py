@@ -15,7 +15,6 @@ This module will change color navigate bar, button and logo,v.v in Payment Provi
 
 It also hides the Enterprise payment providers that are not available in the system from the Payment Providers list.
 
-
 Editions Supported
 ==================
 1. Community Edition
@@ -31,7 +30,6 @@ Module này sẽ thay đổi giao diện các module Payment Provider theo thư�
 Module này cũng ẩn các nhà cung cấp thanh toán Enterprise không có sẵn trong hệ thống
 khỏi danh sách Nhà cung cấp thanh toán.
 
-
 Ấn bản được Hỗ trợ
 ==================
 1. Ấn bản Community
@@ -45,16 +43,11 @@ khỏi danh sách Nhà cung cấp thanh toán.
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.2',
+    'version': '0.2.1',
 
-    # any module necessary for this one to work correctly
     'depends': ['payment'],
 
-    # always loaded
     'data': [
         'data/payment_provider_data.xml',
         'views/payment_provider_views.xml',
