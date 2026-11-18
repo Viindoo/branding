@@ -14,13 +14,13 @@ import { setupPosEnv } from "@point_of_sale/../tests/unit/utils";
 import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 import { ProductScreen } from "@point_of_sale/app/screens/product_screen/product_screen";
 import { reportService } from "@point_of_sale/app/services/report_service";
-import "@viin_brand_pos/app/errors/error_dialogs";
+import "@viin_brand/core/dialog/dialog";
+import "@viin_brand/core/errors/error_dialogs";
 import { CORE_SCAN_AUTHORIZATION } from "@viin_brand_pos/app/screens/product_screen/product_screen";
 import { CORE_WORKERS_MESSAGE } from "@viin_brand_pos/app/services/report_service";
 
-// The unit bundle merges in web.assets_backend: viin_brand_web's dialog titles are de-branded here
-// even without the POS bundle wiring, which tests/test_pos_brand_help.py and the customer-display
-// HttpCase in tests/test_customer_display_render.py guard against the real bundles.
+// The unit bundle merges in web.assets_backend, so the dialog files of viin_brand load here; the POS
+// bundle wiring is guarded by tests/test_pos_brand_help.py and tests/test_customer_display_render.py.
 
 definePosModels();
 
@@ -56,7 +56,8 @@ test("the technical details of an error dialog do not name Odoo", async () => {
     await animationFrame();
     expect(".o_error_detail pre").toHaveCount(1);
     expect(".o_error_detail pre").not.toHaveText(/Odoo/);
-    expect(".o_error_detail pre").not.toHaveText("");
+    expect(".o_error_detail pre").toHaveText(/by the Viindoo framework/);
+    expect(".o_error_detail pre").toHaveText(/meddling with Viindoo/);
 });
 
 test("a refused camera permission does not name Odoo in the scan error", () => {
