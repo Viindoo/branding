@@ -1,29 +1,22 @@
 import { registry } from "@web/core/registry";
 
 /**
- * Business rule under protection: the frontend header's apps button
- * (static/src/js/frontend_to_backend_apps_btn.js) must give a real user pending-icon feedback on
- * click. A unit test alone cannot prove the wiring is actually live: website.layout renders the
- * button as a SIBLING of #wrapwrap, never a descendant of it, so this drives the real rendered
- * page - no fabricated ancestor - and fails loudly if a future Odoo ever nests the button back
- * inside #wrapwrap.
+ * The frontend header's apps button must give a user pending-icon feedback on click. The button
+ * is a sibling of #wrapwrap, so only the real rendered page proves the click wiring reaches it.
  */
 registry.category("web_tour.tours").add("viin_brand_website_frontend_to_backend_apps_btn_wiring", {
     url: "/",
     steps: () => [
         {
             content:
-                "The apps button renders outside #wrapwrap; arm a click guard that blocks navigation",
+                "The apps button renders outside #wrapwrap; arm a guard that blocks navigation",
             trigger:
                 "body > .o_frontend_to_backend_nav > .o_frontend_to_backend_buttons > " +
                 ".o_frontend_to_backend_apps_btn",
             run: () => {
-                // Registered here, at tour-step time, strictly AFTER the production module's own
-                // listener already registered at page load - both bind "click" on `document` in
-                // the default (bubble) phase, so listener REGISTRATION ORDER decides execution
-                // order: this guard always runs after the button's own handler already ran, so
-                // the icon state the next step reads is exactly what a user would see before
-                // navigation actually starts.
+                // Registered after the module's own document click listener, so it runs after
+                // that handler and the next step reads the icon state a user sees before the
+                // navigation starts.
                 document.addEventListener("click", (ev) => ev.preventDefault());
             },
         },
@@ -41,9 +34,7 @@ registry.category("web_tour.tours").add("viin_brand_website_frontend_to_backend_
                 ".o_viin_apps_btn_spinner.fa-circle-o-notch.fa-spin",
         },
         {
-            content:
-                "The anchor itself never carries fa-spin - only the child spinner does, so a " +
-                "regression that spins the whole button again fails here instead of passing",
+            content: "The anchor itself never carries fa-spin, only the child spinner does",
             trigger: ".o_frontend_to_backend_apps_btn:not(.fa-spin)",
         },
     ],
