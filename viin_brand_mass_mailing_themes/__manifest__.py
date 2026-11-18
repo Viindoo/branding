@@ -33,12 +33,10 @@ Module này sẽ thay đổi giao diện module Mass Mailing Themes theo thươn
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
 
-    # any module necessary for this one to work correctly
     'depends': ['mass_mailing_themes'],
 
-    # always loaded
     'data': [
         'views/mass_mailing_themes_templates.xml',
     ],
