@@ -8,8 +8,6 @@ from odoo.tools.translate import code_translations
 
 from .common import activate_frontend_lang
 
-# viewBox of the Viindoo logo shipped by viin_brand_pos (core's Odoo logo is "0 0 919 495").
-VIINDOO_LOGO_VIEWBOX = "0 0 850 201"
 # msgid of a term this module ships to the customer display (iot_notice.js)
 IOT_NOTICE = ("Make sure the IoT Box is switched on and connected to the network, "
               "then restart the IoT Box.")
@@ -63,7 +61,7 @@ class TestCustomerDisplayRender(HttpCase):
                 assertViindooLogos("with order");
                 console.log("test successful");
             })().catch((error) => console.error(error.message));
-        """ % {"viindoo": VIINDOO_LOGO_VIEWBOX}
+        """ % {"viindoo": "0 0 850 201"}  # viewBox of the Viindoo logo; core's Odoo logo is "0 0 919 495"
         self.browser_js(url, code, timeout=120)
 
     def test_customer_display_serves_this_module_terms_in_the_visitor_language(self):

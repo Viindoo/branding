@@ -9,7 +9,6 @@ patch(Navbar.prototype, {
      */
     setup() {
         super.setup();
-        // copy from to_base
         const favicon = `/web/image/res.company/${this.pos.company.id}/favicon`;
         const icons = document.querySelectorAll("link[rel*='icon']");
         for (const icon of icons) {

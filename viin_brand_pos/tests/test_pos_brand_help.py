@@ -12,8 +12,6 @@ QR_CODE_FIELD = "point_of_sale_use_ticket_qr_code"
 CUSTOMER_DISPLAY_BUNDLE = "point_of_sale.customer_display_assets"
 LOGO_OVERRIDE = "viin_brand_pos/static/src/app/components/odoo_logo/odoo_logo.xml"
 CORE_LOGO = "point_of_sale/static/src/app/components/odoo_logo/odoo_logo.xml"
-IOT_NOTICE_PATCH = "viin_brand_pos/static/src/customer_display/customer_display_data_service.js"
-IOT_NOTICE_WRAPPER = "viin_brand_pos/static/src/customer_display/iot_notice.js"
 
 
 @tagged("post_install", "-at_install")
@@ -62,8 +60,11 @@ class TestCustomerDisplayAssets(TransactionCase):
 
     def test_customer_display_bundle_carries_the_iot_notice_replacement(self):
         paths = [p.lstrip("/") for p in self._paths(CUSTOMER_DISPLAY_BUNDLE)]
-        self.assertIn(IOT_NOTICE_PATCH, paths)
-        self.assertIn(IOT_NOTICE_WRAPPER, paths, "the patch imports the wrapper: it must ship in the same bundle")
+        self.assertIn("viin_brand_pos/static/src/customer_display/customer_display_data_service.js", paths)
+        self.assertIn(
+            "viin_brand_pos/static/src/customer_display/iot_notice.js", paths,
+            "the patch imports the wrapper: it must ship in the same bundle",
+        )
 
     def test_core_customer_display_still_emits_the_message_the_notice_patch_replaces(self):
         # The IoT notice swap matches core's message by equality, so it silently stops working
@@ -79,9 +80,9 @@ class TestPosBundlesDebrandCoreWording(TransactionCase):
     """The POS bundles never include web.assets_backend: the de-brand files must be listed in them."""
 
     BRAND_FILES = [
+        "viin_brand/static/src/core/dialog/dialog.js",
         "viin_brand/static/src/core/errors/error_dialogs.js",
         "viin_brand/static/src/core/errors/error_dialogs.xml",
-        "viin_brand_pos/static/src/app/errors/error_dialogs.js",
     ]
 
     def _paths(self, bundle):
