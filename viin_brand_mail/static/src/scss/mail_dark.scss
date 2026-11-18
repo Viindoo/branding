@@ -1,18 +1,9 @@
-// Mail-owned dark rules for what the dark palette's levers do not reach. The dark bundle
-// (web.assets_web_dark) recompiles every mail surface that reads an overridable Sass variable or
-// the gray ramp (dark_palette.scss), so the sidebar, the messaging menu, the header actions, the
-// blue and green bubbles and the chat window are dark-correct from core's own rules and need
-// nothing here. What stays is what no variable reaches: a light literal in core (the rotting
-// kanban card), Bootstrap opacity utilities that thin an already muted tier a second time (they
-// are emitted important), the orange message bubble, the mention list rows, and the active tab
-// accent of the mobile messaging menu, and the followers button of a followed record.
-//
-// The file is contributed to web.assets_web_dark as a plain append (see __manifest__), so it loads
-// after core's mail *.dark.scss tail and a same-specificity rule wins on source order. !important
-// appears only where the competing declaration carries its own. Sass colour functions read concrete
-// values, never var().
+// Mail dark rules for what the dark palette levers do not reach: a light literal in core (the
+// rotting kanban card), muted tiers thinned again by important Bootstrap opacity utilities, the
+// orange bubble, the mention list rows, the mobile messaging-menu tab and the followers button.
+// The file is appended to web.assets_web_dark, so it loads after core's mail dark tail and a
+// same-specificity rule wins on source order; !important only where the competing one has it.
 
-// --- Overdue / rotting kanban card ------------------------------------------------------------
 // Core's rotting_mixin.scss paints the card from the literal `rgba(255, 201, 201, .3)`, which no
 // Sass variable reaches; over the dark card it composites to a muddy near-neutral that loses the
 // danger read. A danger tint mixed over the dark body surface stays red-dominant. The selected
@@ -21,7 +12,6 @@
     background-color: mix($danger, $body-bg, 25%);
 }
 
-// --- Read conversation rows in the messaging menu ---------------------------------------------
 // A read conversation is rendered with muted=1 (messaging_menu.xml `!thread.isUnread ? 1 : 0`),
 // which stamps `text-muted` on the row; the muted colour is the dark scheme's own tier
 // ($o-main-color-muted -> $body-secondary-color). Core thins the preview again with
@@ -39,10 +29,9 @@
     }
 }
 
-// --- Orange message bubble ----------------------------------------------------------------------
 // Core's dark file paints each bubble from the gray ramp (`mix($gray-100, darken($_color, ..), ..)`).
-// The blue and green results read well, but the orange one lands on #5A5221, where the muted tier
-// of the message (placeholder, `Subject:` line, edited marker) reaches only 3.04:1. The orange
+// The blue and green results read well, but the orange one lands on a tone where the muted tier
+// of the message (placeholder, `Subject:` line, edited marker) falls under AA. The orange
 // bubble is painted from a dark tint of its own category colour instead, which keeps the
 // distinction from blue and green while the muted tier clears AA. Core's declarations are
 // important, hence the flag.
@@ -70,37 +59,23 @@ $o-viin-dark-bubble-orange-border: mix($o-view-background-color, $warning, 70%);
     }
 }
 
-// --- The two message tiers the template thins ---------------------------------------------------
-// message.xml itself carries an `opacity` utility on both nodes, so every scheme renders them
-// thinned, and a tier that clears AA once does not clear it twice, least of all on the message
-// bubbles, which sit one rung above the panel. `!important` is required: Bootstrap emits every
-// utility through its utilities API under $enable-important-utilities, so `.opacity-75` and
-// `.opacity-50` each carry their own, and among important declarations specificity decides.
-// The light arm of these nodes lives in core/common/message_contrast.scss.
-
-// The empty-message placeholder (message.xml:110) stacks `.text-muted` for the colour tier and
-// `.opacity-75` on top. Dropping the multiplier leaves the node on the metadata tier every other
-// muted marker in the body shares, a de-emphasis and not a flattening. `> i` keeps this off the
-// `Subject:` line and off the failure-notification glyph, which stacks the same utility on a
-// `text-danger` tone. Unscoped: the declaration holds inside the spreadsheet island too.
+// message.xml carries an opacity utility on the empty-message placeholder and the `(edited)`
+// marker, thinning the muted tier a second time. `!important` is required because Bootstrap emits
+// its utilities important. The light arm lives in core/common/message_contrast.scss.
+// `> i` keeps the placeholder rule off the `Subject:` line and the failure-notification glyph.
 .o-mail-Message-body > i.text-muted.opacity-75 {
     opacity: 100% !important;
 }
 
-// The `(edited)` marker (message.xml:152) has no colour tier of its own - it inherits the message
-// body colour - and the 50% opacity is its whole de-emphasis, so lifting only the opacity would
-// make it the body copy's exact tone. It moves onto the metadata tier instead, read through
-// `var(--secondary-color)` (the dark scheme's `$body-secondary-color`), which keeps it a colour
-// step below the body copy while its 0.65rem size carries the rest. `color` carries no flag:
-// nothing declares a colour on this span, and the island's scoped arm outranks it on specificity.
-// `.o-mail-Message-edited` is the stable hook rather than the inner span's utilities: the server
-// writes that wrapper into the body and core's JS fills it with the span.
+// The `(edited)` marker has no colour tier and its 50% opacity is its whole de-emphasis, so lifting
+// only the opacity would make it the body copy's exact tone. It moves onto the secondary tier,
+// still a colour step below the body copy. `.o-mail-Message-edited` is the stable hook: core's JS
+// fills that wrapper with the span.
 .o-mail-Message-edited .opacity-50 {
     color: var(--secondary-color);
     opacity: 100% !important;
 }
 
-// --- Mention suggestion list rows -------------------------------------------------------------
 // Core's navigable_list.dark.scss mixes the action colour into white for the active and hovered
 // rows, a light fill under the light label. Both rows are re-pointed through core's own custom
 // properties onto dark rungs that the muted secondary text of a row (the e-mail address) also
@@ -110,7 +85,6 @@ $o-viin-dark-bubble-orange-border: mix($o-view-background-color, $warning, 70%);
     --mail-NavigableList-hoverBgColor: #{$o-gray-200};
 }
 
-// --- Date divider label -----------------------------------------------------------------------
 // The thread's date divider ("Today") stacks `text-muted` on `opacity-50`, so the muted tier is
 // halved again. The utility is important, hence the flag; the de-emphasis stays with the muted
 // colour and the small size.
@@ -118,7 +92,6 @@ $o-viin-dark-bubble-orange-border: mix($o-view-background-color, $warning, 70%);
     opacity: 100% !important;
 }
 
-// --- Messaging-menu bottom tabs (mobile) ------------------------------------------------------
 // The active tab reads `--btn-active-color` for its label and paints its icon with the same
 // enterprise action teal, which is too dark for the dark view surface and for the dark
 // component-active tint behind the icon. Both take the scheme's component accent instead.
@@ -130,7 +103,6 @@ $o-viin-dark-bubble-orange-border: mix($o-view-background-color, $warning, 70%);
     }
 }
 
-// --- Member list section headers --------------------------------------------------------------
 // "Online - N" / "Offline - N" stack `text-muted` on `opacity-75` over the raised sidebar surface.
 // The utility is important, hence the flag; the de-emphasis stays with the muted colour and the
 // small uppercase size.
@@ -138,7 +110,6 @@ $o-viin-dark-bubble-orange-border: mix($o-view-background-color, $warning, 70%);
     opacity: 100% !important;
 }
 
-// --- Followers button of a record the user follows ---------------------------------------------
 // The button carries `text-action`; core paints its pressed (`active`) state through
 // `button.text-action.active { --color: <brand teal>; color: var(--color) !important }`, a dark
 // teal that reads 4.16:1 on the dark chatter. The pressed state takes the dark scheme's link tone

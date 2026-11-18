@@ -1,10 +1,4 @@
 # Part of Viindoo. See LICENSE file for full copyright and licensing details.
-#
-# WHAT IS PROTECTED (behaviour, not code): the radios and checkboxes of a Discuss action panel
-# (notification settings, member list, ...) are not white boxes on the dark panel. Core mail fills
-# them with a literal `$white` (`--form-check-bg`), which stays a real white in the dark bundle, so
-# the dark bundle re-points that custom property to a dark-safe fill while the light bundle keeps
-# core's white.
 import re
 
 from odoo.tests.common import TransactionCase, tagged
@@ -18,13 +12,15 @@ from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     _relative_luminance,
 )
 
-ACTION_PANEL_CHECK = ".o-mail-ActionPanel .form-check-input"
-# Relative luminance above which a surface reads as a light band on a dark page.
-LIGHT_SURFACE_LUMINANCE = 0.45
-
 
 @tagged("post_install", "-at_install")
 class TestActionPanelDarkCompile(TransactionCase):
+    """Radios and checkboxes of a Discuss action panel are not white boxes on the dark panel.
+
+    Core mail fills them with a literal white (``--form-check-bg``), so the dark bundle sets a
+    dark-safe fill for it while the light bundle keeps core's white.
+    """
+
     def _form_check_fill(self, bundle_name):
         bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=True, js=False)
         attachments = bundle.css() or self.env["ir.attachment"]
@@ -32,7 +28,7 @@ class TestActionPanelDarkCompile(TransactionCase):
         css = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
         fill = None
         for _order, selector, body in _iter_rules(css):
-            if " ".join(selector.split()) == ACTION_PANEL_CHECK:
+            if " ".join(selector.split()) == ".o-mail-ActionPanel .form-check-input":
                 for value, _important in _declarations(body, ("--form-check-bg",)):
                     fill = value
         return fill
@@ -42,7 +38,8 @@ class TestActionPanelDarkCompile(TransactionCase):
         self.assertIsNotNone(dark, "the dark bundle declares no --form-check-bg for the panel")
         colour = _normalize_colour(dark)
         self.assertTrue(
-            colour is None or _relative_luminance(colour) <= LIGHT_SURFACE_LUMINANCE,
+            # a luminance above 0.45 reads as a light band on a dark page
+            colour is None or _relative_luminance(colour) <= 0.45,
             "the panel form check is the light surface %s in the dark bundle" % dark,
         )
         self.assertEqual(_normalize_colour(self._form_check_fill(BACKEND_BUNDLE) or ""), "#ffffff")

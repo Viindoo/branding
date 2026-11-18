@@ -34,12 +34,10 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1.8',
+    'version': '0.1.9',
 
-    # any module necessary for this one to work correctly
     'depends': ['mail', 'viin_brand'],
 
-    # always loaded
     'data': [
         'data/res_partner_data.xml',
         'data/discuss_channel_data.xml',
@@ -60,41 +58,22 @@ Editions Supported
             ('after', 'mail/static/src/core/common/im_status.scss', 'viin_brand_mail/static/src/core/common/im_status.scss'),
             ('after', 'mail/static/src/core/common/composer.scss', 'viin_brand_mail/static/src/core/common/composer.scss'),
             ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message.scss'),
-            # Light-scheme AA repair of the message METADATA tier (timestamp, in-body muted
-            # markers, the two opacity-thinned nodes). Rides every bundle a mail message renders
-            # in; guarded to the light scheme inside the file, so the dark bundle this one is
-            # recompiled into emits none of it. See message_contrast.scss.
+            # Light-scheme contrast repair of the message metadata; the file guards itself to the light scheme.
             ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
             ('after', 'mail/static/src/discuss/core/common/message_seen_indicator.scss', 'viin_brand_mail/static/src/core/common/message_seen_indicator.scss'),
             ('after', 'mail/static/src/core/public_web/discuss_sidebar.scss', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
             ('after', 'mail/static/src/core/public_web/messaging_menu.scss', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
             ('after', 'mail/static/src/discuss/core/public_web/discuss_sidebar_categories.scss', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
-            # Carry viin_brand_web's numbered statusbar steps onto mail's two
-            # PRIMARY copies of web.StatusBarField (statusbar_duration and the CRM
-            # rotting_statusbar_duration). A primary copy does not inherit extensions registered
-            # after its own blockId, so each copy needs its own attributes-only extension - see the
-            # file header. Plain append: template extensions are order-immune here (both xpaths
-            # only set attributes, and re-setting them is idempotent).
+            # The two mail copies of web.StatusBarField are primary copies, which do not inherit
+            # extensions registered after their own block, so each needs its own extension of the
+            # numbered statusbar steps of viin_brand.
             'viin_brand_mail/static/src/views/fields/statusbar_duration/statusbar_steps_duration.xml',
         ],
-        # Mail-owned dark rules for what the dark palette's levers do not reach: the rotting kanban
-        # card (a light literal in core), the opacity utilities that thin muted text a second time
-        # (important in Bootstrap), the mention list rows and the mobile tab accent. Core's dark
-        # glob covers the web and mail modules only, so the file is contributed here as a plain
-        # append, which lands after core's own mail *.dark.scss tail: a same-specificity rule wins
-        # on source order. See static/src/scss/mail_dark.scss.
+        # Dark rules for what the dark palette does not reach. Plain appends land after core's own
+        # mail `*.dark.scss` tail, so a same-specificity rule wins on source order.
         'web.assets_web_dark': [
             'viin_brand_mail/static/src/scss/mail_dark.scss',
-            # Discuss chrome identity: core mail's dark tail repaints the Discuss navbar (and the
-            # menu-entry background variable) onto its own flat chat surface, leaving that one app
-            # with a navbar unlike every other one and the inherited border rule chopped into
-            # dashes by the entries painting over it. A second plain APPEND, after mail_dark.scss, for
-            # the same source-order reason - core's rules are same-specificity and not
-            # `!important`, so landing later is the whole mechanism. See
-            # static/src/scss/discuss_navbar.dark.scss.
             'viin_brand_mail/static/src/scss/discuss_navbar.dark.scss',
-            # Discuss action-panel form checks: core fills them with a literal `$white`. A plain
-            # APPEND after core's own action_panel.scss (equal specificity, later source wins).
             'viin_brand_mail/static/src/scss/action_panel.dark.scss',
         ],
         'mail.assets_public': [
@@ -103,38 +82,28 @@ Editions Supported
             ('after', 'mail/static/src/core/common/composer.scss', 'viin_brand_mail/static/src/core/common/composer.scss'),
             ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
         ],
-        # viin_brand_mail's own SCSS leaks into web.assets_unit_tests_setup / web.tests_assets via
-        # web's ('include', 'web.assets_backend') (addons/web/__manifest__.py); each 'remove'
-        # strips it back out of the two TEST-ONLY bundles so core's own mail/discuss Hoot/QUnit
-        # tests measure core's own metrics, not Viindoo's. web.assets_backend itself (the real
-        # webclient) is untouched - AssetPaths.remove() operates on the accumulated per-bundle
-        # path list, not on the source bundle. A stale/renamed path here raises ValueError on
-        # module update - keep that loud, never catch it
-        # (odoo/addons/base/models/ir_asset.py AssetPaths._raise_not_found).
+        # The brand SCSS reaches the two test-only bundles through web's include of
+        # web.assets_backend; removing it lets the core mail and discuss tests measure core's own
+        # styles. A renamed path raises on update and must stay loud.
         'web.assets_unit_tests_setup': [
             ('remove', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/composer.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/core.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/im_status.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/message.scss'),
-            # 19.0-only file (the port's message-contrast fix), added after the 18.0 sweep
-            # drew this list - without it one brand stylesheet still reached core's pages.
             ('remove', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/message_seen_indicator.scss'),
             ('remove', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
             ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
             ('remove', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
         ],
-        # web.tests_assets is the legacy QUnit page; it includes web.assets_backend the same way
-        # web.assets_unit_tests_setup does, so it needs the identical remove list.
+        # The legacy QUnit page includes web.assets_backend as well and needs the same removals.
         'web.tests_assets': [
             ('remove', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/composer.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/core.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/im_status.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/message.scss'),
-            # 19.0-only file (the port's message-contrast fix), added after the 18.0 sweep
-            # drew this list - without it one brand stylesheet still reached core's pages.
             ('remove', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/message_seen_indicator.scss'),
             ('remove', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),

@@ -1,40 +1,57 @@
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+import base64
+
 from odoo.tests.common import TransactionCase, tagged
+from odoo.tools.convert import convert_file
 
 
 @tagged("post_install", "-at_install")
 class TestPartnerRootDebrand(TransactionCase):
-    """The built-in bot partner must carry Viindoo branding, not Odoo branding.
+    """The built-in bot partner, the author of every system-generated message, is ViindooBot.
 
-    ``data/res_partner_data.xml`` re-brands ``base.partner_root`` (the author of
-    every system-generated message) from OdooBot to ViindooBot. That record is
-    highly visible - it is the author shown on automated chatter messages - so the
-    de-brand is a shipped product behaviour and must be protected.
-
-    This assertion was previously impossible to make: ``post_init_hook`` used to
-    write the record back to ``OdooBot`` / ``odoobot@example.com`` whenever
-    ``test_enable`` was set, so under the test runner the module's own de-brand was
-    never observable. That fixture write now lives in a rollback-safe test setup
-    (see ``post_load`` in this module's ``__init__.py``), scoped to the core suites
-    that genuinely need core's naming, which leaves the real committed value
-    de-branded and therefore testable here.
-
-    Note this case deliberately derives from a plain ``TransactionCase`` rather than
-    ``mail.tests.common.MailCommon``: the fixture above restores core's OdooBot
-    naming for ``MailCommon`` subclasses, so asserting the de-brand there would
-    observe the fixture instead of the product.
+    The case derives from ``TransactionCase`` and not from ``mail.tests.common.MailCommon``,
+    because the realignment of ``MailCommon`` restores the OdooBot naming and would hide the
+    shipped value.
     """
+
+    def setUp(self):
+        super().setUp()
+        # The data file must keep a customer's edit by its own markup, whatever the
+        # noupdate flag of the core external id of the partner is on a given database.
+        self.env["ir.model.data"].search(
+            [("module", "=", "base"), ("name", "=", "partner_root")]
+        ).noupdate = False
+        self.env.flush_all()
+
+    def _load_partner_data(self, mode):
+        convert_file(self.env, "viin_brand_mail", "data/res_partner_data.xml", None, mode)
+        self.env.invalidate_all()
 
     def test_partner_root_is_viindoo_branded(self):
         partner_root = self.env.ref("base.partner_root")
+        self.assertEqual(partner_root.name, "ViindooBot")
+        self.assertTrue(partner_root.image_1920, "ViindooBot must carry the Viindoo bot picture")
+
+    def test_install_sets_the_viindoo_name_and_image(self):
+        partner_root = self.env.ref("base.partner_root")
+        partner_root.write({"name": "System", "image_1920": False})
+        self._load_partner_data("init")
+        self.assertEqual(partner_root.name, "ViindooBot")
+        self.assertTrue(partner_root.image_1920)
+
+    def test_module_update_keeps_the_customer_name_and_image(self):
+        partner_root = self.env.ref("base.partner_root")
+        customer_image = base64.b64encode(
+            b"<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'/>"
+        )
+        partner_root.write({"name": "Customer Bot", "image_1920": customer_image})
+        self._load_partner_data("update")
         self.assertEqual(
             partner_root.name,
-            "ViindooBot",
-            "base.partner_root must be de-branded to ViindooBot - it is the "
-            "visible author of system-generated chatter messages",
+            "Customer Bot",
+            "a customer's rename of the bot must survive -u viin_brand_mail",
         )
         self.assertEqual(
-            partner_root.email,
-            "viindoobot@example.viindoo.com",
-            "base.partner_root must not keep the Odoo example.com bot address",
+            partner_root.image_1920,
+            customer_image,
+            "a customer's bot picture must survive -u viin_brand_mail",
         )

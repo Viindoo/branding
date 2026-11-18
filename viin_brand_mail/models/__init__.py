@@ -1,4 +1,3 @@
-from . import ir_http
 from . import mail_alias_domain
 from . import mail_alias
 from . import mail_gateway_allowed
