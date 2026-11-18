@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <data>
-    <!-- Invisible this digest because it's contain a feature that have not development yet -->
+    <!-- The tip describes a feature that is not available, so it is archived -->
     	<function name="write" model="digest.tip">
 	        <value eval="[ref('crm.digest_tip_crm_1')]" />
 	        <value eval="{'active': False}" />
