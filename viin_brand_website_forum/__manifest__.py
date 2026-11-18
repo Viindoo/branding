@@ -15,7 +15,6 @@ This module replaces the Odoo brand with Viindoo in the help content of the foru
 given to every new forum, the karma page, and the sample question and answer of the demo forum.
 It does not change colours, buttons or the logo.
 
-
 Editions Supported
 ==================
 1. Community Edition
@@ -30,7 +29,6 @@ Mô-đun này thay thương hiệu Odoo bằng Viindoo trong nội dung trợ gi
 dành cho mỗi diễn đàn mới, trang điểm karma, cùng câu hỏi và câu trả lời mẫu của diễn đàn demo.
 Mô-đun không thay đổi màu sắc, nút bấm hay logo.
 
-
 Ấn bản được Hỗ trợ
 ==================
 1. Ấn bản Community
@@ -44,19 +42,14 @@ Mô-đun không thay đổi màu sắc, nút bấm hay logo.
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
-    # any module necessary for this one to work correctly
     'depends': ['website_forum'],
     'data': [
         'views/forum_forum_template_faq.xml',
         'views/forum_forum_templates_tools.xml',
     ],
-    # always loaded
     'demo': [
         'data/forum_demo.xml',
     ],
