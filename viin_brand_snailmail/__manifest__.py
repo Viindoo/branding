@@ -12,8 +12,7 @@ Gỡ thương hiệu Odoo khỏi các thông báo của Snail Mail
 What it does
 ============
 This module removes the Odoo brand from the messages of Snail Mail. The error shown when a letter
-cannot be sent because the database has no IAP account no longer names an Odoo website.
-
+cannot be sent because the database has no IAP account does not name an Odoo website.
 
 Editions Supported
 ==================
@@ -26,8 +25,7 @@ Editions Supported
 Ứng dụng này làm gì
 ===================
 Mô-đun này gỡ thương hiệu Odoo khỏi các thông báo của Snail Mail. Lỗi hiển thị khi thư không gửi được
-vì cơ sở dữ liệu chưa có tài khoản IAP không còn nhắc đến website của Odoo.
-
+vì cơ sở dữ liệu chưa có tài khoản IAP không nhắc đến website của Odoo.
 
 Ấn bản được Hỗ trợ
 ==================
@@ -42,13 +40,9 @@ vì cơ sở dữ liệu chưa có tài khoản IAP không còn nhắc đến we
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
 
-    # any module necessary for this one to work correctly
     'depends': ['snailmail'],
 
     'installable': True,
