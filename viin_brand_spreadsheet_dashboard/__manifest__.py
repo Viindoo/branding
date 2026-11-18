@@ -43,7 +43,7 @@ khi vẫn giữ nguyên bảng tính bên trong.
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     'depends': ['spreadsheet_dashboard', 'viin_brand_spreadsheet'],
 
@@ -52,12 +52,6 @@ khi vẫn giữ nguyên bảng tính bên trong.
             'viin_brand_spreadsheet_dashboard/static/src/scss/dashboard_action_dark.dark.scss',
         ],
     },
-
-    'images': [
-        ],
-
-    'task_ids': [
-        ],
 
     'installable': True,
     'auto_install': True,
