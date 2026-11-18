@@ -5,7 +5,6 @@ from odoo.tests.common import TransactionCase, tagged
 
 # The Inventory help texts this module owns must not name the Odoo product.
 BRAND_TERM = "Odoo"
-PDF_PREVIEW_FRAGMENT = "PDF preview"
 OPERATION_TYPE_HELP_FIELDS = [
     "use_create_lots",
     "auto_show_reception_report",
@@ -59,7 +58,7 @@ class TestPickingTypeFormNote(TransactionCase):
             "the stock Hardware print section must carry exactly one print note",
         )
         self.assertIn(
-            PDF_PREVIEW_FRAGMENT, " ".join(stock_notes[0].itertext()),
+            "PDF preview", " ".join(stock_notes[0].itertext()),
             "the stock print note must say that a PDF preview opens by default",
         )
 
