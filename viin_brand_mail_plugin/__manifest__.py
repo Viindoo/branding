@@ -33,12 +33,10 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1.0',
+    'version': '0.1.1',
 
-    # any module necessary for this one to work correctly
     'depends': ['mail_plugin'],
 
-    # always loaded
     'data': [
         'views/mail_plugin_login.xml',
     ],
