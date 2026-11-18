@@ -89,7 +89,9 @@ Mô đun này thay đổi một vài thông tin dành riêng cho thương hiệu
     'uninstall_hook': 'uninstall_hook',
     'post_load': 'post_load',
     'installable': False,
-    'auto_install': True,
+    # Force auto install viin_brand when the `web` is installed, that will trigger
+    # other dependencies to install too.
+    'auto_install': ['web'],
     'price': 9.9,
     'currency': 'EUR',
     'license': 'OPL-1',
