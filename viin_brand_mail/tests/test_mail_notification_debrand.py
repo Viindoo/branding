@@ -4,23 +4,12 @@ from odoo.tests.common import TransactionCase, tagged
 
 @tagged("post_install", "-at_install")
 class TestNotificationLayoutDebrand(TransactionCase):
-    """The notification email layout footer must be Viindoo-branded, not Odoo.
+    """The notification email layout footer is Viindoo-branded, not Odoo.
 
-    ``viin_brand_mail`` inherits ``mail.mail_notification_layout`` and
-    ``mail.mail_notification_light`` to replace the trailing "Powered by Odoo"
-    wordmark with "Viindoo" and re-point its marketing link to
-    ``https://viindoo.com?utm_source=db&utm_medium=email``.
-
-    These tests exercise the real mail render path
-    (``mail.render.mixin._render_encapsulate`` -> ``ir.qweb._render``, the exact
-    call Odoo uses in ``mail_thread._notify_by_email_render_layout``) and assert
-    the de-branded outcome on the PRODUCED HTML - never on template internals -
-    so a correct de-brand passes regardless of which XPath achieves it, and a
-    layout still carrying the Odoo wordmark / odoo.com link fails.
-
-    The neutral notification body below contains neither ``Viindoo`` nor
-    ``odoo.com``, so every assertion can be satisfied (or broken) only by the
-    layout de-brand itself.
+    The "Powered by Odoo" wordmark of ``mail.mail_notification_layout`` and
+    ``mail.mail_notification_light`` reads "Viindoo" and links to
+    ``https://viindoo.com?utm_source=db&utm_medium=email``. The assertions run on the HTML rendered
+    from a neutral body that contains neither ``Viindoo`` nor ``odoo.com``.
     """
 
     _NEUTRAL_BODY = "<p>Notification body used for branding assertions.</p>"
