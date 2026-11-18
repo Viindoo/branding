@@ -1,6 +1,6 @@
 {
     'name': "Website eCommerce Debranding for Viindoo",
-    'name_vi_VN': "",
+    'name_vi_VN': "Làm lại nhận diện thương hiệu cho Website eCommerce",
 
     'summary': """
 Debranding Website eCommerce for Viindoo""",
@@ -31,24 +31,15 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/Viindoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.2.0',
+    'version': '0.2.1',
 
-    # any module necessary for this one to work correctly
     'depends': ['website_sale'],
 
-    # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
         'views/templates.xml',
     ],
 
-    'images': [
-        # 'static/description/main_screenshot.png'
-        ],
     'installable': True,
     'auto_install': ['website_sale'],
     'price': 0.0,
