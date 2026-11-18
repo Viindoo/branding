@@ -39,9 +39,8 @@ Module này sẽ thay đổi giao diện module Mail Bot theo thương hiệu Vi
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1.0',
+    'version': '0.1.1',
 
-    # any module necessary for this one to work correctly
     'depends': ['mail_bot'],
     'installable': True,
     'auto_install': True,
