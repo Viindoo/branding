@@ -24,9 +24,6 @@ import { config as transitionConfig } from "@web/core/transition";
 // assistive technology. The toggle also puts the home menu away again when it covers a screen,
 // and opens the sidebar - keeping the home menu - when the home menu IS the screen (boot landing).
 //
-// Forward-ported intent of 18.0 web_responsive 16b8087 ("make the mobile apps menu one-handed");
-// web_responsive no longer exists at 19.0, so the target is the theme's own ViinHomeMenu.
-//
 // Every assertion is on observable DOM: which surfaces are present, the toggle's accessible name,
 // and which app the menu service was asked to open - never on a component internal.
 

@@ -21,14 +21,13 @@ import { browser } from "@web/core/browser/browser";
 import { redirect } from "@web/core/utils/urls";
 import { config as transitionConfig } from "@web/core/transition";
 
-// Four defects of the flat home menu / apps button that predate the 18.0 forward-port:
-//   1. the search box promised "apps, records, actions" but only ever matched app names, so typing a
-//      menu item ("operation types") found nothing - on every screen size, since there is no other
-//      path (the command palette is a separate, keyboard-only surface);
-//   2. Back/Forward with the menu open over a screen changed the URL and the navbar but left the menu
-//      on screen;
-//   3. the date line followed the browser's locale, not the user's language;
-//   4. the desktop apps button had no accessible name.
+// Four behaviours of the flat home menu / apps button:
+//   1. the search box matches menu items as well as app names, so typing a menu item ("operation
+//      types") finds it on every screen size (the command palette is a separate, keyboard-only
+//      surface);
+//   2. Back/Forward with the menu open over a screen puts the menu away along with the URL change;
+//   3. the date line follows the user's language, not the browser's locale;
+//   4. the desktop apps button has an accessible name.
 // Every assertion is on observable DOM, or on the menu service being asked to open something.
 
 defineMailModels();

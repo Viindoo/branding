@@ -1,20 +1,13 @@
 /** @odoo-module **/
 
-// PR #658 item 7 - the home-menu app tiles can be press-dragged to reorder, and the new order PERSISTS
-// per-user across a full page reload (read back from res.users.viin_home_app_order). Driven by
-// tests/test_tours.py, whose runner also asserts the SERVER-side observable (the stored order field).
+// The home-menu app tiles can be press-dragged to reorder, and the new order persists per user
+// across a full reload (read back from res.users.viin_home_app_order). Driven by tests/test_tours.py,
+// whose runner also asserts the server-side stored order.
 //
-// BEHAVIOUR PROTECTED (observable DOM state, never internals): dragging the second tile onto the first
-// reorders the grid (a DIFFERENT app becomes first), and after a same-session reload - which rebuilds
-// the grid from the SERVER-stored order via the home menu's onWillStart read - that reordered app is
-// still first. The expected first-app xmlid is carried across the reload in sessionStorage (which
-// survives a same-tab reload), so the post-reload step is a real end-to-end persistence assertion, not
-// a trivially-true check. RED before item 7 (no drag, no stored order); GREEN after.
-//
-// GROUNDED (OSM 19.0 + core source): the home grid is .o_viin_home_grid and its tiles are
-// .o_viin_home_app[data-menu-xmlid] (home_menu.xml). The `drag_and_drop(<target>)` run helper drags
-// the step's trigger element onto <target> (web_tour tour_helpers_hoot.js); dragging a later element
-// onto an earlier one to move it up mirrors core's im_livechat_chatbot_steps_sequence reorder tour.
+// Dragging the second tile onto the first makes a different app first; after a same-session reload
+// the grid is rebuilt from the server-stored order and that app is still first. The expected
+// first-app xmlid is carried across the reload in sessionStorage, which survives a same-tab reload.
+// `drag_and_drop(<target>)` drags the step's trigger element onto <target>.
 
 import { registry } from "@web/core/registry";
 
@@ -45,10 +38,9 @@ registry.category("web_tour.tours").add("viin_home_reorder_persist_tour", {
             trigger: ".o_viin_home_grid .o_viin_home_app:first-child",
             async run() {
                 const before = sessionStorage.getItem(BEFORE_KEY);
-                // The reorder rewrites reactive state (re-render on a following frame) and fires an ORM
-                // write; the grid exposes the server-ACKNOWLEDGED order as data-viin-saved-order once
-                // the write resolves. Poll (bounded) until BOTH a different app is first AND the server
-                // has acknowledged it - so the reload below cannot race an unsettled write.
+                // The reorder re-renders on a following frame and fires an ORM write; the grid exposes
+                // the acknowledged order as data-viin-saved-order. Poll (bounded) until a different
+                // app is first and the server has acknowledged it, so the reload cannot race the write.
                 for (let attempt = 0; attempt < 60; attempt++) {
                     const grid = document.querySelector(".o_viin_home_grid");
                     const now = grid?.querySelector(".o_viin_home_app")?.dataset.menuXmlid;

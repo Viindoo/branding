@@ -1,19 +1,13 @@
 /** @odoo-module **/
 
-// Guards: with the Appearance systray open, the row for the CURRENTLY SELECTED option renders
-// exactly ONE visible selected-marker - in both colour schemes. Driven by tests/test_tours.py.
+// Guards: with the Appearance systray open, the row for the currently selected option renders
+// exactly one visible selected-marker, in both colour schemes. Driven by tests/test_tours.py.
 //
-// Core Odoo paints its own ::before checkmark on any `.dropdown-item.active` unless that item also
-// carries the opt-out class `dropdown-item_active_noarrow` (web/static/src/webclient/webclient.scss).
-// This component additionally renders its own right-aligned `<i class="fa fa-check">` on the active
-// row, so - absent the opt-out - both paint at once. The assertion below reads the RENDERED result
-// (the active row's computed `::before` content, and how many of its own check icons are actually
-// visible), never a class string, so it stays valid however the suppression ends up implemented.
-//
-// GROUNDED (OSM 19.0 + core source): registry path web_tour.tours + {url, steps: () => [...]};
-// `run` as a plain function that throws on a failed in-browser check is core's own idiom (e.g.
-// hr_skills_event/static/tests/tours/onsite_skill_tour.js) for an assertion no CSS trigger can
-// express.
+// Core paints its own ::before checkmark on any `.dropdown-item.active` unless the item carries the
+// opt-out class `dropdown-item_active_noarrow` (web/static/src/webclient/webclient.scss); this
+// component also renders its own `fa fa-check`, so without the opt-out both paint. The assertion
+// reads the rendered result (the computed `::before` content and the visible check icons), not a
+// class string.
 
 import { registry } from "@web/core/registry";
 
@@ -64,9 +58,8 @@ tours.add("viin_appearance_marker_count_light_tour", {
     ],
 });
 
-// The reload dance is the one T-1 already solved (viin_dark_toggle_tour): choosing Dark PERSISTS
-// the preference + cookie and RELOADS to serve the recompiled dark bundle - there is no in-place
-// flip, so the menu has to be re-opened after the reload to inspect the post-reload markup.
+// Choosing Dark persists the preference and reloads (there is no in-place flip), so the menu is
+// re-opened after the reload.
 tours.add("viin_appearance_marker_count_dark_tour", {
     url: "/odoo",
     steps: () => [
