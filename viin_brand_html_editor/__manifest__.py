@@ -26,10 +26,7 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1',
-    # Renamed from `viin_brand_web_editor` for 19.0: it now de-brands `html_editor`, the 19.0
-    # replacement of the removed core `web_editor`. `old_technical_name` carries the old module's
-    # install state over on upgrade - the standard Viindoo module-rename key.
+    'version': '0.1.1',
     'old_technical_name': 'viin_brand_web_editor',
     'depends': ['html_editor', 'web'],
     'assets': {
