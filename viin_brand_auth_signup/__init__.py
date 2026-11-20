@@ -17,7 +17,3 @@ def _force_branding_translations(env):
         for po_path in get_po_paths('viin_brand_auth_signup', lang):
             importer.load_file(po_path, lang)
     importer.save(overwrite=True, force_overwrite=True)
-
-
-def _post_init_hook(env):
-    _force_branding_translations(env)

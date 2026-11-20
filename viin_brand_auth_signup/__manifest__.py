@@ -41,15 +41,14 @@ Mô-đun này thay thế thương hiệu Odoo bằng Viindoo trong các mẫu em
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.3',
+    'version': '0.1.4',
 
-    'depends': ['auth_signup'],
+    'depends': ['auth_signup', 'viin_brand'],
 
     'data': [
         'data/mail_template_data.xml',
         'data/auth_signup_templates_email.xml',
     ],
-    'post_init_hook': '_post_init_hook',
     'installable': True,
     'auto_install': True,
     'price': 0.0,
