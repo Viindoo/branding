@@ -34,7 +34,7 @@ class BundleCompileTest(TransactionCase):
         return "in file '%s'" % asset_path
 
     def test_backend_bundle_compiles_the_viindoo_logo_overrides(self):
-        """web.assets_backend carries both Viindoo-logo SCSS overrides with no Sass fault."""
+        """web.assets_backend carries the Viindoo-logo SCSS override with no Sass fault."""
         bundle, css = self._compiled_css("web.assets_backend")
         self.assertFalse(
             bundle.css_errors,
@@ -44,7 +44,7 @@ class BundleCompileTest(TransactionCase):
             "/viin_brand/static/img/Viindoo-logo.svg",
             css,
             "web.assets_backend compiled without the Viindoo logo override from "
-            "configurator.scss / website_loader.scss.",
+            "website_loader.scss.",
         )
 
     def test_editor_bundle_compiles_the_resource_editor_warning_extension(self):

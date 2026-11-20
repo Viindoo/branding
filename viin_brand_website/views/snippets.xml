@@ -1,43 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- CTA snippets: "run Odoo" / "trust Odoo" → "run Viindoo" / "trust Viindoo" -->
+    <!-- The call-to-action snippets carry sample copy of the customer's own website: neutral, no product claim. -->
     <template id="s_call_to_action" inherit_id="website.s_call_to_action">
         <xpath expr="//h2" position="replace" mode="inner">
-            50,000+ companies run Viindoo to grow their businesses.
+            Join the companies that grow their business with us.
         </xpath>
     </template>
 
     <template id="s_cta_box" inherit_id="website.s_cta_box">
         <xpath expr="//h2" position="replace" mode="inner">
-            50,000+ companies run Viindoo<br/>to grow their businesses.
+            Join the companies that grow <br/>their business with us.
         </xpath>
     </template>
 
     <template id="s_cta_card" inherit_id="website.s_cta_card">
         <xpath expr="//h2" position="replace" mode="inner">
-            50,000+ companies run Viindoo <br class="d-none d-lg-inline"/>to grow their businesses.
+            Join the companies <br class="d-none d-lg-inline"/>that grow their business with us.
         </xpath>
     </template>
 
     <template id="s_cta_mockups" inherit_id="website.s_cta_mockups">
         <xpath expr="//h2" position="replace" mode="inner">
-            50,000+ companies trust Viindoo.
+            Trusted by companies like yours.
         </xpath>
     </template>
 
-    <!-- Form aside: "Odoo apps, services" → generic -->
     <template id="s_form_aside" inherit_id="website.s_form_aside">
-        <xpath expr="//p" position="replace" mode="inner">
+        <xpath expr="//p[hasclass('lead')]" position="replace" mode="inner">
             Chat with us through or fill in this form to get information about anything related to our apps, services, and company.
         </xpath>
     </template>
 
-    <!-- Table of content: "Design Odoo templates" → "Viindoo templates" -->
     <template id="s_table_of_content" inherit_id="website.s_table_of_content">
-        <xpath expr="//p[contains(., 'Odoo')]" position="replace" mode="inner">
-            Design Viindoo templates easily with clean HTML and Bootstrap CSS. These templates offer a responsive, mobile-first design with SEO-ready markup.
+        <xpath expr="(//h3)[last()]/following-sibling::p[1]" position="replace" mode="inner">
+            Design templates easily with clean HTML and Bootstrap CSS. These templates offer a responsive, mobile-first design with SEO-ready markup.
         </xpath>
     </template>
+
+    <template id="s_cta_mobile" inherit_id="website.s_cta_mobile">
+        <xpath expr="//h2" position="replace" mode="inner">
+            Trusted by companies like yours.
+        </xpath>
+    </template>
+
+    <!-- The footer option "Call-to-Action" is an optional view of the main layout. -->
+    <template id="template_footer_call_to_action" inherit_id="website.template_footer_call_to_action">
+        <xpath expr="//section[hasclass('s_call_to_action')]//h2" position="replace" mode="inner">
+            Join the companies that grow their business with us.
+        </xpath>
+    </template>
+
+    <!-- The account name is the default the website falls back to when it has no Instagram account of its own. -->
+    <template id="s_instagram_page" inherit_id="website.s_instagram_page">
+        <xpath expr="//section[hasclass('s_instagram_page')]" position="attributes">
+            <attribute name="data-instagram-page">officialviindoo</attribute>
+        </xpath>
+    </template>
+
+    <!-- The block picker shows a generic feed mockup, not a profile of another company. -->
+    <template id="snippets" inherit_id="website.snippets">
+        <xpath expr="//t[@t-snippet='website.s_instagram_page']" position="attributes">
+            <attribute name="t-image-preview">/viin_brand_website/static/src/img/s_instagram_preview.webp</attribute>
+        </xpath>
+    </template>
+
+    <record id="website.s_mega_menu_odoo_menu" model="ir.ui.view">
+        <field name="name">Viindoo Menu</field>
+    </record>
 
 </odoo>
