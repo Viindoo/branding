@@ -39,7 +39,7 @@ Module này sẽ thay đổi giao diện các module Email Marketing theo thươ
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     'depends': ['mass_mailing'],
 
@@ -49,6 +49,8 @@ Module này sẽ thay đổi giao diện các module Email Marketing theo thươ
         'views/mailing_list_views.xml',
         'views/res_config_settings_views.xml',
         'views/mailing_templates_portal_layouts.xml',
+        'views/mailing_view_generic.xml',
+        'views/snippets/mass_mailing_snippets.xml',
     ],
     'demo': [
         'data/mass_mailing_demo.xml',
