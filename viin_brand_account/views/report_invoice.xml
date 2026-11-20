@@ -5,7 +5,16 @@
             <xpath expr="//img[@id='qrcode_odoo_logo']" position="attributes">
                 <attribute name="src">/viin_brand/static/img/Viindoo-logo.svg</attribute>
             </xpath>
+            <!-- an attributes xpath changes its first match only, and the payment link QR code has its own logo -->
+            <xpath expr="//div[@id='payment_link_qrcode']//img[@id='qrcode_odoo_logo']" position="attributes">
+                <attribute name="src">/viin_brand/static/img/Viindoo-logo.svg</attribute>
+            </xpath>
         </template>
 
+        <template id="report_invoice_qr_code_preview" inherit_id="account.report_invoice_qr_code_preview">
+            <xpath expr="//img[@id='qrcode_odoo_logo']" position="attributes">
+                <attribute name="src">/viin_brand/static/img/Viindoo-logo.svg</attribute>
+            </xpath>
+        </template>
     </data>
 </odoo>

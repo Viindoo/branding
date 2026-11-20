@@ -39,15 +39,17 @@ Module này sẽ thay đổi giao diện module Invoicing theo thương hiệu V
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
-    'depends': ['account', 'viin_brand'],
+    'depends': ['account', 'viin_brand', 'viin_brand_digest'],
 
     'data': [
         'data/digest_data.xml',
+        'data/mail_template_data.xml',
         'views/account_move_views.xml',
         'views/account_bank_statement_views.xml',
         'views/partner_view.xml',
+        'views/res_company_views.xml',
         'views/report_invoice.xml',
         'views/report_statement.xml',
         'views/terms_template.xml',
