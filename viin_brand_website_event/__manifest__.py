@@ -39,12 +39,16 @@ Module này sẽ thay đổi giao diện module Events theo thương hiệu Viin
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
-    'depends': ['website_event'],
+    'depends': ['website_event', 'viin_brand'],
 
+    'data': [
+        'views/event_snippets.xml',
+    ],
     'demo': [
         'data/event_demo.xml',
+        'data/res_partner_demo.xml',
     ],
     'installable': True,
     'auto_install': True,
