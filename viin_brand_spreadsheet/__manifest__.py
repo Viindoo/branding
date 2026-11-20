@@ -39,9 +39,9 @@ mọi popover vẫn sáng như một tài liệu.
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.2',
+    'version': '0.1.3',
 
-    'depends': ['spreadsheet', 'viin_brand_mail'],
+    'depends': ['spreadsheet', 'viin_brand', 'viin_brand_mail'],
 
     'assets': {
         # Layer 1 re-points the one compile-time variable the engine's mobile chrome still reads;
@@ -57,6 +57,21 @@ mọi popover vẫn sáng như một tài liệu.
             # A plain append: it lands after viin_brand_mail's mail_dark.scss, whose bubble map it
             # reads.
             'viin_brand_spreadsheet/static/src/scss/spreadsheet_chatter_island.dark.scss',
+        ],
+        # The editor loads lazily as its own bundle. The core spreadsheet tests assert the stock
+        # chart names, function categories and link placeholder, so the test bundle keeps core's
+        # own; the dialog title patch only touches the spreadsheet dialog and stays.
+        'spreadsheet.o_spreadsheet': [
+            'viin_brand_spreadsheet/static/src/chart/odoo_chart_core_plugin.js',
+            'viin_brand_spreadsheet/static/src/dialog/confirmation_dialog.js',
+            'viin_brand_spreadsheet/static/src/functions/function_category.js',
+            'viin_brand_spreadsheet/static/src/o_spreadsheet/link_editor.xml',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_spreadsheet/static/tests/spreadsheet_dialog_title_debrand.test.js',
+            ('remove', 'viin_brand_spreadsheet/static/src/chart/odoo_chart_core_plugin.js'),
+            ('remove', 'viin_brand_spreadsheet/static/src/functions/function_category.js'),
+            ('remove', 'viin_brand_spreadsheet/static/src/o_spreadsheet/link_editor.xml'),
         ],
         'web.assets_tests': [
             'viin_brand_spreadsheet/static/tests/tours/test_spreadsheet_editor_action.js',
