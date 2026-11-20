@@ -24,6 +24,6 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:fleet.fleet_vehicle_log_contract_action
 msgid ""
 "Manage all your contracts (leasing, insurances, etc.) with\n"
-"            their related services, costs. The system will automatically warn\n"
+"            their related services, costs. Viindoo will automatically warn\n"
 "            you when some contracts have to be renewed."
 msgstr ""

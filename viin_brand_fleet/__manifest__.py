@@ -37,13 +37,14 @@ Module này sẽ thay đổi giao diện module Fleet theo thương hiệu Viind
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     'depends': ['fleet'],
 
     'data': [
         'views/fleet_board_view.xml',
         'views/fleet_vehicle_cost_views.xml',
+        'views/fleet_vehicle_odometer_views.xml',
     ],
     'installable': True,
     'auto_install': True,
