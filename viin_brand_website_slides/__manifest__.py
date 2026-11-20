@@ -32,7 +32,7 @@ Editions Supported
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     'depends': ['website_slides'],
 
@@ -44,6 +44,11 @@ Editions Supported
     'data': [
         'data/website_slides_templates_profile.xml',
         'data/mail_templates.xml',
+        'views/slide_slide_views.xml',
+        'views/website_slides_templates.xml',
+    ],
+    'demo': [
+        'data/slide_slide_demo.xml',
     ],
 
     'installable': True,
