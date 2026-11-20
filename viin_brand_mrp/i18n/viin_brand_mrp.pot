@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 03:42+0000\n"
-"PO-Revision-Date: 2026-10-20 03:42+0000\n"
+"POT-Creation-Date: 2026-11-19 15:48+0000\n"
+"PO-Revision-Date: 2026-11-19 15:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,9 +15,13 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: viin_brand_mrp
-#: model_terms:ir.ui.view,arch_db:viin_brand_mrp.view_picking_type_form_inherit_mrp
-msgid "A PDF preview opens by default when these documents are printed."
+#. module: mrp
+#: model_terms:digest.tip,tip_description:mrp.digest_tip_mrp_0
+msgid ""
+"With the Viindoo work center control panel, your worker can start work "
+"orders in the shop and follow instructions of the worksheet. Quality tests "
+"are perfectly integrated into the process. Workers can trigger feedback "
+"loops, maintenance alerts, scrap products, etc."
 msgstr ""
 
 #. module: viin_brand_mrp
@@ -56,18 +60,20 @@ msgid "Cost based on"
 msgstr ""
 
 #. module: viin_brand_mrp
+#. module: mrp
 #: model:ir.model.fields,help:viin_brand_mrp.field_mrp_bom__allow_operation_dependencies
+#: model:ir.model.fields,help:mrp.field_mrp_routing_workcenter__allow_operation_dependencies
 msgid ""
 "Create operation level dependencies that will influence both planning and "
 "the status of work orders upon MO confirmation. If this feature is ticked, "
-"and nothing is specified, the system will assume that all operations can be "
+"and nothing is specified, Viindoo will assume that all operations can be "
 "started simultaneously."
 msgstr ""
 
 #. module: viin_brand_mrp
 #: model:ir.model.fields,help:viin_brand_mrp.field_mrp_routing_workcenter__cost_mode
 msgid ""
-"Determines the way the system calculates the cost of the operation:\n"
+"Determines the way Viindoo calculates the cost of the operation:\n"
 "- Based on Actual time: the cost will be calculated based on tracked time and real employee costs.\n"
 "- Based on Estimated time: the cost will be calculated based on estimated time and costs."
 msgstr ""
@@ -91,36 +97,36 @@ msgstr ""
 #. module: viin_brand_mrp
 #: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report_labels
 msgid ""
-"If this checkbox is ticked, the system will automatically print the "
-"allocation report labels of a MO when it is done."
+"If this checkbox is ticked, Viindoo will automatically print the allocation "
+"report labels of a MO when it is done."
 msgstr ""
 
 #. module: viin_brand_mrp
 #: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_mrp_reception_report
 msgid ""
-"If this checkbox is ticked, the system will automatically print the "
-"allocation report of a MO when it is done and has assigned moves."
+"If this checkbox is ticked, Viindoo will automatically print the allocation "
+"report of a MO when it is done and has assigned moves."
 msgstr ""
 
 #. module: viin_brand_mrp
 #: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_done_mrp_lot
 msgid ""
-"If this checkbox is ticked, the system will automatically print the lot/SN "
+"If this checkbox is ticked, Viindoo will automatically print the lot/SN "
 "label of a MO when it is done."
 msgstr ""
 
 #. module: viin_brand_mrp
 #: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_done_mrp_product_labels
 msgid ""
-"If this checkbox is ticked, the system will automatically print the product "
+"If this checkbox is ticked, Viindoo will automatically print the product "
 "labels of a MO when it is done."
 msgstr ""
 
 #. module: viin_brand_mrp
 #: model:ir.model.fields,help:viin_brand_mrp.field_stock_picking_type__auto_print_done_production_order
 msgid ""
-"If this checkbox is ticked, the system will automatically print the "
-"production order of a MO when it is done."
+"If this checkbox is ticked, Viindoo will automatically print the production "
+"order of a MO when it is done."
 msgstr ""
 
 #. module: viin_brand_mrp
@@ -144,10 +150,16 @@ msgid "Stock Move"
 msgstr ""
 
 #. module: viin_brand_mrp
+#: model_terms:ir.ui.view,arch_db:viin_brand_mrp.view_picking_type_form_inherit_mrp
+msgid ""
+"Viindoo opens a PDF preview by default when these documents are printed."
+msgstr ""
+
+#. module: viin_brand_mrp
 #: model:ir.model.fields,help:viin_brand_mrp.field_stock_move__manual_consumption
 msgid ""
 "When activated, then the registration of consumption for that component is recorded manually exclusively.\n"
-"If not activated, and any of the components consumption is edited manually on the manufacturing order, the system assumes manual consumption also."
+"If not activated, and any of the components consumption is edited manually on the manufacturing order, Viindoo assumes manual consumption also."
 msgstr ""
 
 #. module: viin_brand_mrp
