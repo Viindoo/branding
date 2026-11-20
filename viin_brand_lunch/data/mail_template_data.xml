@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Core rewrites this template at every update of lunch, so the footer is rewritten at every update too. -->
+    <function model="mail.template" name="_debrand_lunch_supplier_footer"/>
+</odoo>
