@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="api_doc.DocClient" t-inherit-mode="extension">
+        <xpath expr="//header//h2" position="replace" mode="inner">Viindoo Runtime Doc</xpath>
+    </t>
+</templates>
