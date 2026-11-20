@@ -1,1 +1,1 @@
-from . import snailmail_letter
+from . import ir_ui_menu
