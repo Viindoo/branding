@@ -41,7 +41,7 @@ Module này sẽ thay đổi giao diện module TOTPortal theo thương hiệu V
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     'depends': ['auth_totp_portal'],
 
