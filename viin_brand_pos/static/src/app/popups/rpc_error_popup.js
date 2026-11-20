@@ -6,7 +6,7 @@ import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { registry } from "@web/core/registry";
 import { _t } from "@web/core/l10n/translation";
 
-// Mirrors handleRPCError of point_of_sale/static/src/app/utils/error_handlers.js, with a neutral title.
+// Mirrors handleRPCError of point_of_sale/static/src/app/utils/error_handlers.js, with a Viindoo title.
 export function handleRPCError(error, dialog) {
     const { data } = error;
     if (odooExceptionTitleMap.has(error.exceptionName)) {
@@ -18,7 +18,7 @@ export function handleRPCError(error, dialog) {
         });
     } else {
         dialog.add(AlertDialog, {
-            title: _t("Server Error"),
+            title: _t("Viindoo Server Error"),
             body: data.message,
         });
     }

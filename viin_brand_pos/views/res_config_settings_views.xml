@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//setting[field[@name='point_of_sale_use_ticket_qr_code']]" position="attributes">
-                <attribute name="help">Print information on the receipt to allow the customer to easily access the invoice anytime, from the customer portal.</attribute>
+                <attribute name="help">Print information on the receipt to allow the customer to easily access the invoice anytime, from Viindoo's portal.</attribute>
             </xpath>
         </field>
     </record>

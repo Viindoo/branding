@@ -21,6 +21,7 @@ class TestPosBrandHelp(TransactionCase):
         help_text = self.env["res.company"].fields_get([QR_CODE_FIELD], attributes=["help"])[QR_CODE_FIELD]["help"]
         self.assertTrue(help_text, "the receipt QR code option must keep an explanatory help")
         self.assertNotIn(BRAND_TERM, help_text, "the help of the receipt QR code option must not name Odoo")
+        self.assertIn("Viindoo", help_text)
 
     def test_self_service_invoicing_setting_help_does_not_name_odoo(self):
         view = self.env["res.config.settings"].get_view(
@@ -30,6 +31,7 @@ class TestPosBrandHelp(TransactionCase):
         self.assertEqual(len(settings), 1, "the receipt QR code setting must be on the POS settings form")
         self.assertTrue(settings[0].get("help"), "the receipt QR code setting must keep its help")
         self.assertNotIn(BRAND_TERM, settings[0].get("help"), "the help of the receipt QR code setting must not name Odoo")
+        self.assertIn("Viindoo", settings[0].get("help"))
 
 
 @tagged("post_install", "-at_install")
@@ -92,7 +94,7 @@ class TestPosBundlesDebrandCoreWording(TransactionCase):
     def test_pos_bundle_carries_the_error_dialog_debrand_and_core_wording_patches(self):
         paths = self._paths("point_of_sale._assets_pos")
         for path in self.BRAND_FILES + [
-            "viin_brand_pos/static/src/app/screens/product_screen/product_screen.js",
+            "viin_brand/static/src/core/barcode/barcode_video_scanner.js",
             "viin_brand_pos/static/src/app/services/report_service.js",
         ]:
             with self.subTest(file=path):
