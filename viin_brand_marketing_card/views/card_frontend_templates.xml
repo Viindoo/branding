@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="card_campaign_preview" inherit_id="marketing_card.card_campaign_preview">
+        <xpath expr="//footer//a" position="attributes">
+            <attribute name="href">https://viindoo.com?utm_source=db&amp;utm_medium=auth</attribute>
+        </xpath>
+        <xpath expr="//footer//a" position="replace" mode="inner">Viindoo</xpath>
+    </template>
+
+</odoo>

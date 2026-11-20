@@ -1,0 +1,14 @@
+<odoo>
+
+    <record id="marketing_card.card_campaign_campaign_1" model="card.campaign">
+        <field name="post_suggestion">Check out who joined our community.</field>
+        <field name="target_url">https://www.example.com/</field>
+        <field name="reward_message" type="html">
+            <p>You just leveled up your exposure!</p>
+            <p>Check out our website for more!</p>
+        </field>
+        <field name="reward_target_url">https://www.example.com/</field>
+        <field name="content_sub_header">Welcome to our community</field>
+    </record>
+
+</odoo>
