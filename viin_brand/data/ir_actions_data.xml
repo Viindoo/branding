@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="base.action_partner_form" model="ir.actions.act_window">
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a Contact in your address book
+          </p><p>
+            Viindoo helps you track all activities related to your contacts.
+          </p>
+        </field>
+    </record>
+
+    <record id="base.action_partner_customer_form" model="ir.actions.act_window">
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new customer in your address book
+          </p><p>
+            Viindoo helps you easily track all activities related to a customer.
+          </p>
+        </field>
+    </record>
+
+    <record id="base.action_partner_supplier_form" model="ir.actions.act_window">
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new vendor in your address book
+          </p><p>
+            Viindoo helps you easily track all activities related to a vendor.
+          </p>
+        </field>
+    </record>
+
+    <record id="base.action_res_company_form" model="ir.actions.act_window">
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new company
+          </p><p>
+            Create and manage the companies that will be managed by Viindoo from here. Shops or subsidiaries can be created and maintained from here.
+          </p>
+        </field>
+    </record>
+</odoo>

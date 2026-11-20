@@ -19,10 +19,16 @@ $o-community-color: $o-brand-primary !default;   // core default #71639e -> Viin
 $o-enterprise-color: $o-brand-primary !default;  // core default #714B67 -> Viindoo teal
 $o-brand-odoo: $o-brand-primary !default;        // family head consumed by the navbar + direct core uses
 
-$o-success: #00B365 !default;
-$o-info: #0099E6 !default;
+// Semantic fills: white labels on success, info and danger clear WCAG AA (4.54 / 4.51 / 4.52:1);
+// the warning fill carries the dark label below (10.03:1). The fills are the same in both schemes.
+$o-success: #00884D !default;
+$o-info: #007DBC !default;
 $o-warning: #FFCC32 !default;
-$o-danger: #CC5252 !default;
+$o-danger: #CA4C4C !default;
+
+// The dark label core's color-contrast() picks on a light fill (default: pure black), so every
+// `.text-bg-*` and `.btn-*` label on a light fill reads this tone.
+$color-contrast-dark: #21272B !default;
 
 // Core declares `$o-navbar-background: $o-brand-odoo !default;` in navbar.variables.scss, which
 // compiles after this file, so this value wins. It is darker than the identity teal so white nav
@@ -80,22 +86,24 @@ $o-viin-dark-bundle: false !default;
 // Every rule in this cluster that paints a brand hue is classifiable under exactly one clause. A
 // surface that cannot be classified gets no brand hue.
 //
-//   TEAL   = ACT.              The primary/interactive tier: what the user does and anything
-//                              customer-facing - buttons (including the link-styled `.btn-link`),
-//                              submit, "Send message", the navbar/chrome, tabs, pagers, filter
-//                              facets. Ladder: $o-brand-primary (decorative) -> $o-viin-chrome-base
+//   TEAL   = ACT.              The primary/interactive tier: filled controls and chrome - buttons,
+//                              submit, "Send message", the navbar/chrome, the form notebook tabs,
+//                              filter facets, and core's action text (`text-action`, link_tier.scss).
+//                              Ladder: $o-brand-primary (decorative) -> $o-viin-chrome-base
 //                              (4.74:1, carries white) -> $o-viin-chrome-deep (7.5:1, pressed).
-//                              Scheme-invariant. Hyperlinks are not in this clause: `.btn-link`
-//                              and Bootstrap tabs borrow Bootstrap's link token without being
-//                              links, so link_tier.scss re-anchors them onto this teal tier. Read
-//                              that file before touching $link-*, $nav-link-*, $btn-link-* or
+//                              Scheme-invariant. Link-styled controls are not in this clause:
+//                              `.btn-link`, Bootstrap `.nav-link` tabs and `.pagination` pagers read
+//                              Bootstrap's link token and share the text-link tier below. Read
+//                              link_tier.scss before touching $link-*, $nav-link-*, $btn-link-* or
 //                              $pagination-*.
-//   PURPLE = STRUCTURE         Never a button, tab or pager. It marks organisational affordances:
+//   PURPLE = STRUCTURE         Never a filled button. It marks organisational affordances:
 //            + TEXT LINKS,     the group-by facet, list group headers, home-menu section labels,
-//            LIGHT-ONLY.       the stat value, and the text link itself (the `a` reboot tier,
-//                              `.o_form_uri` record links, "Add a line", "Create"/"Search More",
-//                              calendar "+N more"); a hyperlink is an action, and here brand
-//                              recognition wins over the strict act/structure reading.
+//            LIGHT-ONLY.       the stat value, and the text-link tier: the text link itself (the `a`
+//                              reboot tier, `.o_form_uri` record links, "Add a line",
+//                              "Create"/"Search More", calendar "+N more") and the link-styled
+//                              controls sharing its token (`.btn-link`, Bootstrap tabs, pagers); a
+//                              hyperlink is an action, and here brand recognition wins over the
+//                              strict act/structure reading.
 //                              Token: $o-brand-secondary #7F4282 - 6.99:1 on the white form sheet,
 //                              6.63:1 on the #F8F9FA canvas, 5.90:1 on the #E9ECEF app band.
 //                              Hover is Bootstrap's own shade of the same token (#592E5B).

@@ -5,10 +5,9 @@
 # reads it in. Core tunes its contextual text colours (`text-info`, `text-danger`, `text-warning`,
 # `text-success`, the muted tier) for the VIEW surface - white in light, the panel tier of the
 # recompiled dark bundle - so the surfaces that host decorated rows and contextual text (a list
-# cell, a kanban card, a dialog, a popover) must be that surface, never the app-shell grey; and the
-# label of a brand semantic fill (a state pill, a danger or info button) must clear AA against the
-# fill itself, in both schemes. In dark, the faded label of a read-only radio or checkbox must stay
-# readable on the muted label tier of the mobile form.
+# cell, a kanban card, a dialog, a popover) must be that surface, never the app-shell grey. In dark,
+# the faded label of a read-only radio or checkbox must stay readable on the muted label tier of the
+# mobile form. The labels of the semantic fills are guarded by test_semantic_colour_compile.py.
 #
 # Every expected value is a literal transcribed from core or from the brand palette, and every
 # contrast is the W3C WCAG 2.x formula of test_brand_cascade_compile.py. The compiled CSS is read,
@@ -18,7 +17,6 @@ from odoo.tests.common import TransactionCase, tagged
 
 from .test_brand_cascade_compile import (
     BACKEND_BUNDLE,
-    BLACK,
     DARK_BODY_BG,
     DARK_BUNDLE,
     DARK_MUTED_TIER,
@@ -35,19 +33,12 @@ from .test_brand_cascade_compile import (
     _declarations,
     _iter_rules,
     _normalize_colour,
-    _winning_declaration,
 )
-from .test_dark_gray_ramp_compile import _last_value, _root_value
+from .test_dark_gray_ramp_compile import _last_value
 
 # The contextual text utilities core tunes for a white page ($o-theme-text-colors). The colour each
 # one renders is read from the compiled bundle, so a change of that map shows up here.
 CONTEXTUAL_TEXT_CLASSES = ("text-info", "text-danger", "text-warning", "text-success")
-# The theme semantic fills a state pill or a button can carry (the live `--<name>-rgb` triplets of
-# the compiled :root decide the actual fill; the names are what core's templates put in the class).
-SEMANTIC_FILLS = ("primary", "success", "info", "warning", "danger")
-# Fills whose white label core's color-contrast() accepts at its lowered 3:1 floor but which sit
-# under AA: the label is re-chosen for exactly these.
-FILLS_WITH_RE_CHOSEN_LABEL = ("info", "danger")
 
 LIST_TABLE = ".o_list_renderer .o_list_table"
 KANBAN_CARD = ".o_kanban_record:not(.o_kanban_ghost)"
@@ -64,15 +55,9 @@ def _surface(value):
     return _normalize_colour(value)
 
 
-def _rgb_triplet_to_hex(triplet):
-    channels = [int(part) for part in triplet.replace(",", " ").split()]
-    return "#%02x%02x%02x" % tuple(channels)
-
-
 @tagged("post_install", "-at_install")
 class TestSurfaceTextContrastCompile(TransactionCase):
-    """Surfaces that host core text are the view surface; semantic fills carry an AA label; the
-    dark faded label stays readable."""
+    """Surfaces that host core text are the view surface; the dark faded label stays readable."""
 
     def _css(self, bundle_name):
         bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=True, js=False)
@@ -173,95 +158,11 @@ class TestSurfaceTextContrastCompile(TransactionCase):
                 )
                 self._assert_contextual_text_clears_aa(css, expected, "the %s popover" % arm)
 
-    def _fill(self, css, name):
-        triplet = _root_value(css, "%s-rgb" % name)
-        self.assertIsNotNone(triplet, "No :root --%s-rgb is compiled." % name)
-        return _rgb_triplet_to_hex(triplet)
-
     def _element(self, *classes):
         return {
             "classes": frozenset(classes), "ancestors": UTILITY_ANCESTORS,
             "prev_sibling": frozenset(),
         }
-
-    def test_semantic_fill_badge_labels_clear_wcag_aa_in_both_schemes(self):
-        """The label of every `.text-bg-<semantic colour>` pill clears 4.5:1 against its fill - the
-        brand info blue and danger red included, where core's color-contrast() (lowered to a 3:1
-        floor) picks a white label at 3.13:1 and 4.29:1.
-
-        WOULD FAIL IF REVERTED: dropping the label rule from brand_cascade.scss hands `.text-bg-info`
-        and `.text-bg-danger` core's #FFFFFF label."""
-        for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
-            css = self._css(bundle_name)
-            for name in SEMANTIC_FILLS:
-                with self.subTest(arm=arm, fill=name):
-                    fill = self._fill(css, name)
-                    raw = _winning_declaration(
-                        css, self._element("badge", "text-bg-%s" % name), ("color",),
-                    )
-                    label = _normalize_colour(raw or "")
-                    self.assertIsNotNone(
-                        label, "`.text-bg-%s` compiles no label colour in the %s bundle." % (name, arm),
-                    )
-                    ratio = _contrast_ratio(label, fill)
-                    self.assertGreaterEqual(
-                        ratio, WCAG_AA_NORMAL_TEXT,
-                        "`.text-bg-%s` renders %s on %s = %.2f:1 in the %s bundle, below WCAG AA "
-                        "%.1f:1." % (name, label, fill, ratio, arm, WCAG_AA_NORMAL_TEXT),
-                    )
-                    if name in FILLS_WITH_RE_CHOSEN_LABEL:
-                        self.assertEqual(
-                            label, BLACK,
-                            "`.text-bg-%s` label is %s; white on %s is under AA, so the AA pair is "
-                            "the black label." % (name, label, fill),
-                        )
-
-    def test_semantic_fill_button_labels_clear_wcag_aa_at_rest_hover_and_active(self):
-        """A `.btn-<semantic colour>` label clears 4.5:1 against its fill at rest, on hover and
-        when pressed; its hover and active fills derive from the re-chosen label, so a black label
-        never lands on a shaded-darker fill.
-
-        The re-emit is scoped to `:not(.btn-link)`: the bare `.btn-<colour>` rule keeps core's white
-        label, so a link-styled button that carries the colour class is left to core.
-
-        WOULD FAIL IF REVERTED: dropping the `button-variant()` re-emit leaves `.btn-danger` and
-        `.btn-info` core's white label; dropping the hover or active label argument brings white back
-        on the tinted fill (3.41:1 and 3.15:1 for the danger red); dropping `:not(.btn-link)` moves
-        the black label onto the bare `.btn-<colour>` rule."""
-        pairs = (
-            ("rest", "--btn-color", "--btn-bg"),
-            ("hover", "--btn-hover-color", "--btn-hover-bg"),
-            ("active", "--btn-active-color", "--btn-active-bg"),
-        )
-        for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
-            css = self._css(bundle_name)
-            for name in FILLS_WITH_RE_CHOSEN_LABEL:
-                for state, colour_prop, fill_prop in pairs:
-                    with self.subTest(arm=arm, button=name, state=state):
-                        selector = ".btn-%s:not(.btn-link)" % name
-                        label = _normalize_colour(_last_value(css, selector, colour_prop) or "")
-                        fill = _normalize_colour(_last_value(css, selector, fill_prop) or "")
-                        self.assertIsNotNone(
-                            label, "%s declares no %s in the %s bundle." % (selector, colour_prop, arm),
-                        )
-                        self.assertIsNotNone(
-                            fill, "%s declares no %s in the %s bundle." % (selector, fill_prop, arm),
-                        )
-                        ratio = _contrast_ratio(label, fill)
-                        self.assertGreaterEqual(
-                            ratio, WCAG_AA_NORMAL_TEXT,
-                            "%s %s renders %s on %s = %.2f:1 in the %s bundle, below WCAG AA %.1f:1."
-                            % (selector, state, label, fill, ratio, arm, WCAG_AA_NORMAL_TEXT),
-                        )
-            for name in FILLS_WITH_RE_CHOSEN_LABEL:
-                with self.subTest(arm=arm, button=name, state="link-styled"):
-                    bare = _last_value(css, ".btn-%s" % name, "--btn-color")
-                    self.assertEqual(
-                        _normalize_colour(bare or ""), WHITE,
-                        "The bare `.btn-%s` rule declares --btn-color %r in the %s bundle: the "
-                        "label re-emit must stay scoped to `:not(.btn-link)`, leaving what core "
-                        "resolves for a link-styled button untouched." % (name, bare, arm),
-                    )
 
     def test_default_badge_label_is_readable_on_the_dark_panel(self):
         """A `.badge.text-bg-default` pill (a label-selection value mapped to `default`) has no fill

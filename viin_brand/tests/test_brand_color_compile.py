@@ -287,7 +287,7 @@ class BrandColorCompileTest(TransactionCase):
         )
 
         # --link-color is not in this tier: link_tier.scss makes it the hyperlink colour (purple
-        # in light) and re-anchors the Bootstrap borrowers onto the AA teal. Its guard is
+        # in light), shared by the link-styled Bootstrap controls. Its guard is
         # tests/test_link_tier_compile.py.
 
         # The flat brand-identity teal must still appear elsewhere in the compiled CSS (decorative

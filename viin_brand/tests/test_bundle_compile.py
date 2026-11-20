@@ -50,6 +50,17 @@ class TestBrandBundleCompile(TransactionCase):
             'registerTemplateExtension("web.SettingsPage"', self._compiled_js("web.assets_backend"),
         )
 
+    def test_backend_bundle_carries_the_barcode_and_report_patches(self):
+        js = self._compiled_js("web.assets_backend")
+        self.assertIn("Viindoo needs your authorization first.", js)
+        self.assertIn("with at least two workers to print a pdf version of the reports", js)
+
+    def test_frontend_bundle_carries_the_dialog_and_error_patches(self):
+        """The website, the portal and the public pages show Viindoo in dialogs and errors."""
+        js = self._compiled_js("web.assets_frontend")
+        self.assertIn("Viindoo Error", js)
+        self.assertIn("viin_brand: the default Dialog title was not de-branded", js)
+
     def test_css_bundles_compile_without_errors(self):
         """The dark bundles compile to real CSS, and not to a cached CSS-error fallback.
 

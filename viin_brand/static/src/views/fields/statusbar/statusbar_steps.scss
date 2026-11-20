@@ -4,12 +4,11 @@
 // than its first child, so the container height must not change. The only box created is a
 // pseudo-element inside the existing button, smaller than the button's own line box.
 //
-// The colours are `currentColor`: the digit inherits the label's colour pair, which core and the
-// button maps already keep readable per step state (current / clickable / muted) and per scheme.
-// The ring is the same colour at 40% over transparent; it is decorative, and color-mix composites
-// it on whichever fill the step has.
+// The colours are `currentColor`: the digit inherits the label's colour pair per step state
+// (current / clickable / inactive) and per scheme. The ring is the same colour at 40% over
+// transparent; it is decorative, and color-mix composites it on whichever fill the step has.
 //
-// The file compiles into web.assets_web_dark unchanged; there is no colour to give a dark arm.
+// The file compiles into web.assets_web_dark unchanged: $o-gray-700 follows each scheme's ramp.
 
 .o_statusbar_status > .o_arrow_button.o_viin_numbered_step {
     display: inline-flex;
@@ -41,5 +40,16 @@
     // outline, so a filled badge would add a second component.
     &.o_arrow_button_current::after {
         border-color: currentColor;
+    }
+}
+
+// An inactive step reads core's translucent muted text, which washes out on the grey step; it takes
+// the same grey opaque. The current step keeps its own fill and outline. Same selector shape as
+// core's rule in statusbar_field.scss, which it follows in the bundle.
+.o_field_statusbar > .o_statusbar_status > .o_arrow_button.o_viin_numbered_step:disabled:not(.o_arrow_button_current) {
+    &,
+    &:hover,
+    &:focus {
+        color: $o-gray-700;
     }
 }

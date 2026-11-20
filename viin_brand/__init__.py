@@ -1,5 +1,7 @@
+import functools
 import logging
 import os
+from urllib.parse import urlparse
 
 from odoo.modules import module
 from odoo.modules.module import Manifest, get_module_path
@@ -12,6 +14,7 @@ from odoo.addons.base.models.ir_ui_menu import IrUiMenu
 from . import controllers
 from . import models
 from .apriori import modules_website
+from .models.ir_module_module import IAP_SERVICE_MODULES
 
 _logger = logging.getLogger(__name__)
 
@@ -73,15 +76,29 @@ def get_viin_brand_module_icon(mod):
     return module_icon or get_module_icon(mod)
 
 
-def _load_manifest_plus(module_name, manifest_content):
-    """Replace ``odoo.modules.module._load_manifest`` to set the Viindoo ``website`` of a module.
+def _is_odoo_website(url):
+    hostname = urlparse(url or '').hostname or ''
+    return hostname == 'odoo.com' or hostname.endswith('.odoo.com')
 
-    Every manifest creation path goes through ``_load_manifest``, so the website of the module
-    listed in ``apriori.modules_website`` is branded however the manifest is read.
+
+def _load_manifest_plus(module_name, manifest_content):
+    """Replace ``odoo.modules.module._load_manifest`` to brand the manifest of a module.
+
+    Every manifest creation path goes through ``_load_manifest``, so the manifest is branded
+    however it is read:
+
+    * the ``website`` of a module listed in ``apriori.modules_website`` is its Viindoo page, and the
+      ``website`` of any other module that points at odoo.com is emptied, so Apps shows no
+      "Learn more" button to Odoo;
+    * the modules that sell Odoo IAP credits are not installed automatically.
     """
     info = _load_manifest_orig(module_name, manifest_content)
     if module_name in modules_website:
         info['website'] = modules_website[module_name]
+    elif _is_odoo_website(info.get('website')):
+        info['website'] = ''
+    if module_name in IAP_SERVICE_MODULES:
+        info['auto_install'] = False
     return info
 
 
@@ -183,6 +200,35 @@ def _patch_test_default_manifest_icon_expectation():
     TestModuleManifest.assertDictEqual = assertDictEqual
 
 
+def _realign_core_pdf_metadata_test():
+    """Realign ``base.tests.test_pdf.TestPdf.test_branded_file_writer`` to Viindoo.
+
+    The test reads the creator and producer of a document written by ``BrandedFileWriter`` and
+    compares them with ``'Odoo'``, while every written document carries Viindoo. The wrapper turns
+    only that expected value into Viindoo, so the test still fails when the writer stops setting
+    the entries.
+    """
+    from unittest.mock import patch
+
+    from odoo.addons.base.tests.test_pdf import TestPdf
+
+    from .tools import PRODUCT_NAME
+
+    test_original = TestPdf.test_branded_file_writer
+
+    @functools.wraps(test_original)
+    def test_branded_file_writer(self):
+        assert_equal = self.assertEqual
+
+        def assertEqual(first, second, msg=None):
+            return assert_equal(first, PRODUCT_NAME if second == 'Odoo' else second, msg)
+
+        with patch.object(self, 'assertEqual', assertEqual):
+            return test_original(self)
+
+    TestPdf.test_branded_file_writer = test_branded_file_writer
+
+
 def post_init_hook(env):
     _update_brand_web_icon_data(env)
     _update_favicon(env)
@@ -194,11 +240,61 @@ def uninstall_hook(env):
     env['ir.module.module']._restore_domain_for_action()
 
 
+def _patch_pdf_branding():
+    """Make every PDF Odoo writes carry Viindoo as its creator and producer.
+
+    ``BrandedFileWriter`` sets both entries to Odoo whenever a document is written, so the writer
+    is replaced, and the XMP packet of the document, when it has one, is made to agree with them.
+    The signature field a signer creates by default is renamed likewise.
+    """
+    from odoo.tools import pdf
+    from odoo.tools.pdf.signature import PdfSigner
+
+    from .tools import PRODUCT_NAME, brand_xmp
+
+    metadata = {'/Creator': PRODUCT_NAME, '/Producer': PRODUCT_NAME}
+    writer = pdf.BrandedFileWriter
+
+    def brand_document_xmp(self):
+        xmp = self._root_object.get('/Metadata')
+        if xmp is None:
+            return
+        stream = xmp.get_object()
+        content = stream.getData()
+        branded = brand_xmp(content)
+        if branded != content:
+            stream.setData(branded)
+
+    if hasattr(pdf.PdfWriter, 'write_stream'):
+        def write_stream(self, *args, **kwargs):
+            self.add_metadata(metadata)
+            brand_document_xmp(self)
+            super(writer, self).write_stream(*args, **kwargs)
+
+        writer.write_stream = write_stream
+    else:
+        def write(self, *args, **kwargs):
+            self.addMetadata(metadata)
+            brand_document_xmp(self)
+            super(writer, self).write(*args, **kwargs)
+
+        writer.write = write
+
+    sign_pdf = PdfSigner.sign_pdf
+
+    def sign_pdf_viindoo(self, visible_signature=False, field_name="Viindoo Signature", signer=None):
+        return sign_pdf(self, visible_signature, field_name, signer)
+
+    PdfSigner.sign_pdf = sign_pdf_viindoo
+
+
 def post_load():
     if config.get('test_enable', False):
         _disable_core_webmanifest_tests()
         _patch_test_default_manifest_icon_expectation()
+        _realign_core_pdf_metadata_test()
 
     module.get_module_icon = get_viin_brand_module_icon
     module._load_manifest = _load_manifest_plus
     IrUiMenu._compute_web_icon_data = _compute_web_icon_data_plus
+    _patch_pdf_branding()

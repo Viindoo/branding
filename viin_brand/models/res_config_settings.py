@@ -21,11 +21,16 @@ class ResConfigSettings(models.TransientModel):
 
     @api.model
     def _get_hidden_setting_xpaths(self):
-        """XPaths of the settings every database hides because they only offer Enterprise upsell.
+        """XPaths of the settings every database hides.
 
-        Branding modules extend the list for the upsell rows of their own app.
+        The list holds the settings that only offer Enterprise upsell and the one that sells a paid
+        service of Odoo (company suggestions). Branding modules extend the list for the rows of their
+        own app.
         """
-        return ['//field[@widget="upgrade_boolean"]/ancestor::setting[1]']
+        return [
+            '//field[@widget="upgrade_boolean"]/ancestor::setting[1]',
+            '//setting[@id="partner_autocomplete"]',
+        ]
 
     @api.model
     def get_view(self, view_id=None, view_type='form', **options):

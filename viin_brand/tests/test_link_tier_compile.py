@@ -1,17 +1,13 @@
 # Compiled-cascade guard for the text-link tier: the hyperlink colour is the Viindoo secondary
-# (purple) in light mode, and nothing that is not a hyperlink follows it. SSOT for everything named
+# (purple) in light mode, and the link-styled controls share it. SSOT for everything named
 # $link-* / --link-* in this cluster.
 #
 # Odoo compiles Bootstrap with `$variable-prefix: ''`, so ONE unprefixed token - `--link-color` -
-# carries two unrelated meanings: the hyperlink colour (the `a` reboot rule reads
-# `--link-color-rgb`) and a generic "interactive accent" that three Bootstrap components borrow
-# without being links (`$nav-link-color`, `$btn-link-color`, `$pagination-color`, all
-# `var(--#{$prefix}link-color)` in web/static/lib/bootstrap/scss/_variables.scss). Buttons must
-# stay teal, so static/src/scss/link_tier.scss splits the token rather than re-pointing it.
-#
-# Every arm therefore asserts a pair: the hyperlink tier moved, and the borrower did not. A test
-# of only "the link is purple" passes on a naive re-point that also turns .btn-link and every
-# Bootstrap tab purple; a test of only "buttons are teal" passes on doing nothing.
+# feeds the hyperlink colour (the `a` reboot rule reads `--link-color-rgb`) and three Bootstrap
+# components that render as links (`$nav-link-color`, `$btn-link-color`, `$pagination-color`, all
+# `var(--#{$prefix}link-color)` in web/static/lib/bootstrap/scss/_variables.scss).
+# static/src/scss/link_tier.scss sets them per bundle from `$o-main-link-color`, so they follow
+# the link colour of each scheme; a plain `.btn` keeps its own colour.
 #
 # The assertions read the compiled bundles, not the SCSS source: a source check stays green if
 # the file loses its manifest anchor, lands after Bootstrap's _variables.scss (making every
@@ -252,7 +248,7 @@ class TestLinkTierCompile(TransactionCase):
         )
 
     def test_dark_borrowers_track_the_dark_teal_not_the_light_one(self):
-        """The re-anchored borrowers must be scheme-aware, not frozen at the light teal.
+        """The link-styled controls must follow the dark link teal, not a light-scheme colour.
 
         The borrowers take a Sass value resolved per bundle rather than a runtime
         `var(--link-color)`, so the Sass token itself must be scheme-split; the dark bundle must
