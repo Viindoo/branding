@@ -39,9 +39,9 @@ Module này sẽ thay đổi giao diện module Digest theo thương hiệu Viin
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
-    'depends': ['digest'],
+    'depends': ['digest', 'viin_brand'],
 
     'data': [
         'data/digest_data.xml',
