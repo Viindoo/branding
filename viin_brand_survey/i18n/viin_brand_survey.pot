@@ -1,0 +1,129 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_survey
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-19 15:48+0000\n"
+"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "Cheating on your neighbors will not help!"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "Choosing the cheapest product whatever it does"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "Choosing the product with the longest name"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "Comparing the features of the product with the needs of the customer"
+msgstr ""
+
+#. module: viin_brand_survey
+#: model:ir.model.fields,field_description:viin_brand_survey.field_survey_survey__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "Find the answer and come back to the customer"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "Good luck!"
+msgstr ""
+
+#. module: viin_brand_survey
+#: model:ir.model.fields,field_description:viin_brand_survey.field_survey_survey__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "Ignore the question"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "It describes the features and the specifications of the product"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "It lists the employees who built the product"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "It replaces the invoice of the product"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "Make up an answer"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "Product Knowledge Certification"
+msgstr ""
+
+#. module: viin_brand_survey
+#: model:ir.model,name:viin_brand_survey.model_survey_survey
+msgid "Survey"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid ""
+"Welcome to this product knowledge certification. You will receive 2 random "
+"questions out of a pool of 3."
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "What is the main purpose of a product datasheet?"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "What should you do when a customer asks a question you cannot answer?"
+msgstr ""
+
+#. module: viin_brand_survey
+#. odoo-python
+#: code:addons/viin_brand_survey/models/survey_survey.py:0
+msgid "Which of these helps a customer choose the right product?"
+msgstr ""
