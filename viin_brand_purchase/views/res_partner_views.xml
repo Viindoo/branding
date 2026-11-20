@@ -12,4 +12,20 @@
                 </p>
             </field>
         </record>
+
+    <template id="portal_my_purchase_order" inherit_id="purchase.portal_my_purchase_order">
+        <xpath expr="//div[@id='portal_connect_software_modal']//div[hasclass('modal-body')]/div[not(.//input) and not(.//a)]" position="replace">
+            <div>
+                <h5>Want to import this document in Viindoo?</h5>
+                <p>Drag and drop the request for quotation PDF file into your list of quotations in Viindoo. Enjoy the automation!</p>
+            </div>
+        </xpath>
+        <xpath expr="//div[@id='portal_connect_software_modal']//div[hasclass('modal-body')]/div[.//input]/h5" position="replace">
+            <h5>Not using Viindoo?</h5>
+        </xpath>
+        <xpath expr="//div[@id='portal_connect_software_modal']//div[hasclass('modal-body')]/div[.//input]/p" position="replace">
+            <p>Use the above REST URL to get structured data of the purchase order in UBL format.</p>
+        </xpath>
+        <xpath expr="//div[@id='portal_connect_software_modal']//div[hasclass('modal-body')]/div[.//a and not(.//input)]" position="replace"/>
+    </template>
 </odoo>
