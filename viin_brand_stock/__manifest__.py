@@ -39,9 +39,10 @@ Module này sẽ thay đổi giao diện các module Stock theo thương hiệu 
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.2',
+    'version': '0.1.3',
 
-    'depends': ['stock', 'viin_brand_digest'],
+    # viin_brand: owns the hook that hides the rows of Enterprise shipping connectors
+    'depends': ['stock', 'viin_brand', 'viin_brand_digest'],
 
     'data': [
         'data/digest_data.xml',

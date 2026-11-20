@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='hardware']//div[@colspan='2'][widget[@name='documentation_link']]" position="replace">
                 <div colspan="2">
-                    A PDF preview opens by default when these documents are printed.
+                    Viindoo opens a PDF preview by default when these documents are printed.
                 </div>
             </xpath>
         </field>
