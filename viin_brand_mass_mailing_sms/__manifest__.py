@@ -39,12 +39,13 @@ Module này sẽ thay đổi giao diện các module SMS Marketing theo thương
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     'depends': ['mass_mailing_sms'],
 
     'data': [
         'views/mailing_list_views.xml',
+        'views/mailing_mailing_views.xml',
     ],
     'installable': True,
     'auto_install': True,
