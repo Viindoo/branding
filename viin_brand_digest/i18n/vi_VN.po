@@ -16,6 +16,26 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. module: digest
+#: model:digest.digest,name:digest.digest_digest_default
+msgid "Your Viindoo Periodic Digest"
+msgstr "Tóm tắt định kỳ Viindoo của bạn"
+
+#. module: digest
+#: model:digest.tip,name:digest.digest_tip_digest_2
+#: model_terms:digest.tip,tip_description:digest.digest_tip_digest_2
+msgid "Tip: A calculator in Viindoo"
+msgstr "Mẹo: Máy tính trong Viindoo"
+
+#. module: digest
+#: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
+msgid ""
+"Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
+"Try to notify @ViindooBot to test the feature."
+msgstr ""
+"Nhập \"@\" để thông báo cho ai đó trong tin nhắn hoặc \"#\" để liên kết với một kênh. "
+"Hãy thử thông báo cho @ViindooBot để kiểm tra tính năng này."
+
 #. module: viin_brand_digest
 #: model:ir.model.fields,field_description:viin_brand_digest.field_digest_tip__active
 msgid "Active"
@@ -51,18 +71,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_section_mobile
 msgid "Viindoo Mobile"
 msgstr ""
-
-#. module: digest
-#: model:digest.tip,name:digest.digest_tip_digest_2
-#: model_terms:digest.tip,tip_description:digest.digest_tip_digest_2
-msgid "Tip: A calculator in Viindoo"
-msgstr "Mẹo: Máy tính trong Viindoo"
-
-#. module: digest
-#: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
-msgid ""
-"Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @ViindooBot to test the feature."
-msgstr ""
-"Nhập \"@\" để thông báo cho ai đó trong tin nhắn hoặc \"#\" để liên kết với một kênh. "
-"Hãy thử thông báo cho @ViindooBot để kiểm tra tính năng này."
