@@ -39,14 +39,18 @@ Module này sẽ thay đổi giao diện module Base import theo thương hiệu
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     'depends': ['base_import'],
 
     'assets': {
         'web.assets_backend': [
             'viin_brand_base_import/static/src/import_data_content/import_data_content.xml',
-            ]
+            'viin_brand_base_import/static/src/import_model.js',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_base_import/static/tests/import_format_help.test.js',
+        ],
     },
     'installable': True,
     'auto_install': True,
