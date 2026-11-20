@@ -32,9 +32,13 @@ Editions Supported
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
-    'depends': ['website_profile'],
+    'depends': ['website_profile', 'viin_brand'],
+
+    'data': [
+        'data/mail_template_data.xml',
+    ],
 
     'assets': {
         'web.assets_frontend': [
