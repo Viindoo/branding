@@ -20,4 +20,18 @@
 	       </xpath>
 	   </field>
 	</record>
+
+    <record id="payment_method_form" model="ir.ui.view">
+        <field name="name">payment.method.form.inherit.viin.brand</field>
+        <field name="model">payment.method</field>
+        <field name="inherit_id" ref="payment.payment_method_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='configuration']/div[hasclass('alert-warning')]" position="replace" mode="inner">
+                <i class="fa fa-exclamation-triangle"/> These properties are set to
+                match the behavior of providers and that of their integration with
+                Viindoo regarding this payment method. Any change may result in errors
+                and should be tested on a test database first.
+            </xpath>
+        </field>
+    </record>
 </odoo>

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-10 07:23+0000\n"
-"PO-Revision-Date: 2026-04-10 07:23+0000\n"
+"POT-Creation-Date: 2026-11-19 15:50+0000\n"
+"PO-Revision-Date: 2026-11-19 15:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,14 +16,25 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_payment
+#: model_terms:ir.ui.view,arch_db:viin_brand_payment.payment_method_form
+msgid ""
+"<i class=\"fa fa-exclamation-triangle\"/> These properties are set to\n"
+"                match the behavior of providers and that of their integration with\n"
+"                Viindoo regarding this payment method. Any change may result in errors\n"
+"                and should be tested on a test database first."
+msgstr ""
+
+#. module: viin_brand_payment
 #: model:ir.model.fields,field_description:viin_brand_payment.field_payment_provider__capture_manually
 msgid "Capture Amount Manually"
 msgstr ""
 
+#. module: payment_demo
 #. module: viin_brand_payment
+#: model:ir.model.fields,help:payment_demo.field_payment_transaction__capture_manually
 #: model:ir.model.fields,help:viin_brand_payment.field_payment_provider__capture_manually
 msgid ""
-"Capture the amount from the system, when the delivery is completed.\n"
+"Capture the amount from Viindoo, when the delivery is completed.\n"
 "Use this if you want to charge your customers cards only when\n"
 "you are sure you can ship the goods to them."
 msgstr ""
@@ -61,5 +72,5 @@ msgstr ""
 #: model:ir.model.fields,help:viin_brand_payment.field_payment_provider__support_refund
 msgid ""
 "Refund is a feature allowing to refund customers directly from the payment "
-"in the system."
+"in Viindoo."
 msgstr ""
