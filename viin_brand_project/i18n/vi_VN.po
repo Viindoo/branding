@@ -1,0 +1,79 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_project
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-19 15:59+0000\n"
+"PO-Revision-Date: 2026-11-19 15:59+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: project
+#: model:ir.model.fields,help:project.field_project_project__alias_domain
+msgid "Email domain e.g. 'example.com' in 'viindoo@example.com'"
+msgstr "Tên miền email, ví dụ 'example.com' trong 'viindoo@example.com'"
+
+#. module: project
+#: model:ir.model.fields,help:project.field_project_project__alias_model_id
+msgid ""
+"The model (Viindoo Document Kind) to which this alias corresponds. Any "
+"incoming email that does not reply to an existing record will cause the "
+"creation of a new record of this model (e.g. a Project Task)"
+msgstr ""
+"Mô hình (Loại tài liệu Viindoo) mà bí danh này tương tác. Mọi email đến mà "
+"không phải là email trả lời một bản ghi hiện có sẽ tạo ra một bản ghi mới "
+"trong mô hình này. (ví dụ: Nhiệm vụ dự án)"
+
+#. module: project
+#: model:ir.model.fields,help:project.field_project_project__alias_name
+msgid ""
+"The name of the email alias, e.g. 'jobs' if you want to catch emails for "
+"<jobs@example.viindoo.com>"
+msgstr ""
+"Tên của bí danh email, ví dụ: 'jobs' nếu bạn muốn nhận email gửi đến địa chỉ"
+" <jobs@example.viindoo.com>"
+
+#. module: viin_brand_project
+#. odoo-javascript
+#: code:addons/viin_brand_project/static/src/xml/project_task_kanban_examples.xml:0
+msgid ""
+"Customers propose feedbacks by email; Viindoo creates tasks automatically, and you can\n"
+"            communicate on the task directly."
+msgstr ""
+"Khách hàng gửi phản hồi qua email; Viindoo tự động tạo nhiệm vụ, và bạn có thể\n"
+"            trao đổi trực tiếp trên nhiệm vụ."
+
+#. module: viin_brand_project
+#. odoo-javascript
+#: code:addons/viin_brand_project/static/src/xml/project_task_kanban_examples.xml:0
+msgid "Use the"
+msgstr "Sử dụng"
+
+#. module: viin_brand_project
+#. odoo-javascript
+#: code:addons/viin_brand_project/static/src/xml/project_task_kanban_examples.xml:0
+msgid "Your managers decide which feedback is accepted"
+msgstr "Quản lý của bạn quyết định phản hồi nào được chấp nhận"
+
+#. module: viin_brand_project
+#. odoo-javascript
+#: code:addons/viin_brand_project/static/src/xml/project_task_kanban_examples.xml:0
+msgid ""
+"and which feedback is\n"
+"            moved to the \"Refused\" column."
+msgstr ""
+"và phản hồi nào bị\n"
+"            chuyển sang cột \"Bị từ chối\"."
+
+#. module: viin_brand_project
+#. odoo-javascript
+#: code:addons/viin_brand_project/static/src/xml/project_task_kanban_examples.xml:0
+msgid "icon to organize your daily activities."
+msgstr "biểu tượng để sắp xếp hoạt động hàng ngày của bạn."
