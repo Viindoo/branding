@@ -40,9 +40,28 @@ mở ra chào mời ấn bản Enterprise. Giá trị đã lưu vẫn giữ hàn
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
-    'depends': ['viin_brand_pos', 'pos_self_order'],
+    'depends': ['viin_brand', 'viin_brand_pos', 'pos_self_order'],
+
+    'data': [
+        'views/custom_link_views.xml',
+        'views/pos_self_order_index.xml',
+        'views/res_config_settings_views.xml',
+    ],
+    'assets': {
+        'point_of_sale._assets_pos': [
+            'viin_brand_pos_self_order/static/src/overrides/screens/floor_screen/floor_screen.xml',
+            'viin_brand_pos_self_order/static/src/overrides/components/navbar/navbar.xml',
+        ],
+        'pos_self_order.assets': [
+            # The self order app bundles the core of the web client but not web.assets_backend,
+            # so the dialog and error de-brand of viin_brand is listed here.
+            'viin_brand/static/src/core/dialog/dialog.js',
+            'viin_brand/static/src/core/errors/error_dialogs.js',
+            'viin_brand/static/src/core/errors/error_dialogs.xml',
+        ],
+    },
 
     'installable': True,
     'auto_install': True,

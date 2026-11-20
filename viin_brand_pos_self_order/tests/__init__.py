@@ -1,1 +1,2 @@
+from . import test_brand_surfaces
 from . import test_pay_after_setting
