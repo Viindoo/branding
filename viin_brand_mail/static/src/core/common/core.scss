@@ -25,5 +25,5 @@ $o-viin-unread-badge-green: mix(black, $o-success, 28%) !default;
 // The counter of the chat-window header sits on the teal chrome, which the fill barely separates
 // from; the white ring keeps it distinct in both schemes.
 .o-mail-ChatWindow-header .o-mail-ChatWindow-counter {
-    border: 2px solid $white;
+    border: 1px solid $white;
 }
