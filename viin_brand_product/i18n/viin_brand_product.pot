@@ -6,14 +6,56 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-08 01:42+0000\n"
-"PO-Revision-Date: 2026-04-08 01:42+0000\n"
+"POT-Creation-Date: 2026-11-19 15:50+0000\n"
+"PO-Revision-Date: 2026-11-19 15:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_product
+#. odoo-python
+#: code:addons/viin_brand_product/models/product_template.py:0
+msgid "(e.g: product description, ebook, legal notice, ...)."
+msgstr ""
+
+#. module: viin_brand_product
+#: model:ir.model.fields,field_description:viin_brand_product.field_product_document__display_name
+#: model:ir.model.fields,field_description:viin_brand_product.field_product_template__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_product
+#: model:ir.model.fields,field_description:viin_brand_product.field_product_document__id
+#: model:ir.model.fields,field_description:viin_brand_product.field_product_template__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_product
+#: model:ir.model,name:viin_brand_product.model_product_template
+msgid "Product"
+msgstr ""
+
+#. module: viin_brand_product
+#: model:ir.model,name:viin_brand_product.model_product_document
+msgid "Product Document"
+msgstr ""
+
+#. module: viin_brand_product
+#. odoo-python
+#: code:addons/viin_brand_product/models/product_template.py:0
+msgid "Upload files to your product"
+msgstr ""
+
+#. module: viin_brand_product
+#. odoo-python
+#: code:addons/viin_brand_product/models/product_template.py:0
+msgid ""
+"Use this feature to store any files you would like to share with your "
+"customers"
+msgstr ""
 
 #. module: viin_brand_product
 #: model_terms:ir.ui.view,arch_db:viin_brand_product.product_variant_easy_edit_view
