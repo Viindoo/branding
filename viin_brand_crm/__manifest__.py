@@ -44,15 +44,30 @@ Module này cũng ẩn các thiết lập Odoo IAP của CRM
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.3',
+    'version': '0.1.4',
 
     # viin_brand: owns the hook that hides the upsell settings
     'depends': ['crm', 'viin_brand', 'viin_brand_digest'],
 
     'data': [
         'data/digest_data.xml',
+        'data/ir_cron_data.xml',
+        'data/ir_ui_menu_data.xml',
+        'data/mail_template_data.xml',
         'views/crm_lead_views.xml',
+        'views/crm_team_views.xml',
+        'views/res_config_settings_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'viin_brand_crm/static/src/js/tours/crm.js',
+            'viin_brand_crm/static/src/views/crm_form/crm_pls_tooltip_button.xml',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_crm/static/tests/crm_debrand.test.js',
+        ],
+    },
+    'uninstall_hook': 'uninstall_hook',
     'installable': True,
     'auto_install': True,
     'price': 0.0,
