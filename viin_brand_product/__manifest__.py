@@ -39,7 +39,7 @@ Module này sẽ thay đổi giao diện các module Product theo thương hiệ
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     'depends': ['product'],
 
