@@ -35,15 +35,14 @@ Module này sẽ thay đổi giao diện module Calendar theo thương hiệu Vi
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.2',
+    'version': '0.1.3',
 
-    'depends': ['calendar'],
+    'depends': ['calendar', 'viin_brand'],
 
     'data': [
         'views/calendar_views.xml',
         'data/mail_template_data.xml',
     ],
-    'post_init_hook': '_post_init_hook',
     'installable': True,
     'auto_install': True,
     'price': 0.0,
