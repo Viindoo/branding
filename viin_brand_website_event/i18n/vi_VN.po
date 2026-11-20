@@ -1,0 +1,36 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_website_event
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-19 15:48+0000\n"
+"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: event
+#: model_terms:event.event,description:event.event_0
+msgid ""
+"<b>Technical Rooms</b> - One dedicated to advanced Viindoo developers, one "
+"for new developers."
+msgstr ""
+"<b>Technical Rooms</b> - Một phòng dành cho các lập trình viên Viindoo nâng "
+"cao, một phòng dành cho lập trình viên mới."
+
+#. module: viin_brand_website_event
+#: model_terms:ir.ui.view,arch_db:viin_brand_website_event.s_speaker_bio
+msgid ""
+"John DOE has spent more than twenty years helping organizations improve the "
+"way they work. He has led projects in many industries and enjoys sharing "
+"what he learned with the community."
+msgstr ""
+"John DOE đã dành hơn hai mươi năm giúp các tổ chức cải thiện cách làm việc. "
+"Ông đã dẫn dắt các dự án ở nhiều ngành và thích chia sẻ những gì đã học được"
+" với cộng đồng."
