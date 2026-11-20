@@ -39,7 +39,7 @@ Module này sẽ thay đổi giao diện module Employees theo thương hiệu V
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     'depends': ['hr'],
 
@@ -48,8 +48,6 @@ Module này sẽ thay đổi giao diện module Employees theo thương hiệu V
     ],
     'data': [
         'views/hr_department_views.xml',
-        'views/hr_employee_public_views.xml',
-        'views/hr_employee_views.xml',
     ],
     'installable': True,
     'auto_install': True,
