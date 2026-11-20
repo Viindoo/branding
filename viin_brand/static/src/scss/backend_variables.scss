@@ -1,0 +1,8 @@
+// Bootstrap's `$purple` (`--purple`), which core reads for the livechat "needs help" state, is the
+// Viindoo purple in the backend. The frontend keeps Bootstrap's value: a website's colours belong
+// to its owner.
+//
+// Anchored before pre_variables.scss, which builds the `$colors` map (`--purple`) from `$purple`.
+// web.assets_web_dark recompiles this file after dark_palette.scss has set the dark purple, which
+// `!default` leaves in place.
+$purple: $o-brand-secondary !default;

@@ -218,3 +218,35 @@ $o-viin-dark-semantic-text-tint: 30% !default;
         $-name: mix($o-white, $-light-value, $o-viin-dark-semantic-text-tint),
     )) !global;
 }
+
+// Dark arm of the semantic outline buttons, `$o-btns-bs-outline-override`.
+//
+// Core builds `.btn-outline-{success,info,warning,danger}` with `button-outline-variant()`, which
+// paints the label and the border with the fill itself. The semantic fills are tuned for a light
+// page (success 3.86:1, info 3.89:1, danger 3.88:1 on #111B1E), so a resting outline takes the
+// dark text tier of its colour, the `$o-theme-text-colors` value tinted above (5.97:1 to 6.31:1 on
+// the panel). The `primary` outline above already uses the dark link teal. Hover and active keep
+// the fill and the label of the fill, the pair the filled button carries: white, and the dark label
+// on the warning fill.
+@each $-name, $-fill, $-label in (
+    ("success", $o-success, #FFFFFF),
+    ("info", $o-info, #FFFFFF),
+    ("warning", $o-warning, $color-contrast-dark),
+    ("danger", $o-danger, #FFFFFF)
+) {
+    $o-btns-bs-outline-override: map-merge($o-btns-bs-outline-override, (
+        $-name: (
+            background: transparent,
+            border: map-get($o-theme-text-colors, $-name),
+            color: map-get($o-theme-text-colors, $-name),
+
+            hover-background: $-fill,
+            hover-border: $-fill,
+            hover-color: $-label,
+
+            active-background: $-fill,
+            active-border: $-fill,
+            active-color: $-label,
+        ),
+    )) !global;
+}

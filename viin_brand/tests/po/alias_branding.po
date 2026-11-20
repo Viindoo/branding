@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#. module: viin_brand_alias_fixture
+#: model:res.partner.category,name:viin_brand_alias_fixture.alias_tag
+msgid "Viindoo tag"
+msgstr "Nhãn Viindoo khác"

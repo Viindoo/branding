@@ -24,11 +24,11 @@ import * as colors from "@web/core/colors/colors";
 // (the sm palette, used by most small charts) are maximally hue-separated.
 const BRAND_COLORS_LIGHT = [
     "#00BBCE", // Teal - brand primary ($o-brand-primary)
-    "#CC5252", // Red - danger ($o-danger)
-    "#00B365", // Green - success ($o-success)
+    "#CC5252", // Red
+    "#00B365", // Green
     "#FFA100", // Orange
     "#7F4282", // Purple - brand secondary ($o-brand-secondary)
-    "#0099E6", // Blue - info ($o-info)
+    "#0099E6", // Blue
     "#FFCC32", // Yellow - warning ($o-warning)
     "#DD3BAF", // Magenta
     "#804080", // Deep purple

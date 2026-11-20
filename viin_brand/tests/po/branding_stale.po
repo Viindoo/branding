@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#. module: viin_brand
+#: model:res.partner.category,name:viin_brand.noupdate_translation_tag
+msgid "Old Viindoo tag"
+msgstr "Nhãn Viindoo cũ"

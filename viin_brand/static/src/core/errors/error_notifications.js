@@ -5,7 +5,7 @@ import { _t } from "@web/core/l10n/translation";
 
 const sessionExpired = {
     title: _t("Session Expired"),
-    message: _t("Your session expired. The current page is about to be refreshed."),
+    message: _t("Your Viindoo session expired. The current page is about to be refreshed."),
     buttons: [
         {
             text: _t("Ok"),

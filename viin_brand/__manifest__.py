@@ -34,11 +34,13 @@ This module replaces the Odoo branding of the base, web and base_setup modules w
 
 * Do not bother users with Enterprise-only offers
 
-  * the Apps list hides the Enterprise modules that are not available in the system
+  * the Apps lists hide the Enterprise modules that are not available in Viindoo, the categories
+    and filters that only offer them, and the apps store of Odoo
   * the Settings page hides the options that need Enterprise or a module that cannot be installed,
     and the blocks and apps left empty
-  * the Odoo IAP modules cannot be installed from the user interface; they still install from
-    the command line or as a dependency of another module
+  * the modules that sell Odoo IAP credits are not installed with a new database and cannot be
+    installed from the user interface; they still install from the command line or as a dependency
+    of another module, and a database that has them keeps them
 
 
 Editions Supported
@@ -71,11 +73,13 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
 
 * Không làm phiền người dùng bằng các chào mời của ấn bản Enterprise
 
-  * Danh sách Ứng dụng ẩn các mô-đun Enterprise không có sẵn trong hệ thống
+  * Danh sách Ứng dụng ẩn các mô-đun Enterprise không có sẵn trong Viindoo, các danh mục và bộ lọc
+    chỉ dành cho chúng, và kho ứng dụng của Odoo
   * Trang Cài đặt ẩn các tùy chọn cần Enterprise hoặc cần mô-đun không thể cài đặt,
     cùng các khối và ứng dụng bị bỏ trống
-  * Các mô-đun Odoo IAP không thể cài đặt từ giao diện người dùng; chúng vẫn được cài từ dòng lệnh
-    hoặc khi là phụ thuộc của mô-đun khác
+  * Các mô-đun bán credit Odoo IAP không được cài cùng cơ sở dữ liệu mới và không thể cài đặt từ
+    giao diện người dùng; chúng vẫn được cài từ dòng lệnh hoặc khi là phụ thuộc của mô-đun khác,
+    và cơ sở dữ liệu đã có chúng thì giữ nguyên
 
 Ấn bản được Hỗ trợ
 ==================
@@ -90,7 +94,7 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.3.1',
+    'version': '0.3.2',
     # 'web' is needed at load time: controllers/database.py and controllers/webmanifest.py subclass
     # the core controllers. 'base_setup' is the parent of views/res_config_settings_views.xml.
     'depends': ['base', 'web', 'base_setup'],
@@ -98,7 +102,10 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
         'data/viin_brand_data.xml',
         'data/res_company_data.xml',
         'data/res_partner_data.xml',
+        'data/ir_actions_data.xml',
+        'views/base_wizard_views.xml',
         'views/ir_module_views.xml',
+        'views/ir_ui_view_views.xml',
         'views/res_company_views.xml',
         'views/res_config_settings_views.xml',
         'views/res_partner_views.xml',
@@ -146,6 +153,11 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
             'viin_brand/static/src/core/errors/error_notifications.js',
             # The scoped-app install page loads no backend bundle.
             'viin_brand/static/src/core/install_scoped_app/install_scoped_app.xml',
+            # Dialogs, errors and the page title of the website, the portal and the public pages.
+            'viin_brand/static/src/core/dialog/dialog.js',
+            'viin_brand/static/src/core/errors/error_dialogs.js',
+            'viin_brand/static/src/core/errors/error_dialogs.xml',
+            'viin_brand/static/src/core/browser/title_service.js',
         ],
         'web.assets_backend': [
             'viin_brand/static/src/webclient/webclient.js',
@@ -154,11 +166,17 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
             'viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml',
             'viin_brand/static/src/webclient/user_menu_item.js',
             'viin_brand/static/src/webclient/actions/action_dialog.js',
+            'viin_brand/static/src/webclient/actions/reports/report_notification.js',
+            'viin_brand/static/src/core/barcode/barcode_video_scanner.js',
             'viin_brand/static/src/core/dialog/dialog.js',
             # Text links take the brand secondary; buttons and tabs keep the interactive teal.
             # Anchored between core's `$link-color` and Bootstrap's derived link variables.
             ('before', 'web/static/lib/bootstrap/scss/_variables.scss',
              'viin_brand/static/src/scss/link_tier.scss'),
+            # Bootstrap's `$purple` is the Viindoo purple in the backend only; it must be set before
+            # pre_variables.scss builds the colour map from it.
+            ('before', 'web/static/src/scss/pre_variables.scss',
+             'viin_brand/static/src/scss/backend_variables.scss'),
             'viin_brand/static/src/scss/focus_ring.scss',
             'viin_brand/static/src/scss/color_scheme.scss',
             # Anchored: its `.o_progressbar .o_progress` rule ties core's on specificity and wins on
@@ -210,11 +228,14 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
         'web.assets_unit_tests': [
             'viin_brand/static/tests/dialog_debrand.test.js',
             'viin_brand/static/tests/action_dialog_debrand.test.js',
+            'viin_brand/static/tests/barcode_video_scanner_debrand.test.js',
             'viin_brand/static/tests/documentation_link_debrand.test.js',
             'viin_brand/static/tests/user_menu_debrand.test.js',
             'viin_brand/static/tests/colors_debrand.test.js',
             'viin_brand/static/tests/statusbar_steps.test.js',
             'viin_brand/static/tests/error_dialogs_debrand.test.js',
+            'viin_brand/static/tests/notification_alert_debrand.test.js',
+            'viin_brand/static/tests/report_notification_debrand.test.js',
             'viin_brand/static/tests/title_service_debrand.test.js',
         ],
         'web.assets_tests': [

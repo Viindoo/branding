@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_view_form" model="ir.ui.view">
+        <field name="name">ir.ui.view.form.inherit.viin_brand</field>
+        <field name="model">ir.ui.view</field>
+        <field name="inherit_id" ref="base.view_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[hasclass('alert-info')]" position="replace" mode="inner">Be aware that editing the architecture of a standard view is not advised, since the changes will be overwritten during future module updates.<br/>We recommend applying modifications to standard views through inherited views.</xpath>
+        </field>
+    </record>
+</odoo>

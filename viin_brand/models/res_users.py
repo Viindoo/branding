@@ -1,5 +1,8 @@
-from odoo import fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 from odoo.http import request
+
+from ..tools import debrand_exception
 
 
 class ResUsers(models.Model):
@@ -32,3 +35,10 @@ class ResUsers(models.Model):
         if request and self.env.user in self and scheme in ('light', 'dark'):
             request.future_response.set_cookie('color_scheme', scheme)
         return res
+
+    @api.ondelete(at_uninstall=True)
+    def _unlink_except_master_data(self):
+        try:
+            super()._unlink_except_master_data()
+        except UserError as error:
+            raise debrand_exception(error)

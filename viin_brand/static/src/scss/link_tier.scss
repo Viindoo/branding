@@ -1,17 +1,17 @@
-// The text-link tier: the backend text link takes the Viindoo secondary colour.
+// The text-link tier: a backend hyperlink takes the Viindoo secondary colour (purple in light, the
+// dark link teal in dark), and link-styled buttons, Bootstrap tabs and pagers share that tier. Core's
+// `text-action` takes the interactive teal, the tier of filled controls and chrome.
 //
 // Odoo compiles Bootstrap with `$variable-prefix: ''`, so the link tokens are unprefixed:
 // `--link-color`, `--link-color-rgb`, `--link-hover-color`. They are filled by the chain
 // `$o-main-link-color` -> `$link-color` (bootstrap_overridden.scss) -> `$link-hover-color`
 // (Bootstrap `_variables.scss`) -> `:root` (`_root.scss`) -> `a { color: ... }` (`_reboot.scss`).
 //
-// Four Bootstrap components that are not hyperlinks reuse that chain as a generic interactive
-// accent: tabs (`$nav-link-color`, `$nav-link-hover-color`), buttons (`$btn-link-color`,
+// Three Bootstrap components that are not hyperlinks read that chain too: tabs
+// (`$nav-link-color`, `$nav-link-hover-color`), buttons (`$btn-link-color`,
 // `$btn-link-hover-color`, and the focus glow `$btn-link-focus-shadow-rgb`) and pagers
-// (`$pagination-color`, `-hover`, `-focus`). Re-pointing `--link-color` alone would turn the
-// `.btn-link` buttons, every Bootstrap tab and every pager purple, which must not happen.
-// So `$link-color` becomes the hyperlink colour and the four borrowers are re-anchored onto the
-// interactive tier they mean, using Bootstrap's `!default` variables; nothing here is a cascade
+// (`$pagination-color`, `-hover`, `-focus`). They are set from `$o-main-link-color` below, through
+// Bootstrap's `!default` variables, so they render as a link does; nothing here is a cascade
 // override.
 //
 // Anchor: contributed to `web.assets_backend` at
@@ -32,10 +32,9 @@
 // sets. Both branches of each `if()` reference variables defined in both bundles, so neither can
 // raise "Undefined variable".
 
-// Hover rung of the interactive tier. It is derived from `$o-main-link-color` with Bootstrap's own
-// link-hover formula (`shade-color($c, $link-shade-percentage)`), so it is scheme-aware. `!default`
-// keeps the dark arm dark_palette.scss declares, since a shade() in dark would darken the
-// light-on-dark teal.
+// Hover rung of the link tier, Bootstrap's own link-hover formula
+// (`shade-color($c, $link-shade-percentage)`). `!default` keeps the dark arm dark_palette.scss
+// declares, since a shade() in dark would darken the light-on-dark teal.
 $o-viin-interactive-hover: shade-color($o-main-link-color, $link-shade-percentage) !default;
 
 // The hyperlink tier: brand secondary in light, unchanged teal in dark.
@@ -53,23 +52,27 @@ $link-hover-color: if(
     shade-color($o-brand-secondary, $link-shade-percentage)
 );
 
-// The borrowers are re-anchored onto the interactive tier in both schemes, as Sass values resolved
-// per bundle, so the purple above cannot reach a surface that is not a hyperlink.
+// The borrowers share the hyperlink tier: the brand purple in light, the dark link teal in dark.
 //
 // Tabs: Bootstrap `.nav-link`. The form notebook does not depend on this: notebook.scss paints its
 // own active tab with $o-component-active-border in both bundles.
 $nav-link-color: $o-main-link-color;
 $nav-link-hover-color: $o-viin-interactive-hover;
 
-// Buttons: `.btn-link` is a button, not a hyperlink, so under the colour law (teal = act) a
-// link-styled button stays teal.
+// Buttons: `.btn-link`, with its focus glow.
 $btn-link-color: $o-main-link-color;
 $btn-link-hover-color: $o-viin-interactive-hover;
-// Its focus glow, which Bootstrap derives from $link-color, stays teal too.
 $btn-link-focus-shadow-rgb: to-rgb($o-main-link-color);
 
-// Pagers: Bootstrap `.pagination`, kept consistent with the two above (the backend list pager is
-// `.o_pager` / `.btn-secondary` and is unaffected either way).
+// Pagers: Bootstrap `.pagination` (the backend list pager is `.o_pager` / `.btn-secondary`).
 $pagination-color: $o-main-link-color;
 $pagination-hover-color: $o-viin-interactive-hover;
 $pagination-focus-color: $o-viin-interactive-hover;
+
+// Core's `text-action` utility and the link-styled buttons carrying it (the chatter Followers
+// toggle, an activity's Edit link) read the "action" entry, by default the decorative brand teal.
+// It takes the interactive teal: the AA chrome teal in light, the dark link teal in dark.
+$o-text-colors-custom: map-merge(
+    $o-text-colors-custom,
+    ("action": if($o-viin-dark-bundle, $o-main-link-color, $o-viin-chrome-base))
+);

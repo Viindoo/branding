@@ -112,15 +112,20 @@ $input-placeholder-color: $o-gray-600;    // #8EA5A8 = 6.75:1 on the panel; the 
 // 1.25:1 from the panel and carries $body-color at 12.68:1.
 $o-viin-dark-selection-bg: #123037;
 
-// No purple in dark: $o-brand-secondary itself is neutralised. Our own rules are wrapped in
-// `@if not $o-viin-dark-bundle`, but three core rules read the token directly and recompile here
-// regardless: the mobile form label (`.o_xxs_form_view .o_form_label`, text), the search panel
-// section header `border-bottom`, and the POS backend kanban (text). At the light #7F4282 the first
-// would be 2.50:1 on this panel, a WCAG AA failure. The token collapses onto the dark muted tier
-// ($body-secondary-color, #8EA5A8 = 6.75:1 on #111B1E), the tier core's `.text-body-secondary`
-// uses, so no purple survives anywhere in web.assets_web_dark and all three surfaces land on a
-// neutral that suits them. Declared after $body-secondary-color because Sass resolves top-down.
+// The dark brand accent is the neutral muted tier: $o-brand-secondary itself is neutralised. Our own
+// rules are wrapped in `@if not $o-viin-dark-bundle`, but three core rules read the token directly
+// and recompile here regardless: the mobile form label (`.o_xxs_form_view .o_form_label`, text),
+// the search panel section header `border-bottom`, and the POS backend kanban (text). At the light
+// #7F4282 the first would be 2.50:1 on this panel, a WCAG AA failure. The token collapses onto the
+// dark muted tier ($body-secondary-color, #8EA5A8 = 6.75:1 on #111B1E), the tier core's
+// `.text-body-secondary` uses, and all three surfaces land on a neutral that suits them. Declared
+// after $body-secondary-color because Sass resolves top-down.
 $o-brand-secondary: $body-secondary-color;
+
+// The one purple in the dark bundle is Bootstrap's `$purple` (`--purple`), which carries the
+// livechat "needs help" state; the light value #7F4282 is a lightened Viindoo purple here
+// (5.98:1 on #111B1E). backend_variables.scss keeps it in the dark compile.
+$purple: #BD83C0;
 
 // Dark arm of the readable `.text-secondary` text tier. The light value #6C757D is only 3.73:1 on
 // the dark panel, so it points at the dark muted-text tier (#8EA5A8 = 6.75:1), the same token core's
@@ -152,8 +157,8 @@ $secondary-border-subtle: $border-color;
 $o-main-link-color: #4FD4E2;
 $link-color: #4FD4E2;
 $link-hover-color: #7FE0EA;
-// Dark arm of the interactive-teal hover rung (see link_tier.scss): the borrowers of the link
-// token (`.nav-link`, `.btn-link`, `.pagination`) need their own hover value. It aliases the
+// Dark arm of the link-tier hover rung (see link_tier.scss): the link-styled controls
+// (`.nav-link`, `.btn-link`, `.pagination`) need their own hover value. It aliases the
 // $link-hover-color literal above, so no new hex enters the module; link_tier.scss derives the
 // light rung with Bootstrap's shade formula and declares it `!default`, so this wins in dark. A
 // shade() would be the wrong direction: it darkens a light-on-dark teal.
