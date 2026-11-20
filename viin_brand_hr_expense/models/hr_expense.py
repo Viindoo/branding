@@ -9,4 +9,4 @@ class HrExpense(models.Model):
         try:
             return super()._get_base_account()
         except UserError as e:
-            raise UserError(str(e).replace('Odoo', 'The system')) from None
+            raise UserError(str(e).replace('Odoo', 'Viindoo')) from None

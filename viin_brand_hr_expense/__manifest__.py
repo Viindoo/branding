@@ -39,7 +39,7 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.2',
+    'version': '0.1.3',
 
     'depends': ['hr_expense'],
 
@@ -47,11 +47,16 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
         'data/digest_data.xml',
         'data/mail_templates.xml',
         'views/hr_expense_views.xml',
+        'views/res_config_settings_views.xml',
     ],
     'assets': {
         'web.assets_backend': [
             'viin_brand_hr_expense/static/src/scss/viin_brand_hr_expense.scss',
             'viin_brand_hr_expense/static/src/components/qrcode_action/qrcode_action.xml',
+            'viin_brand_hr_expense/static/src/js/tours/hr_expense_tour.js',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_hr_expense/static/tests/hr_expense_tour_debrand.test.js',
         ],
     },
     'installable': True,
