@@ -44,9 +44,9 @@ khỏi danh sách Nhà cung cấp thanh toán.
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.2.1',
+    'version': '0.2.2',
 
-    'depends': ['payment'],
+    'depends': ['payment', 'viin_brand'],
 
     'data': [
         'data/payment_provider_data.xml',

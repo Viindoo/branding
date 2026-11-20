@@ -1,5 +1,7 @@
 import ast
 
+from lxml import etree
+
 from odoo import api, fields, models
 from odoo.fields import Domain
 
@@ -12,12 +14,12 @@ class PaymentProvider(models.Model):
     _inherit = 'payment.provider'
 
     capture_manually = fields.Boolean(
-        help="Capture the amount from the system, when the delivery is completed.\n"
+        help="Capture the amount from Viindoo, when the delivery is completed.\n"
         "Use this if you want to charge your customers cards only when\n"
         "you are sure you can ship the goods to them.")
 
     support_refund = fields.Selection(
-        help="Refund is a feature allowing to refund customers directly from the payment in the system.")
+        help="Refund is a feature allowing to refund customers directly from the payment in Viindoo.")
 
     @api.model
     def _update_domain_for_action_payment_provider(self):
@@ -41,3 +43,34 @@ class PaymentProvider(models.Model):
                 lambda c: Domain.TRUE if _is_to_buy_condition(c) else c,
             )
             action.domain = False if domain.is_true() else repr(domain)
+
+    @api.model
+    def fields_get(self, allfields=None, attributes=None):
+        """Leave the Enterprise flag out of every field list that offers fields by their label.
+
+        The web client's filter, grouping and export pickers ask for all the fields with their
+        ``string``; a view, or a caller that asks for named fields or for attributes without a
+        label (the validation of a view asks for ``readonly`` and ``required``), still reads it, but
+        as a field that cannot be grouped on, so the Custom Group picker, which lists the fields the
+        views of the action load, does not offer it.
+        """
+        fields = super().fields_get(allfields=allfields, attributes=attributes)
+        if not allfields and (attributes is None or 'string' in attributes):
+            fields.pop('module_to_buy', None)
+        if 'groupable' in fields.get('module_to_buy', ()):
+            fields['module_to_buy']['groupable'] = False
+        return fields
+
+    @api.model
+    def get_view(self, view_id=None, view_type='form', **options):
+        """Drop the buttons that connect a provider through the onboarding service of Odoo.
+
+        The credentials of a provider are entered by hand.
+        """
+        result = super().get_view(view_id=view_id, view_type=view_type, **options)
+        if view_type == 'form' and 'action_start_onboarding' in result['arch']:
+            doc = etree.fromstring(result['arch'])
+            for button in doc.xpath('//button[@name="action_start_onboarding"]'):
+                button.getparent().remove(button)
+            result['arch'] = etree.tostring(doc, encoding='unicode')
+        return result
