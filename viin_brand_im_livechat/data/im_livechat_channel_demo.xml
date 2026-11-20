@@ -16,5 +16,14 @@
         <record id="im_livechat.livechat_channel_session_4_message_2" model="mail.message">
             <field name="body">Hello Joel Willis, you're at the right place! You can customize Viindoo using our Studio application in just a few clicks.</field>
         </record>
+        <record id="im_livechat.livechat_channel_chatbot_session_1_demo" model="discuss.channel">
+            <field name="name">Visitor #234, Viindoo</field>
+        </record>
+        <record id="im_livechat.livechat_channel_chatbot_session_2_demo" model="discuss.channel">
+            <field name="name">Visitor #235, Viindoo</field>
+        </record>
+        <record id="im_livechat.livechat_channel_chatbot_session_3_demo" model="discuss.channel">
+            <field name="name">Visitor #236, Viindoo</field>
+        </record>
     </data>
 </odoo>
