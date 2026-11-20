@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- website.layout uses the view name as the page title and og:title of /slides. -->
+    <record id="website_slides.courses_home" model="ir.ui.view">
+        <field name="name">Courses Homepage</field>
+    </record>
+
+</odoo>
