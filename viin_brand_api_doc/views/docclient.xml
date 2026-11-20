@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="docclient" inherit_id="api_doc.docclient">
+        <xpath expr="//t[@t-set='title']" position="replace">
+            <t t-set="title">Viindoo Runtime Doc</t>
+        </xpath>
+    </template>
+
+</odoo>
