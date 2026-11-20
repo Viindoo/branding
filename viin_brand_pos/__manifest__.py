@@ -41,11 +41,12 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.2',
+    'version': '0.1.3',
 
     'depends': ['viin_brand', 'point_of_sale'],
 
     'data': [
+        'data/pos_config_data.xml',
         'views/pos_assets_index.xml',
         'views/res_config_settings_views.xml',
         'views/report_saledetails_views.xml',
@@ -75,7 +76,8 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             'viin_brand/static/src/core/dialog/dialog.js',
             'viin_brand/static/src/core/errors/error_dialogs.js',
             'viin_brand/static/src/core/errors/error_dialogs.xml',
-            'viin_brand_pos/static/src/app/screens/product_screen/product_screen.js',
+            # The camera permission sentence of every consumer of BarcodeVideoScanner.
+            'viin_brand/static/src/core/barcode/barcode_video_scanner.js',
             'viin_brand_pos/static/src/app/services/report_service.js',
         ],
         'point_of_sale.customer_display_assets': [
@@ -92,9 +94,6 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
         'web.assets_backend': [
             # The printer checklist widget of the POS configuration form lives in the backend.
             'viin_brand_pos/static/src/backend/lna_checklist/lna_checklist.xml',
-        ],
-        'point_of_sale.assets_prod': [
-            'viin_brand_pos/static/src/css/**/*',
         ],
         'web.assets_tests': [
             # Tours load in the backend in test mode, like the tours of point_of_sale.

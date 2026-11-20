@@ -48,6 +48,7 @@ test("a server error in the POS shows a dialog whose title does not name Odoo", 
     expect(dialog.calls).toHaveLength(1);
     expect(dialog.calls[0].Component).toBe(AlertDialog);
     expect(String(dialog.calls[0].props.title)).not.toInclude("Odoo");
+    expect(String(dialog.calls[0].props.title)).toInclude("Viindoo");
     expect(dialog.calls[0].props.title).not.toBe("");
     expect(dialog.calls[0].props.body).toBe("Something failed");
 });
@@ -100,6 +101,7 @@ test("a server error while validating a payment shows a title that does not name
     expect(validation.order.state).toBe("draft");
     expect(dialog.calls).toHaveLength(1);
     expect(String(dialog.calls[0].props.title)).not.toInclude("Odoo");
+    expect(String(dialog.calls[0].props.title)).toInclude("Viindoo");
 });
 
 test("a failed cash move deletion shows a title that does not name Odoo", async () => {
@@ -128,6 +130,7 @@ test("a failed cash move deletion shows a title that does not name Odoo", async 
     expect(thrown).toBe(error);
     expect(dialog.calls).toHaveLength(1);
     expect(String(dialog.calls[0].props.title)).not.toInclude("Odoo");
+    expect(String(dialog.calls[0].props.title)).toInclude("Viindoo");
     expect(dialog.calls[0].props.body).toBe("Not allowed");
 });
 
