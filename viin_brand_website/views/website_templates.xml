@@ -39,4 +39,20 @@
             <attribute name="href">/odoo</attribute>
         </xpath>
     </template>
+
+    <!-- Cookie table: cells are addressed by position, as their text is translated before views are merged. -->
+    <template id="cookie_policy" inherit_id="website.cookie_policy">
+        <xpath expr="//tbody/tr[1]/td[3]" position="replace" mode="inner">
+            session_id (Viindoo)<br/>
+        </xpath>
+        <xpath expr="//tbody/tr[2]/td[3]" position="replace" mode="inner">
+            frontend_lang (Viindoo)
+        </xpath>
+        <xpath expr="//tbody/tr[3]/td[3]" position="replace" mode="inner">
+            im_livechat_previous_operator (Viindoo)<br/>
+            utm_campaign (Viindoo)<br/>
+            utm_source (Viindoo)<br/>
+            utm_medium (Viindoo)
+        </xpath>
+    </template>
 </odoo>

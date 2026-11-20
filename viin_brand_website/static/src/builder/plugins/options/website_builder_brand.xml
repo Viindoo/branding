@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="website.InstagramOption" t-inherit-mode="extension" owl="1">
+        <xpath expr="//BuilderRow" position="attributes">
+            <attribute name="tooltip.translate">Your Instagram page must be public to be integrated into a Viindoo website.</attribute>
+        </xpath>
+    </t>
+
+    <t t-inherit="website.MegaMenuOption" t-inherit-mode="extension" owl="1">
+        <xpath expr="//BuilderSelectItem[Img[contains(@src, 's_mega_menu_odoo_menu')]]" position="attributes">
+            <attribute name="title.translate">Viindoo Menu</attribute>
+        </xpath>
+    </t>
+
+    <t t-inherit="website.s_countdown.end_message" t-inherit-mode="extension" owl="1">
+        <xpath expr="//h2" position="replace" mode="inner">Happy Anniversary!</xpath>
+    </t>
+
+    <t t-inherit="website.dialog.addFont" t-inherit-mode="extension" owl="1">
+        <xpath expr="//sup/a" position="replace">?</xpath>
+    </t>
+</templates>

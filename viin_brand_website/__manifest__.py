@@ -32,7 +32,7 @@ Editions Supported
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.4',
+    'version': '0.1.5',
 
     # viin_brand owns the Apps action domain that data/ir_module_module_data.xml re-applies
     'depends': ['website', 'viin_brand'],
@@ -47,7 +47,6 @@ Editions Supported
     ],
     'assets': {
         'web.assets_backend': [
-            'viin_brand_website/static/src/components/configurator/configurator.scss',
             'viin_brand_website/static/src/components/website_loader/website_loader.scss',
         ],
         'web.assets_frontend': [
@@ -58,6 +57,8 @@ Editions Supported
         ],
         'website.website_builder_assets': [
             'viin_brand_website/static/src/builder/plugins/options/website_info_option.xml',
+            'viin_brand_website/static/src/builder/plugins/options/website_builder_brand.xml',
+            'viin_brand_website/static/src/builder/plugins/options/facebook_option_plugin.js',
         ],
         'web.assets_tests': [
             'viin_brand_website/static/tests/tours/colorpicker_brand_override.js',
@@ -67,6 +68,7 @@ Editions Supported
             # The Hoot suite imports the file, so the unit-test bundle carries it as well.
             'viin_brand_website/static/src/js/frontend_to_backend_apps_btn.js',
             'viin_brand_website/static/tests/js/frontend_to_backend_apps_btn.test.js',
+            'viin_brand_website/static/tests/builder/website_builder_brand.test.js',
         ],
     },
     'installable': True,
