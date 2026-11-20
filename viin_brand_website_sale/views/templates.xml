@@ -16,4 +16,8 @@
             </xpath>
         </template>
     </data>
+
+    <record id="website_sale.s_mega_menu_odoo_menu" model="ir.ui.view">
+        <field name="name">eCommerce: Viindoo Menu</field>
+    </record>
 </odoo>

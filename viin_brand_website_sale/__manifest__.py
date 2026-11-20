@@ -32,7 +32,7 @@ Editions Supported
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.2.1',
+    'version': '0.2.2',
 
     'depends': ['website_sale'],
 
