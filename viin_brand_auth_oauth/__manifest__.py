@@ -39,7 +39,7 @@ Module này sẽ thay đổi giao diện module OAuth2 Authentication theo thư�
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
     'depends': ['auth_oauth'],
 
