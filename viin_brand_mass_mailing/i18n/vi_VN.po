@@ -1,14 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* viin_brand_mass_mailing
-# 	* mass_mailing (reused core xmlid override - see NOTE in viin_brand_stock/i18n/vi_VN.po)
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 16:26+0000\n"
-"PO-Revision-Date: 2026-08-07 16:26+0000\n"
+"POT-Creation-Date: 2026-11-19 15:48+0000\n"
+"PO-Revision-Date: 2026-11-19 15:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,14 +15,33 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. module: mass_mailing
+#: model_terms:ir.actions.act_window,help:mass_mailing.action_create_mass_mailings_from_campaign
+#: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailings_from_campaign
+msgid ""
+"You don't need to import your mailing lists, you can easily\n"
+"                send emails<br> to any contact saved in other Viindoo apps."
+msgstr ""
+"Bạn không cần nhập danh sách liên hệ, bạn có thể dễ dàng\n"
+"                gửi email<br> đến bất kỳ liên hệ nào được lưu trong các ứng dụng Viindoo khác."
+
+#. module: mass_mailing
+#: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailing_lists
+msgid ""
+"No need to import mailing lists, you can send mailings to contacts saved in "
+"other Viindoo apps."
+msgstr ""
+"Không cần nhập danh sách gửi thư, bạn có thể gửi thư cho các liên hệ được lưu trong "
+"các ứng dụng Viindoo khác."
+
 #. module: viin_brand_mass_mailing
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_call_to_action
 msgid ""
-"<font style=\"color: white;\"><strong>50,000+ companies</strong> run "
-"Viindoo.</font>"
+"<font style=\"color: white;\"><strong>Join the companies</strong> that grow "
+"their business with us.</font>"
 msgstr ""
-"<font style=\"color: white;\"><strong>Hơn 50.000 công ty</strong> dùng "
-"Viindoo.</font>"
+"<font style=\"color: white;\"><strong>Hãy cùng những doanh nghiệp</strong> "
+"đang phát triển kinh doanh với chúng tôi.</font>"
 
 #. module: viin_brand_mass_mailing
 #: model:ir.model,name:viin_brand_mass_mailing.model_res_config_settings
@@ -45,7 +63,12 @@ msgstr "Tên hiển thị"
 #: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_mailing_mailing__id
 #: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_res_config_settings__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
+
+#. module: viin_brand_mass_mailing
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_schedule
+msgid "Interactive demo"
+msgstr "Bản demo tương tác"
 
 #. module: viin_brand_mass_mailing
 #: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_mailing_mailing__mail_server_id
@@ -58,34 +81,9 @@ msgid "Mass Mailing"
 msgstr "Gửi thư hàng loạt"
 
 #. module: viin_brand_mass_mailing
-#: model_terms:mailing.mailing,body_arch:mass_mailing.mass_mail_1
-msgid ""
-"Hello,\n"
-"                                                <br/><br/>\n"
-"                                                This month we shipped a refreshed CRM dashboard, faster pivot reports across every module, and new integrations that help your team close more deals — all without leaving Viindoo. We also welcomed 47 new customers and published our SME playbook, free to download below.\n"
-"                                                <br/><br/>\n"
-"                                                Curious about what's next? Join our live walkthrough on the 15th to see how teams like Phương Nam Foods cut their order cycle by 40% with Viindoo."
-msgstr ""
-"Xin chào,\n"
-"                                                <br/><br/>\n"
-"                                                Tháng này Viindoo ra mắt dashboard CRM mới, báo cáo pivot nhanh hơn trên mọi phân hệ, và các tích hợp mới giúp đội ngũ của bạn chốt đơn hiệu quả hơn - tất cả ngay trong Viindoo. Chúng tôi cũng chào đón 47 khách hàng mới và phát hành bộ playbook dành cho doanh nghiệp SME, tải miễn phí bên dưới.\n"
-"                                                <br/><br/>\n"
-"                                                Tò mò xem điều gì sắp ra mắt? Tham gia buổi giới thiệu trực tiếp ngày 15 để biết các đội ngũ như Phương Nam Foods đã rút ngắn chu trình đơn hàng 40% với Viindoo như thế nào."
-
-#. module: viin_brand_mass_mailing
-#: model:mailing.mailing,name:mass_mailing.mass_mail_1
-msgid "Monthly Customer Update"
-msgstr "Bản tin Khách hàng Hằng tháng"
-
-#. module: viin_brand_mass_mailing
-#: model:mailing.mailing,subject:mass_mailing.mass_mail_1
-msgid "Your monthly Viindoo update: new features, tips & success stories"
-msgstr "Bản tin Viindoo hằng tháng: tính năng mới, mẹo dùng & câu chuyện khách hàng"
-
-#. module: viin_brand_mass_mailing
-#: model_terms:mailing.mailing,body_arch:mass_mailing.mass_mail_1
-msgid " All Rights Reserved"
-msgstr " Bản quyền đã đăng ký"
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_section_mobile
+msgid "Mobile app"
+msgstr "Ứng dụng di động"
 
 #. module: viin_brand_mass_mailing
 #: model:ir.model.fields,help:viin_brand_mass_mailing.field_mailing_mailing__mail_server_id
@@ -100,11 +98,8 @@ msgstr ""
 "chủ gửi thư đầu tiên khả dụng (dựa trên trình tự của chúng) như đối với các "
 "thư thông thường."
 
-#. module: mass_mailing
-#: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailing_lists
-msgid ""
-"No need to import mailing lists, you can send mailings to contacts saved in "
-"other Viindoo apps."
+#. module: viin_brand_mass_mailing
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.layout
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.mailing_view_generic
+msgid "Viindoo"
 msgstr ""
-"Không cần nhập danh sách gửi thư, bạn có thể gửi thư cho các liên hệ được lưu trong "
-"các ứng dụng Viindoo khác."
