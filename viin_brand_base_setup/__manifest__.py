@@ -16,10 +16,10 @@ Retired: the base setup branding lives in viin_brand. Updating viin_brand uninst
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.3.1',
+    'version': '0.3.2',
     'depends': ['viin_brand'],
     'installable': True,
-    'price': 9.9,
+    'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
 }
