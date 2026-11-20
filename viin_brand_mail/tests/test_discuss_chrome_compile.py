@@ -94,8 +94,9 @@ class TestDiscussChromeCompile(ContrastCompileHelpers, TransactionCase):
                 with self.subTest(bundle=bundle, selector=selector):
                     border = self._last_declared(css, selector, _BORDER_RE)
                     self.assertIn(
-                        border, ("2px solid #fff", "2px solid #ffffff", "2px solid white"),
-                        "%s must carry a 2px white ring on all four sides" % selector,
+                        border,
+                        ("1px solid #fff", "1px solid #ffffff", "1px solid white"),
+                        "%s must carry a 1px white ring on all four sides" % selector,
                     )
 
     def test_systray_counter_fill_follows_the_success_fill(self):

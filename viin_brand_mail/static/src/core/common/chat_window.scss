@@ -22,7 +22,7 @@
 // The call buttons draw their fill on the glyph, which sits on the teal chrome with almost no
 // separation, so the glyph carries a white ring.
 .o-mail-ChatWindow-header .o-tag-JOIN_LEAVE_CALL > i {
-    border: 2px solid $white;
+    border: 1px solid $white;
 }
 
 // The parent-channel breadcrumb separator carries Bootstrap's `.text-muted` (`!important`), which
