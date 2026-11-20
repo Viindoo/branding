@@ -26,10 +26,20 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
     'old_technical_name': 'viin_brand_web_editor',
     'depends': ['html_editor', 'web'],
     'assets': {
+        'html_editor.assets_media_dialog': [
+            'viin_brand_html_editor/static/src/main/media_dialog_brand.js',
+        ],
+        'html_editor.assets_editor': [
+            'viin_brand_html_editor/static/src/main/image_crop_brand.js',
+            'viin_brand_html_editor/static/src/main/link_popover_brand.xml',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_html_editor/static/tests/html_editor_brand.test.js',
+        ],
         'web.assets_frontend': [
             ('after', 'html_editor/static/src/scss/html_editor.common.scss', 'viin_brand_html_editor/static/src/scss/viin_brand_html_editor.common.scss'),
         ],
