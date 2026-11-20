@@ -104,3 +104,33 @@ class TestRoutingWorkcenterCostModeHelp(TransactionCase):
         info = operation.fields_get(["cost_mode"], attributes=["selection"])["cost_mode"]
         self.assertEqual({value for value, _label in info["selection"]}, {"actual", "estimated"})
         self.assertEqual(operation.default_get(["cost_mode"])["cost_mode"], "actual")
+
+
+@tagged("post_install", "-at_install")
+class TestNoNeutralWordForTheProduct(TransactionCase):
+
+    def test_manufacturing_helps_name_viindoo_not_a_neutral_word(self):
+        checks = {
+            "mrp.bom": ["allow_operation_dependencies"],
+            "stock.move": ["manual_consumption"],
+            "mrp.routing.workcenter": ["cost_mode"],
+            "stock.picking.type": AUTO_PRINT_FIELDS,
+        }
+        for model, names in checks.items():
+            info = self.env[model].fields_get(names, attributes=["help"])
+            for name in names:
+                with self.subTest(field="%s.%s" % (model, name)):
+                    self.assertNotRegex(info[name]["help"], r"\b[Tt]he system\b|\bSystem\b")
+                    self.assertIn("Viindoo", info[name]["help"])
+
+    def test_work_center_digest_tip_names_viindoo_not_a_neutral_word(self):
+        text = self.env.ref("mrp.digest_tip_mrp_0").with_context(lang="en_US").tip_description
+        self.assertNotRegex(text, r"\b[Tt]he system\b|\bsystem work\b")
+        self.assertIn("Viindoo", text)
+
+    def test_mrp_print_note_says_who_opens_the_preview(self):
+        arch = etree.fromstring(self.env["stock.picking.type"].get_view(
+            view_id=self.env.ref("stock.view_picking_type_form").id, view_type="form")["arch"].encode("utf-8"))
+        notes = arch.xpath("//page[@name='mrp_hardware']//div[@colspan='2'][contains(., 'PDF preview')]")
+        self.assertEqual(len(notes), 1)
+        self.assertIn("Viindoo opens a PDF preview", " ".join(notes[0].itertext()))

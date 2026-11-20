@@ -39,7 +39,7 @@ Module này sẽ thay đổi giao diện các module Manufacturing theo thương
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.2',
+    'version': '0.1.3',
 
     'depends': ['mrp'],
 
