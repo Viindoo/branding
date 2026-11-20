@@ -34,7 +34,7 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1.9',
+    'version': '0.1.10',
 
     'depends': ['mail', 'viin_brand'],
 
@@ -64,6 +64,11 @@ Editions Supported
             ('after', 'mail/static/src/core/public_web/discuss_sidebar.scss', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
             ('after', 'mail/static/src/core/public_web/messaging_menu.scss', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
             ('after', 'mail/static/src/discuss/core/public_web/discuss_sidebar_categories.scss', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
+            # The web client of the Discuss app: install prompt, permission toasts and the icon of a
+            # desktop notification.
+            ('after', 'mail/static/src/core/web/messaging_menu_patch.js', 'viin_brand_mail/static/src/core/web/messaging_menu_patch.js'),
+            ('after', 'mail/static/src/core/common/notification_permission_service.js', 'viin_brand_mail/static/src/core/common/notification_permission_service.js'),
+            ('after', 'mail/static/src/core/common/out_of_focus_service.js', 'viin_brand_mail/static/src/core/common/out_of_focus_service.js'),
             # The two mail copies of web.StatusBarField are primary copies, which do not inherit
             # extensions registered after their own block, so each needs its own extension of the
             # numbered statusbar steps of viin_brand.
@@ -81,6 +86,14 @@ Editions Supported
             ('after', 'mail/static/src/core/common/im_status.scss', 'viin_brand_mail/static/src/core/common/im_status.scss'),
             ('after', 'mail/static/src/core/common/composer.scss', 'viin_brand_mail/static/src/core/common/composer.scss'),
             ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
+            ('after', 'mail/static/src/core/common/notification_permission_service.js', 'viin_brand_mail/static/src/core/common/notification_permission_service.js'),
+            ('after', 'mail/static/src/core/common/out_of_focus_service.js', 'viin_brand_mail/static/src/core/common/out_of_focus_service.js'),
+            # The public pages of mail build on web._assets_core, so the dialogs, the error dialogs
+            # and the page title of viin_brand are listed here.
+            'viin_brand/static/src/core/dialog/dialog.js',
+            'viin_brand/static/src/core/errors/error_dialogs.js',
+            'viin_brand/static/src/core/errors/error_dialogs.xml',
+            'viin_brand/static/src/core/browser/title_service.js',
         ],
         # The brand SCSS reaches the two test-only bundles through web's include of
         # web.assets_backend; removing it lets the core mail and discuss tests measure core's own
@@ -96,6 +109,9 @@ Editions Supported
             ('remove', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
             ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
             ('remove', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu_patch.js'),
+            ('remove', 'viin_brand_mail/static/src/core/common/notification_permission_service.js'),
+            ('remove', 'viin_brand_mail/static/src/core/common/out_of_focus_service.js'),
         ],
         # The legacy QUnit page includes web.assets_backend as well and needs the same removals.
         'web.tests_assets': [
@@ -109,6 +125,9 @@ Editions Supported
             ('remove', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
             ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
             ('remove', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
+            ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu_patch.js'),
+            ('remove', 'viin_brand_mail/static/src/core/common/notification_permission_service.js'),
+            ('remove', 'viin_brand_mail/static/src/core/common/out_of_focus_service.js'),
         ],
     },
     'installable': True,

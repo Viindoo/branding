@@ -11,16 +11,19 @@ a.o_channel_redirect {
     }
 }
 
-// Core paints the unread counter from `--o-discuss-badge-bg` with `!important` and a forced white
-// label, defaulting to $o-success (white on it is 2.75:1), so only the custom property can be
-// re-pointed. Light uses the brand purple (6.99:1 under white); dark uses the AA-corrected green
-// shared with the systray counters (4.96:1 under white).
-$o-viin-unread-badge-green: mix(black, $o-success, 28%) !default;   // #008149
+// Unread counters are green in both schemes. Core paints them from `--o-discuss-badge-bg`
+// (`$o-success`) with `!important` and a forced white label; light keeps core's value, dark takes a
+// shade of $o-success darkened for the white label, shared with the systray counters.
+$o-viin-unread-badge-green: mix(black, $o-success, 28%) !default;
 
-.o-discuss-badge {
-    @if $o-viin-dark-bundle {
+@if $o-viin-dark-bundle {
+    .o-discuss-badge {
         --o-discuss-badge-bg: #{$o-viin-unread-badge-green};
-    } @else {
-        --o-discuss-badge-bg: #{$o-brand-secondary};
     }
+}
+
+// The counter of the chat-window header sits on the teal chrome, which the fill barely separates
+// from; the white ring keeps it distinct in both schemes.
+.o-mail-ChatWindow-header .o-mail-ChatWindow-counter {
+    border: 2px solid $white;
 }

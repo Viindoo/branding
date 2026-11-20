@@ -71,6 +71,10 @@ FORBIDDEN_HEADER_PURPLE = "#6c386f"
 
 # `$o-success`, core's default `$o-navbar-badge-bg`: white counter text on it is 2.75:1.
 CORE_SUCCESS_GREEN = "#00b365"
+# The unread counter greens: `$o-success` as viin_brand sets it (light) and the shade
+# of it that carries the white label in dark (`$o-viin-unread-badge-green`).
+UNREAD_BADGE_GREEN = "#00884d"
+UNREAD_BADGE_DARK_GREEN = "#006237"
 
 # `$o-viin-mail-status-away-color` (static/src/core/common/im_status.scss), asserted as a literal
 # rather than re-derived from `darken(#ffa500, 15%)`. Three rules read that one variable so the
@@ -1966,23 +1970,18 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             % (glyph_value, header_value, ratio, WCAG_AA_NORMAL_TEXT),
         )
 
-    def test_discuss_unread_badge_renders_the_brand_purple_through_cores_own_consumer(self):
-        """A Discuss unread counter must render the brand purple in light and an AA shade in dark.
+    def test_discuss_unread_badge_renders_green_through_cores_own_consumer(self):
+        """A Discuss unread counter is green in both schemes, never the brand purple.
 
         Core paints every `.o-discuss-badge` with
-        `background-color: var(--o-discuss-badge-bg) !important`, defaulting the token to $o-success.
-        The `!important` is why the fix is a custom property, and why a core rename of it silently
-        reverts the badge to green with our declaration still in the bundle. Core keeps its own
-        foreground (`color: white !important`), so the contrast assertion is the honest observable
-        for the pair.
+        `background-color: var(--o-discuss-badge-bg) !important` from $o-success and
+        keeps its own foreground (`color: white !important`). Light keeps that token,
+        the green viin_brand gives $o-success; dark re-points the custom property to the
+        shade the systray counters use.
 
-        Modelled on the sidebar counter on purpose: two other `.o-discuss-badge` sites are
-        deliberately overridden by core at higher specificity and must keep winning.
-
-        The dark scheme must not carry the purple: core's forced white label measures 2.90:1 on the
-        dark purple, and letting the token recompile lands on the neutral muted tier, where white is
-        2.59:1. So the dark arm is stated, as the shade the systray counters already use. Purple in
-        light, neither purple nor the muted tier in dark, with the same measured-contrast rule."""
+        Modelled on the sidebar counter on purpose: two other `.o-discuss-badge` sites
+        are deliberately overridden by core at higher specificity and must keep
+        winning."""
         for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
             css = self._compiled_css(bundle_name)
             self._assert_core_source_contains(
@@ -1999,35 +1998,26 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                 css, [badge], BACKGROUND_PROPS,
                 "Discuss sidebar unread badge fill (%s arm)" % arm,
             )
-            if arm == "light":
-                self.assertNotEqual(
-                    fill_rgb, _to_rgb(CORE_SUCCESS_GREEN),
-                    "The Discuss unread badge resolves to core's untouched $o-success %s (resolved: "
-                    "%s) - the brand override on --o-discuss-badge-bg is not reaching it."
-                    % (CORE_SUCCESS_GREEN, fill_value),
-                )
-                self.assertEqual(
-                    fill_rgb, _to_rgb(BRAND_SECONDARY_PURPLE),
-                    "The Discuss unread badge must resolve to the brand SECONDARY purple %s on the "
-                    "LIGHT bundle; it resolved to %s." % (BRAND_SECONDARY_PURPLE, fill_value),
-                )
-            else:
-                self.assertNotEqual(
-                    fill_rgb, _to_rgb(BRAND_SECONDARY_PURPLE),
-                    "The Discuss unread badge compiled the brand purple %s in the DARK bundle. The "
-                    "purple accent is light-only." % BRAND_SECONDARY_PURPLE,
-                )
-                self.assertNotEqual(
-                    fill_rgb, _to_rgb(DARK_BUNDLE_FORBIDDEN_PURPLE),
-                    "The Discuss unread badge compiled the dark purple %s. Core forces a white "
-                    "label on this badge, which measures only 2.90:1 there." % DARK_BUNDLE_FORBIDDEN_PURPLE,
-                )
+            self.assertNotEqual(
+                fill_rgb, _to_rgb(BRAND_SECONDARY_PURPLE),
+                "The Discuss unread badge compiled the brand purple %s in the %s "
+                "bundle; unread counters are green in both schemes."
+                % (BRAND_SECONDARY_PURPLE, arm),
+            )
+            expected = (
+                UNREAD_BADGE_GREEN if arm == "light" else UNREAD_BADGE_DARK_GREEN
+            )
+            self.assertEqual(
+                fill_rgb, _to_rgb(expected),
+                "The Discuss unread badge must resolve to %s in the %s bundle; it "
+                "resolved to %s." % (expected, arm, fill_value),
+            )
+            if arm == "dark":
                 self.assertNotEqual(
                     fill_rgb, _to_rgb(DARK_MUTED_TIER),
-                    "The Discuss unread badge compiled the neutral muted tier %s in the dark bundle "
-                    "- i.e. it follows $o-brand-secondary's dark re-point instead of "
-                    "having its own arm. White on it is 2.59:1, and a grey unread counter reads as "
-                    "'already read'." % DARK_MUTED_TIER,
+                    "The Discuss unread badge compiled the neutral muted tier %s in "
+                    "the dark bundle: white on it is 2.59:1, and a grey unread counter "
+                    "reads as 'already read'." % DARK_MUTED_TIER,
                 )
 
             count_value, count_rgb = self._resolve_colour(

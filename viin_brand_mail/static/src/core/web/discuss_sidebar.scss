@@ -7,3 +7,34 @@
 .o-mail-DiscussSidebar-badge {
     padding: 4px 6px 2px 6px;
 }
+
+// The left sidebar of Discuss reads 1.125 times larger than core's type scale; message content,
+// the composer and the member panel keep core's size.
+$o-viin-discuss-sidebar-scale: 1.125;
+
+.o-mail-DiscussSidebarChannel-itemName,
+.o-mail-DiscussSidebarChannel-floatingName,
+.o-mail-DiscussSearch-inputContainer input {
+    font-size: $o-font-size-base * $o-viin-discuss-sidebar-scale;
+}
+
+.o-mail-Mailbox .small {
+    font-size: $o-font-size-base-small * $o-viin-discuss-sidebar-scale;
+}
+
+.o-mail-DiscussSidebarCategory-title,
+.o-mail-DiscussSidebarChannel-subChannel {
+    font-size: $o-font-size-base-smaller * $o-viin-discuss-sidebar-scale;
+}
+
+// Core fixes the unread counters at 0.78572 * $font-size-base with !important.
+.o-mail-DiscussSidebar-badge,
+.o-mail-DiscussSidebar-badge .o-innerBadge {
+    font-size: 0.78572 * $font-size-base * $o-viin-discuss-sidebar-scale !important;
+}
+
+// Core sizes the category chevron at 0.65rem (`.o-xsmaller` in mail's core.scss).
+.o-mail-DiscussSidebarCategory-icon,
+.o-mail-DiscussSidebarCategory-chevronCompact {
+    font-size: 0.65rem * $o-viin-discuss-sidebar-scale;
+}
