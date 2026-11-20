@@ -1,16 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* stock (reused core xmlid overrides - action help text still lives in this
-# 	  module's own views/*.xml but `odoo-bin i18n export` attributes it to the
-# 	  ORIGINALLY OWNING module since the xmlid is reused, not redeclared)
 # 	* viin_brand_stock
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 03:42+0000\n"
-"PO-Revision-Date: 2026-10-20 03:42+0000\n"
+"POT-Creation-Date: 2026-11-19 16:01+0000\n"
+"PO-Revision-Date: 2026-11-19 16:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -19,51 +16,41 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: stock
+#: model:ir.model.fields,help:stock.field_stock_move_line__picking_type_use_create_lots
+#: model:ir.model.fields,help:stock.field_stock_picking_type__use_create_lots
+#: model:ir.model.fields,help:stock.field_stock_picking__use_create_lots
+msgid ""
+"If this is checked only, it will suppose you want to create new Lots/Serial "
+"Numbers, so you can provide them in a text field. "
+msgstr ""
+"Nếu chỉ chọn ô này, có nghĩa là bạn muốn tạo số lô/sê-ri mới, để bạn có thể "
+"điền chúng trong một trường văn bản. "
+
+#. module: stock
 #: model_terms:ir.actions.act_window,help:stock.action_location_form
 msgid ""
 "Define your locations to reflect your warehouse structure and\n"
-"            organization. The system is able to manage physical locations\n"
+"            organization. Viindoo is able to manage physical locations\n"
 "            (warehouses, shelves, bin, etc), partner locations (customers,\n"
 "            vendors) and virtual locations which are the counterpart of\n"
 "            the stock operations like the manufacturing orders\n"
 "            consumptions, inventories, etc."
 msgstr ""
-"Xác định các vị trí của bạn để phản ánh cấu trúc và tổ chức\n"
-"            kho. Hệ thống có thể quản lý các vị trí thực\n"
-"            (kho, kệ, ngăn,...), các vị trí đối tác (khách hàng,\n"
-"            nhà cung cấp) và các vị trí ảo là đối ứng của\n"
+"Xác định các địa điểm của bạn để phản ánh cấu trúc và tổ chức\n"
+"            kho. Viindoo có thể quản lý các địa điểm thực\n"
+"            (kho, kệ, ngăn,...), các địa điểm đối tác (khách hàng,\n"
+"            nhà cung cấp) và các địa điểm ảo là đối ứng của\n"
 "            các nghiệp vụ kho như tiêu hao của lệnh sản xuất,\n"
 "            kiểm kê,..."
 
 #. module: stock
-#: model_terms:ir.actions.act_window,help:stock.action_location_form
-msgid ""
-"Every stock operation in Viindoo moves the products from one\n"
-"            location to another one.  For instance, if you receive products\n"
-"            from a vendor, the system will move products from the Vendor\n"
-"            location to the Stock location. Each report can be performed on\n"
-"            physical, partner or virtual locations."
-msgstr ""
-"Mọi nghiệp vụ kho trong Viindoo là dịch chuyển hàng hóa từ vị trí này\n"
-"            sang vị trí khác. Ví dụ, nếu bạn nhận hàng từ một nhà cung cấp,\n"
-"            hệ thống sẽ dịch chuyển hàng hóa từ Vị trí nhà cung cấp sang Vị trí\n"
-"            tồn kho. Từng báo cáo có thể được lập cho từng vị trí vật lý, vị\n"
-"            trí đối tác hay vị trí ảo."
-
-#. module: stock
 #: model_terms:ir.actions.act_window,help:stock.action_orderpoint
 msgid ""
-"Define a minimum stock rule so that system creates automatically requests for "
-"quotations or confirmed manufacturing orders to resupply your stock."
+"Define a minimum stock rule so that Viindoo automatically creates requests "
+"for quotations or confirmed manufacturing orders to resupply your stock."
 msgstr ""
-"Định nghĩa một quy tắc tồn kho tối thiểu để hệ thống tự động tạo các yêu "
-"cầu báo giá hoặc các lệnh sản xuất được xác nhận để tái cung ứng cho "
-"kho của bạn."
-
-#. module: viin_brand_stock
-#: model_terms:ir.ui.view,arch_db:viin_brand_stock.view_picking_type_form
-msgid "A PDF preview opens by default when these documents are printed."
-msgstr "Bản xem trước PDF sẽ được mở theo mặc định khi in các tài liệu này."
+"Xác định quy tắc tồn kho tối thiểu để Viindoo tự động tạo yêu cầu báo giá "
+"hoặc lệnh sản xuất đã xác nhận để tái cung ứng hàng tồn kho cho bạn."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_delivery_slip
@@ -106,117 +93,102 @@ msgid "Auto Print Return Slip"
 msgstr "Tự động in phiếu trả hàng"
 
 #. module: viin_brand_stock
-#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_move_line__picking_type_use_create_lots
-#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking__use_create_lots
-#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__use_create_lots
-msgid "Create New Lots/Serial Numbers"
-msgstr "Tạo số lô/sê-ri mới"
+#: model:ir.model,name:viin_brand_stock.model_res_config_settings
+msgid "Config Settings"
+msgstr "Thiết lập cấu hình"
 
 #. module: viin_brand_stock
-#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_move_line__display_name
-#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking__display_name
+#: model:ir.model.fields,field_description:viin_brand_stock.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__display_name
 msgid "Display Name"
 msgstr "Tên hiển thị"
 
 #. module: viin_brand_stock
-#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_move_line__id
-#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking__id
+#: model:ir.model.fields,field_description:viin_brand_stock.field_res_config_settings__id
 #: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__id
 msgid "ID"
 msgstr ""
 
 #. module: viin_brand_stock
-#: model:ir.model.fields,help:viin_brand_stock.field_stock_move_line__picking_type_use_create_lots
-#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking__use_create_lots
-#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__use_create_lots
-msgid ""
-"If this checkbox is ticked only, the system will suppose you want to create "
-"new Lots/Serial Numbers, so you can provide them in a text field."
-msgstr ""
-"Nếu chỉ chọn ô này, hệ thống sẽ tin rằng bạn muốn tạo số lô/sê-ri mới, để "
-"bạn có thể điền chúng trong một trường văn bản."
-
-#. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_delivery_slip
 msgid ""
-"If this checkbox is ticked, the system will automatically print the delivery"
-" slip of a picking when it is validated."
+"If this checkbox is ticked, Viindoo will automatically print the delivery "
+"slip of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu ô này, hệ thống sẽ tự động in phiếu giao hàng của phiếu kho khi"
-" phiếu kho được xác nhận."
+"Nếu đánh dấu ô này, Viindoo sẽ tự động in phiếu giao hàng của phiếu kho khi "
+"phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_lot_labels
 msgid ""
-"If this checkbox is ticked, the system will automatically print the lot/SN "
+"If this checkbox is ticked, Viindoo will automatically print the lot/SN "
 "labels of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn số lô/sê-ri của phiếu"
-" kho khi phiếu kho được xác nhận."
+"Nếu đánh dấu hộp kiểm này, Viindoo sẽ tự động in nhãn số lô/sê-ri của phiếu "
+"kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_package_label
 msgid ""
-"If this checkbox is ticked, the system will automatically print the package "
+"If this checkbox is ticked, Viindoo will automatically print the package "
 "label when \"Put in Pack\" button is used."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn kiện hàng khi nút "
+"Nếu đánh dấu hộp kiểm này, Viindoo sẽ tự động in nhãn kiện hàng khi nút "
 "\"Đóng kiện\" được sử dụng."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_packages
 msgid ""
-"If this checkbox is ticked, the system will automatically print the packages"
-" and their contents of a picking when it is validated."
+"If this checkbox is ticked, Viindoo will automatically print the packages "
+"and their contents of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in các kiện hàng và thành "
-"phần của chúng trong phiếu kho khi phiếu kho được xác nhận."
+"Nếu đánh dấu hộp kiểm này, Viindoo sẽ tự động in các kiện hàng và thành phần"
+" của chúng trong phiếu kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_product_labels
 msgid ""
-"If this checkbox is ticked, the system will automatically print the product "
+"If this checkbox is ticked, Viindoo will automatically print the product "
 "labels of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn sản phẩm của phiếu "
-"kho khi phiếu kho được xác nhận."
+"Nếu đánh dấu hộp kiểm này, Viindoo sẽ tự động in nhãn sản phẩm của phiếu kho"
+" khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_reception_report_labels
 msgid ""
-"If this checkbox is ticked, the system will automatically print the "
-"reception report labels of a picking when it is validated."
+"If this checkbox is ticked, Viindoo will automatically print the reception "
+"report labels of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in nhãn báo cáo nhập kho của "
+"Nếu đánh dấu hộp kiểm này, Viindoo sẽ tự động in nhãn báo cáo nhập kho của "
 "phiếu kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_reception_report
 msgid ""
-"If this checkbox is ticked, the system will automatically print the "
-"reception report of a picking when it is validated and has assigned moves."
+"If this checkbox is ticked, Viindoo will automatically print the reception "
+"report of a picking when it is validated and has assigned moves."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in báo cáo nhập kho của phiếu"
-" kho khi phiếu kho được xác nhận và có dịch chuyển đã giữ hàng."
+"Nếu đánh dấu hộp kiểm này, Viindoo sẽ tự động in báo cáo nhập kho của phiếu "
+"kho khi phiếu kho được xác nhận và có dịch chuyển đã giữ hàng."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_print_return_slip
 msgid ""
-"If this checkbox is ticked, the system will automatically print the return "
-"slip of a picking when it is validated."
+"If this checkbox is ticked, Viindoo will automatically print the return slip"
+" of a picking when it is validated."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động in phiếu trả hàng của phiếu "
+"Nếu đánh dấu hộp kiểm này, Viindoo sẽ tự động in phiếu trả hàng của phiếu "
 "kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
 msgid ""
-"If this checkbox is ticked, the system will automatically show the reception"
-" report (if there are moves to allocate to) when validating."
+"If this checkbox is ticked, Viindoo will automatically show the reception "
+"report (if there are moves to allocate to) when validating."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, hệ thống sẽ tự động hiển thị báo cáo nhập kho "
-"(nếu có các dịch chuyển cần phân bổ) khi xác nhận."
+"Nếu đánh dấu hộp kiểm này, Viindoo sẽ tự động hiển thị báo cáo nhập kho (nếu"
+" có các dịch chuyển cần phân bổ) khi xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model,name:viin_brand_stock.model_stock_picking_type
@@ -224,16 +196,13 @@ msgid "Picking Type"
 msgstr "Loại nghiệp vụ"
 
 #. module: viin_brand_stock
-#: model:ir.model,name:viin_brand_stock.model_stock_move_line
-msgid "Product Moves (Stock Move Line)"
-msgstr "Dịch chuyển sản phẩm (Chi tiết dịch chuyển)"
-
-#. module: viin_brand_stock
 #: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
 msgid "Show Reception Report at Validation"
 msgstr "Hiển thị báo cáo nhập kho khi xác nhận"
 
 #. module: viin_brand_stock
-#: model:ir.model,name:viin_brand_stock.model_stock_picking
-msgid "Transfer"
-msgstr "Phiếu kho"
+#: model_terms:ir.ui.view,arch_db:viin_brand_stock.view_picking_type_form
+msgid ""
+"Viindoo opens a PDF preview by default when these documents are printed."
+msgstr ""
+"Viindoo sẽ mở bản xem trước PDF theo mặc định khi in các tài liệu này."
