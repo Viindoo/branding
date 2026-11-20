@@ -1,0 +1,78 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_sms_twilio
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-19 19:21+0000\n"
+"PO-Revision-Date: 2026-11-19 19:21+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_sms_twilio
+#: model:ir.model,name:viin_brand_sms_twilio.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: viin_brand_sms_twilio
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_ir_actions_server__display_name
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_res_company__display_name
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_sms_composer__display_name
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_sms_sms__display_name
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_sms_twilio_account_manage__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_sms_twilio
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_ir_actions_server__id
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_res_company__id
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_sms_composer__id
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_sms_sms__id
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_sms_twilio_account_manage__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_sms_twilio
+#. odoo-python
+#: code:addons/viin_brand_sms_twilio/models/res_company.py:0
+msgid "Open Settings"
+msgstr ""
+
+#. module: viin_brand_sms_twilio
+#: model:ir.model,name:viin_brand_sms_twilio.model_sms_sms
+msgid "Outgoing SMS"
+msgstr ""
+
+#. module: viin_brand_sms_twilio
+#: model:ir.model.fields,field_description:viin_brand_sms_twilio.field_res_company__sms_provider
+msgid "SMS Provider"
+msgstr ""
+
+#. module: viin_brand_sms_twilio
+#: model:ir.model,name:viin_brand_sms_twilio.model_sms_twilio_account_manage
+msgid "SMS Twilio Connection Wizard"
+msgstr ""
+
+#. module: viin_brand_sms_twilio
+#. odoo-python
+#: code:addons/viin_brand_sms_twilio/models/res_company.py:0
+msgid ""
+"SMS sending is not configured for %(company)s. An administrator has to enter"
+" the Twilio account in Settings > General Settings > Contacts > Send SMS."
+msgstr ""
+
+#. module: viin_brand_sms_twilio
+#: model:ir.model,name:viin_brand_sms_twilio.model_sms_composer
+msgid "Send SMS Wizard"
+msgstr ""
+
+#. module: viin_brand_sms_twilio
+#: model:ir.model,name:viin_brand_sms_twilio.model_ir_actions_server
+msgid "Server Action"
+msgstr ""

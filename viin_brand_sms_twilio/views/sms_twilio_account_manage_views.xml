@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sms_twilio_account_manage_view_form" model="ir.ui.view">
+        <field name="name">sms.twilio.account.manage.view.form.inherit.viin.brand.sms.twilio</field>
+        <field name="model">sms.twilio.account.manage</field>
+        <field name="inherit_id" ref="sms_twilio.sms_twilio_account_manage_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//a[@href='https://www.odoo.com/documentation/latest/applications/marketing/sms_marketing/twilio.html']" position="attributes">
+                <attribute name="href">https://viindoo.com/documentation/19.0/applications/getting-started/external-apps-integration/send-sms-with-twilio.html</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
