@@ -39,9 +39,10 @@ Module này sẽ thay đổi giao diện các module Sale theo thương hiệu V
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
-    'depends': ['sale'],
+    # viin_brand: owns the hook that hides the rows of Enterprise shipping connectors
+    'depends': ['sale', 'viin_brand'],
 
     'data': [
         'views/sale_views.xml',
