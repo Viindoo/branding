@@ -3,16 +3,16 @@
     'name_vi_VN': "Giao diện Viindoo cho mô-đun Snail Mail",
 
     'summary': """
-Removes the Odoo brand from Snail Mail messages""",
+Hides Snail Mail, a paid service operated by Odoo S.A.""",
     'summary_vi_VN': """
-Gỡ thương hiệu Odoo khỏi các thông báo của Snail Mail
+Ẩn Snail Mail, dịch vụ trả phí do Odoo S.A. vận hành
 """,
 
     'description': """
 What it does
 ============
-This module removes the Odoo brand from the messages of Snail Mail. The error shown when a letter
-cannot be sent because the database has no IAP account does not name an Odoo website.
+This module hides Snail Mail, which sends letters through a paid service operated by Odoo S.A.: the
+Snailmail Letters menu is hidden and the queue of letters is not processed. The module stays installed.
 
 Editions Supported
 ==================
@@ -24,8 +24,8 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ===================
-Mô-đun này gỡ thương hiệu Odoo khỏi các thông báo của Snail Mail. Lỗi hiển thị khi thư không gửi được
-vì cơ sở dữ liệu chưa có tài khoản IAP không nhắc đến website của Odoo.
+Mô-đun này ẩn Snail Mail, tính năng gửi thư bưu điện qua dịch vụ trả phí do Odoo S.A. vận hành: menu
+Snailmail Letters bị ẩn và hàng đợi thư không được xử lý. Mô-đun vẫn được giữ nguyên trạng thái đã cài.
 
 Ấn bản được Hỗ trợ
 ==================
@@ -41,10 +41,16 @@ vì cơ sở dữ liệu chưa có tài khoản IAP không nhắc đến website
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
-    'depends': ['snailmail'],
+    'depends': ['snailmail', 'viin_brand'],
 
+    'data': [
+        'data/ir_cron_data.xml',
+        'data/ir_ui_menu_data.xml',
+    ],
+
+    'uninstall_hook': 'uninstall_hook',
     'installable': True,
     'auto_install': True,
     'price': 0.0,

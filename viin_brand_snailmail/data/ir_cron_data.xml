@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Letters go through a credit-based service of Odoo S.A., so the queue is never processed. -->
+    <function model="ir.cron" name="write" eval="[[ref('snailmail.snailmail_print')], {'active': False}]"/>
+</odoo>
