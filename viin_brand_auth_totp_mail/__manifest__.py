@@ -39,9 +39,9 @@ Module này sẽ thay đổi giao diện module Two-Factor Authentication By Mai
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.2',
 
-    'depends': ['auth_totp_mail'],
+    'depends': ['auth_totp_mail', 'viin_brand'],
 
     'data': [
         'data/mail_template_data.xml',
