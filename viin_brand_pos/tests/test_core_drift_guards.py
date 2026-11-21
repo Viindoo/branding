@@ -7,11 +7,6 @@ from odoo.tests.common import TransactionCase, tagged
 from odoo.tools import file_open
 
 ERROR_HANDLERS = "point_of_sale/static/src/app/utils/error_handlers.js"
-CASH_MOVE_LIST_POPUP = (
-    "point_of_sale/static/src/app/components/popups/cash_move_popup/cash_move_list_popup/"
-    "cash_move_list_popup.js"
-)
-ORDER_PAYMENT_VALIDATION = "point_of_sale/static/src/app/utils/order_payment_validation.js"
 
 
 def _squash(text):
@@ -93,7 +88,8 @@ class TestCoreDriftGuards(TransactionCase):
 
     def test_cash_move_deletion_is_still_what_on_delete_cm_restates(self):
         self._assert_in_core(
-            CASH_MOVE_LIST_POPUP,
+            "point_of_sale/static/src/app/components/popups/cash_move_popup/cash_move_list_popup/"
+            "cash_move_list_popup.js",
             """async onDeleteCm(cm) {
                 try {
                     await this.pos.data.call(
@@ -116,7 +112,7 @@ class TestCoreDriftGuards(TransactionCase):
 
     def test_validation_error_handling_is_still_what_handle_validation_error_restates(self):
         self._assert_in_core(
-            ORDER_PAYMENT_VALIDATION,
+            "point_of_sale/static/src/app/utils/order_payment_validation.js",
             """} else if (error instanceof RPCError) {
                 this.order.state = "draft";
                 handleRPCError(error, this.pos.dialog);

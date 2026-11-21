@@ -1,0 +1,43 @@
+// Empty-state ("no content") helper: restyles the core nocontent helper (`.o_view_nocontent` /
+// `.o_nocontent_help`) with comfortable spacing and line-height, the lead help line on the
+// scheme-aware emphasis text tier, the supporting copy on the muted tier and, in the light bundle,
+// actionable hints (links and "create the first record" CTAs) in the AA teal ($o-viin-chrome-base,
+// deepening to $o-viin-chrome-deep on hover). The dark bundle keeps core's link colour for them
+// (--link-color / --link-hover-color). The per-module illustration `::before` images are left
+// untouched. All neutrals read the scheme-aware runtime props, so the empty state is correct in
+// light and dark.
+
+.o_view_nocontent {
+    .o_nocontent_help {
+        color: var(--secondary-color);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+
+        // Lead help line (Odoo renders the primary message as the first block / smiling-face node):
+        // promote to the emphasis text tier for a clear, readable heading.
+        .o_view_nocontent_smiling_face,
+        > p:first-child {
+            margin-bottom: 0.5rem;
+            color: var(--emphasis-color);
+            font-size: 1.0625rem;
+            font-weight: $font-weight-medium;
+        }
+
+        // Actionable hints (links + create CTAs): brand teal in the light bundle, core's link colour
+        // in the dark bundle.
+        a,
+        .o_nocontent_create {
+            @if not $o-viin-dark-bundle {
+                color: $o-viin-chrome-base;
+            }
+            font-weight: $font-weight-medium;
+
+            &:hover,
+            &:focus {
+                @if not $o-viin-dark-bundle {
+                    color: $o-viin-chrome-deep;
+                }
+            }
+        }
+    }
+}

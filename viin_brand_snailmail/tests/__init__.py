@@ -1,1 +1,1 @@
-from . import test_trial_error_debrand
+from . import test_snailmail_hidden

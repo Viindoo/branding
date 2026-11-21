@@ -9,11 +9,8 @@ patch(WebClient.prototype, {
     setup() {
         super.setup();
         this.user = user;
-        // Update Favicons
-        // This patches the core WebClient, which is also mounted by bare
-        // test envs where the user session carries no active company.
-        // Degrade gracefully (skip the favicon update) instead of crashing
-        // every WebClient test; production always has an active company.
+        // Bare test environments mount WebClient without an active company: skip the favicon
+        // update there instead of crashing.
         const currentCompany = this.user.activeCompanies?.[0];
         if (!currentCompany) {
             return;

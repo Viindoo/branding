@@ -1,0 +1,28 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_spreadsheet
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-19 16:05+0000\n"
+"PO-Revision-Date: 2026-11-19 16:05+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_spreadsheet
+#. odoo-javascript
+#: code:addons/viin_brand_spreadsheet/static/src/dialog/confirmation_dialog.js:0
+msgid "Odoo Spreadsheet"
+msgstr ""
+
+#. module: viin_brand_spreadsheet
+#. odoo-javascript
+#: code:addons/viin_brand_spreadsheet/static/src/o_spreadsheet/link_editor.xml:0
+msgid "e.g. 'https://www.example.com'"
+msgstr "vd. 'https://www.example.com'"

@@ -5,7 +5,6 @@ from odoo.tests.common import TransactionCase, tagged
 
 # The Inventory help texts this module owns must not name the Odoo product.
 BRAND_TERM = "Odoo"
-PDF_PREVIEW_FRAGMENT = "PDF preview"
 OPERATION_TYPE_HELP_FIELDS = [
     "use_create_lots",
     "auto_show_reception_report",
@@ -59,7 +58,7 @@ class TestPickingTypeFormNote(TransactionCase):
             "the stock Hardware print section must carry exactly one print note",
         )
         self.assertIn(
-            PDF_PREVIEW_FRAGMENT, " ".join(stock_notes[0].itertext()),
+            "PDF preview", " ".join(stock_notes[0].itertext()),
             "the stock print note must say that a PDF preview opens by default",
         )
 
@@ -103,3 +102,44 @@ class TestOrderpointQuantityHelp(TransactionCase):
                     BRAND_TERM, field_info[name]["help"],
                     "the help of a reordering rule Min/Max quantity must not name Odoo",
                 )
+
+
+@tagged("post_install", "-at_install")
+class TestNoNeutralWordForTheProduct(TransactionCase):
+
+    def test_operation_type_and_lot_helps_do_not_say_the_system(self):
+        names = OPERATION_TYPE_HELP_FIELDS
+        for model, fields_names in (
+            ("stock.picking.type", names),
+            ("stock.picking", ["use_create_lots"]),
+            ("stock.move.line", ["picking_type_use_create_lots"]),
+        ):
+            info = self.env[model].fields_get(fields_names, attributes=["help"])
+            for name in fields_names:
+                with self.subTest(field="%s.%s" % (model, name)):
+                    self.assertNotRegex(info[name]["help"], r"\b[Tt]he system\b|\bSystem\b")
+
+    def test_location_and_reordering_rule_empty_states_name_viindoo_not_a_neutral_word(self):
+        for xmlid in ("stock.action_location_form", "stock.action_orderpoint"):
+            with self.subTest(action=xmlid):
+                help_text = self.env.ref(xmlid).with_context(lang="en_US").help
+                self.assertNotRegex(help_text, r"\b[Tt]he system\b|\bSystem\b|\bsystem creates\b")
+                self.assertIn("Viindoo", help_text)
+
+    def test_print_note_says_who_opens_the_preview(self):
+        arch = etree.fromstring(self.env["stock.picking.type"].get_view(
+            view_id=self.env.ref("stock.view_picking_type_form").id, view_type="form")["arch"].encode("utf-8"))
+        notes = arch.xpath("//page[@name='hardware']//div[@colspan='2'][contains(., 'PDF preview')]")
+        self.assertEqual(len(notes), 1)
+        self.assertIn("Viindoo opens a PDF preview", " ".join(notes[0].itertext()))
+
+
+@tagged("post_install", "-at_install")
+class TestShippingConnectorRows(TransactionCase):
+
+    def test_enterprise_shipping_connector_rows_are_hidden_from_inventory_settings(self):
+        arch = etree.fromstring(self.env["res.config.settings"].get_view(view_type="form")["arch"].encode("utf-8"))
+        for carrier in ("ups", "dhl", "fedex", "usps"):
+            rows = arch.xpath('//setting[@id="compute_shipping_costs_%s"]' % carrier)
+            self.assertEqual(len(rows), 1, carrier)
+            self.assertEqual(rows[0].get("invisible"), "1", carrier)

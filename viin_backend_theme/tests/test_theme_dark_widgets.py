@@ -1,36 +1,9 @@
-# Compile-cascade behaviour guards for viin_backend_theme's OWN widget surfaces (ODOO-AI-ETHOS #8:
-# protect the BEHAVIOR, not the code).
-#
-# WHAT THIS FILE GUARDS. Dark mode is the RECOMPILED web.assets_web_dark bundle owned by
-# viin_brand_web (dark_palette.scss), not a source-text allow-list in this theme, so the guards here
-# assert compiled behaviour only:
-#   * the backend bundle compiles to a healthy stylesheet (an aborted compile = an unstyled
-#     webclient), and the two compile-abort landmines stay out (a var()-ified surface var feeding a
-#     Sass colour function; a '--' inside an XML comment);
-#   * the theme-owned widget surfaces (the home-menu section label) resolve readable colours in each
-#     bundle.
-# The theme owns no statusbar surface and no rail surface, so there is nothing to measure there; the
-# statusbar stays core's own, asserted in tests/test_theme_core_chrome_untouched.py. The theme does
-# introduce --o-viin-* levers (focus tokens), so no rule forbids custom properties.
-#
-# WHY COMPILED-CSS, NOT SOURCE SUBSTRINGS.
-# -----------------------------------------------------------------------------------------------
-# The dark widget colour is produced by SASS at compile time and lives in a SEPARATE bundle
-# (web.assets_web_dark = `('include','web.assets_web')` + a trailing `*.dark.scss` glob) that
-# recompiles every backend rule. Only the compiled bundle shows whether the widget actually
-# renders a readable colour on the dark panel; a source-substring check ("#4FD4E2 appears somewhere")
-# is not a behaviour assertion. So the contrast tests resolve the value a real element COMPUTES
-# through the real cascade, REUSING viin_brand_web's cascade + WCAG SSOT
-# (tests/test_brand_cascade_compile.py) instead of re-implementing it
-# (ODOO-AI-ETHOS #11 SSOT). viin_backend_theme depends on viin_brand_web, so that module is always
-# installed and importable at test time; if it is ever restructured this import is the signal to
-# re-ground, not to fork a second copy of the resolver.
 import os
 import re
 
 from odoo.tests.common import BaseCase, TransactionCase, tagged
 
-from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     CHROME_BASE,
     CHROME_DEEP,
     DARK_BUNDLE,
@@ -43,35 +16,27 @@ from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
     _normalize_colour,
     _winning_declaration,
 )
-# The brand-secondary purple is declared ONLY in SCSS (there is no Python constant for it, unlike
-# the brand primary), so the expected value is READ from viin_brand_web's token SSOT with that
-# module's own resolver rather than re-literalised here (ODOO-AI-ETHOS #11).
-from odoo.addons.viin_brand_web.tests.test_brand_ssot import (
+from odoo.addons.viin_brand.tests.test_brand_ssot import (
     BRAND_VARIABLES_SCSS,
     _resolve_scss_hex,
 )
 
-_HERE = os.path.dirname(os.path.abspath(__file__))
-MODULE_DIR = os.path.dirname(_HERE)
-SCSS_DIR = os.path.join(MODULE_DIR, "static", "src", "scss")
-STATIC_SRC = os.path.join(MODULE_DIR, "static", "src")
+MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 BACKEND_BUNDLE = "web.assets_backend"
 
-# Element ancestor pools (class-only), transcribed from the theme's own templates.
-# home_menu.xml - `.o_viin_home_menu` > `.o_viin_home_content` > `.o_viin_home_body` >
-# `<div class="o_viin_home_section_label">Applications</div>`. The menu ROOT is modelled separately
-# because it is the element that declares the page band the label renders on
-# (`background-color: var(--secondary-bg)`, home_menu.scss).
+# Element ancestor pools (class-only) from home_menu.xml: `.o_viin_home_menu` >
+# `.o_viin_home_content` > `.o_viin_home_body` > `.o_viin_home_section_label`. The menu root is
+# modelled separately because it declares the page band the label renders on
+# (`background-color: var(--secondary-bg)`).
 HOME_MENU_ROOT_CLASSES = frozenset({"o_viin_home_menu"})
 HOME_MENU_ROOT_ANCESTORS = frozenset({"o_web_client", "o_action_manager"})
 HOME_SECTION_LABEL_CLASSES = frozenset({"o_viin_home_section_label"})
 HOME_SECTION_LABEL_ANCESTORS = HOME_MENU_ROOT_ANCESTORS | HOME_MENU_ROOT_CLASSES | {
     "o_viin_home_content", "o_viin_home_body", "d-flex", "flex-column", "flex-grow-1",
 }
-# The muted-grey tier the label takes in the dark bundle (home_menu.scss uses
-# `var(--secondary-color)` there). Named only so the failure message can say what the default is; the
-# load-bearing assertions are "equals the $o-brand-secondary SSOT" and the measured contrast.
+# The muted-grey token the label takes in the dark bundle; named so failure messages can say what
+# the default is.
 DEFAULT_LABEL_TOKEN = "--secondary-color"
 
 
@@ -88,11 +53,13 @@ def _strip_scss_comments(text):
 
 
 def _root_prop(css, name):
-    """Last value declared for the custom property ``name`` on a ``:root`` rule, or None.
+    """Read a custom property declared on a ``:root`` rule.
 
-    The dark palette declares the dark ``--link-color`` on ``:root``; the class-based cascade
-    resolver deliberately does not model ``:root`` (it needs a positive class), so a ``color`` that
-    resolves through a ``:root`` custom property is read here. Last declaration wins (source order)."""
+    The class-based cascade resolver does not model ``:root``, so a ``color`` that resolves through
+    a ``:root`` custom property is read here.
+
+    :return: the last value declared for ``name`` (source order wins), or ``None``
+    """
     values = []
     for _order, selector, body in _iter_rules(css):
         if selector.strip() != ":root":
@@ -105,10 +72,12 @@ def _root_prop(css, name):
 
 
 def _resolve_to_hex(css, value):
-    """Normalise ``value`` to a ``#rrggbb`` colour, following ONE ``var()`` hop through ``:root``.
+    """Normalise ``value`` to a ``#rrggbb`` colour, following one ``var()`` hop through ``:root``.
 
-    Robust to both spellings the dark teal foreground may use: a literal
-    (``color: #4fd4e2``) or the runtime prop (``color: var(--link-color)``)."""
+    Accepts both a literal (``color: #4fd4e2``) and a runtime property (``color: var(--link-color)``).
+
+    :return: the hex colour, or ``None`` when ``value`` is empty or carries no colour
+    """
     if value is None:
         return None
     match = _VAR_RE.match(value.strip())
@@ -120,12 +89,15 @@ def _resolve_to_hex(css, value):
 
 @tagged("post_install", "-at_install")
 class TestThemeDarkWidgetContrast(TransactionCase):
-    """The theme's own widget surfaces must be readable/visible in both compiled bundles."""
+    """The theme's own widget surfaces are readable in both compiled bundles.
+
+    Dark mode is the recompiled ``web.assets_web_dark`` bundle (dark_palette.scss of viin_brand), so
+    these guards read the value a real element computes through the compiled cascade, reusing the
+    cascade and WCAG helpers of viin_brand.
+    """
 
     def _compiled_css(self, bundle_name):
-        """Compile ``bundle_name`` and return its CSS payload as decoded text (19.0 API:
-        ``ir.qweb._get_asset_bundle(name, css=True, js=False).css()`` - same contract as
-        viin_brand_web/tests/test_brand_cascade_compile.py)."""
+        """Compile ``bundle_name`` and return its CSS payload as decoded text."""
         bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=True, js=False)
         attachments = bundle.css() or self.env["ir.attachment"]
         css = "".join(
@@ -139,12 +111,12 @@ class TestThemeDarkWidgetContrast(TransactionCase):
         return css
 
     def test_backend_bundle_compiles_to_a_healthy_stylesheet(self):
-        """web.assets_backend must compile to a large, error-free stylesheet.
+        """web.assets_backend compiles to a large, error-free stylesheet.
 
-        The compile-abort landmine (a var()-ified surface var feeding color-contrast()/mix(), or a
-        Sass error) collapses the whole bundle to a ~23KB stub carrying the "A css error occured"
-        banner and renders the webclient unstyled. A healthy compile is far larger and carries none
-        of that banner. End-to-end proof the theme's SCSS contributions stay compile-safe."""
+        A Sass compile abort (e.g. a var()-ified surface variable feeding color-contrast()) collapses
+        the bundle to a small stub carrying the "A css error occured" banner and leaves the webclient
+        unstyled.
+        """
         css = self._compiled_css(BACKEND_BUNDLE)
         self.assertGreater(
             len(css), 100_000,
@@ -158,41 +130,22 @@ class TestThemeDarkWidgetContrast(TransactionCase):
         )
 
     def test_home_menu_section_label_is_the_structure_purple_on_its_own_band(self):
-        """The home-menu section label must be the STRUCTURE purple, readable on its band, both schemes.
+        """The home-menu section label is the structure purple in light, and readable in both schemes.
 
-        viin_brand_web's COLOUR LAW (brand_variables.scss) reads TEAL = ACT / PURPLE =
-        META-STRUCTURE. "Applications" is a section label - it organises the app grid, it is not
-        something the user can do - so it joins the group-by search facet and the list group header
-        as a purple STRUCTURE accent in LIGHT mode only. The two arms of this test assert OPPOSITE
-        things on purpose:
-          light  the label IS $o-brand-secondary #7F4282 (and is not a teal);
-          dark   the label is NOT purple - it is `var(--secondary-color)`, i.e. "the default look /
-                 core colours". That token flips dark-correct on its own: dark_palette.scss re-points
-                 $body-secondary-color to #8EA5A8, which Bootstrap emits as --secondary-color, giving
-                 7.24:1 on the dark band.
+        The brand colour law reads teal = act, purple = meta-structure. "Applications" organises the
+        app grid, so in LIGHT mode it is the purple ``$o-brand-secondary`` accent, never a teal. In
+        DARK mode it is not purple: it is ``var(--secondary-color)``, which flips dark-correct on its
+        own through the ``$body-secondary-color`` of dark_palette.scss. The choice is made at compile
+        time by the ``$o-viin-dark-bundle`` flag, so each bundle carries exactly one ``color``
+        declaration and there is no dark companion file.
 
-        THE SURFACE IS RESOLVED, NOT ASSUMED. The label sits on the menu root's own band, which
-        home_menu.scss paints `background-color: var(--secondary-bg)` - a runtime prop that flips
-        between the schemes ($gray-200 #E9ECEF light / #0B1315 dark, the latter from
-        viin_brand_web's dark_palette.scss $body-secondary-bg). So the contrast is measured
-        against the band the compiled bundle ACTUALLY declares for that element, in each bundle,
-        rather than against a hardcoded page colour that could silently go stale.
-
-        STILL NO DARK COMPANION FILE, AND THAT IS PART OF THE CONTRACT: the choice is made at COMPILE
-        time by viin_brand_web's $o-viin-dark-bundle flag, so each bundle carries exactly one
-        `color` declaration and there is no cascade fight and no *.dark.scss to keep in sync.
-
-        This is the lowest-risk purple in the cluster: `.o_viin_home_section_label` is theme-owned
-        markup that no core rule targets, so the rule needs no `!important` and no token re-point -
-        which the assertions rely on only in that they expect a plain resolvable colour.
-
-        WOULD FAIL IF REVERTED: restoring `var(--secondary-color)` unconditionally fails the "equals
-        $o-brand-secondary" assertion in the light arm; dropping the `@if` guard (purple in both)
-        fails the dark refusal."""
+        The contrast is measured against the band the compiled bundle declares for the menu root in
+        that bundle, not a hardcoded page colour.
+        """
         expected_purple = _resolve_scss_hex(_read(BRAND_VARIABLES_SCSS), "$o-brand-secondary")
         self.assertIsNotNone(
             expected_purple,
-            "$o-brand-secondary must be declared in viin_brand_web's brand_variables.scss - it "
+            "$o-brand-secondary must be declared in viin_brand's brand_variables.scss - it "
             "is the SSOT for every META/STRUCTURE purple surface in this cluster.",
         )
         expected_purple = expected_purple.lower()
@@ -225,7 +178,7 @@ class TestThemeDarkWidgetContrast(TransactionCase):
             self.assertNotIn(
                 colour, (CHROME_BASE, CHROME_DEEP),
                 "The %s home-menu section label compiled the teal %s. A section label is "
-                "STRUCTURE, not an ACT - see the colour law in viin_brand_web's "
+                "STRUCTURE, not an ACT - see the colour law in viin_brand's "
                 "brand_variables.scss." % (arm, colour),
             )
             if arm == "light":
@@ -239,7 +192,7 @@ class TestThemeDarkWidgetContrast(TransactionCase):
                 self.assertNotEqual(
                     colour, expected_purple,
                     "The home-menu section label compiled the light brand purple %s in the DARK "
-                    "bundle - 2.24:1 on the dark band. The purple accent is light-only; "
+                    "bundle, which is unreadable on the dark band. The purple accent is light-only; "
                     "wrap the declaration in `@if not $o-viin-dark-bundle`."
                     % expected_purple,
                 )
@@ -274,24 +227,26 @@ class TestThemeDarkWidgetContrast(TransactionCase):
                 ratio, WCAG_AA_NORMAL_TEXT,
                 "The home-menu section label renders %s on the %s band %s - %.2f:1, below the WCAG "
                 "AA normal-text threshold of %.1f:1. In the dark bundle this is the signature of a "
-                "$o-brand-secondary that lost its dark arm (the light #7F4282 is 2.50:1 there)."
+                "$o-brand-secondary that lost its dark arm."
                 % (colour, arm, band, ratio, WCAG_AA_NORMAL_TEXT),
             )
 
 
 class TestThemeCompileSafetyInvariants(BaseCase):
-    """Static source guards for the two compile-abort landmines - no DB needed. These protect real
-    catastrophic BEHAVIOURS (unstyled / blank webclient), not file text."""
+    """Static source guards, with no database, for the two compile-abort landmines that leave the
+    webclient unstyled or blank."""
 
     def test_surface_vars_are_never_var_ified(self):
-        """primary_variables.scss must NOT var()-ify a surface var that feeds a Sass colour function.
+        """primary_variables.scss never var()-ifies a surface variable that feeds a Sass colour function.
 
-        `$o-view-background-color` / `$o-webclient-background-color` feed core's `$body-bg` ->
-        `color-contrast()` -> `mix()`, which cannot evaluate a var() at compile time; a var()-ified
-        surface var aborts the WHOLE web.assets_web bundle (unstyled webclient). They MUST stay real
-        hexes - dark is delivered by the recompiled web.assets_web_dark bundle, not a runtime var
-        flip. This is the exact regression guard for that proven abort."""
-        source = _strip_scss_comments(_read(os.path.join(SCSS_DIR, "primary_variables.scss")))
+        ``$o-view-background-color`` and ``$o-webclient-background-color`` feed core's ``$body-bg``
+        -> ``color-contrast()`` -> ``mix()``, which cannot evaluate a ``var()`` at compile time; a
+        var()-ified one aborts the whole ``web.assets_web`` bundle. They stay real hexes: dark is
+        delivered by the recompiled ``web.assets_web_dark`` bundle, not a runtime variable flip.
+        """
+        source = _strip_scss_comments(
+            _read(os.path.join(MODULE_DIR, "static", "src", "scss", "primary_variables.scss"))
+        )
         for var_name in ("$o-view-background-color", "$o-webclient-background-color"):
             offenders = re.findall(re.escape(var_name) + r"\s*:\s*[^;]*var\(", source)
             self.assertFalse(
@@ -302,14 +257,15 @@ class TestThemeCompileSafetyInvariants(BaseCase):
             )
 
     def test_no_double_hyphen_in_xml_comments(self):
-        """No XML comment under static/src may contain '--' (double hyphen).
+        """No XML comment under static/src contains '--' (double hyphen).
 
-        '--' is illegal inside `<!-- ... -->` and makes the QWeb parser reject the WHOLE web.assets
-        template bundle -> `OwlError: Missing template "web.WebClient"` -> the entire backend renders
-        BLANK. A single such slip in a comment took down 100% of the webclient during W2, so this
-        cheap static guard scans every OWL/QWeb .xml under static/src."""
+        '--' is illegal inside ``<!-- ... -->`` and makes the QWeb parser reject the whole
+        web.assets template bundle, so ``Missing template "web.WebClient"`` blanks the entire
+        backend.
+        """
+        static_src = os.path.join(MODULE_DIR, "static", "src")
         offenders = []
-        for root, _dirs, files in os.walk(STATIC_SRC):
+        for root, _dirs, files in os.walk(static_src):
             for name in files:
                 if not name.endswith(".xml"):
                     continue

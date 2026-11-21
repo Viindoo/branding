@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-    	<function name="write" model="auth.oauth.provider">
-	        <value eval="[ref('auth_oauth.provider_openerp')]" />
-	        <value eval="{
-	            'enabled': False,
-	            'name': 'Legacy Accounts (Disabled)',
-	            'body': '',
-	            'auth_endpoint': '',
-	            'validation_endpoint': '',
-	        }" />
-    	</function>
-    </data>
+    <!-- The provider is deleted only when core's record exists: a missing xml id logs a warning -->
+    <delete
+        model="auth.oauth.provider"
+        search="[('id', 'in', obj().env['ir.model.data'].search([('module', '=', 'auth_oauth'), ('name', '=', 'provider_openerp')]).mapped('res_id'))]"/>
 </odoo>

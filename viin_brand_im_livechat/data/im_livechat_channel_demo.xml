@@ -5,7 +5,7 @@
             <field name="body">Hi, if you need help with your database, feel free to contact our support via http://www.viindoo.com/ticket</field>
         </record>
         <record id="im_livechat.livechat_channel_session_6_message_3" model="mail.message">
-            <field name="body">Yes, of course, you can find it here: https://viindoo.com/documentation/16.0/applications.html</field>
+            <field name="body">Yes, of course, you can find it here: https://viindoo.com/documentation/19.0/applications.html</field>
         </record>
         <record id="im_livechat.livechat_channel_session_2_message_2" model="mail.message">
             <field name="body">I was wondering if Viindoo has an application to easily manage social media for my business..</field>
@@ -15,6 +15,15 @@
         </record>
         <record id="im_livechat.livechat_channel_session_4_message_2" model="mail.message">
             <field name="body">Hello Joel Willis, you're at the right place! You can customize Viindoo using our Studio application in just a few clicks.</field>
+        </record>
+        <record id="im_livechat.livechat_channel_chatbot_session_1_demo" model="discuss.channel">
+            <field name="name">Visitor #234, Viindoo</field>
+        </record>
+        <record id="im_livechat.livechat_channel_chatbot_session_2_demo" model="discuss.channel">
+            <field name="name">Visitor #235, Viindoo</field>
+        </record>
+        <record id="im_livechat.livechat_channel_chatbot_session_3_demo" model="discuss.channel">
+            <field name="name">Visitor #236, Viindoo</field>
         </record>
     </data>
 </odoo>

@@ -73,6 +73,11 @@ class TestHideEnterpriseUpsell(TransactionCase):
         self.assertEqual(doc.xpath('//setting[@id="viin_upsell_test"]')[0].get('invisible'), '1')
         self.assertEqual(doc.xpath('//app[@name="viin_upsell_test"]')[0].get('invisible'), '1')
 
+    def test_company_suggestion_setting_is_hidden(self):
+        doc = etree.fromstring(self.settings.get_view(self.env.ref('base.res_config_settings_view_form').id)['arch'])
+
+        self.assertEqual(doc.xpath('//setting[@id="partner_autocomplete"]')[0].get('invisible'), '1')
+
     def test_apps_action_hides_to_buy_modules_and_keeps_other_domains(self):
         Module = self.env['ir.module.module']
         stub = Module.create({'name': 'enterprise_stub', 'to_buy': True, 'state': 'uninstallable'})

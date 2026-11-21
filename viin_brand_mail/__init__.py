@@ -9,6 +9,8 @@ if tools.config.get('test_enable', False):
     from odoo.addons.mail.tests.common import MailCommon
     from odoo.addons.mail.tests.discuss.test_ui import TestUi as CoreDiscussTestUi
 
+    from odoo.addons.viin_brand import get_viin_brand_module_icon
+
     from .models.mail_thread import MailThread as ViinBrandMailThread
     try:
         from odoo.addons.test_mail.tests.test_mail_push import TestWebPushNotification
@@ -21,12 +23,10 @@ if tools.config.get('test_enable', False):
 
 
 def _core_web_push_payload(self, message, msg_vals=False, force_record_name=False):
-    """`_notify_by_web_push_prepare_payload` with this module's de-brand bypassed.
+    """Run ``_notify_by_web_push_prepare_payload`` below this module's override.
 
-    Dispatches straight past our override to whatever implementation sits below it,
-    so the caller observes stock Odoo behaviour (including the stock
-    `odoo-icon-192x192.png` fallback) while any other module's override is still
-    honoured.
+    The caller observes the stock behaviour, including the stock ``odoo-icon-192x192.png``
+    fallback, while the overrides of other modules are still honoured.
     """
     return super(ViinBrandMailThread, self)._notify_by_web_push_prepare_payload(
         message, msg_vals, force_record_name=force_record_name,
@@ -34,23 +34,13 @@ def _core_web_push_payload(self, message, msg_vals=False, force_record_name=Fals
 
 
 def _without_web_push_debrand(test_method_original):
-    """Run a core test with this module's web-push de-brand temporarily disabled.
+    """Run a core test with the web-push de-brand of this module disabled.
 
-    `models/mail_thread.py` replaces the anonymous web-push icon with the Viindoo app
-    icon, which invalidates exactly ONE of the 13 assertions in
-    `test_mail.tests.test_mail_push.TestWebPushNotification.test_notify_by_push_channel`
-    (`test_mail_push.py:135`, the guest-sender icon).
-
-    That expectation is an inline local built at `test_mail_push.py:130-134` inside a
-    loop and a `subTest` - there is no builder, helper or class attribute to patch, so
-    the expectation itself is unreachable. Rather than neuter the whole method (which
-    would silently drop the other 12 assertions - channel-type routing, notification
-    counts, title composition, body/res_id/model, device endpoint and mute-until
-    behaviour) or copy its body (which would drift from core), we restore the
-    PRECONDITION instead: with our override bypassed, core's test exercises core's own
-    code and all 13 assertions run unchanged.
-
-    Our de-brand stays protected by `tests/test_web_push_icon_debrand.py`.
+    The de-brand invalidates exactly one assertion of
+    ``TestWebPushNotification.test_notify_by_push_channel`` (the icon for a guest sender), and
+    that expectation is an inline local of the test. Restoring the precondition keeps its other
+    assertions running unchanged. The de-brand itself is protected by
+    ``tests/test_web_push_icon_debrand.py``.
     """
     def test_notify_by_push_channel(self, *args, **kwargs):
         with patch.object(
@@ -63,62 +53,56 @@ def _without_web_push_debrand(test_method_original):
 
 
 def _restore_core_bot_branding_fixture(setup_class_original):
-    """Build a `setUpClass` that re-applies core's OdooBot naming on `base.partner_root`.
+    """Build a ``setUpClass`` that restores the OdooBot name and email on ``base.partner_root``.
 
-    `data/res_partner_data.xml` de-brands `base.partner_root` to ViindooBot. A number
-    of core suites assert the stock Odoo naming on that very record - e.g.
-    `test_discuss_full.tests.test_performance` (`test_performance.py:400,406`),
-    `test_mail.tests.test_performance`, `im_livechat.tests.test_get_discuss_channel`,
-    `im_livechat.tests.test_chatbot_internals` and
-    `test_mail_full.tests.test_mail_bot`. Since this module is `auto_install`, those
-    suites see the de-branded record and would fail on the literal `OdooBot` /
-    `odoobot@example.com`.
+    Core suites such as those of ``test_discuss_full``, ``test_mail``, ``im_livechat``,
+    ``test_mail_full`` and ``google_calendar`` hardcode the stock bot naming. The write happens in
+    the transaction of the test class and is rolled back on teardown, so no committed data changes.
 
-    All of those suites derive from `mail.tests.common.MailCommon`, so restoring the
-    fixture once here covers every one of them. The write happens inside the test
-    class transaction and is rolled back on teardown, so it never reaches committed
-    data - unlike the previous implementation, which performed this same write from
-    `post_init_hook`, i.e. on the production install path.
-
-    `mail.tests.discuss.test_ui.TestUi` (its `test_05_can_create_channel_tour`
-    tour renders the Discuss sidebar and reads the bot's live `name`) is
-    wrapped SEPARATELY with this same builder rather than being covered by the
-    MailCommon fixture above: it derives from `base.tests.common.
-    HttpCaseWithUserDemo`, a plain `HttpCase` mixin used by ~30 unrelated core
-    suites across `website`, `sale`, `im_livechat`, `digest`, etc. that have no
-    stake in the bot's naming - wrapping `HttpCaseWithUserDemo` itself would
-    restore core's naming for all of them too, far beyond what this fixture
-    needs to cover. Targeting `TestUi` alone keeps the blast radius to the one
-    class that actually needs it.
+    :param setup_class_original: the ``setUpClass`` function to wrap
+    :return: the wrapping ``classmethod``
     """
     def setUpClass(cls):
         setup_class_original(cls)
         partner_root = cls.env.ref('base.partner_root', raise_if_not_found=False)
         if partner_root:
-            # sudo: test fixture restoring a core-owned record inside the test
-            # transaction; rolled back with the class teardown.
+            # sudo: restores a record of another module inside the test transaction
             partner_root.sudo().write({'name': 'OdooBot', 'email': 'odoobot@example.com'})
     return classmethod(setUpClass)
+
+
+def _patch_mailcommon_module_icon_expectation():
+    """Realign the core mail Store tests to the Viindoo module icon.
+
+    Several core suites hardcode the stock icon of a module in the expected ``module_icon`` of
+    their Store payloads, all built through ``MailCommon._filter_threads_fields``. The expected
+    icon is resolved with the same function the Store uses, so the tests assert the Viindoo icon.
+    """
+    _filter_threads_fields_orig = MailCommon._filter_threads_fields
+
+    def _filter_threads_fields(self, /, *threads_data):
+        data_list = _filter_threads_fields_orig(self, *threads_data)
+        for data in data_list:
+            model = data.get('model')
+            if 'module_icon' in data and model and model in self.env:
+                data['module_icon'] = get_viin_brand_module_icon(self.env[model]._original_module)
+        return data_list
+
+    MailCommon._filter_threads_fields = _filter_threads_fields
 
 
 def post_load():
     if not tools.config.get('test_enable', False):
         return
+    _patch_mailcommon_module_icon_expectation()
     MailCommon.setUpClass = _restore_core_bot_branding_fixture(MailCommon.setUpClass.__func__)
-    # mail.tests.discuss.test_ui.TestUi derives from HttpCaseWithUserDemo (NOT MailCommon), so the
-    # MailCommon fixture above misses it too - same reason as TestSyncGoogle below. Its
-    # test_05_can_create_channel_tour tour renders the Discuss sidebar and asserts the literal
-    # "OdooBot" text; wrapped narrowly on TestUi itself (not on HttpCaseWithUserDemo, which ~30
-    # unrelated core suites also derive from - see the docstring above) to keep the fixture's blast
-    # radius to exactly the one suite that needs it.
+    # TestUi derives from HttpCaseWithUserDemo, which ~30 unrelated suites share, so it is
+    # wrapped itself and not its base class.
     CoreDiscussTestUi.setUpClass = _restore_core_bot_branding_fixture(CoreDiscussTestUi.setUpClass.__func__)
-    # google_calendar's sync suites derive from HttpCase (NOT MailCommon), so the MailCommon fixture
-    # above misses them. They hardcode the stock bot address odoobot@example.com in ~14 expected
-    # google-API organizer/attendee payloads (test_sync_odoo2google.py); the event organizer is
-    # env.user = base.partner_root, which this module de-brands to viindoobot@example.viindoo.com,
-    # so every payload mismatches. Restore core's bot identity for their base class too - same
-    # rollback-safe, test-only fixture; the committed de-brand (asserted by test_partner_root_debrand)
-    # is untouched.
+    # The sync tests of google_calendar derive from HttpCase and run right after google_calendar
+    # loads, so the realignment has to exist before that. Within a load phase modules load by graph
+    # depth, then by name: this holds while viin_brand_mail sits at a smaller depth than
+    # google_calendar, which tests/test_realign_load_order.py asserts.
     if TestSyncGoogle:
         TestSyncGoogle.setUpClass = _restore_core_bot_branding_fixture(TestSyncGoogle.setUpClass.__func__)
     if TestWebPushNotification:
@@ -128,12 +112,8 @@ def post_load():
 
 
 def post_init_hook(env):
-    # OBS-1 debrand: normalize any company still holding mail's untouched core default
-    # ('#875A7B', legacy Odoo aubergine) for the outgoing-notification button color to
-    # Viindoo's brand secondary colour (owner decision D1: '#7f4282'), so pre-existing
-    # companies (upgrade path) get debranded too - not just companies created after this
-    # module is installed. A company whose value already differs from the stock default
-    # (an explicit customer choice) is left untouched.
+    # Companies that still hold the stock outgoing-notification button colour of mail get the
+    # Viindoo secondary colour; a colour the customer chose is left untouched.
     env['res.company'].sudo().search([('email_secondary_color', '=', '#875A7B')]).write({
         'email_secondary_color': '#7f4282',
     })

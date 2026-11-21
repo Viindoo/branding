@@ -1,0 +1,14 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#. module: viin_brand
+#: model_terms:ir.actions.act_window,help:viin_brand.noupdate_translation_help
+msgid "One dedicated to advanced Odoo developers, one for new developers."
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.actions.act_window,help:viin_brand.noupdate_translation_help
+msgid "Start now."
+msgstr "Bắt đầu ngay."
+

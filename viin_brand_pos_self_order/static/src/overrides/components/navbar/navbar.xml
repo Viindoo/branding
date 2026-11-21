@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- The menu entry opens a form on a page hosted by Odoo. -->
+    <t t-name="viin_brand_pos_self_order.Navbar" t-inherit="point_of_sale.Navbar" t-inherit-mode="extension">
+        <xpath expr="//DropdownItem[contains(@onSelected, 'redirectToQrForm')]" position="replace"/>
+    </t>
+
+</templates>

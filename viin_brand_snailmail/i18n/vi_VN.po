@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-30 01:44+0000\n"
-"PO-Revision-Date: 2026-10-30 01:44+0000\n"
+"POT-Creation-Date: 2026-11-19 16:01+0000\n"
+"PO-Revision-Date: 2026-11-19 16:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,26 +16,16 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_snailmail
-#: model:ir.model.fields,field_description:viin_brand_snailmail.field_snailmail_letter__display_name
+#: model:ir.model.fields,field_description:viin_brand_snailmail.field_ir_ui_menu__display_name
 msgid "Display Name"
 msgstr "Tên hiển thị"
 
 #. module: viin_brand_snailmail
-#: model:ir.model.fields,field_description:viin_brand_snailmail.field_snailmail_letter__id
+#: model:ir.model.fields,field_description:viin_brand_snailmail.field_ir_ui_menu__id
 msgid "ID"
 msgstr ""
 
 #. module: viin_brand_snailmail
-#: model:ir.model,name:viin_brand_snailmail.model_snailmail_letter
-msgid "Snailmail Letter"
-msgstr "Thư bưu điện"
-
-#. module: viin_brand_snailmail
-#. odoo-python
-#: code:addons/viin_brand_snailmail/models/snailmail_letter.py:0
-msgid ""
-"You don't have an IAP account registered for this service.<br>Please go to "
-"your <a href=%s target=\"new\">IAP account</a> to claim your free credits."
+#: model:ir.model,name:viin_brand_snailmail.model_ir_ui_menu
+msgid "Menu"
 msgstr ""
-"Bạn chưa đăng ký tài khoản IAP cho dịch vụ này.<br>Vui lòng truy cập <a "
-"href=%s target=\"new\">tài khoản IAP</a> của bạn để nhận điểm miễn phí."

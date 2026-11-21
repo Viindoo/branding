@@ -1,29 +1,21 @@
 /** @odoo-module **/
 
-// Durable HttpCase tours for the appearance (dark scheme + density) + D3 home-menu behaviors. Driven
-// by tests/test_tours.py. Tours assert OBSERVABLE UI state only (an attribute on <html>, a rendered
-// tile, the client action that loaded) - never internals. Each trigger is an implicit oracle: the
-// step only advances once the UI reaches that state, so a regression stalls the step and fails.
+// Tours for the appearance (dark scheme + density) and the home-menu behaviours, driven by
+// tests/test_tours.py. They assert observable UI state only (an attribute on <html>, a rendered
+// tile, the client action that loaded); each trigger is an implicit oracle, so a regression stalls
+// the step and fails.
 //
-// T-1 (PR #658 review-fix): the DARK toggle no longer instant-flips [data-bs-theme] with no reload.
-// Dark is now a RECOMPILED server bundle (web.assets_web_dark), which cannot swap without a reload -
-// so choosing Dark PERSISTS the choice (res.users.viin_color_scheme + the color_scheme cookie) and
-// RELOADS, after which the server serves the dark bundle and boot-stamps data-bs-theme=dark. DENSITY
-// stays instant + cookie-SSOT (no server field, no reload) - that tour is unchanged.
-//
-// GROUNDED (OSM 19.0 + core source): registry path web_tour.tours + {url, steps: () => [...]}; the
-// run vocabulary ("click", "edit <text>", "press <Key>") and `expectUnloadPage: true` for a step
-// whose action unloads the page are the v19 forms (web_tour tour_step / tour_automatic; core
-// web/static/tests/tours/user_switch_tour.js uses expectUnloadPage on a reload/navigation click).
+// Dark is a recompiled server bundle (web.assets_web_dark) that cannot swap without a reload, so
+// choosing Dark persists the choice (res.users.viin_color_scheme + the color_scheme cookie) and
+// reloads; the server then serves the dark bundle and boot-stamps data-bs-theme=dark. Density is an
+// instant flip backed by a cookie, with no server field.
 
 import { registry } from "@web/core/registry";
 
 const tours = registry.category("web_tour.tours");
 
-// D-DARK (T-1): toggling Dark PERSISTS the choice + effective cookie and RELOADS; after the reload
-// the server serves the dark bundle and boot-stamps data-bs-theme=dark. There is NO instant, in-place
-// flip. RED now: the current service instant-applies without reloading, so the click step below
-// (expectUnloadPage) fails - the page never unloads within the timeout.
+// Toggling Dark persists the choice and the effective cookie, then reloads; there is no in-place
+// flip, so the click step expects the page to unload.
 tours.add("viin_dark_toggle_tour", {
     url: "/odoo",
     steps: () => [
@@ -37,8 +29,7 @@ tours.add("viin_dark_toggle_tour", {
                 "choose the Dark scheme - this persists the pref + cookie and reloads the page",
             trigger: ".o_viin_appearance_option:contains(Dark)",
             run: "click",
-            // The choice reloads so the server can serve the recompiled dark bundle. Marking the step
-            // as page-unloading is what distinguishes persist+reload from the retired instant flip.
+            // The choice reloads so the server can serve the recompiled dark bundle.
             expectUnloadPage: true,
         },
         {
@@ -49,8 +40,7 @@ tours.add("viin_dark_toggle_tour", {
     ],
 });
 
-// D-DARK persist: a FRESH /odoo load (new browser session) is boot-stamped dark server-side from the
-// persisted user preference, proving the choice survives beyond the reloading session above.
+// A fresh /odoo load is boot-stamped dark server-side from the persisted user preference.
 tours.add("viin_dark_persist_tour", {
     url: "/odoo",
     steps: () => [
@@ -62,11 +52,9 @@ tours.add("viin_dark_persist_tour", {
     ],
 });
 
-// D-DENSITY: choosing Compact stamps the density attribute on <html> INSTANTLY, and it survives a
-// reload. Density is cookie-SSOT by design (viin_density cookie, no server field), so the reload MUST
-// happen inside ONE browser session: location.reload() keeps the cookie jar, whereas a fresh
-// start_tour spawns a new Chrome that only re-injects the auth cookie (not viin_density). The
-// post-reload assertion fails if the boot template stops re-reading the cookie (RED-on-removal).
+// Choosing Compact stamps the density attribute on <html> instantly, and it survives a reload.
+// Density is cookie-backed (no server field), so the reload must stay inside one browser session: a
+// fresh start_tour spawns a Chrome that only re-injects the auth cookie, not viin_density.
 tours.add("viin_density_tour", {
     url: "/odoo",
     steps: () => [
@@ -98,8 +86,8 @@ tours.add("viin_density_tour", {
     ],
 });
 
-// D3 HOME MENU: land on the flat home grid, fuzzy-search a partial app name, keyboard-navigate,
-// and launch - asserting the app action actually loaded (F5 parity).
+// Home menu: land on the flat grid, fuzzy-search a partial app name, keyboard-navigate and launch,
+// asserting that the app action loaded.
 tours.add("viin_home_menu_tour", {
     url: "/odoo",
     steps: () => [

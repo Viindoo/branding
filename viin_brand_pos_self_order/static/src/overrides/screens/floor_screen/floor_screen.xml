@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <!-- The button opens a form on a page hosted by Odoo. -->
+    <t t-name="viin_brand_pos_self_order.FloorScreen" t-inherit="pos_restaurant.FloorScreen" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('qr-order-button')]" position="replace"/>
+    </t>
+
+</templates>

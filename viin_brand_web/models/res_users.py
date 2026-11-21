@@ -1,42 +1,15 @@
-# -*- coding: utf-8 -*-
 from odoo import fields, models
-from odoo.http import request
 
 
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
-    # Per-user backend color scheme (dark mode). The 'viin_' prefix avoids collision with
-    # core's own unprefixed `color_scheme` concept (cookie / ir.http). 'auto' defers to the
-    # client / OS, so the server keeps rendering the super() fallback for it (see ir.http).
+    # TODO: remove in 20.0
+    # The field is declared by `viin_brand`. This declaration stays so that a database on which
+    # this module is still installed keeps the field owned by an installed module.
     viin_color_scheme = fields.Selection(
         selection=[('light', "Light"), ('dark', "Dark"), ('auto', "System")],
         string="Color Scheme",
         default='light',
         help="Backend appearance: Light, Dark, or System (follow the device preference).",
     )
-
-    @property
-    def SELF_READABLE_FIELDS(self):
-        # A user may read their own color-scheme preference (no admin rights needed).
-        return super().SELF_READABLE_FIELDS + ['viin_color_scheme']
-
-    @property
-    def SELF_WRITEABLE_FIELDS(self):
-        # A user may set their OWN color-scheme preference; the SELF scope pins the write to
-        # the current user, so writing another user's field still raises AccessError.
-        return super().SELF_WRITEABLE_FIELDS + ['viin_color_scheme']
-
-    def write(self, vals):
-        # Keeps the color_scheme cookie converging on the CURRENT user's own preference change.
-        # Scoped to self.env.user's own record so writing someone else's preference never bleeds
-        # into the acting user's response. 'auto' is left ALONE rather than expired: that cookie
-        # is core's client-side source of truth for dark mode - core reads it for graph colours,
-        # the colour picker, the ace editor and the pdf.js viewer - so it must always hold a
-        # resolved light|dark. Under 'auto' the client is what resolves the OS and writes the
-        # effective value there, and that resolution is the only copy anything else has.
-        res = super().write(vals)
-        scheme = vals.get('viin_color_scheme')
-        if request and self.env.user in self and scheme in ('light', 'dark'):
-            request.future_response.set_cookie('color_scheme', scheme)
-        return res

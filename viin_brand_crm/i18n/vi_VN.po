@@ -1,14 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* viin_brand_crm
-# 	* crm (reused core xmlid overrides - see NOTE in viin_brand_stock/i18n/vi_VN.po)
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 16:25+0000\n"
-"PO-Revision-Date: 2026-08-07 16:25+0000\n"
+"POT-Creation-Date: 2026-11-19 15:59+0000\n"
+"PO-Revision-Date: 2026-11-19 15:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,10 +15,32 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: viin_brand_crm
-#: model_terms:ir.ui.view,arch_db:viin_brand_crm.crm_lead_view_form
-msgid "e.g. https://viindoo.com"
-msgstr "vd: https://viindoo.com"
+#. module: crm
+#: model:ir.model.fields,help:crm.field_crm_team__alias_domain
+msgid "Email domain e.g. 'example.com' in 'viindoo@example.com'"
+msgstr "Tên miền email, ví dụ 'example.com' trong 'viindoo@example.com'"
+
+#. module: crm
+#: model:ir.model.fields,help:crm.field_crm_team__alias_model_id
+msgid ""
+"The model (Viindoo Document Kind) to which this alias corresponds. Any "
+"incoming email that does not reply to an existing record will cause the "
+"creation of a new record of this model (e.g. a Project Task)"
+msgstr ""
+"Mô hình (Loại tài liệu Viindoo) mà bí danh này tương tác. Mọi email đến mà "
+"không phải là email trả lời một bản ghi hiện có sẽ tạo ra một bản ghi mới "
+"trong mô hình này. (ví dụ: Nhiệm vụ dự án)"
+
+#. module: crm
+#. module: mail
+#: model:ir.model.fields,help:crm.field_crm_team__alias_name
+#: model:ir.model.fields,help:mail.field_mail_alias_mixin_optional__alias_name
+msgid ""
+"The name of the email alias, e.g. 'jobs' if you want to catch emails for "
+"<jobs@example.viindoo.com>"
+msgstr ""
+"Tên của bí danh email, ví dụ: 'jobs' nếu bạn muốn nhận email gửi đến địa chỉ"
+" <jobs@example.viindoo.com>"
 
 #. module: crm
 #: model_terms:digest.tip,tip_description:crm.digest_tip_crm_2
@@ -38,22 +59,90 @@ msgstr ""
 #: model_terms:digest.tip,tip_description:crm.digest_tip_crm_5
 msgid ""
 "Did you know you can turn a list of opportunities into a map view, using the"
-" top-right map icon? A lot of screens in system can be turned into a map: "
+" top-right map icon? A lot of screens in Viindoo can be turned into a map: "
 "tasks, contacts, delivery orders, etc."
 msgstr ""
-"Bạn có biết rằng bạn có thể chuyển danh sách các cơ hội thành chế độ xem bản "
+"Bạn có biết rằng bạn có thể chuyển danh sách các cơ hội thành giao diện bản "
 "đồ bằng cách sử dụng biểu tượng bản đồ trên cùng bên phải không? Rất nhiều "
-"màn hình trong hệ thống có thể được biến thành bản đồ: nhiệm vụ, danh bạ, "
-"phiếu xuất kho, v.v."
+"màn hình trong Viindoo có thể được biến thành bản đồ: nhiệm vụ, liên hệ, "
+"phiếu xuất kho,..."
 
 #. module: crm
-#: model_terms:digest.tip,tip_description:crm.digest_tip_crm_4
+#: model_terms:ir.actions.act_window,help:crm.crm_case_form_view_salesteams_opportunity
 msgid ""
-"Did you know you can search a company by name or VAT number to instantly "
-"fill in all its data? The system autocompletes everything for you: logo, address, "
-"company size, business information, social media accounts, etc."
+"Viindoo helps you keep track of your sales pipeline to follow\n"
+"                up potential sales and better forecast your future revenues."
 msgstr ""
-"Bạn có biết rằng bạn có thể tìm kiếm một công ty theo tên hoặc số VAT và "
-"nhập nhanh vào tất cả dữ liệu của công ty đó không? Hệ thống tự động hoàn "
-"thành mọi thứ cho bạn: logo, địa chỉ, quy mô công ty, thông tin doanh "
-"nghiệp, tài khoản mạng xã hội, v.v."
+"Viindoo giúp bạn theo dõi quy trình bán hàng để bám sát\n"
+"                    các cơ hội bán hàng và dự báo tốt hơn doanh thu tương lai của bạn."
+
+#. module: viin_brand_crm
+#: model:ir.model,name:viin_brand_crm.model_ir_actions_actions
+msgid "Actions"
+msgstr "Tác vụ"
+
+#. module: viin_brand_crm
+#. odoo-javascript
+#: code:addons/viin_brand_crm/static/src/views/crm_form/crm_pls_tooltip_button.xml:0
+msgid "Computed by Viindoo from your data."
+msgstr "Được Viindoo tính toán từ dữ liệu của bạn."
+
+#. module: viin_brand_crm
+#: model:ir.model,name:viin_brand_crm.model_res_config_settings
+msgid "Config Settings"
+msgstr "Thiết lập cấu hình"
+
+#. module: viin_brand_crm
+#: model:ir.model.fields,field_description:viin_brand_crm.field_crm_lead__display_name
+#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_actions_actions__display_name
+#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_cron__display_name
+#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_ui_menu__display_name
+#: model:ir.model.fields,field_description:viin_brand_crm.field_mail_template__display_name
+#: model:ir.model.fields,field_description:viin_brand_crm.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_brand_crm
+#: model:ir.model,name:viin_brand_crm.model_mail_template
+msgid "Email Templates"
+msgstr "Mẫu email"
+
+#. module: viin_brand_crm
+#: model:ir.model.fields,field_description:viin_brand_crm.field_crm_lead__id
+#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_actions_actions__id
+#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_cron__id
+#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_ui_menu__id
+#: model:ir.model.fields,field_description:viin_brand_crm.field_mail_template__id
+#: model:ir.model.fields,field_description:viin_brand_crm.field_res_config_settings__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_crm
+#: model:ir.model,name:viin_brand_crm.model_crm_lead
+msgid "Lead"
+msgstr "Tiềm năng"
+
+#. module: viin_brand_crm
+#: model_terms:ir.ui.view,arch_db:viin_brand_crm.res_config_settings_view_form
+msgid ""
+"Make and receive calls from Viindoo with Ringover's dialer. Track calls, SMS"
+" messages, and get AI-powered transcripts of your conversations."
+msgstr ""
+"Gọi và nhận cuộc gọi từ Viindoo bằng trình quay số Ringover. Theo dõi cuộc "
+"gọi, tin nhắn SMS và nhận bản ghi nội dung cuộc trò chuyện được hỗ trợ bởi "
+"AI."
+
+#. module: viin_brand_crm
+#: model:ir.model,name:viin_brand_crm.model_ir_ui_menu
+msgid "Menu"
+msgstr ""
+
+#. module: viin_brand_crm
+#: model:ir.model,name:viin_brand_crm.model_ir_cron
+msgid "Scheduled Actions"
+msgstr "Tác vụ đã lên lịch"
+
+#. module: viin_brand_crm
+#: model_terms:ir.ui.view,arch_db:viin_brand_crm.crm_lead_view_form
+msgid "e.g. https://viindoo.com"
+msgstr "vd: https://viindoo.com"

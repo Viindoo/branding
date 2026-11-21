@@ -1,51 +1,10 @@
 # Part of Viindoo. See LICENSE file for full copyright and licensing details.
-#
-# WHAT IS PROTECTED (behaviour, not code): a dark-scheme user opening the CE spreadsheet editor
-# sees the COMMAND CHROME - the menu bar / toolbar / formula bar
-# (`.o-spreadsheet-topbar-wrapper`) and the sheet-tab bar (`.o-spreadsheet-bottombar-wrapper`) -
-# repainted dark with readable labels, while the DOCUMENT ZONE (the canvas grid, the side panel,
-# a chart figure's own header, the filter-menu popover) renders BYTE-IDENTICAL to a light-scheme
-# user - never re-pointed by this module. The seam between the grid and the chrome resolves to
-# the same colour a plain core `.border` utility resolves to elsewhere on the page. A Chatter
-# mounted in the side panel keeps its muted text readable once composited over each element's own
-# real rendered background. The toolbar icons inside the dark chrome (`.o-hoverable-button
-# .o-icon`) stay readable against the chrome's own dark background.
-# Three surfaces stay LIGHT ISLANDS regardless of scheme, exactly like the grid/side-panel/popovers
-# above - the formula-bar composer, the mobile small-bottom-bar composer, and the mobile ribbon
-# menu - each readable against its OWN real (white) background, never the chrome's dark one. A
-# link-style button rendered inside any of these light islands stays readable in its pressed state
-# too, for both a dark-scheme and a light-scheme user.
-#
-# WHY A LIVE BROWSER, NEVER A COMPILED-CSS RESOLVER. `spreadsheet/static/src/o_spreadsheet/
-# o_spreadsheet.js` builds its own chrome/island CSS from JS string constants and appends it to
-# `document.head` as `<style>` tags at RUNTIME, after every bundle `<link>` - it is not part of
-# any SCSS this module or core ships, so no compiled-bundle reader can see it (confirmed by
-# reading the generated file directly: the `.o-spreadsheet .text-muted { color: ... !important }`
-# pin lives inside a JS `css` tagged template, not a `.scss` source). Every value below is read
-# with `getComputedStyle` against the real, rendered cascade.
-#
-# WHY CE'S OWN CLASSES, NEVER A HARDCODED CHROME LITERAL. The exact dark tone the chrome repaints
-# to is this module's own SCSS choice (an OPL-1 lever, not a fact this test dictates), so "is
-# dark" is asserted as an OUTCOME (materially different from - and darker than - the same surface
-# under a light-scheme user, with every label still >= 4.5:1 on it) rather than as an assertEqual
-# on one hand-picked hex. Where the AC is instead an EQUALITY - the document zone must stay
-# byte-identical between the two schemes, the seam must equal a live `.border` probe - the test
-# measures BOTH sides live and compares them, never a value copied out of a design note.
-#
-# WHY A TEST-ONLY CLIENT ACTION. CE's spreadsheet addon registers no editor action of its own
-# outside a business module's data (only a download action, a lazy-bundle loader and the
-# dashboard action - confirmed by reading `spreadsheet/static/src/assets_backend/*.js` and
-# `spreadsheet/static/src/actions/*.js` in full), so there is no core route into a rendered
-# editor. `static/tests/tours/test_spreadsheet_editor_action.js` (web.assets_tests) is that route:
-# CORE classes only (`SpreadsheetComponent`, `Model`, the engine's own store registry) - never an
-# `o_viin_*` / business-module selector, so this fixture keeps mounting a bare CE editor even on a
-# checkout with no business module installed at all.
 import json
 
 from odoo.tests import HttpCase, new_test_user, tagged
 from odoo.tools.misc import file_open
 
-from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     WCAG_AA_NORMAL_TEXT,
     WCAG_NON_TEXT_MIN,
     _alpha_of,
@@ -54,33 +13,28 @@ from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
     _normalize_colour,
     _relative_luminance,
 )
-from odoo.addons.viin_brand_web.tests.test_brand_ssot import _resolve_scss_hex
+from odoo.addons.viin_brand.tests.test_brand_ssot import _resolve_scss_hex
 
-# The bare registry TAG the test-only client action self-registers under
-# (static/tests/tours/test_spreadsheet_editor_action.js `VIIN_TEST_SPREADSHEET_EDITOR_ACTION_TAG`)
-# - a plain string `doAction()` resolves against the client-action registry with zero server
-# round-trip (web/static/src/webclient/actions/action_service.js `_loadAction`), exactly like
-# core's own registry-only actions (e.g. "action_download_spreadsheet").
+# Registry tag the test-only client action registers under
+# (static/tests/tours/test_spreadsheet_editor_action.js).
 TEST_EDITOR_ACTION_TAG = "viin_brand_spreadsheet_chrome_dark_test_editor"
 
-# A generous upper bound on "reads as a dark surface": Viindoo's own dark panel tokens sit near
-# 0.0 (`#111b1e` ~= 0.006); CE's stock light chrome sits near 1.0 (a white/near-white ground). A
-# surface has repainted dark only if BOTH this bound holds AND it differs from the same surface
-# under a light-scheme user - the two checks together are what make this a behaviour assertion
-# rather than a "not exactly white" one a translucent shadow could also satisfy.
+# Upper bound of "reads as a dark surface" (Viindoo's dark tokens sit near 0.0, CE's light chrome
+# near 1.0). A surface is dark only if this holds AND it differs from the light-scheme user's.
 DARK_CHROME_MAX_RELATIVE_LUMINANCE = 0.4
 
-# core's own SSOT for $os-text-body (o_spreadsheet_variables.scss) - resolved live off the addons
-# path rather than copied as a literal, so a core re-tune of the variable keeps every assertion
-# below correct instead of silently drifting from a stale hardcoded copy.
+# $os-text-body is resolved from core's SCSS rather than copied, so a core re-tune keeps the
+# assertions correct.
 CORE_SPREADSHEET_VARIABLES_SCSS = "spreadsheet/static/src/o_spreadsheet/o_spreadsheet_variables.scss"
 
 _core_os_text_body_cache = {}
 
 
 def _core_os_text_body():
-    """Return the hex `$os-text-body` resolves to in `CORE_SPREADSHEET_VARIABLES_SCSS`, or None
-    if the variable cannot be found there."""
+    """Return the hex ``$os-text-body`` resolves to in core's spreadsheet SCSS.
+
+    :return: the normalised colour, or ``None`` when the variable cannot be found
+    """
     if "hex" not in _core_os_text_body_cache:
         with file_open(CORE_SPREADSHEET_VARIABLES_SCSS, "r") as core_file:
             content = core_file.read()
@@ -126,8 +80,7 @@ function __effectiveBackground(el) {
 
 
 def _wrap(js_body):
-    """Wrap a measurement snippet in the throw/console.error contract `HttpCase.browser_js` polls
-    for (`console.log('test successful')` on success, `console.error` on any thrown failure)."""
+    """Wrap a measurement snippet in the success/failure console contract of ``browser_js``."""
     return _JS_HELPERS + (
         "(async () => {\n"
         "    try {\n"
@@ -140,32 +93,13 @@ def _wrap(js_body):
     ) % js_body.replace("\n", "\n        ")
 
 
-# One continuous browser session drives: mount the editor -> measure the chrome (row 1) -> create
-# a carousel figure and select it (so its own side panel/carousel-header render) -> open the
-# engine's OWN filter-menu popover -> measure the document zone (row 2) -> mount a core Chatter in
-# the now-open side panel (row 3) -> measure the grid/chrome seam against a live `.border` probe
-# (row 4). Every DOM query and store call below is a CORE class or a CORE store
-# (`stores.SidePanelStore`, `stores.CellPopoverStore`, both re-exported by `@odoo/o-spreadsheet`) -
-# never a business-module selector.
-#
-# Toolbar icon + formula-bar composer (added alongside the rows above, same mounted editor, no
-# extra browser session): every default (non-readonly) toolbar action AND the "more tools"
-# chevron (`.o-toolbar-button.o-hoverable-button.more-tools`, top_bar.xml, rendered
-# UNCONDITIONALLY - a guaranteed fallback match even if the registry-driven actions before it were
-# ever empty) share the class `.o-hoverable-button`; whichever one document order picks first,
-# its `.o-icon` is an `fill="currentColor"` `<svg>`, so its rendered ink IS
-# `getComputedStyle(...).color`, governed by the engine's single, UN-scoped
-# `.o-hoverable-button .o-icon { color: TEXT_BODY }` rule (o_spreadsheet.js). That rule has no
-# bottombar-specific counterpart for this file to cover: reading the full generated
-# `o-spreadsheet-BottomBar` / `BottomBarStatistic` / `BottomBarSheet` templates found them
-# rendering NO `.o-hoverable-button` anywhere, by default or otherwise. So this file measures the
-# ONE real element the rule ever applies to - the topbar's - against the topbar's own background;
-# it does not, and cannot, cover a bottombar icon rule that has no element to apply to.
-# `.o-topbar-composer` (`TopBarComposer`, o_spreadsheet.xml) carries CE's own `bg-white`, forced
-# `!important` by core's OWN `o_spreadsheet_extended.dark.scss` - a LIGHT ISLAND this module must
-# never re-point; its inner `.o-composer` sets no `color` of its own, so it inherits whatever this
-# module's chrome rule paints the wrapper's text - which is exactly the risk a light-island
-# assertion here exists to catch.
+# One browser session mounts the editor and measures the chrome, a carousel figure with its side
+# panel, the filter-menu popover, the optional extra snippet (a Chatter or the irregularity map)
+# and the grid/chrome seam against a live `.border` probe. Only core classes and core stores are
+# queried, never a business-module selector.
+# The engine's injected `.o-hoverable-button .o-icon` rule applies only to the topbar (the bottombar
+# renders no such button), and its `.o-topbar-composer` is a forced-white light island that must
+# not inherit the chrome's dark text colour.
 _MEASURE_EDITOR_JS = """
 const __wowlDebug = await __waitFor(
     () => window.odoo.__WOWL_DEBUG__ && window.odoo.__WOWL_DEBUG__.root, 30000
@@ -251,18 +185,9 @@ const __result = {
 await __setParam(%(param_key)r, JSON.stringify(__result));
 """
 
-# Mounts a core Chatter (Composer included) on a test-created `res.partner` inside the side panel
-# the carousel flow above already opened, then measures the muted text - the surface the engine's
-# own injected `.o-spreadsheet .text-muted` pin (o_spreadsheet.js) governs - AGAINST its own real
-# rendered background (`__effectiveBackground`), never an assumed literal: the side panel itself
-# is white, but an element can still paint its OWN background regardless of what the panel
-# underneath renders. Also measures the "follow" toggle button (`.o-mail-Followers-button`, a real
-# `.btn.btn-link`, chatter.xml) in its PRESSED state -
-# read via `--btn-active-color` directly off the element rather than faking `:active` (a
-# synthetic DOM event never flips a real browser's `:active` match; this button is genuinely its
-# parent's only/first child, so Bootstrap's own `.btn:first-child:active` rule - sharing the exact
-# same `color: var(--btn-active-color)` declaration as a real pointer-press - already governs
-# it today, no simulated press needed to read the value that rule would apply).
+# Mounts a core Chatter on a test partner inside the side panel and measures its muted text
+# against its own real rendered background, plus the follow button's pressed ink, read through
+# `--btn-active-color` because a script cannot force `:active`.
 _CHATTER_JS = """
 const __probe = document.createElement("div");
 __probe.className = "border";
@@ -273,14 +198,7 @@ __result.probeBorderColor = getComputedStyle(__probe).borderTopColor;
 
 const __owl = odoo.loader.modules.get("@odoo/owl");
 const __chatterModule = odoo.loader.modules.get("@mail/chatter/web_portal/chatter");
-// `Chatter`'s own template is a QWeb XML asset resolved BY NAME - only the webclient's own
-// root App wires that lookup in, via the `getTemplate` App option (web/static/src/env.js
-// imports it from this same module and passes it to `new App(...)`). This standalone mount
-// creates its OWN App, so it must supply the same option or OWL's default (inline `xml`-tag
-// templates only) cannot resolve "mail.Chatter" - the exact mechanism CE's own mail module
-// uses for a standalone mount outside the webclient (mail_popout_service.js). The module is
-// part of the always-eager web.assets_backend bundle (web/static/src/env.js itself imports it,
-// and env.js cannot have run without it), so reading it synchronously here is race-free.
+// A standalone App needs the `getTemplate` option to resolve the named "mail.Chatter" template.
 const { getTemplate } = odoo.loader.modules.get("@web/core/templates");
 const __chatterHost = document.createElement("div");
 __sidePanel.appendChild(__chatterHost);
@@ -301,21 +219,9 @@ __result.followersButtonActiveColor = getComputedStyle(__followersButton)
     .trim();
 """
 
-# Toggles the engine's OWN "View > Irregularity map" menu item via a REAL click on the exact path
-# a user takes - the topbar menu button, then its popover item (`topbarMenuRegistry` ids `view` /
-# `view_irregularity_map`, o_spreadsheet.js) - never a store mutator called by hand, the same
-# real-DOM-click technique this file already uses below for `__ribbonToggler`. That menu item's
-# own `execute()` toggles `FormulaFingerprintStore.isEnabled`, which mounts `.irregularity-map`
-# (o_spreadsheet.xml, `t-if="this.fingerprints.isEnabled"`) directly on the dark topbar chrome -
-# OUTSIDE every light island (`.o-sidePanel` / `.o-popover`) the rows above measure. Its "Turn
-# off" `.btn-link` (the only `.btn-link` this subtree ever renders) is read the same way the
-# Chatter follow-toggle above is: `--btn-active-color` straight off the element, no synthetic
-# `:active` needed, for the same reason given above. Only the raw override value is captured -
-# this surface's own background/contrast is not composited here, since certifying it is outside
-# what this module's lever owns (see the test docstring below).
-# Reused via the `_measure()` `chatter_js` extension slot (any extra JS run after the base
-# `__result` is assembled) - the parameter name is a historical artefact of its original purpose,
-# not a constraint on what it may carry.
+# Opens "View > Irregularity map" by real clicks. That panel renders on the dark topbar chrome,
+# outside every light island; its "Turn off" `.btn-link` pressed ink is read through
+# `--btn-active-color`. Runs through the `chatter_js` slot of `_measure()`.
 _IRREGULARITY_MAP_JS = """
 const __viewMenuButton = await __waitFor(
     () => __topbarWrapper.querySelector('.o-topbar-menu[data-id="view"]'), 15000
@@ -333,20 +239,9 @@ __result.irregularityTurnOffActiveColor = getComputedStyle(__irregularityTurnOff
     .trim();
 """
 
-# Mounts the editor under a NARROWED emulated viewport (see `_measure_mobile` below) so the
-# engine's OWN `useScreenWidth()` hook (`spreadsheetRect.width < 768`, o_spreadsheet.js) flips
-# `env.isSmall` true and swaps `TopBarComposer`/`BottomBar` for `SmallBottomBar`/`RibbonMenu` -
-# the exact mechanism the engine itself uses for its mobile layout, never a viewport this test
-# invents. `.o-small-composer` is the mobile formula-bar equivalent, present by default;
-# `.o-menu` (the ribbon) only mounts after a genuine click on `.ribbon-toggler` - a REAL DOM
-# click fires the component's own `t-on-click` listener correctly (unlike `:hover`/`:active`,
-# a click is a discrete event, not an ongoing pointer state a synthetic dispatch cannot fake).
-# `.bottom-bar-menu` (o_spreadsheet.xml `o-spreadsheet-SmallBottomBar`) only renders in the SAME
-# `menuState.isOpen === false` branch the ribbon toggler click flips away from, so its border and
-# the mobile topbar-wrapper's own box-shadow are both read BEFORE that click - the two surfaces
-# core's own `.o-spreadsheet.o-spreadsheet-mobile .o-spreadsheet-topbar-wrapper` glow rule and
-# `.o-spreadsheet-small-bottom-bar .bottom-bar-menu` border rule (o_spreadsheet.scss) paint,
-# neither yet re-pointed by this module's mobile chrome.
+# Mounts the editor on a narrow viewport so the engine's own `isSmall` breakpoint swaps in the
+# mobile composer and ribbon menu. `.bottom-bar-menu` and the topbar glow are read before the
+# ribbon click, which removes that menu from the DOM.
 _MEASURE_MOBILE_JS = """
 const __wowlDebug = await __waitFor(
     () => window.odoo.__WOWL_DEBUG__ && window.odoo.__WOWL_DEBUG__.root, 30000
@@ -397,18 +292,18 @@ await __setParam(%(param_key)r, JSON.stringify(__result));
 
 @tagged("post_install", "-at_install")
 class TestSpreadsheetChromeDark(HttpCase):
-    """The CE spreadsheet editor's command chrome follows a dark-scheme user while its document
-    zone - grid, side panel, chart-figure header, filter-menu popover - stays exactly what a
-    light-scheme user sees, and a Chatter mounted in the side panel stays readable."""
+    """The editor's command chrome follows a dark-scheme user; its document zone stays light.
+
+    The grid, side panel, chart-figure header and filter-menu popover render identically for both
+    schemes, the formula-bar composer and the mobile composer and ribbon menu are light islands
+    readable on their own background, and a Chatter in the side panel stays readable.
+    """
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # `base.group_system` is granted alongside `base.group_user` here only because the
-        # browser-to-Python measurement relay (`__setParam` above) round-trips the captured
-        # colours through `ir.config_parameter.set_param`, which `base`'s own
-        # `ir.model.access.csv` restricts to `base.group_system` - that requirement belongs to
-        # the relay channel, not to the dark-chrome behaviour these users exist to exercise.
+        # `base.group_system` is needed only by the measurement relay, which stores results through
+        # `ir.config_parameter.set_param`.
         cls.dark_user = new_test_user(
             cls.env, login="viin_spreadsheet_chrome_dark_user",
             groups="base.group_user,base.group_system", viin_color_scheme="dark",
@@ -439,8 +334,8 @@ class TestSpreadsheetChromeDark(HttpCase):
         raw = self.env["ir.config_parameter"].sudo().get_param(param_key)
         self.assertTrue(
             raw,
-            "premise broken: the browser-side measurement under login %r never reported a "
-            "value - the test editor action must not have reached a mounted state." % login,
+            "the browser measurement under login %r reported no value - the test editor action "
+            "did not mount." % login,
         )
         return json.loads(raw)
 
@@ -450,12 +345,8 @@ class TestSpreadsheetChromeDark(HttpCase):
             "action_tag": TEST_EDITOR_ACTION_TAG,
             "param_key": param_key,
         })
-        # `browser_size` (base HttpCase attribute, default "1366x768") drives the Chrome
-        # `Emulation.setDeviceMetricsOverride` call a fresh `ChromeBrowser` reads at the START of
-        # every `browser_js()` call (odoo/tests/common.py) - narrowing it here, then restoring it,
-        # forces the ONE real signal the engine's own mobile breakpoint reads
-        # (`.o-spreadsheet`'s rendered width) without touching any test-only flag the engine
-        # itself does not consult.
+        # `browser_size` is read when each `browser_js()` starts; narrowing it flips the engine's
+        # own mobile breakpoint.
         original_browser_size = self.browser_size
         self.browser_size = "375,700"
         try:
@@ -466,9 +357,8 @@ class TestSpreadsheetChromeDark(HttpCase):
         raw = self.env["ir.config_parameter"].sudo().get_param(param_key)
         self.assertTrue(
             raw,
-            "premise broken: the browser-side mobile measurement under login %r never reported "
-            "a value - narrowing the viewport must not have flipped the engine's own `isSmall` "
-            "breakpoint, so `.o-small-composer` never mounted." % login,
+            "the mobile measurement under login %r reported no value - `.o-small-composer` did "
+            "not mount at the narrow viewport." % login,
         )
         return json.loads(raw)
 
@@ -482,7 +372,7 @@ class TestSpreadsheetChromeDark(HttpCase):
             chatter_js=_CHATTER_JS % {"partner_id": self.partner.id},
         )
 
-        # -- Row 1: the chrome repaints dark, with every label readable on it -------------------
+        # The chrome repaints dark with every label readable on it.
         for surface, bg_key, label_key in (
             ("topbar (menu bar / toolbar / formula bar)", "topbarBg", "topbarLabelColor"),
             ("bottombar (sheet tabs)", "bottombarBg", "sheetLabelColor"),
@@ -506,7 +396,9 @@ class TestSpreadsheetChromeDark(HttpCase):
                     ),
                 )
                 label_colour = _normalize_colour(dark[label_key])
-                self.assertIsNotNone(label_colour, "%s label: %r carries no readable colour" % (surface, dark[label_key]))
+                self.assertIsNotNone(
+                    label_colour, "%s label: %r carries no readable colour" % (surface, dark[label_key]),
+                )
                 ratio = _contrast_ratio(label_colour, dark_bg)
                 self.assertGreaterEqual(
                     round(ratio, 2), WCAG_AA_NORMAL_TEXT,
@@ -516,10 +408,7 @@ class TestSpreadsheetChromeDark(HttpCase):
                     ),
                 )
 
-        # -- Toolbar icon: the engine's single UN-scoped `.o-hoverable-button .o-icon` rule reads
-        # as dark-chrome text against the topbar's own dark background - the only wrapper this
-        # rule has a real element to apply to (the bottombar renders no `.o-hoverable-button` at
-        # all, so there is no bottombar-specific instance of this rule for this file to cover) ----
+        # The toolbar icon reads against the topbar's dark background.
         icon_colour = _normalize_colour(dark["toolbarIconColor"])
         self.assertIsNotNone(icon_colour, "toolbar icon: %r carries no readable colour" % dark["toolbarIconColor"])
         for surface, bg_key in (
@@ -537,8 +426,8 @@ class TestSpreadsheetChromeDark(HttpCase):
                     ),
                 )
 
-        # -- A glyph icon another module adds to the topbar, the font-size field and the active
-        # sheet tab's caret: each reads against the fill it is painted on ---------------------------
+        # A glyph icon another module adds, the font-size field and the active sheet tab's caret
+        # read against the fill they are painted on.
         for surface, colour_key, bg_key, floor in (
             ("topbar glyph icon", "glyphIconColor", "topbarBg", WCAG_NON_TEXT_MIN),
             ("font-size field", "fontSizeInputColor", "fontSizeInputBg", WCAG_AA_NORMAL_TEXT),
@@ -556,8 +445,7 @@ class TestSpreadsheetChromeDark(HttpCase):
                     % (surface, fg, bg, ratio, floor),
                 )
 
-        # -- Formula-bar composer: a LIGHT ISLAND (CE's own forced `bg-white`) - readable against
-        # its OWN real background, never the chrome's dark one, for the dark-scheme user ----------
+        # The formula-bar composer is a light island: readable on its own background.
         with self.subTest(surface="formula bar (.o-topbar-composer)"):
             composer_bg = _normalize_colour(dark["topbarComposerBg"])
             self.assertIsNotNone(
@@ -577,7 +465,7 @@ class TestSpreadsheetChromeDark(HttpCase):
                 ),
             )
 
-        # -- Row 5 (light-scheme non-regression): the label keeps CE's own stock colour ---------
+        # A light-scheme user's label keeps the engine's stock colour.
         core_os_text_body = _core_os_text_body()
         self.assertIsNotNone(
             core_os_text_body,
@@ -590,7 +478,7 @@ class TestSpreadsheetChromeDark(HttpCase):
             "$os-text-body colour (%s) - this module must not touch it." % core_os_text_body,
         )
 
-        # -- Row 2: the document zone is byte-identical between the two schemes -----------------
+        # The document zone is identical between the two schemes.
         for surface, key in (
             (".o-grid-container (canvas grid)", "gridBg"),
             (".o-sidePanel (side panel)", "sidePanelBg"),
@@ -609,7 +497,7 @@ class TestSpreadsheetChromeDark(HttpCase):
                     ),
                 )
 
-        # -- Row 4: the grid/chrome seam equals a live core `.border` probe ---------------------
+        # The grid/chrome seam equals a live core `.border` probe.
         probe_colour = _normalize_colour(dark["probeBorderColor"])
         self.assertIsNotNone(probe_colour, "the .border probe carries no readable border colour")
         for edge, key in (
@@ -625,10 +513,8 @@ class TestSpreadsheetChromeDark(HttpCase):
                     "`.border` element resolves to." % (edge, seam_colour, probe_colour),
                 )
 
-        # -- Row 3: a Chatter mounted in the (light, island) side panel stays readable -----------
-        # Composited against each element's OWN real rendered background (`__effectiveBackground`)
-        # - never an assumed WHITE literal, which would stay vacuously green even if the element
-        # sat on a non-white background of its own.
+        # A Chatter in the light-island side panel stays readable, composited against each element's
+        # own rendered background rather than an assumed white.
         for label, colour_key, bg_key in (
             (".text-muted", "chatterMutedColor", "chatterMutedBg"),
         ):
@@ -648,10 +534,7 @@ class TestSpreadsheetChromeDark(HttpCase):
                     ),
                 )
 
-        # -- Row 3b: the same Chatter's own follow-toggle button (a real light-island `.btn-link`)
-        # stays readable in its PRESSED state too, for both schemes - the light user now also
-        # mounts this Chatter (see the `light = self._measure(...)` call above), so both dicts
-        # already carry `followersButton*` without a second browser session ----------------------
+        # The follow-toggle `.btn-link` stays readable when pressed, for both schemes.
         for scheme_name, result in (("dark-scheme", dark), ("light-scheme", light)):
             with self.subTest(chatter_surface="follow toggle button (pressed)", scheme=scheme_name):
                 bg = _normalize_colour(result["followersButtonBg"])
@@ -675,9 +558,7 @@ class TestSpreadsheetChromeDark(HttpCase):
                 )
 
     def test_mobile_composer_and_ribbon_menu_stay_light_islands_both_schemes(self):
-        """The engine's own mobile chrome (`env.isSmall`) keeps its formula-bar composer and
-        ribbon menu as light islands - readable against their own white background regardless of
-        the user's colour scheme, exactly like the desktop document zone."""
+        """The mobile formula composer and ribbon menu stay light islands for both colour schemes."""
         dark = self._measure_mobile(self.dark_user.login)
         light = self._measure_mobile(self.light_user.login)
 
@@ -704,9 +585,7 @@ class TestSpreadsheetChromeDark(HttpCase):
                     )
 
     def test_mobile_dark_scheme_sheds_core_light_topbar_glow_and_bottombar_menu_border(self):
-        """A dark-scheme user on the mobile viewport (`env.isSmall`) loses core's own light
-        seams too - the topbar-wrapper's glow shadow and the bottombar's menu-row border -
-        exactly like the desktop chrome already sheds its own analogous seams for this user."""
+        """On the mobile viewport a dark-scheme user loses core's light topbar glow and bottom-bar menu border."""
         dark = self._measure_mobile(self.dark_user.login)
 
         self.assertEqual(
@@ -730,13 +609,12 @@ class TestSpreadsheetChromeDark(HttpCase):
         )
 
     def test_pressed_link_style_button_outside_light_island_stays_core_governed(self):
-        """A `.btn-link` outside every light island - the irregularity map's own "Turn off"
-        button, rendered by the engine directly on the dark topbar chrome, never inside
-        `.o-sidePanel`/`.o-popover` - keeps whatever PRESSED-state ink the untouched cascade
-        leaves it: this module's own pressed-state lever is scoped to light islands only and
-        must not reach a surface outside that scope. This test makes no readability claim for
-        that ink - this surface's own contrast is governed upstream of this module's lever, so
-        certifying it is not this test's job."""
+        """The pressed-state ink override stays scoped to light islands.
+
+        The irregularity map's "Turn off" ``.btn-link`` sits on the dark topbar chrome, outside
+        ``.o-sidePanel`` and ``.o-popover``, so its pressed ink must not be the island override.
+        No readability claim is made for that surface.
+        """
         dark = self._measure(
             self.dark_user.login, "viin-chrome-dark-irregularity-test-carousel",
             chatter_js=_IRREGULARITY_MAP_JS,

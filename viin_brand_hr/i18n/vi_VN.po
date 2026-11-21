@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* hr
+# 	* viin_brand_hr
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-08 01:42+0000\n"
-"PO-Revision-Date: 2026-04-08 01:42+0000\n"
+"POT-Creation-Date: 2026-11-19 15:48+0000\n"
+"PO-Revision-Date: 2026-11-19 15:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -37,24 +37,17 @@ msgstr ""
 "                    liên quan đến nhân viên theo phòng ban: chi phí, bảng giờ công,\n"
 "                    nghỉ phép, tuyển dụng, v.v."
 
-#. module: hr
-#: model_terms:ir.actions.act_window,help:hr.hr_employee_public_action
-msgid ""
-"With just a quick glance on the software employee screen, you\n"
-"                can easily find all the information you need for each person;\n"
-"                contact data, job position, availability, etc."
-msgstr ""
-"Chỉ cần liếc nhanh trên màn hình nhân viên của phần mềm, bạn\n"
-"                có thể dễ dàng tìm thấy tất cả thông tin bạn cần cho mỗi người;\n"
-"                dữ liệu liên lạc, vị trí công việc, tính khả dụng, v.v."
+#. module: viin_brand_hr
+#: model:ir.model.fields,field_description:viin_brand_hr.field_hr_employee__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
 
-#. module: hr
-#: model_terms:ir.actions.act_window,help:hr.open_view_employee_list_my
-msgid ""
-"With just a quick glance on the software employee screen, you\n"
-"               can easily find all the information you need for each person;\n"
-"               contact data, job position, availability, etc."
+#. module: viin_brand_hr
+#: model:ir.model,name:viin_brand_hr.model_hr_employee
+msgid "Employee"
+msgstr "Nhân viên"
+
+#. module: viin_brand_hr
+#: model:ir.model.fields,field_description:viin_brand_hr.field_hr_employee__id
+msgid "ID"
 msgstr ""
-"Chỉ cần liếc nhanh trên màn hình nhân viên của phần mềm, bạn\n"
-"                có thể dễ dàng tìm thấy tất cả thông tin bạn cần cho mỗi người;\n"
-"                dữ liệu liên lạc, vị trí công việc, tính khả dụng, v.v."

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_menu" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.pos.self.order.viin.brand</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="pos_self_order.res_config_settings_view_form_menu"/>
+        <field name="arch" type="xml">
+            <!-- the stands are ordered from a page hosted by Odoo -->
+            <xpath expr="//button[@name='get_pos_qr_stands']" position="replace"/>
+        </field>
+    </record>
+</odoo>

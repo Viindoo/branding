@@ -29,6 +29,17 @@ class TestIapInstallGuard(TransactionCase):
         with self.assertRaises(UserError):
             self.iap_module.button_immediate_install()
 
+    def test_every_service_module_is_refused_from_the_ui(self):
+        self._from_ui()
+        for name in ('crm_iap_enrich', 'crm_iap_mine', 'website_crm_iap_reveal', 'snailmail', 'snailmail_account'):
+            with self.subTest(module=name):
+                module = self.env['ir.module.module'].search([('name', '=', name)])
+                self.assertTrue(module, "%s is not on the addons path" % name)
+                module.state = 'uninstalled'
+
+                with self.assertRaises(UserError):
+                    module.button_immediate_install()
+
     def test_install_or_update_option_lets_the_iap_module_through(self):
         for option in ('init', 'update'):
             with self.subTest(option=option):

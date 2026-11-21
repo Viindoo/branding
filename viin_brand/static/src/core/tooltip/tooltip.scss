@@ -1,0 +1,17 @@
+// Tooltips (field help / technical tooltips). A tooltip is a high-contrast inverted surface, and
+// Bootstrap's default ($tooltip-bg: $black) is a fixed dark chip that loses contrast in dark mode.
+// The Bootstrap tooltip runtime custom properties (unprefixed: Odoo sets $variable-prefix: '') are
+// re-pointed to an inverted scheme-aware pair: surface = --emphasis-color (dark in light, light in
+// dark), text = --body-bg, so the chip stays legible in both schemes. The arrow is recoloured to
+// match (core sets it from the compile-time $tooltip-bg). Colour only: Bootstrap already forwards
+// `$tooltip-border-radius: var(--border-radius)`.
+
+.o-tooltip {
+    --tooltip-bg: var(--emphasis-color);
+    --tooltip-color: var(--body-bg);
+
+    // Arrow follows the chip surface (core points it at the compile-time $tooltip-bg).
+    + .popover-arrow {
+        --popover-bg: var(--emphasis-color);
+    }
+}

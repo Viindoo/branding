@@ -1,0 +1,39 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_base_import_module
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-19 15:50+0000\n"
+"PO-Revision-Date: 2026-11-19 15:50+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_base_import_module
+#: model:ir.model.fields,field_description:viin_brand_base_import_module.field_ir_module_module__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_base_import_module
+#: model:ir.model.fields,field_description:viin_brand_base_import_module.field_ir_module_module__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_base_import_module
+#: model:ir.model,name:viin_brand_base_import_module.model_ir_module_module
+msgid "Module"
+msgstr ""
+
+#. module: viin_brand_base_import_module
+#. odoo-python
+#: code:addons/viin_brand_base_import_module/models/ir_module_module.py:0
+msgid ""
+"These customizations cannot be imported: the tool they were made with is not"
+" available in Viindoo."
+msgstr ""

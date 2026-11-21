@@ -15,6 +15,24 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. module: digest
+#: model:digest.digest,name:digest.digest_digest_default
+msgid "Your Viindoo Periodic Digest"
+msgstr ""
+
+#. module: digest
+#: model:digest.tip,name:digest.digest_tip_digest_2
+#: model_terms:digest.tip,tip_description:digest.digest_tip_digest_2
+msgid "Tip: A calculator in Viindoo"
+msgstr ""
+
+#. module: digest
+#: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
+msgid ""
+"Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
+"Try to notify @ViindooBot to test the feature."
+msgstr ""
+
 #. module: viin_brand_digest
 #: model:ir.model.fields,field_description:viin_brand_digest.field_digest_tip__active
 msgid "Active"

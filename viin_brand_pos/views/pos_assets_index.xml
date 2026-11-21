@@ -1,5 +1,4 @@
 <odoo>
-    <!--Replace the title of POS-->
     <template id="index" inherit_id="point_of_sale.index" name="Viindoo Index">
         <xpath expr="//html/head/title" position="replace">
             <title>Viindoo - Point of Sale</title>

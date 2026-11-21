@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_recruitment.action_hr_job_applications" model="ir.actions.act_window">
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No applications yet
+            </p><p>
+                Viindoo helps you track applicants in the recruitment
+                process and follow up all operations: meetings, interviews, etc.
+            </p><p>
+                Applicants and their attached résumé are created automatically when an email is sent.
+                If you install the document management modules, all resumes are indexed automatically,
+                so that you can easily search through their content.
+            </p>
+        </field>
+    </record>
+
+    <record id="hr_recruitment.crm_case_categ0_act_job" model="ir.actions.act_window">
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No applications yet
+            </p><p>
+                Viindoo helps you track applicants in the recruitment
+                process and follow up all operations: meetings, interviews, etc.
+            </p><p>
+                Applicants and their attached résumé are created automatically when an email is sent.
+                If you install the document management modules, all resumes are indexed automatically,
+                so that you can easily search through their content.
+            </p>
+        </field>
+    </record>
+</odoo>

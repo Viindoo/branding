@@ -1,29 +1,16 @@
 /** @odoo-module **/
 
-// T-4 (PR #658 review-fix), retargeted for the home-menu pre-focus product decision. Driven by
-// tests/test_tours.py.
+// Bypass blocks (WCAG 2.4.1) on the home-menu landing. Driven by tests/test_tours.py.
 //
-// BYPASS BLOCKS (WCAG 2.4.1) - narrowed guarantee. The "Skip to main content" link (webclient.xml)
-// is NO LONGER the first Tab stop on a fresh `/odoo` load: ViinHomeMenu now pre-focuses its search
-// input on mount, by deliberate product decision ("user lands on the screen, types, and the menu
-// search starts immediately" wins over the old first-Tab-stop guarantee). That change withdrew ONLY
-// the "first focusable element" claim - the skip link itself was not touched and still does its job.
-// What remains true and is guarded here:
-//   1. `.o_viin_skip_link` still exists in the DOM on every `/odoo` load.
-//   2. it is still reachable by keyboard, backward, from the now-focused search input (Shift+Tab) -
-//      it precedes the search input in DOM order (prepended before the NavBar/ActionContainer block),
-//      so a bounded walk of repeated Shift+Tab presses must land on it. The walk is bounded rather
-//      than a single hard-coded press because the exact number of NavBar stops in between is not
-//      this test's concern - a future unrelated navbar change must not silently break this guard by
-//      changing that count.
-//   3. activating it (`skipToMainContent`, webclient_patch.js) still moves keyboard focus into the
-//      main content region (`.o_action_manager`) - it still does its real job, not just exists.
-//
-// GROUNDED (OSM 19.0 + core source): registry path web_tour.tours + {url, steps: () => [...]};
-// `TourHelpers.prototype.press` (web_tour tour_helpers_hoot.js) forwards to hoot-dom's `press()`,
-// whose own `Tab`/`Shift+Tab` handling calls `getNextFocusableElement`/`getPreviousFocusableElement`
-// to walk the REAL tab order - the same mechanism the previous version of this tour already relied on
-// for its single `press Tab` step.
+// ViinHomeMenu pre-focuses its search input on mount, so the "Skip to main content" link
+// (webclient.xml) is not the first Tab stop on a fresh `/odoo` load. Guarded here:
+//   1. `.o_viin_skip_link` exists in the DOM on every `/odoo` load.
+//   2. It is reachable by keyboard, backward, from the focused search input (Shift+Tab): it precedes
+//      the search input in DOM order, so a bounded walk of repeated Shift+Tab presses must land on
+//      it. The walk is bounded because the number of NavBar stops in between is not this test's
+//      concern.
+//   3. Activating it (`skipToMainContent`, webclient_patch.js) moves keyboard focus into the main
+//      content region (`.o_action_manager`).
 
 import { registry } from "@web/core/registry";
 
@@ -33,7 +20,8 @@ tours.add("viin_a11y_skip_link_keyboard_reachable_tour", {
     url: "/odoo",
     steps: () => [
         {
-            content: "the skip-to-main-content link exists in the DOM on a fresh /odoo load (WCAG 2.4.1 bypass blocks)",
+            content:
+                "the skip-to-main-content link exists in the DOM on a fresh /odoo load (WCAG 2.4.1 bypass blocks)",
             trigger: ".o_viin_skip_link",
         },
         {
@@ -61,7 +49,7 @@ tours.add("viin_a11y_skip_link_keyboard_reachable_tour", {
                 if (!document.activeElement?.matches?.(".o_viin_skip_link")) {
                     throw new Error(
                         `Shift+Tab from the pre-focused search input did not reach ` +
-                            `.o_viin_skip_link within ${MAX_SHIFT_TABS} presses - it is no longer ` +
+                            `.o_viin_skip_link within ${MAX_SHIFT_TABS} presses - it is not ` +
                             `keyboard-reachable backward from the search input.`
                     );
                 }
@@ -85,23 +73,11 @@ tours.add("viin_a11y_skip_link_keyboard_reachable_tour", {
     ],
 });
 
-// APP TILES KEEP THEIR OWN ROLE (2026-08-17).
-//
-// An explicit `role` REPLACES an element's implicit role rather than adding to it. The home-menu
-// tiles used to carry `role="listitem"`, so a screen reader announced "list item" where the user
-// could in fact follow a link, and the tiles fell out of links navigation - the shortcut many
-// screen-reader users rely on to move through a page of links. Since the tiles are now real
-// anchors (home_menu.xml), the role that was being suppressed is an accurate and useful one, which
-// makes the suppression a defect rather than a curiosity.
-//
-// The contract is therefore phrased as an ABSENCE plus the affordance that absence restores: every
-// tile is an <a> WITH an href and WITHOUT a role attribute, so its `link` role survives. Written
-// against the DOM the user's assistive technology actually reads - not against a source file - so
-// it holds however the template is refactored.
-//
-// RED ON REVERT: putting `role="listitem"` back on the tile makes `a.o_app[href]:not([role])` match
-// nothing and this step times out. It cannot pass vacuously either: the preceding step asserts the
-// tiles exist at all, so an empty grid fails there first.
+// App tiles keep their own role. An explicit `role` replaces an element's implicit role, so a
+// `role="listitem"` on a tile would hide its `link` role and drop it out of links navigation. Every
+// tile is an <a> with an href and without a role attribute, asserted against the DOM that assistive
+// technology reads. The preceding step asserts the tiles exist, so an empty grid cannot pass
+// vacuously.
 tours.add("viin_a11y_home_tile_semantics_tour", {
     url: "/odoo",
     steps: () => [

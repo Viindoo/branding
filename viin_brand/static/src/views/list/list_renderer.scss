@@ -1,0 +1,47 @@
+// List chrome: a refined multi-record table with muted, letter-spaced column headers on a subtle
+// raised header surface, hairline row separators, a subtle row hover and a brand-teal wash on
+// bulk-selected rows.
+//
+// The cell surface is core's own: `--table-bg: $o-view-background-color` (white in light, the panel
+// tier of the recompiled dark bundle), the tier every text token of the theme is tuned against. It
+// is not re-pointed at --body-bg, the app-shell grey in light, which would put the row text of a
+// decorated row (text-info, text-danger, text-warning, text-muted) below WCAG AA. Core drives the
+// header surface and border from compile-time hex (--ListRenderer-thead-bg-color =
+// $o-webclient-background-color), so each is re-pointed at the native unprefixed runtime props
+// (--tertiary-bg / --border-color). Row decoration colours render as Bootstrap .text-* utilities, so
+// they already ride the semantic retint and are not touched, and neither are the selection
+// checkboxes, which read $primary. The selected-row wash uses color-mix over transparent so it
+// composites on either scheme.
+
+.o_list_renderer {
+    // Header: subtle raised surface + scheme-aware hairline (core uses a compile-time app-bg hex).
+    --ListRenderer-thead-bg-color: var(--tertiary-bg);
+    --ListRenderer-thead-border-end-color: var(--border-color);
+
+    .o_list_table {
+        // All internal borders on the scheme-aware runtime prop (the cell surface stays core's).
+        --table-border-color: var(--border-color);
+
+        // Column headers: muted and letter-spaced, with no case transform. A column header renders a
+        // core string (a field label that core reads back), so uppercasing it would change what
+        // every HOOT assertion and tour selector sees without changing the DOM, for example
+        // `[data-name="login"] span:contains("Login")` on a list header.
+        thead th {
+            color: var(--secondary-color);
+            font-size: 0.75rem;
+            font-weight: $font-weight-medium;
+            letter-spacing: 0.04em;
+        }
+
+        // Subtle row hover on the raised tier; never on the row being edited or bulk-selected. Rides
+        // Bootstrap's --table-accent-bg mechanism (inherited by the row cells).
+        .o_data_row:not(.o_selected_row):not(.o_data_row_selected):hover {
+            --table-accent-bg: var(--tertiary-bg);
+        }
+
+        // Bulk-selected rows: a brand-teal wash composited over the cell surface.
+        .o_data_row_selected {
+            --table-accent-bg: color-mix(in srgb, #{$o-viin-chrome-base} 8%, transparent);
+        }
+    }
+}

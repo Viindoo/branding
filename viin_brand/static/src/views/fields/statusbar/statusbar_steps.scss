@@ -1,0 +1,55 @@
+// Numbered steps on core's arrow statusbar. Additive only: no clip-path, ::before notch, border,
+// padding or radius of the step, and nothing on `.o_statusbar_status`. Core's areItemsWrapping()
+// (statusbar_field.js) folds the whole bar into one "..." dropdown when the root measures taller
+// than its first child, so the container height must not change. The only box created is a
+// pseudo-element inside the existing button, smaller than the button's own line box.
+//
+// The colours are `currentColor`: the digit inherits the label's colour pair per step state
+// (current / clickable / inactive) and per scheme. The ring is the same colour at 40% over
+// transparent; it is decorative, and color-mix composites it on whichever fill the step has.
+//
+// The file compiles into web.assets_web_dark unchanged: $o-gray-700 follows each scheme's ramp.
+
+.o_statusbar_status > .o_arrow_button.o_viin_numbered_step {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+
+    // The ordinal is generated content so `button.textContent` stays core's label (see
+    // statusbar_steps.xml). `order: -1` puts it before the label and follows the writing direction
+    // (the flex row reverses under `.o_rtl`).
+    &::after {
+        order: -1;
+        content: attr(data-viin-step);
+
+        flex: 0 0 auto;
+        align-self: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.5em;
+        height: 1.5em;
+        border: $border-width solid color-mix(in srgb, currentColor 40%, transparent);
+        border-radius: 50%;
+        font-size: 0.6875rem;
+        font-weight: $font-weight-bold;
+        line-height: 1;
+    }
+
+    // The current step closes its ring to full strength; core already gives it its own fill and
+    // outline, so a filled badge would add a second component.
+    &.o_arrow_button_current::after {
+        border-color: currentColor;
+    }
+}
+
+// An inactive step reads core's translucent muted text, which washes out on the grey step; it takes
+// the same grey opaque. The current step keeps its own fill and outline. Same selector shape as
+// core's rule in statusbar_field.scss, which it follows in the bundle.
+.o_field_statusbar > .o_statusbar_status > .o_arrow_button.o_viin_numbered_step:disabled:not(.o_arrow_button_current) {
+    &,
+    &:hover,
+    &:focus {
+        color: $o-gray-700;
+    }
+}

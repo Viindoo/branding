@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.viin.brand.hr.expense</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_expense.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='expense_cards_stripe_issuing']" position="attributes">
+                <attribute name="help">Create prepaid virtual and physical cards for both one-time and recurring expenses, integrated into Viindoo through Stripe Issuing.</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -25,35 +25,25 @@ import {
 import { mailModels } from "@mail/../tests/mail_test_helpers";
 
 // Type-to-search on the flat home menu (ViinHomeMenu): a user must be able to start typing the
-// instant the screen is up, in EITHER render shape this component supports - the boot-landing
-// client action (no `close` prop) and the navbar overlay (`close` prop set, `isOverlay` true) -
-// without clicking the search box first, and without losing whatever they had already typed if
-// focus was briefly lost.
+// instant the screen is up, in either render shape (the boot-landing client action with no `close`
+// prop, and the navbar overlay with `close` set), without clicking the search box first and without
+// losing what was already typed if focus was briefly lost.
 //
-// This file exercises TWO delivery mechanisms `ViinHomeMenu` owns: a mount-time pre-focus of the
-// search input (skipped on a touch device - popping the on-screen keyboard uninvited on a screen
-// the user has not touched yet would be worse than leaving it unfocused), and a window-level
-// keydown listener (`onWindowKeydown`, wired via `useExternalListener(window, "keydown", ...)`)
-// that RECOVERS focus whenever it was lost. That listener is FOCUS-ONLY: it moves focus to the
-// search box and lets the browser's own default action deliver the keystroke natively, rather than
-// reading `ev.key` and hand-inserting it - which is what makes a keystroke APPEND to content
-// already in the box instead of overwriting it, and is also what keeps a composition-based IME
-// session from being interrupted by a synthetic value assignment outside its own session.
+// Two delivery mechanisms are exercised: a mount-time pre-focus of the search input (skipped on a
+// touch device, where an uninvited on-screen keyboard is worse than no focus), and a window-level
+// keydown listener (`onWindowKeydown`) that recovers focus. The listener is focus-only: it moves
+// focus to the search box and lets the browser's default action deliver the keystroke natively, so a
+// keystroke appends to the existing content and a composition-based IME session is not interrupted
+// by a synthetic value assignment.
 //
-// The guard-condition tests mirror core's OWN editable-protection rule
-// (web/static/src/core/hotkeys/hotkey_service.js: `targetIsEditable` accepts
-// input/textarea/contenteditable and excludes checkbox/radio; `shouldProtectEditable` adds that
-// gate on top of the authorized-key check) and core's own IME-guard TEST TECHNIQUE
-// (web/static/tests/core/hotkey_sevice.test.js "should ignore when IME is composing" -
-// `press(key, { isComposing: true })`).
+// The guard-condition tests mirror core's editable-protection rule (hotkey_service.js:
+// `targetIsEditable` accepts input/textarea/contenteditable and excludes checkbox/radio;
+// `shouldProtectEditable` adds that gate) and core's IME-guard technique
+// (`press(key, { isComposing: true })`).
 //
-// WHAT THESE TESTS DO NOT AND CANNOT PROVE. Hoot's `press()` and a browser tour's synthetic
-// `dispatchEvent` cannot reproduce a real OS/IME composition SESSION (Windows Telex/VNI, macOS
-// Vietnamese, TSF-based) - only a live browser driven by a real input method can. What is asserted
-// below is the mechanism (focus-then-native-delivery, append-not-overwrite, mount-time pre-focus
-// with its touch guard) and the guard conditions around it; a real IME composition session
-// surviving correctly remains a live-browser/live-OS verification outside what this automated
-// suite can close.
+// Not provable here: Hoot's `press()` and a tour's synthetic `dispatchEvent` cannot reproduce a real
+// OS/IME composition session (Windows Telex/VNI, macOS Vietnamese, TSF); only a live browser driven
+// by a real input method can.
 
 class ResUsers extends mailModels.ResUsers {
     viin_home_app_order = fields.Char();
@@ -86,7 +76,12 @@ async function mountHomeMenu(props = {}) {
  *  like a real keystroke would. */
 function dispatchKeydown(init) {
     const target = getActiveElement();
-    const event = new KeyboardEvent("keydown", { key: "a", bubbles: true, cancelable: true, ...init });
+    const event = new KeyboardEvent("keydown", {
+        key: "a",
+        bubbles: true,
+        cancelable: true,
+        ...init,
+    });
     target.dispatchEvent(event);
     return event;
 }
@@ -97,13 +92,10 @@ describe("ViinHomeMenu type-to-search", () => {
     });
 
     test("client-action render: mounting alone (no press, no click) already focuses the search box on a non-touch device", async () => {
-        // The title's precondition is "on a non-touch device" - the mobile test preset emulates
-        // touch by default, so this must force the non-touch state itself rather than inherit
-        // whatever the running preset happens to give. mockTouch(false) covers the
-        // matchMedia("(pointer:coarse)") half of hasTouch(), but browser.ontouchstart is a VALUE
-        // captured once when the browser module first loads - mockTouch cannot reach it after the
-        // fact - so it must also be patched directly, or hasTouch() stays true under the mobile
-        // preset regardless of what mockTouch is told.
+        // The title's precondition is "on a non-touch device" and the mobile test preset emulates
+        // touch by default, so the non-touch state is forced. mockTouch(false) covers only the
+        // matchMedia("(pointer:coarse)") half of hasTouch(); browser.ontouchstart is a value
+        // captured once at module load, so it must also be patched directly.
         mockTouch(false);
         patchWithCleanup(browser, { ontouchstart: undefined });
         await mountHomeMenu();
@@ -116,11 +108,8 @@ describe("ViinHomeMenu type-to-search", () => {
     });
 
     test("overlay render: mounting alone (no press, no click, no autofocusSearch prop) already focuses the search box on a non-touch device", async () => {
-        // Same non-touch precondition as the client-action render test above - the mobile preset
-        // emulates touch by default, so this must be forced rather than inherited from the preset.
-        // Same two-line requirement too: mockTouch(false) only reaches the matchMedia half of
-        // hasTouch(); browser.ontouchstart is a value captured once at module load, so it must be
-        // patched directly as well, or hasTouch() stays true under the mobile preset.
+        // Same forced non-touch precondition as the client-action render test above: mockTouch(false)
+        // only reaches the matchMedia half of hasTouch(), so browser.ontouchstart is patched too.
         mockTouch(false);
         patchWithCleanup(browser, { ontouchstart: undefined });
         await mountHomeMenu({ close: () => {} });
@@ -132,7 +121,7 @@ describe("ViinHomeMenu type-to-search", () => {
         });
     });
 
-    test("a touch device never autofocuses the search box on mount - REGRESSION GUARD for the desktop-only pre-focus", async () => {
+    test("a touch device never autofocuses the search box on mount", async () => {
         mockTouch(true);
         await mountHomeMenu({ close: () => {} });
 
@@ -195,7 +184,8 @@ describe("ViinHomeMenu type-to-search", () => {
         await animationFrame();
 
         expect(getActiveElement()).toBe(searchInput(), {
-            message: "a focused checkbox must not be treated as an editable that blocks type-ahead.",
+            message:
+                "a focused checkbox must not be treated as an editable that blocks type-ahead.",
         });
         expect(searchInput().value).toBe("a");
     });
@@ -211,10 +201,12 @@ describe("ViinHomeMenu type-to-search", () => {
         await animationFrame();
 
         expect(getActiveElement()).toBe(other, {
-            message: "an already-focused unrelated input must keep focus - typing must not hijack it into the search box.",
+            message:
+                "an already-focused unrelated input must keep focus - typing must not hijack it into the search box.",
         });
         expect(searchInput().value).toBe("", {
-            message: "the search box must stay untouched while a different input is being typed into.",
+            message:
+                "the search box must stay untouched while a different input is being typed into.",
         });
         expect(other.value).toBe("a", {
             message: "the already-focused input's own native typing must proceed unaffected.",
@@ -279,7 +271,7 @@ describe("ViinHomeMenu type-to-search", () => {
         expect(searchInput().value).toBe("");
     });
 
-    test("the Cmd-K hint badge is not in the rendered markup (superseded by direct type-to-search)", async () => {
+    test("the Cmd-K hint badge is not in the rendered markup", async () => {
         await mountHomeMenu();
 
         expect(".o_viin_home_menu .o_viin_home_search_hint").toHaveCount(0);

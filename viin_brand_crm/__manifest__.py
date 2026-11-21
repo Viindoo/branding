@@ -15,7 +15,6 @@ This module will change color navigate bar, button and logo,v.v in CRM following
 
 It also hides the Odoo IAP settings of CRM (lead enrichment, lead mining, visits to leads).
 
-
 Editions Supported
 ==================
 1. Community Edition
@@ -31,7 +30,6 @@ Module này sẽ thay đổi giao diện module CRM theo thương hiệu Viindoo
 Module này cũng ẩn các thiết lập Odoo IAP của CRM
 (làm giàu dữ liệu, khai thác khách hàng tiềm năng, lượt truy cập thành khách hàng tiềm năng).
 
-
 Ấn bản được Hỗ trợ
 ==================
 1. Ấn bản Community
@@ -45,20 +43,31 @@ Module này cũng ẩn các thiết lập Odoo IAP của CRM
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1.2',
+    'version': '0.1.4',
 
     # viin_brand: owns the hook that hides the upsell settings
     'depends': ['crm', 'viin_brand', 'viin_brand_digest'],
 
-    # always loaded
     'data': [
         'data/digest_data.xml',
+        'data/ir_cron_data.xml',
+        'data/ir_ui_menu_data.xml',
+        'data/mail_template_data.xml',
         'views/crm_lead_views.xml',
+        'views/crm_team_views.xml',
+        'views/res_config_settings_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'viin_brand_crm/static/src/js/tours/crm.js',
+            'viin_brand_crm/static/src/views/crm_form/crm_pls_tooltip_button.xml',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_crm/static/tests/crm_debrand.test.js',
+        ],
+    },
+    'uninstall_hook': 'uninstall_hook',
     'installable': False,
     'auto_install': True,
     'price': 0.0,

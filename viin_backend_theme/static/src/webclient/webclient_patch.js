@@ -1,32 +1,12 @@
 /** @odoo-module **/
 
-// P1 - WebClient landing (TDD §4b P1; fidelity amendment 2026-07-18 M4).
-//
 // v19 `WebClient.loadRouterState()` calls `_loadDefaultApp()` whenever no action is resolved from the
-// URL (webclient.js), and the same method backs the "WEBCLIENT:LOAD_DEFAULT_APP" bus event.
-// The stock implementation selects the first root app; we override it to land on the flat
-// "Applications" home menu (D3) instead. This is the CORRECT v19 hook - the amendment's M4 recorded
-// that the earlier build patched a non-existent `_loadDefaultApp` on the prototype, which is exactly
-// the method patched here (it DOES exist in v19).
+// URL, and the same method backs the "WEBCLIENT:LOAD_DEFAULT_APP" bus event. The stock implementation
+// selects the first root app; this patch lands on the flat "Applications" home menu instead.
 //
-// THE BOOT LANDING IS THE ONLY REMAINING USER OF VIIN_HOME_ACTION (owner decision D3, 2026-08-17).
-// The navbar apps icon used to doAction() this same client action, which is what unmounted the
-// controller underneath and broke 57 core tours; it now opens the home menu as a non-navigating
-// overlay instead (apps_menu_home.js). The boot landing keeps the client action deliberately: with
-// no action resolved from the URL there is no controller to preserve, and an overlay floating over
-// an empty action manager would be strictly worse. The user sees ONE button and ONE home menu on
-// both paths, so this is not a second control.
-//
-// The title de-brand is INHERITED from viin_brand_web and is deliberately NOT duplicated here.
-// It no longer lives in a WebClient patch: commit 9a5083d moved it into
-// viin_brand_web/static/src/core/browser/title_service.js, which de-brands the title service's
-// EMPTY-composition fallback ("Odoo" -> "Viindoo") instead of injecting a permanent `zopenerp` title
-// part that leaked into every composed title ("Viindoo - Hello, world!"). Behaviour here is
-// unaffected either way - this file simply must not re-state where that de-brand lives.
-//
-// T-4 (PR #658 review-fix): skipToMainContent backs the "Skip to main content" bypass-blocks link
-// (WCAG 2.4.1, webclient.xml) - it moves keyboard focus straight into the action region, past the
-// navbar + rail chrome. No longer the shell's first Tab stop; home_menu.js's header covers why.
+// The boot landing is the only user of VIIN_HOME_ACTION: with no action resolved from the URL there
+// is no controller to preserve, so the client action is used instead of the overlay the navbar apps
+// icon opens (apps_menu_home.js).
 
 import { WebClient } from "@web/webclient/webclient";
 import { patch } from "@web/core/utils/patch";
@@ -35,14 +15,9 @@ import { VIIN_HOME_ACTION } from "./apps_menu_home";
 
 patch(WebClient.prototype, {
     _loadDefaultApp() {
-        // Divert to the home menu ONLY when that client action is actually registered.
-        // home_menu.js registers "viin_home_menu" into registry.category("actions") at module
-        // load, so in a real client the guard always passes. It matters in test environments
-        // that mount the WebClient against a cleaned-out action registry: an unguarded
-        // doAction() on an unknown tag throws during boot and takes the whole suite with it,
-        // whereas super() lands on the stock first-root-app exactly as an unthemed build does.
-        // Forward-ported intent from 18.0 web_responsive (221946b) - the module is gone at 19.0
-        // but this hook carries the identical hazard, so the guard is re-expressed here.
+        // Divert only when the client action is registered: a test environment that mounts the
+        // WebClient against a cleaned-out action registry would otherwise throw in doAction() on an
+        // unknown tag during boot, whereas super() lands on the stock first root app.
         if (!registry.category("actions").contains(VIIN_HOME_ACTION)) {
             return super._loadDefaultApp();
         }

@@ -3,7 +3,7 @@ import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 
-// Mirrors CashMoveListPopup.onDeleteCm of point_of_sale with a neutral error title.
+// Mirrors CashMoveListPopup.onDeleteCm of point_of_sale with a Viindoo error title.
 patch(CashMoveListPopup.prototype, {
     async onDeleteCm(cm) {
         try {
@@ -17,7 +17,7 @@ patch(CashMoveListPopup.prototype, {
             this.props.cashMoves = this.props.cashMoves.filter((cashMove) => cashMove.id !== cm.id);
         } catch (error) {
             this.dialog.add(AlertDialog, {
-                title: _t("Server Error"),
+                title: _t("Viindoo Server Error"),
                 body: error.data.message,
             });
             throw error;

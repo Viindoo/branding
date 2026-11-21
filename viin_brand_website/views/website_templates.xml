@@ -16,10 +16,8 @@
         </xpath>
     </template>
 
-    <!-- Outer wrapper view: its own `name` field feeds website.layout's title xpath
-         (main_object.sudo().name) when no explicit website_meta_title override applies,
-         since core's website_info() controller never sets 'main_object' and
-         ir_ui_view._render_template() then defaults it to this view record itself. -->
+    <!-- The page title of /website/info falls back to the name of this wrapper view
+         (website.layout reads main_object.name). -->
     <record id="website.website_info" model="ir.ui.view">
         <field name="name">Viindoo Information</field>
     </record>
@@ -29,31 +27,32 @@
 			<attribute name="content">Viindoo</attribute>
 		</xpath>
 
-        <!-- The x_icon override that used to sit here is deliberately gone.
-             It read:
-                 <xpath expr="//t[@t-set='x_icon']" position="replace">
-                     <t t-set="x_icon" t-value="'/viin_brand/static/img/favicon.ico'"/>
-                 </xpath>
-             locate_node (odoo/tools/template_inheritance.py) resolves an xpath to the FIRST
-             document-order match, which in the combined website.layout arch is website's own
-             producer (website/views/website_templates.xml, t-set x_icon =
-             website.image_url(website, 'favicon')). Replacing it destroyed the website's
-             configured favicon and substituted an unconditional brand path with no `or` guard,
-             so a website that had configured its own favicon never got to serve it.
-             Re-adding a guard would not help: after the replace, x_icon is unset at that point,
-             so `x_icon or <brand>` still collapses to the brand every time.
-             Branding is instead supplied at the DATA level, by models/website.py's default on
-             the favicon field: a new website starts branded, and the customer's own value wins
-             the moment they set one. Non-website pages still get the brand default from
-             viin_brand_common's own fallback in views/webclient_template.xml.
-             Locked by tests/test_website_favicon_not_preempted.py. -->
+        <!-- No x_icon override: an xpath on it matches website's own x_icon producer first and
+             would stop a configured favicon from being served. The brand favicon is the default
+             of the favicon field instead (models/website.py). -->
 
-        <!-- Apps button: this module redirects it straight into the backend; core's own
-             dropdown markup on the sibling menu is deliberately left alone. -->
+        <!-- The apps button links straight to the backend; its sibling dropdown menu stays as
+             core renders it. -->
         <xpath expr="//a[hasclass('o_frontend_to_backend_apps_btn')]" position="attributes">
             <attribute name="title">Go to your Viindoo Apps</attribute>
             <attribute name="data-bs-toggle"/>
             <attribute name="href">/odoo</attribute>
+        </xpath>
+    </template>
+
+    <!-- Cookie table: cells are addressed by position, as their text is translated before views are merged. -->
+    <template id="cookie_policy" inherit_id="website.cookie_policy">
+        <xpath expr="//tbody/tr[1]/td[3]" position="replace" mode="inner">
+            session_id (Viindoo)<br/>
+        </xpath>
+        <xpath expr="//tbody/tr[2]/td[3]" position="replace" mode="inner">
+            frontend_lang (Viindoo)
+        </xpath>
+        <xpath expr="//tbody/tr[3]/td[3]" position="replace" mode="inner">
+            im_livechat_previous_operator (Viindoo)<br/>
+            utm_campaign (Viindoo)<br/>
+            utm_source (Viindoo)<br/>
+            utm_medium (Viindoo)
         </xpath>
     </template>
 </odoo>

@@ -1,107 +1,55 @@
-# <template inherit_id> targets a genuine ir.ui.view guard (ODOO-AI-ETHOS #8) - protects:
+# <template inherit_id> targets a genuine ir.ui.view. The rule:
 #
 #   "Every `<template id=... inherit_id="X">` shipped by an INSTALLED module of this repo must
 #    resolve X to a genuine ir.ui.view record."
 #
-# WHY THIS MATTERS
-# -----------------
-# `odoo/tools/convert.py::_tag_template` hardcodes `model='ir.ui.view'` for any `<template>` tag
-# in a non-`theme_*` module, REGARDLESS of what `inherit_id` actually names (`convert.py:483-486`).
-# It then emits `Field(name='inherit_id', ref=X)` (`convert.py:508`), and `id_get`
-# (`convert.py:585-589`) discards X's real MODEL and keeps only X's raw numeric `res_id`. That
-# bare number is written straight into `ir.ui.view.inherit_id` - a real database foreign key
-# (`ir_ui_view.py:169`, `ondelete='restrict'`). `ir_ui_view` carries thousands of rows across every
-# installed module, so if X is NOT itself an `ir.ui.view`, the FK write can land on a completely
-# unrelated view row and the inheriting template becomes a permanent no-op pointed at the wrong
-# parent.
+# `odoo/tools/convert.py::_tag_template` hardcodes `model='ir.ui.view'` for any `<template>` tag in
+# a non-`theme_*` module, regardless of what `inherit_id` names. It emits
+# `Field(name='inherit_id', ref=X)`, and `id_get` discards X's real model and keeps only its raw
+# numeric `res_id`. That number is written into `ir.ui.view.inherit_id`, a real database foreign
+# key. If X is not itself an `ir.ui.view`, the write can land on an unrelated view row and the
+# inheriting template becomes a permanent no-op pointed at the wrong parent.
 #
-# HOW VISIBLE IS THE FAILURE: CONDITIONALLY SILENT, DATA-DEPENDENT
-# -----------------------------------------------------------------
-# NOT unconditionally silent. An earlier revision of this header claimed the break lands with
-# "ZERO load-time error" and that `_validate_module_views` only runs on `-u`, so a fresh `-i`
-# install would never surface it. THAT CLAIM IS WRONG and is corrected here: `_check_xml` runs on
-# `create` (`ir_ui_view.py:641`) and on `write` (`ir_ui_view.py:664`), not only on upgrade. Inside
-# it, `_get_combined_arch()` (`ir_ui_view.py:442`) is called BEFORE the
-# `if view.type == 'qweb': continue` guard (`ir_ui_view.py:476-477`), so a spec that cannot be
-# located in the wrong parent raises out of `template_inheritance.py:144-146` and is re-raised as a
-# `ValidationError` (`ir_ui_view.py:478-486`). LOUDLY, on a plain `-i`.
+# The failure is conditionally silent and data-dependent. `_check_xml` runs on create and write,
+# and `_get_combined_arch()` runs before the `view.type == 'qweb'` guard, so a spec that cannot be
+# located in the wrong parent raises a ValidationError on a plain `-i`. It goes silent only when
+# BOTH hold:
+#   (a) the non-view record's `res_id` coincides with a real `ir_ui_view` id (otherwise the FK
+#       constraint fails first); and
+#   (b) the spec still locates inside that wrong parent, e.g. an `<xpath expr="." position="inside"/>`
+#       or a selector generic enough to match anywhere.
+# Which record ids exist depends on the database, so no runtime test reproduces it reliably; this
+# guard checks the source on every run.
 #
-# The accurate statement is that the failure is CONDITIONALLY SILENT and DATA-DEPENDENT. To go
-# silent it needs BOTH of:
-#   (a) the non-view record's `res_id` to coincide with a real `ir_ui_view` id - otherwise the FK
-#       constraint itself blows up first; AND
-#   (b) the spec to still locate inside that WRONG parent - typically an
-#       `<xpath expr="." position="inside"/>`, or a selector generic enough to match anywhere.
-# This repo currently ships ZERO `expr="."` outside `static/`, so the easiest-to-silence shape is
-# not present today - which is a fact about today's source, not a property of the defect.
+# The scope key is the shipping module, not the target module. Resolving every scanned `inherit_id`
+# through `self.env.ref` on any database conflates "this target is broken" with "the module that
+# owns the target is not installed on THIS database". The key is whether the module that ships the
+# `<template>` is installed:
+#   * shipping module installed -> `convert.py` processed that `<template>`, so every `inherit_id`
+#     it names must have resolved or the install would have aborted; the check is meaningful.
+#   * shipping module absent    -> the `<template>` was never converted and no FK row was written;
+#     skipping loses no coverage.
+# If module A is installed and one of its templates points at `moduleB.X` while B is absent, the
+# check still reports it, correctly: that is an install-time failure of A.
 #
-# That data-dependence is precisely WHY a static, source-derived guard earns its place: whether the
-# bug explodes or goes quiet depends on which record ids happen to exist in the particular database
-# it is installed into, so NO runtime test reproduces it reliably. Rather than wait for a database
-# whose id layout happens to hide it, this guard checks the source on every run.
-#
-# CLASS OF BUG GUARDED
-# ---------------------
-# A code review of this branch flagged exactly this shape as CRITICAL against
-# viin_brand_auth_signup/data/auth_signup_templates_email.xml (target
-# `auth_signup.reset_password_email`) - independently re-verified against 19.0 core source and
-# `.po` comments (`model_terms:ir.ui.view,arch_db:...`) to be a FALSE POSITIVE for that specific
-# target: it genuinely is an `ir.ui.view`. The finding was a false alarm this time, but the
-# underlying defect CLASS is real (convert.py really does behave this way) and had zero prior
-# automated coverage before this file - hence a general, repo-wide guard, re-derived from source
-# every run, so a genuine future instance of the same shape is caught automatically instead of
-# depending on another one-off manual review.
-#
-# THE SCOPE KEY IS THE SHIPPING MODULE, NOT THE TARGET MODULE
-# ------------------------------------------------------------
-# Resolving every scanned `inherit_id` through `self.env.ref` on any database, unconditionally,
-# is STRUCTURALLY UNABLE TO PASS: it conflates "this target is genuinely broken" with "the module
-# that owns the target simply is not installed on THIS database". Measured on 19.0 source, all 52
-# targets in this repo resolve to genuine `ir.ui.view` records, yet the unconditional form reported
-# 46 offenders on a 4-module instance and 29 on a 97-module instance - every single one a false
-# alarm about an absent module, never a real defect.
-#
-# The correct key is whether the module that SHIPS the `<template>` is installed:
-#   * SHIPPING MODULE INSTALLED   -> `convert.py` has already processed that `<template>`, so every
-#     `inherit_id` it names MUST have resolved or the install would have aborted. Checking it is
-#     meaningful, and it MUST be green.
-#   * SHIPPING MODULE ABSENT      -> the `<template>` was never converted, no FK row was ever
-#     written, there is literally nothing to protect. Skipping loses ZERO real coverage.
-# This does NOT create a cross-module blind spot: if module A IS installed and one of its templates
-# points at `moduleB.X` while B is absent, this key still CHECKS it and still REPORTS it -
-# correctly, because that IS a genuine install-time failure of A.
-#
-# DELIBERATE SCOPE LIMITS
-# ------------------------
-# 1. Only `<template id=... inherit_id="...">` in DATA/VIEW xml (anything outside `static/`).
-#    `static/src/**` OWL templates use `t-inherit`, a different mechanism entirely - already
-#    guarded by viin_brand_web/tests/test_owl_extension_self_shadow.py.
-# 2. THE TARGET LIST IS NEVER HARDCODED. `_template_inherit_targets` re-parses the whole repo on
-#    every test run, exactly like test_scss_variable_closure.py's reachability model - a newly
-#    added `<template inherit_id=...>` anywhere is covered automatically, with no need to touch
-#    this file in lockstep. The INSTALLED-module set is likewise resolved live from
-#    `ir.module.module`, never from a hardcoded module list.
-# 3. PARSED WITH REGEX, NOT AN XML TREE PARSER - same reasoning as
-#    test_owl_extension_self_shadow.py (see that file's scope-limit 4 for the full rationale):
-#    `defusedxml` is not a dependency this codebase carries, and a tag-level regex over trusted,
-#    repo-local source avoids the stdlib tree parsers' XXE/entity-expansion exposure entirely.
-# 4. THIS GUARD NEEDS A LIVE REGISTRY (`self.env.ref`, `ir.module.module`) and therefore cannot be
-#    pure disk-parsing - it only runs meaningfully under a real Odoo instance. It lives in
-#    `viin_brand` (not in the module it happens to have been drafted in) because it imports NO Odoo
-#    module symbol at all and touches only `self.env`: it needs no dependency on anything it scans,
-#    only to be installed. `viin_brand` is `depends: ['base', 'web']` with `auto_install: True`, so
-#    it is present on every database that has `web` - the broadest reach available to a repo-wide
-#    guard, at the cost of zero new dependency edges anywhere.
-# 5. THE SKIP IS REPORTED, NOT HIDDEN. A guard that quietly narrows its own scope rots into a
-#    no-op, which is the very bug class this file exists to prevent. So the checked/skipped counts
-#    and the skipped module names are logged on every run and repeated in the failure message, and
+# Scope:
+# 1. Only `<template id=... inherit_id="...">` in data/view xml (anything outside `static/`).
+#    `static/src/**` OWL templates use `t-inherit`, a different mechanism guarded by
+#    tests/test_owl_extension_self_shadow.py.
+# 2. The target list is re-parsed from the repo on every run, and the installed-module set is
+#    resolved live from `ir.module.module`; nothing is hardcoded.
+# 3. Parsed with a tag-level regex, not an XML tree parser, for the reasons given in
+#    tests/test_owl_extension_self_shadow.py.
+# 4. The guard needs a live registry (`self.env.ref`, `ir.module.module`). It lives in `viin_brand`
+#    because it imports no Odoo module symbol and touches only `self.env`; `viin_brand` is
+#    `auto_install` on `web`, so it is present on every database that has `web`.
+# 5. The skip is reported, not hidden: the checked/skipped counts and skipped module names are
+#    logged on every run and repeated in the failure message, and
 #    `test_scan_covers_every_installed_repo_module_that_ships_such_a_template` pins the scanned set
-#    by EXACT SET EQUALITY against a SECOND, independently implemented oracle (`os.walk` +
-#    `str.split`, sharing no code path with the glob+regex scanner). A future edit that silently
-#    makes the scanner match fewer files fails there. That oracle is deliberately DISK-based rather
-#    than registry-based: a live-registry oracle ("installed repo modules owning a qweb ir.ui.view
-#    with inherit_id") demonstrably diverges, because viin_brand_website_forum ships that same shape
-#    as a plain `<record model="ir.ui.view">` rather than a `<template>` - out of scope here.
+#    by exact set equality against a second, independently implemented oracle (`os.walk` +
+#    `str.split`, sharing no code path with the glob+regex scanner). The oracle is disk-based
+#    rather than registry-based because a registry oracle diverges: viin_brand_website_forum ships
+#    the same shape as a plain `<record model="ir.ui.view">`, which is out of scope here.
 import glob
 import logging
 import os
@@ -119,14 +67,14 @@ _XML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 _TEMPLATE_TAG_RE = re.compile(r"<template\b([^>]*)>")
 _ATTR_RE = re.compile(r'([\w:-]+)\s*=\s*"([^"]*)"')
 
-# Directory names never scanned: OWL sources (a different inheritance mechanism, scope-limit 1)
-# and test packages (never ship <template> records).
+# Directory names never scanned: OWL sources (a different inheritance mechanism) and test packages
+# (never ship <template> records).
 _SKIPPED_DIRS = ("static", "tests")
 
 
 def _view_xml_files(repo_root):
     """Every *.xml file in this repo EXCLUDING static/** (OWL, a different mechanism - see
-    viin_brand_web/tests/test_owl_extension_self_shadow.py) and EXCLUDING tests/** (never ships
+    viin_brand/tests/test_owl_extension_self_shadow.py) and EXCLUDING tests/** (never ships
     <template> records).
     """
     pattern = os.path.join(repo_root, "*", "**", "*.xml")
@@ -140,10 +88,10 @@ def _view_xml_files(repo_root):
 
 
 def _shipping_module(path, repo_root):
-    """The repo module that SHIPS `path` - its first path segment under the repo root.
+    """The repo module that ships `path` - its first path segment under the repo root.
 
-    This is the guard's SCOPE KEY (see header): the module whose install made `convert.py`
-    actually convert the `<template>`, which is what decides whether there is anything to protect.
+    This is the guard's scope key (see header): the module whose install made `convert.py`
+    convert the `<template>`.
     """
     return os.path.relpath(path, repo_root).split(os.sep)[0]
 
@@ -152,9 +100,8 @@ def _template_inherit_targets(repo_root):
     """[(path, shipping_module, template_id, inherit_id)] for every <template inherit_id="...">
     in data/view xml.
 
-    Re-parsed from source every call - never a hardcoded list - so a newly added template is
-    picked up automatically instead of needing this file updated in lockstep. XML comments are
-    stripped first so a commented-out example is never mistaken for a live template.
+    Re-parsed from source on every call. XML comments are stripped first so a commented-out
+    example is not mistaken for a live template.
     """
     targets = []
     for path in _view_xml_files(repo_root):
@@ -171,13 +118,12 @@ def _template_inherit_targets(repo_root):
 
 
 def _modules_shipping_template_inherit(repo_root):
-    """INDEPENDENT oracle: the set of repo modules shipping >=1 `<template ... inherit_id=...>`.
+    """Independent oracle: the set of repo modules shipping at least one
+    `<template ... inherit_id=...>`.
 
-    Deliberately a SECOND, dumber implementation of the same question, sharing NO code path with
-    `_view_xml_files` / `_template_inherit_targets`: `os.walk` instead of `glob`, and plain
-    `str.split` instead of the compiled regexes. That independence is the whole point - if both
-    sides were the same code, the equality gate that consumes this would be a tautology and could
-    not catch a scanner that silently stopped matching files.
+    A second implementation of the same question that shares no code path with `_view_xml_files` /
+    `_template_inherit_targets` (`os.walk` instead of `glob`, `str.split` instead of regexes), so
+    the equality gate that consumes it is not a tautology.
     """
     modules = set()
     for dirpath, dirnames, filenames in os.walk(repo_root):
@@ -196,8 +142,7 @@ def _modules_shipping_template_inherit(repo_root):
                 continue
             with open(os.path.join(dirpath, filename), "r", encoding="utf-8") as xml_file:
                 raw = xml_file.read()
-            # Drop commented-out regions, same semantics as _XML_COMMENT_RE but by a different
-            # mechanism: keep only what follows each comment close.
+            # Drop commented-out regions: keep only what follows each comment close.
             live = "".join(chunk.split("-->")[-1] for chunk in raw.split("<!--"))
             # An opening `<template ...>` tag carrying inherit_id: everything up to the first '>'.
             opening_tags = [chunk.split(">", 1)[0] for chunk in live.split("<template")[1:]]
@@ -208,9 +153,7 @@ def _modules_shipping_template_inherit(repo_root):
 
 
 def _installed(env, modules):
-    """The subset of `modules` in state 'installed' on THIS database - read live from
-    ir.module.module, never a hardcoded list (scope-limit 2).
-    """
+    """The subset of `modules` in state 'installed' on this database."""
     if not modules:
         return set()
     installed = env["ir.module.module"].search([
@@ -224,17 +167,14 @@ def _installed(env, modules):
 class TemplateInheritIdTargetsViewTest(TransactionCase):
 
     def test_template_inherit_id_resolves_to_a_genuine_ir_ui_view(self):
-        """Every <template inherit_id="X"> shipped by an INSTALLED repo module must resolve X to a
-        genuine ir.ui.view record - see module header for why a non-view target is a
-        conditionally-silent, data-dependent no-op via ir.ui.view.inherit_id's raw foreign-key
-        write, and for why the SHIPPING module (not the target's module) is the scope key.
+        """Every <template inherit_id="X"> shipped by an installed repo module must resolve X to a
+        genuine ir.ui.view record; see the module header for the failure mode and the scope key.
         """
         targets = _template_inherit_targets(REPO_ROOT)
         self.assertTrue(
             targets,
-            "no <template inherit_id=...> found repo-wide under %s - this likely means the scan "
-            "itself is broken (see test_scanner_actually_finds_template_inherit_targets below), "
-            "not that this repo genuinely ships none" % REPO_ROOT,
+            "no <template inherit_id=...> found repo-wide under %s - the scan itself is likely "
+            "broken (see test_scanner_actually_finds_template_inherit_targets)" % REPO_ROOT,
         )
         shipping_modules = {module for _path, module, _tpl, _inherit in targets}
         installed = _installed(self.env, shipping_modules)
@@ -244,8 +184,7 @@ class TemplateInheritIdTargetsViewTest(TransactionCase):
         offenders = []
         for path, module, template_id, inherit_id in targets:
             if module not in installed:
-                # Not installed => convert.py never processed this <template>, no inherit_id FK was
-                # ever written, nothing to protect. Reported below, never hidden.
+                # Not installed: convert.py never processed this <template>. Reported below.
                 continue
             checked += 1
             try:
@@ -253,16 +192,16 @@ class TemplateInheritIdTargetsViewTest(TransactionCase):
             except ValueError:
                 offenders.append(
                     "%s (template id=%r): inherit_id %r does not resolve to ANY record, even "
-                    "though its shipping module %r IS installed - convert.py must already have "
-                    "resolved it at install time, so this is a genuine broken reference"
+                    "though its shipping module %r is installed - convert.py resolves it at "
+                    "install time, so this is a broken reference"
                     % (os.path.relpath(path, REPO_ROOT), template_id, inherit_id, module)
                 )
                 continue
             if target._name != "ir.ui.view":
                 offenders.append(
                     "%s (template id=%r): inherit_id %r resolves to a %r record, not "
-                    "ir.ui.view - convert.py will still write it into ir_ui_view.inherit_id, "
-                    "silently corrupting an unrelated row and making this template a no-op"
+                    "ir.ui.view - convert.py writes it into ir_ui_view.inherit_id, which "
+                    "corrupts an unrelated row and makes this template a no-op"
                     % (os.path.relpath(path, REPO_ROOT), template_id, inherit_id, target._name)
                 )
 
@@ -277,40 +216,32 @@ class TemplateInheritIdTargetsViewTest(TransactionCase):
                 ", ".join(sorted(skipped_modules)) or "<none>",
             )
         )
-        # Logged on EVERY run, green included: a skip nobody can see is how a guard rots into a
-        # no-op (header scope-limit 5).
+        # Logged on every run, green included, so a narrowed scope is visible.
         _logger.info("template inherit_id guard - %s", scope)
         self.assertFalse(offenders, "%s\n%s" % (scope, "\n".join(offenders)))
 
     def test_scanner_actually_finds_template_inherit_targets(self):
-        """Sanity gate mirroring test_owl_extension_self_shadow.py's: pins that the scan is
-        genuinely discriminating (non-empty), so the guard above cannot pass vacuously.
-        """
+        """The scan finds targets, so the guard above cannot pass vacuously."""
         targets = _template_inherit_targets(REPO_ROOT)
         self.assertGreater(
             len(targets), 0,
             "scanner found zero <template inherit_id=...> repo-wide, which means the scan "
-            "itself is broken - this repo ships many (e.g. "
-            "viin_brand_auth_signup/data/auth_signup_templates_email.xml)",
+            "itself is broken - this repo ships many",
         )
 
     def test_scan_covers_every_installed_repo_module_that_ships_such_a_template(self):
-        """Anti-scope-shrink gate: the modules the guard actually CHECKS must be EXACTLY the
-        installed repo modules that ship a `<template inherit_id=...>` - an exact set equality,
-        never a "looks big enough" threshold.
+        """The modules the guard checks are exactly the installed repo modules that ship a
+        `<template inherit_id=...>`.
 
-        The right-hand side comes from `_modules_shipping_template_inherit`, a second and
-        deliberately independent implementation (os.walk + str.split, no shared code path with the
-        glob+regex scanner). If a later edit narrows the scanner so it silently matches fewer
-        files - the failure mode that turns a guard into a green no-op - the two sides diverge and
-        this fails.
+        The expected side comes from `_modules_shipping_template_inherit`, which shares no code
+        path with the glob+regex scanner, so a scanner that silently matches fewer files makes the
+        two sides diverge.
         """
         oracle = _modules_shipping_template_inherit(REPO_ROOT)
         self.assertTrue(
             oracle,
             "the independent oracle found zero repo modules shipping a <template inherit_id=...>, "
-            "so the ORACLE itself is broken and cannot pin anything - fix "
-            "_modules_shipping_template_inherit before trusting any result from this file",
+            "so the oracle itself is broken - fix _modules_shipping_template_inherit",
         )
         targets = _template_inherit_targets(REPO_ROOT)
         shipping_modules = {module for _path, module, _tpl, _inherit in targets}
@@ -333,17 +264,11 @@ class TemplateInheritIdTargetsViewTest(TransactionCase):
         )
 
     def test_scanner_would_flag_a_non_view_target(self):
-        """Sanity self-check for the rejection branch: picks a record that genuinely is NOT an
-        ir.ui.view (base.main_company, standard in every Odoo database) and confirms
-        `target._name != 'ir.ui.view'` - the exact condition the guard above uses to flag an
-        offender - evaluates True for it. This shows what the guard WOULD report if a real
-        <template inherit_id="..."> ever targeted a non-view record like this one, without
-        needing a live broken fixture to exist in this repo today.
+        """The condition the guard uses to flag an offender (`target._name != 'ir.ui.view'`) is
+        true for a record that is not an ir.ui.view (base.main_company, present in every database).
         """
         target = self.env.ref("base.main_company")
         self.assertNotEqual(
             target._name, "ir.ui.view",
-            "base.main_company resolved to %r, not ir.ui.view - if this ever changes, Odoo's "
-            "own base data has been restructured and this sanity check needs a new landmark "
-            "record" % target._name,
+            "base.main_company is an %r - this check needs another non-view record" % target._name,
         )

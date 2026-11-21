@@ -1,0 +1,42 @@
+// A11y focus-ring base (WCAG 2.1 SC 1.4.11 non-text contrast >= 3:1).
+//
+// The always-installed base owns a shared focus-ring token applied to core interactive elements on
+// :focus-visible, so an unthemed install is keyboard-accessible too.
+//
+// One Sass variable carries both arms: `$o-viin-focus` is #005E68 here (7.5:1 on white), and the
+// dark bundle recompiles with dark_palette.scss setting `$o-viin-focus: #7FE0EA` first (no
+// `!default`), so each bundle emits its own value with no runtime attribute flip.
+//
+// :root is used deliberately (the SCSS guideline exception for a token shared across bundles); the
+// ring reaches the pixel as the --o-viin-focus custom property.
+$o-viin-focus: #005E68 !default;
+
+:root {
+    --o-viin-focus: #{$o-viin-focus};
+}
+
+// Text-entry fields (input/textarea/select/.form-control/.form-select/.o_input) get no ring: core's
+// native input focus applies.
+//
+// Buttons, links, checkboxes, tabs and rows get a double ring: a 2px outline offset 1px out, plus a
+// 1px inner box-shadow halo in the surface colour (--body-bg). The ring colour can match the
+// element's own fill (a teal button), so the halo separates the ring from the fill and keeps >= 3:1
+// against both the element and its surround in either scheme. :focus-visible (not :focus) keeps
+// pointer clicks from painting the ring.
+//
+// An `.o-navigable` item belongs to core's keyboard navigation, which marks the current item with
+// `.focus`. DOM focus can stay on another item after a hover, so the ring follows `.focus`, not DOM
+// focus; painting both would show two items as selected. :where() keeps the base selectors'
+// specificity unchanged.
+.form-check-input,
+.btn,
+a,
+.dropdown-item,
+.o_notebook .nav-link,
+.o_data_row {
+    &:focus-visible:where(:not(.o-navigable), .focus) {
+        outline: 2px solid var(--o-viin-focus);
+        outline-offset: 1px;
+        box-shadow: 0 0 0 1px var(--body-bg);
+    }
+}

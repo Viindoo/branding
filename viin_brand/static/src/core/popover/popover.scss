@@ -1,0 +1,21 @@
+// Popovers (field / avatar-card / calendar quick-create popovers). Bootstrap paints the popover and
+// its arrow from compile-time hex ($popover-bg / $popover-border-color / $popover-header-bg) that
+// would not flip in dark, so each Bootstrap runtime custom property (unprefixed: Odoo sets
+// $variable-prefix: '') is re-pointed at the scheme-aware props (--tertiary-bg / --body-color /
+// --emphasis-color / --border-color). The surface goes to the view tier ($o-view-background-color:
+// white in light, the panel tier in the recompiled dark bundle, since core's `$white` is not
+// recompiled), not to --body-bg, the app-shell grey in light, which a popover body's muted and
+// contextual text is not tuned against. Bootstrap draws the arrow from --popover-bg and
+// --popover-border-color, so no arrow rule is needed. Colour only: core already pins
+// `$popover-border-radius: $border-radius`. Elevation is scheme-aware via color-mix over
+// --emphasis-color.
+
+.o_popover {
+    --popover-bg: #{$o-view-background-color};
+    --popover-border-color: var(--border-color);
+    --popover-header-bg: var(--tertiary-bg);
+    --popover-header-color: var(--emphasis-color);
+    --popover-body-color: var(--body-color);
+
+    box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--emphasis-color) 16%, transparent);
+}

@@ -11,37 +11,20 @@ import { mailModels } from "@mail/../tests/mail_test_helpers";
 import { cookie } from "@web/core/browser/cookie";
 import { browser } from "@web/core/browser/browser";
 
-// T-1 (PR #658 review-fix) - behavior guards for the `viin_theme` service under Option A.
-//
-// WHAT CHANGED, AND WHAT IS PROTECTED (observable state, not internals). Dark mode is now a
-// RECOMPILED server bundle (web.assets_web_dark), and a server-selected bundle cannot swap without a
-// reload. So the SCHEME toggle no longer instant-flips [data-bs-theme]: setScheme(choice) must
-//   (a) PERSIST the choice to res.users.viin_color_scheme (ORM write),
-//   (b) PERSIST the EFFECTIVE (light|dark) scheme to the `color_scheme` cookie the server reads, and
-//   (c) RELOAD via browser.location.reload() so the server serves the dark bundle + boot-stamps the
-//       paint - WITHOUT any instant [data-bs-theme] flip in the toggle path.
-// DENSITY stays instant (it is attribute-scoped SCSS, not a server bundle): setDensity must stamp
-// data-viin-density and persist its cookie WITHOUT reloading.
-//
-// Each test removes/would-remove exactly one guarantee to prove RED-on-behavior-removal:
-//   drop reload -> the verifySteps(["reload"]) fails; instant-flip the paint -> the "paint unchanged"
-//   assertion fails; drop the ORM write / cookie -> the persist assertions fail; make density reload
-//   -> the density verifySteps([]) fails.
-//
-// GROUNDED (OSM 19.0 + core source): service-test shape from
-// web/static/tests/webclient/reload_company_service.test.js (makeMockEnv + getService +
-// defineModels); browser.location mocked via patchWithCleanup(browser.location, { reload }), the
-// same pattern web/static/tests/core/debug/debug_manager.test.js uses for its "can regenerate
-// assets bundles" test; cookie + matchMedia test-isolated
-// (@odoo/hoot mock window). This ADAPTS the retired instant-apply guards: the old "flips the html
-// root to dark" / "live OS re-paint on toggle" assertions snapshotted the no-reload architecture
-// C-2 removed, so they are dropped rather than translated.
+// Behaviour guards for the `viin_theme` service (observable state, not internals). Dark mode is a
+// recompiled server bundle (web.assets_web_dark) that cannot swap without a reload, so
+// setScheme(choice) must
+//   (a) persist the choice to res.users.viin_color_scheme (ORM write),
+//   (b) persist the effective (light|dark) scheme to the `color_scheme` cookie the server reads, and
+//   (c) reload via browser.location.reload() so the server serves the dark bundle and boot-stamps
+//       the paint, without any instant [data-bs-theme] flip.
+// Density is attribute-scoped SCSS, not a server bundle: setDensity must stamp data-viin-density and
+// persist its cookie without reloading.
 
 describe("viin_theme service (persist + reload)", () => {
-    // The theme depends on viin_brand_mail, so its production JS (in web.assets_backend, included by
-    // the unit-test setup bundle) boots the mail/discuss service graph in makeMockEnv. Spread the
-    // full mail mock model set so those boot RPCs resolve, and OVERRIDE res.users with the per-user
-    // field so the service's boot reconcile read + its persist write resolve cleanly.
+    // The theme depends on viin_brand_mail, so its production JS boots the mail/discuss service
+    // graph in makeMockEnv. Spread the full mail mock model set so those boot RPCs resolve, and
+    // override res.users with the per-user field so the boot read and the persist write resolve.
     class ResUsers extends mailModels.ResUsers {
         viin_color_scheme = fields.Selection({
             selection: [
@@ -132,8 +115,8 @@ describe("viin_theme service (persist + reload)", () => {
     });
 
     test("setDensity('compact') applies instantly and does NOT reload", async () => {
-        // Non-regression guard: density is theme-owned attribute-scoped SCSS (no server bundle), so
-        // T-1's reload must NOT bleed onto density - it stays an instant, reload-free flip.
+        // Density is attribute-scoped SCSS (no server bundle), so the scheme reload must not bleed
+        // onto it: it stays an instant, reload-free flip.
         patchWithCleanup(browser.location, { reload: () => expect.step("reload") });
 
         const service = await startService();

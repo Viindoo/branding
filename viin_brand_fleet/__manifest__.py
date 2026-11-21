@@ -36,19 +36,15 @@ Module này sẽ thay đổi giao diện module Fleet theo thương hiệu Viind
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.2',
 
-    # any module necessary for this one to work correctly
     'depends': ['fleet'],
 
-    # always loaded
     'data': [
         'views/fleet_board_view.xml',
         'views/fleet_vehicle_cost_views.xml',
+        'views/fleet_vehicle_odometer_views.xml',
     ],
     'installable': False,
     'auto_install': True,

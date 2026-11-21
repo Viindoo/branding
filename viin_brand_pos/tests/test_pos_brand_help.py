@@ -12,8 +12,6 @@ QR_CODE_FIELD = "point_of_sale_use_ticket_qr_code"
 CUSTOMER_DISPLAY_BUNDLE = "point_of_sale.customer_display_assets"
 LOGO_OVERRIDE = "viin_brand_pos/static/src/app/components/odoo_logo/odoo_logo.xml"
 CORE_LOGO = "point_of_sale/static/src/app/components/odoo_logo/odoo_logo.xml"
-IOT_NOTICE_PATCH = "viin_brand_pos/static/src/customer_display/customer_display_data_service.js"
-IOT_NOTICE_WRAPPER = "viin_brand_pos/static/src/customer_display/iot_notice.js"
 
 
 @tagged("post_install", "-at_install")
@@ -23,6 +21,7 @@ class TestPosBrandHelp(TransactionCase):
         help_text = self.env["res.company"].fields_get([QR_CODE_FIELD], attributes=["help"])[QR_CODE_FIELD]["help"]
         self.assertTrue(help_text, "the receipt QR code option must keep an explanatory help")
         self.assertNotIn(BRAND_TERM, help_text, "the help of the receipt QR code option must not name Odoo")
+        self.assertIn("Viindoo", help_text)
 
     def test_self_service_invoicing_setting_help_does_not_name_odoo(self):
         view = self.env["res.config.settings"].get_view(
@@ -32,6 +31,7 @@ class TestPosBrandHelp(TransactionCase):
         self.assertEqual(len(settings), 1, "the receipt QR code setting must be on the POS settings form")
         self.assertTrue(settings[0].get("help"), "the receipt QR code setting must keep its help")
         self.assertNotIn(BRAND_TERM, settings[0].get("help"), "the help of the receipt QR code setting must not name Odoo")
+        self.assertIn("Viindoo", settings[0].get("help"))
 
 
 @tagged("post_install", "-at_install")
@@ -62,8 +62,11 @@ class TestCustomerDisplayAssets(TransactionCase):
 
     def test_customer_display_bundle_carries_the_iot_notice_replacement(self):
         paths = [p.lstrip("/") for p in self._paths(CUSTOMER_DISPLAY_BUNDLE)]
-        self.assertIn(IOT_NOTICE_PATCH, paths)
-        self.assertIn(IOT_NOTICE_WRAPPER, paths, "the patch imports the wrapper: it must ship in the same bundle")
+        self.assertIn("viin_brand_pos/static/src/customer_display/customer_display_data_service.js", paths)
+        self.assertIn(
+            "viin_brand_pos/static/src/customer_display/iot_notice.js", paths,
+            "the patch imports the wrapper: it must ship in the same bundle",
+        )
 
     def test_core_customer_display_still_emits_the_message_the_notice_patch_replaces(self):
         # The IoT notice swap matches core's message by equality, so it silently stops working
@@ -79,9 +82,9 @@ class TestPosBundlesDebrandCoreWording(TransactionCase):
     """The POS bundles never include web.assets_backend: the de-brand files must be listed in them."""
 
     BRAND_FILES = [
-        "viin_brand_web/static/src/core/errors/error_dialogs.js",
-        "viin_brand_web/static/src/core/errors/error_dialogs.xml",
-        "viin_brand_pos/static/src/app/errors/error_dialogs.js",
+        "viin_brand/static/src/core/dialog/dialog.js",
+        "viin_brand/static/src/core/errors/error_dialogs.js",
+        "viin_brand/static/src/core/errors/error_dialogs.xml",
     ]
 
     def _paths(self, bundle):
@@ -91,7 +94,7 @@ class TestPosBundlesDebrandCoreWording(TransactionCase):
     def test_pos_bundle_carries_the_error_dialog_debrand_and_core_wording_patches(self):
         paths = self._paths("point_of_sale._assets_pos")
         for path in self.BRAND_FILES + [
-            "viin_brand_pos/static/src/app/screens/product_screen/product_screen.js",
+            "viin_brand/static/src/core/barcode/barcode_video_scanner.js",
             "viin_brand_pos/static/src/app/services/report_service.js",
         ]:
             with self.subTest(file=path):

@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <data>
-    <!-- Invisible this digest because it's contain a feature that have not development yet -->
+    <!-- The tips describe features that are not available, so they are archived -->
     	<function name="write" model="digest.tip">
-	        <value eval="[ref('crm.digest_tip_crm_1')]" />
+	        <value eval="[ref('crm.digest_tip_crm_1'), ref('crm.digest_tip_crm_4')]" />
 	        <value eval="{'active': False}" />
     	</function>
    
@@ -15,20 +15,11 @@
 				</div>
             </field>
         </record>
-        <record id="crm.digest_tip_crm_4" model="digest.tip">
-            <field name="tip_description" type="html">
-				<div>
-				    <p class="tip_title">Tip: Do not waste time recording customers' data</p>
-				    <p class="tip_content">Did you know you can search a company by name or VAT number to instantly fill in all its data? The system autocompletes everything for you: logo, address, company size, business information, social media accounts, etc.</p>
-				    <img src="/crm/static/src/img/milk-autofill.gif" class="illustration_border" />
-				</div>
-            </field>
-        </record>
         <record id="crm.digest_tip_crm_5" model="digest.tip">
             <field name="tip_description" type="html">
 				<div>
 				    <p class="tip_title">Tip: Turn a selection of opportunities into a map</p>
-				    <p class="tip_content">Did you know you can turn a list of opportunities into a map view, using the top-right map icon? A lot of screens in system can be turned into a map: tasks, contacts, delivery orders, etc.</p>
+				    <p class="tip_content">Did you know you can turn a list of opportunities into a map view, using the top-right map icon? A lot of screens in Viindoo can be turned into a map: tasks, contacts, delivery orders, etc.</p>
 				    <img src="/crm/static/src/img/milk-mapview-toggle.gif" class="illustration_border" />
 				</div>
             </field>

@@ -36,29 +36,12 @@ mọi popover vẫn sáng như một tài liệu.
     'website': "https://viindoo.com/apps/modules/19.0/viin_brand_spreadsheet",
     'live_test_url': "https://v19demo-int.viindoo.com",
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
-    # 'demo_video_url': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
-    # 'demo_video_url_vi_VN': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/19.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.3',
 
-    # any module necessary for this one to work correctly
-    'depends': ['spreadsheet', 'viin_brand_mail'],
-
-    # always loaded
-    # 'data': [
-    #     'security/ir.model.access.csv',
-    #     'views/views.xml',
-    #     'views/templates.xml',
-    # ],
-    # only loaded in demonstration mode
-    # 'demo': [
-    #     'demo/demo.xml',
-    # ],
+    'depends': ['spreadsheet', 'viin_brand', 'viin_brand_mail'],
 
     'assets': {
         # Layer 1 re-points the one compile-time variable the engine's mobile chrome still reads;
@@ -75,32 +58,28 @@ mọi popover vẫn sáng như một tài liệu.
             # reads.
             'viin_brand_spreadsheet/static/src/scss/spreadsheet_chatter_island.dark.scss',
         ],
+        # The editor loads lazily as its own bundle. The core spreadsheet tests assert the stock
+        # chart names, function categories and link placeholder, so the test bundle keeps core's
+        # own; the dialog title patch only touches the spreadsheet dialog and stays.
+        'spreadsheet.o_spreadsheet': [
+            'viin_brand_spreadsheet/static/src/chart/odoo_chart_core_plugin.js',
+            'viin_brand_spreadsheet/static/src/dialog/confirmation_dialog.js',
+            'viin_brand_spreadsheet/static/src/functions/function_category.js',
+            'viin_brand_spreadsheet/static/src/o_spreadsheet/link_editor.xml',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_spreadsheet/static/tests/spreadsheet_dialog_title_debrand.test.js',
+            ('remove', 'viin_brand_spreadsheet/static/src/chart/odoo_chart_core_plugin.js'),
+            ('remove', 'viin_brand_spreadsheet/static/src/functions/function_category.js'),
+            ('remove', 'viin_brand_spreadsheet/static/src/o_spreadsheet/link_editor.xml'),
+        ],
         'web.assets_tests': [
             'viin_brand_spreadsheet/static/tests/tours/test_spreadsheet_editor_action.js',
         ],
     },
 
-    'images': [
-        # 'static/description/main_screenshot.png',
-        # 'static/description/another_screenshot_1.png',
-        # 'static/description/another_screenshot_2.png',
-        ],
-
-    # The list of IDs of the project tasks in Viindoo Company's database that require
-    # this module development.
-    'task_ids': [
-        # 1292, 1294,
-        ],
-
     'installable': False,
-    # If this module is a bridge module that integrates 2 or more other modules,
-    # auto_install must be set to True.
-    # In case this module is a module that provides additional functions / features,
-    # it should be activated via a setting directive of the main application related
-    # to these new functions / features.
     'auto_install': True,
-    # 99.9 EURO is a good start for an application while bridge modules should be free of charge
-    # as we usually have pricing for the others that are bridged by this module.
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
