@@ -13,7 +13,6 @@ What it does
 ============
 This module will change color navigate bar, button and logo,v.v in SMS Marketing following Viindoo's brand
 
-
 Editions Supported
 ==================
 1. Community Edition
@@ -25,7 +24,6 @@ Editions Supported
 Ứng dụng này làm gì
 ===================
 Module này sẽ thay đổi giao diện các module SMS Marketing theo thương hiệu Viindoo
-
 
 Ấn bản được Hỗ trợ
 ==================
@@ -40,18 +38,14 @@ Module này sẽ thay đổi giao diện các module SMS Marketing theo thương
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.2',
 
-    # any module necessary for this one to work correctly
     'depends': ['mass_mailing_sms'],
 
-    # always loaded
     'data': [
         'views/mailing_list_views.xml',
+        'views/mailing_mailing_views.xml',
     ],
     'installable': False,
     'auto_install': True,

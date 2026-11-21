@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mailing_mailing_view_form_sms" model="ir.ui.view">
+        <field name="name">mailing.mailing.view.form.inherit.sms.viin.brand.mass.mailing.sms</field>
+        <field name="model">mailing.mailing</field>
+        <field name="inherit_id" ref="mass_mailing_sms.mailing_mailing_view_form_sms"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@invisible='not sms_has_insufficient_credit']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@invisible='not sms_has_unregistered_account']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mailing_mailing_view_kanban_sms" model="ir.ui.view">
+        <field name="name">mailing.mailing.view.kanban.inherit.sms.viin.brand.mass.mailing.sms</field>
+        <field name="model">mailing.mailing</field>
+        <field name="inherit_id" ref="mass_mailing_sms.mailing_mailing_view_kanban_sms"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@invisible='not sms_has_insufficient_credit']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[@invisible='not sms_has_unregistered_account']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

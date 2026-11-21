@@ -2,7 +2,7 @@
 <odoo>
   <template id="account_default_terms_and_conditions"
     inherit_id="account.account_default_terms_and_conditions">
-    <xpath expr="//p[text()[contains(., 'Odoo')]]" position="replace">
+    <xpath expr="//div/p[2]" position="replace">
       <p>Below text serves as a suggestion and doesn’t engage Viindoo's responsibility.</p>
     </xpath>
   </template>

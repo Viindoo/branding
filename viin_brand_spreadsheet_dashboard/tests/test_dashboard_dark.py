@@ -1,55 +1,21 @@
 # Part of Viindoo. See LICENSE file for full copyright and licensing details.
-#
-# WHAT IS PROTECTED (behaviour, not code): a dark-scheme user opening the CE Spreadsheet
-# Dashboards app (`/odoo/dashboards?dashboard_id=<id>`) sees the dashboard SHELL
-# (`.o_spreadsheet_dashboard_action`) repainted as Viindoo's dark app band, while the SHEET
-# (the o-spreadsheet canvas grid rendered inside `.o_renderer`) stays exactly what a
-# light-scheme user sees, with a visible seam at the boundary between the two, and the
-# sidebar's dashboard-list hover state keeps its label at the dark-scheme contrast of the
-# pinned values below. A light-scheme user sees the CE
-# default in every respect - this module's SCSS compiles only into `web.assets_web_dark`.
-# The seam rule itself must stay SCOPED to `.o_spreadsheet_dashboard_action` - a dark-scheme
-# user's `.o_renderer` anywhere ELSE in the app (any core list/kanban/graph/hierarchy view,
-# which all carry the same class) must keep CE's own borderless default; this file guards that
-# negative side too, not just the positive in-dashboard seam.
-#
-# WHY A LIVE BROWSER, NEVER A COMPILED-CSS RESOLVER. The sidebar hover rule
-# (`li:hover:not(.active)`) only applies under the browser's own `:hover` pointer state, which
-# a page-level `browser_js` script cannot force (a synthetic `dispatchEvent` does not flip a
-# real browser's internal `:hover` match). The compiled rule's own declared background is read
-# straight off the live `document.styleSheets` CSSOM instead - the exact bundle the browser
-# parsed for this page - and composed with the label's own (non-hover) computed colour, so the
-# contrast asserted is the one a mouse pointer would actually produce, without depending on a
-# pointer to be simulated.
-#
-# WHY CE'S OWN CLASSES, NEVER A HARDCODED CHROME LITERAL. `.o_renderer`'s own border is read
-# live and compared against a plain core `.border` probe element - the same technique the
-# sibling `viin_brand_spreadsheet` module's chrome/grid seam assertion uses. The exact border
-# colour is this module's own SCSS choice, not a fact this test dictates.
 import json
 
 from odoo.tests import HttpCase, new_test_user, tagged
 from odoo.tools.misc import file_open
 
-from odoo.addons.viin_brand_web.tests.test_brand_cascade_compile import (
+from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
     _alpha_of,
     _composite_over,
     _contrast_ratio,
     _normalize_colour,
     dark_palette_var,
 )
-# Same resolver `test_brand_ssot.py` and `test_brand_cascade_compile.py` already own - reused
-# here (rather than re-implemented) to read the LIGHT bundle's own core SSOT below.
-from odoo.addons.viin_brand_web.tests.test_brand_ssot import _resolve_scss_hex
+from odoo.addons.viin_brand.tests.test_brand_ssot import _resolve_scss_hex
 
-# CE's own literal for both plain `background-color: white` declarations in
-# `dashboard_action.scss` - the sheet's target colour is simply "stay exactly this", in both
-# schemes.
 WHITE = "#ffffff"
 
-# Pinned values for the dark scheme: the dashboard-list row under the pointer
-# (`li:hover:not(.active)`) and the WCAG contrast of its label (#EDF4F5 on that fill, 14.65:1,
-# stated to one decimal).
+# Dark scheme: fill of the dashboard-list row under the pointer and the WCAG contrast of its label.
 DARK_HOVER_BG = "#152225"
 DARK_HOVER_LABEL_CONTRAST = 14.6
 
@@ -91,8 +57,7 @@ function __effectiveBackground(el) {
 
 
 def _wrap(js_body):
-    """Wrap a measurement snippet in the throw/console.error contract `HttpCase.browser_js` polls
-    for (`console.log('test successful')` on success, `console.error` on any thrown failure)."""
+    """Wrap a measurement snippet in the success/failure console contract of ``browser_js``."""
     return _JS_HELPERS + (
         "(async () => {\n"
         "    try {\n"
@@ -105,12 +70,9 @@ def _wrap(js_body):
     ) % js_body.replace("\n", "\n        ")
 
 
-# One page load measures every surface at once: the shell background, the sheet (grid)
-# background, the `.o_renderer` border (the seam candidate, compared against a live `.border`
-# probe), and the sidebar's compiled hover-fill declaration (read off the CSSOM rather than
-# simulated, per the file header). `dashboard_id` is passed as a URL query param, exactly the
-# route `spreadsheet_dashboard`'s own `ir_actions_dashboard_action` (path=`dashboards`)
-# registers and the action's own `getInitialActiveDashboard()` reads.
+# One page load measures the shell background, the sheet (grid) background, the `.o_renderer`
+# border (compared against a live `.border` probe) and the sidebar's compiled hover fill, read off
+# the CSSOM because a script cannot force the browser's `:hover` state.
 _MEASURE_DASHBOARD_JS = """
 await __waitFor(() => document.querySelector(".o_spreadsheet_dashboard_action"), 30000);
 await __waitFor(() => document.querySelector(".o_renderer .o-spreadsheet .o-grid"), 30000);
@@ -132,11 +94,8 @@ __probe.style.position = "absolute";
 __probe.style.visibility = "hidden";
 document.body.appendChild(__probe);
 
-// The search panel's `li` also carries a SEPARATE, background-less `:hover` rule (revealing the
-// per-row edit icon on `.o_search_panel_category_value:hover .o_edit_dashboard`) declared right
-// after the one this test targets - matching on bare ":hover" would pick that one up instead
-// whenever it happens to compile later. Requiring "li:hover" (the target rule's own compiled
-// selector prefix) plus a genuinely declared `background-color` isolates the row-highlight rule.
+// The `li` also carries a background-less `:hover` rule (the per-row edit icon); requiring
+// "li:hover" plus a declared `background-color` isolates the row-highlight rule.
 let __hoverRule = null;
 for (const sheet of document.styleSheets) {
     let rules;
@@ -151,8 +110,7 @@ for (const sheet of document.styleSheets) {
 }
 if (!__hoverRule) {
     throw new Error(
-        "premise broken: no compiled CSS rule matches the sidebar row-highlight hover selector - " +
-        "the dashboard search panel bundle did not compile as expected."
+        "no compiled CSS rule matches the sidebar row-highlight hover selector"
     );
 }
 
@@ -170,9 +128,8 @@ await __setParam(%(param_key)r, JSON.stringify(__result));
 """
 
 
-# The leak-guard counterpart to _MEASURE_DASHBOARD_JS above: a CORE list view the dashboard
-# action never renders into, so any border this reports comes from a rule that reached
-# `.o_renderer` some OTHER way than being inside `.o_spreadsheet_dashboard_action`.
+# A core list view outside the dashboard action: any border it reports leaked from a rule that
+# reached `.o_renderer` outside `.o_spreadsheet_dashboard_action`.
 _MEASURE_CORE_LIST_JS = """
 await __waitFor(() => document.querySelector(".o_list_renderer.o_renderer"), 30000);
 const __renderer = document.querySelector(".o_list_renderer.o_renderer");
@@ -185,30 +142,18 @@ await __setParam(%(param_key)r, JSON.stringify(__result));
 
 @tagged('post_install', '-at_install')
 class TestDashboardDark(HttpCase):
-    """A dark-scheme user's Spreadsheet Dashboards shell repaints to Viindoo's dark app band
-    with a visible seam and a readable sidebar hover label, while the sheet and a light-scheme
-    user's whole page stay exactly what CE ships."""
+    """A dark-scheme user's dashboard shell is Viindoo's dark app band with a seam and a readable hover label.
+
+    The sheet, and a light-scheme user's whole page, stay as CE ships them; the seam rule stays
+    scoped to ``.o_spreadsheet_dashboard_action``.
+    """
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Resolved HERE, not as a module-level constant at import time: a class attribute fails
-        # only the tests in THIS class if either SSOT source is ever renamed/removed, instead of
-        # an import-time exception breaking collection of the whole test module.
-        #
-        # dashboard_action_dark.dark.scss paints the shell with `$o-webclient-background-color` -
-        # resolved from viin_brand_web/static/src/scss/dark_palette.scss (the EXISTING dark
-        # app-canvas token this repo already uses for every other "dark app band" surface:
-        # viin_backend_theme's home-menu band, the kanban canvas, the settings sidebar) instead of
-        # a second hardcoded literal.
         cls.DARK_APP_BAND = dark_palette_var("$o-webclient-background-color")
-        # web/static/src/scss/primary_variables.scss `$o-gray-100` (`!default`) - the palette-ramp
-        # fill core's `li:hover:not(.active)` rule reads (dashboard_action.scss reads it directly,
-        # no map indirection). Asserted as the LIGHT bundle's own value; the dark bundle's hover
-        # fill is asserted against DARK_HOVER_BG.
-        # `file_open` resolves this core path against the addons path, so it works from any
-        # checkout layout, portably - the same technique viin_brand_mail/tests/
-        # test_mail_contrast_compile.py already uses to read a core spreadsheet SCSS file.
+        # Core's `li:hover:not(.active)` rule reads `$o-gray-100`; `file_open` resolves the core path
+        # on any addons-path layout.
         with file_open("web/static/src/scss/primary_variables.scss", "r") as core_scss_file:
             cls.LIGHT_HOVER_BG = _resolve_scss_hex(core_scss_file.read(), "$o-gray-100")
         if cls.LIGHT_HOVER_BG is None:
@@ -218,11 +163,8 @@ class TestDashboardDark(HttpCase):
                 "this exact core token."
             )
         cls.LIGHT_HOVER_BG = cls.LIGHT_HOVER_BG.lower()
-        # `base.group_system` is granted alongside `base.group_user` here only because the
-        # browser-to-Python measurement relay (`__setParam` above) round-trips the captured
-        # colours through `ir.config_parameter.set_param`, which `base`'s own
-        # `ir.model.access.csv` restricts to `base.group_system` - that requirement belongs to
-        # the relay channel, not to the dashboard-shell behaviour these users exist to exercise.
+        # `base.group_system` is needed only by the measurement relay, which stores results through
+        # `ir.config_parameter.set_param`.
         cls.dark_user = new_test_user(
             cls.env, login="viin_dashboard_dark_user",
             groups="base.group_user,base.group_system", viin_color_scheme="dark",
@@ -231,12 +173,7 @@ class TestDashboardDark(HttpCase):
             cls.env, login="viin_dashboard_light_user",
             groups="base.group_user,base.group_system", viin_color_scheme="light",
         )
-        # Created via `cls.env` (superuser in setUpClass), which bypasses both the create-only
-        # `spreadsheet_dashboard.group_dashboard_manager` ACL and the `group_ids`/company
-        # ir.rule on `spreadsheet.dashboard(.group)` - neither test user needs manager rights to
-        # READ a published dashboard, only to create the fixture. `group_ids` and `is_published`
-        # are left at their model defaults (`base.group_user`, `True`), the same defaults CE's
-        # own `test_create_with_default_values` relies on, so both test users see it unaided.
+        # Defaults of `group_ids` and `is_published` let both users read the dashboard unaided.
         cls.dashboard_group = cls.env["spreadsheet.dashboard.group"].create({
             "name": "Viin Brand Dashboard Dark Fixture Group",
         })
@@ -244,13 +181,8 @@ class TestDashboardDark(HttpCase):
             "name": "Viin Brand Dashboard Dark Fixture",
             "dashboard_group_id": cls.dashboard_group.id,
         })
-        # Leak-guard fixture: a throwaway CORE list view on `res.partner`, entirely OUTSIDE the
-        # Spreadsheet Dashboards action - the same minimal-fixture pattern
-        # viin_brand_web/tests/test_scheme_cookie_first_load.py already uses for its pivot/graph
-        # fixtures. `.o_list_renderer` (web/static/src/views/list/list_renderer.xml) carries
-        # `.o_renderer` alongside it, same as every other core renderer (kanban, graph,
-        # hierarchy) - proving whether the dashboard's `.o_renderer` rule leaked into a page the
-        # dashboard action never touches.
+        # Leak guard: a core list view outside the dashboard action; `.o_list_renderer` carries
+        # `.o_renderer` like every core renderer.
         cls.core_list_view = cls.env["ir.ui.view"].create({
             "name": "Viin Brand Dashboard Dark Leak-Guard List (test)",
             "model": "res.partner",
@@ -282,8 +214,8 @@ class TestDashboardDark(HttpCase):
         raw = self.env["ir.config_parameter"].sudo().get_param(param_key)
         self.assertTrue(
             raw,
-            "premise broken: the browser-side measurement under login %r never reported a "
-            "value - the dashboard action must not have reached a mounted state." % login,
+            "the browser measurement under login %r reported no value - the dashboard action "
+            "did not mount." % login,
         )
         return json.loads(raw)
 
@@ -297,8 +229,8 @@ class TestDashboardDark(HttpCase):
         raw = self.env["ir.config_parameter"].sudo().get_param(param_key)
         self.assertTrue(
             raw,
-            "premise broken: the browser-side measurement under login %r never reported a "
-            "value - the core list view must not have reached a mounted state." % login,
+            "the browser measurement under login %r reported no value - the core list view "
+            "did not mount." % login,
         )
         return json.loads(raw)
 

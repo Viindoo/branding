@@ -33,7 +33,7 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
 
     'depends': ['l10n_vn'],
 

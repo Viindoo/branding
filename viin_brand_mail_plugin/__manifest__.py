@@ -33,15 +33,15 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.1.0',
+    'version': '0.1.2',
 
-    # any module necessary for this one to work correctly
-    'depends': ['mail_plugin'],
+    'depends': ['mail_plugin', 'viin_brand'],
 
-    # always loaded
     'data': [
+        'data/ir_ui_menu_data.xml',
         'views/mail_plugin_login.xml',
     ],
+    'uninstall_hook': 'uninstall_hook',
     'installable': False,
     'auto_install': True,
     'price': 9.9,

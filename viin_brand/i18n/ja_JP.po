@@ -6,14 +6,87 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-29 15:33+0000\n"
-"PO-Revision-Date: 2026-10-29 15:33+0000\n"
+"POT-Creation-Date: 2026-11-20 02:39+0000\n"
+"PO-Revision-Date: 2026-11-20 02:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.login_layout
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_bootstrap
+msgid "/viin_brand/static/img/favicon.ico"
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.login_layout
+msgid "<span>Viindoo</span>"
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.res_config_settings_view_form
+msgid ""
+"API Keys allow your users to access Viindoo with external tools when multi-"
+"factor authentication is enabled."
+msgstr "APIキーを使用すると、多要素認証が有効な場合、ユーザは外部ツールからViindooにアクセスできます。"
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_actions_actions
+msgid "Actions"
+msgstr "アクション"
+
+#. module: viin_brand
+#: model:ir.model.fields,help:viin_brand.field_res_users__viin_color_scheme
+msgid ""
+"Backend appearance: Light, Dark, or System (follow the device preference)."
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_view_form
+msgid ""
+"Be aware that editing the architecture of a standard view is not advised, "
+"since the changes will be overwritten during future module updates.<br/>We "
+"recommend applying modifications to standard views through inherited views."
+msgstr "変更は将来のモジュール更新中に上書きされるため、標準ビューのアーキテクチャを編集することはお勧めしません。<br/>継承されたビューを通じて、標準ビューに変更を適用することをお勧めします。"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_module_filter
+msgid "By Odoo"
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_module_filter
+msgid "By Viindoo / TVTMA"
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_offline
+msgid "Check again"
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_offline
+msgid ""
+"Check your network connection and come back here. Viindoo will load as soon "
+"as you're back online."
+msgstr ""
+
+#. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_res_users__viin_color_scheme
+msgid "Color Scheme"
+msgstr ""
+
+#. module: viin_brand
+#: model:ir.model.fields,help:viin_brand.field_ir_mail_server__from_filter
+msgid ""
+"Comma-separated list of addresses or domains for which this server can be used.\n"
+"e.g.: 'notification@viindoo.com' or 'viindoo.com'"
+msgstr ""
+"このサーバーが使用できるアドレスまたはドメインのカンマ区切りリスト。\n"
+"例: 'notification@viindoo.com' または 'viindoo.com'"
 
 #. module: viin_brand
 #: model:ir.model,name:viin_brand.model_res_company
@@ -32,13 +105,47 @@ msgid "Config Settings"
 msgstr "構成設定"
 
 #. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
+msgid "Copyright © 2019"
+msgstr ""
+
+#. module: viin_brand
+#: model:ir.model.fields.selection,name:viin_brand.selection__res_users__viin_color_scheme__dark
+msgid "Dark"
+msgstr ""
+
+#. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_ir_actions_actions__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_ir_actions_report__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_http__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_ir_mail_server__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_module_module__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_ir_rule__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_ui_menu__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_res_company__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_res_lang__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_res_users__display_name
 msgid "Display Name"
 msgstr "表示名"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/user_menu_item.js:0
+msgid "Documentation"
+msgstr ""
+
+#. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_ir_mail_server__from_filter
+msgid "FROM Filtering"
+msgstr "フィルタリングから"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
+msgid "GNU LGPL Licensed"
+msgstr ""
 
 #. module: viin_brand
 #: model:ir.model,name:viin_brand.model_ir_http
@@ -46,13 +153,39 @@ msgid "HTTP Routing"
 msgstr "HTTPルーティング"
 
 #. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_ir_actions_actions__id
+#: model:ir.model.fields,field_description:viin_brand.field_ir_actions_report__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_http__id
+#: model:ir.model.fields,field_description:viin_brand.field_ir_mail_server__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_module_module__id
+#: model:ir.model.fields,field_description:viin_brand.field_ir_rule__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_ui_menu__id
 #: model:ir.model.fields,field_description:viin_brand.field_res_company__id
 #: model:ir.model.fields,field_description:viin_brand.field_res_config_settings__id
+#: model:ir.model.fields,field_description:viin_brand.field_res_lang__id
+#: model:ir.model.fields,field_description:viin_brand.field_res_users__id
 msgid "ID"
 msgstr ""
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_res_lang
+msgid "Languages"
+msgstr "言語"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_users_form_simple_modif
+msgid "Learn more"
+msgstr ""
+
+#. module: viin_brand
+#: model:ir.model.fields.selection,name:viin_brand.selection__res_users__viin_color_scheme__light
+msgid "Light"
+msgstr ""
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_mail_server
+msgid "Mail Server"
+msgstr "メールサーバ"
 
 #. module: viin_brand
 #: model:ir.model,name:viin_brand.model_ir_ui_menu
@@ -63,6 +196,76 @@ msgstr "メニュー"
 #: model:ir.model,name:viin_brand.model_ir_module_module
 msgid "Module"
 msgstr "モジュール"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/user_menu_item.js:0
+msgid "My Viindoo.com account"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.js:0
+msgid "Odoo Warning"
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_offline
+msgid "Offline"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_notifications.js:0
+msgid "Ok"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/views/widgets/notification_alert/notification_alert.xml:0
+msgid ""
+"Push notifications have been blocked. Go to your browser settings to allow "
+"them."
+msgstr ""
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_rule
+msgid "Record Rule"
+msgstr "ルール"
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_actions_report
+msgid "Report Action"
+msgstr "レポートアクション"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.base_partner_merge_automatic_wizard_form
+msgid ""
+"Select the list of fields used to search for\n"
+"                    duplicated records. If you select several fields,\n"
+"                    Viindoo will propose you to merge only those having\n"
+"                    all these fields in common. (not one of the fields)."
+msgstr ""
+"重複した記録の検索で使用するために、項目のリストを選択します。\n"
+"複数の項目を選択した場合、Viindooはすべてに共通して含まれる(ひとつではない)項目のマージを提案します。"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.xml:0
+#: code:addons/viin_brand/static/src/core/errors/error_notifications.js:0
+msgid "Session Expired"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/user_menu_item.js:0
+msgid "Support"
+msgstr ""
+
+#. module: viin_brand
+#: model:ir.model.fields.selection,name:viin_brand.selection__res_users__viin_color_scheme__auto
+msgid "System"
+msgstr ""
 
 #. module: viin_brand
 #. odoo-python
@@ -76,3 +279,96 @@ msgstr "Odoo IAPモジュールはユーザインタフェースからインス�
 msgid ""
 "This field holds the image used to display a favicon for a given company."
 msgstr "このフィールドには、指定した会社のファビコンとして表示する画像を保存します。"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.res_config_settings_view_form
+msgid ""
+"This name will be used for the application when Viindoo is installed through"
+" the browser."
+msgstr "この名前はブラウザからViindooをインストールする際に使用されます。"
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_res_users
+msgid "User"
+msgstr "ユーザ"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/install_scoped_app/install_scoped_app.xml:0
+#: code:addons/viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
+#: model_terms:ir.ui.view,arch_db:viin_brand.brand_promotion_message
+#: model_terms:ir.ui.view,arch_db:viin_brand.login_layout
+#: model_terms:ir.ui.view,arch_db:viin_brand.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_bootstrap
+msgid "Viindoo"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Client Error"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Error"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Network Error"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Warning"
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_offline
+msgid "Viindoo logo"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/barcode/barcode_video_scanner.js:0
+msgid "Viindoo needs your authorization first."
+msgstr "Viindooはまずお客様の許可を必要としています。"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/install_scoped_app/install_scoped_app.xml:0
+#: code:addons/viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
+msgid "Viindoo."
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_offline
+msgid "You are offline"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/actions/reports/report_notification.js:0
+msgid ""
+"You need to start Viindoo with at least two workers to print a pdf version "
+"of the reports."
+msgstr "PDFレポートを印刷するには、ワーカー数を2以上にしてViindooを起動してください。"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.xml:0
+#: code:addons/viin_brand/static/src/core/errors/error_notifications.js:0
+msgid ""
+"Your Viindoo session expired. The current page is about to be refreshed."
+msgstr "Viindooセッションの有効期限が切れました。現在のページがリフレッシュされようとしています。"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_company_form
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_partner_form
+msgid "e.g. https://viindoo.com"
+msgstr ""

@@ -14,7 +14,6 @@ What it does
 This module replaces Odoo branding with Viindoo in auth_signup email templates
 (new user invite, portal invite, password reset).
 
-
 Editions Supported
 ==================
 1. Community Edition
@@ -27,7 +26,6 @@ Editions Supported
 ====================
 Mô-đun này thay thế thương hiệu Odoo bằng Viindoo trong các mẫu email đăng ký
 (mời người dùng mới, mời cổng thông tin, đặt lại mật khẩu).
-
 
 Ấn bản được Hỗ trợ
 ==================
@@ -42,21 +40,15 @@ Mô-đun này thay thế thương hiệu Odoo bằng Viindoo trong các mẫu em
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1.2',
+    'version': '0.1.4',
 
-    # any module necessary for this one to work correctly
-    'depends': ['auth_signup'],
+    'depends': ['auth_signup', 'viin_brand'],
 
-    # always loaded
     'data': [
         'data/mail_template_data.xml',
         'data/auth_signup_templates_email.xml',
     ],
-    'post_init_hook': '_post_init_hook',
     'installable': False,
     'auto_install': True,
     'price': 0.0,

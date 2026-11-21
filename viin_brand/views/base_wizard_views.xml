@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="base_partner_merge_automatic_wizard_form" model="ir.ui.view">
+        <field name="name">base.partner.merge.automatic.wizard.form.inherit.viin_brand</field>
+        <field name="model">base.partner.merge.automatic.wizard</field>
+        <field name="inherit_id" ref="base.base_partner_merge_automatic_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//p[@invisible=&quot;state != 'option'&quot;]" position="replace">
+                <p class="opacity-50" invisible="state != 'option'">
+                    Select the list of fields used to search for
+                    duplicated records. If you select several fields,
+                    Viindoo will propose you to merge only those having
+                    all these fields in common. (not one of the fields).
+                </p>
+            </xpath>
+        </field>
+    </record>
+</odoo>

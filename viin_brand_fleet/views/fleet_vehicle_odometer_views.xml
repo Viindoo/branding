@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="fleet.fleet_vehicle_odometer_reporting_action" model="ir.actions.act_window">
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+              No data for odometer analysis
+            </p>
+            <p>
+              Manage efficiently your vehicle Odometers with Viindoo.
+            </p>
+        </field>
+    </record>
+</odoo>

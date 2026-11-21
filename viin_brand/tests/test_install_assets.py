@@ -5,10 +5,8 @@ from odoo.tests.common import HttpCase, tagged
 class TestViinBrandInstallAssets(HttpCase):
     """viin_brand must install clean on Odoo 19.0 and its brand static assets must serve.
 
-    Baseline install-safety gate for the v16 -> v19 upgrade: the module ships
-    ``installable: False`` and only reaches green once the module is actually
-    installable and installs without error on 19.0, at which point its passive
-    branding binaries (favicon, logo, app-tile PNGs) are reachable over HTTP.
+    Install-safety gate: the module installs without error on 19.0 and its passive branding
+    binaries (favicon, logo, app-tile PNGs) are reachable over HTTP.
     """
 
     def test_module_installs_clean_on_19(self):
@@ -17,7 +15,7 @@ class TestViinBrandInstallAssets(HttpCase):
         self.assertTrue(module, "viin_brand module record must exist in the registry")
         self.assertEqual(
             module.state, 'installed',
-            "viin_brand must install clean on 19.0 (installable flag flipped, no install error)",
+            "viin_brand must install clean on 19.0",
         )
 
     def test_branding_static_assets_serve(self):

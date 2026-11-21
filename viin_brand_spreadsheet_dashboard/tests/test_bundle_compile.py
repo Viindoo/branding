@@ -1,20 +1,9 @@
 # Part of Viindoo. See LICENSE file for full copyright and licensing details.
-#
-# Every bundle this module contributes to must resolve every file it lists and compile with no
-# error. Odoo never checks this at install: a bare (untargeted) manifest entry that goes missing
-# just drops out of the resolved bundle with no exception (odoo/addons/base/models/ir_asset.py
-# `IrAsset._get_paths` falls back to a path with no filename instead of raising), and the failure
-# only surfaces once something tries to read that file's content -
-# `WebAsset._fetch_content`/`.stat()` (assetsbundle.py:744-786) then raises `AssetNotFound`, which
-# a stylesheet asset folds into `bundle.css_errors` (assetsbundle.py:935-958) instead of raising
-# out of a bare `.css()` call.
 from odoo.tests.common import TransactionCase, tagged
 
 
 @tagged("post_install", "-at_install")
 class BundleCompileTest(TransactionCase):
-    """Every asset bundle this module contributes to must actually resolve and compile clean."""
-
     def _compiled_css(self, bundle_name):
         bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=True, js=False)
         attachments = bundle.css() or self.env["ir.attachment"]
@@ -24,11 +13,10 @@ class BundleCompileTest(TransactionCase):
         return bundle, css
 
     def test_dark_bundle_compiles_the_dashboard_shell_repaint(self):
-        """web.assets_web_dark must carry the dashboard shell dark repaint with no Sass fault.
+        """web.assets_web_dark carries the dashboard shell repaint with no Sass fault.
 
-        WOULD FAIL IF: dashboard_action_dark.dark.scss is renamed or deleted (the bare manifest
-        entry then resolves with no filename, and fetching its content raises AssetNotFound into
-        bundle.css_errors - see the module comment), or the file develops a genuine Sass fault.
+        A missing SCSS file resolves silently at install and surfaces only as a
+        ``bundle.css_errors`` entry when its content is fetched.
         """
         bundle, css = self._compiled_css("web.assets_web_dark")
         self.assertFalse(

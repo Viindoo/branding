@@ -10,8 +10,7 @@ class ResConfigSettings(models.TransientModel):
 
     @api.model
     def get_viin_brand_modules_icon(self, modules):
-        # we cannot import outside the class due to the import order in the module's __init__.py
-        # i.e. models are imported prior to assigning the `get_viin_brand_module_icon()` to the `get_module_icon()`
+        # imported here: the models load before `get_module_icon` is replaced by the Viindoo resolver
         from odoo.modules.module import get_module_icon
         from .. import check_viin_brand_module_icon
         result = []
@@ -22,11 +21,16 @@ class ResConfigSettings(models.TransientModel):
 
     @api.model
     def _get_hidden_setting_xpaths(self):
-        """XPaths of the settings every database hides because they only offer Enterprise upsell.
+        """XPaths of the settings every database hides.
 
-        Branding modules extend the list for the upsell rows of their own app.
+        The list holds the settings that only offer Enterprise upsell and the one that sells a paid
+        service of Odoo (company suggestions). Branding modules extend the list for the rows of their
+        own app.
         """
-        return ['//field[@widget="upgrade_boolean"]/ancestor::setting[1]']
+        return [
+            '//field[@widget="upgrade_boolean"]/ancestor::setting[1]',
+            '//setting[@id="partner_autocomplete"]',
+        ]
 
     @api.model
     def get_view(self, view_id=None, view_type='form', **options):

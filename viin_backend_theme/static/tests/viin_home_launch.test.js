@@ -13,18 +13,14 @@ import {
 } from "@web/../tests/web_test_helpers";
 import { mailModels } from "@mail/../tests/mail_test_helpers";
 
-// Enter-to-launch on the flat home menu (ViinHomeMenu): onSearchKeydown's "Enter" case falls back
-// to filteredApps[0] whenever nothing is explicitly highlighted (state.focusIndex stays at its
-// initial -1 until an arrow key moves it). That fallback is correct the instant a query narrows
-// the grid to real candidates - it is what makes "type then Enter" work without an extra
-// keystroke - but wrong the instant nothing has been typed either: with a pre-focused, still-empty
-// search box (static/tests/viin_home_typeahead.test.js), an Enter the user never meant as a
-// selection reaches the very same fallback and launches whatever app happens to render first.
-// These tests pin the three rules that decide which side of that line Enter is on, asserting only
-// the OBSERVABLE outcome - whether, and which, app the "menu" service was asked to open - never
-// state.focusIndex or any other internal, so a fix cannot satisfy them by disabling Enter outright
-// (breaks the "type then Enter" rule) or by gating on the query alone (breaks the
-// explicit-highlight rule, which must win independently of what was typed).
+// Enter-to-launch on the flat home menu (ViinHomeMenu): onSearchKeydown's "Enter" case falls back to
+// filteredApps[0] whenever nothing is explicitly highlighted. That is right once a query narrows the
+// grid ("type then Enter" works without an extra keystroke) but wrong while nothing has been typed:
+// with the pre-focused, still-empty search box (viin_home_typeahead.test.js) an Enter the user never
+// meant as a selection would launch whatever app renders first. These tests pin the three rules that
+// decide which side of that line Enter is on, asserting only whether, and which, app the "menu"
+// service was asked to open: disabling Enter outright breaks "type then Enter", and gating on the
+// query alone breaks the explicit-highlight rule, which must win independently of what was typed.
 
 class ResUsers extends mailModels.ResUsers {
     viin_home_app_order = fields.Char();
@@ -37,13 +33,11 @@ function searchInput() {
 }
 
 /**
- * Mount the real ViinHomeMenu client action (same registry lookup + onRpc stubs as
- * static/tests/viin_home_typeahead.test.js's mountHomeMenu), then replace the "menu" service's
- * selectMenu with an expect.step spy - the patchWithCleanup(service, { method: () => expect.step
- * (...) }) shape already established in static/tests/viin_theme_service.test.js. getService("menu")
- * returns the exact object the component's own useService("menu") holds, so the patch is visible to
- * it regardless of patch-vs-mount order. A test then asserts via expect.verifySteps which app (or
- * none) a launch reached, without needing the real menu service's doAction/navigation side effects.
+ * Mount the real ViinHomeMenu client action (same registry lookup and onRpc stubs as
+ * viin_home_typeahead.test.js's mountHomeMenu), then replace the "menu" service's selectMenu with an
+ * expect.step spy. getService("menu") returns the object the component's own useService("menu")
+ * holds, so the patch is visible to it regardless of patch-vs-mount order. A test then asserts via
+ * expect.verifySteps which app (or none) a launch reached.
  */
 async function mountHomeMenu(props = {}) {
     onRpc("mail.activity", "search_count", () => 0);
@@ -65,11 +59,11 @@ describe("ViinHomeMenu Enter-to-launch", () => {
 
         test("Enter with an empty search and no highlighted tile opens nothing", async () => {
             await mountHomeMenu();
-            // onSearchKeydown is bound on the search input itself (t-on-keydown, home_menu.xml), and
-            // "Enter" is not a single printable character, so onWindowKeydown's recovery listener
-            // never routes it there either - without an explicit focus, this Enter would land on
-            // <body> and the handler this test means to exercise would never run at all, passing
-            // for the wrong reason on any preset that skips the touch-gated mount-time pre-focus.
+            // onSearchKeydown is bound on the search input itself and "Enter" is not a single
+            // printable character, so onWindowKeydown's recovery listener never routes it there:
+            // without an explicit focus this Enter would land on <body>, the handler under test would
+            // not run, and the test would pass for the wrong reason on any preset that skips the
+            // touch-gated mount-time pre-focus.
             searchInput().focus();
 
             await press("Enter");
@@ -94,7 +88,7 @@ describe("ViinHomeMenu Enter-to-launch", () => {
             ]);
         });
 
-        test("Enter with a typed query and no highlight opens the best-matching app - REGRESSION GUARD (Enter must stay usable, never be disabled outright)", async () => {
+        test("Enter with a typed query and no highlight opens the best-matching app", async () => {
             await mountHomeMenu();
 
             await press("s");
@@ -124,18 +118,16 @@ describe("ViinHomeMenu Enter-to-launch", () => {
 
         test("Enter opens the arrow-highlighted tile, not the first one, even with nothing typed", async () => {
             await mountHomeMenu();
-            // onSearchKeydown (ArrowRight/Enter) is bound on the search input itself, and neither
-            // key is a single printable character, so onWindowKeydown's recovery listener never
-            // routes them there - reaching the handler needs the input already focused, exactly as
-            // a user would have it after tapping the search box first. Establish that focus
-            // explicitly rather than relying on the desktop-only, touch-gated mount-time pre-focus
-            // this test must also pass without: the rule under test (an explicit highlight wins) is
-            // independent of touch state, so forcing non-touch would test the wrong thing.
+            // onSearchKeydown (ArrowRight/Enter) is bound on the search input itself and neither key
+            // is a single printable character, so the input must already be focused, as after a user
+            // taps the search box. Focus is set explicitly rather than relying on the touch-gated
+            // mount-time pre-focus: the rule under test (an explicit highlight wins) is independent
+            // of touch state.
             searchInput().focus();
 
-            // Two ArrowRight presses move the highlight from "none" (-1) to index 0, then to
-            // index 1 - landing on the SECOND app, so a launch of the first app cannot be mistaken
-            // for the "nothing highlighted" fallback this suite's other tests guard against.
+            // Two ArrowRight presses move the highlight from "none" (-1) to index 0, then index 1:
+            // the SECOND app, so a launch of the first app cannot be mistaken for the "nothing
+            // highlighted" fallback the other tests guard against.
             await press("ArrowRight");
             await press("ArrowRight");
             await animationFrame();

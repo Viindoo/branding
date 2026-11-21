@@ -1,0 +1,41 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_l10n_vn_edi_viettel
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-19 15:50+0000\n"
+"PO-Revision-Date: 2026-11-19 15:50+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_l10n_vn_edi_viettel
+#: model:ir.model.fields,field_description:viin_brand_l10n_vn_edi_viettel.field_account_move__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_brand_l10n_vn_edi_viettel
+#: model:ir.model.fields,field_description:viin_brand_l10n_vn_edi_viettel.field_account_move__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_l10n_vn_edi_viettel
+#: model:ir.model,name:viin_brand_l10n_vn_edi_viettel.model_account_move
+msgid "Journal Entry"
+msgstr "Bút toán"
+
+#. module: viin_brand_l10n_vn_edi_viettel
+#. odoo-python
+#: code:addons/viin_brand_l10n_vn_edi_viettel/models/account_move.py:0
+msgid ""
+"The invoice has been canceled on sinvoice for reason: %(reason)sBut the "
+"cancellation in Viindoo failed with error: %(error)s"
+msgstr ""
+"Hóa đơn đã bị hủy trên SInvoice với lý do: %(reason)sNhưng việc hủy trong "
+"Viindoo thất bại với lỗi: %(error)s"

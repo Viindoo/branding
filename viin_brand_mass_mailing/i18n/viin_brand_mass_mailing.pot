@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 21:16+0000\n"
-"PO-Revision-Date: 2026-08-07 21:16+0000\n"
+"POT-Creation-Date: 2026-11-19 15:48+0000\n"
+"PO-Revision-Date: 2026-11-19 15:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,11 +15,26 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. module: mass_mailing
+#: model_terms:ir.actions.act_window,help:mass_mailing.action_create_mass_mailings_from_campaign
+#: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailings_from_campaign
+msgid ""
+"You don't need to import your mailing lists, you can easily\n"
+"                send emails<br> to any contact saved in other Viindoo apps."
+msgstr ""
+
+#. module: mass_mailing
+#: model_terms:ir.actions.act_window,help:mass_mailing.action_view_mass_mailing_lists
+msgid ""
+"No need to import mailing lists, you can send mailings to contacts saved in "
+"other Viindoo apps."
+msgstr ""
+
 #. module: viin_brand_mass_mailing
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_call_to_action
 msgid ""
-"<font style=\"color: white;\"><strong>50,000+ companies</strong> run "
-"Viindoo.</font>"
+"<font style=\"color: white;\"><strong>Join the companies</strong> that grow "
+"their business with us.</font>"
 msgstr ""
 
 #. module: viin_brand_mass_mailing
@@ -45,6 +60,11 @@ msgid "ID"
 msgstr ""
 
 #. module: viin_brand_mass_mailing
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_schedule
+msgid "Interactive demo"
+msgstr ""
+
+#. module: viin_brand_mass_mailing
 #: model:ir.model.fields,field_description:viin_brand_mass_mailing.field_mailing_mailing__mail_server_id
 msgid "Mail Server"
 msgstr ""
@@ -55,6 +75,11 @@ msgid "Mass Mailing"
 msgstr ""
 
 #. module: viin_brand_mass_mailing
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.s_section_mobile
+msgid "Mobile app"
+msgstr ""
+
+#. module: viin_brand_mass_mailing
 #: model:ir.model.fields,help:viin_brand_mass_mailing.field_mailing_mailing__mail_server_id
 #: model:ir.model.fields,help:viin_brand_mass_mailing.field_res_config_settings__mass_mailing_outgoing_mail_server
 #: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.res_config_settings_view_form
@@ -62,4 +87,10 @@ msgid ""
 "Use a specific mail server in priority. Otherwise Viindoo relies on the "
 "first outgoing mail server available (based on their sequencing) as it does "
 "for normal mails."
+msgstr ""
+
+#. module: viin_brand_mass_mailing
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.layout
+#: model_terms:ir.ui.view,arch_db:viin_brand_mass_mailing.mailing_view_generic
+msgid "Viindoo"
 msgstr ""

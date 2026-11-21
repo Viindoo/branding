@@ -1,10 +1,9 @@
 /** @odoo-module **/
 
-// W4 unit-b - ViinAppearanceSystray: navbar systray dropdown for the appearance controls (mockup-25
-// moon icon). Offers the color-scheme choice (Light / Dark / System) + the density choice
-// (Comfortable / Compact), delegating every change to the viin_theme service (the single applier +
-// persister). TDD §4b: a NEW component (registry systray with an explicit sequence), NOT a patch.
-// Keyboard + aria accessible via the core Dropdown/DropdownItem (role=menuitemradio + aria-checked).
+// ViinAppearanceSystray: navbar systray dropdown for the appearance controls. Offers the color-scheme
+// choice (Light / Dark / System) and the density choice (Comfortable / Compact), delegating every
+// change to the viin_theme service, the single applier and persister. Keyboard and aria accessible
+// through the core Dropdown/DropdownItem (role=menuitemradio + aria-checked).
 
 import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
@@ -42,10 +41,10 @@ export class ViinAppearanceSystray extends Component {
     }
 }
 
-// Explicit sequence (TDD §4b). systrayItems = registry.getEntries() (sequence ascending) THEN
-// .reverse() (navbar.js), so a HIGHER sequence renders further LEFT. 30 places the appearance toggle
-// left of the mail messaging (25) / activity (20) menus - near the mockup's moon position - and right
-// of a call menu (100). SwitchCompanyMenu (1) / user menu (0) stay rightmost.
+// systrayItems = registry.getEntries() (sequence ascending) then .reverse() (navbar.js), so a higher
+// sequence renders further left. 30 places the appearance toggle left of the mail messaging (25) and
+// activity (20) menus and right of a call menu (100); SwitchCompanyMenu (1) and the user menu (0)
+// stay rightmost.
 registry
     .category("systray")
     .add("viin_backend_theme.appearance", { Component: ViinAppearanceSystray }, { sequence: 30 });

@@ -1,6 +1,6 @@
 {
     'name': "eLearning Debranding for Viindoo",
-    'name_vi_VN': "",
+    'name_vi_VN': "Làm lại nhận diện thương hiệu cho eLearning",
 
     'summary': """
 Debranding eLearning for Viindoo""",
@@ -31,13 +31,9 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/Viindoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.2',
 
-    # any module necessary for this one to work correctly
     'depends': ['website_slides'],
 
     'assets': {
@@ -48,11 +44,13 @@ Editions Supported
     'data': [
         'data/website_slides_templates_profile.xml',
         'data/mail_templates.xml',
+        'views/slide_slide_views.xml',
+        'views/website_slides_templates.xml',
+    ],
+    'demo': [
+        'data/slide_slide_demo.xml',
     ],
 
-    'images': [
-        # 'static/description/main_screenshot.png'
-        ],
     'installable': False,
     'auto_install': ['website_slides'],
     'price': 0.0,

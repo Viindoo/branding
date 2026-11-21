@@ -1,14 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* sale (reused core xmlid override - see NOTE in viin_brand_stock/i18n/vi_VN.po)
 # 	* viin_brand_sale
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 16:26+0000\n"
-"PO-Revision-Date: 2026-08-07 16:26+0000\n"
+"POT-Creation-Date: 2026-11-19 16:01+0000\n"
+"PO-Revision-Date: 2026-11-19 16:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,11 +27,11 @@ msgstr ""
 #. module: sale
 #: model_terms:ir.actions.act_window,help:sale.action_orders_upselling
 msgid ""
-"As an example, if you sell pre-paid hours of services, the system recommends you\n"
+"As an example, if you sell pre-paid hours of services, Viindoo recommends you\n"
 "                to sell extra hours when all ordered hours have been consumed."
 msgstr ""
-"Ví dụ, nếu bạn bán số giờ dịch vụ trả trước, hệ thống sẽ đề xuất bạn\n"
-"                bán thêm số giờ khi tất cả số giờ đã đặt hàng được sử dụng hết."
+"Ví dụ, nếu bạn bán số giờ dịch vụ trả trước, Viindoo sẽ đề xuất bạn\n"
+"                bán thêm số giờ khi tất cả số giờ đặt hàng đã được sử dụng hết."
 
 #. module: viin_brand_sale
 #. odoo-javascript
@@ -50,3 +49,46 @@ msgstr ""
 "            và các dòng đơn bán sẽ được tạo tự động. Bất kỳ tệp PDF nào khác\n"
 "            chứa tệp UBL-RequestForQuotation đính kèm cũng sẽ hoạt động.\n"
 "        "
+
+#. module: viin_brand_sale
+#: model:ir.model,name:viin_brand_sale.model_res_config_settings
+msgid "Config Settings"
+msgstr "Thiết lập cấu hình"
+
+#. module: viin_brand_sale
+#: model:ir.model.fields,field_description:viin_brand_sale.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_brand_sale
+#: model_terms:ir.ui.view,arch_db:viin_brand_sale.sale_order_portal_template
+msgid ""
+"Drag and drop the request for quotation PDF file into your list of "
+"quotations in Viindoo. Enjoy the automation!"
+msgstr ""
+"Kéo và thả tệp PDF yêu cầu báo giá vào danh sách báo giá của bạn trong "
+"Viindoo. Tận hưởng tính năng tự động hóa!"
+
+#. module: viin_brand_sale
+#: model:ir.model.fields,field_description:viin_brand_sale.field_res_config_settings__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_sale
+#: model_terms:ir.ui.view,arch_db:viin_brand_sale.sale_order_portal_template
+msgid "Not using Viindoo?"
+msgstr "Không sử dụng Viindoo?"
+
+#. module: viin_brand_sale
+#: model_terms:ir.ui.view,arch_db:viin_brand_sale.sale_order_portal_template
+msgid ""
+"Use the above REST URL to get structured data of the purchase order in UBL "
+"format."
+msgstr ""
+"Sử dụng URL REST ở trên để lấy dữ liệu có cấu trúc của đơn mua theo định "
+"dạng UBL."
+
+#. module: viin_brand_sale
+#: model_terms:ir.ui.view,arch_db:viin_brand_sale.sale_order_portal_template
+msgid "Want to import this document in Viindoo?"
+msgstr "Bạn muốn nhập chứng từ này vào Viindoo?"

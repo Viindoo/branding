@@ -1,0 +1,31 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_marketing_card
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-19 15:48+0000\n"
+"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_marketing_card
+#: model_terms:ir.ui.view,arch_db:viin_brand_marketing_card.card_campaign_preview
+msgid "Viindoo"
+msgstr ""
+
+#. module: viin_brand_marketing_card
+#: model_terms:ir.ui.view,arch_db:viin_brand_marketing_card.card_campaign_view_form
+msgid "e.g. Annual Customer Talks"
+msgstr "vd. Buổi trò chuyện khách hàng thường niên"
+
+#. module: viin_brand_marketing_card
+#: model_terms:ir.ui.view,arch_db:viin_brand_marketing_card.card_campaign_view_form
+msgid "e.g. Join our Customer Day 2024"
+msgstr "vd. Tham gia Ngày Khách hàng 2024 của chúng tôi"

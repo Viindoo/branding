@@ -8,9 +8,46 @@
                 An order is to upsell when delivered quantities are above initially
                 ordered quantities, and the invoicing policy is based on ordered quantities.
               </p><p>
-                As an example, if you sell pre-paid hours of services, the system recommends you
+                As an example, if you sell pre-paid hours of services, Viindoo recommends you
                 to sell extra hours when all ordered hours have been consumed.
               </p>
             </field>
         </record>
+
+        <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+            <field name="help" type="html">
+              <br/>
+              <h2>
+                Beat competitors with stunning quotations!
+              </h2><p>
+                Boost sales with online payments or signatures, upsells, and a great customer portal.
+              </p>
+            </field>
+        </record>
+
+        <record id="sale.action_quotations" model="ir.actions.act_window">
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Beat competitors with stunning quotations!
+              </p><p>
+                Boost sales with online payments or signatures, upsells, and a great customer portal.
+              </p>
+            </field>
+        </record>
+
+        <template id="sale_order_portal_template" inherit_id="sale.sale_order_portal_template">
+            <xpath expr="//div[@id='sale_portal_connect_software_modal']//div[hasclass('modal-body')]/div[not(.//input) and not(.//a)]" position="replace">
+                <div>
+                    <h5>Want to import this document in Viindoo?</h5>
+                    <p>Drag and drop the request for quotation PDF file into your list of quotations in Viindoo. Enjoy the automation!</p>
+                </div>
+            </xpath>
+            <xpath expr="//div[@id='sale_portal_connect_software_modal']//div[hasclass('modal-body')]/div[.//input]/h5" position="replace">
+                <h5>Not using Viindoo?</h5>
+            </xpath>
+            <xpath expr="//div[@id='sale_portal_connect_software_modal']//div[hasclass('modal-body')]/div[.//input]/p" position="replace">
+                <p>Use the above REST URL to get structured data of the purchase order in UBL format.</p>
+            </xpath>
+            <xpath expr="//div[@id='sale_portal_connect_software_modal']//div[hasclass('modal-body')]/div[.//a and not(.//input)]" position="replace"/>
+        </template>
 </odoo>

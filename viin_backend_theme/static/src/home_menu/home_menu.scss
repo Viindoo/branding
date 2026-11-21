@@ -1,76 +1,17 @@
-// D3 - ViinHomeMenu styling. Mockup-faithful (mockup-02-home-appdrawer / mockup-25-mobile-home):
-// a LIGHT page (theme-aware, flips with dark mode) carrying a LEFT-aligned greeting + date subtitle,
-// a full-width white search box, an "Applications" section label, then one flat dense app grid.
-//
-// COLORS: theme-aware native Bootstrap runtime props ONLY. Odoo compiles Bootstrap with
-// $variable-prefix:'' (core bootstrap_overridden.scss), so the runtime props are UNPREFIXED
-// (--secondary-bg / --body-bg / --body-color / --secondary-color / --border-color), NOT --bs-*.
-// Their dark values come from the recompiled web.assets_web_dark bundle
-// (viin_brand_web/static/src/scss/dark_palette.scss), not a runtime attribute flip. The only
-// brand accent is the viin_brand $o-brand-primary teal on tile hover/focus. NO teal-gradient
-// banner (it diverged from the mockup), NO --viin-* custom properties, NO var() into a Sass
-// color function.
-//
-// NO RADIUS ANYWHERE (owner revision 2026-08-03 "bo hết"). The search box, the "/" hint chip, the
-// app tiles and the app icons used to pin $o-border-radius-lg / -sm / base. Those were already
-// core's OWN values (not a D13 inflation), but the owner asked for every cluster-owned radius
-// declaration to go, so all four are removed and the surfaces are square-cornered. Restoring them
-// is a one-line-each revert to the same `$o-border-radius*` aliases if the owner misses the tiles.
+// Colors use the native Bootstrap runtime props, which Odoo compiles unprefixed (--secondary-bg,
+// --body-bg, --body-color, --secondary-color, --border-color); their dark values come from the
+// recompiled web.assets_web_dark bundle (viin_brand dark_palette.scss). No --viin-* custom
+// properties and no var() inside a Sass color function.
 
-// =================================================================================================
-// THE APP-DASHBOARD BACKGROUND (owner request 2026-08-03: "Ở trên app dashboard, tao muốn có cái
-// background như ở các phiên bản trước đã từng có")
-// =================================================================================================
-// INVESTIGATION - WHY THIS IS DRAWN AND NOT AN IMAGE FILE.
-//  1. ODOO 19 CE CORE SHIPS NO SUCH IMAGE. The whole of web/static/img/ holds exactly two
-//     backgrounds - graph_background.png and form_sheetbg.png - and neither is a home/app-drawer
-//     surface. CE has no app drawer at all (it is an Enterprise feature); the single home-menu token
-//     left in core 19.0 is the bare class name `.o_home_menu_background` in
-//     web/static/src/core/bottom_sheet/bottom_sheet.scss, with no asset behind it.
-//  2. THE IMAGE THE PREVIOUS VIINDOO VERSIONS USED IS NOT OURS. Recovered from this repo's history:
-//     origin/19.0 to_backend_theme/static/src/components/apps_menu/apps_menu.scss set
-//       --app-menu-background: url("/web_responsive/static/src/img/home-menu-bg-overlay.svg"),
-//                              linear-gradient(to bottom, $brand-primary-dark,
-//                                              desaturate(lighten($brand-primary-dark, 20%), 15));
-//     i.e. a faint faceted-polygon overlay over a two-stop teal gradient. That SVG (366 bytes, three
-//     polygons at fill-opacity .02/.03) belongs to web_responsive - OCA, LGPL-3, © LasLabs /
-//     Tecnativa / ITerra / Onestein - and this PR DELETES web_responsive. Copying an LGPL-3 asset
-//     into this OPL-1 module is a licence conflict, so it is not re-added. The only other candidate,
-//     to_backend_theme/static/src/img/app_dashboard_bg.jpg, was deleted in 2018 (cd7fd7f, "remove
-//     unused image") and was itself a rename of backend_theme_v10/.../material-background.jpg - a
-//     stock wallpaper of unknown provenance, which is worse, not better.
-//  3. SO IT IS RE-DRAWN FROM THE BRAND TOKENS. Original work, no third-party asset, and the DESIGN
-//     INTENT of (2) is preserved: a soft teal wash plus two large shallow facets. Pure CSS layers,
-//     so it adds ZERO bytes of image payload to the bundle (no new file, no extra HTTP request, no
-//     data-URI) - roughly 0.5 kB of gradient declarations - and it is scheme-aware for free, which a
-//     single flat SVG could not be (a dark-canvas facet needs the opposite fill from a light one).
-//
-// CONTRAST IS THE CONSTRAINT, NOT THE COLOUR. The app TILES are opaque cards (--body-bg), so the
-// tile labels are mathematically unaffected by whatever sits behind them. What IS at risk is the
-// text painted DIRECTLY on this surface - the greeting, the date subtitle and the purple
-// "APPLICATIONS" label - so the tint peaks are deliberately low single digits and the strongest
-// layer is aimed BELOW the header band. Measured on the resulting surface: the purple section label
-// keeps >= 5:1 and the greeting >= 11:1, both clear of WCAG AA. Raising these percentages without
-// re-measuring the section label is the way to break that.
-//
-// The layers are painted with color-mix() against `transparent`, so they composite over whatever
-// --secondary-bg resolves to in the active scheme. Interpolating a Sass token INTO a CSS function is
-// the cluster's established form (see the notebook underline); it is NOT a var() inside a Sass
-// colour function, which stays banned.
+// The page backdrop is drawn from brand tokens as CSS layers (two shallow facets over a vertical
+// wash), so it adds no image asset. Text painted directly on it (greeting, date, section label)
+// must keep WCAG AA contrast: keep the tint peaks low and re-measure the label before raising them.
+// The layers use color-mix() against transparent, so they composite over --secondary-bg in either
+// scheme.
 .o_viin_home_menu {
-    // Facet + wash tints. Light uses the DECORATIVE brand teal (it never carries text here, so the
-    // 2.33:1 identity teal is exactly the right rung). Dark uses the deep teal instead, which sits
-    // far closer to the canvas - the "darker treatment" the dark scheme needs, and it keeps the dark
-    // page reading as dark instead of as a washed-out teal panel.
-    //
-    // THE DARK PERCENTAGES ARE LOWER THAN THE LIGHT ONES LOOK LIKE THEY SHOULD BE, AND THAT IS
-    // MEASURED, NOT TASTE. A dark canvas has almost no luminance to spare: the first draft ran the
-    // dark layers at 30/20/26% and tests/test_home_menu_background.py caught the result - the muted
-    // section label fell from 7.24:1 on the bare #0B1315 band to 4.49:1 over the composited
-    // backdrop, i.e. BELOW WCAG AA. The same tint that is imperceptible on a light band is a
-    // page-repaint on a dark one. At 12/8/10% the worst-case composite is #08272C and the label
-    // recovers to 6.06:1, with the wash still clearly visible. Re-tune these only with that test
-    // watching.
+    // Light tints the decorative brand teal (it never carries text here); dark uses the deep teal at
+    // lower percentages, because a dark canvas has little luminance to spare and higher tints push
+    // the muted section label below WCAG AA.
     $-bg-facet-a: if(
         $o-viin-dark-bundle,
         color-mix(in srgb, #{$o-viin-chrome-deep} 12%, transparent),
@@ -90,16 +31,8 @@
     height: 100%;
     overflow-y: auto;
     background-color: var(--secondary-bg); // light-gray page (flips in dark)
-    // Two shallow facets (echoing the polygons of the previous theme's overlay) over a vertical wash
-    // that fades out before it reaches the header text. Declared on the scrolling box, so the
-    // default `background-attachment: scroll` pins them to the box - the backdrop stays put while
-    // the app grid scrolls, which is what the old full-page drawer did.
-    //
-    // EACH FACET EDGE IS FEATHERED OVER ~6%, NOT A ZERO-WIDTH STOP. A hard stop is what the source
-    // SVG could afford at 2-3% fill on a saturated teal page; on today's near-neutral band the same
-    // hard edge renders as a single straight seam across the full width and reads as a banding
-    // artifact rather than as a designed fold (confirmed by eye on the live build). A short ramp
-    // keeps the facet legible as a facet and removes the seam.
+    // Two shallow facets over a vertical wash that fades out before the header text. Each facet edge
+    // is feathered over ~6%: a hard stop renders as a straight seam across the full width.
     background-image:
         linear-gradient(163deg, transparent 0 54%, $-bg-facet-a 60%),
         linear-gradient(-14deg, transparent 0 68%, $-bg-facet-b 74%),
@@ -108,37 +41,17 @@
     color: var(--body-color);
     padding-block: ($o-spacer * 2.5);
 
-    // --- THE OVERLAY ARM (D3 mechanism change, owner decision D3, 2026-08-17)
-    // The navbar apps button no longer navigates to a client action: it renders
-    // this same component through the overlay service, ABOVE the controller the
-    // user was on, which therefore stays mounted. `.o-overlay-item` is already
-    // `position: fixed` with the overlay z-index (web/static/src/core/overlay/
-    // overlay_container.scss) but carries no inset, so it would collapse to its
-    // content; the lines below, plus the inline `top` set by home_menu.js, are
-    // the entire difference between the two arms.
-    //
-    // IT STOPS AT THE NAVBAR, DELIBERATELY. Covering the navbar would bury the
-    // very button that toggles the panel back off, which is the owner's
-    // 2026-08-03 round trip ("bam app icon lan nua thi no lai ve lai view cu").
-    // The top edge is the navbar's measured bottom edge, set inline by
-    // home_menu.js (`overlayStyle`) on every render: the navbar's height alone
-    // is wrong whenever something is rendered above the navbar (the banner of a
-    // neutralized database), and measuring follows the navbar if core ever
-    // retunes it. With nothing above the navbar the result on screen is
-    // pixel-identical to what the full-page client action produced, because
-    // that action filled exactly this box.
-    //
-    // NO BACKDROP, ALSO DELIBERATELY: core's apps dropdown has none either, and
-    // a backdrop is what would make the underlying view unreachable. Dismissal
-    // is an outside pointerdown or Escape (home_menu.js), the same two gestures
-    // core's Dropdown answers to.
+    // Overlay arm: the navbar apps button renders this component through the overlay service above
+    // the current controller. `.o-overlay-item` is fixed but has no inset; `top` is set inline by
+    // home_menu.js from the navbar's measured bottom edge. It stops at the navbar so the toggle
+    // button stays reachable, and has no backdrop so the view underneath stays reachable.
     &.o_viin_home_overlay {
         position: fixed;
         inset: 0;
         height: auto;
     }
 
-    // Left-aligned content column, roughly centered in the available width (mockup proportions).
+    // Left-aligned content column, roughly centered in the available width.
     .o_viin_home_content {
         width: 100%;
         max-width: 1040px;
@@ -146,7 +59,6 @@
         padding-inline: ($o-spacer * 1.5);
     }
 
-    // --- header: greeting + date subtitle + white search (all left-aligned) ---
     .o_viin_home_header {
         gap: $o-spacer;
         margin-block-end: ($o-spacer * 1.5);
@@ -198,27 +110,9 @@
         }
     }
 
-    // --- "APPLICATIONS" section label ---
-    // PR #658 item 6 (owner decision 2026-08-03). Under viin_brand_web's COLOUR LAW
-    // (static/src/scss/brand_variables.scss) a section label is not an action - it is the STRUCTURE
-    // the app grid is organised into - so it carries the brand SECONDARY purple, matching the
-    // group-by search facet and the list group header. This is the lowest-risk purple in the
-    // cluster: the class is theme-owned (`.o_viin_home_section_label` in home_menu.xml), no core
-    // rule targets it, so no !important and no token re-point is needed - a plain `color` on a
-    // (0,2,0) selector.
-    //   light  #7F4282 on the --secondary-bg band #E9ECEF = 5.90:1
-    // (It was var(--secondary-color), the muted-grey tier - readable but semantically silent.)
-    //
-    // >>> OWNER REVISION 2026-08-03: the purple is LIGHT-MODE ONLY. <<<
-    // In web.assets_web_dark the label returns to exactly what it was before the accent landed -
-    // var(--secondary-color), the muted tier - which is the "default look / core colours" the owner
-    // asked for and is comfortably readable there: viin_brand_web's dark_palette.scss re-points
-    // $body-secondary-color to #8EA5A8, and Bootstrap emits it as --secondary-color, giving 7.24:1
-    // on the dark band #0B1315 (vs 2.24:1 if the light purple had simply recompiled).
-    // The flag is viin_brand_web's $o-viin-dark-bundle, declared in brand_variables.scss inside
-    // web._assets_primary_variables - in scope here because that bundle is included at the top of
-    // web.assets_backend, which web.assets_web_dark recompiles. Still no *.dark.scss companion: the
-    // choice is made at COMPILE time, so each bundle carries exactly one declaration.
+    // Light bundle: the brand secondary purple (5.90:1 on the --secondary-bg band). Dark bundle: the
+    // muted --secondary-color tier, since the purple would fall to 2.24:1 on the dark band.
+    // $o-viin-dark-bundle (viin_brand) is a compile-time flag, so each bundle carries one declaration.
     .o_viin_home_section_label {
         margin-block-end: $o-spacer;
         @if $o-viin-dark-bundle {
@@ -232,7 +126,6 @@
         text-transform: uppercase;
     }
 
-    // --- flat dense grid: ~6 cols on desktop, auto-stepping down to 2 cols on mobile (mobile-first) ---
     .o_viin_home_grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -247,10 +140,7 @@
         color: inherit;
         cursor: pointer;
         text-align: center;
-        // The tile is an `<a href>` (home_menu.xml) so middle-click / copy-link / screen-reader
-        // semantics work. `color: inherit` above already neutralises the link colour; this
-        // neutralises the other half of the browser's default link styling, so the anchor renders
-        // byte-for-byte like the <button> it replaced.
+        // The tile is an `<a href>`: neutralise the default link underline.
         text-decoration: none;
         transition: border-color 0.12s ease-in-out, box-shadow 0.12s ease-in-out,
             transform 0.12s ease-in-out;

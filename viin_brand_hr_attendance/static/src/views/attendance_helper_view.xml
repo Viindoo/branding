@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="hr_attendance.AttendanceActionHelperMobileScreen" t-inherit-mode="extension">
+        <xpath expr="//img[@src='/hr_attendance/static/img/mock-tablet.png']" position="attributes">
+            <attribute name="src">/viin_brand_hr_attendance/static/img/mock-tablet.png</attribute>
+        </xpath>
+    </t>
+    <t t-inherit="hr_attendance.AttendanceActionHelperRegularScreen" t-inherit-mode="extension">
+        <xpath expr="//img[@src='/hr_attendance/static/img/mock-tablet.png']" position="attributes">
+            <attribute name="src">/viin_brand_hr_attendance/static/img/mock-tablet.png</attribute>
+        </xpath>
+    </t>
+</templates>

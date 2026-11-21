@@ -14,7 +14,6 @@ What it does
 This module hides the "Pay after" setting of Point Of Sale Self Order, whose selector only opens
 the Enterprise upsell. The stored value keeps the core behavior.
 
-
 Editions Supported
 ==================
 1. Community Edition
@@ -26,7 +25,6 @@ Editions Supported
 ===================
 Module này ẩn thiết lập "Thanh toán sau" của Tự gọi món Điểm Bán Lẻ, vì bộ chọn của nó chỉ
 mở ra chào mời ấn bản Enterprise. Giá trị đã lưu vẫn giữ hành vi của core.
-
 
 Ấn bản được Hỗ trợ
 ==================
@@ -41,17 +39,31 @@ mở ra chào mời ấn bản Enterprise. Giá trị đã lưu vẫn giữ hàn
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/19.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.2',
 
-    # viin_brand_pos: the branding of Point Of Sale this module completes
-    'depends': ['viin_brand_pos', 'pos_self_order'],
+    'depends': ['viin_brand', 'viin_brand_pos', 'pos_self_order'],
+
+    'data': [
+        'views/custom_link_views.xml',
+        'views/pos_self_order_index.xml',
+        'views/res_config_settings_views.xml',
+    ],
+    'assets': {
+        'point_of_sale._assets_pos': [
+            'viin_brand_pos_self_order/static/src/overrides/screens/floor_screen/floor_screen.xml',
+            'viin_brand_pos_self_order/static/src/overrides/components/navbar/navbar.xml',
+        ],
+        'pos_self_order.assets': [
+            # The self order app bundles the core of the web client but not web.assets_backend,
+            # so the dialog and error de-brand of viin_brand is listed here.
+            'viin_brand/static/src/core/dialog/dialog.js',
+            'viin_brand/static/src/core/errors/error_dialogs.js',
+            'viin_brand/static/src/core/errors/error_dialogs.xml',
+        ],
+    },
 
     'installable': False,
-    # Bridge module: installed together with the two modules it bridges.
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

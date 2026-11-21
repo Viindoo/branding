@@ -7,8 +7,10 @@ class MailGatewayAllowed(models.Model):
 
     @api.model
     def get_empty_list_help(self, help_message):
-        """
-        Completely overwrite
+        """Return the empty-list help of the allowed list, naming Viindoo.
+
+        :param help_message: the help message of the action
+        :return: the help markup
         """
         get_param = self.env['ir.config_parameter'].sudo().get_param
         LOOP_MINUTES = int(get_param('mail.gateway.loop.minutes', 120))

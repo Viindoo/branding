@@ -13,7 +13,6 @@ What it does
 ============
 This module will change color navigate bar, button and logo,v.v in module Hr Expense following Viindoo's brand
 
-
 Editions Supported
 ==================
 1. Community Edition
@@ -25,7 +24,6 @@ Editions Supported
 Ứng dụng này làm gì
 ===================
 Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu Viindoo
-
 
 Ấn bản được Hỗ trợ
 ==================
@@ -40,25 +38,25 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.3',
 
-    # any module necessary for this one to work correctly
     'depends': ['hr_expense'],
 
-    # always loaded
     'data': [
         'data/digest_data.xml',
         'data/mail_templates.xml',
         'views/hr_expense_views.xml',
+        'views/res_config_settings_views.xml',
     ],
     'assets': {
         'web.assets_backend': [
             'viin_brand_hr_expense/static/src/scss/viin_brand_hr_expense.scss',
             'viin_brand_hr_expense/static/src/components/qrcode_action/qrcode_action.xml',
+            'viin_brand_hr_expense/static/src/js/tours/hr_expense_tour.js',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_hr_expense/static/tests/hr_expense_tour_debrand.test.js',
         ],
     },
     'installable': False,

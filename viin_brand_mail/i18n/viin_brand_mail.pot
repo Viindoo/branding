@@ -6,14 +6,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-18 02:24+0000\n"
-"PO-Revision-Date: 2026-09-18 02:24+0000\n"
+"POT-Creation-Date: 2026-11-19 16:01+0000\n"
+"PO-Revision-Date: 2026-11-19 16:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: mail
+#: model:res.groups,name:mail.group_mail_notification_type_inbox
+msgid "Receive notifications in Viindoo"
+msgstr ""
 
 #. module: viin_brand_mail
 #. odoo-python
@@ -78,7 +83,6 @@ msgid "Delete Emails"
 msgstr ""
 
 #. module: viin_brand_mail
-#: model:ir.model.fields,field_description:viin_brand_mail.field_ir_http__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__display_name
@@ -129,12 +133,6 @@ msgid "Email domain e.g. 'example.com' in 'viindoo@example.com'"
 msgstr ""
 
 #. module: viin_brand_mail
-#: model:ir.model,name:viin_brand_mail.model_ir_http
-msgid "HTTP Routing"
-msgstr ""
-
-#. module: viin_brand_mail
-#: model:ir.model.fields,field_description:viin_brand_mail.field_ir_http__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__id
@@ -162,6 +160,12 @@ msgid "In Viindoo"
 msgstr ""
 
 #. module: viin_brand_mail
+#. odoo-javascript
+#: code:addons/viin_brand_mail/static/src/core/web/messaging_menu_patch.js:0
+msgid "Install Viindoo"
+msgstr ""
+
+#. module: viin_brand_mail
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_push_device__keys
 msgid ""
 "It's refer to browser keys used by the notification: \n"
@@ -183,6 +187,12 @@ msgstr ""
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_users__notification_type
 msgid "Notification"
+msgstr ""
+
+#. module: viin_brand_mail
+#. odoo-python
+#: code:addons/viin_brand_mail/models/res_users.py:0
+msgid "Only internal user can receive notifications in Viindoo"
 msgstr ""
 
 #. module: viin_brand_mail
@@ -244,20 +254,14 @@ msgstr ""
 #. module: viin_brand_mail
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail.res_config_settings_view_form
 msgid ""
-"Using your own email server is required to send/receive emails in Community "
-"and Enterprise versions. Online users already benefit from a ready-to-use "
-"email server (@mycompany.viindoo.com)."
+"Using your own email server is required to send/receive emails. Online users"
+" already benefit from a ready-to-use email server (@mycompany.viindoo.com)."
 msgstr ""
 
 #. module: viin_brand_mail
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail.mail_notification_layout
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail.mail_notification_light
 msgid "Viindoo"
-msgstr ""
-
-#. module: viin_brand_mail
-#: model:ir.model,website_form_label:viin_brand_mail.model_mail_mail
-msgid "Send an E-mail"
 msgstr ""
 
 #. module: viin_brand_mail

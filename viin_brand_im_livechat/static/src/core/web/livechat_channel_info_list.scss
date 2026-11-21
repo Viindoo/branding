@@ -1,0 +1,6 @@
+// The livechat status labels carry the semantic warning and purple hues, which the teal chat-window
+// header separates from by less than 3:1; there the label is white like the rest of the header.
+// !important beats the Bootstrap `.text-warning` utility.
+.o-mail-ChatWindow-header .o-livechat-LivechatStatusLabel {
+    color: $white !important;
+}

@@ -2,9 +2,7 @@
 <odoo>
 
     <template id="layout" inherit_id="mass_mailing.layout">
-        <xpath expr="//title[text()[contains(., 'Odoo')]]" position="replace">
-            <title>Viindoo</title>
-        </xpath>
+        <xpath expr="//title" position="replace" mode="inner">Viindoo</xpath>
     </template>
 
 </odoo>

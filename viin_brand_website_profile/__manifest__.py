@@ -1,6 +1,6 @@
 {
     'name': "Website profile Debranding for Viindoo",
-    'name_vi_VN': "",
+    'name_vi_VN': "Làm lại nhận diện thương hiệu cho Website profile",
 
     'summary': """
 Debranding Website profile for Viindoo""",
@@ -31,23 +31,20 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/Viindoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.2',
 
-    # any module necessary for this one to work correctly
-    'depends': ['website_profile'],
+    'depends': ['website_profile', 'viin_brand'],
+
+    'data': [
+        'data/mail_template_data.xml',
+    ],
 
     'assets': {
         'web.assets_frontend': [
             ('after', 'website_profile/static/src/scss/website_profile.scss', 'viin_brand_website_profile/static/src/scss/website_profile.scss')
         ],
     },
-    'images': [
-        # 'static/description/main_screenshot.png'
-        ],
     'installable': False,
     'auto_install': ['website_profile'],
     'price': 0.0,

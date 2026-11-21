@@ -2,10 +2,6 @@
      color: rgb(94, 255, 55);
 }
 
-.pos .pos-topheader{
-    background: $brand-primary-dark;
-}
-
 .pos .pos-rightheader > * ,
 .pos .pos-rightheader .header-button{
     border-right: 1px solid $brand-primary-dark;
@@ -23,7 +19,6 @@
 .ticket-button.highlight,
 .ticket-button:hover,
 .pos .mode-button.selected-mode:hover,
-.pos .pos-topheader .status-buttons > div:hover,
 .cash-move-button:hover{
     background: $brand-primary-darker;
 }

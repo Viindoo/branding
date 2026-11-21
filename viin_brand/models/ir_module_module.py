@@ -1,17 +1,42 @@
 import ast
+from collections import defaultdict
+
+from lxml import etree
 
 from odoo import _, api, models
 from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.http import request
-from odoo.tools import config
+from odoo.tools import config, file_open, ormcache
+from odoo.tools.translate import TranslationImporter, get_po_paths, translation_file_reader
 
-# Odoo IAP modules: their rows exist before they are installed, so the guard below knows them by name.
-IAP_MODULES = ['iap', 'crm_iap_enrich', 'crm_iap_mine', 'iap_crm', 'iap_mail', 'website_crm_iap_reveal']
+from ..tools import debrand_exception
+
+# The modules that sell Odoo IAP credits and that no other module depends on: a new database does not
+# install them and the user interface does not offer to.
+IAP_SERVICE_MODULES = (
+    'crm_iap_enrich', 'crm_iap_mine', 'website_crm_iap_reveal', 'snailmail', 'snailmail_account',
+)
+# Their rows exist before they are installed, so the guard below knows them by name.
+IAP_MODULES = ('iap', 'iap_crm', 'iap_mail') + IAP_SERVICE_MODULES
+
+# The Apps lists that hide the Enterprise-only module stubs.
+APPS_ACTION_XMLIDS = ('base.open_module_tree', 'website.action_website_add_features')
 
 
 def _is_to_buy_condition(condition):
     return condition.field_expr == 'to_buy'
+
+
+def _is_branding_module(module_name):
+    return module_name == 'viin_brand' or module_name.startswith('viin_brand_')
+
+
+def _catalog_texts(entries, lang):
+    """Return the English sources of catalog entries and their translations in ``lang``."""
+    texts = {entry[2] for entry in entries}
+    texts.update(text for _module, _xmlid, _source, row_lang, text in entries if row_lang == lang and text)
+    return texts
 
 
 class IrModuleModule(models.Model):
@@ -19,27 +44,354 @@ class IrModuleModule(models.Model):
 
     @api.model
     def _update_domain_for_action(self):
-        """Hide the Enterprise-only module stubs (``to_buy``) from the Apps list.
+        """Hide the Enterprise-only module stubs (``to_buy``) from the Apps lists.
 
-        The condition is ANDed with whatever domain the action already has (website adds one that
-        hides themes) and added only once, so reloading data never stacks it.
+        The condition is ANDed with whatever domain an action already has (website adds one that
+        hides themes) and added only once, so reloading data never stacks it. An Apps action of a
+        module that is not installed is skipped.
         """
-        action = self.env.ref('base.open_module_tree', raise_if_not_found=False)
-        if action:
+        for action in self._get_apps_actions():
             domain = Domain(ast.literal_eval(action.domain or '[]'))
             if not any(_is_to_buy_condition(c) for c in domain.iter_conditions()):
                 action.domain = repr(Domain('to_buy', '=', False) & domain)
-        return action
 
     @api.model
     def _restore_domain_for_action(self):
-        """Drop only the ``to_buy`` condition, leaving the domain other modules put on the action."""
-        action = self.env.ref('base.open_module_tree', raise_if_not_found=False)
-        if action and action.domain:
+        """Drop only the ``to_buy`` condition, leaving the domain other modules put on the actions."""
+        for action in self._get_apps_actions():
+            if not action.domain:
+                continue
             domain = Domain(ast.literal_eval(action.domain)).map_conditions(
                 lambda c: Domain.TRUE if _is_to_buy_condition(c) else c,
             )
             action.domain = False if domain.is_true() else repr(domain)
+
+    @api.model
+    def _get_apps_actions(self):
+        actions = self.env['ir.actions.act_window']
+        for xmlid in APPS_ACTION_XMLIDS:
+            actions |= self.env.ref(xmlid, raise_if_not_found=False) or actions.browse()
+        return actions
+
+    @api.model
+    def _load_module_terms(self, modules, langs, overwrite=False):
+        """Let a branding catalog win over the stock translation of what it re-words.
+
+        The loader keeps a translation a record already holds, so a record whose
+        English a branding module (``viin_brand`` or ``viin_brand_*``) re-words keeps
+        the stock wording in a language that came before the branding catalog:
+        loaded with the modules, before an update, or added later. The catalog of
+        each branding module of ``modules`` is applied by
+        :meth:`_reapply_noupdate_translations`, which keeps a text a user wrote.
+        """
+        super()._load_module_terms(modules, langs, overwrite=overwrite)
+        for module_name in modules:
+            if _is_branding_module(module_name):
+                self._reapply_noupdate_translations(module_name, langs)
+
+    @api.model
+    def _reapply_noupdate_translations(self, module_name, langs=None):
+        """Apply the translation catalog of a module to the records it re-words, ``noupdate`` ones included.
+
+        The loader of a catalog never replaces an existing translation of a record whose external
+        id is ``noupdate``, nor one that a catalog of another module naming the record filled in
+        first, so a language installed before the module keeps the stock wording of such a record,
+        product name included. The entries of the module's own catalog are applied to those records
+        in the given languages; running it again changes nothing.
+
+        A record named by several modules (a field that each of them declares) takes, among the
+        entries the catalogs of those modules give it, the one whose English source is the
+        record's English: this catalog's entry when its source is that English, otherwise the
+        entry of the catalog, a branding one first, that translates the English the record holds.
+
+        A translation is replaced only while it is made of texts the catalogs of the record know
+        (their English and their translations), the English text of the record, or the texts of
+        this catalog: a text a user wrote is kept. A value translated term by term is tested on
+        its terms, markup apart, and keeps the stock translation of a term this catalog lacks.
+
+        The catalogs of the record's own module and of this module settle most records; those of
+        the other modules naming a record are read only for a record they leave undecided.
+
+        :param str module_name: the module whose catalog is applied
+        :param langs: language codes; ``None`` applies every installed language
+        """
+        if langs is None:
+            langs = [code for code, _name in self.env['res.lang'].get_installed()]
+        langs = [code for code in langs if code != 'en_US']
+        catalog = TranslationImporter(self.env.cr, verbose=False)
+        for lang in langs:
+            for path in get_po_paths(module_name, lang):
+                catalog.load_file(path, lang)
+        xmlids = self._get_catalog_xmlids(catalog)
+        if not xmlids:
+            return
+        catalog_modules = {xmlid.split('.', 1)[0] for xmlid in xmlids} | {module_name}
+        stock = self._read_stock_texts(catalog_modules, langs, xmlids)
+        self.env.flush_all()
+        selected = TranslationImporter(self.env.cr, verbose=False)
+        pending = []
+        for model, fields in catalog.model_translations.items():
+            for field_name, records in fields.items():
+                for xmlid, values in records.items():
+                    record = self._get_catalog_record(xmlids, xmlid, model)
+                    if record and not self._select_plain(
+                        selected, module_name, record, field_name, xmlid, values, stock[model, field_name, xmlid],
+                        undecided=True,
+                    ):
+                        pending.append(('plain', record, field_name, xmlid, values))
+        for model, fields in catalog.model_terms_translations.items():
+            for field_name, records in fields.items():
+                for xmlid, terms in records.items():
+                    record = self._get_catalog_record(xmlids, xmlid, model)
+                    if record and not self._select_terms(
+                        selected, record, field_name, xmlid, terms, stock[model, field_name, xmlid], undecided=True,
+                    ):
+                        pending.append(('terms', record, field_name, xmlid, terms))
+        if pending:
+            aliases = self._get_record_xmlids({xmlid for _kind, _record, _field, xmlid, _values in pending})
+            named = set().union(*aliases.values())
+            stock = self._read_stock_texts({alias.split('.', 1)[0] for alias in named} | catalog_modules, langs, named)
+            for kind, record, field_name, xmlid, values in pending:
+                entries = [entry for alias in aliases[xmlid] for entry in stock[record._name, field_name, alias]]
+                if kind == 'plain':
+                    self._select_plain(selected, module_name, record, field_name, xmlid, values, entries)
+                else:
+                    self._select_terms(selected, record, field_name, xmlid, values, entries)
+        selected.save(force_overwrite=True)
+
+    @api.model
+    def _select_plain(self, selected, module_name, record, field_name, xmlid, values, entries, undecided=False):
+        """Select the translations of a plain field a record takes, into the ``selected`` importer.
+
+        :param dict values: ``{lang: translation}`` the catalog of ``module_name`` gives the record
+        :param entries: the catalog entries known for the record (:meth:`_read_stock_texts`)
+        :param bool undecided: leave a language undecided, and return ``False``, unless the
+            catalog's own entry translates the record's English and settles it from ``entries``
+        :return: whether every language was decided
+        """
+        english = record.with_context(lang='en_US')[field_name]
+        decided = True
+        for lang, value in values.items():
+            if undecided and not self._is_own_translation(module_name, xmlid, entries, lang, value, english):
+                decided = False
+                continue
+            target = self._select_translation(module_name, xmlid, entries, lang, value, english)
+            stored = record.with_context(lang=lang)[field_name]
+            if target and stored == target:
+                continue
+            known = {english, value} | _catalog_texts(entries, lang)
+            if target and (not stored or stored in known):
+                selected.model_translations[record._name][field_name][xmlid][lang] = target
+            elif undecided:
+                decided = False
+        return decided
+
+    @api.model
+    def _select_terms(self, selected, record, field_name, xmlid, terms, entries, undecided=False):
+        """Select the term translations a record takes, into the ``selected`` importer.
+
+        :param dict terms: ``{English term: {lang: translation}}`` of the catalog applied
+        :param entries: the catalog entries known for the record (:meth:`_read_stock_texts`)
+        :param bool undecided: return ``False`` instead of deciding when the entries may not
+            hold every catalog text the record can carry
+        :return: whether every language was decided
+        """
+        field = record._fields[field_name]
+        english_terms = field.get_trans_terms(record.with_context(lang='en_US')[field_name])
+        decided = True
+        for lang in {lang for values in terms.values() for lang in values}:
+            stored_terms = field.get_trans_terms(record.with_context(lang=lang)[field_name])
+            applied = len(english_terms) == len(stored_terms) and all(
+                terms.get(term, {}).get(lang, translated) == translated
+                for term, translated in zip(english_terms, stored_terms)
+            )
+            if applied:
+                continue
+            known = set(english_terms) | set(terms) | _catalog_texts(entries, lang)
+            known.update(values[lang] for values in terms.values() if lang in values)
+            if known.issuperset(stored_terms):
+                selected_terms = selected.model_terms_translations[record._name][field_name][xmlid]
+                for source, values in terms.items():
+                    if lang in values:
+                        selected_terms[source][lang] = values[lang]
+            elif undecided:
+                decided = False
+        return decided
+
+    @api.model
+    def _select_translation(self, module_name, xmlid, entries, lang, value, english):
+        """Return the translation a record holding ``english`` takes in ``lang``, ``None`` when unknown.
+
+        The catalog's own value applies when the entry it comes from (this module, this external
+        id, this language) translates ``english``.
+
+        :param str module_name: the branding module whose catalog gives ``value``
+        :param str xmlid: the external id the catalog of ``module_name`` names the record by
+        :param entries: the entries of the catalogs naming the record (:meth:`_read_stock_texts`)
+        :param str value: the translation the catalog of ``module_name`` gives the record
+        """
+        if self._is_own_translation(module_name, xmlid, entries, lang, value, english):
+            return value
+        matching = [
+            (module, text) for module, _alias, source, row_lang, text in entries
+            if source == english and row_lang == lang and text
+        ]
+        branding = {text for module, text in matching if _is_branding_module(module)}
+        candidates = branding or {text for _module, text in matching}
+        return candidates.pop() if len(candidates) == 1 else None
+
+    @api.model
+    def _is_own_translation(self, module_name, xmlid, entries, lang, value, english):
+        """Return whether the entry ``value`` comes from translates ``english``.
+
+        That entry is the one of the catalog of ``module_name`` naming ``xmlid`` in ``lang``
+        with ``value`` as translation; another entry of the same catalog (another external id
+        of the record, another language) does not tell the source of ``value``.
+        """
+        return any(
+            module == module_name and alias == xmlid and row_lang == lang and text == value and source == english
+            for module, alias, source, row_lang, text in entries
+        )
+
+    @api.model
+    def _read_stock_texts(self, module_names, langs, xmlids):
+        """Read the entries the catalogs of modules give records, translated or not.
+
+        A catalog file is read once per transaction.
+
+        :param module_names: the modules whose PO files are read
+        :param langs: language codes
+        :param xmlids: the external ids of the records whose entries are read
+        :return: ``{(model, field, xmlid): [(module, xmlid, English source, lang, translation)]}``,
+            over every entry of the record; the translation is empty when the catalog leaves it out
+        """
+        entries = defaultdict(list)
+        rows_by_path = self.env.cr.cache.setdefault('viin_brand_catalog_rows', {})
+        for module_name in sorted(module_names):
+            for lang in langs:
+                for path in get_po_paths(module_name, lang):
+                    if path not in rows_by_path:
+                        with file_open(path, 'rb', env=self.env) as po_file:
+                            rows_by_path[path] = [
+                                (
+                                    (
+                                        row['imd_model'],
+                                        row['name'].split(',')[1],
+                                        '%s.%s' % (row['module'], row['imd_name']),
+                                    ),
+                                    row['src'],
+                                    row['value'],
+                                )
+                                for row in translation_file_reader(po_file, 'po')
+                                if row['type'] in ('model', 'model_terms')
+                            ]
+                    for key, source, value in rows_by_path[path]:
+                        if key[2] in xmlids:
+                            entries[key].append((module_name, key[2], source, lang, value))
+        return entries
+
+    @api.model
+    def _get_catalog_xmlids(self, importer):
+        """Return the external ids of an importer's entries whose record exists."""
+        xmlids = {
+            xmlid
+            for dictionary in (importer.model_translations, importer.model_terms_translations)
+            for fields in dictionary.values()
+            for records in fields.values()
+            for xmlid in records
+        }
+        if not xmlids:
+            return set()
+        self.env['ir.model.data'].flush_model()
+        self.env.cr.execute(
+            "SELECT module || '.' || name FROM ir_model_data"
+            " WHERE module || '.' || name IN %s AND res_id IS NOT NULL",
+            [tuple(xmlids)],
+        )
+        return {xmlid for [xmlid] in self.env.cr.fetchall()}
+
+    @api.model
+    def _get_record_xmlids(self, xmlids):
+        """Return, for each external id of ``xmlids``, every external id of its record, itself included."""
+        self.env['ir.model.data'].flush_model()
+        self.env.cr.execute(
+            "SELECT named.module || '.' || named.name, alias.module || '.' || alias.name"
+            " FROM ir_model_data named"
+            " JOIN ir_model_data alias ON alias.model = named.model AND alias.res_id = named.res_id"
+            " WHERE named.module || '.' || named.name IN %s",
+            [tuple(xmlids)],
+        )
+        aliases = defaultdict(set)
+        for xmlid, alias in self.env.cr.fetchall():
+            aliases[xmlid].add(alias)
+        return aliases
+
+    @api.model
+    def _get_catalog_record(self, xmlids, xmlid, model):
+        """Return the record of an external id of ``xmlids``, an empty recordset when it is not a ``model``.
+
+        The record is read as superuser: a language install runs as the user who asked
+        for it, and a catalog applies to the records whatever the rules that hide them
+        from that user, as the core importer writes them.
+        """
+        record = self.env.ref(xmlid, raise_if_not_found=False) if xmlid in xmlids else None
+        if record is None or record._name != model:
+            return self.env[model]
+        return record.sudo()
+
+    @api.model
+    def fields_get(self, allfields=None, attributes=None):
+        """Leave the Enterprise flag out of every field list that offers fields by their label.
+
+        The web client's filter, grouping and export pickers ask for all the fields with their
+        ``string``; a view, or a caller that asks for named fields or for attributes without a
+        label (the validation of a view asks for ``readonly`` and ``required``), still reads it, but
+        as a field that cannot be grouped on, so the Custom Group picker, which lists the fields the
+        views of the action load, does not offer it.
+        """
+        fields = super().fields_get(allfields=allfields, attributes=attributes)
+        if not allfields and (attributes is None or 'string' in attributes):
+            fields.pop('to_buy', None)
+        if 'groupable' in fields.get('to_buy', ()):
+            fields['to_buy']['groupable'] = False
+        return fields
+
+    @api.model
+    def get_view(self, view_id=None, view_type='form', **options):
+        """Drop the module-type group of the search panel, which lists the apps store of Odoo."""
+        result = super().get_view(view_id=view_id, view_type=view_type, **options)
+        if view_type == 'search':
+            doc = etree.fromstring(result['arch'])
+            panel_fields = doc.xpath('//searchpanel/field[@name="module_type"]')
+            if panel_fields:
+                for node in panel_fields:
+                    node.getparent().remove(node)
+                result['arch'] = etree.tostring(doc, encoding='unicode')
+        return result
+
+    @api.model
+    def search_panel_select_range(self, field_name, **kwargs):
+        """Leave the categories that hold no module an Apps list shows out of the search panel."""
+        result = super().search_panel_select_range(field_name, **kwargs)
+        if field_name == 'category_id' and result.get('values'):
+            shown = self.with_context(active_test=False)
+            result['values'] = [
+                value for value in result['values']
+                if shown.search_count([('category_id', 'child_of', value['id']), ('to_buy', '=', False)])
+            ]
+        return result
+
+    @api.model
+    @ormcache()
+    def _get_industry_categories_from_apps(self):
+        """Never ask the apps store of Odoo for industry categories."""
+        return []
+
+    def _button_immediate_function(self, function):
+        try:
+            return super()._button_immediate_function(function)
+        except UserError as error:
+            raise debrand_exception(error)
 
     def button_immediate_install(self):
         self._check_iap_modules_are_not_requested()

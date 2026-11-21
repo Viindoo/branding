@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="event.event_stage_done" model="event.stage">
+        <field name="description">Finished events. Viindoo will automatically move them to this stage once their end date has passed.</field>
+    </record>
+</odoo>

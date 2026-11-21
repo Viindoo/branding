@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
     <t t-inherit="website.ResourceEditorWarningOverlay" t-inherit-mode="extension" owl="1">
         <xpath expr="//h1[hasclass('text-dark')]" position="replace" mode="inner">
-            Your changes might be lost during a future system upgrade.
+            Your changes might be lost during a future Viindoo upgrade.
         </xpath>
     </t>
 </templates>

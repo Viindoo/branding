@@ -1,18 +1,16 @@
 /** @odoo-module **/
 
-// Shared app-icon resolver (SSOT) for the vertical rail (D4) and the home menu (D3).
+// Shared app-icon resolver for the home menu.
 //
-// Odoo apps declare `web_icon="<module>,static/description/icon.png"`; the menu service exposes
-// that string on `app.webIcon` and its rendered data-URI on `app.webIconData`. The comma-prefix is
-// the app's TECHNICAL NAME - and it matches the file names in `viin_brand/static/img/apps/<name>.png`
-// exactly (verified: `sale_management`, `account`, `crm`, `point_of_sale`, ...). We prefer the
-// Viindoo icon set for a consistent branded look, and fall back to the app's own `webIconData`
-// (which core already computed, incl. the default_icon_app.png placeholder) when no Viindoo icon
-// exists for that module. Font-glyph apps have a non-module first token (e.g. "fa fa-...") that is
-// not in the set, so they naturally fall through to webIconData too.
+// Odoo apps declare `web_icon="<module>,static/description/icon.png"`; the menu service exposes that
+// string on `app.webIcon` and its rendered data-URI on `app.webIconData`. The comma-prefix is the
+// app's technical name, which matches the file names in `viin_brand/static/img/apps/<name>.png`. The
+// Viindoo icon is preferred for a consistent branded look; the app's own `webIconData` (core's
+// default_icon_app.png placeholder included) is the fallback, and font-glyph apps (a non-module
+// first token such as "fa fa-...") fall through to it as well.
 
-// The 53 icons that ship in viin_brand/static/img/apps/ (data-driven from the directory listing -
-// a MISS here just means "use the native icon", never a broken image). SSOT for both consumers.
+// Names of the icons in viin_brand/static/img/apps/; a miss means "use the native icon", never a
+// broken image.
 export const VIIN_APP_ICONS = new Set([
     "account",
     "base",
@@ -69,8 +67,6 @@ export const VIIN_APP_ICONS = new Set([
     "website_slides",
 ]);
 
-const VIIN_ICON_BASE = "/viin_brand/static/img/apps";
-
 /**
  * Return the technical (module) name an app's web_icon points at, or "".
  * @param {object} app a menu-service app entry ({ webIcon, webIconData, ... })
@@ -89,7 +85,7 @@ export function appIconModule(app) {
 export function getAppIconUrl(app) {
     const mod = appIconModule(app);
     if (mod && VIIN_APP_ICONS.has(mod)) {
-        return `${VIIN_ICON_BASE}/${mod}.png`;
+        return `/viin_brand/static/img/apps/${mod}.png`;
     }
     return (app && app.webIconData) || "/web/static/img/default_icon_app.png";
 }

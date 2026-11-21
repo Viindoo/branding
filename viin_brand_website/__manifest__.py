@@ -1,6 +1,6 @@
 {
     'name': "Website Debranding for Viindoo",
-    'name_vi_VN': "",
+    'name_vi_VN': "Làm lại nhận diện thương hiệu cho Website",
 
     'summary': """
 Debranding Website Builder for Viindoo""",
@@ -31,18 +31,13 @@ Editions Supported
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/Viindoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1.3',
+    'version': '0.1.5',
 
-    # viin_brand: owns the Apps action domain this module re-applies and the brand assets the views use
+    # viin_brand owns the Apps action domain that data/ir_module_module_data.xml re-applies
     'depends': ['website', 'viin_brand'],
 
-    # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
         'data/digest_data.xml',
         'data/ir_module_module_data.xml',
         'views/templates.xml',
@@ -52,7 +47,6 @@ Editions Supported
     ],
     'assets': {
         'web.assets_backend': [
-            'viin_brand_website/static/src/components/configurator/configurator.scss',
             'viin_brand_website/static/src/components/website_loader/website_loader.scss',
         ],
         'web.assets_frontend': [
@@ -63,26 +57,23 @@ Editions Supported
         ],
         'website.website_builder_assets': [
             'viin_brand_website/static/src/builder/plugins/options/website_info_option.xml',
+            'viin_brand_website/static/src/builder/plugins/options/website_builder_brand.xml',
+            'viin_brand_website/static/src/builder/plugins/options/facebook_option_plugin.js',
         ],
         'web.assets_tests': [
             'viin_brand_website/static/tests/tours/colorpicker_brand_override.js',
             'viin_brand_website/static/tests/tours/frontend_to_backend_apps_btn_wiring.js',
         ],
         'web.assets_unit_tests': [
-            # frontend_to_backend_apps_btn.js is listed here so the Hoot suite's own `import` of
-            # it resolves; the module's separate web.assets_frontend entry (production delivery
-            # to a real website page) is added independently and is not this bundle's concern.
+            # The Hoot suite imports the file, so the unit-test bundle carries it as well.
             'viin_brand_website/static/src/js/frontend_to_backend_apps_btn.js',
             'viin_brand_website/static/tests/js/frontend_to_backend_apps_btn.test.js',
+            'viin_brand_website/static/tests/builder/website_builder_brand.test.js',
         ],
     },
-    'images': [
-        # 'static/description/main_screenshot.png'
-        ],
     'installable': False,
     'auto_install': True,
-    # Brands websites that already existed when this module landed - a field
-    # default cannot reach them. See __init__._brand_untouched_favicons.
+    # Brands the favicon of websites a field default cannot reach (see __init__._brand_untouched_favicons).
     'post_init_hook': 'post_init_hook',
     'price': 0.0,
     'currency': 'EUR',

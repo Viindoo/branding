@@ -3,19 +3,10 @@
 import { registry } from "@web/core/registry";
 
 /**
- * viin_brand_common recolours the frontend theme palette (primary #7f4282), so
- * the core `website_background_colorpicker` tour no longer holds on the branded
- * stack: its custom-colour step targets a hard-coded swatch
- * `background-color:#65435C` (= rgb(101,67,92)) which the recoloured palette
- * never produces, and its following RGBA check asserts that exact rgb.
- *
- * Re-register the tour (force) with the custom-colour part adapted to whatever
- * the first custom swatch is on the branded palette, and relax only the
- * hard-coded custom-colour RGBA assertion into a pure check that the RGBA pane
- * rendered (a plain drop would leave a click step as the LAST step, and
- * web_tour ignores the action of a last step with a warning). The gradient
- * steps (a fixed preset, unaffected by branding) and their RGBA check are kept
- * intact, so the tour still exercises the colorpicker.
+ * The branded palette has no `#65435C` swatch, so the custom-colour steps of core's
+ * `website_background_colorpicker` tour cannot hold. This re-registers the tour with its first
+ * custom swatch picked from the branded palette and the hard-coded custom-colour RGBA assertion
+ * relaxed into a check that the RGBA pane is shown. The gradient steps are unchanged.
  */
 const tours = registry.category("web_tour.tours");
 const core = tours.get("website_background_colorpicker", null);
@@ -26,8 +17,8 @@ if (core) {
             ...core,
             steps: () => {
                 const steps = core.steps();
-                // Indices of both "RGBA color matches" checks (gradient + custom);
-                // the custom one is the last such step.
+                // The gradient and the custom colour each have an "RGBA color matches" check;
+                // the custom one is the last.
                 const rgbaIdx = steps
                     .map((s, i) =>
                         (s.content || "").includes("RGBA color matches the selected color") ? i : -1
@@ -36,21 +27,8 @@ if (core) {
                 const dropIdx = rgbaIdx.length ? rgbaIdx[rgbaIdx.length - 1] : -1;
                 return steps.reduce((acc, s, i) => {
                     if (i === dropIdx) {
-                        // Relax the hard-coded custom-colour rgb assertion into a
-                        // pure check: the branded palette produces a different rgb,
-                        // but the tour must still END on a step that actually
-                        // asserts something rather than on a bare action.
-                        //
-                        // 17.0 expressed "this is a check step" as `isCheck: true`
-                        // plus `run: undefined`. Neither survived the 18.0 tour-engine
-                        // rewrite (TourAutomatic/TourStepAutomatic), and neither is back
-                        // at 19.0: StepSchema (now web_tour/static/src/js/tour_service.js,
-                        // moved there from tour_service/) still carries no isCheck key at
-                        // all, so an Owl validate() pass would reject the step. `run` is
-                        // still declared `{ type: [String, Function, Boolean], optional:
-                        // true }`, so an explicit undefined is not the same as absent
-                        // either. The idiom on both 18.0 and 19.0 is simply a step
-                        // carrying no run at all - core's own tours end that way.
+                        // A step without `run` is a pure check; a tour must end on a check, as
+                        // web_tour ignores the action of a last step.
                         const checkStep = {
                             ...s,
                             content: "Check the custom color RGBA pane is shown (brand palette)",

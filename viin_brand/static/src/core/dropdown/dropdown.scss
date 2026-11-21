@@ -1,0 +1,24 @@
+// Dropdown menus (systray / cog / field menus). Bootstrap paints the menu from compile-time hex
+// ($dropdown-bg / $dropdown-border-color / $dropdown-color) that would not flip in dark, so each
+// Bootstrap runtime custom property (unprefixed: Odoo sets $variable-prefix: '') is re-pointed at
+// the scheme-aware props (--body-bg / --body-color / --border-color). The focused item gets a
+// brand-teal wash: core hardcodes the Sass $dropdown-link-hover-bg on `.dropdown-item.focus`, so it
+// is re-declared here (this file loads after core in web.assets_backend, and equal-or-higher
+// specificity plus later order wins). The teal is the AA teal ($o-viin-chrome-base #007F8E) via
+// color-mix over transparent so it composites on either scheme, and item text stays on --body-color
+// for AA. Colour only: Bootstrap already forwards `$dropdown-border-radius: var(--border-radius)`.
+
+.o-dropdown--menu {
+    --dropdown-bg: var(--body-bg);
+    --dropdown-color: var(--body-color);
+    --dropdown-link-color: var(--body-color);
+    --dropdown-border-color: var(--border-color);
+
+    box-shadow: 0 0.5rem 1.25rem color-mix(in srgb, var(--emphasis-color) 14%, transparent);
+
+    // Focused / keyboard-highlighted item (core: background-color: $dropdown-link-hover-bg).
+    .dropdown-item.focus {
+        background-color: color-mix(in srgb, #{$o-viin-chrome-base} 10%, transparent);
+        color: var(--body-color);
+    }
+}

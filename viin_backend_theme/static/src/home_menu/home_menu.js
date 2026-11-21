@@ -1,53 +1,34 @@
 /** @odoo-module **/
 
-// D3 - ViinHomeMenu: full-page flat "Applications" grid client action (tag "viin_home_menu").
-// ONE flat dense grid (no category sections, no sticky headers). Search-first: filters with the core
-// fuzzyLookup (NOT Fuse.js). Keyboard: arrow keys move a highlight across the responsive grid and
-// Enter launches the highlighted app. Icons load lazily so 100+ PNGs don't block first paint. Reads
-// the native menuService app list and launches via menuService.selectMenu.
+// ViinHomeMenu: the flat "Applications" grid (client action tag "viin_home_menu"). One dense grid
+// with no category sections. Search-first: filters with the core fuzzyLookup; the arrow keys move a
+// highlight across the responsive grid and Enter launches the highlighted app. Icons load lazily.
+// Reads the native menuService app list and launches via menuService.selectMenu.
 //
-// PR #658 item 7 - per-user drag-reorder: the grid is ordered by the user's stored
-// res.users.viin_home_app_order (app root-menu xmlids); a press-drag reorders the tiles and persists
-// the new order to that SELF_WRITEABLE field. Apps missing from the stored order (newly installed)
-// append at the end in default sequence and are never hidden - the feature is purely additive to the
-// keyboard/click paths above.
+// Per-user drag-reorder: the grid is ordered by the user's stored res.users.viin_home_app_order (app
+// root-menu xmlids); a press-drag reorders the tiles and persists the new order to that
+// self-writeable field. Apps missing from the stored order (newly installed) append at the end in
+// default sequence and are never hidden.
 //
-// SEARCH-FIRST FOCUS: `onMounted` pre-focuses ViinHomeMenu's search box on mount, in both render
-// shapes, whenever `hasTouch` reports no touch support - a deliberate product decision: land on the
-// screen, type, and searching starts immediately, with no click first. Recovering a keystroke that
-// arrives once focus has moved elsewhere (`onWindowKeydown`) needs the box to already hold focus so
-// a composition-based IME session can attach to it and so the browser's native keydown appends
-// rather than overwrites - guarded by `static/tests/viin_home_typeahead.test.js`.
+// Search-first focus: `onMounted` pre-focuses the search box in both render shapes when `hasTouch`
+// reports no touch support, so the user can type at once. Recovering a keystroke that arrives after
+// focus moved elsewhere (`onWindowKeydown`) needs the box to hold focus already, so an IME
+// composition can attach to it and the native keydown appends rather than overwrites.
 //
-// COST, ACCEPTED: pre-focusing the search box means it, not the shell's `.o_viin_skip_link`
-// bypass-blocks link (WCAG 2.4.1), receives the page's very first Tab. The skip link stays present,
-// reachable by Shift-Tab from the search box or by landmark/heading screen-reader navigation, and
-// activating it still moves focus into the main action region (`skipToMainContent`,
-// webclient_patch.js) - only its place as the FIRST stop is given up, on purpose, for the
-// search-first goal above. The search input's `aria-label` (home_menu.xml) covers the resulting
-// gap: a screen-reader user landing there on mount is told what the field is, not left with no
-// orientation at all. `data-allow-hotkeys="true"` (home_menu.xml) keeps core's global hotkeys
-// reachable while the box holds focus by default (`@web/core/hotkeys/hotkey_service.js`
-// `shouldProtectEditable`). `role="combobox"` was evaluated and rejected: it implies
-// `aria-expanded`/`aria-controls`/`aria-activedescendant` wiring a popup listbox this markup does
-// not have - the grid is always visible, never a popup - so the implicit textbox role plus the
-// `aria-label` describes this input correctly and a bare `role="combobox"` would not.
+// The search box therefore takes the page's first Tab instead of the shell's `.o_viin_skip_link`
+// (WCAG 2.4.1); the skip link stays reachable by Shift-Tab, and the input's `aria-label`
+// (home_menu.xml) tells a screen-reader user what the field is. `data-allow-hotkeys="true"` keeps
+// core's global hotkeys reachable while the box holds focus (hotkey_service.js
+// `shouldProtectEditable`). `role="combobox"` is not used: it implies aria-expanded/aria-controls/
+// aria-activedescendant wiring for a popup listbox, and this grid is always visible.
 //
-// D3 MECHANISM CHANGE, 2026-08-17 (owner decision D3) - THIS COMPONENT NOW HAS TWO MOUNT POINTS.
-// It used to be reachable ONLY as a full-page client action, which meant the navbar apps button had
-// to `doAction()` - and a doAction UNMOUNTS the controller the user was on. Core's contract for that
-// button is the opposite: `.o_navbar_apps_menu button` opens a popover and does NOT navigate, which
-// is what all 57 core tour files built on `stepUtils.showAppsMenuItem()` depend on (they either open
-// an app from the list that appears, or click the button as harmless boilerplate and keep working on
-// the SAME view). So the navbar arm now renders this component through the OVERLAY service instead,
-// above the still-mounted controller, and the client action survives for the BOOT LANDING only -
-// where there is no controller to preserve. ONE button, ONE home menu, one design; only the
-// mechanism differs, and the user cannot tell the two apart.
+// Two mount points, one component: the navbar apps button renders it through the overlay service
+// above the still-mounted controller (core's contract for that button is to open a list, not to
+// navigate, which core tours built on `stepUtils.showAppsMenuItem()` rely on), and the client action
+// serves the boot landing, where there is no controller to preserve.
 //
-// The tiles are `<a href>` rather than `<button>` for the same reason core renders its own app list
-// that way (dropdown_item.xml picks the tag from the presence of `href`): middle-click opens a new
-// tab, right-click copies the link, and a screen reader announces a link to a page. Nothing about
-// the rendered tile changes.
+// The tiles are `<a href>`, as core renders its own app list: middle-click opens a new tab,
+// right-click copies the link, and a screen reader announces a link.
 
 import {
     Component,
@@ -71,12 +52,10 @@ import { NavBar } from "@web/webclient/navbar/navbar";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { getAppIconUrl } from "../webclient/app_icons";
 
-// The navbar chrome the OVERLAY arm must not treat as "outside" - clicking the apps button is the
-// toggle, and it must reach its own handler with the overlay still open (a pointerdown-close here
-// would close it a beat before the click re-opened it, i.e. the toggle would never shut). On a small
-// screen core renders the toggle as `a.o_menu_toggle` instead of `.o_navbar_apps_menu`.
+// Navbar chrome the overlay must not treat as "outside": clicking the apps button toggles the
+// overlay, and a pointerdown-close would shut it a beat before the click re-opened it. On a small
+// screen core renders the toggle as `a.o_menu_toggle`.
 const APPS_MENU_SELECTOR = ".o_navbar_apps_menu, .o_menu_toggle";
-const OVERLAY_ROOT_SELECTOR = ".o_viin_home_overlay";
 
 const { DateTime } = luxon;
 
@@ -87,11 +66,8 @@ const MENU_SEARCH_MAX_RESULTS = 15;
 
 export class ViinHomeMenu extends Component {
     static template = "viin_backend_theme.ViinHomeMenu";
-    // TWO MOUNT POINTS, ONE COMPONENT (D3 mechanism change, 2026-08-17). This renders either as the
-    // BOOT-LANDING client action (WebClient._loadDefaultApp - the action-service props below), or as
-    // the NON-NAVIGATING OVERLAY the navbar apps button opens (`close` set, no action). `action` is
-    // therefore optional: the overlay arm has no action behind it, which is the entire point - the
-    // controller the user was on stays mounted underneath.
+    // Rendered either as the boot-landing client action (action-service props below) or as the
+    // overlay the navbar apps button opens (`close` set, no action), so `action` is optional.
     static props = {
         ...standardActionServiceProps,
         action: { type: Object, optional: true },
@@ -104,72 +80,53 @@ export class ViinHomeMenu extends Component {
         this.ui = useService("ui");
         this.gridRef = useRef("grid");
         this.searchRef = useRef("search");
-        // Pre-focus the search box the moment this component mounts, in EITHER render shape - see
-        // the file header for the full WCAG/IME reasoning. Skipped on a touch device: an
-        // unrequested virtual keyboard popping on a screen the user has not touched yet is worse
-        // than leaving it unfocused.
+        // Pre-focus the search box on mount in either render shape (see the file header); skipped on
+        // a touch device, where an unrequested virtual keyboard is worse than no focus.
         onMounted(() => {
             if (!hasTouch()) {
                 this._focusSearchInput();
             }
         });
-        // Type-to-search RECOVERY: a printable keystroke with nothing editable focused must move
-        // focus back into the search box, in EITHER render shape, so this is unconditional rather
-        // than gated on isOverlay - the FIRST keystroke on mount is already covered by the pre-focus
-        // above; this listener only recovers focus after it was lost. useHotkey cannot express "any
-        // printable character" - core's AUTHORIZED_KEYS (hotkey_service.js) excludes most printable
-        // punctuation - so this listens directly and mirrors that same file's IME-composition check,
-        // its targetIsEditable/shouldProtectEditable rule (an already-focused editable, including
-        // the search box itself, keeps its own native typing untouched), and its `ui.activeElement`
-        // UI-layering check (a Dialog or other higher layer owns the keystroke instead).
+        // Type-to-search recovery: a printable keystroke with nothing editable focused moves focus
+        // back into the search box, in either render shape. useHotkey cannot express "any printable
+        // character", so this listens directly and mirrors hotkey_service.js: the IME-composition
+        // check, the targetIsEditable rule (an already-focused editable keeps its native typing) and
+        // the `ui.activeElement` check (a Dialog or higher layer owns the keystroke).
         useExternalListener(window, "keydown", this.onWindowKeydown);
         if (this.isOverlay) {
-            // DISMISSAL, borrowed verbatim from what core's own apps DROPDOWN does - because the
-            // contract this overlay restores is core's: clicking the apps button must not navigate,
-            // and interacting with the page underneath must put the app list away again
-            // (web/static/src/core/dropdown/dropdown.js `closeOnClickAway`, no backdrop). A pointer
-            // interaction that lands outside both the overlay and the navbar apps button closes it.
-            // In a real session that is a click on the navbar; under a tour it is the next step's
-            // click on the controller below, which is exactly the behaviour that leaves the DOM
-            // clean for the rest of the tour instead of stranding a full-screen panel over it.
+            // Dismissal as core's apps dropdown does it (`closeOnClickAway`, no backdrop): a pointer
+            // interaction outside both the overlay and the navbar apps button closes it, so the
+            // page underneath stays usable and a tour's next click does not hit a stranded panel.
             useExternalListener(document, "pointerdown", this.onOutsidePointerDown, {
                 capture: true,
             });
-            // Whatever sits above the navbar can change height with the window (a banner wrapping
-            // onto more lines), so the top edge measured at render is measured again.
+            // Whatever sits above the navbar can change height with the window (a banner wrapping),
+            // so the measured top edge is measured again.
             useExternalListener(window, "resize", () => this.render());
-            // Escape dismisses and hands focus back to the button that opened it - a non-modal
-            // overlay that traps the user is an accessibility defect (WCAG 2.1.2). The full-page
-            // client-action arm has no trigger to return to, so it does not register this.
+            // Escape dismisses and returns focus to the opening button: a non-modal overlay must
+            // not trap the user (WCAG 2.1.2). The client-action arm has no trigger to return to.
             useHotkey("escape", () => this.props.close({ restoreFocus: true }), {
                 bypassEditableProtection: true,
             });
-            // The browser's Back/Forward (popstate -> ROUTE_CHANGE) re-points the webclient at another
-            // page BEHIND this overlay: the URL and the navbar's app name change while the panel
-            // stays up, so the screen says one thing and the address bar another. Nothing of
-            // ours navigates while the overlay is open, so any route change means the user left
-            // it - put it away and let them see the page the URL now names.
+            // Browser Back/Forward re-points the webclient behind the overlay, leaving the screen and
+            // the address bar disagreeing. Nothing of ours navigates while it is open, so any route
+            // change means the user left it: put it away.
             useBus(routerBus, "ROUTE_CHANGE", () => this.props.close());
         }
         this.state = useState({
             query: "",
             // index of the highlighted tile within `filteredApps` (arrow-nav), -1 = none
             focusIndex: -1,
-            // per-user tile order (app root-menu xmlids); [] = default menu sequence. Read from
-            // res.users.viin_home_app_order in onWillStart, then rewritten reactively on each drop.
+            // per-user tile order (app root-menu xmlids); [] = default menu sequence
             appOrder: [],
-            // csv of the LAST order the server has ACKNOWLEDGED (set after the ORM write resolves).
-            // Surfaced on the grid as data-viin-saved-order so a caller can tell when a drop has
-            // persisted server-side (used by the persist tour before it reloads).
+            // csv of the last order the server acknowledged, surfaced on the grid as
+            // data-viin-saved-order so a caller can tell when a drop has persisted
             savedOrder: null,
         });
-        // Press-drag a tile to reorder the grid (an enhancement - keyboard arrow-nav + click still
-        // work). A movement TOLERANCE (not a press-delay) discriminates a plain tap (launches the app,
-        // no move) from a deliberate press-drag (reorders): a real drag sets the sortable's
-        // preventClick, so the dragged tile never launches on drop. Disabled while searching, since the
-        // filtered/score-ordered subset is not the persisted order. Grounded on core list_renderer /
-        // kanban_renderer / control_panel, which use the same tolerance-based discrimination when one
-        // element is both the click and the drag target.
+        // Press-drag reorders the grid. A movement tolerance (not a press-delay) tells a plain tap
+        // (launches the app) from a drag, which sets the sortable's preventClick so the dragged tile
+        // never launches on drop. Disabled while searching: the filtered subset is not the persisted
+        // order.
         useSortable({
             enable: () => !this.state.query,
             ref: this.gridRef,
@@ -178,14 +135,13 @@ export class ViinHomeMenu extends Component {
             tolerance: 10,
             onDrop: (params) => this.onTileDrop(params),
         });
-        // Mockup header subtitle: "<date> · N activities due today" plus the stored app order - read
-        // together in one onWillStart. Each read degrades on its own (a failure never blanks the grid):
-        // activities due today-or-earlier (Odoo's "today" activity meaning includes overdue) default to
-        // 0, the app order defaults to the empty (default-sequence) list.
+        // Subtitle "<date> - N activities due today" (today-or-earlier, as Odoo's "today" activity
+        // meaning includes overdue) and the stored app order, read together. Each read degrades on its
+        // own, so a failure never blanks the grid: 0 activities, default-sequence order.
         this.activityCount = 0;
         onWillStart(async () => {
-            // Local date in ISO form (YYYY-MM-DD) for the server domain; "en-CA" yields ISO order from
-            // the LOCAL date (not UTC), avoiding a midnight off-by-one.
+            // "en-CA" yields the ISO date (YYYY-MM-DD) of the local day (not UTC), avoiding a midnight
+            // off-by-one in the server domain.
             const today = new Date().toLocaleDateString("en-CA");
             const [activityCount, appOrder] = await Promise.all([
                 this.orm
@@ -210,9 +166,8 @@ export class ViinHomeMenu extends Component {
     }
 
     /**
-     * The overlay stops at the navbar's real bottom edge, not at the navbar's height: anything
-     * rendered above the navbar (the banner of a neutralized database) pushes it down, and a
-     * constant top would cover its lower part. Without a navbar the panel starts at the window top.
+     * The overlay starts at the navbar's real bottom edge, not at its height: anything rendered above
+     * the navbar (a banner) pushes it down. Without a navbar the panel starts at the window top.
      */
     get overlayStyle() {
         if (!this.isOverlay) {
@@ -234,19 +189,15 @@ export class ViinHomeMenu extends Component {
         if (!(target instanceof Element)) {
             return;
         }
-        if (target.closest(OVERLAY_ROOT_SELECTOR) || target.closest(APPS_MENU_SELECTOR)) {
+        if (target.closest(".o_viin_home_overlay") || target.closest(APPS_MENU_SELECTOR)) {
             return;
         }
         this.props.close();
     }
 
-    /** The tile's `href`, from CORE's OWN helper - never a second copy of the URL scheme.
-     *
-     *  `NavBar.prototype.getMenuItemHref` is the single place Odoo 19 builds an app's backend URL
-     *  (`/odoo/<actionPath|action-<id>>`, navbar.js), and it is what core's own apps-menu
-     *  DropdownItems are given. It reads nothing off `this`, so calling it through the prototype is
-     *  safe and keeps ONE definition: if core changes the URL shape, these tiles follow it for free
-     *  instead of silently pointing at a dead route. */
+    /** The tile's `href`, from core's `NavBar.prototype.getMenuItemHref`, the single definition of an
+     *  app's backend URL (`/odoo/<actionPath|action-<id>>`). It reads nothing off `this`, so calling
+     *  it through the prototype is safe. */
     getMenuHref(app) {
         return NavBar.prototype.getMenuItemHref(app);
     }
@@ -262,10 +213,9 @@ export class ViinHomeMenu extends Component {
             .filter(Boolean);
     }
 
-    /** Order apps by the per-user preference (state.appOrder): apps whose root-menu xmlid appears in
-     *  the stored order come first, in that order; apps NOT in it (newly installed / never dragged)
-     *  keep the default menu sequence and append at the END. Never filters - every accessible app
-     *  always renders, so a stale stored value can never hide an app. */
+    /** Order apps by the per-user preference (state.appOrder): apps in the stored order come first,
+     *  in that order; the rest keep the default menu sequence and append at the end. Never filters,
+     *  so a stale stored value cannot hide an app. */
     _orderApps(apps) {
         const rank = new Map(this.state.appOrder.map((xmlid, index) => [xmlid, index]));
         return apps
@@ -273,15 +223,14 @@ export class ViinHomeMenu extends Component {
             .sort((a, b) => {
                 const ra = rank.has(a.app.xmlid) ? rank.get(a.app.xmlid) : Infinity;
                 const rb = rank.has(b.app.xmlid) ? rank.get(b.app.xmlid) : Infinity;
-                // Equal rank (both unknown): keep the default menu sequence (stable by original index).
+                // Equal rank (both unknown): keep the default menu sequence.
                 return ra === rb ? a.index - b.index : ra - rb;
             })
             .map((entry) => entry.app);
     }
 
     /** On drop, splice the dragged tile to its new slot (after `previous`, or first if none), rewrite
-     *  the reactive order so the grid re-renders in the new order, then persist it. Mirrors the
-     *  canonical core reorder algorithm (control_panel.js _sortEmbeddedActionDrop). */
+     *  the reactive order so the grid re-renders, then persist it. */
     onTileDrop({ element, previous }) {
         const xmlid = element.dataset.menuXmlid;
         if (!xmlid) {
@@ -302,12 +251,10 @@ export class ViinHomeMenu extends Component {
         this._persistOrder(order);
     }
 
-    /** Persist the reordered app list to the current user's SELF_WRITEABLE viin_home_app_order field.
-     *  Written IMMEDIATELY (not debounced): a drop is a discrete, deliberate action, and a debounce
-     *  would silently drop the write when the user reorders then navigates/reloads within the debounce
-     *  window. On success the acknowledged csv is mirrored into state.savedOrder (surfaced on the grid
-     *  as data-viin-saved-order) so a caller can tell the write has landed server-side. Best-effort:
-     *  a failed write just means the order re-reads from the server on the next open. */
+    /** Persist the reordered app list to the user's self-writeable viin_home_app_order field.
+     *  Written immediately, not debounced: a debounce would lose the write when the user reloads
+     *  within its window. On success the acknowledged csv is mirrored into state.savedOrder.
+     *  Best-effort: a failed write just means the order re-reads from the server on the next open. */
     async _persistOrder(order) {
         const csv = order.join(",");
         try {
@@ -327,9 +274,8 @@ export class ViinHomeMenu extends Component {
     }
 
     /**
-     * Every menu entry that opens something (an action), under its app - the pool the search box
-     * draws "menu items" from. Apps themselves are the tiles, so they are not repeated here.
-     * Read once: the menu tree does not change while this screen is up.
+     * Every menu entry that opens an action, under its app: the pool the search box draws menu items
+     * from (apps are the tiles). Read once: the menu tree does not change while this screen is up.
      */
     get menuItems() {
         if (!this._menuItems) {
@@ -357,17 +303,15 @@ export class ViinHomeMenu extends Component {
         return this._menuItems;
     }
 
-    /** Menu entries (sub-menus) matching the query - found by typing, with no Ctrl+K, so it works
-     *  on a touch screen as well. */
+    /** Menu entries (sub-menus) matching the query, found by typing so it works on touch screens. */
     get menuMatches() {
         const query = this.state.query.trim();
         if (query.length < MENU_SEARCH_MIN_LENGTH) {
             return [];
         }
         // Every typed word must appear (case- and accent-insensitively) in the entry's name or its
-        // app path. Not the apps' letters-in-order fuzzy match: across a few hundred menu entries
-        // that matches nearly anything ("tag" finds "Tai khoan ngan hang"). Entries whose OWN name
-        // holds all the words come before those matched only through their path.
+        // app path; the apps' letters-in-order fuzzy match would match nearly anything across a few
+        // hundred entries. Entries whose own name holds all the words come first.
         const words = normalize(query).split(/\s+/).filter(Boolean);
         const hits = this.menuItems.filter((item) => words.every((w) => item.pathKey.includes(w)));
         const rank = (item) => (words.every((w) => item.nameKey.includes(w)) ? 0 : 1);
@@ -393,9 +337,8 @@ export class ViinHomeMenu extends Component {
         return user.name;
     }
 
-    /** Mockup subtitle date, e.g. "Wednesday, July 16" - in the USER's language: luxon's default
-     *  locale is the one Odoo's localization service sets from the user's lang, whereas the browser's
-     *  own locale (what `toLocaleDateString(undefined)` reads) is unrelated to it. */
+    /** Subtitle date, e.g. "Wednesday, July 16", in the user's language: luxon's default locale is
+     *  the one Odoo's localization service sets from the user's lang, unlike the browser's locale. */
     get dateLabel() {
         return DateTime.now().toLocaleString({ weekday: "long", month: "long", day: "numeric" });
     }
@@ -409,12 +352,9 @@ export class ViinHomeMenu extends Component {
         return getAppIconUrl(app);
     }
 
-    /** A tile is a real `<a href>`, so a MODIFIED click is the browser's to handle - that is the
-     *  whole reason it is a link and not a button: middle-click and ctrl/cmd-click open the app in a
-     *  new tab, shift-click in a new window, and right-click offers "copy link address". A plain
-     *  primary click is ours: the webclient is a single-page app, so it routes through the menu
-     *  service instead of reloading the page. Core's DropdownItem takes the same preventDefault
-     *  branch on its own app links (dropdown_item.js `onClick`). */
+    /** A tile is a real `<a href>`, so a modified click (middle, ctrl/cmd, shift, alt) is the
+     *  browser's to handle. A plain primary click routes through the menu service instead of
+     *  reloading the page, as core's DropdownItem does for its own app links. */
     onTileClick(ev, app) {
         if (ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) {
             return;
@@ -438,8 +378,8 @@ export class ViinHomeMenu extends Component {
             return;
         }
         this.menuService.selectMenu(app);
-        // The overlay's job is done the moment an app is chosen; leaving it up would cover the app
-        // the user just asked for. (The client-action arm is replaced by the new controller instead.)
+        // The overlay would cover the app just chosen; the client-action arm is replaced by the new
+        // controller instead.
         this.props.close?.();
     }
 
@@ -449,13 +389,10 @@ export class ViinHomeMenu extends Component {
         this.searchRef.el?.focus({ preventScroll: true });
     }
 
-    /** Move focus into the search box, unless a guard says otherwise: mid-IME composition, a
-     *  higher UI layer open, an accelerator modifier held, not a single printable character, or an
-     *  editable target already owns the keystroke. Reads `ev.key` only to check that guard; it
-     *  never WRITES into the search box - no `input.value` assignment, no injecting `ev.key` -
-     *  so the browser's own keydown default action delivers the character natively once focus has
-     *  moved, which is what makes a recovered keystroke APPEND to content already in the box
-     *  instead of overwriting it. */
+    /** Move focus into the search box, unless mid-IME composition, a higher UI layer is open, an
+     *  accelerator modifier is held, the key is not a single printable character, or an editable
+     *  target already owns the keystroke. It never writes into the box: the browser's own keydown
+     *  default delivers the character once focus has moved, so it appends instead of overwriting. */
     onWindowKeydown(ev) {
         if (ev.isComposing || ev.keyCode === 229) {
             return;
@@ -530,10 +467,8 @@ export class ViinHomeMenu extends Component {
                 break;
             case "Enter": {
                 ev.preventDefault();
-                // An explicit arrow-highlight always wins, typed or not (rule: highlighted tile
-                // opens regardless of query). Otherwise, only a non-empty query has a match worth
-                // opening (rule: type-then-Enter opens the first match); an empty query with
-                // nothing highlighted opens nothing (rule: no selection, no launch).
+                // An arrow-highlighted tile always opens; otherwise only a non-empty query has a
+                // match to open, and an empty query with nothing highlighted opens nothing.
                 if (current >= 0) {
                     this.launch(this.filteredApps[current]);
                 } else if (this.state.query.trim()) {

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="analytic.account_analytic_line_action" model="ir.actions.act_window">
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No activity yet on this account
+            </p><p>
+                In Viindoo, sales orders and projects are implemented using
+                analytic accounts. You can track costs and revenues to analyse
+                your margins easily.
+            </p><p>
+                Costs will be created automatically when you register supplier
+                invoices, expenses or timesheets.
+            </p><p>
+                Revenues will be created automatically when you create customer
+                invoices. Customer invoices can be created based on sales orders
+                (fixed price invoices), on timesheets (based on the work done) or
+                on expenses (e.g. reinvoicing of travel costs).
+            </p>
+        </field>
+    </record>
+
+    <record id="analytic.account_analytic_line_action_entries" model="ir.actions.act_window">
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No activity yet
+            </p><p>
+                In Viindoo, sales orders and projects are implemented using
+                analytic accounts. You can track costs and revenues to analyse
+                your margins easily.
+            </p><p>
+                Costs will be created automatically when you register supplier
+                invoices, expenses or timesheets.
+            </p><p>
+                Revenues will be created automatically when you create customer
+                invoices. Customer invoices can be created based on sales orders
+                (fixed price invoices), on timesheets (based on the work done) or
+                on expenses (e.g. reinvoicing of travel costs).
+            </p>
+        </field>
+    </record>
+</odoo>

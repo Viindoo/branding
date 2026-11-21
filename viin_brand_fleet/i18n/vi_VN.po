@@ -27,9 +27,9 @@ msgstr "Quản lý hiệu quả chi phí các phương tiện khác nhau với V
 #: model_terms:ir.actions.act_window,help:fleet.fleet_vehicle_log_contract_action
 msgid ""
 "Manage all your contracts (leasing, insurances, etc.) with\n"
-"            their related services, costs. The system will automatically warn\n"
+"            their related services, costs. Viindoo will automatically warn\n"
 "            you when some contracts have to be renewed."
 msgstr ""
 "Quản lý tất cả các hợp đồng của bạn (cho thuê, bảo hiểm, v.v.) với \n"
-"các dịch vụ liên quan, chi phí của họ. Hệ thống sẽ tự động cảnh báo \n"
+"các dịch vụ liên quan, chi phí của họ. Viindoo sẽ tự động cảnh báo \n"
 "bạn khi một số hợp đồng phải được gia hạn."

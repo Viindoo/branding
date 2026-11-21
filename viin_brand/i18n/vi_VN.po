@@ -6,14 +6,121 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-29 15:33+0000\n"
-"PO-Revision-Date: 2026-10-29 15:33+0000\n"
+"POT-Creation-Date: 2026-11-20 02:39+0000\n"
+"PO-Revision-Date: 2026-11-20 02:39+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: base
+#: model_terms:ir.actions.act_window,help:base.action_partner_customer_form
+msgid "Viindoo helps you easily track all activities related to a customer."
+msgstr ""
+"Viindoo giúp bạn dễ dàng nắm bắt các hoạt động liên quan tới khách hàng."
+
+#. module: base
+#: model_terms:ir.actions.act_window,help:base.action_partner_form
+msgid "Viindoo helps you track all activities related to your contacts."
+msgstr "Viindoo giúp bạn theo dõi tất cả hoạt động liên quan tới các liên hệ."
+
+#. module: base
+#: model_terms:ir.actions.act_window,help:base.action_partner_supplier_form
+msgid "Viindoo helps you easily track all activities related to a vendor."
+msgstr ""
+"Viindoo giúp bạn dễ dàng nắm bắt các hoạt động liên quan tới nhà cung cấp."
+
+#. module: base
+#: model_terms:ir.actions.act_window,help:base.action_res_company_form
+msgid ""
+"Create and manage the companies that will be managed by Viindoo from here. "
+"Shops or subsidiaries can be created and maintained from here."
+msgstr ""
+"Tạo và quản lý các công ty sẽ được quản lý tại Viindoo ở đây. Các cửa hàng "
+"hoặc công ty con cũng có thể được tạo và điều hành từ đây."
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.login_layout
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_bootstrap
+msgid "/viin_brand/static/img/favicon.ico"
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.login_layout
+msgid "<span>Viindoo</span>"
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.res_config_settings_view_form
+msgid ""
+"API Keys allow your users to access Viindoo with external tools when multi-"
+"factor authentication is enabled."
+msgstr ""
+"Mã khóa API cho phép người dùng của bạn truy cập Viindoo bằng các công cụ "
+"bên ngoài khi đang bật xác thực đa yếu tố."
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_actions_actions
+msgid "Actions"
+msgstr "Tác vụ"
+
+#. module: viin_brand
+#: model:ir.model.fields,help:viin_brand.field_res_users__viin_color_scheme
+msgid ""
+"Backend appearance: Light, Dark, or System (follow the device preference)."
+msgstr "Giao diện nền: Sáng, Tối, hoặc Hệ thống (theo tùy chọn của thiết bị)."
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_view_form
+msgid ""
+"Be aware that editing the architecture of a standard view is not advised, "
+"since the changes will be overwritten during future module updates.<br/>We "
+"recommend applying modifications to standard views through inherited views."
+msgstr ""
+"Xin lưu ý rằng không nên chỉnh sửa kiến trúc của giao diện tiêu chuẩn, vì "
+"các thay đổi sẽ bị ghi đè trong các bản cập nhật phân hệ trong tương "
+"lai.<br/>Chúng tôi khuyên bạn nên sửa đổi giao diện tiêu chuẩn thông qua "
+"giao diện kế thừa."
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_module_filter
+msgid "By Odoo"
+msgstr "Bởi Odoo"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_module_filter
+msgid "By Viindoo / TVTMA"
+msgstr "Bởi Viindoo / TVTMA"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_offline
+msgid "Check again"
+msgstr "Kiểm tra lại"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_offline
+msgid ""
+"Check your network connection and come back here. Viindoo will load as soon "
+"as you're back online."
+msgstr ""
+"Kiểm tra kết nối mạng của bạn và quay lại đây. Viindoo sẽ tải ngay khi bạn "
+"trực tuyến trở lại."
+
+#. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_res_users__viin_color_scheme
+msgid "Color Scheme"
+msgstr "Chế độ màu"
+
+#. module: viin_brand
+#: model:ir.model.fields,help:viin_brand.field_ir_mail_server__from_filter
+msgid ""
+"Comma-separated list of addresses or domains for which this server can be used.\n"
+"e.g.: 'notification@viindoo.com' or 'viindoo.com'"
+msgstr ""
+"Danh sách các địa chỉ hoặc tên miền được phân tách bằng dấu phẩy mà máy chủ này có thể được sử dụng.\n"
+"VD: 'notification@viindoo.com' hoặc 'viindoo.com'"
 
 #. module: viin_brand
 #: model:ir.model,name:viin_brand.model_res_company
@@ -32,13 +139,47 @@ msgid "Config Settings"
 msgstr "Thiết lập cấu hình"
 
 #. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
+msgid "Copyright © 2019"
+msgstr "Bản quyền © 2019"
+
+#. module: viin_brand
+#: model:ir.model.fields.selection,name:viin_brand.selection__res_users__viin_color_scheme__dark
+msgid "Dark"
+msgstr "Tối"
+
+#. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_ir_actions_actions__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_ir_actions_report__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_http__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_ir_mail_server__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_module_module__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_ir_rule__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_ui_menu__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_res_company__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_res_lang__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_res_users__display_name
 msgid "Display Name"
 msgstr "Tên hiển thị"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/user_menu_item.js:0
+msgid "Documentation"
+msgstr "Tài liệu"
+
+#. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_ir_mail_server__from_filter
+msgid "FROM Filtering"
+msgstr "Bộ lọc TỪ"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
+msgid "GNU LGPL Licensed"
+msgstr "Giấy phép GNU LGPL"
 
 #. module: viin_brand
 #: model:ir.model,name:viin_brand.model_ir_http
@@ -46,13 +187,39 @@ msgid "HTTP Routing"
 msgstr "Định tuyến HTTP"
 
 #. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_ir_actions_actions__id
+#: model:ir.model.fields,field_description:viin_brand.field_ir_actions_report__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_http__id
+#: model:ir.model.fields,field_description:viin_brand.field_ir_mail_server__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_module_module__id
+#: model:ir.model.fields,field_description:viin_brand.field_ir_rule__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_ui_menu__id
 #: model:ir.model.fields,field_description:viin_brand.field_res_company__id
 #: model:ir.model.fields,field_description:viin_brand.field_res_config_settings__id
+#: model:ir.model.fields,field_description:viin_brand.field_res_lang__id
+#: model:ir.model.fields,field_description:viin_brand.field_res_users__id
 msgid "ID"
 msgstr ""
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_res_lang
+msgid "Languages"
+msgstr "Ngôn ngữ"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_users_form_simple_modif
+msgid "Learn more"
+msgstr "Tìm hiểu thêm"
+
+#. module: viin_brand
+#: model:ir.model.fields.selection,name:viin_brand.selection__res_users__viin_color_scheme__light
+msgid "Light"
+msgstr "Sáng"
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_mail_server
+msgid "Mail Server"
+msgstr "Máy chủ thư"
 
 #. module: viin_brand
 #: model:ir.model,name:viin_brand.model_ir_ui_menu
@@ -63,6 +230,78 @@ msgstr ""
 #: model:ir.model,name:viin_brand.model_ir_module_module
 msgid "Module"
 msgstr "Phân hệ"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/user_menu_item.js:0
+msgid "My Viindoo.com account"
+msgstr "Tài khoản Viindoo.com"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.js:0
+msgid "Odoo Warning"
+msgstr "Cảnh báo Odoo"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_offline
+msgid "Offline"
+msgstr "Ngoại tuyến"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_notifications.js:0
+msgid "Ok"
+msgstr ""
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/views/widgets/notification_alert/notification_alert.xml:0
+msgid ""
+"Push notifications have been blocked. Go to your browser settings to allow "
+"them."
+msgstr "Thông báo đẩy đã bị chặn. Đi tới thiết lập trình duyệt để cho phép."
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_rule
+msgid "Record Rule"
+msgstr "Quy tắc"
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_actions_report
+msgid "Report Action"
+msgstr "Tác vụ báo cáo"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.base_partner_merge_automatic_wizard_form
+msgid ""
+"Select the list of fields used to search for\n"
+"                    duplicated records. If you select several fields,\n"
+"                    Viindoo will propose you to merge only those having\n"
+"                    all these fields in common. (not one of the fields)."
+msgstr ""
+"Chọn danh sách các trường được sử dụng để tìm kiếm\n"
+"                    các bản ghi trùng lặp. Nếu bạn chọn nhiều trường,\n"
+"                    Viindoo sẽ đề xuất bạn chỉ gộp những bản ghi có\n"
+"                    tất cả các trường được chọn có giá trị giống nhau (không phải chỉ một trong số các trường)."
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.xml:0
+#: code:addons/viin_brand/static/src/core/errors/error_notifications.js:0
+msgid "Session Expired"
+msgstr "Phiên đăng nhập hết hạn"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/user_menu_item.js:0
+msgid "Support"
+msgstr "Hỗ trợ"
+
+#. module: viin_brand
+#: model:ir.model.fields.selection,name:viin_brand.selection__res_users__viin_color_scheme__auto
+msgid "System"
+msgstr "Hệ thống"
 
 #. module: viin_brand
 #. odoo-python
@@ -78,3 +317,100 @@ msgid ""
 msgstr ""
 "Trường này chứa hình ảnh được sử dụng để hiển thị hình đại diện nhất định "
 "cho một công ty."
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.res_config_settings_view_form
+msgid ""
+"This name will be used for the application when Viindoo is installed through"
+" the browser."
+msgstr ""
+"Tên này sẽ được sử dụng cho ứng dụng khi Viindoo được cài đặt thông qua "
+"trình duyệt."
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_res_users
+msgid "User"
+msgstr "Người dùng"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/install_scoped_app/install_scoped_app.xml:0
+#: code:addons/viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
+#: model_terms:ir.ui.view,arch_db:viin_brand.brand_promotion_message
+#: model_terms:ir.ui.view,arch_db:viin_brand.login_layout
+#: model_terms:ir.ui.view,arch_db:viin_brand.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_bootstrap
+msgid "Viindoo"
+msgstr "Hệ thống Viindoo"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Client Error"
+msgstr "Lỗi phía máy khách Viindoo"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Error"
+msgstr "Lỗi Viindoo"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Network Error"
+msgstr "Lỗi mạng Viindoo"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.js:0
+msgid "Viindoo Warning"
+msgstr "Cảnh báo Viindoo"
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_offline
+msgid "Viindoo logo"
+msgstr "Biểu trưng Viindoo"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/barcode/barcode_video_scanner.js:0
+msgid "Viindoo needs your authorization first."
+msgstr "Viindoo cần sự cho phép của bạn trước."
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/install_scoped_app/install_scoped_app.xml:0
+#: code:addons/viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
+msgid "Viindoo."
+msgstr ""
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_offline
+msgid "You are offline"
+msgstr "Bạn đang ngoại tuyến"
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/webclient/actions/reports/report_notification.js:0
+msgid ""
+"You need to start Viindoo with at least two workers to print a pdf version "
+"of the reports."
+msgstr ""
+"Bạn cần chạy Viindoo với ít nhất 2 worker để in báo cáo định dạng pdf."
+
+#. module: viin_brand
+#. odoo-javascript
+#: code:addons/viin_brand/static/src/core/errors/error_dialogs.xml:0
+#: code:addons/viin_brand/static/src/core/errors/error_notifications.js:0
+msgid ""
+"Your Viindoo session expired. The current page is about to be refreshed."
+msgstr ""
+"Phiên làm việc Viindoo của bạn đã hết hạn. Trang hiện tại sẽ được tải lại."
+
+#. module: viin_brand
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_company_form
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_partner_address_form
+#: model_terms:ir.ui.view,arch_db:viin_brand.view_partner_form
+msgid "e.g. https://viindoo.com"
+msgstr "vd. https://viindoo.com"

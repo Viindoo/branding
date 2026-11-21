@@ -13,7 +13,6 @@ What it does
 ============
 This module will change color navigate bar, button and logo,v.v in Stock following Viindoo's brand
 
-
 Editions Supported
 ==================
 1. Community Edition
@@ -25,7 +24,6 @@ Editions Supported
 Ứng dụng này làm gì
 ===================
 Module này sẽ thay đổi giao diện các module Stock theo thương hiệu Viindoo
-
 
 Ấn bản được Hỗ trợ
 ==================
@@ -40,16 +38,12 @@ Module này sẽ thay đổi giao diện các module Stock theo thương hiệu 
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1.1',
+    'version': '0.1.3',
 
-    # any module necessary for this one to work correctly
-    'depends': ['stock', 'viin_brand_digest'],
+    # viin_brand: owns the hook that hides the rows of Enterprise shipping connectors
+    'depends': ['stock', 'viin_brand', 'viin_brand_digest'],
 
-    # always loaded
     'data': [
         'data/digest_data.xml',
         'views/stock_orderpoint_views.xml',

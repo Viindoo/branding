@@ -1,19 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-"""Live-instance positive-evidence oracle for the SaverScreen branding fix.
+"""The SaverScreen of the POS shows the Viindoo logo.
 
-Runs ``ViinBrandPosSaverScreenLogoTour`` (static/tests/tours/
-saver_screen_logo_tour.js), which navigates to point_of_sale.SaverScreen and
-asserts the RESOLVED ``background-image`` of its ``.pos-logo`` element names
-the Viindoo asset - not merely that the screen renders without throwing.
-
-RED today (before the production fix): the dead xpath in
-static/src/app/screens/saver_screen.xml raises an OwlError the first time
-SaverScreen is rendered, destroying the whole POS root component - the
-``.login-overlay .pos-logo`` trigger the tour waits for never appears, so
-this test fails by timeout rather than by a wrong assertion. That is the
-correct RED: it fails for the actual production defect (an OwlError that
-crashes a live POS session after 5 idle minutes), not a narrower proxy of
-it.
+``ViinBrandPosSaverScreenLogoTour`` (static/tests/tours/saver_screen_logo_tour.js) opens the screen
+and asserts that the resolved ``background-image`` of its ``.pos-logo`` element names the Viindoo
+asset. A template extension that cannot be located destroys the whole POS root component, so the
+tour also guards that the screen renders at all.
 """
 from odoo.tests import tagged
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="project.example.customerfeedback" t-inherit-mode="extension">
+        <xpath expr="." position="replace" mode="inner">
+            Customers propose feedbacks by email; Viindoo creates tasks automatically, and you can
+            communicate on the task directly. <br/>Your managers decide which feedback is accepted
+            <span class="o_status d-inline-block o_status_green"></span> and which feedback is
+            moved to the "Refused" column.
+            <br/>
+            Use the <a class="fa fa-clock-o"></a> icon to organize your daily activities.
+        </xpath>
+    </t>
+</templates>

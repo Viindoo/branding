@@ -13,7 +13,6 @@ What it does
 ============
 This module will change color navigate bar, button and logo,v.v in module Base import following Viindoo's brand
 
-
 Editions Supported
 ==================
 1. Community Edition
@@ -25,7 +24,6 @@ Editions Supported
 Ứng dụng này làm gì
 ===================
 Module này sẽ thay đổi giao diện module Base import theo thương hiệu Viindoo
-
 
 Ấn bản được Hỗ trợ
 ==================
@@ -40,20 +38,19 @@ Module này sẽ thay đổi giao diện module Base import theo thương hiệu
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/14.0/odoo/addons/base/data/ir_module_category_data.xml
-    # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.2',
 
-    # any module necessary for this one to work correctly
     'depends': ['base_import'],
 
-    # always loaded
     'assets': {
         'web.assets_backend': [
             'viin_brand_base_import/static/src/import_data_content/import_data_content.xml',
-            ]
+            'viin_brand_base_import/static/src/import_model.js',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_base_import/static/tests/import_format_help.test.js',
+        ],
     },
     'installable': False,
     'auto_install': True,

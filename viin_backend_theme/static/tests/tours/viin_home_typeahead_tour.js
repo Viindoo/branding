@@ -1,19 +1,14 @@
 /** @odoo-module **/
 
-// Type-to-search on the flat home menu, driven end-to-end on the BOOT-LANDING client-action
-// render (a fresh /odoo load) - the shape the Hoot unit tests (viin_home_typeahead.test.js) cannot
-// reach, since those mount the component directly rather than booting the real webclient. A user
-// must be able to start typing the instant the screen is up, with no click on the search box
-// first, and a keystroke that arrives after focus was briefly lost must APPEND to whatever the
-// user had already typed rather than replace it.
+// Type-to-search on the flat home menu, driven end-to-end on the boot-landing client-action render
+// (a fresh /odoo load), which the Hoot unit tests (viin_home_typeahead.test.js) cannot reach because
+// they mount the component directly. A user must be able to type the instant the screen is up, and
+// a keystroke that arrives after focus was briefly lost must append to what was typed, not replace
+// it.
 //
-// GROUNDED: `run: "press <key>"` invokes Odoo 19.0's own tour-automation keyboard helper,
-// `TourHelpers.prototype.press`, which forwards to `hoot.press()` from `@odoo/hoot-dom` - the SAME
-// `press()` the Hoot unit tests (`viin_home_typeahead.test.js`) already use, with the same real
-// two-phase target resolution (once before, once after the keydown dispatch) and the same
-// append-not-overwrite insertion semantics already validated there. A raw, untrusted synthetic
-// `dispatchEvent` never triggers a real browser's native text-insertion default action, so this
-// file does not construct one by hand.
+// `run: "press <key>"` uses `TourHelpers.prototype.press`, which forwards to hoot's `press()`, so
+// the native text-insertion default action happens as in a real browser; a hand-built synthetic
+// `dispatchEvent` never triggers it.
 
 import { registry } from "@web/core/registry";
 
