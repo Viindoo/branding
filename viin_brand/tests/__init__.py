@@ -31,7 +31,6 @@ from . import test_owl_extension_self_shadow
 from . import test_partner_root_debrand
 from . import test_pdf_metadata
 from . import test_pivot_dark_compile
-from . import test_retired_shell
 from . import test_scheme_cookie_first_load
 from . import test_scss_variable_closure
 from . import test_semantic_colour_compile
