@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="pwa_manifest" inherit_id="website_event_track.pwa_manifest">
+        <xpath expr="//meta[@name='theme-color']" position="attributes">
+            <attribute name="content"/>
+            <attribute name="t-att-content">website.get_events_app_theme_color()</attribute>
+        </xpath>
+    </template>
+
+</odoo>
