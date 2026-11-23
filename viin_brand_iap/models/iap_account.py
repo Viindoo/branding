@@ -38,6 +38,16 @@ class IapAccount(models.Model):
         self._refuse_paid_endpoint()
         return super().action_view_my_services()
 
+    def _get_account_information_from_iap(self):
+        """Never ask the IAP of Odoo S.A. for the balance of an account.
+
+        Core reads the balances on every opening of an account and reports an unreachable server
+        with a persistent notification, which would blame a service this database never calls.
+        """
+        if self._has_paid_endpoint():
+            return
+        return super()._get_account_information_from_iap()
+
     @api.model
     def _has_paid_endpoint(self):
         return is_paid_service(iap_tools.iap_get_endpoint(self.env))
