@@ -4,16 +4,32 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 16:01+0000\n"
-"PO-Revision-Date: 2026-11-19 16:01+0000\n"
+"POT-Creation-Date: 2026-11-22 03:11+0000\n"
+"PO-Revision-Date: 2026-11-22 03:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_website
+#: model:ir.module.module,description:base.module_viin_brand_website
+msgid ""
+"\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"\n"
+msgstr ""
+
+#. module: viin_brand_website
+#: model:ir.module.module,summary:base.module_viin_brand_website
+msgid "Debranding Website Builder for Viindoo"
+msgstr ""
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.s_form_aside
@@ -35,6 +51,7 @@ msgid ""
 msgstr ""
 
 #. module: viin_brand_website
+#: model:ir.model.fields,field_description:viin_brand_website.field_ir_module_module__display_name
 #: model:ir.model.fields,field_description:viin_brand_website.field_website__display_name
 msgid "Display Name"
 msgstr ""
@@ -46,11 +63,12 @@ msgstr ""
 
 #. module: viin_brand_website
 #. odoo-javascript
-#: code:addons/viin_brand_website/static/src/builder/plugins/options/website_builder_brand.xml:0
+#: code:addons/viin_brand_website/static/src/builder/plugins/options/countdown_brand.edit.xml:0
 msgid "Happy Anniversary!"
 msgstr ""
 
 #. module: viin_brand_website
+#: model:ir.model.fields,field_description:viin_brand_website.field_ir_module_module__id
 #: model:ir.model.fields,field_description:viin_brand_website.field_website__id
 msgid "ID"
 msgstr ""
@@ -69,6 +87,7 @@ msgstr ""
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.s_cta_box
+#: model_terms:ir.ui.view,arch_db:viin_brand_website.s_cta_centered
 msgid "Join the companies that grow <br/>their business with us."
 msgstr ""
 
@@ -76,6 +95,19 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.s_call_to_action
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.template_footer_call_to_action
 msgid "Join the companies that grow their business with us."
+msgstr ""
+
+#. module: viin_brand_website
+#: model:ir.model,name:viin_brand_website.model_ir_module_module
+msgid "Module"
+msgstr ""
+
+#. module: viin_brand_website
+#. odoo-javascript
+#: code:addons/viin_brand_website/static/src/builder/plugins/options/website_builder_brand.xml:0
+msgid ""
+"Note that your server has its own upload limit, which will take precedence "
+"over this value"
 msgstr ""
 
 #. module: viin_brand_website
@@ -107,8 +139,19 @@ msgid "Viindoo Version"
 msgstr ""
 
 #. module: viin_brand_website
+#. odoo-javascript
+#: code:addons/viin_brand_website/static/src/components/resource_editor/resource_editor_warning.xml:0
+msgid "Warning: Your changes may be overwritten after updates."
+msgstr ""
+
+#. module: viin_brand_website
 #: model:ir.model,name:viin_brand_website.model_website
 msgid "Website"
+msgstr ""
+
+#. module: viin_brand_website
+#: model:ir.module.module,shortdesc:base.module_viin_brand_website
+msgid "Website Debranding for Viindoo"
 msgstr ""
 
 #. module: viin_brand_website
@@ -124,19 +167,15 @@ msgid ""
 msgstr ""
 
 #. module: viin_brand_website
-#. odoo-javascript
-#: code:addons/viin_brand_website/static/src/components/resource_editor/resource_editor_warning.xml:0
-msgid "Your changes might be lost during a future Viindoo upgrade."
-msgstr ""
-
-#. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.brand_promotion
 msgid "free website"
 msgstr ""
 
 #. module: viin_brand_website
 #: model_terms:ir.ui.view,arch_db:viin_brand_website.cookie_policy
-msgid "frontend_lang (Viindoo)"
+msgid ""
+"frontend_lang (Viindoo)<br/>\n"
+"            tz (Viindoo)"
 msgstr ""
 
 #. module: viin_brand_website
@@ -190,4 +229,27 @@ msgid ""
 "Google. With the built-in SEO tool, once you define a few keywords, Viindoo "
 "will recommend you the best keywords to target. Then adapt your title and "
 "description accordingly to boost your traffic."
+msgstr ""
+
+#. module: website
+#: model_terms:digest.tip,tip_description:website.digest_tip_website_3
+msgid "Tip: Use illustrations to spice up your website"
+msgstr ""
+
+#. module: website
+#: model_terms:digest.tip,tip_description:website.digest_tip_website_3
+msgid ""
+"Not only can you search for royalty-free illustrations, their colors are "
+"also converted so that they always fit your Theme."
+msgstr ""
+
+#. module: website
+#: model_terms:digest.tip,tip_description:website.digest_tip_website_4
+msgid "Tip: Add shapes to energize your Website"
+msgstr ""
+
+#. module: website
+#: model_terms:digest.tip,tip_description:website.digest_tip_website_4
+msgid ""
+"More than 90 shapes exist and their colors are picked to match your Theme."
 msgstr ""

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-inherit="website.ResourceEditorWarningOverlay" t-inherit-mode="extension" owl="1">
-        <xpath expr="//h1[hasclass('text-dark')]" position="replace" mode="inner">
-            Your changes might be lost during a future Viindoo upgrade.
+    <t t-inherit="website.ResourceEditorWarningOverlay" t-inherit-mode="extension">
+        <xpath expr="//p[a[contains(@href, 'odoo.com')]]" position="replace" mode="inner">
+            <i class="oi" data-icon="info"></i>
+            Warning: Your changes may be overwritten after updates.
         </xpath>
     </t>
 </templates>
