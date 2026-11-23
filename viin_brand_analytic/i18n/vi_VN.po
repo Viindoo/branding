@@ -4,16 +4,51 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 17:53+0000\n"
-"PO-Revision-Date: 2026-11-19 17:53+0000\n"
+"POT-Creation-Date: 2026-11-22 02:26+0000\n"
+"PO-Revision-Date: 2026-11-22 02:26+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_analytic
+#: model:ir.module.module,summary:base.module_viin_brand_analytic
+msgid "Theme branding Viindoo for module Analytic Accounting"
+msgstr "Giao diện brand Viindoo cho module Kế toán phân tích"
+
+#. module: viin_brand_analytic
+#: model:ir.module.module,description:base.module_viin_brand_analytic
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands the empty-state help of the analytic items as Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này đổi nội dung hướng dẫn khi chưa có phát sinh quản trị thành thương hiệu Viindoo.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_analytic
+#: model:ir.module.module,shortdesc:base.module_viin_brand_analytic
+msgid "Analytic Accounting Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Kế toán quản trị"
 
 #. module: analytic
 #: model_terms:ir.actions.act_window,help:analytic.account_analytic_line_action
