@@ -10,16 +10,24 @@ class TestDigestTranslation(NoupdateTranslationCase):
     def test_default_digest_name_of_a_language_loaded_before_the_module_names_viindoo(self):
         self.load_stock_then_branding_catalog(['digest'], 'viin_brand_digest')
         digest = self.env.ref('digest.digest_digest_default')
-        self.assertHoldsStockWording(self.translated(digest, 'name'))
+        self.assertNamesNoOdoo(self.translated(digest, 'name'))
         self.load_catalog('viin_brand_digest')
         self.assertNamesNoOdoo(self.translated(digest, 'name'))
+
+    def test_default_digest_name_of_a_language_activated_after_the_cluster_shows_the_branded_english(self):
+        # French has no catalog of the module: its stock catalog translates the stock English, which names Odoo.
+        self.env['res.lang']._activate_lang('fr_FR')
+        self.env['ir.module.module']._load_module_terms(['digest', 'viin_brand_digest'], ['fr_FR'])
+        digest = self.env.ref('digest.digest_digest_default')
+        french = str(digest.with_context(lang='fr_FR').name)
+        self.assertEqual(french, str(digest.with_context(lang='en_US').name))
+        self.assertNamesNoOdoo(french)
 
     def _hold_core_translation(self, tip):
         """Give the tip the translation of the stock catalog, then the English of the module.
 
         The stock English is written and translated first, as an update of the stock module leaves
-        the tip, and the English of the module comes after, so that the stock wording stays in the
-        language of the user.
+        the tip, and the English of the module comes after.
         """
         english = {field: str(tip.with_context(lang='en_US')[field]) for field in ('name', 'tip_description')}
         stock_english = {field: value.replace('Viindoo', 'Odoo') for field, value in english.items()}
@@ -33,7 +41,7 @@ class TestDigestTranslation(NoupdateTranslationCase):
         tip_3 = self.env.ref('digest.digest_tip_digest_3')
         self._hold_core_translation(tip_2)
         self._hold_core_translation(tip_3)
-        self.assertIn('Odoo', self.translated(tip_2, 'name'))
+        self.assertNamesNoOdoo(self.translated(tip_2, 'name'))
         self.load_catalog('viin_brand_digest')
         for tip, field in ((tip_2, 'name'), (tip_2, 'tip_description'), (tip_3, 'tip_description')):
             value = self.translated(tip, field)

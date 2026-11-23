@@ -4,16 +4,84 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 21:16+0000\n"
-"PO-Revision-Date: 2026-08-07 21:16+0000\n"
+"POT-Creation-Date: 2026-11-22 03:08+0000\n"
+"PO-Revision-Date: 2026-11-22 03:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_digest
+#: model:ir.module.module,summary:base.module_viin_brand_digest
+msgid "Theme branding Viindoo for module Digest"
+msgstr ""
+
+#. module: viin_brand_digest
+#: model:ir.module.module,description:base.module_viin_brand_digest
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module will change color navigate bar, button and logo,v.v in module Digest following Viindoo's brand\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+
+#. module: viin_brand_digest
+#: model:ir.model.fields,field_description:viin_brand_digest.field_digest_tip__active
+msgid "Active"
+msgstr ""
+
+#. module: viin_brand_digest
+#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_tip_view_form
+#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_tip_view_search
+msgid "Archived"
+msgstr ""
+
+#. module: viin_brand_digest
+#: model:ir.model,name:viin_brand_digest.model_digest_digest
+msgid "Digest"
+msgstr ""
+
+#. module: viin_brand_digest
+#: model:ir.module.module,shortdesc:base.module_viin_brand_digest
+msgid "Digest Branding For Viindoo"
+msgstr ""
+
+#. module: viin_brand_digest
+#: model:ir.model,name:viin_brand_digest.model_digest_tip
+msgid "Digest Tip"
+msgstr ""
+
+#. module: viin_brand_digest
+#: model:ir.model.fields,field_description:viin_brand_digest.field_digest_digest__display_name
+#: model:ir.model.fields,field_description:viin_brand_digest.field_digest_tip__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_digest
+#: model:ir.model.fields,field_description:viin_brand_digest.field_digest_digest__id
+#: model:ir.model.fields,field_description:viin_brand_digest.field_digest_tip__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_digest
+#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_mail_main
+msgid "Viindoo"
+msgstr ""
+
+#. module: viin_brand_digest
+#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_section_mobile
+msgid "Viindoo Mobile"
+msgstr ""
 
 #. module: digest
 #: model:digest.digest,name:digest.digest_digest_default
@@ -29,42 +97,18 @@ msgstr ""
 #. module: digest
 #: model_terms:digest.tip,tip_description:digest.digest_tip_digest_3
 msgid ""
-"Type \"@\" to notify someone in a message, or \"#\" to link to a channel. "
-"Try to notify @ViindooBot to test the feature."
+"Type \"@\" to notify someone in a message. Try to notify @ViindooBot to test "
+"the feature."
 msgstr ""
 
-#. module: viin_brand_digest
-#: model:ir.model.fields,field_description:viin_brand_digest.field_digest_tip__active
-msgid "Active"
+#. module: digest
+#: model_terms:digest.tip,tip_description:digest.digest_tip_digest_0
+msgid "Tip: Speed up your workflow with shortcuts"
 msgstr ""
 
-#. module: viin_brand_digest
-#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_tip_view_form
-#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_tip_view_search
-msgid "Archived"
-msgstr ""
-
-#. module: viin_brand_digest
-#: model:ir.model,name:viin_brand_digest.model_digest_tip
-msgid "Digest Tips"
-msgstr ""
-
-#. module: viin_brand_digest
-#: model:ir.model.fields,field_description:viin_brand_digest.field_digest_tip__display_name
-msgid "Display Name"
-msgstr ""
-
-#. module: viin_brand_digest
-#: model:ir.model.fields,field_description:viin_brand_digest.field_digest_tip__id
-msgid "ID"
-msgstr ""
-
-#. module: viin_brand_digest
-#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_mail_main
-msgid "Viindoo"
-msgstr ""
-
-#. module: viin_brand_digest
-#: model_terms:ir.ui.view,arch_db:viin_brand_digest.digest_section_mobile
-msgid "Viindoo Mobile"
+#. module: digest
+#: model_terms:digest.tip,tip_description:digest.digest_tip_digest_0
+msgid ""
+"Press ALT in any screen to highlight shortcuts for every button in the "
+"screen. It is useful to process multiple documents in batch."
 msgstr ""

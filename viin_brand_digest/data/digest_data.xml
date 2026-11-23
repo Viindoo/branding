@@ -17,8 +17,12 @@
 			<xpath expr="//div[@id='footer']/p[@id='powered']/a//span[hasclass('odoo_link_text')]" position="replace" mode="inner">
 				Viindoo
 			</xpath>
-			<xpath expr="//div[@id='footer']/p[@id='powered']/a//span[hasclass('odoo_link_text')]" position="attributes">
-				<attribute name="style">color: #7f4282;</attribute>
+		</template>
+
+		<template id="digest_mail_layout"
+			inherit_id="digest.digest_mail_layout">
+			<xpath expr="//*[local-name()='t'][@t-set='color_company']" position="attributes">
+				<attribute name="t-value">company.email_secondary_color or '#7F4282'</attribute>
 			</xpath>
 		</template>
 
@@ -38,6 +42,13 @@
 
 			<xpath expr="//a[@href='https://itunes.apple.com/us/app/odoo/id1272543640']" position="attributes">
 				<attribute name="href">https://apps.apple.com/vn/app/viindoo-mobile/id1562267579</attribute>
+			</xpath>
+
+			<xpath expr="//img[hasclass('download_app')][contains(@src, 'google_play')]" position="attributes">
+				<attribute name="src">/digest/static/src/img/google_play.png</attribute>
+			</xpath>
+			<xpath expr="//img[hasclass('download_app')][contains(@src, 'app_store')]" position="attributes">
+				<attribute name="src">/digest/static/src/img/app_store.png</attribute>
 			</xpath>
 
 		</template>
