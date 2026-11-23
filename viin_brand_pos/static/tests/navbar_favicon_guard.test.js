@@ -1,10 +1,8 @@
-/** @odoo-module **/
-
 import { expect, getFixture, test } from "@odoo/hoot";
 
-import { setupPosEnv } from "@point_of_sale/../tests/unit/utils";
 import { definePosModels } from "@point_of_sale/../tests/unit/data/generate_model_definitions";
 import { mountWithCleanup } from "@web/../tests/web_test_helpers";
+import { setupPosEnvWithoutScale } from "@viin_brand_pos/../tests/pos_test_env";
 
 import { Navbar } from "@point_of_sale/app/components/navbar/navbar";
 import "@viin_brand_pos/app/navbar/navbar";
@@ -20,7 +18,7 @@ test("branded POS navbar setup() sets the favicon from the current company when 
     icon.href = "/original-favicon.ico";
     getFixture().appendChild(icon);
 
-    const store = await setupPosEnv();
+    const store = await setupPosEnvWithoutScale();
     await mountWithCleanup(Navbar, {});
 
     expect(icon.getAttribute("href")).toBe(`/web/image/res.company/${store.company.id}/favicon`);

@@ -24,6 +24,21 @@ _XPATH_OVERRIDE_TARGETS = [
         "point_of_sale",
         "static/src/app/screens/saver_screen/saver_screen.xml",
     ),
+    (
+        "static/src/app/navbar/navbar.xml",
+        "point_of_sale",
+        "static/src/app/components/navbar/navbar.xml",
+    ),
+    (
+        "static/src/customer_display/customer_display.xml",
+        "point_of_sale",
+        "static/src/customer_display/customer_display.xml",
+    ),
+    (
+        "static/src/backend/lna_checklist/lna_checklist.xml",
+        "point_of_sale",
+        "static/src/backend/lna_checklist/lna_checklist.xml",
+    ),
 ]
 
 

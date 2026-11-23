@@ -1,8 +1,7 @@
 # Part of Viindoo. See LICENSE file for full copyright and licensing details.
-import base64
-
 from odoo.tests.common import tagged
 from odoo.tools import file_open
+from odoo.tools.binary import BinaryBytes
 
 from odoo.addons.viin_brand.tests.common import NoupdateTranslationCase
 
@@ -13,7 +12,7 @@ class TestSneakersTranslation(NoupdateTranslationCase):
     def test_sneakers_name_of_a_language_loaded_before_the_module_is_neutral(self):
         with file_open('point_of_sale/static/img/product_odoo_sneakers.png', 'rb') as image:
             product = self.env['product.product'].create({
-                'name': 'Odoo Sneakers', 'image_1920': base64.b64encode(image.read()),
+                'name': 'Odoo Sneakers', 'image_1920': BinaryBytes(image.read()),
             })
         for model, record, name in (
             ('product.product', product, 'product_odoo_sneakers'),

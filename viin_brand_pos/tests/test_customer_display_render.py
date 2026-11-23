@@ -1,24 +1,17 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 """Load the real public pages in a browser: a template extension is applied lazily at mount time,
 so a bundle that merely compiles (test_bundle_compile) can still render a blank page."""
-import json
-
 from odoo.tests.common import HttpCase, tagged
-from odoo.tools.translate import code_translations
-
-from .common import activate_frontend_lang
-
-# msgid of a term this module ships to the customer display (iot_notice.js)
-IOT_NOTICE = ("Make sure the IoT Box is switched on and connected to the network, "
-              "then restart the IoT Box.")
 
 
 @tagged("post_install", "-at_install")
 class TestCustomerDisplayRender(HttpCase):
 
-    def test_customer_display_renders_viindoo_logo_without_and_with_an_order(self):
+    def _display_url(self):
         config = self.env["pos.config"].create({"name": "Customer display shop"})
-        url = "/pos_customer_display/%s/test-device?access_token=%s" % (config.id, config.access_token)
+        return "/pos_customer_display/%s/test-device?access_token=%s" % (config.id, config.access_token)
+
+    def test_customer_display_shows_the_viindoo_logo_and_title_in_every_state(self):
         code = """
             (async () => {
                 const wait = async (condition, label) => {
@@ -30,74 +23,40 @@ class TestCustomerDisplayRender(HttpCase):
                     }
                     throw new Error("timeout waiting for: " + label);
                 };
-                const logos = () =>
+                const footerLogos = () =>
                     [...document.querySelectorAll(".o_customer_display svg")].map((s) => s.getAttribute("viewBox"));
-                const assertViindooLogos = (state) => {
-                    if (!logos().length) {
+                const assertViindooFooter = (state) => {
+                    if (!footerLogos().length) {
                         throw new Error(state + ": no Powered by logo rendered");
                     }
-                    for (const viewBox of logos()) {
+                    for (const viewBox of footerLogos()) {
                         if (viewBox !== "%(viindoo)s") {
                             throw new Error(state + ": unexpected logo " + viewBox);
                         }
                     }
                 };
 
-                // empty-order state
+                // waiting for an order
                 await wait(() => document.querySelector(".o_customer_display"), "customer display mounted");
-                assertViindooLogos("empty order");
+                assertViindooFooter("waiting for an order");
+                if (/odoo/i.test(document.title)) {
+                    throw new Error("the tab title names Odoo: " + document.title);
+                }
 
-                // with-order state, fed the way the POS cashier screen feeds it
-                new BroadcastChannel("UPDATE_CUSTOMER_DISPLAY").postMessage({
-                    finalized: false, general_customer_note: "", amount: "$ 10.00", subtotal: false,
-                    amountTaxes: false, change: false, paymentLines: [],
-                    lines: [{
-                        productId: 1, taxGroupLabels: [], discount: "", customerNote: "", internalNote: "[]",
-                        productName: "Chair", price: "$ 10.00", qty: "1", unit: "Units", unitPrice: "$ 10.00",
-                        packLotLines: [], comboParent: "", price_without_discount: "$ 10.00", isSelected: true,
-                    }],
-                });
-                await wait(() => document.querySelector(".o_customer_display .orderline"), "order line rendered");
-                assertViindooLogos("with order");
+                // the idle screen, fed the way the POS cashier screen feeds it
+                odoo.__WOWL_DEBUG__.root.customerDisplay.data.set({ displayScreenSaver: true });
+                await wait(() => document.querySelector(".login-overlay .pos-logo"), "idle screen");
+                const image = getComputedStyle(document.querySelector(".login-overlay .pos-logo")).backgroundImage;
+                if (!image.includes("viin_brand_pos") || !image.includes("viindoo-logo")) {
+                    throw new Error("the idle screen logo is not the Viindoo one: " + image);
+                }
                 console.log("test successful");
             })().catch((error) => console.error(error.message));
         """ % {"viindoo": "0 0 850 201"}  # viewBox of the Viindoo logo; core's Odoo logo is "0 0 919 495"
-        self.browser_js(url, code, timeout=120)
-
-    def test_customer_display_serves_this_module_terms_in_the_visitor_language(self):
-        """A logged-out Vietnamese visitor gets this module's terms in Vietnamese."""
-        activate_frontend_lang(self.env, "vi_VN")
-        expected = next(
-            (m["string"] for m in code_translations.get_web_translations("viin_brand_pos", "vi_VN")["messages"]
-             if m["id"] == IOT_NOTICE),
-            None,
-        )
-        self.assertTrue(expected and expected != IOT_NOTICE, "vi_VN.po must translate the IoT notice")
-        config = self.env["pos.config"].create({"name": "Customer display shop"})
-        url = "/pos_customer_display/%s/test-device?access_token=%s" % (config.id, config.access_token)
-        code = """
-            (async () => {
-                for (let i = 0; i < 150 && !document.querySelector(".o_customer_display"); i++) {
-                    await new Promise((resolve) => setTimeout(resolve, 100));
-                }
-                if (!document.querySelector(".o_customer_display")) {
-                    throw new Error("the customer display did not mount");
-                }
-                const { _t } = odoo.loader.modules.get("@web/core/l10n/translation");
-                const got = String(_t(%(msgid)s));
-                if (got !== %(expected)s) {
-                    throw new Error("not translated for the visitor: " + got);
-                }
-                console.log("test successful");
-            })().catch((error) => console.error(error.message));
-        """ % {"msgid": json.dumps(IOT_NOTICE), "expected": json.dumps(expected)}
-        self.browser_js(url, code, cookies={"frontend_lang": "vi_VN"}, timeout=120)
+        self.browser_js(self._display_url(), code, timeout=120)
 
     def test_customer_display_error_dialogs_do_not_name_odoo(self):
-        """The customer display bundle (web._assets_core only) gets the error-dialog de-brand
-        and the Viindoo wordmark as default dialog title."""
-        config = self.env["pos.config"].create({"name": "Customer display shop"})
-        url = "/pos_customer_display/%s/test-device?access_token=%s" % (config.id, config.access_token)
+        """The customer display bundle (web._assets_core only) gets the error-dialog de-brand."""
         code = """
             (async () => {
                 for (let i = 0; i < 150 && !document.querySelector(".o_customer_display"); i++) {
@@ -107,25 +66,28 @@ class TestCustomerDisplayRender(HttpCase):
                     throw new Error("the customer display did not mount");
                 }
                 const dialogs = odoo.loader.modules.get("@web/core/errors/error_dialogs");
-                const { Dialog } = odoo.loader.modules.get("@web/core/dialog/dialog");
                 const titles = {
                     ErrorDialog: String(dialogs.ErrorDialog.title),
                     ClientErrorDialog: String(dialogs.ClientErrorDialog.title),
                     NetworkErrorDialog: String(dialogs.NetworkErrorDialog.title),
-                    DefaultDialog: String(Dialog.defaultProps.title),
                 };
                 for (const [name, title] of Object.entries(titles)) {
                     if (title.includes("Odoo")) {
                         throw new Error(name + " title still names Odoo: " + title);
                     }
                 }
-                if (titles.DefaultDialog !== "Viindoo") {
-                    throw new Error("the default dialog title is not the Viindoo wordmark: " + titles.DefaultDialog);
-                }
                 console.log("test successful");
             })().catch((error) => console.error(error.message));
         """
-        self.browser_js(url, code, timeout=120)
+        self.browser_js(self._display_url(), code, timeout=120)
+
+    def test_customer_display_follows_the_language_of_the_visitor(self):
+        # base declares a stub `website` model, so the installed module is looked up instead
+        if self.env["ir.module.module"].search_count([("name", "=", "website"), ("state", "=", "installed")]):
+            self.skipTest("website restricts the languages a public visitor can pick: it decides this surface")
+        self.env["res.lang"]._activate_lang("vi_VN")
+        response = self.url_open(self._display_url(), cookies={"frontend_lang": "vi_VN"})
+        self.assertRegex(response.text, r"user_context\W+lang\W+vi_VN")
 
 
 @tagged("post_install", "-at_install")

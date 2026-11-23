@@ -2,11 +2,8 @@
     'name': "Point Of Sale Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Điểm Bán Lẻ",
 
-    'summary': """
-Theme branding Viindoo for module Point Of Sale """,
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module Point Of Sale
-""",
+    'summary': "Theme branding Viindoo for module Point Of Sale",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module Point Of Sale",
 
     'description': """
 What it does
@@ -35,9 +32,9 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_pos?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_pos?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -47,19 +44,16 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
 
     'data': [
         'data/pos_config_data.xml',
+        'views/customer_display_index.xml',
         'views/pos_assets_index.xml',
+        'views/pos_order_receipt_views.xml',
+        'views/pos_price_inclusion_wizard_views.xml',
         'views/res_config_settings_views.xml',
         'views/report_saledetails_views.xml',
     ],
     'assets': {
         'point_of_sale._assets_pos': [
-            # The brand variables already reach this bundle through web._assets_primary_variables,
-            # and a repeated directive on an included path is ignored, so the bridge file is
-            # anchored after the brand file instead.
-            ('after', 'viin_brand/static/src/scss/brand_variables.scss',
-             'viin_brand_pos/static/src/scss/pos_variables.scss'),
             ('after', 'point_of_sale/static/src/scss/pos.scss', 'viin_brand_pos/static/src/scss/style.scss'),
-            'viin_brand_pos/static/src/app/screens/receipt/order_receipt.xml',
             'viin_brand_pos/static/src/app/screens/saver_screen.xml',
             'viin_brand_pos/static/src/app/navbar/navbar.xml',
             'viin_brand_pos/static/src/app/components/odoo_logo/odoo_logo.xml',
@@ -83,10 +77,9 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
         'point_of_sale.customer_display_assets': [
             # The public customer display page bundles its own subset of point_of_sale
             # (core's OdooLogo component and template included), not _assets_pos, so the
-            # Viindoo logo extension and the IoT notice patch must be listed here as well.
+            # Viindoo logo extensions must be listed here as well.
             'viin_brand_pos/static/src/app/components/odoo_logo/odoo_logo.xml',
-            'viin_brand_pos/static/src/customer_display/iot_notice.js',
-            'viin_brand_pos/static/src/customer_display/customer_display_data_service.js',
+            'viin_brand_pos/static/src/customer_display/customer_display.xml',
             'viin_brand/static/src/core/dialog/dialog.js',
             'viin_brand/static/src/core/errors/error_dialogs.js',
             'viin_brand/static/src/core/errors/error_dialogs.xml',
@@ -108,14 +101,13 @@ Module này sẽ thay đổi màu sắc của thanh điều hướng (navbar), c
             # navbar_favicon_guard.test.js mounts the real navbar, which the unit bundle already
             # loads through point_of_sale._assets_pos; the listing is a harmless duplicate.
             'viin_brand_pos/static/src/app/navbar/navbar.js',
+            'viin_brand_pos/static/tests/pos_test_env.js',
             'viin_brand_pos/static/tests/navbar_favicon_guard.test.js',
-            # The IoT notice lives in its own file because point_of_sale removes customer_display/** from the unit bundle.
-            'viin_brand_pos/static/src/customer_display/iot_notice.js',
             'viin_brand_pos/static/tests/pos_error_debrand.test.js',
-            'viin_brand_pos/static/tests/pos_core_wording_debrand.test.js',
+            'viin_brand_pos/static/tests/report_service_debrand.test.js',
         ],
     },
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

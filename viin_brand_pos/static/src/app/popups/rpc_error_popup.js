@@ -4,6 +4,7 @@ import { odooExceptionTitleMap, ErrorDialog } from "@web/core/errors/error_dialo
 import { RPCError } from "@web/core/network/rpc";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 
 // Mirrors handleRPCError of point_of_sale/static/src/app/utils/error_handlers.js, with a Viindoo title.
@@ -25,8 +26,9 @@ export function handleRPCError(error, dialog) {
 }
 
 function rpcErrorHandlerOverride(env, error, originalError) {
+    const dialog = useService("dialog");
     if (originalError instanceof RPCError) {
-        handleRPCError(originalError, env.services.dialog);
+        handleRPCError(originalError, dialog);
         return true;
     }
 }

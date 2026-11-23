@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Like core's own record: a name the user edits is not reset by an update. -->
+    <data noupdate="1">
+        <!-- The rename is branding, not a change a user made: no tracking line on the chatter of the partner. -->
+        <record id="point_of_sale.default_session_closing_partner" model="res.partner" context="{'mail_notrack': True}">
+            <field name="name">Viindoo POS</field>
+        </record>
+        <!-- Stored fields computed from the name (the company name entity) are recomputed at the next flush, in the
+             environment that flushes. Flushing here keeps them inside the untracked context of the rename. -->
+        <function model="res.partner" name="flush_model" eval="[[]]" context="{'mail_notrack': True}"/>
+    </data>
+
     <function model="pos.config" name="_debrand_clothes_scenario"/>
 </odoo>

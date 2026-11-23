@@ -7,8 +7,8 @@ from odoo.addons.point_of_sale.controllers.customer_display import PosCustomerDi
 class PosCustomerDisplayBrand(PosCustomerDisplay):
 
     @http.route()
-    def pos_customer_display(self, id_, device_uuid, **kw):
-        response = super().pos_customer_display(id_, device_uuid, **kw)
+    def pos_customer_display(self, id_, identifier, **kw):
+        response = super().pos_customer_display(id_, identifier, **kw)
         # Web translations follow user_context['lang'], which core takes from the public user, not
         # from the visitor's language (request.lang). A logged-in user keeps their own language.
         # A NotFound response has no qcontext.
