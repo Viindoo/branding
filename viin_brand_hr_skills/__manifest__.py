@@ -2,11 +2,8 @@
     'name': "Skills Management Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Skills Management",
 
-    'summary': """
-Theme branding Viindoo for module Skills Management """,
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module Skills Management
-""",
+    'summary': "Theme branding Viindoo for module Skills Management",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module Skills Management",
 
     'description': """
 What it does
@@ -29,9 +26,9 @@ Module này sẽ thay đổi giao diện module Skills Management theo thương 
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_hr_skills?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_hr_skills?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1.1',
@@ -41,7 +38,7 @@ Module này sẽ thay đổi giao diện module Skills Management theo thương 
     'data': [
         'views/hr_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
