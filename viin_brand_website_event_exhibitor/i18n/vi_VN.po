@@ -4,16 +4,51 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-10 07:23+0000\n"
-"PO-Revision-Date: 2026-04-10 07:23+0000\n"
+"POT-Creation-Date: 2026-11-22 02:50+0000\n"
+"PO-Revision-Date: 2026-11-22 02:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_website_event_exhibitor
+#: model:ir.module.module,summary:base.module_viin_brand_website_event_exhibitor
+msgid "Theme branding Viindoo for module Event Exhibitors"
+msgstr "Giao diện brand Viindoo cho module Event Exhibitors"
+
+#. module: viin_brand_website_event_exhibitor
+#: model:ir.module.module,description:base.module_viin_brand_website_event_exhibitor
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module will change color navigate bar, button and logo,v.v in module Event Exhibitors following Viindoo's brand\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này sẽ đổi màu thanh điều hướng, nút bấm, logo, v.v. trong phân hệ Đơn vị triển lãm sự kiện theo thương hiệu của Viindoo\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"==================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_website_event_exhibitor
+#: model:ir.module.module,shortdesc:base.module_viin_brand_website_event_exhibitor
+msgid "Event Exhibitors Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Đơn vị triển lãm sự kiện"
 
 #. module: viin_brand_website_event_exhibitor
 #: model_terms:ir.ui.view,arch_db:viin_brand_website_event_exhibitor.event_sponsor_view_form
