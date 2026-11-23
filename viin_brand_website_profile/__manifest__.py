@@ -2,12 +2,9 @@
     'name': "Website profile Debranding for Viindoo",
     'name_vi_VN': "Làm lại nhận diện thương hiệu cho Website profile",
 
-    'summary': """
-Debranding Website profile for Viindoo""",
+    'summary': "Debranding Website profile for Viindoo",
 
-    'summary_vi_VN': """
-Làm lại màu sắc Phần mềm Website profile theo thương hiệu Viindoo
-        """,
+    'summary_vi_VN': "Làm lại màu sắc Phần mềm Website profile theo thương hiệu Viindoo",
 
     'description': """
 
@@ -26,9 +23,9 @@ Editions Supported
     """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_website_profile?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_website_profile?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -36,16 +33,12 @@ Editions Supported
 
     'depends': ['website_profile', 'viin_brand'],
 
-    'data': [
-        'data/mail_template_data.xml',
-    ],
-
     'assets': {
         'web.assets_frontend': [
             ('after', 'website_profile/static/src/scss/website_profile.scss', 'viin_brand_website_profile/static/src/scss/website_profile.scss')
         ],
     },
-    'installable': False,
+    'installable': True,
     'auto_install': ['website_profile'],
     'price': 0.0,
     'currency': 'EUR',
