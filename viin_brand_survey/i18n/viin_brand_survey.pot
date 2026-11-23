@@ -4,16 +4,39 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:48+0000\n"
-"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"POT-Creation-Date: 2026-11-22 03:09+0000\n"
+"PO-Revision-Date: 2026-11-22 03:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_survey
+#: model:ir.module.module,summary:base.module_viin_brand_survey
+msgid ""
+"This module brands Surveys with Viindoo: the certification sample and the "
+"onboarding tour name Viindoo."
+msgstr ""
+
+#. module: viin_brand_survey
+#: model:ir.module.module,description:base.module_viin_brand_survey
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands Surveys with Viindoo: the certification sample and the onboarding tour name\n"
+"Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
 
 #. module: viin_brand_survey
 #. odoo-python
@@ -100,6 +123,11 @@ msgstr ""
 #. module: viin_brand_survey
 #: model:ir.model,name:viin_brand_survey.model_survey_survey
 msgid "Survey"
+msgstr ""
+
+#. module: viin_brand_survey
+#: model:ir.module.module,shortdesc:base.module_viin_brand_survey
+msgid "Surveys Branding For Viindoo"
 msgstr ""
 
 #. module: viin_brand_survey

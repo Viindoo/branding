@@ -2,13 +2,8 @@
     'name': "Surveys Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Khảo sát",
 
-    'summary': """
-This module brands Surveys with Viindoo: the certification sample and the onboarding tour name
-Viindoo.""",
-    'summary_vi_VN': """
-Mô-đun này thay đổi giao diện Khảo sát theo thương hiệu Viindoo: mẫu chứng chỉ và tour hướng dẫn
-nhắc tới Viindoo.
-""",
+    'summary': "This module brands Surveys with Viindoo: the certification sample and the onboarding tour name Viindoo.",
+    'summary_vi_VN': "Mô-đun này thay đổi giao diện Khảo sát theo thương hiệu Viindoo: mẫu chứng chỉ và tour hướng dẫn nhắc tới Viindoo.",
 
     'description': """
 What it does
@@ -37,9 +32,9 @@ nhắc tới Viindoo.
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_survey",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_survey",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     # 'demo_video_url': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     # 'demo_video_url_vi_VN': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     'support': "apps.support@viindoo.com",
@@ -47,7 +42,7 @@ nhắc tới Viindoo.
     'category': 'Hidden',
     'version': '0.1.0',
 
-    'depends': ['survey'],
+    'depends': ['survey', 'viin_brand'],
 
     # 'data': [],
     # 'demo': [],
@@ -59,11 +54,12 @@ nhắc tới Viindoo.
             'viin_brand_survey/static/src/js/tours/survey_tour.js',
         ],
         'web.assets_unit_tests': [
+            'survey/static/src/js/tours/survey_tour.js',
             'viin_brand_survey/static/tests/survey_tour_debrand.test.js',
         ],
     },
-    'installable': False,
-    # 'auto_install': True,  # TODO: Uncomment when upgrading module to production-ready status
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
