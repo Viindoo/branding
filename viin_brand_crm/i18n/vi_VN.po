@@ -4,16 +4,108 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:59+0000\n"
-"PO-Revision-Date: 2026-11-19 15:59+0000\n"
+"POT-Creation-Date: 2026-11-22 15:00+0000\n"
+"PO-Revision-Date: 2026-11-22 15:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_crm
+#: model:ir.module.module,summary:base.module_viin_brand_crm
+msgid "Theme branding Viindoo for module CRM"
+msgstr "Giao diện brand Viindoo cho module CRM"
+
+#. module: viin_brand_crm
+#: model:ir.module.module,description:base.module_viin_brand_crm
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module will change color navigate bar, button and logo,v.v in CRM following Viindoo's brand\n"
+"\n"
+"It also hides the Odoo IAP settings of CRM (lead enrichment, lead mining, visits to leads) and the\n"
+"Lead Sourcing entry of the Generate menu, and its Mail plugins entry names Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này thay đổi màu thanh điều hướng, nút bấm và logo,... trong CRM theo thương hiệu của Viindoo\n"
+"\n"
+"Phân hệ cũng ẩn các thiết lập Odoo IAP của CRM (bổ sung thông tin tiềm năng, tìm tiềm năng, khách\n"
+"truy cập thành tiềm năng) và mục Lead Sourcing của menu Tạo; mục Mail plugins của menu này gọi tên Viindoo.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_crm
+#. odoo-javascript
+#: code:addons/viin_brand_crm/static/src/components/promote_mail_plugins_dialog/promote_mail_plugins_dialog.xml:0
+msgid "Bring Viindoo into your inbox:"
+msgstr "Đưa Viindoo vào hộp thư đến của bạn:"
+
+#. module: viin_brand_crm
+#: model:ir.module.module,shortdesc:base.module_viin_brand_crm
+msgid "CRM Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho CRM"
+
+#. module: viin_brand_crm
+#. odoo-javascript
+#: code:addons/viin_brand_crm/static/src/views/crm_form/crm_pls_tooltip_button.xml:0
+msgid "Computed by Viindoo from your data."
+msgstr "Được Viindoo tính toán từ dữ liệu của bạn."
+
+#. module: viin_brand_crm
+#: model:ir.model,name:viin_brand_crm.model_res_config_settings
+msgid "Config Settings"
+msgstr "Thiết lập cấu hình"
+
+#. module: viin_brand_crm
+#: model:ir.model.fields,field_description:viin_brand_crm.field_mail_render_mixin__display_name
+#: model:ir.model.fields,field_description:viin_brand_crm.field_res_config_settings__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: viin_brand_crm
+#. odoo-javascript
+#: code:addons/viin_brand_crm/static/src/components/promote_mail_plugins_dialog/promote_mail_plugins_dialog.xml:0
+msgid "Find any Viindoo record without leaving your inbox."
+msgstr "Tìm bất kỳ bản ghi Viindoo nào mà không cần rời hộp thư đến."
+
+#. module: viin_brand_crm
+#: model:ir.model.fields,field_description:viin_brand_crm.field_mail_render_mixin__id
+#: model:ir.model.fields,field_description:viin_brand_crm.field_res_config_settings__id
+msgid "ID"
+msgstr ""
+
+#. module: viin_brand_crm
+#: model:ir.model,name:viin_brand_crm.model_mail_render_mixin
+msgid "Mail Render Mixin"
+msgstr "Mixin kết xuất email"
+
+#. module: viin_brand_crm
+#. odoo-javascript
+#: code:addons/viin_brand_crm/static/src/components/promote_mail_plugins_dialog/promote_mail_plugins_dialog.xml:0
+msgid "Save emails and attachments directly to Viindoo."
+msgstr "Lưu email và tệp đính kèm trực tiếp vào Viindoo."
+
+#. module: viin_brand_crm
+#: model_terms:ir.ui.view,arch_db:viin_brand_crm.crm_lead_view_form
+msgid "e.g. https://viindoo.com"
+msgstr "vd: https://viindoo.com"
 
 #. module: crm
 #: model:ir.model.fields,help:crm.field_crm_team__alias_domain
@@ -52,8 +144,8 @@ msgid ""
 msgstr ""
 "Công cụ trí tuệ nhân tạo của hệ thống dự đoán tỷ lệ thành công của từng cơ "
 "hội dựa trên lịch sử của bạn. Bạn luôn có thể cập nhật tỷ lệ thành công theo"
-" cách thủ công, nhưng nếu bạn để Viindoo thực hiện công việc, điểm số sẽ được "
-"cập nhật trong khi cơ hội tiến lên trong chu kỳ bán hàng của bạn."
+" cách thủ công, nhưng nếu bạn để Viindoo thực hiện công việc, điểm số sẽ "
+"được cập nhật trong khi cơ hội tiến lên trong chu kỳ bán hàng của bạn."
 
 #. module: crm
 #: model_terms:digest.tip,tip_description:crm.digest_tip_crm_5
@@ -75,74 +167,3 @@ msgid ""
 msgstr ""
 "Viindoo giúp bạn theo dõi quy trình bán hàng để bám sát\n"
 "                    các cơ hội bán hàng và dự báo tốt hơn doanh thu tương lai của bạn."
-
-#. module: viin_brand_crm
-#: model:ir.model,name:viin_brand_crm.model_ir_actions_actions
-msgid "Actions"
-msgstr "Tác vụ"
-
-#. module: viin_brand_crm
-#. odoo-javascript
-#: code:addons/viin_brand_crm/static/src/views/crm_form/crm_pls_tooltip_button.xml:0
-msgid "Computed by Viindoo from your data."
-msgstr "Được Viindoo tính toán từ dữ liệu của bạn."
-
-#. module: viin_brand_crm
-#: model:ir.model,name:viin_brand_crm.model_res_config_settings
-msgid "Config Settings"
-msgstr "Thiết lập cấu hình"
-
-#. module: viin_brand_crm
-#: model:ir.model.fields,field_description:viin_brand_crm.field_crm_lead__display_name
-#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_actions_actions__display_name
-#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_cron__display_name
-#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_ui_menu__display_name
-#: model:ir.model.fields,field_description:viin_brand_crm.field_mail_template__display_name
-#: model:ir.model.fields,field_description:viin_brand_crm.field_res_config_settings__display_name
-msgid "Display Name"
-msgstr "Tên hiển thị"
-
-#. module: viin_brand_crm
-#: model:ir.model,name:viin_brand_crm.model_mail_template
-msgid "Email Templates"
-msgstr "Mẫu email"
-
-#. module: viin_brand_crm
-#: model:ir.model.fields,field_description:viin_brand_crm.field_crm_lead__id
-#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_actions_actions__id
-#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_cron__id
-#: model:ir.model.fields,field_description:viin_brand_crm.field_ir_ui_menu__id
-#: model:ir.model.fields,field_description:viin_brand_crm.field_mail_template__id
-#: model:ir.model.fields,field_description:viin_brand_crm.field_res_config_settings__id
-msgid "ID"
-msgstr ""
-
-#. module: viin_brand_crm
-#: model:ir.model,name:viin_brand_crm.model_crm_lead
-msgid "Lead"
-msgstr "Tiềm năng"
-
-#. module: viin_brand_crm
-#: model_terms:ir.ui.view,arch_db:viin_brand_crm.res_config_settings_view_form
-msgid ""
-"Make and receive calls from Viindoo with Ringover's dialer. Track calls, SMS"
-" messages, and get AI-powered transcripts of your conversations."
-msgstr ""
-"Gọi và nhận cuộc gọi từ Viindoo bằng trình quay số Ringover. Theo dõi cuộc "
-"gọi, tin nhắn SMS và nhận bản ghi nội dung cuộc trò chuyện được hỗ trợ bởi "
-"AI."
-
-#. module: viin_brand_crm
-#: model:ir.model,name:viin_brand_crm.model_ir_ui_menu
-msgid "Menu"
-msgstr ""
-
-#. module: viin_brand_crm
-#: model:ir.model,name:viin_brand_crm.model_ir_cron
-msgid "Scheduled Actions"
-msgstr "Tác vụ đã lên lịch"
-
-#. module: viin_brand_crm
-#: model_terms:ir.ui.view,arch_db:viin_brand_crm.crm_lead_view_form
-msgid "e.g. https://viindoo.com"
-msgstr "vd: https://viindoo.com"

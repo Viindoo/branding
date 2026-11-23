@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="viin_brand_crm.PromoteMailPluginsDialog" t-inherit="crm.PromoteMailPluginsDialog" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('row')]/div[1]" position="attributes">
+            <attribute name="class">col-12</attribute>
+        </xpath>
+        <xpath expr="//p[hasclass('m-0')]" position="replace" mode="inner">Bring Viindoo into your inbox:</xpath>
+        <xpath expr="//li[contains(., 'Find any')]" position="replace" mode="inner">Find any Viindoo record without leaving your inbox.</xpath>
+        <xpath expr="//li[contains(., 'Save emails')]" position="replace" mode="inner">Save emails and attachments directly to Viindoo.</xpath>
+        <!-- The Learn More link and the video of the dialog are Odoo's. -->
+        <xpath expr="//a[@role='button' and hasclass('btn-link')]" position="replace"/>
+        <xpath expr="//div[hasclass('row')]/div[2]" position="replace"/>
+        <xpath expr="//a[@title='Gmail']/img" position="attributes">
+            <attribute name="src">/viin_brand_crm/static/src/img/gmail.png</attribute>
+        </xpath>
+        <xpath expr="//a[@title='Outlook']/img" position="attributes">
+            <attribute name="src">/viin_brand_crm/static/src/img/outlook.png</attribute>
+        </xpath>
+    </t>
+</templates>

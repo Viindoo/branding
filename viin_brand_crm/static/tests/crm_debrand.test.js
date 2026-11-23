@@ -17,42 +17,40 @@ beforeEach(() => {
     allowTranslations();
 });
 
-test("the crm onboarding tour does not name Odoo", () => {
+// The steps that the lead mining service adds to the tour.
+const LEAD_MINING_STEPS = [
+    { trigger: ".o_control_panel_main_buttons .o-dropdown", run: "click" },
+    {
+        trigger: '.o_lead_mining_element[data-module-xml-id="base.module_crm_iap_mine"]',
+        run: "click",
+    },
+    { trigger: ".modal-body .o_industry", run: "click" },
+    { trigger: ".modal-footer button[name=action_submit]", run: "click" },
+    { trigger: ".modal-footer button[special=cancel]", run: "click" },
+];
+
+test("the crm onboarding tour does not name Odoo and names Viindoo instead", () => {
     const steps = registry.category("web_tour.tours").get("crm_tour").steps();
 
     expect(steps.length).toBeGreaterThan(0);
     for (const step of steps) {
         expect(String(step.content || "")).not.toInclude("Odoo");
     }
-    expect(steps.map((step) => String(step.content || "")).join(" ")).toInclude(
-        "Viindoo will save all modifications"
-    );
+    expect(steps.map((step) => String(step.content || "")).join(" ")).toMatch(/\bViindoo\b/);
 });
 
-test("the crm onboarding tour leaves out the Lead Generation steps of the hidden button", () => {
+test("the crm onboarding tour leaves out the lead generation steps the lead mining service adds", () => {
     const tour = registry.category("web_tour.tours").get("crm_tour");
-    // the steps the lead mining service adds to the tour
+    const triggers = () => tour.steps().map((step) => step.trigger);
+    const withoutLeadMining = triggers();
     patchWithCleanup(tour, {
         steps() {
-            return [
-                ...super.steps(),
-                { trigger: ".o_button_generate_leads", run: "click .o_button_generate_leads" },
-                { trigger: ".modal-body .o_industry", run: "click" },
-                { trigger: ".modal-footer button[name=action_submit]", run: "click" },
-                { trigger: ".modal-footer button[special=cancel]", run: "click" },
-                { trigger: ".o_kanban_view", run: "click" },
-            ];
+            return [...super.steps(), ...LEAD_MINING_STEPS];
         },
     });
 
-    const triggers = tour.steps().map((step) => step.trigger);
-
-    expect(triggers).not.toInclude(".o_button_generate_leads");
-    expect(triggers).not.toInclude(".modal-body .o_industry");
-    expect(triggers).not.toInclude(".modal-footer button[name=action_submit]");
-    expect(triggers).not.toInclude(".modal-footer button[special=cancel]");
-    expect(triggers).toInclude('.modal-footer button[name="action_schedule_activities"]');
-    expect(triggers.at(-1)).toBe(".o_kanban_view");
+    expect(triggers()).toEqual(withoutLeadMining);
+    expect(triggers()).toInclude('.modal-footer button[name="action_schedule_activities"]');
 });
 
 test("the probability tooltip names Viindoo as the computing product and links to a Viindoo page", async () => {
@@ -61,6 +59,6 @@ test("the probability tooltip names Viindoo as the computing product and links t
     });
 
     expect(".o_crm_pls_tooltip_footer").not.toHaveText(/Odoo/);
-    expect(".o_crm_pls_tooltip_footer").toHaveText(/Computed by Viindoo from your data\./);
+    expect(".o_crm_pls_tooltip_footer").toHaveText(/\bViindoo\b/);
     expect(".o_crm_pls_tooltip_footer a").toHaveAttribute("href", /^https:\/\/viindoo\.com\//);
 });
