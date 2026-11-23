@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 21:07+0000\n"
-"PO-Revision-Date: 2026-08-07 21:07+0000\n"
+"POT-Creation-Date: 2026-11-22 02:47+0000\n"
+"PO-Revision-Date: 2026-11-22 02:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,23 +16,29 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_mail_bot
+#: model:ir.module.module,summary:base.module_viin_brand_mail_bot
+msgid "Debranding Mail Bot for Viindoo"
+msgstr ""
+
+#. module: viin_brand_mail_bot
+#: model:ir.module.module,description:base.module_viin_brand_mail_bot
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module will change brand in Mail Bot following Viindoo's brand\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+
+#. module: viin_brand_mail_bot
 #: model:ir.model.fields,field_description:viin_brand_mail_bot.field_mail_bot__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail_bot.field_res_users__display_name
 msgid "Display Name"
-msgstr ""
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid ""
-"Great! You can customize %(bold_start)scanned responses%(bold_end)s in the "
-"Discuss app."
-msgstr ""
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/res_user.py:0
-msgid "Hello,"
 msgstr ""
 
 #. module: viin_brand_mail_bot
@@ -47,33 +53,8 @@ msgid "Mail Bot"
 msgstr ""
 
 #. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid ""
-"Sorry, I am not listening. To get someone's attention, %(bold_start)sping "
-"him%(bold_end)s. Write %(command_start)s@ViindooBot%(command_end)s and "
-"select me."
-msgstr ""
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid "Thanks"
-msgstr ""
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid ""
-"That's the end of this overview. You can %(bold_start)sclose this "
-"conversation%(bold_end)s or type %(command_start)sstart the "
-"tour%(command_end)s to see it again. Enjoy discovering Viindoo!"
-msgstr ""
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/res_user.py:0
-msgid "Try to send me an emoji"
+#: model:ir.module.module,shortdesc:base.module_viin_brand_mail_bot
+msgid "Mail Bot Debranding for Viindoo"
 msgstr ""
 
 #. module: viin_brand_mail_bot
@@ -82,23 +63,6 @@ msgid "User"
 msgstr ""
 
 #. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/res_user.py:0
-msgid ""
-"Viindoo's chat helps employees collaborate efficiently. I'm here to help you"
-" discover its features."
-msgstr ""
-
-#. module: viin_brand_mail_bot
 #: model:ir.model.fields,field_description:viin_brand_mail_bot.field_res_users__odoobot_state
 msgid "ViindooBot Status"
-msgstr ""
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid ""
-"Wow you are a natural!%(new_line)sPing someone with @username to grab their "
-"attention. %(bold_start)sTry to ping me using%(bold_end)s "
-"%(command_start)s@ViindooBot%(command_end)s in a sentence."
 msgstr ""

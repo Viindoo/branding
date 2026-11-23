@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 16:25+0000\n"
-"PO-Revision-Date: 2026-08-07 16:25+0000\n"
+"POT-Creation-Date: 2026-11-22 02:47+0000\n"
+"PO-Revision-Date: 2026-11-22 02:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,73 +16,56 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_mail_bot
+#: model:ir.module.module,summary:base.module_viin_brand_mail_bot
+msgid "Debranding Mail Bot for Viindoo"
+msgstr "Giao diện brand Viindoo cho module Mail Bot"
+
+#. module: viin_brand_mail_bot
+#: model:ir.module.module,description:base.module_viin_brand_mail_bot
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module will change brand in Mail Bot following Viindoo's brand\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này sẽ đổi thương hiệu trong Mail Bot theo thương hiệu của Viindoo\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"==================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_mail_bot
 #: model:ir.model.fields,field_description:viin_brand_mail_bot.field_mail_bot__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail_bot.field_res_users__display_name
 msgid "Display Name"
 msgstr "Tên hiển thị"
 
 #. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid ""
-"Great! You can customize %(bold_start)scanned responses%(bold_end)s in the "
-"Discuss app."
-msgstr ""
-"Tuyệt vời! Bạn có thể tùy chỉnh %(bold_start)scác câu trả lời mẫu"
-"%(bold_end)s trong ứng dụng Thảo luận."
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/res_user.py:0
-msgid "Hello,"
-msgstr "Xin chào,"
-
-#. module: viin_brand_mail_bot
 #: model:ir.model.fields,field_description:viin_brand_mail_bot.field_mail_bot__id
 #: model:ir.model.fields,field_description:viin_brand_mail_bot.field_res_users__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: viin_brand_mail_bot
 #: model:ir.model,name:viin_brand_mail_bot.model_mail_bot
 msgid "Mail Bot"
-msgstr "Mail Bot"
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid ""
-"Sorry, I am not listening. To get someone's attention, %(bold_start)sping "
-"him%(bold_end)s. Write %(command_start)s@ViindooBot%(command_end)s and "
-"select me."
 msgstr ""
-"Xin lỗi, tôi không nghe thấy. Để thu hút sự chú ý của ai đó, %(bold_start)s"
-"hãy ping họ%(bold_end)s. Viết %(command_start)s@ViindooBot%(command_end)s "
-"và chọn tôi."
 
 #. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid "Thanks"
-msgstr "Cám ơn"
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid ""
-"That's the end of this overview. You can %(bold_start)sclose this "
-"conversation%(bold_end)s or type %(command_start)sstart the "
-"tour%(command_end)s to see it again. Enjoy discovering Viindoo!"
-msgstr ""
-"Đây là phần cuối của tổng quan này. Bạn có thể %(bold_start)sđóng cuộc trò "
-"chuyện này%(bold_end)s hoặc gõ %(command_start)sstart the tour"
-"%(command_end)s để xem lại. Hãy thưởng thức việc khám phá Viindoo!"
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/res_user.py:0
-msgid "Try to send me an emoji"
-msgstr "Hãy thử gửi cho tôi một biểu tượng cảm xúc"
+#: model:ir.module.module,shortdesc:base.module_viin_brand_mail_bot
+msgid "Mail Bot Debranding for Viindoo"
+msgstr "Thương hiệu Viindoo cho Mail Bot"
 
 #. module: viin_brand_mail_bot
 #: model:ir.model,name:viin_brand_mail_bot.model_res_users
@@ -90,28 +73,6 @@ msgid "User"
 msgstr "Người dùng"
 
 #. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/res_user.py:0
-msgid ""
-"Viindoo's chat helps employees collaborate efficiently. I'm here to help you"
-" discover its features."
-msgstr ""
-"Ứng dụng trò chuyện của Viindoo giúp nhân viên cộng tác hiệu quả. Tôi ở đây "
-"để giúp bạn khám phá các tính năng của ứng dụng này."
-
-#. module: viin_brand_mail_bot
 #: model:ir.model.fields,field_description:viin_brand_mail_bot.field_res_users__odoobot_state
 msgid "ViindooBot Status"
 msgstr "Tình trạng ViindooBot"
-
-#. module: viin_brand_mail_bot
-#. odoo-python
-#: code:addons/viin_brand_mail_bot/models/mail_bot.py:0
-msgid ""
-"Wow you are a natural!%(new_line)sPing someone with @username to grab their "
-"attention. %(bold_start)sTry to ping me using%(bold_end)s "
-"%(command_start)s@ViindooBot%(command_end)s in a sentence."
-msgstr ""
-"Wow bạn thật tự nhiên!%(new_line)sPing ai đó với @username để thu hút sự "
-"chú ý của họ. %(bold_start)sHãy thử ping tôi bằng cách sử dụng%(bold_end)s "
-"%(command_start)s@ViindooBot%(command_end)s trong một câu."
