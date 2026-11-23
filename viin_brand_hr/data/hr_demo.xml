@@ -29,15 +29,21 @@ If you have development competencies, we can propose you specific traineeships</
 
     <!--Employees-->
 
-      <record id="hr.employee_qdp" model="hr.employee">
+      <record id="hr.employee_qdp" model="hr.employee" context="{'mail_notrack': True}">
           <field name="work_email">gilles@example.com</field>
       </record>
 
-      <record id="hr.employee_jod" model="hr.employee">
+      <record id="hr.employee_jod" model="hr.employee" context="{'mail_notrack': True}">
           <field name="work_email">jod@example.com</field>
       </record>
 
-      <record id="hr.work_contact_jod" model="res.partner">
+      <record id="hr.work_contact_jod" model="res.partner" context="{'mail_notrack': True}">
           <field name="email">jod@example.com</field>
       </record>
+
+      <!-- Rewriting the demo addresses is branding, not a change a user made: no history line on the records.
+           Stored fields computed from them are recomputed at the next flush, in the environment that flushes,
+           so they are flushed here, in the untracked context. -->
+      <function model="hr.employee" name="flush_model" eval="[[]]" context="{'mail_notrack': True}"/>
+      <function model="res.partner" name="flush_model" eval="[[]]" context="{'mail_notrack': True}"/>
 </odoo>
