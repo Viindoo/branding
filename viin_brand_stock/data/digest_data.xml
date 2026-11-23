@@ -1,10 +1,21 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-    	<!-- Invisible this digest because it's contain a feature that have not development yet -->
-    	<function name="write" model="digest.tip">
-	        <value eval="[ref('stock.digest_tip_stock_0')]" />
-	        <value eval="{'active': False}" />
-    	</function>
-    </data>
+    <record id="stock.digest_tip_stock_0" model="digest.tip">
+        <field name="tip_description" type="html">
+<div>
+    <p class="tip_title">Tip: Speed up inventory operations with barcodes</p>
+    <table class="tip_twocol">
+        <tr>
+            <td class="tip_twocol_left" style="width: 45%;">
+                <img src="/stock/static/src/img/barcode.gif" class="tip_twocol_img" width="240"/>
+            </td>
+            <td style="width: 55%;">
+                <p class="tip_content" style="margin: 0;">Enjoy a quick-paced experience with the Viindoo barcode app. It is blazing fast and works even without a stable internet connection. It supports all flows: inventory adjustments, batch picking, moving lots or pallets, low inventory checks, etc. Go to the "Apps" menu to activate the barcode interface.</p>
+            </td>
+        </tr>
+    </table>
+    <div style="clear: both;"/>
+</div>
+        </field>
+    </record>
 </odoo>

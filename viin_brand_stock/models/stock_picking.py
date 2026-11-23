@@ -4,8 +4,8 @@ from odoo import fields, models
 class StockPickingType(models.Model):
     _inherit = 'stock.picking.type'
 
-    auto_show_reception_report = fields.Boolean(
-        help="If this checkbox is ticked, Viindoo will automatically show the reception report (if there are moves to allocate to) when validating.")
+    auto_show_allocation_report = fields.Boolean(
+        help="If this checkbox is ticked, Viindoo will automatically show the allocation report (if there are moves to allocate to) when validating.")
     auto_print_delivery_slip = fields.Boolean(
         help="If this checkbox is ticked, Viindoo will automatically print the delivery slip of a picking when it is validated.")
     auto_print_return_slip = fields.Boolean(
