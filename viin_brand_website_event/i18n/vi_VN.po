@@ -4,16 +4,53 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:48+0000\n"
-"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"POT-Creation-Date: 2026-11-22 03:12+0000\n"
+"PO-Revision-Date: 2026-11-22 03:12+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_website_event
+#: model:ir.module.module,summary:base.module_viin_brand_website_event
+msgid "Viindoo branding of the sample data of Events"
+msgstr "Thương hiệu Viindoo cho dữ liệu mẫu của Sự kiện"
+
+#. module: viin_brand_website_event
+#: model:ir.module.module,description:base.module_viin_brand_website_event
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module replaces the Odoo brand with Viindoo in the sample events and the sample speaker profile\n"
+"of the demo data of Events.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"=========\n"
+"Phân hệ này thay thương hiệu Odoo bằng Viindoo trong sự kiện mẫu và hồ sơ diễn giả mẫu\n"
+"của dữ liệu demo của Sự kiện.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_website_event
+#: model:ir.module.module,shortdesc:base.module_viin_brand_website_event
+msgid "Events Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Sự kiện"
 
 #. module: event
 #: model_terms:event.event,description:event.event_0
@@ -26,6 +63,7 @@ msgstr ""
 
 #. module: viin_brand_website_event
 #: model_terms:ir.ui.view,arch_db:viin_brand_website_event.s_speaker_bio
+#: model_terms:event.event,description:event.event_2
 msgid ""
 "John DOE has spent more than twenty years helping organizations improve the "
 "way they work. He has led projects in many industries and enjoys sharing "
@@ -34,3 +72,112 @@ msgstr ""
 "John DOE đã dành hơn hai mươi năm giúp các tổ chức cải thiện cách làm việc. "
 "Ông đã dẫn dắt các dự án ở nhiều ngành và thích chia sẻ những gì đã học được"
 " với cộng đồng."
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Conference for Architects"
+msgstr "Hội thảo cho kiến trúc sư"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid ""
+"During this conference, our team will give a detailed overview of our "
+"business applications. You’ll know all the benefits of using it."
+msgstr ""
+"Trong cuộc hội thảo này, chúng tôi sẽ cung cấp tổng quan chi tiết về các ứng"
+" dụng doanh nghiệp. Bạn sẽ biết toàn bộ các lợi ích khi sử dụng các ứng dụng"
+" này."
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Objectives"
+msgstr "Mục tiêu"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Having attended this conference, participants should be able to:"
+msgstr "Tham dự xong hội thảo này, người tham dự sẽ có thể:"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Understand the various modules;"
+msgstr "Hiểu về các phân hệ khác nhau;"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Functional flow of the main applications;"
+msgstr "Dòng hoạt động của các ứng dụng chính;"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Program"
+msgstr "Chương trình"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Introduction, CRM, Sales Management"
+msgstr "Giới thiệu, CRM, Quản lý bán hàng"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Purchase, Sales &amp; Purchase management, Financial accounting."
+msgstr "Mua hàng, Quản lý bán hàng &amp; mua hàng, Kế toán tài chính."
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Project management, Human resources, Contract management."
+msgstr "Quản lý dự án, Quản lý nhân lực, Quản lý hợp đồng."
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Warehouse management, Manufacturing (MRP) &amp; Sales, Import/Export."
+msgstr "Quản lý nhà kho, Sản xuất (MRP) &amp; Bán hàng, Xuất/Nhập khẩu."
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Point of Sale (POS), Introduction to report customization."
+msgstr "POS (PoS), Giới thiệu về tùy biến báo cáo."
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid ""
+"For any additional information, please contact us at <a "
+"class=\"o_translate_inline\" "
+"href=\"mailto:events@example.viindoo.com\">events@example.viindoo.com</a>"
+msgstr ""
+"Nếu bạn cần thêm thông tin, vui lòng liên hệ với chúng tôi tại <a "
+"class=\"o_translate_inline\" "
+"href=\"mailto:events@example.viindoo.com\">events@example.viindoo.com</a>"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid ""
+"<span class=\"badge text-bg-secondary o_wevent_badge float-"
+"end\">SPEAKER</span>"
+msgstr ""
+"<span class=\"badge text-bg-secondary o_wevent_badge float-end\">DIỄN "
+"GIẢ</span>"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "John Doe's avatar"
+msgstr "Ảnh đại diện của John Doe"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "John DOE"
+msgstr ""
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid "Company"
+msgstr "Công ty"
+
+#. module: event
+#: model_terms:event.event,description:event.event_2
+msgid ""
+"Chamber Works reserves the right to cancel, re-name or re-locate the event "
+"or change the dates on which it is held."
+msgstr ""
+"Chamber Works có quyền hủy bỏ, đổi tên hoặc thay đổi địa điểm của sự kiện "
+"hoặc thay đổi ngày tổ chức sự kiện."
