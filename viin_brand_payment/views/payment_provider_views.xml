@@ -27,7 +27,7 @@
         <field name="inherit_id" ref="payment.payment_method_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='configuration']/div[hasclass('alert-warning')]" position="replace" mode="inner">
-                <i class="fa fa-exclamation-triangle"/> These properties are set to
+                <i class="oi" data-icon="warning"/> These properties are set to
                 match the behavior of providers and that of their integration with
                 Viindoo regarding this payment method. Any change may result in errors
                 and should be tested on a test database first.
