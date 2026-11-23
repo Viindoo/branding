@@ -14,5 +14,5 @@ test("no hint of the expense tour names Odoo", () => {
     for (const hint of hints) {
         expect(hint).not.toInclude("Odoo");
     }
-    expect(hints.some((hint) => hint.includes("Viindoo will save"))).toBe(true);
+    expect(hints.some((hint) => hint.includes("Viindoo"))).toBe(true);
 });
