@@ -1,20 +1,28 @@
 <odoo>
-	<template id="mail_notification_light" inherit_id="mail.mail_notification_light">
-		<xpath expr="//a[contains(@href, 'www.odoo.com')]" position="replace" mode="inner">
-			Viindoo
-		</xpath>
-		<xpath expr="//a[contains(@href, 'www.odoo.com')]" position="attributes">
-            <attribute name="href">https://viindoo.com?utm_source=db&amp;utm_medium=email</attribute>
-            <attribute name="t-att-style">'color: ' + (company.email_secondary_color or '#66C8D3') + ';'</attribute>
-		</xpath>
-	</template>
-	<template id="mail_notification_layout" inherit_id="mail.mail_notification_layout">
-		<xpath expr="//a[contains(@href, 'www.odoo.com')]" position="replace" mode="inner">
+    <template id="mail_notification_light" inherit_id="mail.mail_notification_light">
+        <xpath expr="//a[contains(@href, 'www.odoo.com')]" position="replace" mode="inner">
             Viindoo
-		</xpath>
-		<xpath expr="//a[contains(@href, 'www.odoo.com')]" position="attributes">
+        </xpath>
+        <xpath expr="//a[contains(@href, 'www.odoo.com')]" position="attributes">
             <attribute name="href">https://viindoo.com?utm_source=db&amp;utm_medium=email</attribute>
-            <attribute name="t-att-style">'color: ' + (company.email_secondary_color or '#66C8D3') + ';'</attribute>
-		</xpath>
-	</template>
+            <attribute name="t-attf-style">color: {{company.email_secondary_color or '#7F4282'}};</attribute>
+        </xpath>
+    </template>
+    <template id="mail_notification_layout" inherit_id="mail.mail_notification_layout">
+        <xpath expr="//td[@t-if='has_button_access' and @t-att-style]" position="attributes">
+            <attribute name="t-att-style">'border-radius: 3px; text-align: center; background: ' + (company.email_secondary_color or '#7F4282') + ';'</attribute>
+        </xpath>
+        <xpath expr="//a[contains(@href, 'www.odoo.com')]" position="replace" mode="inner">
+            Viindoo
+        </xpath>
+        <xpath expr="//a[contains(@href, 'www.odoo.com')]" position="attributes">
+            <attribute name="href">https://viindoo.com?utm_source=db&amp;utm_medium=email</attribute>
+            <attribute name="t-attf-style">color: {{company.email_secondary_color or '#7F4282'}};</attribute>
+        </xpath>
+    </template>
+    <template id="discuss_channel_invitation_template" inherit_id="mail.discuss_channel_invitation_template">
+        <xpath expr="//a[@t-attf-href]" position="attributes">
+            <attribute name="t-attf-style">background-color: {{user.company_id.email_secondary_color or '#7F4282'}}; color: {{user.company_id.email_primary_color or '#FFFFFF'}}; text-decoration: none; padding: 8px 12px; border-radius: 4px; display: inline-block; font-weight: bold;</attribute>
+        </xpath>
+    </template>
 </odoo>

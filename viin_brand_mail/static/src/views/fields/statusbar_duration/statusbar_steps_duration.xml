@@ -8,14 +8,14 @@
   <t t-inherit="mail.StatusBarDurationField" t-inherit-mode="extension">
     <xpath expr="//button[@role='radio']" position="attributes">
       <attribute name="class" add="o_viin_numbered_step" separator=" "/>
-      <attribute name="t-att-data-viin-step">viinStepNumber(item)</attribute>
+      <attribute name="t-att-data-viin-step">this.viinStepNumber(item)</attribute>
     </xpath>
   </t>
 
   <t t-inherit="mail.RottingStatusBarDurationField" t-inherit-mode="extension">
     <xpath expr="//button[@role='radio']" position="attributes">
       <attribute name="class" add="o_viin_numbered_step" separator=" "/>
-      <attribute name="t-att-data-viin-step">viinStepNumber(item)</attribute>
+      <attribute name="t-att-data-viin-step">this.viinStepNumber(item)</attribute>
     </xpath>
   </t>
 

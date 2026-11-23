@@ -1,4 +1,4 @@
-// The send affordance and the input focus ring use the AA teal $o-navbar-background. This file
+// The send affordance and the input focus ring use the brand purple $o-brand-primary. This file
 // loads right after core's composer.scss in every bundle that ships it, so equal-specificity
 // overrides win on source order.
 .o-mail-Composer-input {
@@ -9,17 +9,17 @@
 // `.o-mail-Composer-send`. Core paints it 3.11:1 under its forced white glyph.
 .o-mail-Composer-actions {
     button.o-sendMessageActive {
-        background-color: $o-navbar-background;
+        background-color: $o-brand-primary;
     }
 }
 
 // !important is required here solely to beat Bootstrap's `.border { border: ... !important }` on
 // the composer input container.
 .o-mail-Composer-bg:has(textarea:focus) {
-    border-color: $o-navbar-background !important;
+    border-color: $o-brand-primary !important;
     box-shadow:
-        0 0 4px rgba($o-navbar-background, 0.4),
-        0 0 8px rgba($o-navbar-background, 0.3);
+        0 0 4px rgba($o-brand-primary, 0.4),
+        0 0 8px rgba($o-brand-primary, 0.3);
     transition: all 0.25s ease;
 }
 
@@ -35,18 +35,18 @@
 // Chatter composer toggles. Core gives Send message `active` while the message composer is open
 // and Log note `btn-primary active` while the note composer is open, so
 // `.o-mail-Chatter-*.btn-primary.active` means "this composer is open". The two open toggles must
-// not share one colour (teal vs the neutral grey) and the label is not pinned to `white`. Each
+// not share one colour (purple vs the neutral grey) and the label is not pinned to `white`. Each
 // selector is (0,3,0), which out-specifies `.btn-primary` and `.btn.active`: no !important.
 
-// Send message, open: the deep teal rung. The chrome base is already the resting `.btn-primary`
+// Send message, open: the deep purple rung. The brand purple is already the resting `.btn-primary`
 // fill, so reusing it would make open and closed indistinguishable.
 .o-mail-Chatter-sendMessage {
     &.btn-primary {
         &.active {
-            --btn-active-color: #{$o-white};
+            --btn-active-color: #{$o-viin-action-label};
 
-            background-color: $o-viin-chrome-deep;
-            border-color: $o-viin-chrome-deep;
+            background-color: $o-viin-action-deep;
+            border-color: $o-viin-action-deep;
         }
     }
 }
@@ -54,7 +54,7 @@
 // Log note, open: core hands this button `btn-primary active`, whose map state is a near-white
 // chip that is a light island in dark. The default secondary button is wanted, so its resting
 // entries are read from $o-btns-bs-override["secondary"] instead of re-typing the colours; the
-// active keys would give a pale-teal accent. Both toggles are therefore grey while the note
+// active keys would give a pale-purple accent. Both toggles are therefore grey while the note
 // composer is open, and the composer itself (no danger tint) tells which one is open.
 //
 // The map is in scope in every bundle this file compiles into.

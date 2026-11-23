@@ -12,9 +12,10 @@ class MailGatewayAllowed(models.Model):
         :param help_message: the help message of the action
         :return: the help markup
         """
-        get_param = self.env['ir.config_parameter'].sudo().get_param
-        LOOP_MINUTES = int(get_param('mail.gateway.loop.minutes', 120))
-        LOOP_THRESHOLD = int(get_param('mail.gateway.loop.threshold', 20))
+        # sudo: system parameters of the loop guard; the user only reads the thresholds shown in the help
+        get_int = self.env['ir.config_parameter'].sudo().get_int
+        loop_minutes = get_int('mail.gateway.loop.minutes') or 120
+        loop_threshold = get_int('mail.gateway.loop.threshold') or 20
 
         return Markup(_('''
             <p class="o_view_nocontent_smiling_face">
@@ -25,6 +26,6 @@ class MailGatewayAllowed(models.Model):
                 minutes. If there are some addresses from which you need to receive very frequent
                 updates, you can however add them below and Viindoo will let them go through.
             </p>''')) % {
-            'threshold': LOOP_THRESHOLD,
-            'minutes': LOOP_MINUTES,
+            'threshold': loop_threshold,
+            'minutes': loop_minutes,
         }

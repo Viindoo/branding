@@ -20,6 +20,7 @@ class TestWebPushIconDebrand(TransactionCase):
         cls.partner = cls.env["res.partner"].create({"name": "Debrand Web Push Partner"})
 
     def _make_message(self, author_id=False):
+        # sudo: arrange - the message is created for a guest author the test user cannot create for
         return self.env["mail.message"].sudo().create({
             "model": "res.partner",
             "res_id": self.partner.id,

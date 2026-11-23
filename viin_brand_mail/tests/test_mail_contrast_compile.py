@@ -13,13 +13,6 @@ from odoo.tests.common import TransactionCase, tagged
 from odoo.tools.misc import file_open
 
 try:
-    # Imported defensively: a missing symbol fails the guard that needs it, not collection of the
-    # whole tests package.
-    from odoo.addons.viin_brand.controllers.webmanifest import VIINDOO_THEME_COLOR
-except ImportError:
-    VIINDOO_THEME_COLOR = None
-
-try:
     # The cluster's single cascade resolver and ancestor model, imported rather than copied. Only
     # private helpers are imported: a TestCase class would re-run that suite under this module.
     from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
@@ -46,59 +39,72 @@ try:
 except ImportError:
     ScssStylesheetAsset = None
 
-# `$o-navbar-background` (viin_brand/static/src/scss/brand_variables.scss): the AA teal every
-# chrome, interactive and glyph surface resolves to.
-CHROME_BASE_TEAL = "#007f8e"
+# `$o-viin-chrome-base` (viin_brand/static/src/scss/brand_variables.scss): the teal of the frame of
+# the application (the navbar, the chat-window header); white on it is 4.74:1.
+CHROME_BASE = "#007f8e"
 
-# `$o-viin-chrome-deep`: the pressed / open tone. The chatter's open "Send message" toggle uses it
-# because the base is already that button's resting fill.
-CHROME_DEEP_TEAL = "#005e68"
+# `$o-brand-primary`: the brand purple every content, interactive and glyph surface resolves to;
+# white on it is 6.99:1.
+BRAND_PURPLE = "#7f4282"
 
-# A dark-tuned brand secondary purple (2.90:1 under core's forced white label). The purple accent
-# is light-mode only: nothing in web.assets_web_dark may resolve to it.
-DARK_BUNDLE_FORBIDDEN_PURPLE = "#b589b8"
-# The dark muted tier (`$body-secondary-color` in dark_palette.scss) that `$o-brand-secondary`
-# collapses onto in the dark bundle: only 2.59:1 under core's forced-white badge label, so the
-# Discuss badge needs its own dark arm.
+# `$o-viin-action-deep`: the pressed / open tone of the content. The chatter's open "Send message"
+# toggle uses it because the brand purple is already that button's resting fill.
+ACTION_DEEP = "#592e5b"
+# The dark scheme's content colour is the brand cyan, and its deep rung is the cyan 15% toward black.
+BRAND_CYAN = "#00bbce"
+DARK_ACTION_DEEP = "#009faf"
+
+# The dark muted tier (`$body-secondary-color` in dark_palette.scss): only 2.59:1 under core's
+# forced-white badge label, so the Discuss badge needs its own dark arm.
 DARK_MUTED_TIER = "#8ea5a8"
 
-# `$o-brand-secondary`. The chatter active toggle keeps this fill and only its foreground needs an
-# own value, so it is asserted positively: a "fix" that repaints it teal is caught.
-BRAND_SECONDARY_PURPLE = "#7f4282"
+# The brand cyan, a decoration in the light scheme (2.33:1 on white): it must never carry a glyph
+# or a fill under text.
+FLAT_BRAND_CYAN = "#00bbce"
 
-# The chat-window header fill the header must not use: `mix(black, $o-brand-secondary, 15%)`.
+# The chat-window header fill the header must not use: `mix(black, $o-brand-primary, 15%)`.
 FORBIDDEN_HEADER_PURPLE = "#6c386f"
 
 # `$o-success`, core's default `$o-navbar-badge-bg`: white counter text on it is 2.75:1.
 CORE_SUCCESS_GREEN = "#00b365"
-# The unread counter greens: `$o-success` as viin_brand sets it (light) and the shade
-# of it that carries the white label in dark (`$o-viin-unread-badge-green`).
-UNREAD_BADGE_GREEN = "#00884d"
-UNREAD_BADGE_DARK_GREEN = "#006237"
+# The identity purple the systray counters take from `$o-navbar-badge-bg`, in both schemes.
+IDENTITY_PURPLE = "#7f4282"
+# The chat-window header counter: an important `o-discuss-badge` on the teal chrome of the header.
+CHAT_WINDOW_COUNTER_CLASSES = frozenset({
+    "o-mail-ChatWindow-counter", "mx-1", "badge", "rounded-pill", "fw-bold", "o-discuss-badge",
+    "shadow-sm",
+})
+CHAT_WINDOW_HEADER_ANCESTORS = frozenset({
+    "o_web_client", "o-mail-ChatWindow", "o-mail-ChatWindow-header",
+})
 
-# `$o-viin-mail-status-away-color` (static/src/core/common/im_status.scss), asserted as a literal
-# rather than re-derived from `darken(#ffa500, 15%)`. Three rules read that one variable so the
-# picker swatch and the dot it selects cannot drift apart.
+# `$o-viin-status-away` (viin_brand, brand_variables.scss), asserted as a literal rather than
+# re-derived from `darken(#ffa500, 15%)`. The dot and the picker swatch read that one variable so
+# they cannot drift apart.
 AWAY_AMBER = "#b27400"
+# The success fill $o-success, the text colour of the online and bot glyph.
+SUCCESS_GREEN = "#00884d"
 # Values idle must not regress to, asserted negatively: the flat orange (1.97:1 on white) and a
 # lighter amber that fails on the focused dropdown row.
 FLAT_AWAY_ORANGE = "#ffa500"
 LIGHTER_AWAY_AMBER = "#cc8400"
-# Core's untouched `.o-yellow { color: $yellow }`: what renders when this module's three rules
-# stop matching (1.63:1 on the white puck).
+# Core's untouched `.o-yellow { color: $yellow }`: what renders when this module's two rules
+# stop matching (1.63:1 on white).
 CORE_YELLOW = "#ffc107"
 
 # The surfaces the idle glyph renders on, each re-asserted against core's source by the guard that
-# uses it: the ImStatus puck is pure white; the dropdown menu is `$dropdown-bg` = `var(--body-bg)`
+# uses it: the view surface is pure white; the dropdown menu is `$dropdown-bg` = `var(--body-bg)`
 # in the backend; the focused row is core's `rgba($black, 0.08)` wash over that menu
 # (248*0.92 = 228.16, 249*0.92 = 229.08, 250*0.92 = 230 -> #e4e5e6).
-IM_STATUS_PUCK_SURFACE = "#ffffff"
+WHITE_SURFACE = "#ffffff"
 DROPDOWN_MENU_SURFACE = "#f8f9fa"
 DROPDOWN_ROW_FOCUS_SURFACE = "#e4e5e6"
 
-# WCAG 2.x thresholds: normal text needs >= 4.5:1, a meaningful non-text indicator (1.4.11) >= 3:1.
+# WCAG 2.x thresholds: normal text needs >= 4.5:1, large (bold) text and a meaningful non-text
+# indicator (1.4.11) >= 3:1.
 WCAG_AA_NORMAL_TEXT = 4.5
 WCAG_AA_NON_TEXT = 3.0
+WCAG_AA_LARGE_TEXT = 3.0
 
 # A divider must stay perceptible without glaring: the floor keeps a Discuss seam from vanishing
 # into the panel, the ceiling keeps it from reading as a bright rule like the untouched light-mode
@@ -115,6 +121,9 @@ BACKEND_BUNDLE = "web.assets_backend"
 # dark_palette.scss redefines the surface, text and border Sass variables there, so mail surfaces
 # reading an overridable variable recompile dark-correct.
 DARK_BUNDLE = "web.assets_web_dark"
+# The lazy-loaded views (activity, pivot, graph...) are compiled into their own dark bundle, which
+# holds no media chrome: `$light` / `$dark` follow the dark ramp there.
+LAZY_DARK_BUNDLE = "web.assets_backend_lazy_dark"
 # The mail-owned dark rules reach the dark bundle only through an explicit manifest entry (core's
 # dark glob is web/mail-only), so their wiring is guarded structurally.
 DARK_SURFACE_SOURCE = "viin_brand_mail/static/src/scss/mail_dark.scss"
@@ -122,13 +131,6 @@ DARK_SURFACE_SOURCE = "viin_brand_mail/static/src/scss/mail_dark.scss"
 # A translucent `rgba(r, g, b, a)` wash (a < 1) in a compiled value.
 _RGBA_ALPHA_RE = re.compile(r"rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*([0-9.]+%?)\s*\)")
 _VAR_REF_RE = re.compile(r"var\(\s*--([\w-]+)\s*(?:,[^)]*)?\)")
-# Bootstrap's `rgba(var(--<name>-rgb), var(--border-opacity))` utility shape (`.border-secondary`),
-# which `_VAR_REF_RE` never matches because it takes the channels and the opacity from two
-# custom properties.
-_UTILITY_RGB_VAR_RE = re.compile(
-    r"rgba?\(\s*var\(\s*--([\w-]+)\s*\)\s*,\s*var\(\s*--[\w-]+\s*\)\s*\)"
-)
-
 # One non-nested `selectors { body }` rule; rules wrapped in @media are captured individually.
 _RULE_RE = re.compile(r"([^{}]+)\{([^{}]*)\}")
 _BACKGROUND_RE = re.compile(r"background(?:-color)?\s*:\s*([^;]+)", re.IGNORECASE)
@@ -374,11 +376,11 @@ MESSAGE_BUBBLE_ANCESTORS = frozenset({
 # `.o_main_navbar > .o_menu_systray`; `badge` is what core's navbar consumer keys on.
 SYSTRAY_ANCESTORS = frozenset({
     "o_web_client", "o_main_navbar", "o_menu_systray", "dropdown", "dropdown-toggle",
-    "o-mail-MessagingMenu", "o-mail-ActivityMenu",
+    "o-mail-MessagingMenuInDropdown", "o-mail-ActivityMenu",
 })
 SYSTRAY_COUNTER_CLASSES = {
-    ".o-mail-MessagingMenu-counter": frozenset({
-        "o-mail-MessagingMenu-counter", "badge", "rounded-pill",
+    ".o-mail-MessagingMenuInDropdown-counter": frozenset({
+        "o-mail-MessagingMenuInDropdown-counter", "badge", "rounded-pill",
     }),
     ".o-mail-ActivityMenu-counter": frozenset({
         "o-mail-ActivityMenu-counter", "badge", "rounded-pill",
@@ -403,17 +405,17 @@ CHAT_WINDOW_MORE_ACTIONS_CLASSES = frozenset({
     "o-ps-1_5", "pe-0", "py-1", "my-0", "w-100", "rounded-end-0", "bg-inherit", "rounded-top-3",
 })
 
-# The unread counter of a Discuss sidebar channel, chosen over the other `.o-discuss-badge` sites
-# because core deliberately overrides two of them at higher specificity (a non-`.o-important`
-# NotificationItem badge, the messaging menu's tab-unread dot). `o-muted` is absent on purpose:
-# core keeps a muted counter $gray-400.
+# The unread counter of a Discuss conversation row (an important `NotificationItem` badge), chosen
+# over the other `.o-discuss-badge` sites because core deliberately overrides two of them at higher
+# specificity (a non-`.o-important` NotificationItem badge, the messaging menu's tab-unread dot).
+# `o-muted` is absent on purpose: core keeps a muted counter grey.
 DISCUSS_SIDEBAR_ANCESTORS = frozenset({
-    "o_web_client", "o-mail-Discuss", "o-mail-DiscussSidebar", "o-mail-DiscussSidebar-item",
-    "o-mail-DiscussSidebarChannel",
+    "o_web_client", "o-mail-Discuss", "o-mail-DiscussApp-sidebar", "o-mail-MessagingMenu",
+    "o-mail-MessagingMenuItem", "o-mail-NotificationItem", "list-group-item",
 })
 DISCUSS_UNREAD_BADGE_CLASSES = frozenset({
-    "o-mail-DiscussSidebar-badge", "o-discuss-badge", "badge", "rounded-pill", "shadow-sm",
-    "fw-bold", "mx-1",
+    "o-mail-NotificationItem-badge", "o-mail-NotificationItem-counter", "o-discuss-badge",
+    "o-important", "badge", "rounded-pill", "shadow-sm", "fw-bold", "d-flex", "flex-shrink-0",
 })
 
 # `<span class="o-mail-MessageSeenIndicator position-relative">` plus `o-hasEveryoneSeen opacity-75`
@@ -427,24 +429,20 @@ MESSAGE_SEEN_EVERYONE_CLASSES = frozenset({
     "o-mail-MessageSeenIndicator", "position-relative", "o-hasEveryoneSeen", "opacity-75",
 })
 
-# The ImStatus root carries `bg-white bg-opacity-100` (why the puck is white); the idle glyph is
-# `<i class="fa fa-circle o-yellow">` two levels down.
-IM_STATUS_ANCESTORS = frozenset({
-    "o_web_client", "o-mail-ImStatus", "d-flex", "justify-content-center", "flex-shrink-0",
-    "align-items-center", "bg-white", "bg-opacity-100", "rounded-circle", "flex-column", "smaller",
-})
-# ThreadIcon renders the idle glyph through a nested <ImStatus>, so both `.o-mail-*  .o-yellow`
-# rules match it at equal specificity: the desync this model measures.
-THREAD_ICON_ANCESTORS = IM_STATUS_ANCESTORS | {"o-mail-ThreadIcon"}
-# The Away swatch is `<i class="fa fa-circle o-yellow me-1">` inside a DropdownItem of the
+# The idle glyph is `<i class="oi o-mail-ImStatus d-flex o-yellow rounded-circle bg-transparent">`:
+# the colour class sits on the glyph element itself, with no wrapper of its own.
+IM_STATUS_ANCESTORS = frozenset({"o_web_client"})
+# The Away swatch is `<i class="oi o-yellow me-1">` inside a DropdownItem of the
 # `o-mail-ImStatusDropdown` menu. `o-mail-ImStatus` is absent on purpose: only the dropdown toggle
-# is inside an ImStatus, so the ImStatus rule must not be credited for the swatch.
+# is an ImStatus, so the ImStatus rule must not be credited for the swatch.
 IM_STATUS_DROPDOWN_ANCESTORS = frozenset({
     "o_web_client", "o-mail-ImStatusDropdown", "o-dropdown--menu", "dropdown-menu", "show",
     "o-dropdown-item", "dropdown-item", "o-navigable",
 })
-IDLE_GLYPH_CLASSES = frozenset({"fa", "fa-circle", "o-yellow"})
-IDLE_SWATCH_CLASSES = IDLE_GLYPH_CLASSES | {"me-1"}
+IDLE_GLYPH_CLASSES = frozenset({
+    "oi", "o-mail-ImStatus", "d-flex", "o-yellow", "rounded-circle", "bg-transparent",
+})
+IDLE_SWATCH_CLASSES = frozenset({"oi", "o-yellow", "me-1"})
 
 
 # A compiled `rgb()`/`rgba()` value with its alpha slot captured whole. Odoo's `o-print-color`
@@ -606,12 +604,13 @@ DATE_SECTION_CLASSES = frozenset({
 })
 DATE_SECTION_LABEL_CLASSES = frozenset({"px-2", "smaller", "text-muted", "opacity-50"})
 
-# A read conversation row (`text-muted border-secondary`) and its timestamp (`opacity-75` because
-# the row is muted). The row's `bg-transparent` is left out: it paints nothing, and the resolver
-# reads that utility's compiled `RGBA(0, 0, 0, var(--bg-opacity, 1))` as opaque black.
+# A read conversation row (a `NotificationItem` without `o-interest`, which core dims as a whole) and
+# its lines: the preview and the timestamp carry `o-muted`, which dims them again. The row's
+# `bg-transparent`-like `--list-group-bg: transparent` paints nothing.
 NOTIFICATION_ITEM_CLASSES = frozenset({
-    "o-mail-NotificationItem", "list-group-item", "d-flex", "cursor-pointer", "align-items-center",
-    "w-100", "position-relative", "o-py-1_5", "text-muted", "border-secondary", "o-px-2_5", "gap-2",
+    "o-mail-NotificationItem", "o-navigable", "rounded-4", "border", "border-dark",
+    "list-group-item", "d-flex", "cursor-pointer", "align-items-center", "w-100",
+    "position-relative", "o-px-1_5", "py-2", "gap-2",
 })
 NOTIFICATION_ITEM_LINE_CLASSES = frozenset({"o-mail-NotificationItem-line", "d-flex", "text-nowrap"})
 # The section header of the Discuss members panel, inside the action panel that Discuss puts in the
@@ -635,22 +634,27 @@ MEMBER_LIST_PANEL_LAYERS = (
     WEBCLIENT_ANCESTORS,
 )
 
-# The list the rows sit in paints `--mail-MessagingMenu-bg`, declared on the `.o-mail-MessagingMenu`
-# root.
+# The rows sit in the tab content of the messaging menu, whose root paints the fill.
 NOTIFICATION_LIST_CLASSES = frozenset({
-    "o-mail-MessagingMenu-list", "d-flex", "flex-column", "overflow-auto", "o-scrollbar-thin",
-    "flex-grow-1", "list-group", "list-group-flush",
+    "o-mail-MessagingMenu-tabContent", "d-flex", "flex-column", "overflow-auto", "o-scrollbar-thin",
+    "flex-grow-1", "o-px-1_5", "o-gap-0_5",
 })
-NOTIFICATION_ITEM_NAME_CLASSES = frozenset({"o-mail-NotificationItem-name", "o-fw-600"})
-NOTIFICATION_ITEM_TEXT_CLASSES = frozenset({"o-mail-NotificationItem-text", "text-truncate", "small"})
+NOTIFICATION_ITEM_NAME_CLASSES = frozenset({
+    "o-mail-NotificationItem-name", "align-items-baseline", "fw-bold", "text-truncate",
+})
+NOTIFICATION_ITEM_TEXT_CLASSES = frozenset({
+    "o-mail-NotificationItem-text", "text-start", "pe-none", "small", "o-muted",
+})
 NOTIFICATION_ITEM_DATE_CLASSES = frozenset({
-    "o-mail-NotificationItem-date", "ms-2", "me-1", "flex-shrink-0", "align-self-end", "smaller",
-    "opacity-75",
+    "o-mail-NotificationItem-date", "ms-2", "me-1", "flex-shrink-0", "align-self-end",
+    "o-xsmaller", "o-muted",
 })
 
 NOTIFICATION_ITEM_LAYERS = (
-    NOTIFICATION_ITEM_LINE_CLASSES, NOTIFICATION_ITEM_CLASSES, NOTIFICATION_LIST_CLASSES,
-    frozenset({"o-mail-MessagingMenu"}), WEBCLIENT_ANCESTORS,
+    NOTIFICATION_ITEM_LINE_CLASSES, NOTIFICATION_ITEM_CLASSES,
+    frozenset({"o-mail-MessagingMenuItem", "rounded-4"}), NOTIFICATION_LIST_CLASSES,
+    frozenset({"o-mail-MessagingMenu", "d-flex", "flex-column", "flex-grow-1", "overflow-hidden"}),
+    WEBCLIENT_ANCESTORS,
 )
 
 # The followers button in the chatter topbar: `active` when the user follows the record, coloured
@@ -665,22 +669,23 @@ FOLLOWERS_BUTTON_LAYERS = (
     frozenset({"o-mail-ChatterContainer", "o-mail-Form-chatter"}), WEBCLIENT_ANCESTORS,
 )
 
-# The mobile bottom navigation: the active tab is a `.btn` whose label and icon both take their
-# colour from the tab.
+# The navigation of the messaging menu: the active tab is a `.btn` whose label and icon both take
+# their colour from the tab.
 MESSAGING_MENU_NAVBAR_CLASSES = frozenset({
-    "o-mail-MessagingMenu-navbar", "d-flex", "flex-shrink-0", "bg-view", "border-top", "w-100",
-    "p-2", "gap-2",
+    "o-mail-MessagingMenu-navbar", "d-flex", "flex-column", "flex-shrink-0", "px-1", "o-py-2_5",
+    "gap-2", "overflow-auto", "h-100", "o-scrollbar-thin",
 })
 MESSAGING_MENU_TAB_CLASSES = frozenset({
-    "o-mail-MessagingMenu-tab", "btn", "d-flex", "flex-column", "align-items-center", "flex-grow-1",
-    "flex-shrink-1", "p-1", "position-relative", "border-0", "active", "pb-2",
+    "o-mail-MessagingMenu-tab", "o-navigable", "btn", "d-flex", "flex-column", "align-items-center",
+    "w-100", "flex-shrink-0", "p-1", "bg-transparent", "position-relative", "border-0", "active",
 })
-MESSAGING_MENU_TAB_LABEL_CLASSES = frozenset({"o-xsmaller"})
+MESSAGING_MENU_TAB_LABEL_CLASSES = frozenset({"o-xsmaller", "text-center", "lh-1", "mt-1"})
 MESSAGING_MENU_TAB_ICON_CLASSES = frozenset({
-    "o-mail-MessagingMenu-tabIcon", "rounded-pill", "mx-auto", "p-2", "fs-5",
+    "oi", "o-mail-MessagingMenu-tabIcon", "rounded-pill", "mx-auto", "p-2", "fs-5",
 })
 MESSAGING_MENU_LAYERS = (
-    MESSAGING_MENU_TAB_CLASSES, MESSAGING_MENU_NAVBAR_CLASSES, frozenset({"o-mail-MessagingMenu"}),
+    MESSAGING_MENU_TAB_CLASSES, MESSAGING_MENU_NAVBAR_CLASSES,
+    frozenset({"o-mail-MessagingMenu-container", "d-flex", "flex-grow-1", "overflow-hidden"}),
     WEBCLIENT_ANCESTORS,
 )
 
@@ -822,20 +827,20 @@ CHATTER_EDITED_MARKER_LAYERS = _edited_marker_layers(CHATTER_MESSAGE_LAYERS)
 # Discuss: the `.o-mail-DiscussContent-core` layer paints (`background-color: $body-bg`), which the
 # dark recompile drives to the dark view surface.
 DISCUSS_THREAD_COLUMN_CLASSES = frozenset({
-    "d-flex", "flex-column", "flex-grow-1", "bg-inherit", "o-min-width-0",
+    "d-flex", "flex-column", "flex-grow-1", "bg-inherit", "min-w-0", "mt-1",
 })
 DISCUSS_CONTENT_CORE_CLASSES = frozenset({
     "o-mail-DiscussContent-core", "overflow-auto", "o-scrollbar-thin", "d-flex", "flex-grow-1",
-    "w-100",
+    "w-100", "gap-2",
 })
 DISCUSS_CONTENT_MAIN_CLASSES = frozenset({
-    "o-mail-DiscussContent-main", "d-flex", "overflow-hidden", "flex-grow-1",
+    "o-mail-DiscussContent-main", "d-flex", "overflow-hidden", "flex-grow-1", "gap-2",
 })
 DISCUSS_CONTENT_CLASSES = frozenset({
-    "o-mail-DiscussContent", "d-flex", "flex-column", "h-100", "w-100", "overflow-auto",
+    "o-mail-DiscussContent", "d-flex", "flex-column", "h-100", "flex-grow-1", "overflow-auto",
     "o-scrollbar-thin",
 })
-DISCUSS_ROOT_CLASSES = frozenset({"o-mail-Discuss", "d-flex", "h-100", "flex-grow-1"})
+DISCUSS_ROOT_CLASSES = frozenset({"o-mail-Discuss", "d-flex", "h-100", "flex-grow-1", "gap-2", "p-2"})
 DISCUSS_PANEL_LAYERS = (
     DISCUSS_THREAD_COLUMN_CLASSES, DISCUSS_CONTENT_CORE_CLASSES, DISCUSS_CONTENT_MAIN_CLASSES,
     DISCUSS_CONTENT_CLASSES, DISCUSS_ROOT_CLASSES, WEBCLIENT_ANCESTORS,
@@ -871,33 +876,23 @@ DARK_MESSAGE_CONTAINERS = (
 # actionable ("the o-blue bubble" and "layer 9 of the chain" point to different files).
 Backdrop = collections.namedtuple("Backdrop", "painter depth value rgb")
 
-# The Discuss panel dividers, each an element core stamps with a bare Bootstrap `border-secondary`
-# utility; no viin_brand_mail rule targets these classes for a border colour. `element_class` is the
-# element's own semantic class, `border_utility` the directional utility it also carries (it sets
-# the width/style/colour shorthand, so `_BORDER_COLOR_RE` never matches it).
-DiscussSeam = collections.namedtuple("DiscussSeam", "label element_class border_utility source")
+# The Discuss panel edges, each an element core draws with the bare Bootstrap `.border` utility;
+# no viin_brand_mail rule targets these classes for a border colour. `element_class` is the
+# element's own semantic class, `source` the core file that declares it.
+DiscussSeam = collections.namedtuple("DiscussSeam", "label element_class source")
 
-DISCUSS_SEAM_ANCESTORS = frozenset().union(
-    WEBCLIENT_ANCESTORS, DISCUSS_ROOT_CLASSES, DISCUSS_CONTENT_CLASSES, DISCUSS_CONTENT_MAIN_CLASSES,
-    DISCUSS_CONTENT_CORE_CLASSES,
-)
 DISCUSS_DARK_SEAMS = (
     DiscussSeam(
-        "the Discuss root's top rule (desktop layout only)",
-        ".o-mail-Discuss", ".border-top",
-        "mail/static/src/core/public_web/discuss.xml - `t-att-class` branch for `!ui.isSmall`",
+        "the Discuss sidebar menu's edge", ".o-mail-MessagingMenu",
+        "mail/static/src/core/public_web/messaging_menu/messaging_menu.xml",
     ),
     DiscussSeam(
-        "the Discuss content header's bottom rule",
-        ".o-mail-DiscussContent-header", ".border-bottom",
+        "the Discuss content header box's edge", ".o-mail-DiscussContent-headerBox",
         "mail/static/src/core/public_web/discuss_content.xml",
     ),
     DiscussSeam(
-        # Covers both render sites: the in-meeting side panel reuses this class verbatim.
-        "the Discuss/meeting side panel's start rule",
-        ".o-mail-DiscussContent-panelContainer", ".border-start",
-        "mail/static/src/core/public_web/discuss_content.xml and "
-        "mail/static/src/discuss/call/common/meeting.xml (same class, reused verbatim)",
+        "the Discuss side panel's edge", ".o-mail-DiscussContent-panelContainer",
+        "mail/static/src/core/public_web/discuss_content.xml",
     ),
 )
 
@@ -1145,18 +1140,24 @@ class ContrastCompileHelpers:
         fallback = self._root_token(css, "body-color", bundle_name, label)
         return self._resolve_scheme_colour(css, fallback, bundle_name, label)
 
-    def _rendered_ink(self, css, chain, bundle_name, label):
+    def _rendered_ink(self, css, chain, bundle_name, label, dimmed_by_ancestors=False):
         """Return ``(value, rgb, alpha)`` of the ink an element paints, alpha included.
 
         The colour is not always opaque: `$text-muted` is `rgba($o-gray-700, $o-opacity-muted)` and
-        an element may carry an `opacity` utility. Both multiply into one effective alpha, read
-        from the compiled bundle rather than pinned."""
+        an element, or with ``dimmed_by_ancestors`` one of its ancestors, may carry an `opacity`.
+        All of them multiply into one effective alpha, read from the compiled bundle rather than
+        pinned."""
         self._require_cascade_resolver()
         value, rgb = self._inherited_colour(css, chain, bundle_name, label)
         alpha_match = _RGBA_ALPHA_RE.search(value)
         alpha = 1.0 if alpha_match is None else (_to_alpha(alpha_match.group(1)) or 1.0)
-        opacity = _computed_value(css, chain, ("opacity",))
-        if opacity is not None:
+        # `opacity` composes through the tree: an ancestor that dims its subtree dims the element.
+        # Read only where the model of the ancestors is exact: a state-dependent dimming of a
+        # message (`.o-mail-Thread:has(.o-selected)`) is not one the class model can decide.
+        for depth in range(len(chain) if dimmed_by_ancestors else 1):
+            opacity = _computed_value(css, chain[depth:], ("opacity",))
+            if opacity is None:
+                continue
             element_alpha = _to_alpha(_normalize_value(opacity))
             self.assertIsNotNone(
                 element_alpha,
@@ -1170,6 +1171,7 @@ class ContrastCompileHelpers:
 
     def _assert_readable_on_every_message_surface(
         self, bundle_name, chain, subject, why, panel_label="the chatter panel",
+        dimmed_by_ancestors=False,
     ):
         """Assert ``subject`` clears AA on the panel and on each bubble it can be read on.
 
@@ -1181,7 +1183,9 @@ class ContrastCompileHelpers:
             the right stylesheet
         """
         css = self._compiled_css(bundle_name)
-        ink_value, ink_rgb, alpha = self._rendered_ink(css, chain, bundle_name, subject)
+        ink_value, ink_rgb, alpha = self._rendered_ink(
+            css, chain, bundle_name, subject, dimmed_by_ancestors=dimmed_by_ancestors,
+        )
         surfaces = [(panel_label, ())]
         surfaces += [(sibling.label, (sibling,)) for sibling in MESSAGE_BUBBLE_SIBLINGS
                      if _painted_sibling_chain(chain, sibling) is not None]
@@ -1258,43 +1262,43 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         )
         return min(alphas)
 
-    def test_chat_window_header_renders_brand_teal_never_the_mis_ported_purple(self):
-        """The chat-window header must be the brand teal chrome carrying readable white text.
+    def test_chat_window_header_renders_the_chrome_teal_not_the_brand_purple(self):
+        """The chat-window header must be the chrome teal carrying readable white text, in both schemes.
 
-        Only the ``.o-mail-ChatWindow-header`` element is read; its descendants carry their own
-        colours."""
-        css = self._compiled_css(BACKEND_BUNDLE)
+        The header floats over the application, so it is frame and reads the chrome ladder; the
+        conversation inside it is content. Only the ``.o-mail-ChatWindow-header`` element is read;
+        its descendants carry their own colours."""
+        for bundle in (BACKEND_BUNDLE, DARK_BUNDLE):
+            with self.subTest(bundle=bundle):
+                self._assert_chat_window_header_is_chrome_teal(bundle)
+
+    def _assert_chat_window_header_is_chrome_teal(self, bundle):
+        css = self._compiled_css(bundle)
         header_element = re.compile(r"^\.o-mail-ChatWindow-header([:.]|$)")
         bodies = _bodies_matching(css, header_element.match, ANY_ANCESTORS)
         self.assertTrue(
             bodies,
             "No rule targets the .o-mail-ChatWindow-header element itself in compiled %s - the "
-            "module's chat-window de-brand did not reach the bundle." % BACKEND_BUNDLE,
+            "module's chat-window de-brand did not reach the bundle." % bundle,
         )
 
         backgrounds = _declared_hexes(bodies, _BACKGROUND_RE)
         self.assertTrue(
             backgrounds,
             "The .o-mail-ChatWindow-header element declares no background colour in compiled %s; "
-            "the branded header chrome cannot be verified." % BACKEND_BUNDLE,
+            "the branded header chrome cannot be verified." % bundle,
         )
         self.assertNotIn(
             FORBIDDEN_HEADER_PURPLE, backgrounds,
-            "Chat-window header compiled to the purple %s (backgrounds: %r); the header chrome is "
-            "the teal CHROME-BASE tier." % (FORBIDDEN_HEADER_PURPLE, backgrounds),
-        )
-        self.assertNotIn(
-            BRAND_SECONDARY_PURPLE, backgrounds,
-            "Chat-window header compiled to the brand SECONDARY purple %s (backgrounds: %r). The "
-            "header chrome belongs to the teal CHROME-BASE tier, not the secondary tier."
-            % (BRAND_SECONDARY_PURPLE, backgrounds),
+            "Chat-window header compiled to the darkened purple %s (backgrounds: %r); the header "
+            "chrome is the CHROME-BASE tier." % (FORBIDDEN_HEADER_PURPLE, backgrounds),
         )
 
         # Last writer wins at equal specificity - this is what actually renders.
         self.assertEqual(
-            backgrounds[-1], CHROME_BASE_TEAL,
-            "Chat-window header must render the CHROME-BASE AA teal %s (the $o-navbar-background "
-            "SSOT token); compiled backgrounds were %r." % (CHROME_BASE_TEAL, backgrounds),
+            backgrounds[-1], CHROME_BASE,
+            "Chat-window header must render the CHROME-BASE teal %s (the $o-viin-chrome-base "
+            "SSOT token); compiled backgrounds were %r." % (CHROME_BASE, backgrounds),
         )
 
         header_colors = _declared_values(bodies, _COLOR_RE)
@@ -1316,7 +1320,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         """Header action glyphs must be readable as rendered: colour and opacity together.
 
         Core dims idle header actions with ``--o-mail-ActionList-Button-opacity: .5``, which
-        composites even pure white down to 2.30:1, below the 3:1 non-text floor, so the glyph colour
+        composites even pure white below the 3:1 non-text floor, so the glyph colour
         alone is not enough: the pass/fail rule is stated on the composited colour.
 
         The rules are read directly rather than resolved through the cascade: this module's subject
@@ -1371,12 +1375,12 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                 values,
                 "The chat-window header's ActionList buttons declare no --%s. Core resolves the "
                 "button foreground through that token, so leaving it unset keeps the Bootstrap "
-                "secondary glyph #212529 = 1.79:1 on the teal header." % token,
+                "secondary glyph #212529, unreadable on the teal header." % token,
             )
             glyph_rgb = self._assert_rgb(values[-1], "chat-window header --%s" % token)
             self.assertEqual(
                 glyph_rgb, WHITE_RGB,
-                "Chat-window header --%s compiled to %r; the glyph must be WHITE on the teal "
+                "Chat-window header --%s compiled to %r; the glyph must be WHITE on the purple "
                 "chrome." % (token, values[-1]),
             )
 
@@ -1385,7 +1389,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             opacity_values,
             "The chat-window header's ActionList buttons declare no "
             "--o-mail-ActionList-Button-opacity, so core's idle `.5` stands and even a white "
-            "glyph composites to 2.30:1 on the teal header.",
+            "glyph composites below the contrast floor on the teal header.",
         )
         effective_alpha = _to_alpha(opacity_values[-1])
         self.assertIsNotNone(
@@ -1408,7 +1412,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         """A `.text-muted` glyph in the header must take the header's white, not Bootstrap grey.
 
         Core's parent-channel breadcrumb chevron is `text-muted opacity-75`: a `!important`
-        Bootstrap grey (#495057) that stays ~2.3:1 on the teal chrome, below the 3:1 non-text floor.
+        Bootstrap grey (#495057) that stays under the 3:1 non-text floor on the teal chrome.
         Asserted as ``color: inherit`` beating that ``!important`` rather than as a hex, because the
         legible value is whatever the header foreground computes to."""
         css = self._compiled_css(BACKEND_BUNDLE)
@@ -1421,7 +1425,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             bodies,
             "No compiled rule realigns a `.text-muted` glyph inside .o-mail-ChatWindow-header in "
             "%s, so core's Bootstrap grey #495057 (a `!important` utility) still paints the "
-            "parent-channel breadcrumb chevron on the teal header - ~2.3:1, below the 3:1 non-text "
+            "parent-channel breadcrumb chevron on the teal header, below the 3:1 non-text "
             "floor." % BACKEND_BUNDLE,
         )
         colors = _declared_values(bodies, _COLOR_RE)
@@ -1436,7 +1440,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             "the header test pins - inherit keeps the two in lock-step." % colors,
         )
 
-    def test_chatter_open_composer_toggles_are_teal_for_send_and_the_default_grey_for_log_note(self):
+    def test_chatter_open_composer_toggles_are_deep_content_colour_for_send_and_the_default_grey_for_log_note(self):
         """"Send message" and "Log note", while open, must differ and both be readable.
 
         A Log note is internal and a Send message goes to the customer, so the two open toggles must
@@ -1447,7 +1451,8 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         met by a grey that merely looks right. Left to core, the toggle carries `btn-primary active`
         and resolves the primary map's near-white active state.
 
-        "Send message" is the deep teal: the chrome base is already the button's resting
+        "Send message" is the deep content rung (purple in light, cyan in dark): the content colour is
+        already the button's resting
         `.btn-primary` fill, so reusing it would make an open composer look like a closed one.
 
         The labels are resolved through Bootstrap's `.btn.active { color: var(--btn-active-color) }`
@@ -1513,19 +1518,13 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                     )
                     fills[toggle] = backgrounds[-1]    # last writer wins at equal specificity
 
+                    resting_fill = BRAND_PURPLE if arm == "light" else BRAND_CYAN
                     self.assertNotIn(
-                        BRAND_SECONDARY_PURPLE, backgrounds,
-                        "The OPEN %s compiled the brand purple %s in the %s bundle. The chatter "
-                        "toggles carry no purple: Send message is teal, Log note is the default "
-                        "neutral."
-                        % (toggle, BRAND_SECONDARY_PURPLE, arm),
-                    )
-                    self.assertNotIn(
-                        DARK_BUNDLE_FORBIDDEN_PURPLE, backgrounds,
-                        "The OPEN %s compiled the dark purple %s in the %s bundle. Core's forced "
-                        "white label measures only 2.90:1 on it, so the dark scheme has no purple "
-                        "arm."
-                        % (toggle, DARK_BUNDLE_FORBIDDEN_PURPLE, arm),
+                        resting_fill, backgrounds,
+                        "The OPEN %s compiled the resting fill %s in the %s bundle, which is the "
+                        "RESTING fill of a `.btn-primary`: an open composer would look like a "
+                        "closed one. Send message is the deep rung, Log note the default neutral."
+                        % (toggle, resting_fill, arm),
                     )
 
                     label_values = _declared_values(bodies, _custom_property_re("btn-active-color"))
@@ -1533,7 +1532,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                         label_values,
                         "Active %s declares no --btn-active-color, so `.btn.active { color: "
                         "var(--btn-active-color) }` falls back to the primary-button map's dark "
-                        "teal #002428 - a 1.07:1 label on the teal, and the wrong label on the "
+                        "dark purple - an unreadable label on the deep purple, and the wrong label on the "
                         "neutral." % toggle,
                     )
 
@@ -1582,16 +1581,17 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             self.assertNotEqual(
                 send_fill, note_fill,
                 "Both chatter toggles compiled the SAME fill %s in the %s bundle. 'Send message' is "
-                "customer-facing (TEAL = ACT) and 'Log note' is internal (the default neutral); one "
+                "customer-facing (PURPLE = ACT) and 'Log note' is internal (the default neutral); one "
                 "colour for both erases the distinction while composing." % (send_fill, arm),
             )
+            expected_deep = ACTION_DEEP if arm == "light" else DARK_ACTION_DEEP
             self.assertEqual(
-                send_fill, CHROME_DEEP_TEAL,
-                "The OPEN 'Send message' toggle compiled %s instead of the deep chrome rung %s in "
-                "the %s bundle. Customer-facing = ACT = teal; the chrome base %s is this button's "
-                "RESTING fill (open would look identical to closed) and core's untouched "
-                "active-background is the near-white #E6F2F4."
-                % (send_fill, CHROME_DEEP_TEAL, arm, CHROME_BASE_TEAL),
+                send_fill, expected_deep,
+                "The OPEN 'Send message' toggle compiled %s instead of the deep content rung %s in "
+                "the %s bundle. Customer-facing = ACT = the content colour; its resting fill is "
+                "this button's RESTING fill (open would look identical to closed) and core's "
+                "untouched active-background is the near-white #F2ECF2."
+                % (send_fill, expected_deep, arm),
             )
 
     def test_send_message_composer_carries_a_readable_danger_cue_log_note_does_not(self):
@@ -1626,7 +1626,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         )
         self._assert_core_source_contains(
             "mail/static/src/chatter/web/chatter.xml",
-            ("o-mail-Chatter-sendMessage btn", "'active': state.composerType === 'message'"),
+            ("o-mail-Chatter-sendMessage btn", "'active': this.state.composerType === 'message'"),
             "The chatter does not mark the Send-message toggle `active` while the message composer "
             "is open, so the `:has()` gate matches nothing and the danger cue never appears.",
         )
@@ -1750,8 +1750,8 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                 % (tinted_ratio, plain_ratio, arm),
             )
 
-    def test_send_message_button_renders_the_aa_teal_under_its_forced_white_glyph(self):
-        """The real send button must be the AA teal, not core's lighter `lighten($primary, 7.5%)`.
+    def test_send_message_button_renders_the_brand_purple_under_its_forced_white_glyph(self):
+        """The real send button must be the brand purple, not core's lighter `lighten($primary, 7.5%)`.
 
         The active send button renders through the composer action list (btnClass
         "o-sendMessageActive o-text-white") under the white glyph core forces. This module's rule has
@@ -1773,10 +1773,10 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         backgrounds = _declared_hexes(bodies, _BACKGROUND_RE)
         self.assertTrue(backgrounds, "the active send button declares no background colour.")
         self.assertEqual(
-            backgrounds[-1], CHROME_BASE_TEAL,
-            "The active send button must compile to the CHROME-BASE AA teal %s; compiled "
-            "backgrounds were %r (core paints it lighten($primary, 7.5%%) ~#00a1b4)."
-            % (CHROME_BASE_TEAL, backgrounds),
+            backgrounds[-1], BRAND_PURPLE,
+            "The active send button must compile to the BRAND purple %s; compiled "
+            "backgrounds were %r (core paints it lighten($primary, 7.5%%))."
+            % (BRAND_PURPLE, backgrounds),
         )
         ratio = _contrast_ratio(WHITE_RGB, self._assert_rgb(backgrounds[-1], "send button background"))
         self.assertGreaterEqual(
@@ -1786,81 +1786,60 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             % (backgrounds[-1], ratio, WCAG_AA_NORMAL_TEXT),
         )
 
-    def test_im_status_online_dot_is_legible_on_its_white_puck(self):
-        """The online/bot presence dot must be the AA teal, not purple and not the flat brand teal.
+    def test_im_status_online_dot_is_legible_on_white(self):
+        """The online/bot presence dot is the success green and clears the 3:1 non-text floor on white.
 
-        mail.ImStatus always renders the glyph on a `bg-white bg-opacity-100` puck, including inside
-        the teal chat-window header, and the flat teal is only 2.33:1 on white, below the 3:1
-        non-text floor for a status indicator."""
-        self.assertIsNotNone(
-            VIINDOO_THEME_COLOR,
-            "VIINDOO_THEME_COLOR must be importable from "
-            "viin_brand/controllers/webmanifest.py (the single Python brand-hex SSOT).",
+        mail.ImStatus stamps its colour class on the glyph element itself
+        (`o-mail-ImStatus text-success`), and the glyph is painted on whatever sits behind it. It
+        carries no colour of its own: it is core's `text-success`, which viin_brand points at the
+        success green. The brand cyan is only 2.33:1 on white, and the brand purple is the colour of
+        an action, not of a state.
+
+        WOULD FAIL IF REVERTED: a rule that repaints the glyph with the brand purple or cyan, or a
+        success text colour under 3:1 on white."""
+        css = self._compiled_css(BACKEND_BUNDLE)
+        element = {
+            "classes": frozenset({"oi", "o-mail-ImStatus", "d-flex", "text-success"}),
+            "ancestors": IM_STATUS_ANCESTORS,
+        }
+        # core's `text-success` compiles to `RGBA(r, g, b, var(--text-opacity, 1))`: read the channels.
+        value = self._resolve(css, [element], ("color",), ".o-mail-ImStatus.text-success")
+        channels = _RGB_FUNCTIONAL_RE.match(value.strip())
+        self.assertIsNotNone(channels, "%r is not an rgb() colour." % value)
+        rgb = tuple(int(channels.group(index)) for index in (1, 2, 3))
+        self.assertEqual(
+            rgb, _to_rgb(SUCCESS_GREEN),
+            "The online/bot presence dot resolves to %s, not the success green %s." % (value, SUCCESS_GREEN),
         )
-        flat_brand_teal = VIINDOO_THEME_COLOR.lower()
+        for brand_colour in (BRAND_PURPLE, FLAT_BRAND_CYAN):
+            self.assertNotEqual(
+                rgb, _to_rgb(brand_colour),
+                "The online/bot presence dot is painted with the action colour %s." % brand_colour,
+            )
+        ratio = _contrast_ratio(rgb, WHITE_RGB)
+        self.assertGreaterEqual(
+            ratio, WCAG_AA_NON_TEXT,
+            ".o-mail-ImStatus presence dot (%s) on white is only %.2f:1 - a meaningful non-text "
+            "indicator needs >= %.1f:1 (WCAG 1.4.11)." % (value, ratio, WCAG_AA_NON_TEXT),
+        )
 
-        css = self._compiled_css(BACKEND_BUNDLE)
-        for host in (".o-mail-ImStatus", ".o-mail-ThreadIcon"):
-            with self.subTest(host=host):
-                bodies = _bodies_matching(
-                    css,
-                    lambda selector: selector.startswith(host + " ")
-                    and ".text-success" in selector,
-                    ANY_ANCESTORS,
-                )
-                self.assertTrue(
-                    bodies,
-                    "No compiled rule repaints the success/presence glyph inside %s in %s - the "
-                    "presence de-brand did not reach the bundle." % (host, BACKEND_BUNDLE),
-                )
+    def test_systray_unread_counters_are_the_identity_purple_with_a_readable_white_count(self):
+        """The systray counters are the identity purple under a white count, in both schemes.
 
-                dot_colors = _declared_hexes(bodies, _COLOR_RE)
-                self.assertTrue(dot_colors, "%s presence glyph declares no colour." % host)
-                self.assertNotIn(
-                    BRAND_SECONDARY_PURPLE, dot_colors,
-                    "%s presence dot compiled to the brand secondary PURPLE %s (%r)."
-                    % (host, BRAND_SECONDARY_PURPLE, dot_colors),
-                )
-                self.assertNotIn(
-                    flat_brand_teal, dot_colors,
-                    "%s presence dot compiled to the flat brand-identity teal %s (%r), which is "
-                    "only 2.33:1 on the white puck the glyph always renders on - below the WCAG "
-                    "3:1 non-text floor. It must use the darker CHROME-BASE teal %s."
-                    % (host, flat_brand_teal, dot_colors, CHROME_BASE_TEAL),
-                )
-                self.assertEqual(
-                    dot_colors[-1], CHROME_BASE_TEAL,
-                    "%s presence dot must compile to the CHROME-BASE AA teal %s; compiled colours "
-                    "were %r." % (host, CHROME_BASE_TEAL, dot_colors),
-                )
-                ratio = _contrast_ratio(
-                    self._assert_rgb(dot_colors[-1], "%s presence dot" % host), WHITE_RGB
-                )
-                self.assertGreaterEqual(
-                    ratio, WCAG_AA_NON_TEXT,
-                    "%s presence dot (%s) on its white puck is only %.2f:1 - a meaningful non-text "
-                    "indicator needs >= %.1f:1 (WCAG 1.4.11)."
-                    % (host, dot_colors[-1], ratio, WCAG_AA_NON_TEXT),
-                )
+        They sit on the scheme-invariant chrome, so they read the navbar's own tokens, which
+        viin_brand sets: `$o-navbar-badge-bg` (core navbar.variables.scss, read by
+        `.o_main_navbar .o_menu_systray .badge`) is the identity purple and `$o-navbar-badge-color` is
+        white. The content colour of the dark scheme is the cyan, so a counter that read it would
+        change in dark; it reads the invariant purple instead. Every `.badge` of the systray follows,
+        the two mail counters among them.
 
-    def test_systray_unread_counters_are_readable_on_the_navbar(self):
-        """The messaging/activity systray counters must carry an AA-readable count.
-
-        Core paints the badges with `var(--o-navbar-badge-bg, ...)` and
-        `var(--o-navbar-badge-color, ...)`; `$o-navbar-badge-bg` resolves to $o-success #00B365,
-        whose 11px count is 2.75:1. Only the rule is asserted for the replacement shade (a green
-        other than $o-success, AA against its own foreground): the production value is derived with
-        no named token, so pinning it would turn a legitimate re-tune into a false alarm.
-
-        The fill and the count colour are resolved on a modelled badge through core's own
-        `.o_main_navbar .o_menu_systray .badge` consumer, so a core rename of either token makes the
-        branded value unreachable and the guard red."""
-        css = self._compiled_css(BACKEND_BUNDLE)
+        The fill and the count colour are resolved on a modelled badge through core's own consumer,
+        so a core rename of either token makes the branded value unreachable and the guard red."""
         # `badge` is what core's navbar consumer keys on: a rename would leave the models below
         # stale.
         self._assert_core_source_contains(
-            "mail/static/src/core/web/messaging_menu_patch.xml",
-            ("o-mail-MessagingMenu-counter badge rounded-pill",),
+            "mail/static/src/core/web/messaging_menu_in_dropdown.xml",
+            ("o-mail-MessagingMenuInDropdown-counter badge rounded-pill",),
             "The messaging systray counter does not render as a `.badge`, so core's "
             ".o_menu_systray .badge rule does not paint it and neither token applies.",
         )
@@ -1870,69 +1849,38 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             "The activity systray counter does not render as a `.badge`, so core's "
             ".o_menu_systray .badge rule does not paint it and neither token applies.",
         )
-        for counter in (".o-mail-MessagingMenu-counter", ".o-mail-ActivityMenu-counter"):
-            with self.subTest(counter=counter):
-                bodies = _bodies_matching(css, lambda selector: selector == counter, ANY_ANCESTORS)
-                self.assertTrue(
-                    bodies,
-                    "No compiled rule targets %s in %s - the systray counter a11y override did "
-                    "not reach the bundle." % (counter, BACKEND_BUNDLE),
-                )
-
-                badge_bgs = _declared_values(bodies, _custom_property_re("o-navbar-badge-bg"))
-                badge_colors = _declared_values(bodies, _custom_property_re("o-navbar-badge-color"))
-                self.assertTrue(
-                    badge_bgs,
-                    "%s declares no --o-navbar-badge-bg, so core's $o-navbar-badge-bg ($o-success "
-                    "%s) stands and the count renders at 2.75:1." % (counter, CORE_SUCCESS_GREEN),
-                )
-                self.assertTrue(
-                    badge_colors,
-                    "%s declares no --o-navbar-badge-color, so the count inherits the navbar's "
-                    "near-white entry colour with no contrast guarantee." % counter,
-                )
-
-                # Both must also be the tokens the navbar reads: the counters carry no colour of
-                # their own, core's `.o_main_navbar .o_menu_systray .badge` paints them. Resolving
-                # through that consumer fails on a core rename, where reading our own declarations
-                # back would stay green with the badge visibly back on $o-success.
-                element = {
-                    "classes": SYSTRAY_COUNTER_CLASSES[counter], "ancestors": SYSTRAY_ANCESTORS,
-                }
-                background_value, background_rgb = self._resolve_colour(
-                    css, [element], BACKGROUND_PROPS, "%s badge fill" % counter
-                )
-                foreground_value, foreground_rgb = self._resolve_colour(
-                    css, [element], ("color",), "%s count text" % counter
-                )
-                self.assertNotEqual(
-                    background_rgb, _to_rgb(CORE_SUCCESS_GREEN),
-                    "%s renders the unmodified $o-success %s (resolved: %s), which only reaches "
-                    "2.75:1 under white 11px text."
-                    % (counter, CORE_SUCCESS_GREEN, background_value),
-                )
-                # The badge stays a success badge: darkening must not drift into another hue
-                # (green channel dominant).
-                self.assertGreater(
-                    background_rgb[1], max(background_rgb[0], background_rgb[2]),
-                    "%s resolves its badge fill to %s, which is not a green - the counter is "
-                    "a success badge and must keep its semantic hue while darkening."
-                    % (counter, background_value),
-                )
-                ratio = _contrast_ratio(foreground_rgb, background_rgb)
-                self.assertGreaterEqual(
-                    ratio, WCAG_AA_NORMAL_TEXT,
-                    "%s renders its count %s on %s - only %.2f:1, and this 11px systray text needs "
-                    ">= %.1f:1."
-                    % (counter, foreground_value, background_value, ratio, WCAG_AA_NORMAL_TEXT),
-                )
+        for bundle in (BACKEND_BUNDLE, DARK_BUNDLE):
+            css = self._compiled_css(bundle)
+            for counter in (".o-mail-MessagingMenuInDropdown-counter", ".o-mail-ActivityMenu-counter"):
+                with self.subTest(bundle=bundle, counter=counter):
+                    element = {
+                        "classes": SYSTRAY_COUNTER_CLASSES[counter], "ancestors": SYSTRAY_ANCESTORS,
+                    }
+                    background_value, background_rgb = self._resolve_colour(
+                        css, [element], BACKGROUND_PROPS, "%s badge fill" % counter
+                    )
+                    foreground_value, foreground_rgb = self._resolve_colour(
+                        css, [element], ("color",), "%s count text" % counter
+                    )
+                    self.assertEqual(
+                        background_rgb, _to_rgb(IDENTITY_PURPLE),
+                        "%s renders its badge fill %s in %s instead of the identity purple %s."
+                        % (counter, background_value, bundle, IDENTITY_PURPLE),
+                    )
+                    ratio = _contrast_ratio(foreground_rgb, background_rgb)
+                    self.assertGreaterEqual(
+                        ratio, WCAG_AA_NORMAL_TEXT,
+                        "%s renders its count %s on %s - only %.2f:1, and this 11px systray text "
+                        "needs >= %.1f:1."
+                        % (counter, foreground_value, background_value, ratio, WCAG_AA_NORMAL_TEXT),
+                    )
 
     def test_chat_window_header_dropdown_toggle_stays_white_while_hovered_or_open(self):
         """Hovering or opening the chat-window title dropdown must keep its label white.
 
         Core paints the hovered/open `.o-mail-ChatWindow-moreActions` with
         `color: var(--mail-ChatWindow-moreActionsHoverColor, black) !important`; the working black
-        fallback fails silently and looks deliberate on the teal chrome (2.14:1), whether this
+        fallback fails silently and looks deliberate on the teal chrome, whether this
         module's declaration is dropped or core renames the property.
 
         Resolved through core's own consumer on a modelled hovered toggle, the custom property looked
@@ -1955,7 +1903,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             glyph_rgb, WHITE_RGB,
             "The hovered/open chat-window title dropdown resolves its label to %s. Core's own "
             "default for --mail-ChatWindow-moreActionsHoverColor is BLACK, which is unreadable on "
-            "the teal header chrome, so this module must keep feeding that property white."
+            "the purple header chrome, so this module must keep feeding that property white."
             % glyph_value,
         )
 
@@ -1970,75 +1918,82 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             % (glyph_value, header_value, ratio, WCAG_AA_NORMAL_TEXT),
         )
 
-    def test_discuss_unread_badge_renders_green_through_cores_own_consumer(self):
-        """A Discuss unread counter is green in both schemes, never the brand purple.
+    def test_discuss_unread_badges_render_the_identity_purple_with_a_white_count(self):
+        """Every unread counter of the Discuss family is the identity purple under a white count, in
+        both schemes, like the counters of the navbar.
 
         Core paints every `.o-discuss-badge` with
-        `background-color: var(--o-discuss-badge-bg) !important` from $o-success and
-        keeps its own foreground (`color: white !important`). Light keeps that token,
-        the green viin_brand gives $o-success; dark re-points the custom property to the
-        shade the systray counters use.
+        `background-color: var(--o-discuss-badge-bg) !important` and keeps its own foreground
+        (`color: white !important`); the property is declared from `$o-success` on the badge and on
+        its `.o-innerBadge`, with no Sass variable. This module declares it again on the same two
+        selectors from `$o-viin-brand-purple`, the scheme-invariant purple (the content colour of the
+        dark scheme is the cyan, which must not reach a counter).
 
-        Modelled on the sidebar counter on purpose: two other `.o-discuss-badge` sites
-        are deliberately overridden by core at higher specificity and must keep
-        winning."""
+        Modelled on the sidebar counter and on the chat-window header counter, two sites of the
+        family. The muted counter of core (`o-muted`) is declared by core at higher specificity and
+        must keep its neutral tier: only the unread counters change."""
+        self._assert_core_source_contains(
+            "mail/static/src/core/public_web/notification_item.xml",
+            ("o-mail-NotificationItem-badge o-discuss-badge",),
+            "The Discuss unread counter does not carry `o-discuss-badge`, so neither "
+            "core's consumer nor this module's token reaches it and the model below is stale.",
+        )
+        self._assert_core_source_contains(
+            "mail/static/src/core/common/chat_window.xml",
+            ("o-mail-ChatWindow-counter mx-1 badge rounded-pill fw-bold o-discuss-badge",),
+            "The chat-window counter does not carry `o-discuss-badge`.",
+        )
+        sites = (
+            ("sidebar counter", {
+                "classes": DISCUSS_UNREAD_BADGE_CLASSES, "ancestors": DISCUSS_SIDEBAR_ANCESTORS,
+            }),
+            ("chat-window header counter", {
+                "classes": CHAT_WINDOW_COUNTER_CLASSES, "ancestors": CHAT_WINDOW_HEADER_ANCESTORS,
+            }),
+        )
         for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
             css = self._compiled_css(bundle_name)
-            self._assert_core_source_contains(
-                "mail/static/src/discuss/core/public_web/discuss_sidebar_categories.xml",
-                ("badge rounded-pill o-discuss-badge fw-bold",),
-                "The Discuss sidebar unread counter does not carry `o-discuss-badge`, so neither "
-                "core's consumer nor this module's token reaches it and the model below is stale.",
-            )
-            badge = {
-                "classes": DISCUSS_UNREAD_BADGE_CLASSES, "ancestors": DISCUSS_SIDEBAR_ANCESTORS,
-            }
-
-            fill_value, fill_rgb = self._resolve_colour(
-                css, [badge], BACKGROUND_PROPS,
-                "Discuss sidebar unread badge fill (%s arm)" % arm,
-            )
-            self.assertNotEqual(
-                fill_rgb, _to_rgb(BRAND_SECONDARY_PURPLE),
-                "The Discuss unread badge compiled the brand purple %s in the %s "
-                "bundle; unread counters are green in both schemes."
-                % (BRAND_SECONDARY_PURPLE, arm),
-            )
-            expected = (
-                UNREAD_BADGE_GREEN if arm == "light" else UNREAD_BADGE_DARK_GREEN
-            )
-            self.assertEqual(
-                fill_rgb, _to_rgb(expected),
-                "The Discuss unread badge must resolve to %s in the %s bundle; it "
-                "resolved to %s." % (expected, arm, fill_value),
-            )
-            if arm == "dark":
-                self.assertNotEqual(
-                    fill_rgb, _to_rgb(DARK_MUTED_TIER),
-                    "The Discuss unread badge compiled the neutral muted tier %s in "
-                    "the dark bundle: white on it is 2.59:1, and a grey unread counter "
-                    "reads as 'already read'." % DARK_MUTED_TIER,
+            for label, badge in sites:
+                with self.subTest(arm=arm, site=label):
+                    fill_value, fill_rgb = self._resolve_colour(
+                        css, [badge], BACKGROUND_PROPS, "Discuss %s fill (%s arm)" % (label, arm),
+                    )
+                    self.assertEqual(
+                        fill_rgb, _to_rgb(IDENTITY_PURPLE),
+                        "The Discuss %s must resolve to the identity purple %s in the %s bundle; "
+                        "it resolved to %s." % (label, IDENTITY_PURPLE, arm, fill_value),
+                    )
+                    count_value, count_rgb = self._resolve_colour(
+                        css, [badge], ("color",), "Discuss %s count (%s arm)" % (label, arm),
+                    )
+                    ratio = _contrast_ratio(count_rgb, fill_rgb)
+                    self.assertGreaterEqual(
+                        ratio, WCAG_AA_NORMAL_TEXT,
+                        "The Discuss %s count (%s on %s, %s arm) is only %.2f:1 - this is small "
+                        "bold text and needs >= %.1f:1."
+                        % (label, count_value, fill_value, arm, ratio, WCAG_AA_NORMAL_TEXT),
+                    )
+            with self.subTest(arm=arm, site="muted counter"):
+                muted = {
+                    "classes": DISCUSS_UNREAD_BADGE_CLASSES - {"o-important"} | {"o-muted"},
+                    "ancestors": DISCUSS_SIDEBAR_ANCESTORS,
+                }
+                _value, muted_rgb = self._resolve_colour(
+                    css, [muted], BACKGROUND_PROPS, "Discuss muted counter fill (%s arm)" % arm,
                 )
-
-            count_value, count_rgb = self._resolve_colour(
-                css, [badge], ("color",),
-                "Discuss sidebar unread badge count (%s arm)" % arm,
-            )
-            ratio = _contrast_ratio(count_rgb, fill_rgb)
-            self.assertGreaterEqual(
-                ratio, WCAG_AA_NORMAL_TEXT,
-                "The Discuss unread count (%s on %s, %s arm) is only %.2f:1 - this is small bold "
-                "text and needs >= %.1f:1."
-                % (count_value, fill_value, arm, ratio, WCAG_AA_NORMAL_TEXT),
-            )
+                self.assertNotEqual(
+                    muted_rgb, _to_rgb(IDENTITY_PURPLE),
+                    "A muted Discuss counter compiled the identity purple in the %s bundle: core "
+                    "keeps a muted counter on its neutral tier, so it reads as already seen." % arm,
+                )
 
     def test_seen_by_everyone_tick_clears_the_non_text_floor_as_composited(self):
         """The "seen by everyone" tick must stay legible as rendered: colour and opacity together.
 
         Core paints the tick `color: var(--mail-MessageSeenIndicator-hasEveryoneSeenColor,
         lighten($primary, 20%))` under `opacity-75`, so the pixel a user sees is the 75% composite
-        over the message-list surface: the AA teal #007F8E measures 4.74:1 raw but ~3.11:1
-        composited, so a raw-colour assertion would pass a value that fails on screen. The rule is
+        over the message-list surface: a colour that measures well raw can fall under the
+        floor composited, so a raw-colour assertion would pass a value that fails on screen. The rule is
         stated on the composited value against the WCAG 1.4.11 non-text floor, with the opacity read
         from the compiled bundle (Bootstrap's `.opacity-75`) so a core change to the dimming is
         caught too.
@@ -2064,10 +2019,10 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             css, [indicator], ("color",), "seen-by-everyone tick"
         )
         self.assertEqual(
-            tick_rgb, _to_rgb(CHROME_BASE_TEAL),
-            "The seen-by-everyone tick resolves to %s; it must resolve to the CHROME-BASE AA teal "
+            tick_rgb, _to_rgb(BRAND_PURPLE),
+            "The seen-by-everyone tick resolves to %s; it must resolve to the BRAND purple "
             "%s fed through core's own --mail-MessageSeenIndicator-hasEveryoneSeenColor."
-            % (tick_value, CHROME_BASE_TEAL),
+            % (tick_value, BRAND_PURPLE),
         )
 
         # Read the dimming core actually applies to this element instead of assuming 75%.
@@ -2091,7 +2046,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             ratio, WCAG_AA_NON_TEXT,
             "The seen-by-everyone tick (%s at opacity %s) composites to rgb%r on the white message "
             "list, which is only %.2f:1 - a meaningful non-text indicator needs >= %.1f:1 (WCAG "
-            "1.4.11). The flat identity teal blends to ~1.93:1 here, which is exactly why the "
+            "1.4.11). The flat brand cyan blends far lower here, which is exactly why the "
             "raw colour alone is not the rule."
             % (tick_value, dimming, composited, ratio, WCAG_AA_NON_TEXT),
         )
@@ -2099,13 +2054,13 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
     def test_idle_presence_glyph_resolves_to_one_amber_at_all_three_render_sites(self):
         """Every idle/away glyph must resolve to the same amber, wherever it renders.
 
-        Left to core's `.o-yellow { color: $yellow }` the glyph reads #ffc107, 1.63:1 on the white
-        puck. Three separate rules render the same state: the ImStatus dot, the same dot reached
-        through ThreadIcon's nested <ImStatus> (which wins outright through an `!important`), and the
-        "Away" swatch in the status picker, which must match the dot it produces. Production keeps
-        them in step through one Sass variable; this test asserts the outcome by resolving all three
-        through the cascade and requiring one identical value, each rule pitted against core's
-        `.o-yellow`, so a rule that stops matching is reported rather than assumed.
+        Left to core's `.o-yellow { color: $yellow }` the glyph reads #ffc107, 1.63:1 on white. Two
+        rules render the same state: the ImStatus dot (which ThreadIcon reuses as a nested
+        <ImStatus>) and the "Away" swatch in the status picker, which must match the dot it
+        produces. Production keeps them in step through one Sass variable; this test asserts the
+        outcome by resolving both through the cascade and requiring one identical value, each rule
+        pitted against core's `.o-yellow`, so a rule that stops matching is reported rather than
+        assumed.
 
         The value is pinned: #b27400 is a literal design constant, never recomputed from
         `darken(#ffa500, 15%)`, which would compare the production expression against itself. The
@@ -2113,12 +2068,12 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         #ffa500 and the lighter #cc8400."""
         css = self._compiled_css(BACKEND_BUNDLE)
 
-        # The class contract these three rules key on must still be the one core renders.
+        # The class contract these rules key on must still be the one core renders.
         self._assert_core_source_contains(
-            "mail/static/src/core/common/im_status.xml",
-            ("o-yellow",),
-            "Core does not render the idle glyph with that class, so all three of this module's "
-            "`.o-yellow` rules are inert and idle falls back to core's #ffc107.",
+            "mail/static/src/core/common/im_status.js",
+            ("return \"o-yellow\"", "o-mail-ImStatus d-flex ${this.colorClass}"),
+            "Core does not render the idle glyph with that class on the glyph element, so this "
+            "module's `.o-yellow` rules are inert and idle falls back to core's #ffc107.",
         )
         self._assert_core_source_contains(
             "mail/static/src/core/common/im_status_dropdown.xml",
@@ -2129,7 +2084,6 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
 
         sites = (
             ("ImStatus presence dot", IDLE_GLYPH_CLASSES, IM_STATUS_ANCESTORS),
-            ("ThreadIcon presence dot", IDLE_GLYPH_CLASSES, THREAD_ICON_ANCESTORS),
             ("ImStatusDropdown Away swatch", IDLE_SWATCH_CLASSES, IM_STATUS_DROPDOWN_ANCESTORS),
         )
         resolved = {}
@@ -2146,7 +2100,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                 self.assertNotEqual(
                     rgb, _to_rgb(FLAT_AWAY_ORANGE),
                     "The %s resolves to the flat orange %s, which is only 1.97:1 on the white "
-                    "puck; idle is darkened for AA."
+                    "surface; idle is darkened for AA."
                     % (label, FLAT_AWAY_ORANGE),
                 )
                 self.assertNotEqual(
@@ -2171,9 +2125,9 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         distinct = {rgb for _value, rgb in resolved.values()}
         self.assertEqual(
             len(distinct), 1,
-            "The idle glyph resolves to MORE THAN ONE colour across its three render sites (%r). "
+            "The idle glyph resolves to MORE THAN ONE colour across its render sites (%r). "
             "The status picker would not match the dot it produces - which is precisely the "
-            "desync the single $o-viin-mail-status-away-color variable exists to prevent."
+            "desync the single $o-viin-status-away variable exists to prevent."
             % ({label: value for label, (value, _rgb) in resolved.items()},),
         )
 
@@ -2181,8 +2135,8 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         """The idle amber must clear 3:1 against each real background it renders against.
 
         A meaningful status indicator is non-text content (WCAG 1.4.11: 3:1), and the glyph renders
-        on three surfaces, the darkest being the binding constraint: the ImStatus puck (plain white,
-        even inside the teal chat-window header), the status-picker menu (`$dropdown-bg` ->
+        on three surfaces, the darkest being the binding constraint: plain white (the list and the
+        view surface), the status-picker menu (`$dropdown-bg` ->
         `$body-bg` -> `$o-gray-100` = #f8f9fa) and the focused picker row (`$dropdown-link-hover-bg`
         = `rgba($black, 0.08)` over that menu = #e4e5e6).
 
@@ -2209,17 +2163,10 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             "The dropdown hover wash or the body background changed, so the focused picker row is "
             "not %s." % DROPDOWN_ROW_FOCUS_SURFACE,
         )
-        self._assert_core_source_contains(
-            "mail/static/src/core/common/im_status.xml",
-            ("bg-white bg-opacity-100",),
-            "The ImStatus root does not force a white puck, so the presence dot's background is "
-            "whatever is behind it, including the teal chat-window header.",
-        )
-
         amber_rgb = _to_rgb(AWAY_AMBER)
         self.assertIsNotNone(amber_rgb, "AWAY_AMBER must be a plain hex colour.")
         surfaces = (
-            ("ImStatus white puck", IM_STATUS_PUCK_SURFACE),
+            ("white view surface", WHITE_SURFACE),
             ("status-picker menu", DROPDOWN_MENU_SURFACE),
             ("focused status-picker row", DROPDOWN_ROW_FOCUS_SURFACE),
         )
@@ -2233,12 +2180,11 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                     % (AWAY_AMBER, label, surface, ratio, WCAG_AA_NON_TEXT),
                 )
 
-        # Idle must stay distinguishable from online: `text-success` paints online/bot in the
-        # CHROME-BASE teal.
+        # Idle must stay distinguishable from online: `text-success` paints online/bot green.
         self.assertNotEqual(
-            amber_rgb, _to_rgb(CHROME_BASE_TEAL),
+            amber_rgb, _to_rgb(SUCCESS_GREEN),
             "The idle glyph resolves to the same %s as the online/bot glyph - the two presence "
-            "states would be indistinguishable." % CHROME_BASE_TEAL,
+            "states would be indistinguishable." % SUCCESS_GREEN,
         )
 
     def test_module_scss_compiles_without_errors_in_every_bundle_it_is_served_in(self):
@@ -2279,87 +2225,6 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
     # sculpts them from literals), asserted on the compiled dark bundle against the fixed AA
     # threshold, never a hex snapshot.
 
-    def _resolve_seam_border_rgb(self, css, value, label):
-        """Resolve a compiled border-color to RGB, also covering Bootstrap's two-var utility shape.
-
-        :meth:`_resolve_dark_colour` follows a single bare ``var(--token)``, but a Bootstrap
-        `border-<colour>` utility compiles to `rgba(var(--secondary-rgb), var(--border-opacity))`
-        (`_UTILITY_RGB_VAR_RE`); anything else goes through :meth:`_resolve_dark_colour`.
-
-        The opacity slot is not read: Bootstrap pins `border-opacity` to 1 on this rule, so the
-        resolved RGB is opaque."""
-        match = _UTILITY_RGB_VAR_RE.fullmatch(value.strip())
-        if match is None:
-            return self._resolve_dark_colour(css, value, label)[1]
-        triplet = self._dark_root_token(css, match.group(1), label)
-        return self._assert_rgb("rgb(%s)" % triplet, label)
-
-    def test_dark_rotting_kanban_card_stays_a_readable_solid_danger_surface(self):
-        """The overdue/rotting kanban card must paint a solid red danger tint readable under text.
-
-        Core's rotting_mixin.scss paints `.o_kanban_record.oe_kanban_card_rotting { background-color:
-        rgba(255, 201, 201, .3) }`, a translucent light-pink literal no overridable Sass variable
-        reaches, so the dark recompile cannot flip it: over the dark card it composites to a muddy
-        near-neutral and loses the danger read. This module re-points it to
-        `mix($danger, $body-bg, 25%)`, a solid tint evaluated against the dark $body-bg.
-
-        The rule is stated on the translucency: the winning dark background must be opaque, stay
-        red-dominant (the signal is chromatic, so a luminance-contrast measure would not capture
-        it), and the dark body text must clear WCAG AA on it. The `.o_record_selected` state is
-        excluded: it keeps the core selection highlight. Both rules have equal specificity, so the
-        assertions read the last-declared background."""
-        css = self._compiled_css(DARK_BUNDLE)
-        bodies = _bodies_matching(
-            css,
-            lambda selector: ".oe_kanban_card_rotting" in _selector_subject(selector)
-            and ".o_record_selected" not in _selector_subject(selector), ANY_ANCESTORS,
-        )
-        self.assertTrue(
-            bodies,
-            "No compiled rule styles the base .oe_kanban_card_rotting card in %s - core's own "
-            "rotting_mixin.scss is included via web.assets_web, so an empty match means the dark "
-            "bundle did not build." % DARK_BUNDLE,
-        )
-        backgrounds = _declared_values(bodies, _BACKGROUND_RE)
-        self.assertTrue(
-            backgrounds,
-            "The rotting card declares no background in %s; its danger surface cannot be verified."
-            % DARK_BUNDLE,
-        )
-        winning = backgrounds[-1]
-
-        # Opaque: a translucent light wash over the dark card is the muddy-neutral defect itself.
-        alpha_match = _RGBA_ALPHA_RE.search(winning)
-        if alpha_match is not None:
-            alpha = _to_alpha(alpha_match.group(1))
-            self.assertIsNotNone(
-                alpha, "The rotting card background %r has an unparseable alpha." % winning,
-            )
-            self.assertGreaterEqual(
-                alpha, 1.0,
-                "The dark rotting card compiled to the TRANSLUCENT %s - core's untouched "
-                "rgba(255,201,201,.3) literal, which composites to a muddy near-neutral over the "
-                "#111B1E card and loses the danger read. It must be a SOLID danger tint." % winning,
-            )
-        card_rgb = self._assert_rgb(winning, "dark rotting card background")
-
-        # Red channel dominant: the danger signal is chromatic, not luminance.
-        self.assertTrue(
-            card_rgb[0] > card_rgb[1] and card_rgb[0] > card_rgb[2],
-            "The dark rotting card compiled to %s (rgb%r), whose red channel is not dominant - it "
-            "does not read as an overdue/danger card." % (winning, card_rgb),
-        )
-
-        # The dark body text core paints on kanban cards clears AA on the tint.
-        body_text = self._dark_root_token(css, "body-color", "dark kanban card body text")
-        text_rgb = self._assert_rgb(body_text, "dark body text")
-        ratio = _contrast_ratio(text_rgb, card_rgb)
-        self.assertGreaterEqual(
-            ratio, WCAG_AA_NORMAL_TEXT,
-            "The dark rotting card text (%s) on its danger tint (%s) is only %.2f:1 - WCAG AA normal "
-            "text needs >= %.1f:1." % (body_text, winning, ratio, WCAG_AA_NORMAL_TEXT),
-        )
-
     def test_dark_chatter_message_date_muted_timestamp_clears_aa_on_the_dark_thread(self):
         """The chatter message timestamp must stay a readable muted grey on the dark thread.
 
@@ -2396,237 +2261,103 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             % (date_value, surface_value, ratio, WCAG_AA_NORMAL_TEXT),
         )
 
-    def test_dark_discuss_sidebar_border_is_scheme_aware_not_a_fixed_light_gray(self):
-        """The Discuss sidebar divider must be the scheme-aware --border-color, not the light $gray-500.
+    def test_dark_discuss_messaging_menu_surfaces_are_readable_dark_surfaces(self):
+        """The messaging menu, in the Discuss sidebar and in the systray dropdown, is a dark surface.
 
-        A compile-time `border-right-color: $gray-500` (#adb5bd) never flips: a white line on the
-        dark app. The divider is `var(--border-color)`, resolved through core's `:root` emission of
-        the recompiled dark `$border-color` (#25383C), so a core rename orphans the reference and
-        the guard goes red."""
+        Core fills the sidebar menu with `$o-view-background-color` and the dropdown panel from
+        `var(--mail-MessagingMenu-bg, ...)`, which its dark file sets to `$gray-100`. Each fill is
+        resolved through the compiled dark bundle and measured against the text of the menu
+        ($body-color) at the fixed AA threshold."""
         css = self._compiled_css(DARK_BUNDLE)
-        bodies = _bodies_matching(
-            css,
-            lambda selector: _selector_subject(selector) == ".o-mail-DiscussSidebar",
-            ANY_ANCESTORS,
+        text_rgb = self._dark_body_color_rgb(css, "dark messaging-menu text")
+        surfaces = (
+            ("Discuss sidebar menu", ".o-mail-MessagingMenu", _BACKGROUND_RE),
+            (
+                "systray dropdown panel", ".o-mail-MessagingMenuInDropdown",
+                _custom_property_re("mail-MessagingMenu-bg"),
+            ),
         )
-        self.assertTrue(
-            bodies,
-            "No compiled rule styles the .o-mail-DiscussSidebar element in %s - the sidebar border "
-            "override did not reach the bundle." % DARK_BUNDLE,
-        )
-        borders = _declared_values(bodies, _BORDER_COLOR_RE)
-        self.assertTrue(
-            borders,
-            "The .o-mail-DiscussSidebar element declares no border colour in %s." % DARK_BUNDLE,
-        )
-        winning = borders[-1]
-        self.assertNotIn(
-            "#adb5bd", winning,
-            "The Discuss sidebar border compiled to the fixed light gray $gray-500 (#adb5bd) in %s - "
-            "it never flips, so the sidebar edge is a white line on the dark app. It must be the "
-            "scheme-aware var(--border-color)." % DARK_BUNDLE,
-        )
-        border_value, border_rgb = self._resolve_dark_colour(css, winning, "dark sidebar border")
-        self.assertEqual(
-            border_rgb, self._assert_rgb("#25383c", "dark --border-color"),
-            "The Discuss sidebar border resolves to %s; it must resolve to the recompiled dark "
-            "--border-color #25383C, not a light gray." % border_value,
-        )
-
-    def test_dark_discuss_sidebar_channel_name_stays_readable_at_rest_hover_and_active(self):
-        """Channel names must clear WCAG AA on the dark sidebar: resting, hovered and on the open item.
-
-        The name span carries no colour of its own and inherits the dark `$body-color`. The surfaces
-        under it are core's own (the resting sidebar, the item hover `mix($gray-100, $gray-200)` and
-        the active item token `mix($gray-200, $gray-300)`), read from the dark gray ramp; each is
-        measured against the inherited name colour at the fixed AA threshold."""
-        css = self._compiled_css(DARK_BUNDLE)
-        name_rgb = self._assert_rgb(
-            self._dark_root_token(css, "body-color", "dark sidebar channel name"),
-            "dark sidebar channel name",
-        )
-
-        surfaces = []  # (label, resolved surface rgb) for the three item states the name renders on
-
-        rest_bodies = _bodies_matching(
-            css,
-            lambda selector: _selector_subject(selector) == ".o-mail-discussSidebarBgColor",
-            ANY_ANCESTORS,
-        )
-        rest_bgs = _declared_values(rest_bodies, _BACKGROUND_RE)
-        self.assertTrue(
-            rest_bgs,
-            "No compiled .o-mail-discussSidebarBgColor background in %s - core's own core.dark.scss "
-            "is in the bundle, so an empty match means the dark bundle did not build." % DARK_BUNDLE,
-        )
-        surfaces.append(
-            ("resting sidebar", self._resolve_dark_colour(css, rest_bgs[-1], "resting sidebar")[1])
-        )
-
-        hover_bodies = _bodies_matching(
-            css,
-            lambda selector: _selector_subject(selector) == ".o-mail-DiscussSidebar-item:hover",
-            ANY_ANCESTORS,
-        )
-        hover_bgs = _declared_values(hover_bodies, _BACKGROUND_RE)
-        self.assertTrue(
-            hover_bgs,
-            "No compiled .o-mail-DiscussSidebar-item:hover background in %s - core's discuss_sidebar.scss "
-            "is in the bundle, so an empty match means the dark bundle did not build." % DARK_BUNDLE,
-        )
-        surfaces.append(
-            ("hovered sidebar item",
-             self._resolve_dark_colour(css, hover_bgs[-1], "hovered sidebar item")[1])
-        )
-
-        active_bodies = _bodies_matching(
-            css,
-            lambda selector: _selector_subject(selector) == ".o-mail-DiscussSidebar-item",
-            ANY_ANCESTORS,
-        )
-        active_tokens = _declared_values(
-            active_bodies, _custom_property_re("mail-DiscussSidebar-itemActiveBgColor")
-        )
-        self.assertTrue(
-            active_tokens,
-            "No compiled --mail-DiscussSidebar-itemActiveBgColor on .o-mail-DiscussSidebar-item in %s "
-            "- core's discuss_sidebar.dark.scss is in the bundle, so an empty match means the dark "
-            "bundle did not build." % DARK_BUNDLE,
-        )
-        surfaces.append(
-            ("active sidebar item",
-             self._resolve_dark_colour(css, active_tokens[-1], "active sidebar item")[1])
-        )
-
-        for label, surface_rgb in surfaces:
+        for label, selector, pattern in surfaces:
             with self.subTest(surface=label):
-                ratio = _contrast_ratio(name_rgb, surface_rgb)
+                bodies = _bodies_matching(
+                    css, lambda token, selector=selector: _selector_subject(token) == selector,
+                    ANY_ANCESTORS,
+                )
+                fills = _declared_values(bodies, pattern)
+                self.assertTrue(
+                    fills,
+                    "No compiled fill on %s (%s) in %s - core's own messaging menu styles are in "
+                    "the bundle, so an empty match means the dark bundle did not build."
+                    % (selector, label, DARK_BUNDLE),
+                )
+                fill_value, fill_rgb = self._resolve_dark_colour(css, fills[-1], label)
+                ratio = _contrast_ratio(text_rgb, fill_rgb)
                 self.assertGreaterEqual(
                     ratio, WCAG_AA_NORMAL_TEXT,
-                    "The Discuss channel name (dark $body-color) on the %s (rgb%r) is only %.2f:1 - "
+                    "The messaging-menu text (dark $body-color) on the %s fill (%s) is only %.2f:1 - "
                     "WCAG AA normal text needs >= %.1f:1."
-                    % (label, surface_rgb, ratio, WCAG_AA_NORMAL_TEXT),
+                    % (label, fill_value, ratio, WCAG_AA_NORMAL_TEXT),
                 )
 
     def test_dark_discuss_thread_message_body_clears_aa_on_the_dark_thread(self):
-        """A Discuss thread message body must stay readable on the dark thread surface.
+        """A Discuss thread message body must stay readable on the dark thread and on every bubble.
 
-        The body inherits the dark $body-color; the thread canvas is
-        `.o-mail-DiscussContent-core { background-color: $body-bg }`. The surface is resolved from
-        the real mail canvas rule and the text through core's :root emission of $body-color, and the
-        pair is measured at the fixed AA threshold."""
-        css = self._compiled_css(DARK_BUNDLE)
-        body_text = self._assert_rgb(
-            self._dark_root_token(css, "body-color", "dark thread message body"),
-            "dark thread message body",
-        )
-        canvas_bodies = _bodies_matching(
-            css,
-            lambda selector: _selector_subject(selector) == ".o-mail-DiscussContent-core",
-            ANY_ANCESTORS,
-        )
-        canvas_bgs = _declared_values(canvas_bodies, _BACKGROUND_RE)
-        self.assertTrue(
-            canvas_bgs,
-            "No compiled .o-mail-DiscussContent-core background in %s - core's own discuss_content.scss "
-            "is in the bundle, so an empty match means the dark bundle did not build." % DARK_BUNDLE,
-        )
-        surface_value, surface_rgb = self._resolve_dark_colour(
-            css, canvas_bgs[-1], "dark thread canvas"
-        )
-        ratio = _contrast_ratio(body_text, surface_rgb)
-        self.assertGreaterEqual(
-            ratio, WCAG_AA_NORMAL_TEXT,
-            "The Discuss thread message body (dark $body-color) on the dark thread canvas (%s) is only "
-            "%.2f:1 - WCAG AA normal text needs >= %.1f:1."
-            % (surface_value, ratio, WCAG_AA_NORMAL_TEXT),
-        )
-
-    def test_dark_discuss_messaging_menu_panel_is_a_readable_dark_surface(self):
-        """The messaging-menu / systray dropdown panel must be a dark surface its text can be read on.
-
-        Core fills the panel from `var(--mail-MessagingMenu-bg, $o-view-background-color)` and its
-        dark file sets that property to `mix($gray-100, $gray-200, 65%)`. The last declared fill is
-        measured against the dropdown text ($body-color) at the fixed AA threshold."""
-        css = self._compiled_css(DARK_BUNDLE)
-        menu_bodies = _bodies_matching(
-            css,
-            lambda selector: _selector_subject(selector) == ".o-mail-MessagingMenu",
-            ANY_ANCESTORS,
-        )
-        fills = _declared_values(menu_bodies, _custom_property_re("mail-MessagingMenu-bg"))
-        self.assertTrue(
-            fills,
-            "No compiled --mail-MessagingMenu-bg on .o-mail-MessagingMenu in %s - core's "
-            "messaging_menu.dark.scss is in the bundle, so an empty match means the dark bundle did "
-            "not build." % DARK_BUNDLE,
-        )
-        panel_value, panel_rgb = self._resolve_dark_colour(
-            css, fills[-1], "dark messaging-menu panel"
-        )
-        text_rgb = self._assert_rgb(
-            self._dark_root_token(css, "body-color", "dark messaging-menu text"),
-            "dark messaging-menu text",
-        )
-        ratio = _contrast_ratio(text_rgb, panel_rgb)
-        self.assertGreaterEqual(
-            ratio, WCAG_AA_NORMAL_TEXT,
-            "The messaging-menu text (dark $body-color) on the resolved panel fill (%s) is only "
-            "%.2f:1 - WCAG AA normal text needs >= %.1f:1."
-            % (panel_value, ratio, WCAG_AA_NORMAL_TEXT),
+        The body inherits the dark $body-color; the surface is whatever the Discuss thread chain
+        paints (the Discuss root and the content panel), resolved through the cascade, and each
+        bubble the body can sit on."""
+        self._assert_readable_on_every_message_surface(
+            DARK_BUNDLE,
+            _element_chain(
+                MESSAGE_BODY_CLASSES, (MESSAGE_TEXT_BODY_CLASSES,) + DISCUSS_MESSAGE_LAYERS,
+            ),
+            "Discuss message body",
+            "The message text is the plain body colour of the scheme.",
+            panel_label="the Discuss thread canvas",
         )
 
     def test_dark_discuss_panel_seams_recede_instead_of_glaring(self):
-        """Every Discuss panel seam must be a quiet dark divider, not a bright light-mode hairline.
+        """Every Discuss panel edge must be a quiet dark divider, not a bright light-mode hairline.
 
-        Each seam carries Bootstrap's `.border-secondary` utility,
-        `rgba(var(--secondary-rgb), var(--border-opacity))`; the dark gray ramp makes `$secondary`
-        the dark border rung.
+        Each panel carries Bootstrap's bare `.border` utility, which reads `--border-color`; the
+        dark gray ramp makes that token the dark border rung.
 
-        Asserted as a band against the dark panel background rather than a hex: perceptible
+        Asserted as a band against the fill of the panel rather than a hex: perceptible
         (`>= DISCUSS_SEAM_MIN_RATIO`) so the line exists, receding (`<= DISCUSS_SEAM_MAX_RATIO`) so
-        it never glares. Border and panel are both resolved through core's own `:root` emission, and
-        rules are read for the Discuss ancestor chain only, so a rule scoped under another module's
-        root does not stand in for it."""
+        it never glares. Border and fill are both resolved through the compiled dark bundle."""
         css = self._compiled_css(DARK_BUNDLE)
-        panel_rgb = self._assert_rgb(
-            self._dark_root_token(css, "body-bg", "dark Discuss panel"), "dark Discuss panel",
+        border_rgb = self._assert_rgb(
+            self._dark_root_token(css, "border-color", "dark Discuss panel border"),
+            "dark Discuss panel border",
         )
         for seam in DISCUSS_DARK_SEAMS:
             with self.subTest(seam=seam.label):
+                self._assert_core_source_contains(
+                    seam.source, (seam.element_class.lstrip("."), "border"),
+                    "The panel is not drawn with the `.border` utility any more, so the seam this "
+                    "guard measures is not the one that renders.",
+                )
                 bodies = _bodies_matching(
-                    css,
-                    lambda selector, seam=seam: _selector_subject(selector) in (
-                        seam.element_class, seam.border_utility, ".border-secondary",
-                    ),
-                    DISCUSS_SEAM_ANCESTORS,
+                    css, lambda token, seam=seam: _selector_subject(token) == seam.element_class,
+                    ANY_ANCESTORS,
                 )
+                fills = _declared_values(bodies, _BACKGROUND_RE)
                 self.assertTrue(
-                    bodies,
-                    "No compiled rule styles %s (%s) or the `.border-secondary` utility it carries in "
-                    "%s - core's own template (%s) is included via web.assets_web, so an empty match "
-                    "means the dark bundle did not build." % (
-                        seam.label, seam.element_class, DARK_BUNDLE, seam.source,
-                    ),
+                    fills,
+                    "No compiled background on %s (%s) in %s - core's own stylesheet is in the "
+                    "bundle, so an empty match means the dark bundle did not build."
+                    % (seam.element_class, seam.label, DARK_BUNDLE),
                 )
-                borders = _declared_values(bodies, _BORDER_COLOR_RE)
-                self.assertTrue(
-                    borders,
-                    "%s (%s) declares no border colour in %s - neither its own rule nor the "
-                    "`.border-secondary` utility it carries painted one; the seam would render with "
-                    "no visible border at all." % (seam.label, seam.element_class, DARK_BUNDLE),
-                )
-                border_rgb = self._resolve_seam_border_rgb(css, borders[-1], seam.label)
-                ratio = _contrast_ratio(border_rgb, panel_rgb)
+                _fill_value, fill_rgb = self._resolve_dark_colour(css, fills[-1], seam.label)
+                ratio = _contrast_ratio(border_rgb, fill_rgb)
                 self.assertGreaterEqual(
                     ratio, DISCUSS_SEAM_MIN_RATIO,
-                    "%s border resolved to rgb%r, only %.2f:1 against the dark panel - it has faded "
+                    "%s border resolved to rgb%r, only %.2f:1 against its panel - it has faded "
                     "into the background instead of staying a perceptible divider (needs >= %.1f:1)."
                     % (seam.label, border_rgb, ratio, DISCUSS_SEAM_MIN_RATIO),
                 )
                 self.assertLessEqual(
                     ratio, DISCUSS_SEAM_MAX_RATIO,
-                    "%s border resolved to rgb%r, %.2f:1 against the dark panel - that is a glaring "
+                    "%s border resolved to rgb%r, %.2f:1 against its panel - that is a glaring "
                     "light-mode hairline, not a receding dark divider (needs <= %.1f:1)."
                     % (seam.label, border_rgb, ratio, DISCUSS_SEAM_MAX_RATIO),
                 )
@@ -2634,13 +2365,11 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
     def test_dark_discuss_navbar_is_the_webclients_own_not_a_discuss_only_repaint(self):
         """Opening Discuss must not repaint the navbar into a surface no other app wears.
 
-        Core mail's dark tail repaints the Discuss chrome onto one flat surface
-        (`--mail-Discuss-surface-dark`) for `.o_web_client.o_mail_discuss .o_main_navbar` and
-        re-points `--NavBar-entry-backgroundColor` at it, but never touches the bar's
-        `border-bottom`, which core web paints from `$o-navbar-border-bottom`. Under a brand-coloured
-        navbar Discuss alone would render a grey bar with grey entries under a brand-coloured rule,
-        and since entries are the full border-box height (see :data:`NAVBAR_CHROME_SURFACES`), each
-        paints its own fill across the 1px border row and chops the rule into dashes.
+        Core mail marks the body `o_mail_discuss` while Discuss is open. A rule keyed on that class
+        that repainted the navbar would render a bar and entries unlike every other app under the
+        bar's own `border-bottom`, which core web paints from `$o-navbar-border-bottom`; since
+        entries are the full border-box height (see :data:`NAVBAR_CHROME_SURFACES`), each would
+        paint its own fill across the 1px border row and chop the rule into dashes.
 
         The bar and a menu entry are each resolved twice from the same compiled dark bundle, under
         the Discuss body and under a plain webclient body, and the two must agree; nothing pins what
@@ -2650,9 +2379,9 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         # The class core's Discuss-only rules key on is part of the contract: a rename would leave
         # the models stale and the guard comparing two identical plain-webclient chains.
         self._assert_core_source_contains(
-            "mail/static/src/core/public_web/discuss.dark.scss",
-            (".o_web_client.o_mail_discuss", ".o_main_navbar"),
-            "Core mail does not scope its Discuss chrome on `.o_web_client.o_mail_discuss`, so "
+            "mail/static/src/core/public_web/discuss_app/discuss_app.js",
+            ("o_mail_discuss",),
+            "Core mail does not mark the body with `o_mail_discuss` while Discuss is open, so "
             "the two contexts this guard compares are not the two contexts that render.",
         )
         painted = {}
@@ -2715,13 +2444,12 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
     def test_dark_message_bubbles_are_dark_tinted_surfaces_per_category(self):
         """Each message bubble (blue/green/orange) must be a dark tinted surface under its body text.
 
-        Core paints each bubble from message.dark.scss, read from the dark gray ramp; the orange
-        variant reads too bright for the muted tier, so this module paints it from a dark tint of
-        its own category colour. The last-declared background of each
-        `.o-mail-Message-bubble.o-#{type}` is read (the `.o-muted` and tail selectors are excluded
-        by the exact-subject match) among the rules that reach this bubble
-        (MESSAGE_BUBBLE_ANCESTORS), and measured against the dark body text at the fixed AA
-        threshold."""
+        Core paints each bubble from `var(--o-bubble-bg)`, which message.dark.scss and core.dark.scss
+        declare per category from the dark gray ramp; the orange variant reads too bright for the
+        muted tier, so this module re-points it to a dark tint of its own category colour. The last
+        `--o-bubble-bg` of each `.o-mail-Message-bubble.o-#{type}` is read among the rules that
+        reach this bubble (MESSAGE_BUBBLE_ANCESTORS) and measured against the dark body text at the
+        fixed AA threshold."""
         self._require_scope_filter()
         css = self._compiled_css(DARK_BUNDLE)
         text_rgb = self._dark_body_color_rgb(css, "dark message bubble body text")
@@ -2739,13 +2467,13 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                     " message.dark.scss are in the bundle, so an empty match means the dark bundle "
                     "did not build." % (subject, DARK_BUNDLE),
                 )
-                backgrounds = _declared_values(bodies, _BACKGROUND_RE)
+                fills = _declared_values(bodies, _custom_property_re("o-bubble-bg"))
                 self.assertTrue(
-                    backgrounds,
-                    "The %s bubble declares no background in %s." % (subject, DARK_BUNDLE),
+                    fills,
+                    "The %s bubble declares no --o-bubble-bg in %s." % (subject, DARK_BUNDLE),
                 )
                 bubble_value, bubble_rgb = self._resolve_dark_colour(
-                    css, backgrounds[-1], "%s bubble" % variant
+                    css, fills[-1], "%s bubble" % variant
                 )
                 ratio = _contrast_ratio(text_rgb, bubble_rgb)
                 self.assertGreaterEqual(
@@ -2754,6 +2482,50 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                     "only %.2f:1 - WCAG AA normal text needs >= %.1f:1."
                     % (variant, bubble_value, ratio, WCAG_AA_NORMAL_TEXT),
                 )
+
+    def _last_rgb(self, css, selector, pattern, label):
+        """Return the opaque colour the last rule of exactly ``selector`` declares for ``pattern``."""
+        bodies = _bodies_matching(css, lambda token: token == selector, ANY_ANCESTORS)
+        values = _declared_values(bodies, pattern)
+        self.assertTrue(values, "no compiled rule of %r declares %s" % (selector, label))
+        return self._assert_rgb(values[-1], "%s (%s)" % (label, selector))
+
+    def test_dark_activity_view_status_cells_and_counter_stay_readable(self):
+        """In the dark lazy bundle the count label of a `.today` / `.planned` / `.overdue` activity
+        cell reads at least 3:1 (large bold text) on its status fill, a `.done` cell label at least
+        3:1 on its fill, and the cell counter label at least 4.5:1 on its `.bg-light` badge.
+
+        The lazy bundle holds no media chrome, so `$light` / `$dark` follow the dark ramp there
+        (dark label on a bright status fill); the scheme-invariant pins live in the non-lazy
+        bundle only."""
+        css = self._compiled_css(LAZY_DARK_BUNDLE)
+        cell = ".o_activity_view .o_activity_summary_cell"
+        for state in ("today", "planned", "overdue"):
+            selector = "%s.%s" % (cell, state)
+            fill = self._last_rgb(css, selector, _BACKGROUND_RE, "%s fill" % state)
+            label = self._last_rgb(css, selector, _COLOR_RE, "%s label" % state)
+            self.assertGreaterEqual(
+                round(_contrast_ratio(label, fill), 2), WCAG_AA_LARGE_TEXT,
+                "%s cell: rgb%r on rgb%r" % (state, label, fill),
+            )
+        done_fill = self._last_rgb(css, cell + ".done", _BACKGROUND_RE, "done fill")
+        done_label = self._last_rgb(css, cell + ".done a", _COLOR_RE, "done label")
+        self.assertGreaterEqual(
+            round(_contrast_ratio(done_label, done_fill), 2), WCAG_AA_LARGE_TEXT,
+            "done cell: rgb%r on rgb%r" % (done_label, done_fill),
+        )
+        counter = self._last_rgb(
+            css, cell + " .o-mail-ActivityCell-counter", _COLOR_RE, "counter label",
+        )
+        dark_css = self._compiled_css(DARK_BUNDLE)
+        badge_bodies = _bodies_matching(dark_css, lambda token: token == ".bg-light", ANY_ANCESTORS)
+        badge_values = _declared_values(badge_bodies, _custom_property_re("background-color"))
+        self.assertTrue(badge_values, "no `--background-color` declared on .bg-light")
+        badge = self._resolve_dark_colour(dark_css, badge_values[-1], "activity counter badge")[1]
+        self.assertGreaterEqual(
+            round(_contrast_ratio(counter, badge), 2), WCAG_AA_NORMAL_TEXT,
+            "activity counter: rgb%r on rgb%r" % (counter, badge),
+        )
 
     def test_dark_followers_button_of_a_followed_record_clears_aa_on_the_chatter_panel(self):
         """The followers button of a followed record must clear AA on the dark chatter.
@@ -2779,10 +2551,11 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
     def test_dark_read_notification_item_name_and_preview_clear_aa(self):
         """A read conversation's name and preview in the messaging-menu list must clear WCAG AA.
 
-        A read (non-unread, non-hard-muted) conversation stamps `text-muted` on the row, which
-        compiles to the dark scheme's muted tier; the preview carries core's own `opacity: .75`,
-        lifted to 1 by this module. Each node's colour and opacity are resolved through the cascade
-        over the real row chain and composited onto the list surface."""
+        A read (non-interesting, non-hard-muted) conversation is dimmed by core as a whole and again
+        on its preview (`o-muted`); this module moves the de-emphasis onto the muted colour of the
+        scheme and lifts both opacities to 1. Each node's colour and opacity, the row's included,
+        are resolved through the cascade over the real row chain and composited onto the list
+        surface."""
         for subject, classes in (
             ("read conversation name", NOTIFICATION_ITEM_NAME_CLASSES),
             ("read conversation preview", NOTIFICATION_ITEM_TEXT_CLASSES),
@@ -2794,7 +2567,48 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                     subject,
                     "The read row's muted tier must clear AA at the opacity it is rendered with.",
                     panel_label="the messaging-menu list",
+                    dimmed_by_ancestors=True,
                 )
+
+    def test_notice_rows_of_the_messaging_menu_are_readable_on_their_wash_in_both_schemes(self):
+        """The name and the text of a notice row (`bg-info`, `bg-warning`) must clear AA on its wash.
+
+        Core thins the fill of such a row to `--bg-opacity` (a 20% wash of the semantic colour over
+        the menu), while the `bg-*` utility keeps the label colour it picked for a solid fill: white
+        on the Viindoo info blue. The label is resolved through the cascade over the row chain, the
+        wash is composited over the surface the menu paints, and the pair is measured at the fixed
+        AA threshold."""
+        for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
+            css = self._compiled_css(bundle_name)
+            for variant, rgb_token in (("bg-info", "info-rgb"), ("bg-warning", "warning-rgb")):
+                with self.subTest(arm=arm, variant=variant):
+                    chain = _element_chain(
+                        NOTIFICATION_ITEM_CLASSES | {variant, "o-important", "o-interest"},
+                        NOTIFICATION_ITEM_LAYERS[2:],
+                    )
+                    label_value, label_rgb = self._inherited_colour(
+                        css, chain, bundle_name, "%s row label" % variant,
+                    )
+                    row_bodies = _bodies_matching(
+                        css,
+                        lambda selector, variant=variant: selector == ".o-mail-NotificationItem.%s" % variant,
+                        ANY_ANCESTORS,
+                    )
+                    opacities = _declared_values(row_bodies, _custom_property_re("bg-opacity"))
+                    self.assertTrue(opacities, "no --bg-opacity declared on a %s row" % variant)
+                    wash_rgb = self._assert_rgb(
+                        "rgb(%s)" % self._root_token(css, rgb_token, bundle_name, "%s wash" % variant),
+                        "%s wash" % variant,
+                    )
+                    menu = self._rendered_backdrop(css, chain[1:], bundle_name, "%s row menu" % variant)
+                    painted = _composite(wash_rgb, menu.rgb, _to_alpha(opacities[-1]))
+                    ratio = _contrast_ratio(label_rgb, painted)
+                    self.assertGreaterEqual(
+                        ratio, WCAG_AA_NORMAL_TEXT,
+                        "The label of a %s row (%s) on its wash rgb%r is only %.2f:1 in the %s "
+                        "bundle - WCAG AA normal text needs >= %.1f:1."
+                        % (variant, label_value, painted, ratio, arm, WCAG_AA_NORMAL_TEXT),
+                    )
 
     def test_dark_mention_suggestion_rows_clear_aa_when_active_or_hovered(self):
         """Every label of the active and of the hovered suggestion row clears AA on that row.
@@ -2874,9 +2688,8 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
     def test_dark_read_notification_item_timestamp_clears_aa(self):
         """The timestamp of a read conversation in the messaging menu must clear AA.
 
-        The read row is `text-muted` and its timestamp adds the `opacity-75` utility on top, so the
-        tier is multiplied twice; the utility is important, so only an important rule on the
-        timestamp cancels it."""
+        The read row is dimmed as a whole and its timestamp is dimmed again (`o-muted`), so the
+        opacity is multiplied twice; only a rule on the row and on the timestamp cancels both."""
         self._assert_readable_on_every_message_surface(
             DARK_BUNDLE,
             _element_chain(
@@ -2885,9 +2698,10 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                 tag="small",
             ),
             "read conversation timestamp",
-            "The read row's `opacity-75` dims the muted tier a second "
-            "time; cancel the utility rather than lowering the floor.",
+            "The read row's opacities dim the muted tier a second "
+            "time; cancel them rather than lowering the floor.",
             panel_label="the messaging-menu list",
+            dimmed_by_ancestors=True,
         )
 
     def test_dark_active_messaging_menu_tab_label_and_icon_are_readable(self):
@@ -3102,7 +2916,7 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
         re-tuning the bubbles all satisfy it."""
         self._assert_core_source_contains(
             "mail/static/src/core/common/message.xml",
-            ('t-if="message.isEmpty" class="text-muted opacity-75"',),
+            ('t-if="this.message.isEmpty" class="text-muted opacity-75"',),
             "The empty-message placeholder does not carry those classes, so the element model "
             "below is keyed on markup core does not render.",
         )

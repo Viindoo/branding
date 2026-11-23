@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 16:01+0000\n"
-"PO-Revision-Date: 2026-11-19 16:01+0000\n"
+"POT-Creation-Date: 2026-11-22 14:59+0000\n"
+"PO-Revision-Date: 2026-11-22 14:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,9 +15,16 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: mail
-#: model:res.groups,name:mail.group_mail_notification_type_inbox
-msgid "Receive notifications in Viindoo"
+#. module: viin_brand_mail
+#: model:ir.module.module,description:base.module_viin_brand_mail
+msgid ""
+"\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
 msgstr ""
 
 #. module: viin_brand_mail
@@ -33,6 +40,11 @@ msgid ""
 "                minutes. If there are some addresses from which you need to receive very frequent\n"
 "                updates, you can however add them below and Viindoo will let them go through.\n"
 "            </p>"
+msgstr ""
+
+#. module: viin_brand_mail
+#: model:ir.module.module,summary:base.module_viin_brand_mail
+msgid "Debranding Mail Discuss for Viindoo"
 msgstr ""
 
 #. module: viin_brand_mail
@@ -68,8 +80,13 @@ msgid "By Emails"
 msgstr ""
 
 #. module: viin_brand_mail
+#: model:ir.model,name:viin_brand_mail.model_mail_call_artifact
+msgid "Call Artifact"
+msgstr ""
+
+#. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_res_company
-msgid "Companies"
+msgid "Company"
 msgstr ""
 
 #. module: viin_brand_mail
@@ -83,12 +100,19 @@ msgid "Delete Emails"
 msgstr ""
 
 #. module: viin_brand_mail
+#: model:ir.module.module,shortdesc:base.module_viin_brand_mail
+msgid "Discuss Debranding for Viindoo"
+msgstr ""
+
+#. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_call_artifact__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_gateway_allowed__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_mail__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_render_mixin__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_template__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_thread__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_company__display_name
@@ -99,7 +123,7 @@ msgstr ""
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_alias
-msgid "Email Aliases"
+msgid "Email Alias"
 msgstr ""
 
 #. module: viin_brand_mail
@@ -114,7 +138,7 @@ msgstr ""
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_template
-msgid "Email Templates"
+msgid "Email Template"
 msgstr ""
 
 #. module: viin_brand_mail
@@ -133,12 +157,22 @@ msgid "Email domain e.g. 'example.com' in 'viindoo@example.com'"
 msgstr ""
 
 #. module: viin_brand_mail
+#: model:ir.model.fields,help:viin_brand_mail.field_res_users__notification_type
+msgid ""
+"How notifications for document messages and system updates are delivered:\n"
+"- By email: Notifications are sent to your email address.\n"
+"- In Viindoo: Notifications appear in your Viindoo inbox."
+msgstr ""
+
+#. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_call_artifact__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_gateway_allowed__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_mail__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_render_mixin__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_template__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_thread__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_company__id
@@ -160,12 +194,6 @@ msgid "In Viindoo"
 msgstr ""
 
 #. module: viin_brand_mail
-#. odoo-javascript
-#: code:addons/viin_brand_mail/static/src/core/web/messaging_menu_patch.js:0
-msgid "Install Viindoo"
-msgstr ""
-
-#. module: viin_brand_mail
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_push_device__keys
 msgid ""
 "It's refer to browser keys used by the notification: \n"
@@ -177,6 +205,11 @@ msgstr ""
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_gateway_allowed
 msgid "Mail Gateway Allowed"
+msgstr ""
+
+#. module: viin_brand_mail
+#: model:ir.model,name:viin_brand_mail.model_mail_render_mixin
+msgid "Mail Render Mixin"
 msgstr ""
 
 #. module: viin_brand_mail
@@ -197,15 +230,7 @@ msgstr ""
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_mail
-msgid "Outgoing Mails"
-msgstr ""
-
-#. module: viin_brand_mail
-#: model:ir.model.fields,help:viin_brand_mail.field_res_users__notification_type
-msgid ""
-"Policy on how to handle Chatter notifications:\n"
-"- By Emails: notifications are sent to your email address\n"
-"- In Viindoo: notifications appear in your Viindoo Inbox"
+msgid "Outgoing Mail"
 msgstr ""
 
 #. module: viin_brand_mail
@@ -230,20 +255,13 @@ msgid ""
 msgstr ""
 
 #. module: viin_brand_mail
+#: model:ir.model.fields,help:viin_brand_mail.field_mail_compose_message__auto_delete
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_mail__auto_delete
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_template__auto_delete
 msgid ""
 "This option permanently removes any track of email after it's been sent, "
 "including from the Technical menu in the Settings, in order to preserve "
 "storage space of your Viindoo database."
-msgstr ""
-
-#. module: viin_brand_mail
-#: model:ir.model.fields,help:viin_brand_mail.field_mail_compose_message__auto_delete
-msgid ""
-"This option permanently removes any track of email after it's been "
-"sent,including from the Technical menu in the Settings, in order to preserve"
-" storage space of your Viindoo database."
 msgstr ""
 
 #. module: viin_brand_mail
@@ -267,4 +285,9 @@ msgstr ""
 #. module: viin_brand_mail
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail.email_compose_message_wizard_form
 msgid "e.g: \"info@mycompany.viindoo.com\""
+msgstr ""
+
+#. module: mail
+#: model:res.groups,name:mail.group_mail_notification_type_inbox
+msgid "Receive notifications in Viindoo"
 msgstr ""
