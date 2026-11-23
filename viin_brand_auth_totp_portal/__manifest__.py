@@ -2,11 +2,8 @@
     'name': "TOTPortal Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module TOTPortal",
 
-    'summary': """
-Theme branding Viindoo for module TOTPortal""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module TOTPortal
-""",
+    'summary': "Theme branding Viindoo for module TOTPortal",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module TOTPortal",
 
     'description': """
 What it does
@@ -35,9 +32,9 @@ Module này sẽ thay đổi giao diện module TOTPortal theo thương hiệu V
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_auth_totp_portal?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_auth_totp_portal?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -48,7 +45,7 @@ Module này sẽ thay đổi giao diện module TOTPortal theo thương hiệu V
     'data': [
         'views/templates.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

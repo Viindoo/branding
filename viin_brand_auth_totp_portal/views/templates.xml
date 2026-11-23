@@ -3,7 +3,7 @@
 	<template id="totp_portal_hook" name="TOTP Portal hook"
 		inherit_id="portal.portal_my_security">
 		<xpath expr="//section/h4/a" position="attributes">
-			<attribute name="href">https://viindoo.com/documentation/19.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
+			<attribute name="href">https://viindoo.com/documentation/20.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
 		</xpath>
 	</template>
 </odoo>
