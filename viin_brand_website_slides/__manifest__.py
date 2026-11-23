@@ -2,12 +2,9 @@
     'name': "eLearning Debranding for Viindoo",
     'name_vi_VN': "Làm lại nhận diện thương hiệu cho eLearning",
 
-    'summary': """
-Debranding eLearning for Viindoo""",
+    'summary': "Debranding eLearning for Viindoo",
 
-    'summary_vi_VN': """
-Làm lại màu sắc Phần mềm eLearning theo thương hiệu Viindoo
-        """,
+    'summary_vi_VN': "Làm lại màu sắc Phần mềm eLearning theo thương hiệu Viindoo",
 
     'description': """
 
@@ -26,15 +23,15 @@ Editions Supported
     """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_website_slides?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_website_slides?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
     'version': '0.1.2',
 
-    'depends': ['website_slides'],
+    'depends': ['website_slides', 'viin_brand'],
 
     'assets': {
         'web.assets_frontend': [
@@ -43,7 +40,6 @@ Editions Supported
     },
     'data': [
         'data/website_slides_templates_profile.xml',
-        'data/mail_templates.xml',
         'views/slide_slide_views.xml',
         'views/website_slides_templates.xml',
     ],
@@ -51,7 +47,7 @@ Editions Supported
         'data/slide_slide_demo.xml',
     ],
 
-    'installable': False,
+    'installable': True,
     'auto_install': ['website_slides'],
     'price': 0.0,
     'currency': 'EUR',

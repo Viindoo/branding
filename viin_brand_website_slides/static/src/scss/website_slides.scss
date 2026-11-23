@@ -1,6 +1,3 @@
-// Only tokens declared by core are used: this module depends on website_slides alone, so
-// tokens declared by other branding modules are undefined in this bundle.
-
 .o_wslides_channel_completion_progressbar .progress .progress-bar {
     background-color: $o-brand-primary;
 }
@@ -11,12 +8,15 @@
     padding: 10px
 }
 
-.o_wprofile_nav_tabs .nav-link:not(.active):hover {
-    background: $o-brand-secondary;
-}
+// Core sets the white label of these tabs from md up only, so the hover fill stops there too.
+@include media-breakpoint-up(md) {
+    .o_wprofile_nav_tabs .nav-link:not(.active):hover {
+        background: $o-viin-accent-text;
+    }
 
-.o_wslides_course_main .o_wslides_nav_tabs .nav-link:not(.active):hover {
-    background: $o-brand-secondary;
+    .o_wslides_course_main .o_wslides_nav_tabs .nav-link:not(.active):hover {
+        background: $o-viin-accent-text;
+    }
 }
 
 .o_wslides_course_header{
@@ -25,4 +25,8 @@
 
 .o_wslides_course_pict{
     border: none;
+}
+
+.o_wslides_quiz_modal .tooltip.bs-tooltip-top .tooltip-inner {
+    background-color: $o-brand-primary;
 }
