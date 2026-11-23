@@ -2,17 +2,14 @@
     'name': "Sign Up Debranding for Viindoo",
     'name_vi_VN': "Thương hiệu Viindoo cho mô-đun Đăng ký",
 
-    'summary': """
-Debranding Sign Up email templates for Viindoo""",
-    'summary_vi_VN': """
-Thay thế thương hiệu Odoo bằng Viindoo trong các mẫu email đăng ký
-""",
+    'summary': "Debranding Sign Up email templates for Viindoo",
+    'summary_vi_VN': "Thay thế thương hiệu Odoo bằng Viindoo trong các mẫu email đăng ký",
 
     'description': """
 What it does
 ============
-This module replaces Odoo branding with Viindoo in auth_signup email templates
-(new user invite, portal invite, password reset).
+This module replaces Odoo branding with Viindoo in the invitation email sent to a new user and in
+the welcome subtitle of the email sent when an account is created.
 
 Editions Supported
 ==================
@@ -24,8 +21,8 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ====================
-Mô-đun này thay thế thương hiệu Odoo bằng Viindoo trong các mẫu email đăng ký
-(mời người dùng mới, mời cổng thông tin, đặt lại mật khẩu).
+Mô-đun này thay thế thương hiệu Odoo bằng Viindoo trong email mời người dùng mới và trong tiêu đề
+phụ chào mừng của email gửi khi tài khoản được tạo.
 
 Ấn bản được Hỗ trợ
 ==================
@@ -35,9 +32,9 @@ Mô-đun này thay thế thương hiệu Odoo bằng Viindoo trong các mẫu em
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_auth_signup?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_auth_signup?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -47,9 +44,8 @@ Mô-đun này thay thế thương hiệu Odoo bằng Viindoo trong các mẫu em
 
     'data': [
         'data/mail_template_data.xml',
-        'data/auth_signup_templates_email.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
