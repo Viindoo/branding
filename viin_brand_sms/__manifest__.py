@@ -2,12 +2,8 @@
     'name': "SMS Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module SMS",
 
-    'summary': """
-This module makes SMS go through the Twilio account of the customer: Twilio is installed wherever
-SMS is.""",
-    'summary_vi_VN': """
-Mô-đun này đưa việc gửi SMS về tài khoản Twilio của khách hàng: Twilio được cài ở mọi nơi có SMS.
-""",
+    'summary': "This module makes SMS go through the Twilio account of the customer: Twilio is installed wherever SMS is.",
+    'summary_vi_VN': "Mô-đun này đưa việc gửi SMS về tài khoản Twilio của khách hàng: Twilio được cài ở mọi nơi có SMS.",
 
     'description': """
 What it does
@@ -35,9 +31,9 @@ Mô-đun này đưa việc gửi SMS về tài khoản Twilio của khách hàng
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_sms",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_sms",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     # 'demo_video_url': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     # 'demo_video_url_vi_VN': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     'support': "apps.support@viindoo.com",
@@ -57,8 +53,8 @@ Mô-đun này đưa việc gửi SMS về tài khoản Twilio của khách hàng
             'viin_brand_sms/static/tests/sms_widget_pricing_link.test.js',
         ],
     },
-    'installable': False,
-    # 'auto_install': ['sms'],  # TODO: Uncomment when upgrading module to production-ready status
+    'installable': True,
+    'auto_install': ['sms'],
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

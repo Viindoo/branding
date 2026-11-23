@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-inherit="sms.SmsWidget" t-inherit-mode="extension">
-        <xpath expr="//a[hasclass('fa-info-circle')]" position="replace"/>
+    <t t-inherit="sms.SmsCharCounter" t-inherit-mode="extension">
+        <xpath expr="//a[contains(@href, 'iap/sms/pricing')]" position="replace"/>
     </t>
 </templates>
