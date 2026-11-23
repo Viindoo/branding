@@ -3,34 +3,24 @@ import "@point_of_sale/app/utils/error_handlers";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { ConnectionLostError } from "@web/core/network/rpc";
 import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 
 // Mirrors "pos-offlineErrorHandler" of point_of_sale/static/src/app/utils/error_handlers.js, with
-// neutral wording.
+// the product name of the notice changed.
 function offlineErrorHandlerOverride(env, error, originalError) {
-    const candidateError = originalError || error;
-    const isOfflineFetchTypeError =
-        candidateError instanceof TypeError &&
-        /NetworkError when attempting to fetch resource/i.test(candidateError.message || "");
-
-    if (isOfflineFetchTypeError) {
-        return true;
-    }
-
+    const pos = useService("pos");
+    const dialog = useService("dialog");
     if (originalError instanceof ConnectionLostError) {
-        const network = env.services.pos?.data?.network;
-        if (!network) {
-            return true;
-        }
-        if (!network.warningTriggered) {
-            env.services.dialog.add(AlertDialog, {
+        if (!pos.data.network.warningTriggered) {
+            dialog.add(AlertDialog, {
                 title: _t("Connection Lost"),
                 body: _t(
-                    "Until the connection is back, Viindoo Point of Sale keeps working with limited features. Check your connection or continue with limited functionality."
+                    "Until the connection is reestablished, Viindoo Point of Sale will operate with limited functionality."
                 ),
                 confirmLabel: _t("Continue with limited functionality"),
             });
-            network.warningTriggered = true;
+            pos.data.network.warningTriggered = true;
         }
 
         return true;

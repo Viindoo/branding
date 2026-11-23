@@ -1,10 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from lxml import etree
+from lxml import etree, html
 
-from odoo.tests.common import HttpCase, TransactionCase, tagged
-from odoo.tools import file_open
-
-from .common import activate_frontend_lang
+from odoo.tests.common import TransactionCase, tagged
 
 BRAND_TERM = "Odoo"
 QR_CODE_FIELD = "point_of_sale_use_ticket_qr_code"
@@ -12,6 +9,8 @@ QR_CODE_FIELD = "point_of_sale_use_ticket_qr_code"
 CUSTOMER_DISPLAY_BUNDLE = "point_of_sale.customer_display_assets"
 LOGO_OVERRIDE = "viin_brand_pos/static/src/app/components/odoo_logo/odoo_logo.xml"
 CORE_LOGO = "point_of_sale/static/src/app/components/odoo_logo/odoo_logo.xml"
+DISPLAY_OVERRIDE = "viin_brand_pos/static/src/customer_display/customer_display.xml"
+CORE_DISPLAY = "point_of_sale/static/src/customer_display/customer_display.xml"
 
 
 @tagged("post_install", "-at_install")
@@ -35,24 +34,14 @@ class TestPosBrandHelp(TransactionCase):
 
 
 @tagged("post_install", "-at_install")
-class TestCustomerDisplayTranslations(HttpCase):
-
-    def test_customer_display_page_receives_this_module_translations(self):
-        activate_frontend_lang(self.env, "vi_VN")
-        modules = self.url_open("/website/translations?lang=vi_VN").json()["modules"]
-        self.assertTrue(modules.get("viin_brand_pos", {}).get("messages"), "this module's terms must be served")
-        self.assertIn("point_of_sale", modules, "the translations core already sends must be kept")
-
-
-@tagged("post_install", "-at_install")
 class TestCustomerDisplayAssets(TransactionCase):
 
     def _paths(self, bundle):
-        return [path for path, _full, _bundle, _mtime in
+        return [path.lstrip("/") for path, _full, _bundle, _mtime in
                 self.env["ir.asset"]._get_asset_paths(bundle=bundle, assets_params={})]
 
     def test_customer_display_bundle_swaps_the_logo_template_after_core(self):
-        paths = [p.lstrip("/") for p in self._paths(CUSTOMER_DISPLAY_BUNDLE)]
+        paths = self._paths(CUSTOMER_DISPLAY_BUNDLE)
         self.assertIn(CORE_LOGO, paths, "core must keep providing point_of_sale.OdooLogo on the customer display")
         self.assertIn(LOGO_OVERRIDE, paths, "the Viindoo logo extension must reach the customer display bundle")
         self.assertGreater(
@@ -60,21 +49,10 @@ class TestCustomerDisplayAssets(TransactionCase):
             "the extension must come after the template it extends",
         )
 
-    def test_customer_display_bundle_carries_the_iot_notice_replacement(self):
-        paths = [p.lstrip("/") for p in self._paths(CUSTOMER_DISPLAY_BUNDLE)]
-        self.assertIn("viin_brand_pos/static/src/customer_display/customer_display_data_service.js", paths)
-        self.assertIn(
-            "viin_brand_pos/static/src/customer_display/iot_notice.js", paths,
-            "the patch imports the wrapper: it must ship in the same bundle",
-        )
-
-    def test_core_customer_display_still_emits_the_message_the_notice_patch_replaces(self):
-        # The IoT notice swap matches core's message by equality, so it silently stops working
-        # the day core rewords it: this is the drift alarm.
-        core_message = ("Make sure there is an IoT Box subscription associated with your Odoo "
-                        "database, then restart the IoT Box.")
-        with file_open("point_of_sale/static/src/customer_display/customer_display_data_service.js") as f:
-            self.assertIn(core_message, f.read())
+    def test_customer_display_bundle_extends_the_idle_screen_after_core(self):
+        paths = self._paths(CUSTOMER_DISPLAY_BUNDLE)
+        self.assertIn(DISPLAY_OVERRIDE, paths, "the idle screen logo extension must reach the customer display")
+        self.assertGreater(paths.index(DISPLAY_OVERRIDE), paths.index(CORE_DISPLAY))
 
 
 @tagged("post_install", "-at_install")
@@ -112,8 +90,10 @@ class TestPosBundlesDebrandCoreWording(TransactionCase):
             self._paths("web.assets_backend"),
         )
 
-    def test_sales_details_report_title_fallback_does_not_name_odoo(self):
-        arch = self.env.ref("point_of_sale.pos_daily_sales_report_layout")._get_combined_arch()
-        titles = arch.xpath("//title")
-        self.assertEqual(len(titles), 1)
-        self.assertNotIn(BRAND_TERM, etree.tostring(titles[0], encoding="unicode"))
+    def _report_title(self, **values):
+        layout = self.env["ir.qweb"]._render("point_of_sale.pos_daily_sales_report_layout", values)
+        return html.fromstring(str(layout)).findtext(".//head/title")
+
+    def test_sales_details_report_title_is_the_title_of_the_report_else_names_no_odoo(self):
+        self.assertEqual(self._report_title(title="Sales of the day"), "Sales of the day")
+        self.assertNotIn(BRAND_TERM, self._report_title())

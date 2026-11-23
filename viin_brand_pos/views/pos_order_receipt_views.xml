@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="pos_order_receipt_footer" inherit_id="point_of_sale.pos_order_receipt_footer">
+        <xpath expr="//div[@name='footer_powered_by']" position="replace" mode="inner">
+            Powered by <strong>Viindoo</strong>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="customer_display_index" inherit_id="point_of_sale.customer_display_index">
+        <!-- Core declares a second title that holds the debug flag; the browser shows the first. -->
+        <xpath expr="//head/title[1]" position="replace" mode="inner">Viindoo PoS Customer Display</xpath>
+    </template>
+</odoo>

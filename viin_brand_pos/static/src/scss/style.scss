@@ -1,76 +1,20 @@
-.pos .oe_status .oe_green, .pos .oe_icon.oe_green{
-     color: rgb(94, 255, 55);
+// The POS takes its colours from the brand tokens of viin_brand: `$o-brand-primary` is the Viindoo
+// purple and `shade-color(..., 20%)` is the hover rung of the primary button.
+$o-viin-pos-header-border: shade-color($o-brand-primary, 20%);
+
+.pos .pos-rightheader > * {
+    border-right: 1px solid $o-viin-pos-header-border;
 }
 
-.pos .pos-rightheader > * ,
-.pos .pos-rightheader .header-button{
-    border-right: 1px solid $brand-primary-dark;
-}
-
-.pos .pos-rightheader .header-button:last-child{
-    border-left: 1px solid $brand-primary-dark;
-}
-
-.pos .pos-rightheader .header-button{
-    border-left: 1px solid $brand-primary-dark;
-}
-
-.pos .mode-button.selected-mode,
-.ticket-button.highlight,
-.ticket-button:hover,
-.pos .mode-button.selected-mode:hover,
-.cash-move-button:hover{
-    background: $brand-primary-darker;
-}
-
-.pos .product .product-info-button:hover{
-    background: lighten($o-enterprise-primary-color,5%);
-}
-
-.receipt-screen .default-view .actions .send-email button.send.highlight{
-    background-color: $primary;
-    opacity: 0.6;
-}
-
-.pos .pos-rightheader .header-button.confirm{
-    background: $danger;
-}
-
-.pos .oe_status .oe_red,
-.pos .oe_icon.oe_red{
-    color: $danger;
-}
-
-.pos .green-border-bottom{
-    border-bottom: solid$brand-primary 3px $brand-primary;
-}
-
-.pos .leftpane .pads{
-    border-top: solid 3px $brand-primary;
-}
-
-.pos .clientlist-screen .client-details{
-    border-bottom: solid 5px $brand-primary;
-}
-
-.payment-screen .paymentlines-empty .total{
-    color: $success;
-}
-
-[badge]:after{
-    background: $primary;
-}
-
-.pos .searchbox-client input:focus {
-    box-shadow: 0px 0px 0px 2px $brand-primary inset;
-    color: $brand-primary;
+.pos .leftpane .pads {
+    border-top: solid 3px $o-brand-primary;
 }
 
 .login-overlay {
     background: {
         size: cover;
         attachment: fixed;
-        color: var(--homeMenu-bg-color, #{$brand-primary});;
+        color: var(--homeMenu-bg-color, #{$o-brand-primary});
         image: var(--homeMenu-bg-image, url("/viin_brand/static/img/viindoo_backgound.png"));
     }
 }

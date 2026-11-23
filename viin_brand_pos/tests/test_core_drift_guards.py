@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 """This module restates a few core POS JS code paths with only the product name removed. Each guard
-reads the core 19.0 source and fails when the restated fragment changes, so the copy is revisited."""
+reads the core 20.0 source and fails when the restated fragment changes, so the copy is revisited."""
 import re
 
 from odoo.tests.common import TransactionCase, tagged
@@ -46,8 +46,9 @@ class TestCoreDriftGuards(TransactionCase):
                 }
             }""",
             """function rpcErrorHandler(env, error, originalError) {
+                const dialog = useService("dialog");
                 if (originalError instanceof RPCError) {
-                    handleRPCError(originalError, env.services.dialog);
+                    handleRPCError(originalError, dialog);
                     return true;
                 }
             }
@@ -58,26 +59,18 @@ class TestCoreDriftGuards(TransactionCase):
         self._assert_in_core(
             ERROR_HANDLERS,
             """export function offlineErrorHandler(env, error, originalError) {
-                const candidateError = originalError || error;
-                const isOfflineFetchTypeError =
-                    candidateError instanceof TypeError &&
-                    /NetworkError when attempting to fetch resource/i.test(candidateError.message || "");
-
-                if (isOfflineFetchTypeError) {
-                    return true;
-                }
-
+                const pos = useService("pos");
+                const dialog = useService("dialog");
                 if (originalError instanceof ConnectionLostError) {
-                    const network = env.services.pos?.data?.network;
-                    if (!network) {
-                        return true;
-                    }
-                    if (!network.warningTriggered) {
-                        env.services.dialog.add(AlertDialog, {
-                            title: _t("Connection Lost"),""",
-            """confirmLabel: _t("Continue with limited functionality"),
+                    if (!pos.data.network.warningTriggered) {
+                        dialog.add(AlertDialog, {
+                            title: _t("Connection Lost"),
+                            body: _t(
+                                "Until the connection is reestablished, Odoo Point of Sale will operate with limited functionality."
+                            ),
+                            confirmLabel: _t("Continue with limited functionality"),
                         });
-                        network.warningTriggered = true;
+                        pos.data.network.warningTriggered = true;
                     }
 
                     return true;
@@ -99,7 +92,8 @@ class TestCoreDriftGuards(TransactionCase):
                         {},
                         true
                     );
-                    this.props.cashMoves = this.props.cashMoves.filter((cashMove) => cashMove.id !== cm.id);
+                    this.cashMoves.set(this.cashMoves().filter((cashMove) => cashMove.id !== cm.id));
+                    this.props.onDelete(cm.id);
                 } catch (error) {
                     this.dialog.add(AlertDialog, {
                         title: _t("Odoo Server Error"),

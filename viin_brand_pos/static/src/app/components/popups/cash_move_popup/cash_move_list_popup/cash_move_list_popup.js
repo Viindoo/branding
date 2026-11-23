@@ -14,7 +14,8 @@ patch(CashMoveListPopup.prototype, {
                 {},
                 true
             );
-            this.props.cashMoves = this.props.cashMoves.filter((cashMove) => cashMove.id !== cm.id);
+            this.cashMoves.set(this.cashMoves().filter((cashMove) => cashMove.id !== cm.id));
+            this.props.onDelete(cm.id);
         } catch (error) {
             this.dialog.add(AlertDialog, {
                 title: _t("Viindoo Server Error"),

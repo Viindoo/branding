@@ -1,4 +1,3 @@
-/** @odoo-module **/
 /* global posmodel */
 
 // Proves the Viindoo logo renders on the SaverScreen: its ".pos-logo" div carries the "--navbar-logo"
@@ -10,7 +9,8 @@ import { registry } from "@web/core/registry";
 registry.category("web_tour.tours").add("ViinBrandPosSaverScreenLogoTour", {
     steps: () =>
         [
-            Chrome.startPoS(),
+            // The first load of the POS fetches every record of the shop: it outlasts the default step timeout.
+            Chrome.startPoS().map((step) => ({ ...step, timeout: 60000 })),
             {
                 trigger: "body",
                 run: () => posmodel.navigate("SaverScreen"),

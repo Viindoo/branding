@@ -1,13 +1,15 @@
-import base64
-
 from odoo import api, models
 from odoo.tools import file_open
+from odoo.tools.binary import BinaryBytes
 
 DEMO_PRODUCT_XMLID = 'point_of_sale.product_odoo_sneakers'
 # Plain lookup key: the name the clothes scenario gives to its sneakers.
 CORE_DEMO_PRODUCT_NAME = 'Odoo Sneakers'
 DEMO_PRODUCT_NAME = 'Sneakers'
 DEMO_PRODUCT_IMAGE = 'viin_brand_pos/static/img/product_sneakers.png'
+# Plain lookup keys: the name core gives to the partner of the closing entries, and the one it has here.
+CORE_CLOSING_PARTNER_NAME = 'Odoo POS'
+CLOSING_PARTNER_NAME = 'Viindoo POS'
 
 
 class PosConfig(models.Model):
@@ -17,6 +19,12 @@ class PosConfig(models.Model):
         result = super()._load_onboarding_clothes_demo_data(with_demo_data)
         self._debrand_clothes_scenario()
         return result
+
+    def _get_or_create_default_partner(self):
+        partner = super()._get_or_create_default_partner()
+        if partner.name == CORE_CLOSING_PARTNER_NAME:
+            partner.name = CLOSING_PARTNER_NAME
+        return partner
 
     @api.model
     def _debrand_clothes_scenario(self):
@@ -29,6 +37,6 @@ class PosConfig(models.Model):
         product = self.env.ref(DEMO_PRODUCT_XMLID, raise_if_not_found=False)
         if product and product.name == CORE_DEMO_PRODUCT_NAME:
             with file_open(DEMO_PRODUCT_IMAGE, 'rb') as image:
-                product.write({'name': DEMO_PRODUCT_NAME, 'image_1920': base64.b64encode(image.read())})
+                product.write({'name': DEMO_PRODUCT_NAME, 'image_1920': BinaryBytes(image.read())})
         if product and product.name == DEMO_PRODUCT_NAME:
             self.env['ir.module.module']._reapply_noupdate_translations('viin_brand_pos')
