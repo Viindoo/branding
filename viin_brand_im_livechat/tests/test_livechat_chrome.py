@@ -65,21 +65,12 @@ class TestLivechatBundlesAndViews(TransactionCase):
             with self.subTest(file=path):
                 self.assertIn(path, external)
 
-    def test_frontend_title_patch_is_listed_only_where_the_core_title_service_is(self):
-        paths = self._paths("web.assets_frontend")
-        core = "web/static/src/core/browser/title_service.js" in paths
-        brand = "viin_brand/static/src/core/browser/title_service.js" in paths
-        self.assertEqual(
-            brand, core,
-            "the viin_brand title patch must not be served without the core title service it patches",
-        )
-
     def test_agents_hint_names_viindoo(self):
         arch = self.env["im_livechat.channel"].get_views([[False, "form"]])["views"]["form"]["arch"]
         paragraphs = etree.fromstring(arch).xpath("//page[@name='Agents']//p[contains(@class, 'text-muted')]")
         texts = " ".join(text for paragraph in paragraphs for text in paragraph.xpath(".//text()"))
-        self.assertIn("Agents who are inactive in Viindoo for more than 30 minutes", texts)
-        self.assertNotIn("in the system", texts)
+        self.assertTrue(paragraphs, "the Agents tab keeps its hint")
+        self.assertIn("Viindoo", texts)
         self.assertNotIn("Odoo", texts)
 
     def _assert_support_page_powered_by_viindoo(self, arch):

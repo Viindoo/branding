@@ -2,12 +2,9 @@
     'name': "Live Chat Debranding for Viindoo",
     'name_vi_VN': "Làm lại nhận diện thương hiệu cho Live Chat",
 
-    'summary': """
-Debranding Live Chat for Viindoo""",
+    'summary': "Debranding Live Chat for Viindoo",
 
-    'summary_vi_VN': """
-Làm lại màu sắc Live Chat theo thương hiệu Viindoo
-        """,
+    'summary_vi_VN': "Làm lại màu sắc Live Chat theo thương hiệu Viindoo",
 
     'description': """
 
@@ -26,9 +23,9 @@ Editions Supported
     """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_im_livechat?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_im_livechat?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -41,11 +38,6 @@ Editions Supported
         'data/im_livechat_support_bot_demo.xml',
     ],
     'assets': {
-        # im_livechat's embed drops core's title service from the frontend bundles that include it,
-        # so the title patch of viin_brand that web.assets_frontend lists goes with it.
-        'web.assets_frontend': [
-            ('remove', 'viin_brand/static/src/core/browser/title_service.js'),
-        ],
         'web.assets_backend': [
             ('after', 'im_livechat/static/src/core/web/livechat_channel_info_list.scss',
              'viin_brand_im_livechat/static/src/core/web/livechat_channel_info_list.scss'),
@@ -84,7 +76,7 @@ Editions Supported
         'views/im_livechat_channel_views.xml',
     ],
     'post_init_hook': 'post_init_hook',
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

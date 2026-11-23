@@ -2,21 +2,25 @@
 <odoo>
     <data>
         <!-- Override "Odoo" Welcome Bot demo chatbot -->
-        <record id="im_livechat.welcome_bot_operator_partner_demo" model="res.partner">
+        <record id="im_livechat.welcome_bot_operator_partner_demo" model="res.partner" context="{'mail_notrack': True}">
             <field name="name">Viindoo</field>
-            <field name="image_1920" type="base64" file="viin_brand/static/img/viin_assistant.png"/>
+            <field name="image_1920" type="bytes" file="viin_brand/static/img/viin_assistant.png"/>
         </record>
+        <!-- The rename is branding, not a change a user made: no history line on the partner. Stored fields computed
+             from the name are recomputed at the next flush, in the environment that flushes, so they are flushed
+             here, in the untracked context. -->
+        <function model="res.partner" name="flush_model" eval="[[]]" context="{'mail_notrack': True}"/>
         <record id="im_livechat.chatbot_script_welcome_bot_demo" model="chatbot.script">
             <field name="title">Viindoo</field>
-            <field name="image_1920" type="base64" file="viin_brand/static/img/viin_assistant.png"/>
+            <field name="image_1920" type="bytes" file="viin_brand/static/img/viin_assistant.png"/>
         </record>
 
         <!-- Override "Support Bot" demo chatbot -->
         <record id="im_livechat.support_bot_operator_partner_demo" model="res.partner">
-            <field name="image_1920" type="base64" file="viin_brand/static/img/viin_assistant.png"/>
+            <field name="image_1920" type="bytes" file="viin_brand/static/img/viin_assistant.png"/>
         </record>
         <record id="im_livechat.chatbot_script_support_bot_demo" model="chatbot.script">
-            <field name="image_1920" type="base64" file="viin_brand/static/img/viin_assistant.png"/>
+            <field name="image_1920" type="bytes" file="viin_brand/static/img/viin_assistant.png"/>
         </record>
     </data>
 </odoo>

@@ -11,6 +11,13 @@
 			<xpath expr="//page[@name='configuration_widget']//separator[1]" position="attributes">
 				<attribute name="string">FOR WEBSITES BUILT WITH VIINDOO</attribute>
 			</xpath>
+			<!-- The reset buttons restore the colours the channel is created with. -->
+			<xpath expr="//widget[@name='colors_reset_button'][contains(@options, 'button_background_color')]" position="attributes">
+				<attribute name="options">{'default_colors': {'button_background_color': '#7F4282', 'button_text_color': '#FFFFFF'}}</attribute>
+			</xpath>
+			<xpath expr="//widget[@name='colors_reset_button'][contains(@options, 'header_background_color')]" position="attributes">
+				<attribute name="options">{'default_colors': {'header_background_color': '#7F4282', 'title_color': '#FFFFFF'}}</attribute>
+			</xpath>
 	    </field>
 	</record>
 </odoo>
