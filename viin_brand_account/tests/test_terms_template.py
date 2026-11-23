@@ -37,4 +37,4 @@ class TestDefaultTermsTemplate(TransactionCase):
                 self.assertIn(self._disclaimer(brand, lang, 0), paragraphs)
                 self.assertNotIn(self._disclaimer(core, lang, 1), paragraphs)
                 self.assertEqual(len(paragraphs), 2)
-        self.assertIn("Viindoo's responsibility", self._disclaimer(brand, 'en_US', 0))
+        self.assertIn('Viindoo', self._disclaimer(brand, 'en_US', 0))

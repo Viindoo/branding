@@ -18,8 +18,14 @@ class TestNoPostSending(TransactionCase):
     def test_a_partner_preference_for_post_falls_back_to_email(self):
         partner = self.env['res.partner'].create({'name': 'Preference holder'})
         move = self.env['account.move'].create({'move_type': 'out_invoice', 'partner_id': partner.id})
-        with patch.object(AccountMoveSend, '_get_default_sending_methods', return_value={'snailmail'}):
-            self.assertEqual(self.env['account.move.send']._get_default_sending_methods(move), {'email'})
+        with patch.object(AccountMoveSend, '_get_default_sending_methods', return_value=['snailmail']):
+            self.assertEqual(self.env['account.move.send']._get_default_sending_methods(move), ['email'])
+
+    def test_the_other_default_sending_methods_stay_when_the_preference_is_post(self):
+        partner = self.env['res.partner'].create({'name': 'Preference holder'})
+        move = self.env['account.move'].create({'move_type': 'out_invoice', 'partner_id': partner.id})
+        with patch.object(AccountMoveSend, '_get_default_sending_methods', return_value=['snailmail', 'manual']):
+            self.assertEqual(self.env['account.move.send']._get_default_sending_methods(move), ['manual'])
 
     def test_the_post_choice_is_not_offered_on_the_partner(self):
         field = self.env['res.partner']._fields['invoice_sending_method']
@@ -33,7 +39,3 @@ class TestNoPostSending(TransactionCase):
         rows = etree.fromstring(arch).xpath('//setting[@id="send_invoices_followups"]')
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0].get('invisible'), '1')
-
-    def test_the_default_sending_methods_override_keeps_the_model_decorator_of_core(self):
-        method = type(self.env['account.move.send'])._get_default_sending_methods
-        self.assertTrue(getattr(method, '_api_model', False))

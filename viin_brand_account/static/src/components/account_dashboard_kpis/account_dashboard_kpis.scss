@@ -1,0 +1,6 @@
+// The row of the KPI cards of the invoicing dashboard sits flush against the control panel: core gives
+// its wrapper a bottom margin of the kanban record margin and none on top, at every width. It takes
+// the same margin on top, from the same token, so the gap above the row is the one below it.
+.o_account_dashboard_kpis_wrapper {
+    margin-top: $o-kanban-record-margin;
+}

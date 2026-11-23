@@ -2,11 +2,8 @@
     'name': "Invoicing Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Invoicing",
 
-    'summary': """
-Theme branding Viindoo for module Invoicing""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module Invoicing
-""",
+    'summary': "Theme branding Viindoo for module Invoicing",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module Invoicing",
 
     'description': """
 What it does
@@ -33,9 +30,9 @@ Module này sẽ thay đổi giao diện module Invoicing theo thương hiệu V
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_account?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_account?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -44,8 +41,6 @@ Module này sẽ thay đổi giao diện module Invoicing theo thương hiệu V
     'depends': ['account', 'viin_brand', 'viin_brand_digest'],
 
     'data': [
-        'data/digest_data.xml',
-        'data/mail_template_data.xml',
         'views/account_move_views.xml',
         'views/account_bank_statement_views.xml',
         'views/partner_view.xml',
@@ -54,7 +49,14 @@ Module này sẽ thay đổi giao diện module Invoicing theo thương hiệu V
         'views/report_statement.xml',
         'views/terms_template.xml',
     ],
-    'installable': False,
+    'assets': {
+        'web.assets_backend': [
+            # Same specificity as core's rules: it wins on source position, at every width.
+            ('after', 'account/static/src/components/account_dashboard_kpis/account_dashboard_kpis.scss',
+             'viin_brand_account/static/src/components/account_dashboard_kpis/account_dashboard_kpis.scss'),
+        ],
+    },
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
