@@ -2,11 +2,8 @@
     'name': "OAuth2 Authentication Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module OAuth2 Authentication",
 
-    'summary': """
-Theme branding Viindoo for module OAuth2 Authentication""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module OAuth2 Authentication
-""",
+    'summary': "Theme branding Viindoo for module OAuth2 Authentication",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module OAuth2 Authentication",
 
     'description': """
 What it does
@@ -33,9 +30,9 @@ Module này sẽ thay đổi giao diện module OAuth2 Authentication theo thư�
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_auth_oauth?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_auth_oauth?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -46,7 +43,7 @@ Module này sẽ thay đổi giao diện module OAuth2 Authentication theo thư�
     'data': [
         'data/auth_oauth_data.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
