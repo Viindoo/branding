@@ -4,6 +4,7 @@
     <template id="card_campaign_preview" inherit_id="marketing_card.card_campaign_preview">
         <xpath expr="//footer//a" position="attributes">
             <attribute name="href">https://viindoo.com?utm_source=db&amp;utm_medium=auth</attribute>
+            <attribute name="style">color: #7F4282;</attribute>
         </xpath>
         <xpath expr="//footer//a" position="replace" mode="inner">Viindoo</xpath>
     </template>
