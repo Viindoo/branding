@@ -31,5 +31,5 @@ class TestFaviconSettingTranslation(NoupdateTranslationCase):
                 english = field.with_context(lang='en_US')[field_name]
                 self.assertEqual(
                     self.translated(field, field_name),
-                    self.catalog_translation('website', english, xmlid),
+                    self.catalog_translation('website', english, xmlid, core=True),
                 )

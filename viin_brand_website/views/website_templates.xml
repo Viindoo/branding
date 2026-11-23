@@ -1,9 +1,8 @@
 <odoo>
     <template id="show_website_info"
         inherit_id="website.show_website_info">
-        <xpath
-	        expr="//h1/small" position="replace">
-	        <small>Viindoo Version <t t-out="version.get('server_version')"/></small>
+        <xpath expr="//h1/small" position="replace" mode="inner">
+            Viindoo Version <t t-out="version.get('server_version')"/>
         </xpath>
         <xpath expr="//section/p[1]" position="replace">
             <p>
@@ -12,7 +11,8 @@
         </xpath>
         <!-- Chart of account and l10n app -->
         <xpath expr="//div[@t-if='l10n']/dl/dt/a" position="attributes">
-            <attribute name="t-attf-href">https://viindoo.com/intro/accounting</attribute>
+            <attribute name="t-att-href"/>
+            <attribute name="href">https://viindoo.com/intro/accounting</attribute>
         </xpath>
     </template>
 
@@ -46,7 +46,8 @@
             session_id (Viindoo)<br/>
         </xpath>
         <xpath expr="//tbody/tr[2]/td[3]" position="replace" mode="inner">
-            frontend_lang (Viindoo)
+            frontend_lang (Viindoo)<br/>
+            tz (Viindoo)
         </xpath>
         <xpath expr="//tbody/tr[3]/td[3]" position="replace" mode="inner">
             im_livechat_previous_operator (Viindoo)<br/>

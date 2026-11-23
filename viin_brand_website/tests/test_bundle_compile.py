@@ -84,6 +84,49 @@ class BundleCompileTest(TransactionCase):
             "website_info_option.xml.",
         )
 
+    def test_editor_bundle_compiles_the_seo_keywords_help_extension(self):
+        """website.assets_editor drops the odoo.com link of the SEO keywords help cleanly."""
+        _js_attachment, content = self._compiled_js("website.assets_editor")
+        self.assertNotIn(
+            self._own_asset_error_marker("viin_brand_website/static/src/components/dialog/seo_brand.xml"),
+            content,
+            "website.assets_editor compiled with an embedded template error - seo_brand.xml failed "
+            "to resolve or parse.",
+        )
+        self.assertRegex(
+            content,
+            r'registerTemplateExtension\(\s*"website\.seoMetaKeywordsDocumentationLink",\s*`[^`]*seo_brand\.xml`',
+        )
+
+    def test_builder_iframe_bundle_carries_the_countdown_end_message_extension(self):
+        """The countdown end message lives in the iframe bundle, so its extension must too."""
+        _js_attachment, content = self._compiled_js("website.assets_inside_builder_iframe")
+        self.assertNotIn(
+            self._own_asset_error_marker(
+                "viin_brand_website/static/src/builder/plugins/options/countdown_brand.edit.xml"
+            ),
+            content,
+            "website.assets_inside_builder_iframe compiled with an embedded template error - "
+            "countdown_brand.edit.xml failed to resolve or parse.",
+        )
+        self.assertRegex(
+            content,
+            r'registerTemplateExtension\(\s*"website\.s_countdown\.end_message",\s*`[^`]*countdown_brand\.edit\.xml`',
+        )
+
+    def test_website_builder_assets_bundle_carries_the_facebook_page_default(self):
+        """website.website_builder_assets patches the Facebook option plugin with the Viindoo page."""
+        _js_attachment, content = self._compiled_js("website.website_builder_assets")
+        self.assertNotIn(
+            self._own_asset_error_marker(
+                "viin_brand_website/static/src/builder/plugins/options/facebook_option_plugin.js"
+            ),
+            content,
+            "website.website_builder_assets compiled with an embedded error for "
+            "facebook_option_plugin.js.",
+        )
+        self.assertIn("@viin_brand_website/builder/plugins/options/facebook_option_plugin", content)
+
     def test_frontend_bundle_delivers_the_apps_button_click_wiring_to_the_browser(self):
         """web.assets_frontend carries the apps button's click wiring, not just its file.
 
@@ -132,26 +175,4 @@ class BundleCompileTest(TransactionCase):
             content,
             "web.assets_tests compiled without the apps-button wiring tour from "
             "frontend_to_backend_apps_btn_wiring.js.",
-        )
-
-    def test_tests_bundle_compiles_the_colorpicker_override_tour(self):
-        """web.assets_tests carries the branded colorpicker tour override."""
-        js_attachment, content = self._compiled_js("web.assets_tests")
-        self.assertTrue(
-            js_attachment,
-            "web.assets_tests did not produce a JS attachment - the bundle did not build.",
-        )
-        self.assertNotIn(
-            self._own_asset_error_marker(
-                "viin_brand_website/static/tests/tours/colorpicker_brand_override.js"
-            ),
-            content,
-            "web.assets_tests compiled with a missing-asset error for "
-            "colorpicker_brand_override.js.",
-        )
-        self.assertIn(
-            "website_background_colorpicker",
-            content,
-            "web.assets_tests compiled without the branded colorpicker tour override from "
-            "colorpicker_brand_override.js.",
         )

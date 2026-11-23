@@ -26,16 +26,13 @@ registry.category("web_tour.tours").add("viin_brand_website_frontend_to_backend_
             run: "click",
         },
         {
-            content:
-                "The icon swapped to a dedicated pending-spinner child; the anchor's own " +
-                "static glyph class is gone",
+            content: "The icon of the button turned into the spinning pending icon",
             trigger:
-                ".o_frontend_to_backend_apps_btn:not(.fa-th) > " +
-                ".o_viin_apps_btn_spinner.fa-circle-o-notch.fa-spin",
+                ".o_frontend_to_backend_apps_btn > i.oi.oi-spin[data-icon='progress_activity']",
         },
         {
-            content: "The anchor itself never carries fa-spin, only the child spinner does",
-            trigger: ".o_frontend_to_backend_apps_btn:not(.fa-spin)",
+            content: "The anchor itself never spins, only its icon does",
+            trigger: ".o_frontend_to_backend_apps_btn:not(.oi-spin)",
         },
     ],
 });

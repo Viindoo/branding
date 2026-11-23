@@ -1,40 +1,29 @@
-import "@website/builder/plugins/options/facebook_option_plugin";
+import { FacebookOptionPlugin } from "@website/builder/plugins/options/facebook_option_plugin";
 import { getCommonAncestor } from "@html_editor/utils/dom_traversal";
-import { registry } from "@web/core/registry";
+import { VIINDOO_SOCIAL_LINKS } from "@viin_brand/core/social_links/viindoo_social_links";
 import { patch } from "@web/core/utils/patch";
-
-export const DEFAULT_FACEBOOK_PAGE = "https://www.facebook.com/Viindoo";
-
-const FacebookOptionPlugin = registry.category("website-plugins").get("facebookOption");
 
 patch(FacebookOptionPlugin.prototype, {
     /**
-     * Fill the Facebook blocks that have no page yet with the website's own Facebook page,
-     * falling back to the Viindoo page.
-     *
-     * Mirrors `loadAndSetEmptyLink` of the core plugin: its fallback page is a literal inside the
-     * method, so the method is re-declared here.
+     * A Facebook block without a page takes the Facebook page of the website's company, else the
+     * Viindoo page, in place of the Odoo page core falls back to. The first fill goes through the
+     * same observer and notification path as core's own first fill.
      */
     async loadAndSetEmptyLink(nodes) {
         if (this.facebookUrl) {
-            this.setEmptyLink(nodes);
-            return;
+            return super.loadAndSetEmptyLink(nodes);
         }
-        const res = await this.services.orm.read(
-            "website",
-            [this.services.website.currentWebsite.id],
+        const [company] = await this.services.orm.read(
+            "res.company",
+            [this.services.website.currentWebsite.company_id],
             ["social_facebook"]
         );
-        if (res) {
-            this.facebookUrl = res[0].social_facebook || DEFAULT_FACEBOOK_PAGE;
-            const hasChanged = this.dependencies.history.ignoreDOMMutations(() =>
-                this.setEmptyLink(nodes)
-            );
-            if (hasChanged) {
-                const commonAncestor = getCommonAncestor(nodes, this.editable);
-                this.dispatchTo("content_manually_updated_handlers", commonAncestor);
-                this.config.onChange({ isPreviewing: false });
-            }
+        this.facebookUrl = company?.social_facebook || VIINDOO_SOCIAL_LINKS.social_facebook;
+        const hasChanged = this.dependencies.domObserver.ignore(() => this.setEmptyLink(nodes));
+        if (hasChanged) {
+            const commonAncestor = getCommonAncestor(nodes, this.editable);
+            this.trigger("on_content_manually_updated_handlers", commonAncestor);
+            this.config.onChange({ isPreviewing: false });
         }
     },
 });

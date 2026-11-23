@@ -58,10 +58,32 @@
         </xpath>
     </template>
 
-    <!-- The block picker shows a generic feed mockup, not a profile of another company. -->
+    <!-- The Facebook preview shows the Viindoo page until the block takes the page of the website's company. -->
+    <template id="s_facebook_page" inherit_id="website.s_facebook_page">
+        <xpath expr="//iframe[hasclass('o_facebook_page_preview')]" position="attributes">
+            <attribute name="src">https://www.facebook.com/plugins/page.php?height=500&amp;hide_cover=false&amp;href=https%3A%2F%2Fwww.facebook.com%2FViindoo&amp;show_facepile=false&amp;small_header=false&amp;tabs=timeline%2Cevents%2Cmessages&amp;width=500</attribute>
+        </xpath>
+    </template>
+
+    <template id="s_cta_centered" inherit_id="website.s_cta_centered">
+        <xpath expr="//h2" position="replace" mode="inner">
+            Join the companies that grow <br/>their business with us.
+        </xpath>
+    </template>
+
+    <!-- The block picker and the drag ghost show generic feed mockups, not the profile of another company. -->
     <template id="snippets" inherit_id="website.snippets">
-        <xpath expr="//t[@t-snippet='website.s_instagram_page']" position="attributes">
+        <xpath expr="//t[@t-snippet='website.s_instagram_page'][@t-image-preview]" position="attributes">
             <attribute name="t-image-preview">/viin_brand_website/static/src/img/s_instagram_preview.webp</attribute>
+        </xpath>
+        <xpath expr="//t[@t-snippet='website.s_instagram_page'][@t-drag-image-preview]" position="attributes">
+            <attribute name="t-drag-image-preview">/viin_brand_website/static/src/img/s_instagram_preview.webp</attribute>
+        </xpath>
+        <xpath expr="//t[@t-snippet='website.s_facebook_page'][@t-image-preview]" position="attributes">
+            <attribute name="t-image-preview">/viin_brand_website/static/src/img/s_facebook_preview.webp</attribute>
+        </xpath>
+        <xpath expr="//t[@t-snippet='website.s_facebook_page'][@t-drag-image-preview]" position="attributes">
+            <attribute name="t-drag-image-preview">/viin_brand_website/static/src/img/s_facebook_preview.webp</attribute>
         </xpath>
     </template>
 

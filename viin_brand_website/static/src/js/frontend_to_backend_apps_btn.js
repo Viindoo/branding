@@ -1,9 +1,10 @@
 const APPS_BTN_SELECTOR = ".o_frontend_to_backend_apps_btn";
-const APPS_BTN_STATIC_ICON_CLASS = "fa-th";
+const APPS_BTN_ICON_SELECTOR = "i.oi";
+const APPS_BTN_PENDING_ICON = "progress_activity";
 
-// Identifies this spinner without relying on the shared fa-circle-o-notch/fa-spin classes, which
-// other spinners on the page also carry.
-export const APPS_BTN_SPINNER_MARKER_CLASS = "o_viin_apps_btn_spinner";
+// Holds the icon the button shows when idle while it shows the pending one; its presence also tells
+// that the button is pending.
+export const APPS_BTN_IDLE_ICON_ATTR = "data-viin-idle-icon";
 
 /**
  * A modifier-held or non-primary-button click opens the target in a new tab (or does not
@@ -13,29 +14,27 @@ export function isNewTabClick(ev) {
     return Boolean(ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey || ev.button !== 0);
 }
 
-// The spinner is a dedicated child: the anchor is a flex box, so fa-spin on the anchor itself
-// would rotate the whole button instead of the icon. Idempotent, so a second click before the
-// reset adds no second spinner.
+// The anchor is a flex box: the spin class goes on its icon child, never on the anchor itself, or
+// the whole button would rotate. Idempotent, so a second click before the reset keeps the idle icon.
 export function markAppsBtnPending(el) {
-    if (el.querySelector(`.${APPS_BTN_SPINNER_MARKER_CLASS}`)) {
+    const iconEl = el.querySelector(APPS_BTN_ICON_SELECTOR);
+    if (!iconEl || iconEl.hasAttribute(APPS_BTN_IDLE_ICON_ATTR)) {
         return;
     }
-    el.classList.remove(APPS_BTN_STATIC_ICON_CLASS);
-    const spinnerEl = document.createElement("i");
-    spinnerEl.classList.add("fa", "fa-circle-o-notch", "fa-spin", APPS_BTN_SPINNER_MARKER_CLASS);
-    spinnerEl.setAttribute("role", "img");
-    spinnerEl.setAttribute("aria-label", "Loading");
-    spinnerEl.setAttribute("title", "Loading");
-    el.appendChild(spinnerEl);
+    iconEl.setAttribute(APPS_BTN_IDLE_ICON_ATTR, iconEl.dataset.icon);
+    iconEl.dataset.icon = APPS_BTN_PENDING_ICON;
+    iconEl.classList.add("oi-spin");
 }
 
-// Safe on a button that was never clicked: a bfcache pageshow can fire with no spinner present.
+// Safe on a button that was never clicked: a bfcache pageshow can fire with no pending icon.
 export function resetAppsBtnIcon(el) {
-    const spinnerEl = el.querySelector(`.${APPS_BTN_SPINNER_MARKER_CLASS}`);
-    if (spinnerEl) {
-        spinnerEl.remove();
+    const iconEl = el.querySelector(APPS_BTN_ICON_SELECTOR);
+    if (!iconEl?.hasAttribute(APPS_BTN_IDLE_ICON_ATTR)) {
+        return;
     }
-    el.classList.add(APPS_BTN_STATIC_ICON_CLASS);
+    iconEl.dataset.icon = iconEl.getAttribute(APPS_BTN_IDLE_ICON_ATTR);
+    iconEl.removeAttribute(APPS_BTN_IDLE_ICON_ATTR);
+    iconEl.classList.remove("oi-spin");
 }
 
 /**
@@ -57,7 +56,7 @@ document.addEventListener("click", onAppsBtnClick);
 document.addEventListener("auxclick", onAppsBtnClick);
 
 window.addEventListener("pageshow", (ev) => {
-    // Only a bfcache restore keeps the DOM, and the spinner, from before the page was left.
+    // Only a bfcache restore keeps the DOM, and the pending icon, from before the page was left.
     if (!ev.persisted) {
         return;
     }
