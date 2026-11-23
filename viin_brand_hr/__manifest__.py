@@ -2,11 +2,8 @@
     'name': "Employees Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Employees",
 
-    'summary': """
-Theme branding Viindoo for module Employees""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module Employees
-""",
+    'summary': "Theme branding Viindoo for module Employees",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module Employees",
 
     'description': """
 
@@ -33,23 +30,26 @@ Module này sẽ thay đổi giao diện module Employees theo thương hiệu V
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_hr?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_hr?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
     'version': '0.1.2',
 
-    'depends': ['hr'],
+    'depends': ['hr', 'viin_brand'],
 
     'demo': [
         'data/hr_demo.xml',
     ],
-    'data': [
-        'views/hr_department_views.xml',
-    ],
-    'installable': False,
+    'assets': {
+        'web.assets_backend': [
+            # Same specificity as core's rule: it wins on source position.
+            ('after', 'hr/static/src/scss/hr.scss', 'viin_brand_hr/static/src/scss/hr.scss'),
+        ],
+    },
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

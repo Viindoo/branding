@@ -1,0 +1,7 @@
+// The "absent" dot of the employee presence widget: core paints it with the warning fill
+// ($warning, #FFCC32), 1.51:1 on white. It takes the same amber as the "away" presence glyph of
+// Discuss ($o-viin-status-away), 3.90:1 on white; the dark scheme resolves that token to the
+// warning fill, so the dot keeps its colour there.
+.o_icon_employee_absent {
+    color: $o-viin-status-away;
+}

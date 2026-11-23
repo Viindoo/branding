@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:48+0000\n"
-"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"POT-Creation-Date: 2026-11-22 02:30+0000\n"
+"PO-Revision-Date: 2026-11-22 02:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,27 +15,35 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: hr
-#: model_terms:ir.actions.act_window,help:hr.hr_department_tree_action
+#. module: viin_brand_hr
+#: model:ir.module.module,description:base.module_viin_brand_hr
 msgid ""
-"Viindoo's department structure is used to manage all documents\n"
-"                    related to employees by departments: expenses, timesheets,\n"
-"                    leaves, recruitments, etc."
+"\n"
+"\n"
+"What it does\n"
+"============\n"
+"This module will change color navigate bar, button and logo,v.v in module Employees following Viindoo's brand\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
 msgstr ""
-"Cấu trúc phòng ban của phần mềm được sử dụng để quản lý tất cả các tài liệu\n"
-"                    liên quan đến nhân viên theo phòng ban: chi phí, bảng giờ công,\n"
-"                    nghỉ phép, tuyển dụng, v.v."
+"\n"
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này thay đổi màu thanh điều hướng, nút, logo,... trong phân hệ Nhân viên theo thương hiệu Viindoo\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
 
-#. module: hr
-#: model_terms:ir.actions.act_window,help:hr.hr_department_kanban_action
-msgid ""
-"Viindoo's department structure is used to manage all documents\n"
-"                related to employees by departments: expenses, timesheets,\n"
-"                time off, recruitments, etc."
-msgstr ""
-"Cấu trúc phòng ban của phần mềm được sử dụng để quản lý tất cả các tài liệu\n"
-"                    liên quan đến nhân viên theo phòng ban: chi phí, bảng giờ công,\n"
-"                    nghỉ phép, tuyển dụng, v.v."
+#. module: viin_brand_hr
+#: model:ir.module.module,summary:base.module_viin_brand_hr
+msgid "Theme branding Viindoo for module Employees"
+msgstr "Giao diện brand Viindoo cho module Employees"
 
 #. module: viin_brand_hr
 #: model:ir.model.fields,field_description:viin_brand_hr.field_hr_employee__display_name
@@ -46,6 +54,11 @@ msgstr "Tên hiển thị"
 #: model:ir.model,name:viin_brand_hr.model_hr_employee
 msgid "Employee"
 msgstr "Nhân viên"
+
+#. module: viin_brand_hr
+#: model:ir.module.module,shortdesc:base.module_viin_brand_hr
+msgid "Employees Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Nhân viên"
 
 #. module: viin_brand_hr
 #: model:ir.model.fields,field_description:viin_brand_hr.field_hr_employee__id
