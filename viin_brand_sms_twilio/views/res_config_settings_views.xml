@@ -8,6 +8,7 @@
             <xpath expr="//field[@name='sms_provider']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
+            <!-- sms_provider is always invisible: the Twilio block below is always shown, so the provider radio has nothing to switch. -->
             <xpath expr="//div[hasclass('content-group')][button[@name='action_open_sms_twilio_account_manage']]" position="attributes">
                 <attribute name="invisible"/>
             </xpath>

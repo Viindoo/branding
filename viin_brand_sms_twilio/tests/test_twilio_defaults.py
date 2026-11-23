@@ -1,7 +1,10 @@
+from types import SimpleNamespace
+
 from lxml import etree
 
-from odoo.addons.viin_brand_sms_twilio import post_init_hook
 from odoo.tests.common import TransactionCase, tagged
+
+from odoo.addons.viin_brand_sms_twilio import _companies_through_odoo_after, post_init_hook
 
 
 @tagged('post_install', '-at_install')
@@ -32,8 +35,23 @@ class TestTwilioDefaults(TransactionCase):
         self.assertTrue(hrefs)
         for href in hrefs:
             self.assertNotIn('odoo.com', href)
-        self.assertTrue(any(href.startswith('https://viindoo.com/documentation/19.0/') for href in hrefs))
+        self.assertTrue(any(href.startswith('https://viindoo.com/documentation/20.0/') for href in hrefs))
 
-    def test_the_routing_test_of_core_twilio_runs_with_the_account_check_realigned(self):
-        from odoo.addons.sms_twilio.tests.test_sms_twilio import TestSmsTwilio
-        self.assertTrue(TestSmsTwilio.test_send_with_multi_company.realigned_for_sender_number)
+    def test_the_core_sms_suites_run_with_their_companies_on_the_gateway_of_odoo(self):
+        from odoo.addons.sms.tests.common import SMSCase, SMSCommon
+        for suite_class in (SMSCase, SMSCommon):
+            with self.subTest(suite=suite_class.__name__):
+                self.assertTrue(suite_class.setUpClass.realigned_for_odoo_gateway)
+
+    def test_the_realigned_setup_of_the_core_sms_suites_moves_every_company_to_the_gateway_of_odoo(self):
+        calls = []
+        other = self.env['res.company'].create({'name': 'Second Company'})
+        self.assertEqual((self.env.company.sms_provider, other.sms_provider), ('twilio', 'twilio'))
+        setup_class = _companies_through_odoo_after(calls.append)
+
+        with self.env.cr.savepoint():
+            setup_class.__func__(SimpleNamespace(env=self.env))
+            (self.env.company | other).invalidate_recordset(['sms_provider'])
+
+            self.assertEqual(len(calls), 1, 'the setUpClass of core still runs first')
+            self.assertEqual((self.env.company.sms_provider, other.sms_provider), ('iap', 'iap'))
