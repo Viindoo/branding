@@ -2,16 +2,13 @@
     'name': "Google Calendar Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Lịch Google",
 
-    'summary': """
-Theme branding Viindoo for module Google Calendar""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module Lịch Google
-""",
+    'summary': "Theme branding Viindoo for module Google Calendar",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module Lịch Google",
 
     'description': """
 What it does
 ============
-This module brands the Google Calendar account reset options and the help of the synchronised calendar as Viindoo.
+This module brands the Google Calendar account reset option and the delete-calendar confirmation as Viindoo.
 
 Editions Supported
 ==================
@@ -22,7 +19,7 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ===================
-Module này đặt thương hiệu Viindoo cho lựa chọn đặt lại tài khoản Lịch Google và trợ giúp của lịch được đồng bộ.
+Module này đặt thương hiệu Viindoo cho lựa chọn đặt lại tài khoản Lịch Google và hộp xác nhận xoá lịch.
 
 Ấn bản được Hỗ trợ
 ==================
@@ -32,15 +29,15 @@ Module này đặt thương hiệu Viindoo cho lựa chọn đặt lại tài kh
     """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_google_calendar?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_google_calendar?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     # 'demo_video_url': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     # 'demo_video_url_vi_VN': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/19.0/odoo/addons/base/data/ir_module_category_data.xml
+    # Check https://github.com/odoo/odoo/blob/20.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
     'version': '0.1',
@@ -48,6 +45,14 @@ Module này đặt thương hiệu Viindoo cho lựa chọn đặt lại tài kh
     # any module necessary for this one to work correctly
     'depends': ['google_calendar'],
 
+    'assets': {
+        'web.assets_backend': [
+            'viin_brand_google_calendar/static/src/views/attendee_calendar/calendar_filter_section.js',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_google_calendar/static/tests/attendee_calendar_filter_section.test.js',
+        ],
+    },
 
     # 'images': [
     #     'static/description/main_screenshot.png',
@@ -61,13 +66,8 @@ Module này đặt thương hiệu Viindoo cho lựa chọn đặt lại tài kh
     #     1292, 1294,
     # ],
 
-    'installable': False,
-    # If this module is a bridge module that integrates 2 or more other modules,
-    # auto_install must be set to True.
-    # In case this module is a module that provides additional functions / features,
-    # it should be activated via a setting directive of the main application related
-    # to these new functions / features.
-    # 'auto_install': True,  # TODO: Uncomment when upgrading module to production-ready status
+    'installable': True,
+    'auto_install': True,
     # 99.9 EURO is a good start for an application while bridge modules should be free of charge
     # as we usually have pricing for the others that are bridged by this module.
     'price': 0.0,

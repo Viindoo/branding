@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:48+0000\n"
-"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"POT-Creation-Date: 2026-11-22 02:35+0000\n"
+"PO-Revision-Date: 2026-11-22 02:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,18 +16,42 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_google_calendar
-#: model:ir.model.fields,field_description:viin_brand_google_calendar.field_res_users_settings__google_calendar_cal_id
-msgid "Calendar ID"
-msgstr "ID lịch"
+#: model:ir.module.module,summary:base.module_viin_brand_google_calendar
+msgid "Theme branding Viindoo for module Google Calendar"
+msgstr "Giao diện brand Viindoo cho module Lịch Google"
 
 #. module: viin_brand_google_calendar
-#: model:ir.model.fields.selection,name:viin_brand_google_calendar.selection__google_calendar_account_reset__delete_policy__delete_odoo
-msgid "Delete from Viindoo"
-msgstr "Xóa khỏi Viindoo"
+#: model:ir.module.module,description:base.module_viin_brand_google_calendar
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands the Google Calendar account reset option and the delete-calendar confirmation as Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này đổi tùy chọn đặt lại tài khoản Google Lịch và hộp xác nhận xóa lịch thành thương hiệu Viindoo.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_google_calendar
+#: model:ir.model.fields,field_description:viin_brand_google_calendar.field_google_calendar_account_reset__delete_events
+msgid "Delete synced events from Viindoo"
+msgstr "Xóa các sự kiện đã đồng bộ khỏi Viindoo"
 
 #. module: viin_brand_google_calendar
 #: model:ir.model.fields,field_description:viin_brand_google_calendar.field_google_calendar_account_reset__display_name
-#: model:ir.model.fields,field_description:viin_brand_google_calendar.field_res_users_settings__display_name
 msgid "Display Name"
 msgstr "Tên hiển thị"
 
@@ -37,33 +61,20 @@ msgid "Google Calendar Account Reset"
 msgstr "Đặt lại tài khoản Google Lịch"
 
 #. module: viin_brand_google_calendar
+#: model:ir.module.module,shortdesc:base.module_viin_brand_google_calendar
+msgid "Google Calendar Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Google Lịch"
+
+#. module: viin_brand_google_calendar
 #: model:ir.model.fields,field_description:viin_brand_google_calendar.field_google_calendar_account_reset__id
-#: model:ir.model.fields,field_description:viin_brand_google_calendar.field_res_users_settings__id
 msgid "ID"
 msgstr ""
 
 #. module: viin_brand_google_calendar
-#. module: google_calendar
-#: model:ir.model.fields,help:viin_brand_google_calendar.field_res_users_settings__google_calendar_cal_id
-#: model:ir.model.fields,help:google_calendar.field_res_users__google_calendar_cal_id
+#: model:ir.model.fields,help:viin_brand_google_calendar.field_google_calendar_account_reset__delete_events
 msgid ""
-"Last Calendar ID who has been synchronized. If it is changed, we remove all "
-"links between GoogleID and Viindoo Google Internal ID"
+"This will affect events in calendars you own, and any other events you are "
+"organizing."
 msgstr ""
-"ID Lịch cuối cùng được đồng bộ hóa. Nếu bị thay đổi, chúng tôi sẽ xóa bỏ tất"
-" cả liên kết giữa Google ID và Google ID nội bộ trong Viindoo"
-
-#. module: viin_brand_google_calendar
-#: model:ir.model.fields,help:viin_brand_google_calendar.field_google_calendar_account_reset__delete_policy
-msgid "This will only affect events for which the user is the owner"
-msgstr "Việc này sẽ chỉ ảnh hưởng sự kiện mà người dùng là chủ sở hữu"
-
-#. module: viin_brand_google_calendar
-#: model:ir.model,name:viin_brand_google_calendar.model_res_users_settings
-msgid "User Settings"
-msgstr "Thiết lập người dùng"
-
-#. module: viin_brand_google_calendar
-#: model:ir.model.fields,field_description:viin_brand_google_calendar.field_google_calendar_account_reset__delete_policy
-msgid "User's Existing Events"
-msgstr "Sự kiện hiện có của người dùng"
+"Thao tác này sẽ ảnh hưởng đến các sự kiện trong những lịch bạn sở hữu và mọi"
+" sự kiện khác mà bạn đang tổ chức."
