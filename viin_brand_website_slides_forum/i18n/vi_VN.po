@@ -1,0 +1,56 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* viin_brand_website_slides_forum
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-22 03:39+0000\n"
+"PO-Revision-Date: 2026-11-22 03:39+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: viin_brand_website_slides_forum
+#: model:ir.module.module,summary:base.module_viin_brand_website_slides_forum
+msgid "Viindoo FAQ for the forums of eLearning courses"
+msgstr "Áp dụng FAQ Viindoo cho các diễn đàn khóa học của mô-đun Slides Forum"
+
+#. module: viin_brand_website_slides_forum
+#: model:ir.module.module,description:base.module_viin_brand_website_slides_forum
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"When installed, this module replaces the default FAQ of the forums that eLearning creates with its\n"
+"sample data (Slides Forum) with the Viindoo FAQ provided by Forum Branding For Viindoo, so these course\n"
+"forums show the Viindoo FAQ, not the Odoo FAQ. It does not change colours, buttons or the logo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Khi được cài đặt, phân hệ này thay FAQ mặc định của các diễn đàn mà Học online tạo cùng dữ liệu\n"
+"mẫu (Slides Forum) bằng FAQ Viindoo do Forum Branding For Viindoo cung cấp, nhờ đó các diễn đàn\n"
+"khóa học này hiển thị FAQ của Viindoo, không phải FAQ của Odoo. Phân hệ không thay đổi màu sắc,\n"
+"nút bấm hay logo.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_website_slides_forum
+#: model:ir.module.module,shortdesc:base.module_viin_brand_website_slides_forum
+msgid "Slides Forum Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Diễn đàn Slides"
