@@ -1,22 +1,54 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* mass_mailing_sms (reused core xmlid override - see NOTE in
-# 	  viin_brand_stock/i18n/vi_VN.po; viin_brand_mass_mailing_sms itself has no
-# 	  translatable terms of its own, which is why a scoped `odoo-bin i18n
-# 	  export viin_brand_mass_mailing_sms` reports "No translatable terms found")
+# 	* viin_brand_mass_mailing_sms
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-08 01:42+0000\n"
-"PO-Revision-Date: 2026-04-08 01:42+0000\n"
+"POT-Creation-Date: 2026-11-22 02:49+0000\n"
+"PO-Revision-Date: 2026-11-22 02:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_mass_mailing_sms
+#: model:ir.module.module,summary:base.module_viin_brand_mass_mailing_sms
+msgid "Theme branding Viindoo for module SMS Marketing"
+msgstr "Giao diện brand Viindoo cho module SMS Marketing"
+
+#. module: viin_brand_mass_mailing_sms
+#: model:ir.module.module,description:base.module_viin_brand_mass_mailing_sms
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module will change color navigate bar, button and logo,v.v in SMS Marketing following Viindoo's brand\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này sẽ đổi màu thanh điều hướng, nút bấm, logo, v.v. trong Marketing qua SMS theo thương hiệu của Viindoo\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"==================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_mass_mailing_sms
+#: model:ir.module.module,shortdesc:base.module_viin_brand_mass_mailing_sms
+msgid "SMS Marketing Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Marketing qua SMS"
 
 #. module: mass_mailing_sms
 #: model_terms:ir.actions.act_window,help:mass_mailing_sms.mailing_list_action_sms

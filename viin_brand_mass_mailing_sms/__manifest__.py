@@ -2,11 +2,8 @@
     'name': "SMS Marketing Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module SMS Marketing",
 
-    'summary': """
-Theme branding Viindoo for module SMS Marketing""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module SMS Marketing
-""",
+    'summary': "Theme branding Viindoo for module SMS Marketing",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module SMS Marketing",
 
     'description': """
 What it does
@@ -33,9 +30,9 @@ Module này sẽ thay đổi giao diện các module SMS Marketing theo thương
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_mass_mailing_sms?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_mass_mailing_sms?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -47,7 +44,7 @@ Module này sẽ thay đổi giao diện các module SMS Marketing theo thương
         'views/mailing_list_views.xml',
         'views/mailing_mailing_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
