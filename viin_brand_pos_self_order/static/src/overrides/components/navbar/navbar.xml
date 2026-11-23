@@ -2,8 +2,8 @@
 <templates xml:space="preserve">
 
     <!-- The menu entry opens a form on a page hosted by Odoo. -->
-    <t t-name="viin_brand_pos_self_order.Navbar" t-inherit="point_of_sale.Navbar" t-inherit-mode="extension">
-        <xpath expr="//DropdownItem[contains(@onSelected, 'redirectToQrForm')]" position="replace"/>
+    <t t-name="viin_brand_pos_self_order.BurgerMenuDialog" t-inherit="point_of_sale.BurgerMenuDialog" t-inherit-mode="extension">
+        <xpath expr="//t[@t-call='point_of_sale.BurgerDialogMenuButton'][contains(@onClick, 'redirectToQrForm')]" position="replace"/>
     </t>
 
 </templates>

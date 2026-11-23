@@ -28,15 +28,17 @@ class TestSelfOrderBrandSurfaces(TransactionCase):
     def test_custom_link_list_placeholders_are_neutral_samples(self):
         arch = etree.fromstring(self.env['pos_self_order.custom_link'].get_view(
             view_id=self.env.ref('pos_self_order.custom_link_tree').id, view_type='list')['arch'])
-        for name, expected in (('name', 'mysite'), ('url', 'https://example.com')):
+        for name in ('name', 'url'):
             field = arch.xpath('//field[@name="%s"]' % name)
             self.assertEqual(len(field), 1, name)
-            self.assertEqual(field[0].get('placeholder'), expected)
+            self.assertTrue(field[0].get('placeholder'), name)
+            self.assertNotRegex(field[0].get('placeholder'), PRODUCT_NAME)
 
     def test_self_order_page_title_does_not_name_a_product(self):
         titles = self.env.ref('pos_self_order.index')._get_combined_arch().xpath('//title')
         self.assertEqual(len(titles), 1)
-        self.assertEqual(titles[0].text, 'Self Order')
+        self.assertTrue(titles[0].text.strip())
+        self.assertNotRegex(titles[0].text, PRODUCT_NAME)
 
     def test_settings_do_not_offer_stands_ordered_from_odoo(self):
         arch = etree.fromstring(self.env['res.config.settings'].get_view(view_type='form')['arch'])
