@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <function model="event.event.ticket" name="_recolour_demo_tickets"/>
+
+</odoo>

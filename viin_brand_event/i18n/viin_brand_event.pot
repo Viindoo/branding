@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:48+0000\n"
-"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"POT-Creation-Date: 2026-11-22 03:20+0000\n"
+"PO-Revision-Date: 2026-11-22 03:20+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,14 +15,39 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: event
-#: model:event.stage,description:event.event_stage_done
+#. module: viin_brand_event
+#: model:ir.module.module,summary:base.module_viin_brand_event
+msgid "Theme branding Viindoo for module Events"
+msgstr ""
+
+#. module: viin_brand_event
+#: model:ir.module.module,description:base.module_viin_brand_event
 msgid ""
-"Finished events. Viindoo will automatically move them to this stage once "
-"their end date has passed."
+"\n"
+"What it does\n"
+"============\n"
+"This module brands the stages, the website field placeholder and the onboarding tour of the events as Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+
+#. module: viin_brand_event
+#: model:ir.module.module,shortdesc:base.module_viin_brand_event
+msgid "Events Branding For Viindoo"
 msgstr ""
 
 #. module: viin_brand_event
 #: model_terms:ir.ui.view,arch_db:viin_brand_event.view_event_form
 msgid "e.g. \"https://www.example.com\""
+msgstr ""
+
+#. module: event
+#: model:event.stage,description:event.event_stage_done
+msgid ""
+"Finished events. Viindoo will automatically move them to this stage once "
+"their end date has passed."
 msgstr ""

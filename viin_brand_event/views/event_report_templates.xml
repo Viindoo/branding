@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- The band of the ticket name on a printed badge: a ticket without a colour takes the colour a new ticket gets. -->
+    <template id="event_report_template_foldable_badge" inherit_id="event.event_report_template_foldable_badge">
+        <xpath expr="//div[@t-if='ticket']" position="attributes">
+            <attribute name="t-attf-style">background-color: {{ticket.color or ticket.default_get(['color'])['color']}};</attribute>
+        </xpath>
+    </template>
+
+    <template id="event_report_template_badge_card" inherit_id="event.event_report_template_badge_card">
+        <xpath expr="//div[@t-if='ticket']" position="attributes">
+            <attribute name="t-attf-style">background-color: {{ticket.color or ticket.default_get(['color'])['color']}};</attribute>
+        </xpath>
+    </template>
+
+</odoo>
