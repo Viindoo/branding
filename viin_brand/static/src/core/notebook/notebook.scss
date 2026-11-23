@@ -1,7 +1,7 @@
-// Notebook tabs: active and hover tab underline in brand teal.
+// Notebook tabs: active and hover tab underline in the brand colour.
 //
 // Horizontal notebook only (the vertical variant keeps core chrome). The accent reads
-// $o-component-active-border, core's "current component" colour: the AA teal #007F8E in light
+// $o-component-active-border, core's "current component" colour: the brand purple #7F4282 in light
 // (brand_variables.scss) and the light-on-dark teal #4FD4E2 in dark (dark_palette.scss), so the
 // label clears 4.5:1 on either panel. Neutral tab text and the header baseline read the native
 // unprefixed runtime props (--secondary-color / --body-color / --border-color / --body-bg) so tabs

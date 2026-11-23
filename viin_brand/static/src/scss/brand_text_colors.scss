@@ -1,0 +1,12 @@
+// The success text colour of the whole product.
+//
+// `$o-theme-text-colors` is core's seam for the text variant of a semantic colour: the
+// `.text-success` utility, the invalid-state indicators that read `o-text-color()`, and every
+// consumer of those. Its default "success" is #008818, a green that is not the success fill
+// ($o-success, #00884D), so a "paid" figure, an online presence glyph and a success badge would
+// read three greens. The entry takes $o-success, and the dark bundle derives its text tier from it
+// (dark_buttons.scss), so one green reaches every success text and icon in both schemes.
+//
+// Merged, not assigned: the other entries keep core's contrast-tuned values. The file is a plain
+// append to web._assets_primary_variables, after core's declaration of the map.
+$o-theme-text-colors: map-merge($o-theme-text-colors, ("success": $o-success));

@@ -9,13 +9,18 @@ from odoo.tools import config
 class TestIapInstallGuard(TransactionCase):
 
     @classmethod
+    def _module(cls, name):
+        """The module record of ``name``, a stub when no addons path carries it."""
+        Module = cls.env['ir.module.module']
+        module = Module.search([('name', '=', name)]) or Module.create({'name': name})
+        module.state = 'uninstalled'
+        return module
+
+    @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        Module = cls.env['ir.module.module']
-        cls.iap_module = Module.search([('name', '=', 'iap_crm')])
-        cls.iap_module.state = 'uninstalled'
-        cls.other_module = Module.search([('name', '=', 'mail')])
-        cls.other_module.state = 'uninstalled'
+        cls.iap_module = cls._module('iap_crm')
+        cls.other_module = cls._module('other_module_stub')
 
     def _from_ui(self, init=None, update=None):
         request_patch = patch('odoo.addons.viin_brand.models.ir_module_module.request', new=object())
@@ -33,9 +38,7 @@ class TestIapInstallGuard(TransactionCase):
         self._from_ui()
         for name in ('crm_iap_enrich', 'crm_iap_mine', 'website_crm_iap_reveal', 'snailmail', 'snailmail_account'):
             with self.subTest(module=name):
-                module = self.env['ir.module.module'].search([('name', '=', name)])
-                self.assertTrue(module, "%s is not on the addons path" % name)
-                module.state = 'uninstalled'
+                module = self._module(name)
 
                 with self.assertRaises(UserError):
                     module.button_immediate_install()

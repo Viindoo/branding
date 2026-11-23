@@ -7,9 +7,6 @@ class IrHttp(models.AbstractModel):
 
     def session_info(self):
         result = super().session_info()
-        # The settings page asks for the brand module icons only in a real webclient session;
-        # core settings view tests assert exact RPC sequences and carry no such key.
-        result['viin_brand_settings_icons'] = self.env.user._is_internal()
         result['support_url'] = 'https://viindoo.com/pricing'
         return result
 

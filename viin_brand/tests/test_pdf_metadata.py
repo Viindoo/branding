@@ -8,10 +8,10 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import NameOID
 import datetime
 
+from odoo.addons.base.tests.files import PDF_RAW
 from odoo.addons.viin_brand.tools import brand_pdf
 from odoo.tests.common import TransactionCase, tagged
-from odoo.tools.misc import file_open
-from odoo.tools import pdf
+from odoo.tools import mute_logger, pdf
 from odoo.tools.pdf.signature import PdfSigner
 
 
@@ -21,13 +21,13 @@ class TestPdfMetadata(TransactionCase):
 
     def _blank_pdf(self, writer_class):
         writer = writer_class()
-        writer.addBlankPage(width=200, height=200)
+        writer.add_blank_page(width=200, height=200)
         stream = io.BytesIO()
         writer.write(stream)
         return stream.getvalue()
 
     def _info(self, content):
-        info = pdf.PdfFileReader(io.BytesIO(content)).getDocumentInfo()
+        info = pdf.PdfReader(io.BytesIO(content)).metadata
         return info['/Creator'], info['/Producer']
 
     def test_written_pdf_carries_viindoo_as_creator_and_producer(self):
@@ -40,15 +40,14 @@ class TestPdfMetadata(TransactionCase):
 
     def test_pdfa_document_carries_viindoo_as_creator_and_producer(self):
         writer = pdf.OdooPdfFileWriter()
-        with file_open('base/tests/minimal.pdf', 'rb') as stream:
-            writer.cloneReaderDocumentRoot(pdf.OdooPdfFileReader(io.BytesIO(stream.read()), strict=False))
+        writer.clone_reader_document_root(pdf.OdooPdfFileReader(io.BytesIO(PDF_RAW), strict=False))
         writer.convert_to_pdfa()
         stream = io.BytesIO()
         writer.write(stream)
 
         self.assertEqual(self._info(stream.getvalue()), ('Viindoo', 'Viindoo'))
 
-    def test_default_signature_field_is_named_viindoo(self):
+    def test_default_signature_field_is_named_viindoo_and_unique(self):
         private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
         subject = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, 'viindoo.com')])
         now = datetime.datetime.now(datetime.timezone.utc)
@@ -58,15 +57,23 @@ class TestPdfMetadata(TransactionCase):
             .not_valid_before(now).not_valid_after(now + datetime.timedelta(days=10))
             .sign(private_key, hashes.SHA256())
         )
-        with file_open('base/tests/minimal.pdf', 'rb') as stream:
-            with patch.object(PdfSigner, '_load_key_and_certificate', return_value=(private_key, certificate)):
-                signed = PdfSigner(stream, self.env.company).sign_pdf()
-        if not signed:
-            self.skipTest('The PDF signature needs Python 3.12 or later')
+        with patch.object(PdfSigner, '_load_key_and_certificates', return_value=(private_key, certificate, None)):
+            first = PdfSigner(PDF_RAW, self.env.company).sign_pdf()
+            if not first:
+                self.skipTest('The PDF signature could not be produced')
+            second = PdfSigner(first, self.env.company).sign_pdf()
 
-        content = signed.getvalue()
-        self.assertIn(b'/T (Viindoo\\040Signature)', content)
-        self.assertNotIn(b'Odoo\\040Signature', content)
+        def signature_fields(content):
+            return set(pdf.PdfReader(io.BytesIO(content)).get_fields() or ())
+
+        first_fields = signature_fields(first)
+        self.assertEqual(len(first_fields), 1)
+        self.assertRegex(first_fields.pop(), r'^Viindoo Signature [0-9a-f-]{36}$')
+        self.assertNotIn(b'Odoo Signature', first)
+        self.assertEqual(
+            len(signature_fields(second)), 2,
+            "signing again must add a second, differently named field",
+        )
 
     def _xmp_packet(self, product, title='Odoo order'):
         return (
@@ -86,8 +93,8 @@ class TestPdfMetadata(TransactionCase):
 
     def _pdfa_values(self, content):
         reader = pdf.OdooPdfFileReader(io.BytesIO(content), strict=False)
-        info = reader.getDocumentInfo()
-        packet = reader.trailer['/Root']['/Metadata'].getObject().getData().decode()
+        info = reader.metadata
+        packet = reader.trailer['/Root']['/Metadata'].get_object().get_data().decode()
         return {
             'creator': info['/Creator'], 'producer': info['/Producer'],
             'creator_tool': re.search(r'<xmp:CreatorTool>(.*?)</xmp:CreatorTool>', packet).group(1),
@@ -98,7 +105,7 @@ class TestPdfMetadata(TransactionCase):
 
     def test_pdfa_xmp_agrees_with_the_document_information(self):
         writer = pdf.OdooPdfFileWriter()
-        writer.addBlankPage(width=200, height=200)
+        writer.add_blank_page(width=200, height=200)
         writer.add_file_metadata(self._xmp_packet('Odoo'))
         stream = io.BytesIO()
         writer.write(stream)
@@ -114,12 +121,12 @@ class TestPdfMetadata(TransactionCase):
 
     def test_xmp_of_a_document_read_from_elsewhere_agrees_with_the_document_information(self):
         source = pdf.OdooPdfFileWriter()
-        source.addBlankPage(width=200, height=200)
+        source.add_blank_page(width=200, height=200)
         source.add_file_metadata(self._xmp_packet('Another tool'))
         source_stream = io.BytesIO()
         pdf.PdfWriter.write_stream(source, source_stream)
         writer = pdf.OdooPdfFileWriter()
-        writer.cloneReaderDocumentRoot(pdf.OdooPdfFileReader(io.BytesIO(source_stream.getvalue()), strict=False))
+        writer.clone_reader_document_root(pdf.OdooPdfFileReader(io.BytesIO(source_stream.getvalue()), strict=False))
         stream = io.BytesIO()
         writer.write(stream)
 
@@ -137,16 +144,24 @@ class TestPdfMetadata(TransactionCase):
 
     def test_report_pdf_of_a_single_document_carries_viindoo(self):
         Report = self.env['ir.actions.report']
-        if Report.get_wkhtmltopdf_state() not in ('ok', 'upgrade'):
-            self.skipTest('wkhtmltopdf is not available')
+        module = self.env.ref('base.module_base')
+        streams = ({module.id: {'stream': io.BytesIO(PDF_RAW), 'attachment': None}}, 'pdf')
 
-        content = Report._run_wkhtmltopdf(['<html><body><p>Quotation</p></body></html>'])
+        with patch.object(type(Report), '_pre_render_qweb_pdf', return_value=streams):
+            content, report_type = Report._render_qweb_pdf('base.report_irmodulereference', [module.id])
 
-        reader = pdf.PdfFileReader(io.BytesIO(content), strict=False)
-        info = reader.getDocumentInfo()
-        self.assertEqual(reader.getNumPages(), 1)
+        info = pdf.PdfReader(io.BytesIO(content), strict=False).metadata
+        self.assertEqual(report_type, 'pdf')
         self.assertEqual((info['/Creator'], info['/Producer']), ('Viindoo', 'Viindoo'))
-        self.assertNotIn(b'Odoo', content)
+
+    def test_report_that_is_not_a_pdf_is_returned_as_it_is(self):
+        Report = self.env['ir.actions.report']
+        module = self.env.ref('base.module_base')
+
+        with patch.object(type(Report), '_pre_render_qweb_pdf', return_value=(b'<html/>', 'html')):
+            content, report_type = Report._render_qweb_pdf('base.report_irmodulereference', [module.id])
+
+        self.assertEqual((content, report_type), (b'<html/>', 'html'))
 
     def test_report_output_that_is_not_a_pdf_is_returned_unchanged_silently(self):
         for content in (b'', b'not a pdf', b'<html><body>Quotation</body></html>'):
@@ -157,27 +172,61 @@ class TestPdfMetadata(TransactionCase):
     def test_a_damaged_pdf_document_is_returned_unchanged_with_a_warning(self):
         content = b'%PDF-1.4\n' + b'damaged' * 10
 
-        with self.assertLogs('odoo.addons.viin_brand.tools', 'WARNING') as logs:
+        # the PDF library reports the damaged document itself before the module does
+        with mute_logger('pypdf._reader'), \
+                self.assertLogs('odoo.addons.viin_brand.tools', 'WARNING') as logs:
             result = brand_pdf(content)
 
         self.assertEqual(result, content)
         self.assertEqual(logs.records[0].levelname, 'WARNING')
 
-    def _run_core_branded_writer_test(self):
-        # Imported here: a test class imported at module level runs with this module.
-        from odoo.addons.base.tests.test_pdf import TestPdf
+    def _encrypted_pdf(self):
+        writer = pdf.PdfFileWriter()
+        writer.add_blank_page(width=200, height=200)
+        writer.encrypt('')
+        return self._written(writer)
 
-        with file_open('base/tests/minimal.pdf', 'rb') as stream:
-            self.minimal_pdf_reader = pdf.OdooPdfFileReader(io.BytesIO(stream.read()))
-        TestPdf.test_branded_file_writer(self)
+    def _written(self, writer):
+        stream = io.BytesIO()
+        writer.write(stream)
+        return stream.getvalue()
 
-    def test_core_branded_writer_test_expects_viindoo(self):
-        self._run_core_branded_writer_test()
+    def test_an_encrypted_pdf_document_is_returned_unchanged_without_a_warning(self):
+        content = self._encrypted_pdf()
 
-    def test_core_branded_writer_test_fails_on_a_document_without_viindoo(self):
-        with patch.object(pdf, 'PdfFileWriter', pdf.PdfWriter), \
-                self.assertRaises(AssertionError):
-            self._run_core_branded_writer_test()
+        with self.assertNoLogs('odoo.addons.viin_brand.tools', 'WARNING'):
+            result = brand_pdf(content)
+
+        self.assertEqual(result, content, "rewriting would drop the encryption of the document")
+
+    def test_a_pdf_document_with_an_unsupported_encryption_is_returned_unchanged_without_a_warning(self):
+        # the /Encrypt entry points at an object that is not an encryption dictionary, as the core
+        # account test of an encrypted vendor bill builds it
+        content, count = re.subn(
+            rb'/Encrypt (\d+) (\d+) R', rb'/Encrypt 1 \2 R', self._encrypted_pdf(),
+        )
+        self.assertEqual(count, 1, "the document must carry an /Encrypt entry")
+
+        with self.assertNoLogs('odoo.addons.viin_brand.tools', 'WARNING'):
+            result = brand_pdf(content)
+
+        self.assertEqual(result, content)
+
+    def test_the_report_of_an_encrypted_pdf_still_prints_as_it_is(self):
+        Report = self.env['ir.actions.report']
+        module = self.env.ref('base.module_base')
+        supported = self._encrypted_pdf()
+        unsupported = re.sub(rb'/Encrypt (\d+) (\d+) R', rb'/Encrypt 1 \2 R', supported)
+
+        for name, content in (('supported', supported), ('unsupported', unsupported)):
+            streams = ({module.id: {'stream': io.BytesIO(content), 'attachment': None}}, 'pdf')
+            with self.subTest(encryption=name), \
+                    patch.object(type(Report), '_pre_render_qweb_pdf', return_value=streams), \
+                    self.assertNoLogs('odoo.addons.viin_brand.tools', 'WARNING'):
+                result, report_type = Report._render_qweb_pdf('base.report_irmodulereference', [module.id])
+
+                self.assertEqual(report_type, 'pdf')
+                self.assertEqual(result, content)
 
     def test_a_failure_of_the_pdf_library_returns_the_original_document(self):
         content = self._blank_pdf(pdf.PdfFileWriter)
@@ -199,12 +248,12 @@ class TestPdfMetadata(TransactionCase):
 
     def test_document_information_other_than_creator_and_producer_is_kept(self):
         writer = pdf.PdfFileWriter()
-        writer.addBlankPage(width=200, height=200)
-        writer.addMetadata({'/Title': 'Quotation S0001', '/Creator': 'wkhtmltopdf', '/Producer': 'Qt'})
+        writer.add_blank_page(width=200, height=200)
+        writer.add_metadata({'/Title': 'Quotation S0001', '/Creator': 'wkhtmltopdf', '/Producer': 'Qt'})
         stream = io.BytesIO()
         writer.write(stream)
 
-        info = pdf.PdfFileReader(io.BytesIO(brand_pdf(stream.getvalue()))).getDocumentInfo()
+        info = pdf.PdfReader(io.BytesIO(brand_pdf(stream.getvalue()))).metadata
 
         self.assertEqual(
             (info['/Title'], info['/Creator'], info['/Producer']), ('Quotation S0001', 'Viindoo', 'Viindoo'),

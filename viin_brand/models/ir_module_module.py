@@ -1,14 +1,15 @@
 import ast
+import functools
+import os
 from collections import defaultdict
-
-from lxml import etree
+from contextlib import suppress
 
 from odoo import _, api, models
 from odoo.exceptions import UserError
 from odoo.fields import Domain
 from odoo.http import request
-from odoo.tools import config, file_open, ormcache
-from odoo.tools.translate import TranslationImporter, get_po_paths, translation_file_reader
+from odoo.tools import SQL, config, file_open, file_path
+from odoo.tools.translate import ParsedTranslation, TranslationImporter, get_po_paths, translation_file_reader
 
 from ..tools import debrand_exception
 
@@ -20,16 +21,33 @@ IAP_SERVICE_MODULES = (
 # Their rows exist before they are installed, so the guard below knows them by name.
 IAP_MODULES = ('iap', 'iap_crm', 'iap_mail') + IAP_SERVICE_MODULES
 
-# The Apps lists that hide the Enterprise-only module stubs.
-APPS_ACTION_XMLIDS = ('base.open_module_tree', 'website.action_website_add_features')
+# The Apps lists that hide the Enterprise-only module stubs. A module that adds an Apps list of its
+# own extends ``_get_apps_actions``.
+APPS_ACTION_XMLIDS = ('base.open_module_tree',)
 
 
 def _is_to_buy_condition(condition):
     return condition.field_expr == 'to_buy'
 
 
+def _hide_enterprise_stubs(domain):
+    """Add the condition that hides the Enterprise-only module stubs, once.
+
+    :param Domain domain: the domain of a module list
+    :return: ``domain`` itself when it already hides the stubs, else the domain with the condition
+    """
+    if any(_is_to_buy_condition(c) for c in domain.iter_conditions()):
+        return domain
+    return Domain('to_buy', '=', False) & domain
+
+
 def _is_branding_module(module_name):
     return module_name == 'viin_brand' or module_name.startswith('viin_brand_')
+
+
+def _terms_of(field, value):
+    """Return the translatable terms of the value of a ``model_terms`` field, in order."""
+    return ParsedTranslation(field, value).terms if value else []
 
 
 def _catalog_texts(entries, lang):
@@ -37,6 +55,48 @@ def _catalog_texts(entries, lang):
     texts = {entry[2] for entry in entries}
     texts.update(text for _module, _xmlid, _source, row_lang, text in entries if row_lang == lang and text)
     return texts
+
+
+@functools.lru_cache(maxsize=256)
+def _parse_catalog(path, mtime_ns, size):
+    """Return the entries a catalog file gives records, by external id.
+
+    A catalog file is static while the server runs: it is parsed once per process and again when
+    its modification time or its size (``mtime_ns`` and ``size``, part of the cache key) changes.
+    The cache holds the parsed catalogs of the least recently read 256 files.
+
+    :return: ``{xmlid: ((model, field, xmlid), English source, translation), ...}``
+    """
+    index = defaultdict(list)
+    with file_open(path, 'rb') as po_file:
+        for row in translation_file_reader(po_file, 'po'):
+            if row['type'] in ('model', 'model_terms'):
+                xmlid = '%s.%s' % (row['module'], row['imd_name'])
+                key = (row['imd_model'], row['name'].split(',')[1], xmlid)
+                index[xmlid].append((key, row['src'], row['value']))
+    return {xmlid: tuple(rows) for xmlid, rows in index.items()}
+
+
+def _get_pot_path(module_name):
+    """Return the path of the catalog template of a module, ``None`` when it has none."""
+    with suppress(FileNotFoundError):
+        return file_path('%s/i18n/%s.pot' % (module_name, module_name))
+    return None
+
+
+def _translations_of(branding, entries, model, field_name, source, lang):
+    """Return the texts that translate ``source`` in ``lang``, with the one a record takes.
+
+    :param branding: ``{(model, field, English, lang): {translation}}`` of the branding catalogs
+    :param entries: the entries of the catalogs naming the record (``_read_stock_texts``)
+    :return: ``(translations, target)``: the translations of the branding catalogs and of the
+        catalogs naming the record, and the one a record that holds none of them takes: a branding
+        one first, then one of the record's catalogs, else ``source`` itself
+    """
+    own = branding.get((model, field_name, source, lang), set())
+    stock = {text for _module, _xmlid, src, row_lang, text in entries if src == source and row_lang == lang and text}
+    translations = own | stock
+    return translations, min(own or stock or {source})
 
 
 class IrModuleModule(models.Model):
@@ -52,8 +112,9 @@ class IrModuleModule(models.Model):
         """
         for action in self._get_apps_actions():
             domain = Domain(ast.literal_eval(action.domain or '[]'))
-            if not any(_is_to_buy_condition(c) for c in domain.iter_conditions()):
-                action.domain = repr(Domain('to_buy', '=', False) & domain)
+            hidden = _hide_enterprise_stubs(domain)
+            if hidden is not domain:
+                action.domain = repr(hidden)
 
     @api.model
     def _restore_domain_for_action(self):
@@ -83,11 +144,14 @@ class IrModuleModule(models.Model):
         loaded with the modules, before an update, or added later. The catalog of
         each branding module of ``modules`` is applied by
         :meth:`_reapply_noupdate_translations`, which keeps a text a user wrote.
+        Where no catalog translates the English of a branding module, the record shows
+        that English (:meth:`_apply_branding_english`).
         """
         super()._load_module_terms(modules, langs, overwrite=overwrite)
-        for module_name in modules:
-            if _is_branding_module(module_name):
-                self._reapply_noupdate_translations(module_name, langs)
+        branding_modules = [module_name for module_name in modules if _is_branding_module(module_name)]
+        for module_name in branding_modules:
+            self._reapply_noupdate_translations(module_name, langs)
+        self._apply_branding_english(modules, langs)
 
     @api.model
     def _reapply_noupdate_translations(self, module_name, langs=None):
@@ -102,7 +166,9 @@ class IrModuleModule(models.Model):
         A record named by several modules (a field that each of them declares) takes, among the
         entries the catalogs of those modules give it, the one whose English source is the
         record's English: this catalog's entry when its source is that English, otherwise the
-        entry of the catalog, a branding one first, that translates the English the record holds.
+        entry of the catalog, a branding one first, that translates the English the record holds;
+        an entry of that English with an empty msgstr, where no entry has a translation, reads as
+        the English itself and replaces a translation the catalogs know.
 
         A translation is replaced only while it is made of texts the catalogs of the record know
         (their English and their translations), the English text of the record, or the texts of
@@ -197,10 +263,10 @@ class IrModuleModule(models.Model):
         :return: whether every language was decided
         """
         field = record._fields[field_name]
-        english_terms = field.get_trans_terms(record.with_context(lang='en_US')[field_name])
+        english_terms = _terms_of(field, record.with_context(lang='en_US')[field_name])
         decided = True
         for lang in {lang for values in terms.values() for lang in values}:
-            stored_terms = field.get_trans_terms(record.with_context(lang=lang)[field_name])
+            stored_terms = _terms_of(field, record.with_context(lang=lang)[field_name])
             applied = len(english_terms) == len(stored_terms) and all(
                 terms.get(term, {}).get(lang, translated) == translated
                 for term, translated in zip(english_terms, stored_terms)
@@ -223,7 +289,9 @@ class IrModuleModule(models.Model):
         """Return the translation a record holding ``english`` takes in ``lang``, ``None`` when unknown.
 
         The catalog's own value applies when the entry it comes from (this module, this external
-        id, this language) translates ``english``.
+        id, this language) translates ``english``. Otherwise the translation is the one the entries
+        of the record's English give, a branding catalog's first; when none of them has a
+        translation, an entry of that English with an empty msgstr gives ``english`` itself.
 
         :param str module_name: the branding module whose catalog gives ``value``
         :param str xmlid: the external id the catalog of ``module_name`` names the record by
@@ -235,6 +303,10 @@ class IrModuleModule(models.Model):
         matching = [
             (module, text) for module, _alias, source, row_lang, text in entries
             if source == english and row_lang == lang and text
+        ] or [
+            # a catalog that leaves the msgstr empty translates the source to itself
+            (module, english) for module, _alias, source, row_lang, text in entries
+            if source == english and row_lang == lang
         ]
         branding = {text for module, text in matching if _is_branding_module(module)}
         candidates = branding or {text for _module, text in matching}
@@ -257,7 +329,7 @@ class IrModuleModule(models.Model):
     def _read_stock_texts(self, module_names, langs, xmlids):
         """Read the entries the catalogs of modules give records, translated or not.
 
-        A catalog file is read once per transaction.
+        A catalog file is parsed once per process (:func:`_parse_catalog`).
 
         :param module_names: the modules whose PO files are read
         :param langs: language codes
@@ -266,29 +338,245 @@ class IrModuleModule(models.Model):
             over every entry of the record; the translation is empty when the catalog leaves it out
         """
         entries = defaultdict(list)
-        rows_by_path = self.env.cr.cache.setdefault('viin_brand_catalog_rows', {})
+        xmlids = set(xmlids)
         for module_name in sorted(module_names):
             for lang in langs:
                 for path in get_po_paths(module_name, lang):
-                    if path not in rows_by_path:
-                        with file_open(path, 'rb', env=self.env) as po_file:
-                            rows_by_path[path] = [
-                                (
-                                    (
-                                        row['imd_model'],
-                                        row['name'].split(',')[1],
-                                        '%s.%s' % (row['module'], row['imd_name']),
-                                    ),
-                                    row['src'],
-                                    row['value'],
-                                )
-                                for row in translation_file_reader(po_file, 'po')
-                                if row['type'] in ('model', 'model_terms')
-                            ]
-                    for key, source, value in rows_by_path[path]:
-                        if key[2] in xmlids:
-                            entries[key].append((module_name, key[2], source, lang, value))
+                    index = self._read_catalog(path)
+                    for xmlid in index.keys() & xmlids:
+                        for key, source, value in index[xmlid]:
+                            entries[key].append((module_name, xmlid, source, lang, value))
         return entries
+
+    @api.model
+    def _read_catalog(self, path):
+        """Return the entries a catalog file gives records, by external id.
+
+        :param str path: a PO file, read with the template of its module, or a template
+        :return: ``{xmlid: ((model, field, xmlid), English source, translation), ...}``; the
+            translation is empty when the file leaves it out
+        """
+        stat = os.stat(path)
+        return _parse_catalog(path, stat.st_mtime_ns, stat.st_size)
+
+    @api.model
+    def _get_branding_modules(self):
+        """Return the names of the branding modules installed, or being installed or updated."""
+        # sudo: a language install reads the module states whatever the access of the user who asks for it
+        modules = self.sudo().search([
+            ('name', '=like', 'viin_brand%'), ('state', 'in', ('installed', 'to install', 'to upgrade')),
+        ])
+        return sorted(name for name in modules.mapped('name') if _is_branding_module(name))
+
+    @api.model
+    def _get_branding_rewords(self, modules=()):
+        """Return what each branding module re-words of the records of other modules.
+
+        A branding module re-words a field of a record when its catalog template gives it an English
+        text other than the one the template of a module owning the record gives it. What a branding
+        module re-words is kept with the registry, and read again when the module is among
+        ``modules``, whose loading may give its records new external ids.
+
+        :param modules: the names of the modules being loaded
+        :return: ``{branding module: (texts, records)}``: ``texts`` is ``{(model, field): {English}}``
+            of the plain fields it re-words, ``records`` is ``{(model, field): {xmlid}}`` of the
+            records whose field translated term by term its catalog names
+        """
+        # kept with the registry: the loader commits after each module, which empties the cursor cache
+        cache = vars(self.env.registry).setdefault('viin_brand_rewords', {})
+        branding_modules = self._get_branding_modules()
+        for module_name in set(cache) - set(branding_modules):
+            del cache[module_name]
+        unread = [name for name in branding_modules if name not in cache or name in modules]
+        named = {}
+        for module_name in unread:
+            named[module_name] = defaultdict(dict)
+            pot_path = _get_pot_path(module_name)
+            for xmlid, rows in self._read_catalog(pot_path).items() if pot_path else ():
+                for (model, field_name, _xmlid), source, _value in rows:
+                    field = model in self.env and self.env[model]._fields.get(field_name)
+                    if field and field.translate and field.store:
+                        named[module_name][xmlid][model, field_name] = source
+        xmlids = set().union(*named.values())
+        aliases = self._get_record_xmlids(xmlids) if xmlids else {}
+        for module_name, sources_by_xmlid in named.items():
+            texts, records = defaultdict(set), defaultdict(set)
+            for xmlid, sources in sources_by_xmlid.items():
+                owners = [
+                    alias for alias in aliases.get(xmlid, ()) if not _is_branding_module(alias.split('.', 1)[0])
+                ]
+                for (model, field_name), english in sources.items():
+                    if callable(self.env[model]._fields[field_name].translate):
+                        if owners:
+                            records[model, field_name].add(xmlid)
+                    elif any(source != english for source in self._read_template_sources(owners, model, field_name)):
+                        texts[model, field_name].add(english)
+            cache[module_name] = (texts, records)
+        return {name: cache[name] for name in branding_modules}
+
+    @api.model
+    def _read_template_sources(self, xmlids, model, field_name):
+        """Return the English texts the templates of the modules of ``xmlids`` give a field of them."""
+        sources = set()
+        for xmlid in xmlids:
+            pot_path = _get_pot_path(xmlid.split('.', 1)[0])
+            rows = self._read_catalog(pot_path).get(xmlid, ()) if pot_path else ()
+            sources.update(source for (row_model, row_field, _xmlid), source, _value in rows if (
+                (row_model, row_field) == (model, field_name)
+            ))
+        return sources
+
+    @api.model
+    def _get_branding_english_targets(self, modules, rewords):
+        """Return the records whose translations the loading of ``modules`` may have left stale.
+
+        They are the records of ``modules`` that hold an English text a branding module re-words,
+        and, for a branding module of ``modules``, every record that holds an English text it
+        re-words (an inherited field takes the help of the field it re-words) and the records
+        its catalog names term by term.
+
+        :param rewords: the result of :meth:`_get_branding_rewords`
+        :return: ``[(records, field name)]``
+        """
+        texts, own_texts, term_records = defaultdict(set), defaultdict(set), defaultdict(set)
+        for module_name, (module_texts, module_records) in rewords.items():
+            for key, english in module_texts.items():
+                texts[key] |= english
+                if module_name in modules:
+                    own_texts[key] |= english
+            if module_name in modules:
+                for key, xmlids in module_records.items():
+                    term_records[key] |= xmlids
+        self.env['ir.model.data'].flush_model()
+        targets = []
+        for (model, field_name), english in texts.items():
+            records = self.env[model]
+            records.flush_model([field_name])
+            ids = {record_id for [record_id] in self.env.execute_query(SQL(
+                """SELECT m.id FROM ir_model_data imd JOIN %s m ON m.id = imd.res_id
+                   WHERE imd.model = %s AND imd.module = ANY(%s) AND m.%s->>'en_US' = ANY(%s)""",
+                SQL.identifier(records._table), model, list(modules), SQL.identifier(field_name), list(english),
+            ))}
+            if own_texts.get((model, field_name)):
+                ids.update(record_id for [record_id] in self.env.execute_query(SQL(
+                    "SELECT id FROM %s WHERE %s->>'en_US' = ANY(%s)",
+                    SQL.identifier(records._table), SQL.identifier(field_name), list(own_texts[model, field_name]),
+                )))
+            targets.append((records.browse(sorted(ids)), field_name))
+        for (model, field_name), xmlids in term_records.items():
+            records = self.env[model]
+            for xmlid in xmlids:
+                records |= self.env.ref(xmlid, raise_if_not_found=False) or records
+            targets.append((records, field_name))
+        return [(records, field_name) for records, field_name in targets if records]
+
+    @api.model
+    def _read_branding_translations(self, branding_modules, langs):
+        """Return the translations the catalogs of the branding modules give English texts.
+
+        Within a module, the catalog of a regional language (``de_CH``) wins over the one of its base
+        language (``de``), as the core loader applies them.
+
+        :return: ``{(model, field, English, lang): {translation}}``
+        """
+        branding = defaultdict(set)
+        for module_name in branding_modules:
+            for lang in langs:
+                values = {}
+                for path in get_po_paths(module_name, lang):
+                    for rows in self._read_catalog(path).values():
+                        for (model, field_name, _xmlid), source, value in rows:
+                            if value:
+                                values[model, field_name, source, lang] = value
+                for key, value in values.items():
+                    branding[key].add(value)
+        return branding
+
+    @api.model
+    def _apply_branding_english(self, modules, langs):
+        """Give the records holding the English of a branding module its translation, else that English.
+
+        The catalog of the module owning a record translates the English the record has without the
+        branding, and the loader keeps that translation. A record whose field holds an English text a
+        branding module re-words takes, in each language, the translation a branding catalog gives
+        that text, else the translation a catalog of the record gives it, else the text itself. A
+        field translated term by term is decided term by term.
+
+        A translation is replaced only while it is the English of the record or a text the catalogs
+        know (their English and their translations): a text a user wrote is kept. Running it again
+        changes nothing.
+
+        :param modules: the names of the modules whose catalogs were loaded; only the records they
+            can have changed are decided (:meth:`_get_branding_english_targets`)
+        :param langs: language codes
+        """
+        langs = [code for code in langs if code != 'en_US']
+        if not langs:
+            return
+        rewords = self._get_branding_rewords(modules)
+        targets = self._get_branding_english_targets(set(modules), rewords)
+        if not targets:
+            return
+        aliases = defaultdict(set)
+        for records, _field_name in targets:
+            for res_id, xmlid in self.env.execute_query(SQL(
+                "SELECT res_id, module || '.' || name FROM ir_model_data WHERE model = %s AND res_id = ANY(%s)",
+                records._name, records.ids,
+            )):
+                aliases[records._name, res_id].add(xmlid)
+        named = set().union(*aliases.values())
+        entries = self._read_stock_texts({xmlid.split('.', 1)[0] for xmlid in named} | set(rewords), langs, named)
+        branding = self._read_branding_translations(rewords, langs)
+        selected = TranslationImporter(self.env.cr, verbose=False)
+        for records, field_name in targets:
+            # sudo: a catalog applies to the records whatever the rules that hide them from the user
+            for record in records.sudo():
+                names = aliases[record._name, record.id]
+                if not names:
+                    continue
+                record_entries = [entry for name in names for entry in entries[record._name, field_name, name]]
+                select = (
+                    self._select_branding_terms if callable(record._fields[field_name].translate)
+                    else self._select_branding_english
+                )
+                select(selected, record, field_name, min(names), langs, record_entries, branding)
+        selected.save(force_overwrite=True)
+
+    @api.model
+    def _select_branding_english(self, selected, record, field_name, xmlid, langs, entries, branding):
+        """Select the translations of a plain field that holds the English of a branding module.
+
+        :param entries: the entries of the catalogs naming the record (:meth:`_read_stock_texts`)
+        :param branding: ``{(model, field, English, lang): {translation}}`` of the branding catalogs
+        """
+        english = record.with_context(lang='en_US')[field_name]
+        for lang in langs:
+            stored = record.with_context(lang=lang)[field_name]
+            translations, target = _translations_of(branding, entries, record._name, field_name, english, lang)
+            if stored == target or stored in translations:
+                continue
+            if stored == english or stored in _catalog_texts(entries, lang):
+                selected.model_translations[record._name][field_name][xmlid][lang] = target
+
+    @api.model
+    def _select_branding_terms(self, selected, record, field_name, xmlid, langs, entries, branding):
+        """Select the term translations of a field that holds terms of a branding module.
+
+        Each English term takes the translation :meth:`_select_branding_english` gives a plain text,
+        and the whole value is replaced as :meth:`_select_terms` replaces it.
+        """
+        field = record._fields[field_name]
+        english_terms = _terms_of(field, record.with_context(lang='en_US')[field_name])
+        terms = defaultdict(dict)
+        for lang in langs:
+            stored_terms = _terms_of(field, record.with_context(lang=lang)[field_name])
+            if len(stored_terms) != len(english_terms):
+                stored_terms = [None] * len(english_terms)
+            for term, stored in zip(english_terms, stored_terms):
+                translations, target = _translations_of(branding, entries, record._name, field_name, term, lang)
+                terms[term][lang] = stored if stored in translations else target
+        if terms:
+            self._select_terms(selected, record, field_name, xmlid, terms, entries)
 
     @api.model
     def _get_catalog_xmlids(self, importer):
@@ -357,19 +645,6 @@ class IrModuleModule(models.Model):
         return fields
 
     @api.model
-    def get_view(self, view_id=None, view_type='form', **options):
-        """Drop the module-type group of the search panel, which lists the apps store of Odoo."""
-        result = super().get_view(view_id=view_id, view_type=view_type, **options)
-        if view_type == 'search':
-            doc = etree.fromstring(result['arch'])
-            panel_fields = doc.xpath('//searchpanel/field[@name="module_type"]')
-            if panel_fields:
-                for node in panel_fields:
-                    node.getparent().remove(node)
-                result['arch'] = etree.tostring(doc, encoding='unicode')
-        return result
-
-    @api.model
     def search_panel_select_range(self, field_name, **kwargs):
         """Leave the categories that hold no module an Apps list shows out of the search panel."""
         result = super().search_panel_select_range(field_name, **kwargs)
@@ -382,7 +657,7 @@ class IrModuleModule(models.Model):
         return result
 
     @api.model
-    @ormcache()
+    @api.ormcache()
     def _get_industry_categories_from_apps(self):
         """Never ask the apps store of Odoo for industry categories."""
         return []

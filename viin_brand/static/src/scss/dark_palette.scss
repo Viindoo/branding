@@ -30,6 +30,14 @@ $o-viin-dark-bundle: true;
 // sits on).
 $body-bg: #111B1E;
 $o-view-background-color: #111B1E;
+// Popover surface. Core sets `$popover-bg: $white !default` (bootstrap_overridden.scss) and Bootstrap
+// emits it as the runtime `--popover-bg` of every `.popover` (_popover.scss), while the popover text
+// (`--popover-body-color`, `--popover-header-color`) follows the scheme. `$white` stays a real white
+// in this bundle (see below), so a popover that is not a core `.o_popover` kept a white box under the
+// near-white text of the scheme: the tooltip of the graph views (web.GraphRenderer.CustomTooltip, a
+// plain `.popover`) read 1.1:1. The surface is the panel tier, which the popover text is tuned
+// against. Bootstrap's arrow colour follows `$popover-bg`.
+$popover-bg: $o-view-background-color;
 // App-shell background band behind the panels (.o_web_client reads $o-webclient-background-color;
 // Bootstrap emits --secondary-bg from $body-secondary-bg).
 $o-webclient-background-color: #0B1315;
@@ -112,19 +120,39 @@ $input-placeholder-color: $o-gray-600;    // #8EA5A8 = 6.75:1 on the panel; the 
 // 1.25:1 from the panel and carries $body-color at 12.68:1.
 $o-viin-dark-selection-bg: #123037;
 
-// The dark brand accent is the neutral muted tier: $o-brand-secondary itself is neutralised. Our own
-// rules are wrapped in `@if not $o-viin-dark-bundle`, but three core rules read the token directly
-// and recompile here regardless: the mobile form label (`.o_xxs_form_view .o_form_label`, text),
-// the search panel section header `border-bottom`, and the POS backend kanban (text). At the light
-// #7F4282 the first would be 2.50:1 on this panel, a WCAG AA failure. The token collapses onto the
-// dark muted tier ($body-secondary-color, #8EA5A8 = 6.75:1 on #111B1E), the tier core's
-// `.text-body-secondary` uses, and all three surfaces land on a neutral that suits them. Declared
-// after $body-secondary-color because Sass resolves top-down.
-$o-brand-secondary: $body-secondary-color;
+// The brand cyan is a readable text colour on the dark panel (7.50:1 on #111B1E), so the structural
+// accent takes it. $o-brand-secondary itself keeps its light value, which is the same cyan: core
+// rules that read the token directly (the search panel section header border, the point of sale
+// kanban) land on it. A literal, because the order of this file relative to brand_variables.scss
+// (same anchor) is undefined.
+$o-viin-accent-text: #00BBCE;
 
-// The one purple in the dark bundle is Bootstrap's `$purple` (`--purple`), which carries the
-// livechat "needs help" state; the light value #7F4282 is a lightened Viindoo purple here
-// (5.98:1 on #111B1E). backend_variables.scss keeps it in the dark compile.
+// The content colour of the dark scheme is the brand cyan. The identity purple #7F4282 is 2.50:1 on
+// the dark panel, so a button, a link, a tab or a checked box in purple reads poorly; the cyan is
+// 7.50:1. Every content consumer reads one token, `$o-brand-primary`, so re-pointing it here moves
+// them all. The tokens brand_variables.scss derives from it with `!default` are assigned again,
+// because that file compiles first and has already captured the purple in them. The chrome teal does
+// not read this token, so it stays the same in both schemes, and the navbar counters read
+// `$o-viin-brand-purple`.
+$o-brand-primary: $o-viin-accent-text;
+$primary: $o-brand-primary;
+$o-community-color: $o-brand-primary;
+$o-enterprise-color: $o-brand-primary;
+$o-brand-odoo: $o-brand-primary;
+
+// Rungs of the cyan, derived from it with Sass's own mix(), so no hex enters the module:
+//   hover    15% toward white: brighter, as a dark surface needs more luminance before a hue
+//            reads as itself (the label on it reads at 7.2:1 in the dark ink);
+//   pressed  15% toward black, the deep rung ($o-viin-action-deep) of the content ladder.
+$o-viin-dark-action-hover: mix($o-brand-primary, white, 85%);
+$o-viin-action-deep: mix($o-brand-primary, black, 85%);
+// The label of a filled cyan control. White on the cyan is only 2.33:1, so the label is the dark ink
+// core's color-contrast() picks on a light fill ($color-contrast-dark, 6.48:1 on the cyan).
+$o-viin-action-label: $color-contrast-dark;
+
+// Bootstrap's `$purple` (`--purple`) carries the livechat "needs help" state; the light value
+// #7F4282 is a lightened Viindoo purple here (5.98:1 on #111B1E). backend_variables.scss keeps it
+// in the dark compile.
 $purple: #BD83C0;
 
 // Dark arm of the readable `.text-secondary` text tier. The light value #6C757D is only 3.73:1 on
@@ -151,17 +179,18 @@ $secondary-bg-subtle: $body-tertiary-bg;
 $secondary-border-subtle: $border-color;
 
 // Content links (dark arm). :root --link-color is emitted from $link-color (= $o-main-link-color).
-// The light AA teal #007F8E measures only 3.69:1 on #111B1E, so the dark arm lifts it to a lighter
-// teal. The teal chrome (navbar/rail) is scheme-invariant and owned elsewhere; this governs content
-// links only.
-$o-main-link-color: #4FD4E2;
-$link-color: #4FD4E2;
-$link-hover-color: #7FE0EA;
+// The identity purple measures only 2.5:1 on #111B1E, so the dark arm is the brand cyan (7.50:1),
+// and the hover rung is the cyan 40% toward white (10.24:1). The teal chrome (navbar/rail) is
+// scheme-invariant and owned elsewhere; this governs content links and core's action text only.
+$o-main-link-color: $o-brand-primary;
+$link-color: $o-main-link-color;
+$link-hover-color: mix($o-main-link-color, white, 60%);
+$o-enterprise-action-color: $o-main-link-color;
 // Dark arm of the link-tier hover rung (see link_tier.scss): the link-styled controls
 // (`.nav-link`, `.btn-link`, `.pagination`) need their own hover value. It aliases the
 // $link-hover-color literal above, so no new hex enters the module; link_tier.scss derives the
 // light rung with Bootstrap's shade formula and declares it `!default`, so this wins in dark. A
-// shade() would be the wrong direction: it darkens a light-on-dark teal.
+// shade() would be the wrong direction: it darkens a light-on-dark tone.
 $o-viin-interactive-hover: $link-hover-color;
 
 // Dropdown-item and list-group interactive states. Core re-declares the Bootstrap dropdown-link
@@ -201,46 +230,43 @@ $list-group-action-hover-color: $body-color;         // #EDF4F5 on the panel, 15
 $o-list-group-active-color: $body-color;             // label on the info-tinted band
 $o-list-group-active-bg: $o-viin-dark-selection-bg;  // info-tinted dark band, 12.68:1 under the label
 
-// Active / current component tier. Core seeds the trio from the flat decorative teal and a black
-// label (`$o-component-active-color: $o-black`, `$o-component-active-bg: mix($o-action, $o-gray-100,
+// Active / current component tier. Core seeds the trio from the brand colour and a black label
+// (`$o-component-active-color: $o-black`, `$o-component-active-bg: mix($o-action, $o-gray-100,
 // 20%)`, `$o-component-active-border: $o-action`), which the ramp alone does not make dark-correct.
 // The statusbar seeds --o-statusbar-background-active from it, and Bootstrap paints the current step,
 // which core renders `disabled`, from `--btn-disabled-color` = `color-contrast($background)` of the
 // dark control fill = #FFFFFF, which needs a dark fill under it.
 //
-// The three tokens are read by five consumers (the statusbar current-step fill and outline, the
-// "secondary" and "light" entries of $o-btns-bs-override, $o-btns-bs-OUTLINE-override, and the
-// settings tab `--settings__tab-bg--active`), and a per-map fix in dark_buttons.scss would reach
-// only two. Re-pointing the source tokens fixes all of them, and dark_buttons.scss forwards the dark
-// values without any edit to its active keys.
+// The three tokens are read by five consumers (the statusbar current-step fill, the "secondary" and
+// "light" entries of $o-btns-bs-override, $o-btns-bs-OUTLINE-override, and the settings tab
+// `--settings__tab-bg--active`), and a per-map fix in dark_buttons.scss would reach only two.
+// Re-pointing the source tokens fixes all of them, and dark_buttons.scss forwards the dark values
+// without any edit to its active keys.
 //
-// The fill keeps core's construction (the interactive teal mixed 20% into the surface one rung above
-// the panel, $o-gray-100) with the dark teal for $o-action. It reads $o-main-link-color, declared
-// above in this file, because the order of this file relative to brand_variables.scss (same anchor)
-// is undefined, so only tokens declared earlier in this file may be read.
-//   fill   mix(#4FD4E2, #152225, 20%) = #21464B - #FFFFFF on it 10.28:1, $body-color 9.23:1; one
-//          rung above the resting step #25383C, so the outline carries the emphasis in both schemes.
-//   border the dark teal: the light #007F8E outline is only 2.37:1 on the new fill, while the dark
-//          teal restores 5.80:1 and is the dark arm every other foreground teal gets. Light is
-//          untouched, so $o-component-active-border stays the chrome base there.
-//   color  the dark body tier: the `:active` pressed label of a neutral button would be 1.87:1 on
-//          the new fill at core's $o-black.
+// The fill keeps core's construction (the content colour mixed 20% into the surface one rung above
+// the panel, $o-gray-100). It reads $o-main-link-color, declared above in this file, because the
+// order of this file relative to brand_variables.scss (same anchor) is undefined, so only tokens
+// declared earlier in this file may be read.
+//   fill   mix(cyan, #152225, 20%) = #114147 - #FFFFFF on it 11.22:1, one rung above the resting
+//          step #25383C, so the outline carries the emphasis in both schemes.
+//   border the cyan, which restores the outline on the new fill. Light is untouched, so
+//          $o-component-active-border stays the brand purple there.
+//   color  the dark body tier: the `:active` pressed label of a neutral button would be unreadable
+//          on the new fill at core's $o-black.
 $o-component-active-bg: mix($o-main-link-color, $body-tertiary-bg, 20%);
 $o-component-active-border: $o-main-link-color;
 $o-component-active-color: $body-color;
 
-// Faded-label tier. Two core mechanisms fade a form label to say "not editable here": the empty /
-// readonly / false label rule (`opacity: .66`, form_controller.scss) and Bootstrap's disabled
-// form-check label (`$form-check-label-disabled-opacity`, what a read-only radio or checkbox label
-// renders). On the dark panel Bootstrap's default fade leaves the muted label tier under AA. One
-// value serves both mechanisms, stays visibly dimmer than a live label and keeps AA on both label
-// tiers over the panel. dark_secondary_surfaces.dark.scss reads the token for the first mechanism.
+// Faded-label tier. Bootstrap fades the label of a disabled form-check (what a read-only radio or
+// checkbox label renders) with `$form-check-label-disabled-opacity`. On the dark panel the default
+// fade leaves the muted label tier under AA; this value stays visibly dimmer than a live label and
+// keeps AA on both label tiers over the panel.
 $o-viin-dark-faded-label-opacity: 0.85;
 $form-check-label-disabled-opacity: $o-viin-dark-faded-label-opacity;
 
-// A11y focus ring, dark arm. focus_ring.scss declares `$o-viin-focus: #005E68 !default;` and emits
-// `--o-viin-focus`. Set here first (no `!default`), the ring compiles to the light-on-dark teal,
-// clearing WCAG SC 1.4.11 (>= 3:1) on #111B1E; the light bundle keeps #005E68 (7.5:1 on white).
+// A11y focus ring, dark arm. focus_ring.scss declares `$o-viin-focus: #00707C !default;` and emits
+// `--o-viin-focus`. Set here first (no `!default`), the ring compiles to the light-on-dark cyan,
+// clearing WCAG SC 1.4.11 (>= 3:1) on #111B1E; the light bundle keeps #00707C (5.82:1 on white).
 $o-viin-focus: #7FE0EA;
 
 // Bootstrap baked-icon ink (WCAG SC 1.4.11 non-text, >= 3:1). Several Bootstrap scalars bake their
@@ -259,26 +285,28 @@ $btn-close-color: $body-color;                    // 4.83:1 at the stock .5 clos
 $form-switch-color: $body-color;                  // opaque fill, 15.72:1
 $form-select-indicator-color: $body-color;        // 15.72:1
 // The switch's focus ring and the accordion's active chevron both mark "this control has the user's
-// attention", so they reuse the focus-ring and active-component teal declared above and stay
+// attention", so they reuse the focus-ring and active-component tones declared above and stay
 // distinguishable from a resting control.
 $form-switch-focus-color: $o-viin-focus;          // 11.47:1
 $accordion-icon-active-color: $o-main-link-color; // 9.88:1
 
 // Mobile burger / app-menu sidebar. Core's burger_menu.variables.scss hardcodes the panel white
-// (`$o-burger-base-bg: $o-white`) and the topbar text `$o-black`, beside the topbar
-// `$o-gray-100` and the entry text `$o-gray-800` that follow the ramp, and burger_menu.scss reads
-// those four variables directly, so the white panel and black topbar text are not reachable from
-// the gray rungs. The sidebar section titles and the user-menu links carry the dark body text
-// #EDF4F5, which on a white panel is 1.11:1, so the surface is darkened rather than the text
+// (`$o-burger-base-bg: $o-white`) and the topbar text `$o-black`, beside the topbar `$o-gray-100`
+// that follows the ramp, and burger_menu.scss reads those variables directly, so the white panel and
+// black topbar text are not reachable from the gray rungs. The sidebar entries carry the dark body
+// text #EDF4F5, which on a white panel is 1.11:1, so the surface is darkened rather than the text
 // narrowed.
 //
-// The four tokens are `!default` and read only by burger_menu.scss, a closed native lever. Set
+// The three tokens are `!default` and read only by burger_menu.scss, a closed native lever. Set
 // here without `!default`, before core's `**/*.variables.scss` glob, core's own rules recompile
-// dark-correct. burger_menu.scss feeds `$o-burger-base-color` through `rgba(..., .8)` into
-// `o-hover-text-color`, so darkening the variable lets Sass re-composite both the resting and hover
-// arms; a tail rule would have to hand-composite that alpha. A var() inside a Sass colour function
-// is not possible, so all four resolve to concrete hexes declared earlier in this file.
+// dark-correct. A var() inside a Sass colour function is not possible, so all three resolve to
+// concrete hexes declared earlier in this file.
 $o-burger-base-bg: $o-view-background-color;   // panel #111B1E - same tier as the form sheet / card
-$o-burger-base-color: $body-color;             // entry text #EDF4F5; the rgba(.8) arm reads 10.40:1
 $o-burger-topbar-bg: $body-tertiary-bg;        // topbar #152225 - raised band above the panel
 $o-burger-topbar-color: $body-color;           // topbar text; `.o_sidebar_close.text-reset` inherits it
+
+// Checked checkbox, radio and switch. Core fills them from `$o-brand-primary` (`!default`, in
+// bootstrap_overridden.scss), which in the dark scheme is the brand cyan: 5.98:1 against the
+// selected-row band and 7.50:1 against the panel, so a checked box reads. The tick is the label of
+// a filled cyan control. Light is untouched.
+$form-check-input-checked-color: $o-viin-action-label;

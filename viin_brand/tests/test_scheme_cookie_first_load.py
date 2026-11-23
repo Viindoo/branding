@@ -41,20 +41,20 @@ from .test_brand_cascade_compile import (
     _normalize_colour,
 )
 
-# JS helpers shared by every browser_js call: a JSON-RPC `ir.config_parameter.set_param` (the
+# JS helpers shared by every browser_js call: a JSON-RPC `ir.config_parameter.set_str` (the
 # channel that round-trips a measured value back to this test's transaction, see
 # `_read_json_param`), a poll-until-truthy waiter (the webclient mounts views asynchronously), and
 # an "effective background" walk (a transparent ancestor must be skipped to find the surface
 # behind the text).
 _JS_HELPERS = """
 async function __setParam(key, value) {
-    const resp = await fetch('/web/dataset/call_kw/ir.config_parameter/set_param', {
+    const resp = await fetch('/web/dataset/call_kw/ir.config_parameter/set_str', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
             jsonrpc: '2.0',
             method: 'call',
-            params: {model: 'ir.config_parameter', method: 'set_param', args: [key, value], kwargs: {}},
+            params: {model: 'ir.config_parameter', method: 'set_str', args: [key, value], kwargs: {}},
         }),
     });
     const data = await resp.json();
@@ -67,7 +67,13 @@ async function __waitFor(predicate, timeoutMs) {
         if (result) { return result; }
         await new Promise((resolve) => setTimeout(resolve, 100));
     }
-    throw new Error('__waitFor: timed out waiting for a condition');
+    throw new Error(
+        '__waitFor: timed out waiting for a condition; the page shows: '
+        + document.body.innerText.slice(0, 300).replace(/\\s+/g, ' ')
+        + ' | has window.Chart: ' + Boolean(window.Chart)
+        + ' | canvas: ' + document.querySelectorAll('canvas').length
+        + ' | pivot cells: ' + document.querySelectorAll('.o_pivot_cell_value').length
+    );
 }
 function __effectiveBackground(el) {
     let node = el;
@@ -209,7 +215,7 @@ class TestSchemeCookieResponseWrite(HttpCase):
 
     def test_response_cookie_is_not_set_when_writing_a_different_users_own_preference(self):
         """The sync is scoped to the acting user's own preference change, like the model's
-        SELF_WRITEABLE_FIELDS boundary: an admin changing a different user's preference must not
+        user_writeable boundary: an admin changing a different user's preference must not
         change the admin's own response cookie."""
         admin = new_test_user(
             self.env, login='viin_scheme_cookie_admin', groups='base.group_user,base.group_system',
@@ -300,7 +306,8 @@ class TestPivotGraphFreshContextReadability(HttpCase):
             'name': 'Dark Mode First Load Graph (test)',
             'model': 'res.partner',
             'type': 'graph',
-            'arch': '<graph/>',
+            # two groupings: with one, the graph shows no legend of its own
+            'arch': '<graph><field name="create_uid"/><field name="lang"/></graph>',
         })
         cls.graph_action = cls.env['ir.actions.act_window'].create({
             'name': 'Dark Mode First Load Graph (test)',
@@ -309,7 +316,7 @@ class TestPivotGraphFreshContextReadability(HttpCase):
             'view_id': cls.graph_view.id,
         })
         # base.group_system is needed only because the measurement round-trips a value through
-        # ir.config_parameter.set_param, which base restricts to that group.
+        # ir.config_parameter.set_str, which base restricts to that group.
         cls.dark_user = new_test_user(
             cls.env, login='viin_fresh_dark_first_load',
             groups='base.group_user,base.group_system',
@@ -320,38 +327,13 @@ class TestPivotGraphFreshContextReadability(HttpCase):
         super().setUp()
         if "tour_enabled" not in self.env["res.users"]._fields:
             self.skipTest("web_tour is not installed")
-        # When viin_backend_theme is installed, its viinThemeService also sets the `color_scheme`
-        # cookie on every webclient boot once its own `orm.read` resolves, which frequently wins
-        # the race the response cookie exists to remove; the test would then measure whichever
-        # async operation finishes first. The service and its only consumer
-        # (ViinAppearanceSystray, a navbar dropdown icon unrelated to any view) are removed from
-        # `web.assets_backend` together: removing only the service leaves a dangling
-        # `useService("viin_theme")` that throws an OwlError and breaks the page. The page chrome
-        # stays dark through `bootEffective` (root.dataset.bsTheme), which the server-rendered
-        # boot template stamps regardless of the service.
-        if self.env['ir.module.module']._get('viin_backend_theme').state == 'installed':
-            assets = self.env['ir.asset'].sudo().create([
-                {
-                    'name': 'Neutralise viin_theme_service cookie write (scheme first-load test)',
-                    'bundle': 'web.assets_backend',
-                    'directive': 'remove',
-                    'path': 'viin_backend_theme/static/src/webclient/viin_theme_service.js',
-                },
-                {
-                    'name': 'Neutralise viin_theme_service\'s only consumer (scheme first-load test)',
-                    'bundle': 'web.assets_backend',
-                    'directive': 'remove',
-                    'path': 'viin_backend_theme/static/src/webclient/appearance_systray/**/*',
-                },
-            ])
-            self.addCleanup(assets.sudo().unlink)
-            self.addCleanup(self.env.registry.clear_cache, 'assets')
 
     def _read_json_param(self, key):
         # The browser's requests run on a different test cursor than self.env's (same transaction,
         # separate cache): invalidate before reading back what it wrote.
         self.env.invalidate_all()
-        raw = self.env['ir.config_parameter'].sudo().get_param(key)
+        # sudo: reads back the parameter the page wrote, whatever the test user can.
+        raw = self.env['ir.config_parameter'].sudo().get_str(key)
         self.assertTrue(
             raw,
             "the browser-side measurement never reported a value under %r - the page did not "

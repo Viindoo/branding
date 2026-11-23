@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { registry } from "@web/core/registry";
 import { _t } from "@web/core/l10n/translation";
 
@@ -17,5 +15,5 @@ const sessionExpired = {
 
 registry
     .category("error_notifications")
-    .add("odoo.http.SessionExpiredException", sessionExpired, { force: true })
+    .add("odoo.http.session.SessionExpiredException", sessionExpired, { force: true })
     .add("werkzeug.exceptions.Forbidden", sessionExpired, { force: true });

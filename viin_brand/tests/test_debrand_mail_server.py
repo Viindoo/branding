@@ -1,5 +1,5 @@
 # Mail-server de-brand guard. Once viin_brand is installed, no Odoo wordmark may leak through
-# user-facing field help. Core Odoo 19.0 ir.mail_server.from_filter help reads:
+# user-facing field help. Core ir.mail_server.from_filter help reads:
 #     Comma-separated list of addresses or domains for which this server can be used.
 #     e.g.: "notification@odoo.com" or "odoo.com"
 # carrying the "odoo.com" wordmark twice; the module re-brands that help to Viindoo text. This

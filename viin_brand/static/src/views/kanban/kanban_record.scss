@@ -6,7 +6,7 @@
 // bundle. The surface is not re-pointed at --body-bg, the app-shell grey in light and also the
 // kanban canvas tier: the card would lose its raised look and the muted and deadline text on it
 // would fall below WCAG AA. Shadow and hover-lift use color-mix over transparent (composites on
-// either scheme) against --emphasis-color and the AA teal ($o-viin-chrome-base).
+// either scheme) against --emphasis-color and the brand purple ($o-brand-primary).
 //
 // No radius: Odoo CE declares none on `.o_kanban_record`, so the card is square-cornered like core.
 
@@ -23,6 +23,6 @@
     &:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 16px color-mix(in srgb, var(--emphasis-color) 12%, transparent);
-        border-color: color-mix(in srgb, #{$o-viin-chrome-base} 35%, var(--border-color));
+        border-color: color-mix(in srgb, #{$o-brand-primary} 35%, var(--border-color));
     }
 }

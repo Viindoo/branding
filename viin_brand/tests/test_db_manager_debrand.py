@@ -5,12 +5,12 @@ from odoo.tools import mute_logger
 @tagged('post_install', '-at_install')
 class TestViinBrandDbManagerDebrand(HttpCase):
     """The database-manager pages must be de-branded to Viindoo AND every
-    kwarg-driven variant of ``Database._render_template`` must still render.
+    kwarg-driven variant of the core ``_render_template`` must still render.
 
     Core drives the template through ``manage=`` / ``error=`` kwargs
     (``selector()`` -> ``manage=False``; ``create()`` and the other write
     handlers -> ``error=...``), so the override must forward them to
-    ``super()._render_template()``. These tests protect both the de-brand string
+    the core renderer. These tests protect both the de-brand string
     replacements and the kwarg-path rendering.
     """
 
@@ -107,7 +107,7 @@ class TestViinBrandDbManagerDebrand(HttpCase):
         "Database creation error." traceback at ERROR; it is caught and re-rendered
         as the error page, and the expected log is muted.
 
-        Guards that the ``error=`` kwarg reaches ``super()._render_template``; the
+        Guards that the ``error=`` kwarg reaches the core renderer; the
         template's ``<t t-if="error">`` block renders regardless of the database
         list. The POST is side-effect-free: an empty ``master_pwd`` short-circuits
         the admin-password change and the invalid name raises before any database
@@ -121,17 +121,18 @@ class TestViinBrandDbManagerDebrand(HttpCase):
             'login': 'admin',
             'phone': '',
         })
-        self.assertEqual(res.status_code, 200)
+        # core answers a failed database operation with its page and the status 422
+        self.assertEqual(res.status_code, 422)
         self.assertIn(
-            'Database creation error', res.text,
+            'alert alert-danger', res.text,
             "the create-error page must render the error alert; the error= kwarg "
-            "must be forwarded to super()._render_template",
+            "must be forwarded to the core renderer",
         )
 
     def test_db_selector_suppresses_management_actions(self):
         """The selector page (manage=False) hides the per-database management actions.
 
-        Guards that the ``manage=False`` kwarg reaches ``super()._render_template``.
+        Guards that the ``manage=False`` kwarg reaches the core renderer.
         Self-calibrating: the ``manage`` flag is only observable when a database is
         listed, so the assertion runs only after confirming the manager page (manage
         default True) actually renders the management actions.

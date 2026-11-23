@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-inherit="web.SessionExpiredDialog" t-inherit-mode="extension" owl="1">
+    <t t-inherit="web.ErrorDialog" t-inherit-mode="extension">
+        <xpath expr="//code[@t-if='this.props.message']" position="attributes">
+            <attribute name="t-if">this.message</attribute>
+            <attribute name="t-out">this.message</attribute>
+        </xpath>
+    </t>
+
+    <t t-inherit="web.SessionExpiredDialog" t-inherit-mode="extension">
         <xpath expr="//Dialog" position="attributes">
             <attribute name="title.translate">Session Expired</attribute>
         </xpath>

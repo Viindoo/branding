@@ -2,13 +2,9 @@
     'name': "Viindoo Branding",
     'name_vi_VN': "Ứng dụng với thương hiệu Viindoo",
 
-    'summary': """
-Set Viindoo Brandings.
-""",
+    'summary': "Set Viindoo Brandings.",
 
-    'summary_vi_VN': """
-Thiết lập thương hiệu Viindoo.
-        """,
+    'summary_vi_VN': "Thiết lập thương hiệu Viindoo.",
 
     'description': """
 This module replaces the Odoo branding of the base, web and base_setup modules with Viindoo's
@@ -89,9 +85,9 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
     """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.3.2',
@@ -120,6 +116,8 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
             # Appended, not anchored: it must run after html_editor's variables, which build
             # $o-color-palettes, whichever of the two modules loads first.
             'viin_brand/static/src/scss/brand_palette_reset.scss',
+            # After core's `$o-theme-text-colors`; the dark arm of the map reads the entry set here.
+            'viin_brand/static/src/scss/brand_text_colors.scss',
         ],
         'web.assets_web_dark': [
             # The dark palette lands before core consumes the Sass variables, so every core rule
@@ -133,8 +131,9 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
              'viin_brand/static/src/scss/dark_theme_tints.scss'),
             ('after', 'web/static/src/webclient/webclient.scss',
              'viin_brand/static/src/scss/dark_badge_label.scss'),
-            # After core's primary_variables.scss, where the active-state tokens it forwards exist.
-            ('after', 'web/static/src/scss/primary_variables.scss',
+            # After core's primary_variables.scss, where the active-state tokens it forwards exist,
+            # and after the light "success" text entry its dark tint is derived from.
+            ('after', 'viin_brand/static/src/scss/brand_text_colors.scss',
              'viin_brand/static/src/scss/dark_buttons.scss'),
             # Listed explicitly: core's `*.dark.scss` glob covers only its own tree.
             'viin_brand/static/src/scss/dark_secondary_surfaces.dark.scss',
@@ -157,19 +156,19 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
             'viin_brand/static/src/core/dialog/dialog.js',
             'viin_brand/static/src/core/errors/error_dialogs.js',
             'viin_brand/static/src/core/errors/error_dialogs.xml',
-            'viin_brand/static/src/core/browser/title_service.js',
+            'viin_brand/static/src/core/social_links/viindoo_social_links.js',
         ],
         'web.assets_backend': [
+            # The Viindoo social accounts, for the modules that fill social links with them.
+            'viin_brand/static/src/core/social_links/viindoo_social_links.js',
             'viin_brand/static/src/webclient/webclient.js',
-            'viin_brand/static/src/webclient/settings_form_view/settings/settings_page.js',
-            'viin_brand/static/src/webclient/settings_form_view/settings/settings_page.xml',
             'viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml',
             'viin_brand/static/src/webclient/user_menu_item.js',
             'viin_brand/static/src/webclient/actions/action_dialog.js',
             'viin_brand/static/src/webclient/actions/reports/report_notification.js',
             'viin_brand/static/src/core/barcode/barcode_video_scanner.js',
             'viin_brand/static/src/core/dialog/dialog.js',
-            # Text links take the brand secondary; buttons and tabs keep the interactive teal.
+            # Text links, link-styled controls and core's action text share the brand link tone.
             # Anchored between core's `$link-color` and Bootstrap's derived link variables.
             ('before', 'web/static/lib/bootstrap/scss/_variables.scss',
              'viin_brand/static/src/scss/link_tier.scss'),
@@ -179,7 +178,7 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
              'viin_brand/static/src/scss/backend_variables.scss'),
             'viin_brand/static/src/scss/focus_ring.scss',
             'viin_brand/static/src/scss/color_scheme.scss',
-            # Anchored: its `.o_progressbar .o_progress` rule ties core's on specificity and wins on
+            # Anchored: its `.o_progressbar .progress` rule ties core's on specificity and wins on
             # source position.
             ('after', 'web/static/src/views/fields/progress_bar/progress_bar_field.scss',
              'viin_brand/static/src/scss/brand_cascade.scss'),
@@ -187,7 +186,6 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
             'viin_brand/static/src/core/colors/colors.js',
             'viin_brand/static/src/core/errors/error_dialogs.js',
             'viin_brand/static/src/core/errors/error_dialogs.xml',
-            'viin_brand/static/src/core/browser/title_service.js',
             'viin_brand/static/src/views/widgets/**/*',
             'viin_brand/static/src/views/fields/statusbar/statusbar_steps.js',
             'viin_brand/static/src/views/fields/statusbar/statusbar_steps.xml',
@@ -212,6 +210,8 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
              'viin_brand/static/src/core/ui/block_ui.scss'),
             ('after', 'web/static/src/search/control_panel/control_panel.scss',
              'viin_brand/static/src/search/control_panel/control_panel.scss'),
+            ('after', 'web/static/src/search/search_panel/search_view.scss',
+             'viin_brand/static/src/search/search_panel/search_view.scss'),
             ('after', 'web/static/src/webclient/loading_indicator/loading_indicator.scss',
              'viin_brand/static/src/webclient/loading_indicator/loading_indicator.scss'),
             ('after', 'web/static/src/views/kanban/kanban_record.scss',
@@ -225,6 +225,13 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
             ('after', 'web/static/src/views/view.scss',
              'viin_brand/static/src/views/view.scss'),
         ],
+        # The brand SCSS reaches the unit-test bundles through web's include of web.assets_backend.
+        # The list header restyle (font size, letter spacing) changes the text widths that the core
+        # list tests assert (column widths, truncated header tooltip); removing it lets those tests
+        # measure core's own styles. A renamed path raises on update and must stay loud.
+        'web.assets_unit_tests_setup': [
+            ('remove', 'viin_brand/static/src/views/list/list_renderer.scss'),
+        ],
         'web.assets_unit_tests': [
             'viin_brand/static/tests/dialog_debrand.test.js',
             'viin_brand/static/tests/action_dialog_debrand.test.js',
@@ -234,9 +241,7 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
             'viin_brand/static/tests/colors_debrand.test.js',
             'viin_brand/static/tests/statusbar_steps.test.js',
             'viin_brand/static/tests/error_dialogs_debrand.test.js',
-            'viin_brand/static/tests/notification_alert_debrand.test.js',
             'viin_brand/static/tests/report_notification_debrand.test.js',
-            'viin_brand/static/tests/title_service_debrand.test.js',
         ],
         'web.assets_tests': [
             'viin_brand/static/tests/tours/about_debrand_tour.js',
@@ -245,7 +250,7 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
     'post_init_hook': 'post_init_hook',
     'uninstall_hook': 'uninstall_hook',
     'post_load': 'post_load',
-    'installable': False,
+    'installable': True,
     # Installing `web` installs the branding, which in turn pulls the other branding modules in.
     'auto_install': ['web'],
     'price': 9.9,

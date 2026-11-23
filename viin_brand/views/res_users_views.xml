@@ -11,9 +11,9 @@
             </xpath>
             <xpath expr="//div[@name='api_keys']/div[1]/span[hasclass('text-muted')]" position="after">
                 <widget name="documentation_link"
-                        path="https://viindoo.com/documentation/19.0/developer/development/integrate-with-third-party-resources.html"
+                        path="https://viindoo.com/documentation/20.0/developer/development/integrate-with-third-party-resources.html"
                         label="Learn more"
-                        icon="fa-fw o_button_icon fa-info-circle"/>
+                        icon="info"/>
             </xpath>
         </field>
     </record>

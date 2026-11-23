@@ -1,5 +1,5 @@
-# Compiled-cascade guard for the text-link tier: the hyperlink colour is the Viindoo secondary
-# (purple) in light mode, and the link-styled controls share it. SSOT for everything named
+# Compiled-cascade guard for the text-link tier: the hyperlink colour is the Viindoo brand purple
+# in light mode and its light tone in dark, and the link-styled controls share it. SSOT for everything named
 # $link-* / --link-* in this cluster.
 #
 # Odoo compiles Bootstrap with `$variable-prefix: ''`, so ONE unprefixed token - `--link-color` -
@@ -14,9 +14,8 @@
 # assignment a no-op) or core renames a borrower variable. Both bundles are compiled because dark
 # is an independent recompile.
 #
-# The dark arm is inverted on purpose: the brand purple is a light-mode-only accent. In
-# web.assets_web_dark the link tier keeps the teal dark_palette.scss sets, so the dark arm asserts
-# the absence of purple and the presence of the dark teal (see the COLOUR LAW block in
+# In web.assets_web_dark the link tier takes the light purple dark_palette.scss sets, because the
+# brand purple is only 2.50:1 on the dark panel (see the COLOUR LAW block in
 # static/src/scss/brand_variables.scss).
 import os
 import re
@@ -25,7 +24,7 @@ from odoo.tests.common import TransactionCase, tagged
 
 from .test_brand_cascade_compile import (
     BACKEND_BUNDLE,
-    CHROME_BASE,
+    BRAND_PURPLE,
     DARK_BUNDLE,
     DARK_LINK_REF,
     WCAG_AA_NORMAL_TEXT,
@@ -33,8 +32,8 @@ from .test_brand_cascade_compile import (
     _iter_rules,
     _normalize_colour,
 )
-# The brand-secondary purple lives only in SCSS, so the expected value is read from
-# brand_variables.scss with the resolver of tests/test_brand_ssot.py.
+# The link purple lives only in SCSS, so the expected value is read from brand_variables.scss with
+# the resolver of tests/test_brand_ssot.py.
 from .test_brand_ssot import BRAND_VARIABLES_SCSS, _resolve_scss_hex
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -55,7 +54,7 @@ LINK_SURFACES = {
 # from web/static/lib/bootstrap/scss/. Bootstrap declares `--nav-link-color` on the container
 # `.nav` and only reads it on `.nav-link`, so the declaration is looked up on `.nav`; `.btn-link`
 # and `.pagination` declare their own. Each is `var(--link-color)` in stock Bootstrap, which is
-# why they need re-anchoring once --link-color stops meaning "interactive teal".
+# why they need re-anchoring once --link-color is the brand link tone.
 LINK_BORROWERS = (
     ("Bootstrap tabs (--nav-link-color, declared on .nav)", ".nav", "--nav-link-color"),
     ("link-styled buttons (.btn-link)", ".btn-link", "--btn-color"),
@@ -114,15 +113,15 @@ class TestLinkTierCompile(TransactionCase):
         return self._declared_on(css, ":root", prop)
 
     def _expected_purple(self):
-        purple = _resolve_scss_hex(_read(BRAND_VARIABLES_SCSS), "$o-brand-secondary")
+        purple = _resolve_scss_hex(_read(BRAND_VARIABLES_SCSS), "$o-main-link-color")
         self.assertIsNotNone(
             purple,
-            "$o-brand-secondary must be declared in static/src/scss/brand_variables.scss - it is "
-            "the SSOT for every brand-secondary surface, the text link included.",
+            "$o-main-link-color must be declared in static/src/scss/brand_variables.scss - it is "
+            "the SSOT of the text link.",
         )
         return purple.lower()
 
-    def test_light_link_tokens_compile_to_the_brand_secondary(self):
+    def test_light_link_tokens_compile_to_the_brand_purple(self):
         """:root --link-color / -rgb / --link-hover-color must carry the brand purple in light mode.
 
         These four tokens are what the `a` reboot rule reads
@@ -136,10 +135,10 @@ class TestLinkTierCompile(TransactionCase):
         self.assertTrue(link_values, "no --link-color custom property found on :root.")
         self.assertIn(
             expected_purple, link_values,
-            "--link-color must compile to the Viindoo secondary %s. Got %r (the AA teal %s means "
-            "link_tier.scss did not take effect: check its manifest anchor is still BEFORE "
+            "--link-color must compile to the Viindoo link purple %s. Got %r (check that "
+            "link_tier.scss manifest anchor is still BEFORE "
             "web/static/lib/bootstrap/scss/_variables.scss)."
-            % (expected_purple, link_values, CHROME_BASE),
+            % (expected_purple, link_values),
         )
 
         channels = expected_purple.lstrip("#")
@@ -152,14 +151,14 @@ class TestLinkTierCompile(TransactionCase):
         self.assertTrue(rgb_values, "no --link-color-rgb custom property found on :root.")
         self.assertIn(
             expected_rgb, rgb_values,
-            "--link-color-rgb must compile to the brand-secondary channels %s (%r). This is the "
+            "--link-color-rgb must compile to the link-purple channels %s (%r). This is the "
             "token the `a` reboot rule actually reads, so a stale triplet means links still render "
             "the old hue even when --link-color looks right." % (expected_rgb, rgb_values),
         )
 
         # The hover rung must be a darker purple, Bootstrap's own shade of the same token. It is
         # asserted as a relationship (same hue family, darker) rather than a hex, so re-tuning the
-        # shade percentage passes while a revert to teal, or a lighter hover, fails.
+        # shade percentage passes while a lighter hover fails.
         hover_values = [
             _normalize_colour(value) for value in self._root_values(css, "--link-hover-color")
         ]
@@ -170,7 +169,7 @@ class TestLinkTierCompile(TransactionCase):
         self.assertGreater(
             blue, green,
             "--link-hover-color %s is not in the purple family (a purple has more blue than green); "
-            "the hover rung must be derived from $o-brand-secondary, not left on the teal tier."
+            "the hover rung must be derived from $o-main-link-color."
             % hover,
         )
         self.assertGreater(
@@ -216,12 +215,11 @@ class TestLinkTierCompile(TransactionCase):
             % base,
         )
 
-    def test_dark_link_tier_keeps_the_teal_and_never_goes_purple(self):
-        """In web.assets_web_dark the link tier is UNCHANGED - the brand purple is light-only.
+    def test_dark_link_tier_takes_the_light_purple_not_the_brand_purple(self):
+        """In web.assets_web_dark the link tier takes the light purple of dark_palette.scss.
 
         The dark link token must not be the brand purple (2.50:1 on the dark panel), and it must
-        still be the readable dark teal dark_palette.scss sets, asserted by value and by measured
-        contrast."""
+        be the readable light purple, asserted by value and by measured contrast."""
         expected_purple = self._expected_purple()
         css = self._compiled_css(DARK_BUNDLE)
 
@@ -231,13 +229,12 @@ class TestLinkTierCompile(TransactionCase):
         dark_link = link_values[-1]
         self.assertNotEqual(
             dark_link, expected_purple,
-            "the dark bundle's --link-color compiled to the brand purple %s. The purple is a "
-            "LIGHT-MODE-ONLY accent (COLOUR LAW, brand_variables.scss): link_tier.scss must keep "
-            "its light arm behind the $o-viin-dark-bundle flag." % expected_purple,
+            "the dark bundle's --link-color compiled to the brand purple %s, 2.50:1 on the dark "
+            "panel: dark_palette.scss must set the light purple." % expected_purple,
         )
         self.assertEqual(
             dark_link, DARK_LINK_REF,
-            "the dark bundle's --link-color must stay the dark teal %s that dark_palette.scss "
+            "the dark bundle's --link-color must be the light purple %s that dark_palette.scss "
             "sets; got %s." % (DARK_LINK_REF, dark_link),
         )
         ratio = _contrast_ratio(dark_link, "#111b1e")
@@ -247,12 +244,12 @@ class TestLinkTierCompile(TransactionCase):
             % (dark_link, ratio),
         )
 
-    def test_dark_borrowers_track_the_dark_teal_not_the_light_one(self):
-        """The link-styled controls must follow the dark link teal, not a light-scheme colour.
+    def test_dark_borrowers_track_the_dark_link_tone_not_the_light_one(self):
+        """The link-styled controls must follow the dark link purple, not a light-scheme colour.
 
         The borrowers take a Sass value resolved per bundle rather than a runtime
         `var(--link-color)`, so the Sass token itself must be scheme-split; the dark bundle must
-        compile them to the dark teal. The light #007f8e is 3.69:1 on the dark panel, below AA."""
+        compile them to the dark link purple. The light #7f4282 is 2.50:1 on the dark panel, below AA."""
         css = self._compiled_css(DARK_BUNDLE)
         for name, selector, prop in LINK_BORROWERS:
             values = [
@@ -262,25 +259,25 @@ class TestLinkTierCompile(TransactionCase):
             self.assertTrue(values, "no %s found on %s in the dark bundle." % (prop, selector))
             self.assertIn(
                 DARK_LINK_REF, values,
-                "%s must compile to the DARK interactive teal %s in web.assets_web_dark; got %r. "
-                "The light teal %s is only 3.69:1 on the dark panel."
-                % (name, DARK_LINK_REF, values, CHROME_BASE),
+                "%s must compile to the DARK link purple %s in web.assets_web_dark; got %r. "
+                "The light purple %s is only 2.50:1 on the dark panel."
+                % (name, DARK_LINK_REF, values, BRAND_PURPLE),
             )
 
     def test_link_tier_introduces_no_new_hex_literal(self):
         """link_tier.scss must derive every colour from an existing token - no new brand hex.
 
         A second nearly-identical literal is how a palette drifts out of SSOT. Every value in this
-        file has to come from $o-brand-secondary / $o-main-link-color, or from Bootstrap's own
+        file has to come from $o-main-link-color, or from Bootstrap's own
         shade formula applied to one of them."""
         source = _read(LINK_TIER_SCSS)
-        # Comments quote core values (#007F8E, #4FD4E2, ...); only code lines are scanned.
+        # Comments quote colour values; only code lines are scanned.
         code = re.sub(r"/\*.*?\*/", "", source, flags=re.DOTALL)
         code = re.sub(r"//[^\n]*", "", code)
         hexes = re.findall(r"#[0-9A-Fa-f]{3,8}\b", code)
         self.assertFalse(
             hexes,
-            "link_tier.scss declares raw hex literal(s) %r. Derive from $o-brand-secondary / "
+            "link_tier.scss declares raw hex literal(s) %r. Derive from "
             "$o-main-link-color instead - the cluster keeps exactly one declaration per brand "
             "colour." % hexes,
         )

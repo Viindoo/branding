@@ -15,7 +15,8 @@ class DebrandRenderTest(HttpCase):
             "login page must render (no ParseError from the de-brand xpath targets)",
         )
         body = response.text
-        self.assertIn("Powered by", body, "login page must still show the 'Powered by' promotion")
+        self.assertIn("viindoo.com?utm_source=db", body, "the promotion must still be on the page")
+        self.assertNotIn("odoo.com?utm_source=db", body, "the promotion must not link to Odoo")
         self.assertIn(
             "Viindoo", body,
             "login 'Powered by' promotion must be de-branded to Viindoo (server-rendered), not Odoo",

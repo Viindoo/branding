@@ -13,10 +13,13 @@ ErrorDialog.title = _t("Viindoo Error");
 ClientErrorDialog.title = _t("Viindoo Client Error");
 NetworkErrorDialog.title = _t("Viindoo Network Error");
 
+// The technical details show `this.message`, which starts as the message of the error: props are
+// read-only, so the product name is replaced on this copy (see error_dialogs.xml).
 // The client error service writes two sentences naming the product into the technical details.
 patch(ErrorDialog.prototype, {
     setup() {
         super.setup();
+        this.message = this.props.message;
         if (typeof this.props.traceback === "string") {
             this.traceback = this.props.traceback
                 .replace(/by the Odoo framework/g, "by the Viindoo framework")
@@ -31,8 +34,8 @@ patch(ErrorDialog.prototype, {
 patch(RPCErrorDialog.prototype, {
     setup() {
         super.setup();
-        if (this.props.message) {
-            this.props.message = this.props.message.toString().replace(/Odoo/g, "Viindoo");
+        if (this.message) {
+            this.message = this.message.toString().replace(/Odoo/g, "Viindoo");
         }
         if (this.traceback) {
             this.traceback = this.traceback.toString().replace(/Odoo/g, "Viindoo");

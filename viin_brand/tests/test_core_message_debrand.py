@@ -1,10 +1,12 @@
 import re
 from unittest.mock import patch
 
+from lxml import etree
+
 from odoo.exceptions import RedirectWarning, UserError
 from odoo.tests.common import TransactionCase, tagged
 
-ODOO_WORD = re.compile(r'\bOdoo\b')
+from .common import ODOO_WORD
 
 
 @tagged('post_install', '-at_install')
@@ -21,17 +23,18 @@ class TestCoreMessageDebrand(TransactionCase):
             {'name': 'Debrand partner A', 'company_id': companies[0].id},
             {'name': 'Debrand partner B', 'company_id': companies[1].id},
         ])
-        self.env['ir.rule'].create({
+        self.env['ir.access'].create({
             'name': 'Debrand company rule',
             'model_id': self.env['ir.model']._get('res.partner').id,
-            'domain_force': "[('company_id', 'in', company_ids)]",
+            'operation': 'r',
+            'domain': "[('company_id', 'in', company_ids)]",
         })
         user = self.env['res.users'].create({
             'name': 'Debrand user', 'login': 'debrand_user',
             'group_ids': [(6, 0, [self.env.ref('base.group_user').id])],
         })
 
-        error = self.env['ir.rule'].with_user(user)._make_access_error('read', partners)
+        error = self.env['ir.access'].with_user(user)._make_record_access_error(partners, 'read')
 
         self.assertViindoo(str(error))
 
@@ -79,6 +82,7 @@ class TestCoreMessageDebrand(TransactionCase):
 
     def test_deleting_the_system_user_names_viindoo(self):
         with self.assertRaises(UserError) as caught:
+            # sudo: only the superuser reaches the guard of the system user.
             self.env.ref('base.user_root').sudo().unlink()
 
         self.assertViindoo(str(caught.exception))
@@ -94,11 +98,18 @@ class TestCoreMessageDebrand(TransactionCase):
     def test_merge_wizard_text_names_viindoo(self):
         arch = re.sub(r'\s+', ' ', self.env['base.partner.merge.automatic.wizard'].get_view(view_type='form')['arch'])
 
-        self.assertIn('Viindoo will propose', arch)
-        self.assertNotRegex(arch, ODOO_WORD)
+        self.assertViindoo(arch)
 
-    def test_translation_export_wizard_keeps_the_core_sentence_about_the_odoo_project(self):
-        arch = re.sub(r'\s+', ' ', self.env['base.language.export'].get_view(view_type='form')['arch'])
+    def test_translation_export_wizard_keeps_the_core_paragraph_about_the_odoo_project(self):
+        """The paragraph that points to the Odoo translation project is core's own."""
+        paragraph = "//p[a[contains(@href, 'github.com/odoo/odoo/wiki/Translations')]]"
 
-        self.assertIn('translating Odoo in your language', arch)
-        self.assertFalse(self.env.ref('viin_brand.wizard_lang_export', raise_if_not_found=False))
+        def text_of(arch):
+            [node] = etree.fromstring(arch).xpath(paragraph)
+            return ' '.join(''.join(node.itertext()).split())
+
+        core_arch = self.env.ref('base.wizard_lang_export').with_context(lang='en_US').arch
+        merged_arch = self.env['base.language.export'].with_context(
+            lang='en_US').get_view(view_type='form')['arch']
+
+        self.assertEqual(text_of(merged_arch), text_of(core_arch))

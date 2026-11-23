@@ -1,8 +1,10 @@
 import functools
 import logging
 import os
+import uuid
 from urllib.parse import urlparse
 
+from odoo import addons
 from odoo.modules import module
 from odoo.modules.module import Manifest, get_module_path
 from odoo.tools import config
@@ -35,6 +37,15 @@ def _is_installable(module_name):
     return bool(manifest and manifest['installable'])
 
 
+def _is_in_addons_paths(module_name):
+    """Tell whether a directory of that name is in the addons paths.
+
+    Unlike the manifest lookup, it never logs: a wrapper of ``Manifest.for_addon`` that drops the
+    ``display_warning`` argument makes the lookup of a module that does not exist log a warning.
+    """
+    return any(os.path.isdir(os.path.join(path, module_name)) for path in addons.__path__)
+
+
 def check_viin_brand_module_icon(module_name):
     """Find the Viindoo icon of a module.
 
@@ -46,7 +57,9 @@ def check_viin_brand_module_icon(module_name):
     """
     brand_module_name = 'viin_brand_%s' % (
         module_name if module_name not in ('general_settings', 'modules') else 'base')
-    brand_module_path = get_module_path(brand_module_name, display_warning=False)
+    brand_module_path = _is_in_addons_paths(brand_module_name) and get_module_path(
+        brand_module_name, display_warning=False,
+    )
     if brand_module_path and _is_installable(brand_module_name):
         brand_icon = os.path.join('static', 'description', 'icon.png')
         if os.path.exists(os.path.join(brand_module_path, brand_icon)):
@@ -102,6 +115,11 @@ def _load_manifest_plus(module_name, manifest_content):
     return info
 
 
+def _checksum(binary_value):
+    """Return the checksum of a binary value, ``False`` when it is empty."""
+    return binary_value and binary_value.checksum
+
+
 def _update_brand_web_icon_data(env):
     # menus restricted to base.group_no_one are part of the full list
     menus = env['ir.ui.menu'].with_context({'ir.ui.menu.full_list': True}).search([('web_icon', '!=', False)])
@@ -122,7 +140,7 @@ def _update_brand_web_icon_data(env):
                 vals = {}
                 if m.web_icon != web_icon:
                     vals['web_icon'] = web_icon
-                if web_icon_data != m.web_icon_data:
+                if _checksum(web_icon_data) != _checksum(m.web_icon_data):
                     vals['web_icon_data'] = web_icon_data
                 if vals:
                     m.write(vals)
@@ -178,60 +196,24 @@ def _disable_core_webmanifest_tests():
     WebManifestRoutesTest.test_webmanifest_scoped = pass_test
 
 
-def _patch_test_default_manifest_icon_expectation():
-    """Realign ``base.tests.test_module.TestModuleManifest`` to the Viindoo icon.
+def _update_document_layout_colours(env):
+    """Give the companies that never chose a colour of the document layout the colours of the brand.
 
-    ``test_default_manifest`` compares the manifest of a temporary module with a literal dict
-    carrying the stock base icon, while the module resolves to the Viindoo base icon. The wrapper
-    rewrites only an ``icon`` key equal to the stock path, so every other assertion is unchanged.
+    Only a company whose primary and secondary colours are both empty is changed; a colour that a
+    company holds, even only one of the two, is its own choice.
     """
-    from odoo.addons.base.tests.test_module import TestModuleManifest
-
-    assertDictEqual_orig = TestModuleManifest.assertDictEqual
-
-    def _rebrand_icon(mapping):
-        if isinstance(mapping, dict) and mapping.get('icon') == STOCK_BASE_ICON:
-            mapping = dict(mapping, icon=get_viin_brand_module_icon('base'))
-        return mapping
-
-    def assertDictEqual(self, d1, d2, msg=None):
-        return assertDictEqual_orig(self, _rebrand_icon(d1), _rebrand_icon(d2), msg)
-
-    TestModuleManifest.assertDictEqual = assertDictEqual
-
-
-def _realign_core_pdf_metadata_test():
-    """Realign ``base.tests.test_pdf.TestPdf.test_branded_file_writer`` to Viindoo.
-
-    The test reads the creator and producer of a document written by ``BrandedFileWriter`` and
-    compares them with ``'Odoo'``, while every written document carries Viindoo. The wrapper turns
-    only that expected value into Viindoo, so the test still fails when the writer stops setting
-    the entries.
-    """
-    from unittest.mock import patch
-
-    from odoo.addons.base.tests.test_pdf import TestPdf
-
-    from .tools import PRODUCT_NAME
-
-    test_original = TestPdf.test_branded_file_writer
-
-    @functools.wraps(test_original)
-    def test_branded_file_writer(self):
-        assert_equal = self.assertEqual
-
-        def assertEqual(first, second, msg=None):
-            return assert_equal(first, PRODUCT_NAME if second == 'Odoo' else second, msg)
-
-        with patch.object(self, 'assertEqual', assertEqual):
-            return test_original(self)
-
-    TestPdf.test_branded_file_writer = test_branded_file_writer
+    # sudo: the hook runs at install with no user, over every company
+    companies = env['res.company'].sudo().search([
+        ('primary_color', '=', False),
+        ('secondary_color', '=', False),
+    ])
+    companies.write(env['res.company'].default_get(['primary_color', 'secondary_color']))
 
 
 def post_init_hook(env):
     _update_brand_web_icon_data(env)
     _update_favicon(env)
+    _update_document_layout_colours(env)
 
 
 def uninstall_hook(env):
@@ -260,40 +242,34 @@ def _patch_pdf_branding():
         if xmp is None:
             return
         stream = xmp.get_object()
-        content = stream.getData()
+        content = stream.get_data()
         branded = brand_xmp(content)
         if branded != content:
-            stream.setData(branded)
+            stream.set_data(branded)
 
-    if hasattr(pdf.PdfWriter, 'write_stream'):
-        def write_stream(self, *args, **kwargs):
-            self.add_metadata(metadata)
-            brand_document_xmp(self)
-            super(writer, self).write_stream(*args, **kwargs)
+    def write_stream(self, *args, **kwargs):
+        self.add_metadata(metadata)
+        brand_document_xmp(self)
+        super(writer, self).write_stream(*args, **kwargs)
 
-        writer.write_stream = write_stream
-    else:
-        def write(self, *args, **kwargs):
-            self.addMetadata(metadata)
-            brand_document_xmp(self)
-            super(writer, self).write(*args, **kwargs)
+    writer.write_stream = write_stream
 
-        writer.write = write
+    write_signature_placeholder = PdfSigner.write_signature_placeholder
 
-    sign_pdf = PdfSigner.sign_pdf
+    @functools.wraps(write_signature_placeholder)
+    def write_signature_placeholder_viindoo(self, sig_overlay_pdf=None, field_name=None, appearance_origin=None):
+        # a unique name, so that signing a document again never collides with an existing field
+        field_name = field_name or f"{PRODUCT_NAME} Signature {uuid.uuid4()}"
+        return write_signature_placeholder(self, sig_overlay_pdf, field_name, appearance_origin)
 
-    def sign_pdf_viindoo(self, visible_signature=False, field_name="Viindoo Signature", signer=None):
-        return sign_pdf(self, visible_signature, field_name, signer)
-
-    PdfSigner.sign_pdf = sign_pdf_viindoo
+    PdfSigner.write_signature_placeholder = write_signature_placeholder_viindoo
 
 
 def post_load():
     if config.get('test_enable', False):
         _disable_core_webmanifest_tests()
-        _patch_test_default_manifest_icon_expectation()
-        _realign_core_pdf_metadata_test()
 
+    controllers.database.patch_database_manager()
     module.get_module_icon = get_viin_brand_module_icon
     module._load_manifest = _load_manifest_plus
     IrUiMenu._compute_web_icon_data = _compute_web_icon_data_plus

@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 /* eslint-disable no-import-assign */
 // Viindoo graph/pivot/dashboard palette override.
 //
@@ -20,44 +18,45 @@
 // field widget whose factory runs before this module, so it keeps core's colours.
 import * as colors from "@web/core/colors/colors";
 
-// LIGHT scheme (readable on the default light backend). Teal first, then spread so the first six
-// (the sm palette, used by most small charts) are maximally hue-separated.
+// LIGHT scheme (readable on the default light backend). Purple first, the signature cyan second,
+// then spread so the first six (the sm palette, used by most small charts) are maximally
+// hue-separated.
 const BRAND_COLORS_LIGHT = [
-    "#00BBCE", // Teal - brand primary ($o-brand-primary)
+    "#7F4282", // Purple - brand primary ($o-brand-primary)
+    "#00BBCE", // Cyan - brand secondary ($o-brand-secondary)
     "#CC5252", // Red
     "#00B365", // Green
     "#FFA100", // Orange
-    "#7F4282", // Purple - brand secondary ($o-brand-secondary)
     "#0099E6", // Blue
     "#FFCC32", // Yellow - warning ($o-warning)
     "#DD3BAF", // Magenta
-    "#804080", // Deep purple
+    "#00707C", // Deep cyan
     "#343A40", // Charcoal
 ];
 
 // DARK scheme (readable on the dark backend): lighter variants in the same hue order as
 // BRAND_COLORS_LIGHT, so a series index keeps its hue across schemes.
 const BRAND_COLORS_DARK = [
-    "#66F0FF", // Light teal (for #00BBCE)
+    "#C796CA", // Light purple (for #7F4282)
+    "#66F0FF", // Light cyan (for #00BBCE)
     "#E5A8A8", // Light red (for #CC5252)
     "#59FFB6", // Light green (for #00B365)
     "#FFD07F", // Light orange (for #FFA100)
-    "#C796CA", // Light purple (for #7F4282)
     "#73D0FF", // Light blue (for #0099E6)
     "#FFE598", // Light yellow (for #FFCC32)
     "#EE9DD6", // Light magenta (for #DD3BAF)
-    "#CA95CA", // Light deep purple (for #804080)
+    "#4FD4E2", // Light deep cyan (for #00707C)
     "#929CA6", // Grey (for #343A40)
 ];
 
-// sm palette (<= 6 series): the six most hue-separated brand colours, teal first.
+// sm palette (<= 6 series): the six most hue-separated brand colours, purple first.
 const BRAND_SM_LIGHT = BRAND_COLORS_LIGHT.slice(0, 6);
 const BRAND_SM_DARK = BRAND_COLORS_DARK.slice(0, 6);
 
 // The named "odoo" palette: core ships an aubergine trio; a caller passing the literal "odoo"
-// palette name gets a teal-family trio instead.
-const BRAND_ODOO_LIGHT = ["#00BBCE", "#007F8E", "#66F0FF"]; // teal, AA dark teal, light teal
-const BRAND_ODOO_DARK = ["#66F0FF", "#00BBCE", "#C796CA"]; // light teal, teal, light purple
+// palette name gets a purple and cyan trio instead.
+const BRAND_ODOO_LIGHT = ["#7F4282", "#00BBCE", "#CCB3CD"]; // purple, cyan, light purple
+const BRAND_ODOO_DARK = ["#C796CA", "#66F0FF", "#00BBCE"]; // light purple, light cyan, cyan
 
 /**
  * Brand replacement for core getColors: returns the branded array for a colour scheme and a

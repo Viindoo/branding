@@ -1,6 +1,7 @@
 import io
 import logging
 import re
+from urllib.parse import urlsplit
 
 from lxml import etree
 
@@ -9,6 +10,20 @@ from odoo.tools import pdf
 _logger = logging.getLogger(__name__)
 
 PRODUCT_NAME = 'Viindoo'
+# Viindoo's own accounts on the social networks, under the field names of the company social links
+# (``res.company.social_*``). static/src/core/social_links/viindoo_social_links.js declares the same
+# table; the two must stay equal.
+VIINDOO_SOCIAL_LINKS = {
+    'social_facebook': 'https://www.facebook.com/Viindoo',
+    'social_linkedin': 'https://www.linkedin.com/company/viindoo',
+    'social_twitter': 'https://twitter.com/OfficialViindoo',
+    'social_youtube': 'https://www.youtube.com/channel/UCOqIasQbpYcLdV09BrjBwqw',
+    'social_instagram': 'https://www.instagram.com/OfficialViindoo/',
+    'social_github': 'https://github.com/viindoo',
+    'social_tiktok': 'https://www.tiktok.com/@viindoo.software',
+}
+# The handle a Twitter card names as the site account, taken from the company social link.
+VIINDOO_TWITTER_HANDLE = '@' + urlsplit(VIINDOO_SOCIAL_LINKS['social_twitter']).path.strip('/')
 # A document larger than this is printed as it is: the rewrite loads the whole document a second
 # time in memory only to set two metadata entries, which is not worth the cost on a very large report.
 BRAND_PDF_MAX_BYTES = 64 * 1024 * 1024
@@ -64,14 +79,27 @@ def brand_xmp(content):
     return etree.tostring(tree, encoding='UTF-8', xml_declaration=False) if changed else content
 
 
+def _keep_unreadable_pdf(content, error):
+    """Return ``content`` as it is, after a warning that its metadata could not be set.
+
+    :param bytes content: the document that could not be rewritten
+    :param Exception error: the failure of the PDF library
+    :rtype: bytes
+    """
+    _logger.warning("The PDF metadata could not be set (%s), the document is kept as it is", type(error).__name__)
+    return content
+
+
 def brand_pdf(content):
     """Return a PDF document whose creator and producer are Viindoo, the other entries kept.
 
     The rewrite only sets metadata, so it never prevents a print: content that is
     not a PDF document (no PDF header in its first kilobyte, where a reader looks
-    for it) or is larger than ``BRAND_PDF_MAX_BYTES`` is returned as it is, and so
-    is a PDF document that cannot be read or fails in the PDF library, with a
-    warning.
+    for it), is larger than ``BRAND_PDF_MAX_BYTES`` or is encrypted is returned as
+    it is, and so is a PDF document that cannot be read or fails in the PDF
+    library, with a warning. An encrypted document is an expected input: rewriting
+    it would drop its protection, and an encryption or a stream filter the PDF
+    library has no handler for cannot be read at all, and is kept quietly.
 
     :param bytes content: the output of a report renderer
     :return: the rewritten document, ``content`` itself when it is not rewritten
@@ -81,14 +109,22 @@ def brand_pdf(content):
     if not is_pdf or len(content) > BRAND_PDF_MAX_BYTES:
         return content
     try:
-        reader = pdf.PdfFileReader(io.BytesIO(content), strict=False)
+        reader = pdf.PdfReader(io.BytesIO(content), strict=False)
+    except NotImplementedError:
+        # The PDF library raises it for an encryption or a stream filter it has no handler for.
+        _logger.debug("The PDF document uses an encryption or a filter that cannot be read, it is kept as it is")
+        return content
+    except Exception as error:  # noqa: BLE001 - branding must never break a print
+        return _keep_unreadable_pdf(content, error)
+    if reader.is_encrypted:
+        return content
+    try:
         writer = pdf.PdfFileWriter()
-        writer.cloneReaderDocumentRoot(reader)
-        info = reader.getDocumentInfo() or {}
-        writer.addMetadata({key: value for key, value in info.items() if key not in ('/Creator', '/Producer')})
+        writer.clone_reader_document_root(reader)
+        info = reader.metadata or {}
+        writer.add_metadata({key: value for key, value in info.items() if key not in ('/Creator', '/Producer')})
         with io.BytesIO() as buffer:
             writer.write(buffer)
             return buffer.getvalue()
     except Exception as error:  # noqa: BLE001 - branding must never break a print
-        _logger.warning("The PDF metadata could not be set (%s), the document is kept as it is", type(error).__name__)
-        return content
+        return _keep_unreadable_pdf(content, error)

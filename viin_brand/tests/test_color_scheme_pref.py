@@ -4,7 +4,7 @@
 #  1. res.users.viin_color_scheme is a per-user Selection (light/dark/auto, default light).
 #  2. SECURITY: it is SELF-writeable - a plain internal user sets their OWN preference with no admin
 #     rights, but writing ANOTHER user's preference raises AccessError. This is the only security
-#     surface of the feature (no ir.model.access / ir.rule / sudo), so the SELF scope is what must
+#     surface of the feature (no ir.access / sudo), so the SELF scope is what must
 #     be asserted.
 #  3. ir.http.color_scheme() resolution order: the user's own explicit light/dark preference > the
 #     request `color_scheme` cookie > super(). The cookie ranks BELOW an explicit preference because
@@ -56,7 +56,7 @@ class TestViinColorSchemePref(TransactionCase):
         )
 
     def test_user_sets_own_scheme_without_admin(self):
-        """A non-admin internal user writes their OWN scheme (SELF_WRITEABLE) - no admin rights."""
+        """A non-admin internal user writes their OWN scheme (user_writeable) - no admin rights."""
         self.user_a.with_user(self.user_a).write({"viin_color_scheme": "dark"})
         self.assertEqual(self.user_a.viin_color_scheme, "dark")
 

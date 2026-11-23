@@ -1,5 +1,9 @@
+import base64
+
+from lxml import html
+
 from odoo.tests.common import tagged
-from odoo.tools import file_path
+from odoo.tools import file_open, file_path
 
 from odoo.addons.web.tests.test_webmanifest import WebManifestRoutesTest
 
@@ -37,16 +41,16 @@ class BrandWebManifestRoutesTest(WebManifestRoutesTest):
     """
 
     def _assert_brand_color(self, value, label):
-        """Assert a rendered manifest colour equals the ONE brand-hex SSOT (case-insensitive:
-        JSON case may differ from the canonical #00BBCE)."""
+        """Assert a rendered manifest colour equals the ONE chrome-colour SSOT (case-insensitive:
+        JSON case may differ from the canonical #007F8E)."""
         self.assertIsNotNone(
             VIINDOO_THEME_COLOR,
             "VIINDOO_THEME_COLOR must be defined in viin_brand/controllers/webmanifest.py "
-            "(single Python brand-hex SSOT).",
+            "(single Python chrome-colour SSOT).",
         )
         self.assertEqual(
             (value or "").lower(), VIINDOO_THEME_COLOR.lower(),
-            "manifest %s must equal the brand SSOT VIINDOO_THEME_COLOR=%s (got %r)"
+            "manifest %s must equal the chrome SSOT VIINDOO_THEME_COLOR=%s (got %r)"
             % (label, VIINDOO_THEME_COLOR, value),
         )
 
@@ -112,7 +116,7 @@ class BrandWebManifestRoutesTest(WebManifestRoutesTest):
 
     def test_brand_scoped_webmanifest_debranded(self):
         """
-        The scoped-app PWA manifest is de-branded from the same brand SSOT. In core 19.0 the
+        The scoped-app PWA manifest is de-branded from the same brand SSOT. In core 20.0 the
         scoped manifest dict is built inline in the `scoped_app_manifest` route (hardcoding
         #714B67); the module re-points it so theme/background come from the SSOT.
 
@@ -204,8 +208,9 @@ class BrandWebManifestRoutesTest(WebManifestRoutesTest):
         """An untouched `web.web_app_name` (core's stock 'Odoo') must be de-branded to Viindoo.
 
         `test_brand_webmanifest` covers the unset-parameter case, which reaches the same default
-        through core's `get_param` fallback; this covers the stock-value branch."""
-        self.env["ir.config_parameter"].sudo().set_param(WEB_APP_NAME_PARAM, "Odoo")
+        through core's `get_str` fallback; this covers the stock-value branch."""
+        # sudo: system parameters are set whatever rights the test user has.
+        self.env["ir.config_parameter"].sudo().set_str(WEB_APP_NAME_PARAM, "Odoo")
         self.env.flush_all()
 
         self.authenticate("admin", "admin")
@@ -222,7 +227,8 @@ class BrandWebManifestRoutesTest(WebManifestRoutesTest):
         Core resolves the PWA name from the `web.web_app_name` ir.config_parameter, so a blanket
         overwrite would destroy a customer's own PWA app name on every manifest fetch. Only the
         untouched Odoo default may be replaced."""
-        self.env["ir.config_parameter"].sudo().set_param(WEB_APP_NAME_PARAM, CUSTOMER_APP_NAME)
+        # sudo: system parameters are set whatever rights the test user has.
+        self.env["ir.config_parameter"].sudo().set_str(WEB_APP_NAME_PARAM, CUSTOMER_APP_NAME)
         self.env.flush_all()
 
         self.authenticate("admin", "admin")
@@ -248,3 +254,30 @@ class BrandWebManifestRoutesTest(WebManifestRoutesTest):
             '<link rel="apple-touch-icon" href="/viin_brand/static/img/viindoo-icon-ios.png"/>', document.text,
             "Icon for iOS is present in the head of the document.",
         )
+
+    def test_brand_offline_page(self):
+        """The offline page carries the Viindoo icon and the Viindoo name, never the Odoo ones."""
+        response = self.url_open("/odoo/offline")
+
+        self.assertEqual(response.status_code, 200)
+        page = html.fromstring(response.content)
+        visible_text = " ".join(page.xpath("//body//text()[not(ancestor::script or ancestor::style)]"))
+        images = page.xpath("//img")
+        self.assertEqual(len(images), 1)
+        self.assertIn("Viindoo", images[0].get("alt"))
+        self.assertIn("Viindoo", visible_text)
+        self.assertNotRegex(visible_text + " " + images[0].get("alt"), r"\bOdoo\b")
+        with file_open("viin_brand/static/img/viindoo-icon-192x192.png", "rb") as icon:
+            expected_icon = "data:image/png;base64," + base64.b64encode(icon.read()).decode()
+        self.assertEqual(images[0].get("src"), expected_icon)
+
+    def test_brand_webclient_theme_color_meta(self):
+        """The web client page asks the browser for the chrome colour, as the web app manifest does."""
+        self.authenticate("admin", "admin")
+
+        response = self.url_open("/odoo")
+
+        self.assertEqual(response.status_code, 200)
+        colours = html.fromstring(response.content).xpath("//meta[@name='theme-color']/@content")
+        self.assertEqual(len(colours), 1)
+        self._assert_brand_color(colours[0], "web client theme-color meta")

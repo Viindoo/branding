@@ -18,6 +18,7 @@ from .test_brand_cascade_compile import (
     WCAG_AA_NORMAL_TEXT,
     WHITE,
     _COMMENT_RE,
+    _computed_value,
     _contrast_ratio,
     _iter_rules,
     _declarations,
@@ -30,12 +31,15 @@ FRONTEND_BUNDLE = "web.assets_frontend"
 
 # colour name -> (fill, label on that fill)
 SEMANTIC_PAIRS = {
-    "primary": ("#007f8e", "#ffffff"),
+    "primary": ("#7f4282", "#ffffff"),
     "success": ("#00884d", "#ffffff"),
     "info": ("#007dbc", "#ffffff"),
     "warning": ("#ffcc32", "#21272b"),
     "danger": ("#ca4c4c", "#ffffff"),
 }
+# The primary fill is the content colour of the scheme: the brand purple under a white label in light,
+# the brand cyan under the dark ink in dark (white on the cyan is only 2.33:1).
+DARK_SEMANTIC_PAIRS = dict(SEMANTIC_PAIRS, primary=("#00bbce", "#21272b"))
 OUTLINE_COLOURS = ("primary", "success", "info", "warning", "danger")
 LIGHT_PURPLE = "#7f4282"
 DARK_PURPLE = "#bd83c0"
@@ -65,6 +69,9 @@ class TestSemanticColourCompile(TransactionCase):
             "prev_sibling": frozenset(),
         }
 
+    def _pairs(self, arm):
+        return SEMANTIC_PAIRS if arm == "light" else DARK_SEMANTIC_PAIRS
+
     def _fill(self, css, name):
         triplet = _root_value(css, "%s-rgb" % name)
         self.assertIsNotNone(triplet, "No :root --%s-rgb is compiled." % name)
@@ -78,7 +85,7 @@ class TestSemanticColourCompile(TransactionCase):
         fill, changes the pair."""
         for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
             css = self._css(bundle_name)
-            for name, (fill, label) in SEMANTIC_PAIRS.items():
+            for name, (fill, label) in self._pairs(arm).items():
                 with self.subTest(arm=arm, colour=name):
                     self.assertEqual(self._fill(css, name), fill)
                     badge_label = _normalize_colour(
@@ -90,6 +97,31 @@ class TestSemanticColourCompile(TransactionCase):
                     button_label = _normalize_colour(_last_value(css, ".btn-%s" % name, "--btn-color") or "")
                     button_fill = _normalize_colour(_last_value(css, ".btn-%s" % name, "--btn-bg") or "")
                     self.assertEqual((button_fill, button_label), (fill, label), ".btn-%s" % name)
+
+    def test_success_text_is_the_success_fill_in_light_and_its_lightened_arm_in_dark(self):
+        """`.text-success` and the success text of the invalid-state helpers read the one success green:
+        the fill in the light bundle, the same green lightened 30% toward white in the dark one, on
+        every scheme the same as the fill's hue; the other three text colours stay core's.
+
+        WOULD FAIL IF REVERTED: without brand_text_colors.scss the text keeps core's #008818 (a second
+        green beside the success fill); without the re-anchor of dark_buttons.scss the dark arm tints
+        core's green and the light entry overwrites it, leaving the unlightened fill on the dark panel."""
+        expectations = (
+            ("light", BACKEND_BUNDLE, {
+                "success": "#00884d", "info": "#0180a5", "warning": "#9a6b01", "danger": "#d23f3a",
+            }),
+            ("dark", DARK_BUNDLE, {"success": "#4dac82"}),
+        )
+        for arm, bundle_name, expected in expectations:
+            css = self._css(bundle_name)
+            for name, colour in expected.items():
+                with self.subTest(arm=arm, colour=name):
+                    resolved = _normalize_colour(
+                        _computed_value(css, [self._element("text-%s" % name)], ("color",)) or ""
+                    )
+                    self.assertEqual(resolved, colour, ".text-%s in the %s bundle" % (name, arm))
+        ratio = _contrast_ratio("#4dac82", DARK_BODY_BG)
+        self.assertGreaterEqual(ratio, WCAG_AA_NORMAL_TEXT)
 
     def test_buttons_clear_wcag_aa_at_rest_hover_and_active(self):
         """The label of a `.btn-<colour>` clears 4.5:1 against its fill in every state.
@@ -142,7 +174,7 @@ class TestSemanticColourCompile(TransactionCase):
         inherits; without the exception a translucent fill gets a white label on the page."""
         for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
             css = self._css(bundle_name)
-            for name, (_fill, label) in SEMANTIC_PAIRS.items():
+            for name, (_fill, label) in self._pairs(arm).items():
                 with self.subTest(arm=arm, colour=name):
                     solid = _normalize_colour(
                         _last_value(css, '.bg-%s:not([class*="bg-opacity-"])' % name, "color") or ""

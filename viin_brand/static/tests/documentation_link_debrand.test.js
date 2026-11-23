@@ -22,13 +22,13 @@ function computedUrl(path) {
 // URL, so asserting the getter returns "" is asserting the link disappears), and a link to a third
 // party keeps its URL.
 
-const VIINDOO_DOCUMENTATION = "https://viindoo.com/documentation/19.0/";
+const VIINDOO_DOCUMENTATION = "https://viindoo.com/documentation/20.0/";
 
 test("Settings > Users documentation link opens the Viindoo user guide", () => {
     // base_setup ships this as a relative path ("/applications/general/users.html"), so
-    // super.url version-substitutes it to the running server's series (19.0 here).
+    // super.url version-substitutes it to the running server's series (20.0 here).
     expect(
-        computedUrl("https://www.odoo.com/documentation/19.0/applications/general/users.html")
+        computedUrl("https://www.odoo.com/documentation/20.0/applications/general/users.html")
     ).toBe(
         VIINDOO_DOCUMENTATION +
             "applications/getting-started/manage-users/user-account-setting-and-management.html"
@@ -54,10 +54,25 @@ test("Settings > Discuss custom ICE server documentation links open the Viindoo 
     ).toBe(page);
 });
 
+test("a documentation link finds its Viindoo page whatever the series of the build", () => {
+    // A final build links to its own series, a development build to `master`, a few links are
+    // written with `latest`: the same page is found for all of them.
+    const page =
+        VIINDOO_DOCUMENTATION +
+        "applications/finance/accounting-and-invoicing/taxation/default-taxes.html";
+    for (const series of ["20.0", "21.0", "saas~20.1", "master", "latest"]) {
+        expect(
+            computedUrl(
+                `https://www.odoo.com/documentation/${series}/applications/finance/accounting/taxation/taxes/default_taxes.html`
+            )
+        ).toBe(page);
+    }
+});
+
 test("a link to a feature that Viindoo hides is mapped to an empty URL", () => {
     expect(
         computedUrl(
-            "https://www.odoo.com/documentation/19.0/applications/general/in_app_purchase.html"
+            "https://www.odoo.com/documentation/20.0/applications/general/in_app_purchase.html"
         )
     ).toBe("");
 });
@@ -65,7 +80,7 @@ test("a link to a feature that Viindoo hides is mapped to an empty URL", () => {
 test("the Vietnam localization link opens the Viindoo S-Invoice guide", () => {
     expect(
         computedUrl(
-            "https://www.odoo.com/documentation/19.0/applications/finance/fiscal_localizations/vietnam.html"
+            "https://www.odoo.com/documentation/20.0/applications/finance/fiscal_localizations/vietnam.html"
         )
     ).toBe(
         VIINDOO_DOCUMENTATION +
@@ -76,7 +91,7 @@ test("the Vietnam localization link opens the Viindoo S-Invoice guide", () => {
 test("corrected links open the page of their own setting", () => {
     expect(
         computedUrl(
-            "https://www.odoo.com/documentation/19.0/applications/finance/accounting/taxation/taxes/default_taxes.html"
+            "https://www.odoo.com/documentation/20.0/applications/finance/accounting/taxation/taxes/default_taxes.html"
         )
     ).toBe(
         VIINDOO_DOCUMENTATION +
@@ -84,7 +99,7 @@ test("corrected links open the page of their own setting", () => {
     );
     expect(
         computedUrl(
-            "https://www.odoo.com/documentation/19.0/applications/productivity/mail_plugins.html"
+            "https://www.odoo.com/documentation/20.0/applications/productivity/mail_plugins.html"
         )
     ).toBe("");
 });
@@ -92,7 +107,7 @@ test("corrected links open the page of their own setting", () => {
 test("an unmapped odoo.com documentation link is hidden", () => {
     expect(
         computedUrl(
-            "https://www.odoo.com/documentation/19.0/applications/a/page/nobody/mapped.html"
+            "https://www.odoo.com/documentation/20.0/applications/a/page/nobody/mapped.html"
         )
     ).toBe("");
     expect(computedUrl("https://www.odoo.com/documentation/master/developer/unmapped.html")).toBe(

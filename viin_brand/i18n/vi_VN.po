@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 02:39+0000\n"
-"PO-Revision-Date: 2026-11-20 02:39+0000\n"
+"POT-Creation-Date: 2026-11-22 14:59+0000\n"
+"PO-Revision-Date: 2026-11-22 14:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,37 +15,91 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: base
-#: model_terms:ir.actions.act_window,help:base.action_partner_customer_form
-msgid "Viindoo helps you easily track all activities related to a customer."
-msgstr ""
-"Viindoo giúp bạn dễ dàng nắm bắt các hoạt động liên quan tới khách hàng."
-
-#. module: base
-#: model_terms:ir.actions.act_window,help:base.action_partner_form
-msgid "Viindoo helps you track all activities related to your contacts."
-msgstr "Viindoo giúp bạn theo dõi tất cả hoạt động liên quan tới các liên hệ."
-
-#. module: base
-#: model_terms:ir.actions.act_window,help:base.action_partner_supplier_form
-msgid "Viindoo helps you easily track all activities related to a vendor."
-msgstr ""
-"Viindoo giúp bạn dễ dàng nắm bắt các hoạt động liên quan tới nhà cung cấp."
-
-#. module: base
-#: model_terms:ir.actions.act_window,help:base.action_res_company_form
-msgid ""
-"Create and manage the companies that will be managed by Viindoo from here. "
-"Shops or subsidiaries can be created and maintained from here."
-msgstr ""
-"Tạo và quản lý các công ty sẽ được quản lý tại Viindoo ở đây. Các cửa hàng "
-"hoặc công ty con cũng có thể được tạo và điều hành từ đây."
+#. module: viin_brand
+#: model:ir.module.module,summary:base.module_viin_brand
+msgid "Set Viindoo Brandings."
+msgstr "Thiết lập thương hiệu Viindoo."
 
 #. module: viin_brand
-#: model_terms:ir.ui.view,arch_db:viin_brand.login_layout
-#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_bootstrap
-msgid "/viin_brand/static/img/favicon.ico"
+#: model:ir.module.module,description:base.module_viin_brand
+msgid ""
+"\n"
+"This module replaces the Odoo branding of the base, web and base_setup modules with Viindoo's\n"
+"\n"
+"* Replace Odoo's module icons and favicon with Viindoo's\n"
+"\n"
+"  * icons live in `viin_brand/static/img/apps/<module_name>.png`, or in a\n"
+"    module named `viin_brand_<module_name>` shipping `static/description/icon.png`\n"
+"  * the favicon lives in `viin_brand/static/img/favicon.ico` and is applied to every company\n"
+"  * load the module server wide (`--load=base,web,viin_brand`) so the branding\n"
+"    is in place from the first module installation\n"
+"\n"
+"* Show Viindoo identity on every page, dialog and document\n"
+"\n"
+"  * the database manager, the login page, the browser tab title, the report layouts and the\n"
+"    offline page carry the Viindoo name, logo and links\n"
+"  * the web app manifest carries the Viindoo name, colour and icons\n"
+"  * dialogs and error dialogs carry the Viindoo name, and documentation links point to Viindoo's\n"
+"    documentation\n"
+"\n"
+"* Let every user choose a Light, Dark or System color scheme in their Preferences, with the\n"
+"  Viindoo brand palette in both schemes\n"
+"\n"
+"* Do not bother users with Enterprise-only offers\n"
+"\n"
+"  * the Apps lists hide the Enterprise modules that are not available in Viindoo, the categories\n"
+"    and filters that only offer them, and the apps store of Odoo\n"
+"  * the Settings page hides the options that need Enterprise or a module that cannot be installed,\n"
+"    and the blocks and apps left empty\n"
+"  * the modules that sell Odoo IAP credits are not installed with a new database and cannot be\n"
+"    installed from the user interface; they still install from the command line or as a dependency\n"
+"    of another module, and a database that has them keeps them\n"
+"\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
 msgstr ""
+"\n"
+"Phân hệ này thay thương hiệu Odoo của các phân hệ base, web và base_setup bằng thương hiệu Viindoo\n"
+"\n"
+"* Thay biểu tượng phân hệ và favicon của Odoo bằng của Viindoo\n"
+"\n"
+"  * biểu tượng nằm trong `viin_brand/static/img/apps/<module_name>.png`, hoặc trong một\n"
+"    phân hệ tên `viin_brand_<module_name>` có kèm `static/description/icon.png`\n"
+"  * favicon nằm trong `viin_brand/static/img/favicon.ico` và được áp dụng cho mọi công ty\n"
+"  * nạp phân hệ ở mức toàn máy chủ (`--load=base,web,viin_brand`) để thương hiệu\n"
+"    có hiệu lực ngay từ lần cài đặt phân hệ đầu tiên\n"
+"\n"
+"* Hiển thị nhận diện Viindoo trên mọi trang, hộp thoại và tài liệu\n"
+"\n"
+"  * trình quản lý cơ sở dữ liệu, trang đăng nhập, tiêu đề thẻ trình duyệt, bố cục báo cáo và\n"
+"    trang ngoại tuyến đều mang tên, logo và liên kết của Viindoo\n"
+"  * tệp kê khai ứng dụng web mang tên, màu sắc và biểu tượng của Viindoo\n"
+"  * các hộp thoại và hộp thoại lỗi mang tên Viindoo, và liên kết tài liệu trỏ tới\n"
+"    tài liệu của Viindoo\n"
+"\n"
+"* Cho phép mỗi người dùng chọn bảng màu Sáng, Tối hoặc Theo hệ thống trong Tùy chọn của mình, với\n"
+"  bảng màu thương hiệu Viindoo ở cả hai bảng màu\n"
+"\n"
+"* Không làm phiền người dùng với các chào mời chỉ có ở bản Enterprise\n"
+"\n"
+"  * danh sách Ứng dụng ẩn các phân hệ Enterprise không có trong Viindoo, các danh mục\n"
+"    và bộ lọc chỉ để chào mời chúng, và kho ứng dụng của Odoo\n"
+"  * trang Thiết lập ẩn các tùy chọn cần Enterprise hoặc một phân hệ không thể cài đặt,\n"
+"    cùng các khối và ứng dụng bị bỏ trống\n"
+"  * các phân hệ bán tín dụng IAP của Odoo không được cài cùng cơ sở dữ liệu mới và không thể\n"
+"    cài từ giao diện người dùng; chúng vẫn cài được từ dòng lệnh hoặc dưới dạng phụ thuộc\n"
+"    của phân hệ khác, và cơ sở dữ liệu đã có chúng thì vẫn giữ nguyên\n"
+"\n"
+"\n"
+"Các phiên bản được hỗ trợ\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
 
 #. module: viin_brand
 #: model_terms:ir.ui.view,arch_db:viin_brand.login_layout
@@ -62,9 +116,19 @@ msgstr ""
 "bên ngoài khi đang bật xác thực đa yếu tố."
 
 #. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_access
+msgid "Access"
+msgstr "Truy cập"
+
+#. module: viin_brand
 #: model:ir.model,name:viin_brand.model_ir_actions_actions
-msgid "Actions"
+msgid "Action"
 msgstr "Tác vụ"
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_actions_act_window
+msgid "Action Window"
+msgstr "Cửa sổ tác vụ"
 
 #. module: viin_brand
 #: model:ir.model.fields,help:viin_brand.field_res_users__viin_color_scheme
@@ -124,7 +188,7 @@ msgstr ""
 
 #. module: viin_brand
 #: model:ir.model,name:viin_brand.model_res_company
-msgid "Companies"
+msgid "Company"
 msgstr "Công ty"
 
 #. module: viin_brand
@@ -150,12 +214,15 @@ msgid "Dark"
 msgstr "Tối"
 
 #. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_base_module_update__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_ir_access__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_ir_actions_act_window__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_actions_actions__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_actions_report__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_http__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_mail_server__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_module_module__display_name
-#: model:ir.model.fields,field_description:viin_brand.field_ir_rule__display_name
+#: model:ir.model.fields,field_description:viin_brand.field_ir_sequence__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_ir_ui_menu__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_res_company__display_name
 #: model:ir.model.fields,field_description:viin_brand.field_res_config_settings__display_name
@@ -182,17 +249,25 @@ msgid "GNU LGPL Licensed"
 msgstr "Giấy phép GNU LGPL"
 
 #. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_ir_ui_menu__group_ids
+msgid "Groups"
+msgstr "Nhóm"
+
+#. module: viin_brand
 #: model:ir.model,name:viin_brand.model_ir_http
 msgid "HTTP Routing"
 msgstr "Định tuyến HTTP"
 
 #. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_base_module_update__id
+#: model:ir.model.fields,field_description:viin_brand.field_ir_access__id
+#: model:ir.model.fields,field_description:viin_brand.field_ir_actions_act_window__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_actions_actions__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_actions_report__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_http__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_mail_server__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_module_module__id
-#: model:ir.model.fields,field_description:viin_brand.field_ir_rule__id
+#: model:ir.model.fields,field_description:viin_brand.field_ir_sequence__id
 #: model:ir.model.fields,field_description:viin_brand.field_ir_ui_menu__id
 #: model:ir.model.fields,field_description:viin_brand.field_res_company__id
 #: model:ir.model.fields,field_description:viin_brand.field_res_config_settings__id
@@ -202,8 +277,19 @@ msgid "ID"
 msgstr ""
 
 #. module: viin_brand
+#: model:ir.model.fields,help:viin_brand.field_ir_ui_menu__group_ids
+msgid ""
+"If you have groups, the visibility of this menu will be based on these "
+"groups. If this field is empty, Viindoo will compute visibility based on the"
+" related object's read access."
+msgstr ""
+"Nếu bạn có nhóm, khả năng hiển thị của menu này sẽ dựa trên nhóm đó. Nếu "
+"trường này trống, Viindoo sẽ tính toán khả năng hiển thị dựa trên quyền xem "
+"của đối tượng liên quan."
+
+#. module: viin_brand
 #: model:ir.model,name:viin_brand.model_res_lang
-msgid "Languages"
+msgid "Language"
 msgstr "Ngôn ngữ"
 
 #. module: viin_brand
@@ -252,20 +338,7 @@ msgstr "Ngoại tuyến"
 #. odoo-javascript
 #: code:addons/viin_brand/static/src/core/errors/error_notifications.js:0
 msgid "Ok"
-msgstr ""
-
-#. module: viin_brand
-#. odoo-javascript
-#: code:addons/viin_brand/static/src/views/widgets/notification_alert/notification_alert.xml:0
-msgid ""
-"Push notifications have been blocked. Go to your browser settings to allow "
-"them."
-msgstr "Thông báo đẩy đã bị chặn. Đi tới thiết lập trình duyệt để cho phép."
-
-#. module: viin_brand
-#: model:ir.model,name:viin_brand.model_ir_rule
-msgid "Record Rule"
-msgstr "Quy tắc"
+msgstr "OK"
 
 #. module: viin_brand
 #: model:ir.model,name:viin_brand.model_ir_actions_report
@@ -284,6 +357,16 @@ msgstr ""
 "                    các bản ghi trùng lặp. Nếu bạn chọn nhiều trường,\n"
 "                    Viindoo sẽ đề xuất bạn chỉ gộp những bản ghi có\n"
 "                    tất cả các trường được chọn có giá trị giống nhau (không phải chỉ một trong số các trường)."
+
+#. module: viin_brand
+#: model:ir.model,name:viin_brand.model_ir_sequence
+msgid "Sequence"
+msgstr "Trình tự"
+
+#. module: viin_brand
+#: model:ir.model.fields,field_description:viin_brand.field_ir_sequence__padding
+msgid "Sequence Size"
+msgstr "Kích thước trình tự"
 
 #. module: viin_brand
 #. odoo-javascript
@@ -328,6 +411,11 @@ msgstr ""
 "trình duyệt."
 
 #. module: viin_brand
+#: model:ir.model,name:viin_brand.model_base_module_update
+msgid "Update Module"
+msgstr "Cập nhật phân hệ"
+
+#. module: viin_brand
 #: model:ir.model,name:viin_brand.model_res_users
 msgid "User"
 msgstr "Người dùng"
@@ -337,11 +425,14 @@ msgstr "Người dùng"
 #: code:addons/viin_brand/static/src/core/install_scoped_app/install_scoped_app.xml:0
 #: code:addons/viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
 #: model_terms:ir.ui.view,arch_db:viin_brand.brand_promotion_message
-#: model_terms:ir.ui.view,arch_db:viin_brand.login_layout
 #: model_terms:ir.ui.view,arch_db:viin_brand.res_config_settings_view_form
-#: model_terms:ir.ui.view,arch_db:viin_brand.webclient_bootstrap
 msgid "Viindoo"
 msgstr "Hệ thống Viindoo"
+
+#. module: viin_brand
+#: model:ir.module.module,shortdesc:base.module_viin_brand
+msgid "Viindoo Branding"
+msgstr "Thương hiệu Viindoo"
 
 #. module: viin_brand
 #. odoo-javascript
@@ -379,6 +470,15 @@ msgid "Viindoo needs your authorization first."
 msgstr "Viindoo cần sự cho phép của bạn trước."
 
 #. module: viin_brand
+#: model:ir.model.fields,help:viin_brand.field_ir_sequence__padding
+msgid ""
+"Viindoo will automatically add some '0' on the left of the 'Next Number' to "
+"get the required padding size."
+msgstr ""
+"Viindoo sẽ tự động thêm một vài số '0' vào bên trái của 'Số tiếp theo' để "
+"đạt số lượng chữ số yêu cầu."
+
+#. module: viin_brand
 #. odoo-javascript
 #: code:addons/viin_brand/static/src/core/install_scoped_app/install_scoped_app.xml:0
 #: code:addons/viin_brand/static/src/webclient/settings_form_view/widgets/res_config_edition.xml:0
@@ -414,3 +514,29 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:viin_brand.view_partner_form
 msgid "e.g. https://viindoo.com"
 msgstr "vd. https://viindoo.com"
+
+#. module: base
+#: model_terms:ir.actions.act_window,help:base.action_partner_customer_form
+msgid "Viindoo helps you easily track all activities related to a customer."
+msgstr ""
+"Viindoo giúp bạn dễ dàng nắm bắt các hoạt động liên quan tới khách hàng."
+
+#. module: base
+#: model_terms:ir.actions.act_window,help:base.action_partner_form
+msgid "Viindoo helps you track all activities related to your contacts."
+msgstr "Viindoo giúp bạn theo dõi tất cả hoạt động liên quan tới các liên hệ."
+
+#. module: base
+#: model_terms:ir.actions.act_window,help:base.action_partner_supplier_form
+msgid "Viindoo helps you easily track all activities related to a vendor."
+msgstr ""
+"Viindoo giúp bạn dễ dàng nắm bắt các hoạt động liên quan tới nhà cung cấp."
+
+#. module: base
+#: model_terms:ir.actions.act_window,help:base.action_res_company_form
+msgid ""
+"Create and manage the companies that will be managed by Viindoo from here. "
+"Shops or subsidiaries can be created and maintained from here."
+msgstr ""
+"Tạo và quản lý các công ty sẽ được quản lý tại Viindoo ở đây. Các cửa hàng "
+"hoặc công ty con cũng có thể được tạo và điều hành từ đây."

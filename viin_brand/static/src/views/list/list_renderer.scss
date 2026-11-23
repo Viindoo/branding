@@ -1,5 +1,5 @@
 // List chrome: a refined multi-record table with muted, letter-spaced column headers on a subtle
-// raised header surface, hairline row separators, a subtle row hover and a brand-teal wash on
+// raised header surface, hairline row separators, a subtle row hover and a brand wash on
 // bulk-selected rows.
 //
 // The cell surface is core's own: `--table-bg: $o-view-background-color` (white in light, the panel
@@ -39,9 +39,9 @@
             --table-accent-bg: var(--tertiary-bg);
         }
 
-        // Bulk-selected rows: a brand-teal wash composited over the cell surface.
+        // Bulk-selected rows: a brand wash composited over the cell surface.
         .o_data_row_selected {
-            --table-accent-bg: color-mix(in srgb, #{$o-viin-chrome-base} 8%, transparent);
+            --table-accent-bg: color-mix(in srgb, #{$o-brand-primary} 8%, transparent);
         }
     }
 }
