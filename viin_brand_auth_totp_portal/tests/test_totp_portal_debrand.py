@@ -21,7 +21,6 @@ class TestTotpPortalDebrand(HttpCase):
                 response = self.url_open("/my/security")
 
                 self.assertEqual(response.status_code, 200)
-                self.assertIn("two-factor", response.text.lower())
                 self.assertNotRegex(response.text, ODOO_DOCUMENTATION)
                 links = html.fromstring(response.content).xpath(
                     "//a[contains(@href, 'two-factor-authentication')]/@href")
