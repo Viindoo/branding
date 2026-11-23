@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_plugin.digest_tip_mail_plugin" model="digest.tip">
+        <field name="name">Tip: Connect Viindoo to your inbox</field>
+        <field name="tip_description" type="html">
+<div>
+    <p class="tip_title">Tip: Connect Viindoo to your inbox</p>
+    <div class="tip_content">Connect Viindoo to your inbox to access your data from any email.</div>
+    <div style="display: flex; width: fit-content; margin: auto;">
+        <div style="display: flex; flex-direction: row; padding: 0.25rem 0.5rem; margin-left: 1rem; margin-right: 1rem;">
+            <img src="/mail_plugin/static/src/img/gmail.png" style="width: 40px; margin-right: 5px;"/>
+            <div>
+                <span>connect to <br/> <h3 style="margin: 0px;">Gmail</h3></span>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: row; padding: 0.25rem 0.5rem; margin-left: 1rem; margin-right: 1rem;">
+            <img src="/mail_plugin/static/src/img/outlook.png" style="width: 40px; margin-right: 5px;"/>
+            <div>
+                <span>connect to <br/> <h3 style="margin: 0px;">Outlook</h3></span>
+            </div>
+        </div>
+    </div>
+</div>
+        </field>
+    </record>
+</odoo>

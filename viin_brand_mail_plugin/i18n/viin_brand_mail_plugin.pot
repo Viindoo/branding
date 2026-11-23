@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 16:01+0000\n"
-"PO-Revision-Date: 2026-11-19 16:01+0000\n"
+"POT-Creation-Date: 2026-11-22 15:01+0000\n"
+"PO-Revision-Date: 2026-11-22 15:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,26 +16,33 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_mail_plugin
-#: model:ir.model.fields,field_description:viin_brand_mail_plugin.field_ir_ui_menu__display_name
-msgid "Display Name"
+#: model:ir.module.module,description:base.module_viin_brand_mail_plugin
+msgid ""
+"\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
 msgstr ""
 
 #. module: viin_brand_mail_plugin
-#: model:ir.model.fields,field_description:viin_brand_mail_plugin.field_ir_ui_menu__id
-msgid "ID"
+#: model:ir.module.module,summary:base.module_viin_brand_mail_plugin
+msgid "Debranding mail plugin for Viindoo software"
 msgstr ""
 
 #. module: viin_brand_mail_plugin
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail_plugin.app_auth
-msgid "Let"
+msgid "Allow"
 msgstr ""
 
 #. module: viin_brand_mail_plugin
-#: model:ir.model,name:viin_brand_mail_plugin.model_ir_ui_menu
-msgid "Menu"
+#: model:ir.module.module,shortdesc:base.module_viin_brand_mail_plugin
+msgid "Mail Plugin Debranding for Viindoo"
 msgstr ""
 
 #. module: viin_brand_mail_plugin
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail_plugin.app_auth
-msgid "access your Viindoo database?"
+msgid "to access your Viindoo database?"
 msgstr ""

@@ -2,7 +2,7 @@
 <odoo>
     <template id="app_auth" inherit_id="mail_plugin.app_auth">
         <xpath expr="(//form//p[hasclass('text-center')])[1]" position="replace" mode="inner">
-            Let <t t-esc="friendlyname"/> access your Viindoo database?
+            Allow <t t-out="friendlyname"/> to access your Viindoo database?
         </xpath>
     </template>
 </odoo>
