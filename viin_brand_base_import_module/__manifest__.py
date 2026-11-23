@@ -2,11 +2,8 @@
     'name': "Import Module Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Nhập module",
 
-    'summary': """
-Theme branding Viindoo for module Import Module""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module Nhập module
-""",
+    'summary': "Theme branding Viindoo for module Import Module",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module Nhập module",
 
     'description': """
 What it does
@@ -32,15 +29,15 @@ Module này thương hiệu hóa các thông điệp khi nhập module theo Viin
     """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_base_import_module?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_base_import_module?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     # 'demo_video_url': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     # 'demo_video_url_vi_VN': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     'support': "apps.support@viindoo.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/19.0/odoo/addons/base/data/ir_module_category_data.xml
+    # Check https://github.com/odoo/odoo/blob/20.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
     'version': '0.1',
@@ -60,13 +57,18 @@ Module này thương hiệu hóa các thông điệp khi nhập module theo Viin
     #     1292, 1294,
     # ],
 
-    'installable': False,
+    'assets': {
+        'web.assets_tests': [
+            'viin_brand_base_import_module/static/tests/tours/**/*',
+        ],
+    },
+    'installable': True,
     # If this module is a bridge module that integrates 2 or more other modules,
     # auto_install must be set to True.
     # In case this module is a module that provides additional functions / features,
     # it should be activated via a setting directive of the main application related
     # to these new functions / features.
-    # 'auto_install': True,  # TODO: Uncomment when upgrading module to production-ready status
+    'auto_install': True,
     # 99.9 EURO is a good start for an application while bridge modules should be free of charge
     # as we usually have pricing for the others that are bridged by this module.
     'price': 0.0,

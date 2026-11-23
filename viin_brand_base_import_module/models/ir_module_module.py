@@ -1,4 +1,6 @@
-from odoo import _, api, models
+from lxml import etree
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.translate import LazyTranslate
 
@@ -15,6 +17,21 @@ CORE_MISSING_DEPENDENCIES_INTRO = _lt_core(
 
 class IrModuleModule(models.Model):
     _inherit = 'ir.module.module'
+
+    total_lines_of_code = fields.Integer(help="Number of lines of code of the module.")
+
+    @api.model
+    def get_view(self, view_id=None, view_type='form', **options):
+        """Drop the module-type group of the search panel, which lists the apps store of Odoo."""
+        result = super().get_view(view_id=view_id, view_type=view_type, **options)
+        if view_type == 'search':
+            doc = etree.fromstring(result['arch'])
+            panel_fields = doc.xpath('//searchpanel/field[@name="module_type"]')
+            if panel_fields:
+                for node in panel_fields:
+                    node.getparent().remove(node)
+                result['arch'] = etree.tostring(doc, encoding='unicode')
+        return result
 
     @api.model
     def _get_missing_dependencies(self, zip_data):

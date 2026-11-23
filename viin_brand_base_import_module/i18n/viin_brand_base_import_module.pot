@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:50+0000\n"
-"PO-Revision-Date: 2026-11-19 15:50+0000\n"
+"POT-Creation-Date: 2026-11-22 15:00+0000\n"
+"PO-Revision-Date: 2026-11-22 15:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,33 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_base_import_module
+#: model:ir.module.module,summary:base.module_viin_brand_base_import_module
+msgid "Theme branding Viindoo for module Import Module"
+msgstr ""
+
+#. module: viin_brand_base_import_module
+#: model:ir.module.module,description:base.module_viin_brand_base_import_module
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands the messages of the module import as Viindoo and keeps the Enterprise offer out of them.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+
+#. module: viin_brand_base_import_module
 #: model:ir.model.fields,field_description:viin_brand_base_import_module.field_ir_module_module__display_name
 msgid "Display Name"
+msgstr ""
+
+#. module: viin_brand_base_import_module
+#: model:ir.model.fields,field_description:viin_brand_base_import_module.field_ir_module_module__total_lines_of_code
+msgid "Extra lines of Code"
 msgstr ""
 
 #. module: viin_brand_base_import_module
@@ -26,8 +51,18 @@ msgid "ID"
 msgstr ""
 
 #. module: viin_brand_base_import_module
+#: model:ir.module.module,shortdesc:base.module_viin_brand_base_import_module
+msgid "Import Module Branding For Viindoo"
+msgstr ""
+
+#. module: viin_brand_base_import_module
 #: model:ir.model,name:viin_brand_base_import_module.model_ir_module_module
 msgid "Module"
+msgstr ""
+
+#. module: viin_brand_base_import_module
+#: model:ir.model.fields,help:viin_brand_base_import_module.field_ir_module_module__total_lines_of_code
+msgid "Number of lines of code of the module."
 msgstr ""
 
 #. module: viin_brand_base_import_module
