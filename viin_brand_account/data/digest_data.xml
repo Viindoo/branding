@@ -1,7 +1,0 @@
-<odoo>
-    <!-- The tip sells sending invoices by post, which is not available, so it is archived -->
-    <function name="write" model="digest.tip">
-        <value eval="[ref('account.digest_tip_account_0')]"/>
-        <value eval="{'active': False}"/>
-    </function>
-</odoo>

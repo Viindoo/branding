@@ -14,6 +14,5 @@ class AccountMoveSend(models.AbstractModel):
     @api.model
     def _get_default_sending_methods(self, move):
         """Never default to sending by post, even for a partner that still holds that preference."""
-        methods = super()._get_default_sending_methods(move)
-        methods.discard('snailmail')
-        return methods or {'email'}
+        methods = [method for method in super()._get_default_sending_methods(move) if method != 'snailmail']
+        return methods or ['email']
