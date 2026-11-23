@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="lunch_product_view_search" model="ir.ui.view">
+        <field name="name">lunch.product.search.inherit.viin.brand</field>
+        <field name="model">lunch.product</field>
+        <field name="inherit_id" ref="lunch.lunch_product_view_search"/>
+        <field name="arch" type="xml">
+            <!-- Core paints this icon with a fixed colour of Odoo; the link colour follows the palette in both schemes. -->
+            <xpath expr="//searchpanel/field[@name='category_id']" position="attributes">
+                <attribute name="color">var(--link-color)</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

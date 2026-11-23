@@ -2,17 +2,13 @@
     'name': "Lunch Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Ăn trưa",
 
-    'summary': """
-This module brands Lunch with Viindoo: the order mail sent to the supplier is powered by Viindoo.""",
-    'summary_vi_VN': """
-Mô-đun này thay đổi giao diện Ăn trưa theo thương hiệu Viindoo: thư đặt món gửi nhà cung cấp hiển
-thị Viindoo ở chân thư.
-""",
+    'summary': "This module brands Lunch with Viindoo: the section icons of the product search panel follow the Viindoo palette.",
+    'summary_vi_VN': "Mô-đun này thay đổi giao diện Ăn trưa theo thương hiệu Viindoo: biểu tượng các nhóm ở bảng tìm kiếm của sản phẩm theo bảng màu Viindoo.",
 
     'description': """
 What it does
 ============
-This module brands Lunch with Viindoo: the order mail sent to the supplier is powered by Viindoo.
+This module brands Lunch with Viindoo: the section icons of the product search panel follow the Viindoo palette.
 
 Editions Supported
 ==================
@@ -24,8 +20,8 @@ Editions Supported
     'description_vi_VN': """
 Ứng dụng này làm gì
 ===================
-Mô-đun này thay đổi giao diện Ăn trưa theo thương hiệu Viindoo: thư đặt món gửi nhà cung cấp hiển
-thị Viindoo ở chân thư.
+Mô-đun này thay đổi giao diện Ăn trưa theo thương hiệu Viindoo: biểu tượng các nhóm ở bảng tìm kiếm
+của sản phẩm theo bảng màu Viindoo.
 
 Ấn bản được Hỗ trợ
 ==================
@@ -35,9 +31,9 @@ thị Viindoo ở chân thư.
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_lunch",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_lunch",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     # 'demo_video_url': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     # 'demo_video_url_vi_VN': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
     'support': "apps.support@viindoo.com",
@@ -45,14 +41,19 @@ thị Viindoo ở chân thư.
     'category': 'Hidden',
     'version': '0.1.0',
 
-    'depends': ['lunch'],
+    'depends': ['lunch', 'viin_brand'],
 
     'data': [
-        'data/mail_template_data.xml',
+        'views/lunch_product_views.xml',
     ],
     # 'demo': [],
-    'installable': False,
-    # 'auto_install': True,  # TODO: Uncomment when upgrading module to production-ready status
+    'assets': {
+        'web.assets_tests': [
+            'viin_brand_lunch/static/tests/tours/**/*',
+        ],
+    },
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',
