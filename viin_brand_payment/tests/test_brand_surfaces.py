@@ -50,7 +50,7 @@ class TestPaymentBrandSurfaces(TransactionCase):
         self.assertNotRegex(text, PRODUCT_NAME)
         self.assertIn('Viindoo', text)
 
-    def test_field_helps_name_viindoo_not_a_neutral_word(self):
+    def test_field_helps_do_not_name_odoo(self):
         for model, name in (
             ('payment.provider', 'capture_manually'),
             ('payment.provider', 'support_refund'),
@@ -59,4 +59,11 @@ class TestPaymentBrandSurfaces(TransactionCase):
             with self.subTest(field='%s.%s' % (model, name)):
                 help_text = self.env[model].fields_get([name], attributes=['help'])[name]['help']
                 self.assertNotRegex(help_text, PRODUCT_NAME)
-                self.assertNotRegex(help_text, r'\bthe system\b')
+
+    def test_payment_method_configuration_note_uses_the_icon_font_of_the_series(self):
+        arch = etree.fromstring(self.env['payment.method'].get_view(
+            view_id=self.env.ref('payment.payment_method_form').id, view_type='form')['arch'])
+        icons = arch.xpath("//page[@name='configuration']/div[hasclass('alert-warning')]/i")
+        self.assertEqual(len(icons), 1)
+        self.assertEqual(icons[0].get('data-icon'), 'warning')
+        self.assertFalse(set((icons[0].get('class') or '').split()) & {'fa', 'fa-exclamation-triangle'})

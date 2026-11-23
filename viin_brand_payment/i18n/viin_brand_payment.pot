@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:50+0000\n"
-"PO-Revision-Date: 2026-11-19 15:50+0000\n"
+"POT-Creation-Date: 2026-11-22 03:15+0000\n"
+"PO-Revision-Date: 2026-11-22 03:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,31 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_payment
+#: model:ir.module.module,summary:base.module_viin_brand_payment
+msgid "Theme branding Viindoo for module Payment Provider"
+msgstr ""
+
+#. module: viin_brand_payment
+#: model:ir.module.module,description:base.module_viin_brand_payment
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module will change color navigate bar, button and logo,v.v in Payment Provider following Viindoo's brand\n"
+"\n"
+"It also hides the Enterprise payment providers that are not available in the system from the Payment Providers list.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+
+#. module: viin_brand_payment
 #: model_terms:ir.ui.view,arch_db:viin_brand_payment.payment_method_form
 msgid ""
-"<i class=\"fa fa-exclamation-triangle\"/> These properties are set to\n"
+"<i class=\"oi\" data-icon=\"warning\"/> These properties are set to\n"
 "                match the behavior of providers and that of their integration with\n"
 "                Viindoo regarding this payment method. Any change may result in errors\n"
 "                and should be tested on a test database first."
@@ -29,9 +51,7 @@ msgstr ""
 msgid "Capture Amount Manually"
 msgstr ""
 
-#. module: payment_demo
 #. module: viin_brand_payment
-#: model:ir.model.fields,help:payment_demo.field_payment_transaction__capture_manually
 #: model:ir.model.fields,help:viin_brand_payment.field_payment_provider__capture_manually
 msgid ""
 "Capture the amount from Viindoo, when the delivery is completed.\n"
@@ -59,6 +79,11 @@ msgstr ""
 #. module: viin_brand_payment
 #: model:ir.model,name:viin_brand_payment.model_payment_provider
 msgid "Payment Provider"
+msgstr ""
+
+#. module: viin_brand_payment
+#: model:ir.module.module,shortdesc:base.module_viin_brand_payment
+msgid "Payment Provider Branding For Viindoo"
 msgstr ""
 
 #. module: viin_brand_payment
