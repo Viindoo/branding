@@ -2,13 +2,8 @@
     'name': "Project Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Dự án",
 
-    'summary': """
-This module brands Project with Viindoo: the onboarding tour, the examples of the stage columns and
-the dialogs and errors of the project sharing page name Viindoo.""",
-    'summary_vi_VN': """
-Mô-đun này thay đổi giao diện Dự án theo thương hiệu Viindoo: tour hướng dẫn, ví dụ về các cột giai
-đoạn, hộp thoại và thông báo lỗi của trang chia sẻ dự án đều nhắc tới Viindoo.
-""",
+    'summary': "Viindoo brand on the Project onboarding tour, the stage column examples, and the dialogs and errors of project sharing",
+    'summary_vi_VN': "Thương hiệu Viindoo cho tour hướng dẫn Dự án, ví dụ cột giai đoạn, hộp thoại và thông báo lỗi của trang chia sẻ dự án",
 
     'description': """
 What it does
@@ -37,11 +32,9 @@ Mô-đun này thay đổi giao diện Dự án theo thương hiệu Viindoo: tou
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_project",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
-    # 'demo_video_url': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
-    # 'demo_video_url_vi_VN': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_project",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -49,8 +42,6 @@ Mô-đun này thay đổi giao diện Dự án theo thương hiệu Viindoo: tou
 
     'depends': ['project', 'viin_brand'],
 
-    # 'data': [],
-    # 'demo': [],
     'assets': {
         'web.assets_backend': [
             'viin_brand_project/static/src/js/tours/project_tour.js',
@@ -60,14 +51,13 @@ Mô-đun này thay đổi giao diện Dự án theo thương hiệu Viindoo: tou
             'viin_brand/static/src/core/dialog/dialog.js',
             'viin_brand/static/src/core/errors/error_dialogs.js',
             'viin_brand/static/src/core/errors/error_dialogs.xml',
-            'viin_brand/static/src/core/browser/title_service.js',
         ],
         'web.assets_unit_tests': [
             'viin_brand_project/static/tests/project_debrand.test.js',
         ],
     },
-    'installable': False,
-    # 'auto_install': True,  # TODO: Uncomment when upgrading module to production-ready status
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

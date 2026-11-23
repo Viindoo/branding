@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:59+0000\n"
-"PO-Revision-Date: 2026-11-19 15:59+0000\n"
+"POT-Creation-Date: 2026-11-22 03:22+0000\n"
+"PO-Revision-Date: 2026-11-22 03:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,10 +15,61 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+#. module: viin_brand_project
+#: model:ir.module.module,summary:base.module_viin_brand_project
+msgid ""
+"Viindoo brand on the Project onboarding tour, the stage column examples, and"
+" the dialogs and errors of project sharing"
+msgstr ""
+"Thương hiệu Viindoo cho tour hướng dẫn Dự án, ví dụ cột giai đoạn, hộp thoại"
+" và thông báo lỗi của trang chia sẻ dự án"
+
+#. module: viin_brand_project
+#: model:ir.module.module,description:base.module_viin_brand_project
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands Project with Viindoo: the onboarding tour, the examples of the stage columns and\n"
+"the dialogs and errors of the project sharing page name Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này đưa thương hiệu Viindoo vào Dự án: chuyến hướng dẫn làm quen, các ví dụ về cột giai đoạn,\n"
+"hộp thoại và thông báo lỗi của trang chia sẻ dự án đều nhắc tới Viindoo.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_project
+#. odoo-javascript
+#: code:addons/viin_brand_project/static/src/xml/project_task_kanban_examples.xml:0
+msgid ""
+"Customers propose feedbacks by email; Viindoo creates tasks automatically, and you can\n"
+"            communicate on the task directly."
+msgstr ""
+"Khách hàng gửi phản hồi qua email; Viindoo tự động tạo nhiệm vụ, và bạn có thể\n"
+"            trao đổi trực tiếp trên nhiệm vụ."
+
 #. module: project
 #: model:ir.model.fields,help:project.field_project_project__alias_domain
 msgid "Email domain e.g. 'example.com' in 'viindoo@example.com'"
 msgstr "Tên miền email, ví dụ 'example.com' trong 'viindoo@example.com'"
+
+#. module: viin_brand_project
+#: model:ir.module.module,shortdesc:base.module_viin_brand_project
+msgid "Project Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Dự án"
 
 #. module: project
 #: model:ir.model.fields,help:project.field_project_project__alias_model_id
@@ -39,16 +90,6 @@ msgid ""
 msgstr ""
 "Tên của bí danh email, ví dụ: 'jobs' nếu bạn muốn nhận email gửi đến địa chỉ"
 " <jobs@example.viindoo.com>"
-
-#. module: viin_brand_project
-#. odoo-javascript
-#: code:addons/viin_brand_project/static/src/xml/project_task_kanban_examples.xml:0
-msgid ""
-"Customers propose feedbacks by email; Viindoo creates tasks automatically, and you can\n"
-"            communicate on the task directly."
-msgstr ""
-"Khách hàng gửi phản hồi qua email; Viindoo tự động tạo nhiệm vụ, và bạn có thể\n"
-"            trao đổi trực tiếp trên nhiệm vụ."
 
 #. module: viin_brand_project
 #. odoo-javascript

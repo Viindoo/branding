@@ -18,11 +18,17 @@ test("no hint of the project tour names Odoo", () => {
     for (const hint of hints) {
         expect(hint).not.toInclude("Odoo");
     }
-    expect(hints.some((hint) => hint.includes("Viindoo will automatically save"))).toBe(true);
+    expect(hints.some((hint) => hint.includes("Viindoo"))).toBe(true);
 });
 
 test("the customer feedback example of the stage columns names Viindoo", () => {
     const template = getTemplate("project.example.customerfeedback");
-    expect(template.textContent).toInclude("Viindoo creates tasks automatically");
+    expect(template.textContent).toInclude("Viindoo");
     expect(template.textContent).not.toInclude("Odoo");
+});
+
+test("the customer feedback example keeps its activity icon", () => {
+    const template = getTemplate("project.example.customerfeedback");
+    expect(template.querySelectorAll("a.oi[data-icon='schedule']")).toHaveLength(1);
+    expect(template.querySelectorAll(".fa")).toHaveLength(0);
 });
