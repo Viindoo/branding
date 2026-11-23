@@ -2,11 +2,8 @@
     'name': "Portal Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Portal",
 
-    'summary': """
-Theme branding Viindoo for module Portal""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module Portal
-""",
+    'summary': "Theme branding Viindoo for module Portal",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module Portal",
 
     'description': """
 What it does
@@ -29,21 +26,20 @@ Module này sẽ thay đổi giao diện các module Portal theo thương hiệu
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_portal?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_portal?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
     'version': '0.1.2',
 
-    'depends': ['portal'],
+    'depends': ['portal', 'viin_brand'],
 
     'data': [
         'views/portal_templates.xml',
     ],
-    'post_init_hook': '_post_init_hook',
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
