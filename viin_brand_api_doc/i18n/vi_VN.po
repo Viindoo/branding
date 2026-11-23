@@ -4,16 +4,51 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:48+0000\n"
-"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"POT-Creation-Date: 2026-11-22 02:22+0000\n"
+"PO-Revision-Date: 2026-11-22 02:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_api_doc
+#: model:ir.module.module,summary:base.module_viin_brand_api_doc
+msgid "Theme branding Viindoo for module API Documentation"
+msgstr "Giao diện brand Viindoo cho module Tài liệu API"
+
+#. module: viin_brand_api_doc
+#: model:ir.module.module,description:base.module_viin_brand_api_doc
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands the title of the runtime documentation of the API as Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này đổi tiêu đề của tài liệu thời gian chạy của API thành thương hiệu Viindoo.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_api_doc
+#: model:ir.module.module,shortdesc:base.module_viin_brand_api_doc
+msgid "API Documentation Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Tài liệu API"
 
 #. module: viin_brand_api_doc
 #. odoo-javascript
