@@ -15,8 +15,3 @@ class TestAttendanceSettings(TransactionCase):
         setting = self.doc.xpath("//setting[field[@name='attendance_from_systray']]")[0]
         self.assertIn('Viindoo', setting.get('help'))
         self.assertNotIn('Odoo', setting.get('help'))
-
-    def test_the_kiosk_manual_opens_a_viindoo_page(self):
-        links = self.doc.xpath("//setting[field[@name='attendance_kiosk_mode']]//a/@href")
-        self.assertEqual(len(links), 1)
-        self.assertTrue(links[0].startswith('https://viindoo.com/documentation/19.0/'))

@@ -8,9 +8,6 @@
             <xpath expr="//setting[field[@name='attendance_from_systray']]" position="attributes">
                 <attribute name="help">Allow Users to Check in/out from Viindoo.</attribute>
             </xpath>
-            <xpath expr="//a[@href='https://www.odoo.com/documentation/latest/applications/hr/attendances/hardware.html']" position="attributes">
-                <attribute name="href">https://viindoo.com/documentation/19.0/applications/human-resources/attendances/operations/set-up-the-attendance-kiosk.html</attribute>
-            </xpath>
         </field>
     </record>
 </odoo>
