@@ -5,12 +5,7 @@
         	<xpath expr="//head/style[@type='text/css'][last()]" position="after">
         		<style type="text/css">
                         body {
-                            background-image: -webkit-linear-gradient(top, #005e68, #00e7ff);
-                            background-image: -moz-linear-gradient(top, #005e68, #00e7ff);
-                            background-image: -ms-linear-gradient(top, #005e68, #00e7ff);
-                            background-image: -o-linear-gradient(top, #005e68, #00e7ff);
-                            background-image: linear-gradient(to bottom, #005e68, #00e7ff);
-                            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#005e68', endColorstr='#00e7ff',GradientType=0 );
+                            background-image: linear-gradient(to bottom, #592E5B, #7F4282);
                         }
                     </style>
         	</xpath>

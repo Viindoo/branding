@@ -5,7 +5,7 @@
             <field name="body">Hi, if you need help with your database, feel free to contact our support via http://www.viindoo.com/ticket</field>
         </record>
         <record id="im_livechat.livechat_channel_session_6_message_3" model="mail.message">
-            <field name="body">Yes, of course, you can find it here: https://viindoo.com/documentation/19.0/applications.html</field>
+            <field name="body">Yes, of course, you can find it here: https://viindoo.com/documentation/20.0/applications.html</field>
         </record>
         <record id="im_livechat.livechat_channel_session_2_message_2" model="mail.message">
             <field name="body">I was wondering if Viindoo has an application to easily manage social media for my business..</field>

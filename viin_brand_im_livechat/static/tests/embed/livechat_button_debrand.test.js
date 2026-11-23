@@ -15,7 +15,7 @@ defineLivechatModels();
 test("the livechat launcher button renders without throwing with the module's embed assets loaded", async () => {
     await startServer();
     await loadDefaultEmbedConfig();
-    await start({ authenticateAs: false });
+    await start({ authenticateAs: false, waitUntilSubscribe: false });
     // `contains` polls until timeout, so a later re-render cannot recover a crashed render.
     await contains(".o-livechat-LivechatButton");
 });
