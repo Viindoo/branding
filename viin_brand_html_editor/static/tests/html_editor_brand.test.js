@@ -2,7 +2,7 @@ import { ImageCrop } from "@html_editor/main/media/image_crop";
 import { describe, expect, test } from "@odoo/hoot";
 import { click, waitFor } from "@odoo/hoot-dom";
 import { animationFrame } from "@odoo/hoot-mock";
-import { makeMockEnv, mountWithCleanup, onRpc } from "@web/../tests/web_test_helpers";
+import { mountWithCleanup, onRpc } from "@web/../tests/web_test_helpers";
 import { getTemplate } from "@web/core/templates";
 import "@viin_brand_html_editor/main/image_crop_brand";
 import "@viin_brand_html_editor/main/media_dialog_brand";
@@ -22,8 +22,7 @@ test("the link popover URL placeholder suggests a neutral address", () => {
 
 test("the media dialog URL placeholders suggest neutral addresses", async () => {
     onRpc("ir.attachment", "search_read", () => []);
-    const env = await makeMockEnv();
-    await setupEditor(`<p><img class="img-fluid" src="/web/static/img/logo.png"></p>`, { env });
+    await setupEditor(`<p><img class="img-fluid" src="/web/static/img/logo.png"></p>`);
     await click("img");
     await waitFor(".o-we-toolbar");
     await click("button[name='replace_image']");
@@ -43,7 +42,6 @@ test("the media dialog URL placeholders suggest neutral addresses", async () => 
 
 test("the notification of an image that cannot be cropped names Viindoo", async () => {
     onRpc("/html_editor/get_image_info", () => ({}));
-    await makeMockEnv();
     const media = document.createElement("img");
     media.setAttribute("src", "https://example.com/external.png");
     document.body.append(media);

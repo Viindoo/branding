@@ -21,14 +21,13 @@ Editions Supported
     """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_html_editor?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_html_editor?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1.2',
-    'old_technical_name': 'viin_brand_web_editor',
-    'depends': ['html_editor', 'web'],
+    'depends': ['html_editor', 'web', 'viin_brand'],
     'assets': {
         'html_editor.assets_media_dialog': [
             'viin_brand_html_editor/static/src/main/media_dialog_brand.js',
@@ -40,11 +39,19 @@ Editions Supported
         'web.assets_unit_tests': [
             'viin_brand_html_editor/static/tests/html_editor_brand.test.js',
         ],
+        # Core's colour tests of the editor compare the computed colour of the content palette
+        # with core's literal (rgb(113, 75, 103)). The unit-test bundle seeds that palette with
+        # core's colour; the production bundles keep the brand's (tests/test_core_palette_pin.py and
+        # tests/test_brand_scheme.py).
+        'web.assets_unit_tests_setup': [
+            ('before', 'html_editor/static/src/scss/html_editor.variables.scss',
+             'viin_brand_html_editor/static/tests/scss/core_palette_pin.scss'),
+        ],
         'web.assets_frontend': [
             ('after', 'html_editor/static/src/scss/html_editor.common.scss', 'viin_brand_html_editor/static/src/scss/viin_brand_html_editor.common.scss'),
         ],
     },
-    'installable': False,
+    'installable': True,
     'auto_install': ['html_editor'],
     'price': 0.0,
     'currency': 'EUR',
