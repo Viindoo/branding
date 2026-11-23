@@ -1,23 +1,9 @@
-from odoo.addons.sms.tools.sms_api import SmsApiBase
 from odoo.addons.sms_twilio.tools.sms_api import SmsApiTwilio
 from odoo.tools.translate import LazyTranslate
 
 # The failure reason core writes when Twilio gives no answer, looked up in the catalog of the core
 # module that owns it so that it equals what core wrote in every language.
 CORE_NO_ANSWER_REASON = LazyTranslate('sms_twilio')("Unknown failure at sending, please contact Odoo support")
-
-
-class SmsApiNotConfigured(SmsApiBase):
-    """Stand-in provider of a company that has no Twilio account: nothing is sent and every SMS fails
-    with the sentence that tells where to configure the account."""
-
-    def _send_sms_batch(self, messages, delivery_reports_url=False):
-        failure_reason = self.company._get_sms_not_configured_message()
-        return [
-            {'uuid': number_info['uuid'], 'state': 'server_error', 'failure_reason': failure_reason}
-            for message in messages
-            for number_info in message['numbers']
-        ]
 
 
 class SmsApiTwilioViindoo(SmsApiTwilio):
