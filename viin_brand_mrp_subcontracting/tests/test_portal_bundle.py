@@ -6,9 +6,10 @@ BUNDLE = 'mrp_subcontracting.webclient'
 CORE_FILE = 'web/static/src/core/dialog/dialog.js'
 BRAND_FILES = [
     'viin_brand/static/src/core/dialog/dialog.js',
+    'viin_brand/static/src/webclient/actions/action_dialog.js',
     'viin_brand/static/src/core/errors/error_dialogs.js',
     'viin_brand/static/src/core/errors/error_dialogs.xml',
-    'viin_brand/static/src/core/browser/title_service.js',
+    'viin_brand/static/src/core/errors/error_notifications.js',
     'viin_brand/static/src/core/barcode/barcode_video_scanner.js',
     'viin_brand/static/src/webclient/actions/reports/report_notification.js',
 ]
