@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:48+0000\n"
-"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"POT-Creation-Date: 2026-11-22 02:35+0000\n"
+"PO-Revision-Date: 2026-11-22 02:35+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,18 +16,32 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_google_calendar
-#: model:ir.model.fields,field_description:viin_brand_google_calendar.field_res_users_settings__google_calendar_cal_id
-msgid "Calendar ID"
+#: model:ir.module.module,summary:base.module_viin_brand_google_calendar
+msgid "Theme branding Viindoo for module Google Calendar"
 msgstr ""
 
 #. module: viin_brand_google_calendar
-#: model:ir.model.fields.selection,name:viin_brand_google_calendar.selection__google_calendar_account_reset__delete_policy__delete_odoo
-msgid "Delete from Viindoo"
+#: model:ir.module.module,description:base.module_viin_brand_google_calendar
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands the Google Calendar account reset option and the delete-calendar confirmation as Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+
+#. module: viin_brand_google_calendar
+#: model:ir.model.fields,field_description:viin_brand_google_calendar.field_google_calendar_account_reset__delete_events
+msgid "Delete synced events from Viindoo"
 msgstr ""
 
 #. module: viin_brand_google_calendar
 #: model:ir.model.fields,field_description:viin_brand_google_calendar.field_google_calendar_account_reset__display_name
-#: model:ir.model.fields,field_description:viin_brand_google_calendar.field_res_users_settings__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -37,31 +51,18 @@ msgid "Google Calendar Account Reset"
 msgstr ""
 
 #. module: viin_brand_google_calendar
+#: model:ir.module.module,shortdesc:base.module_viin_brand_google_calendar
+msgid "Google Calendar Branding For Viindoo"
+msgstr ""
+
+#. module: viin_brand_google_calendar
 #: model:ir.model.fields,field_description:viin_brand_google_calendar.field_google_calendar_account_reset__id
-#: model:ir.model.fields,field_description:viin_brand_google_calendar.field_res_users_settings__id
 msgid "ID"
 msgstr ""
 
 #. module: viin_brand_google_calendar
-#. module: google_calendar
-#: model:ir.model.fields,help:viin_brand_google_calendar.field_res_users_settings__google_calendar_cal_id
-#: model:ir.model.fields,help:google_calendar.field_res_users__google_calendar_cal_id
+#: model:ir.model.fields,help:viin_brand_google_calendar.field_google_calendar_account_reset__delete_events
 msgid ""
-"Last Calendar ID who has been synchronized. If it is changed, we remove all "
-"links between GoogleID and Viindoo Google Internal ID"
-msgstr ""
-
-#. module: viin_brand_google_calendar
-#: model:ir.model.fields,help:viin_brand_google_calendar.field_google_calendar_account_reset__delete_policy
-msgid "This will only affect events for which the user is the owner"
-msgstr ""
-
-#. module: viin_brand_google_calendar
-#: model:ir.model,name:viin_brand_google_calendar.model_res_users_settings
-msgid "User Settings"
-msgstr ""
-
-#. module: viin_brand_google_calendar
-#: model:ir.model.fields,field_description:viin_brand_google_calendar.field_google_calendar_account_reset__delete_policy
-msgid "User's Existing Events"
+"This will affect events in calendars you own, and any other events you are "
+"organizing."
 msgstr ""
