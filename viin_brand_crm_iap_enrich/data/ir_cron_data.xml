@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <function model="ir.cron" name="_deactivate_lead_enrichment_cron"/>
+</odoo>
