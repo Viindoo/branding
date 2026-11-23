@@ -1,18 +1,23 @@
-import { defineMailModels } from "@mail/../tests/mail_test_helpers";
 import { describe, expect, test } from "@odoo/hoot";
-import { makeDialogMockEnv, mountWithCleanup } from "@web/../tests/web_test_helpers";
+import { animationFrame } from "@odoo/hoot-mock";
+import { defineMailModels } from "@mail/../tests/mail_test_helpers";
+import { getService, mountWithCleanup } from "@web/../tests/web_test_helpers";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import "@viin_brand_spreadsheet/dialog/confirmation_dialog";
+import { DialogPlugin } from "@web/core/dialog/dialog_plugin";
+import { MainComponentsContainer } from "@web/core/main_components_container";
+import "@viin_brand_spreadsheet/dialog/spreadsheet_dialog_title";
 
 describe.current.tags("desktop");
 defineMailModels();
 
 async function openDialog(title) {
-    const env = await makeDialogMockEnv();
-    await mountWithCleanup(ConfirmationDialog, {
-        env,
-        props: { body: "Some content", title, close: () => {}, confirm: () => {} },
+    await mountWithCleanup(MainComponentsContainer);
+    getService(DialogPlugin).add(ConfirmationDialog, {
+        body: "Some content",
+        title,
+        confirm: () => {},
     });
+    await animationFrame();
 }
 
 test("the spreadsheet dialog is titled with the Viindoo name", async () => {
