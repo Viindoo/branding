@@ -4,16 +4,38 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:51+0000\n"
-"PO-Revision-Date: 2026-11-19 15:51+0000\n"
+"POT-Creation-Date: 2026-11-22 03:14+0000\n"
+"PO-Revision-Date: 2026-11-22 03:14+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_website_slides
+#: model:ir.module.module,description:base.module_viin_brand_website_slides
+msgid ""
+"\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"\n"
+
+#. module: viin_brand_website_slides
+#: model:ir.module.module,summary:base.module_viin_brand_website_slides
+msgid "Debranding eLearning for Viindoo"
+msgstr "Làm lại màu sắc Phần mềm eLearning theo thương hiệu Viindoo"
 
 #. module: viin_brand_website_slides
 #: model:ir.model,name:viin_brand_website_slides.model_slide_channel
@@ -31,11 +53,6 @@ msgid "ID"
 msgstr ""
 
 #. module: viin_brand_website_slides
-#: model_terms:ir.ui.view,arch_db:viin_brand_website_slides.mail_notification_channel_invite
-msgid "Viindoo"
-msgstr ""
-
-#. module: viin_brand_website_slides
 #: model_terms:ir.ui.view,arch_db:viin_brand_website_slides.view_slide_slide_form
 msgid ""
 "e.g. In this video, we'll give you the keys on how we can help you to grow "
@@ -44,3 +61,8 @@ msgstr ""
 "vd. Trong video này, chúng tôi sẽ chỉ cho bạn cách chúng tôi có thể giúp bạn"
 " phát triển kinh doanh. Cuối video, chúng tôi sẽ đề xuất một bài kiểm tra để"
 " kiểm tra kiến thức của bạn."
+
+#. module: viin_brand_website_slides
+#: model:ir.module.module,shortdesc:base.module_viin_brand_website_slides
+msgid "eLearning Debranding for Viindoo"
+msgstr "Thương hiệu Viindoo cho eLearning"
