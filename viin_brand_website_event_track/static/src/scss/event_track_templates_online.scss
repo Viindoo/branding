@@ -1,0 +1,8 @@
+// The track card banner of the online event: core writes the Odoo purple as a literal in its gradient. Same gradient,
+// same angle and a second stop 10% darker, from the content purple of the product; the opacity stays
+// core's.
+.o_wesession_index {
+    .o_wesession_gradient {
+        background-image: linear-gradient(120deg, $o-brand-primary, darken($o-brand-primary, 10%));
+    }
+}
