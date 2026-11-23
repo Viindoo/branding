@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Viindoo accounts are the fallback of a company that fills no link of its own. -->
+    <template id="social_links" inherit_id="mass_mailing.social_links">
+        <xpath expr="//t[@t-set='base_social_links']" position="attributes">
+            <attribute name="t-value">{
+                'social_facebook': 'https://www.facebook.com/Viindoo',
+                'social_instagram': 'https://www.instagram.com/OfficialViindoo/',
+                'social_twitter': 'https://twitter.com/OfficialViindoo',
+                'social_linkedin': 'https://www.linkedin.com/company/viindoo',
+                'social_tiktok': 'https://www.tiktok.com/@viindoo.software',
+            }</attribute>
+        </xpath>
+    </template>
+
+</odoo>
