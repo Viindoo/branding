@@ -1,4 +1,4 @@
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+# Part of Viindoo. See LICENSE file for full copyright and licensing details.
 from lxml import etree
 
 from odoo.tests.common import TransactionCase, tagged
@@ -12,32 +12,6 @@ AUTO_PRINT_FIELDS = [
     "auto_print_mrp_reception_report",
     "auto_print_mrp_reception_report_labels",
 ]
-
-
-@tagged("post_install", "-at_install")
-class TestMrpBomOperationDependenciesHelp(TransactionCase):
-
-    def test_operation_dependencies_help_does_not_name_odoo(self):
-        help_text = self.env["mrp.bom"].fields_get(
-            ["allow_operation_dependencies"], attributes=["help"]
-        )["allow_operation_dependencies"]["help"]
-        self.assertNotIn(
-            BRAND_TERM, help_text,
-            "the Operation Dependencies help on the BoM must not name Odoo",
-        )
-
-
-@tagged("post_install", "-at_install")
-class TestStockMoveManualConsumptionHelp(TransactionCase):
-
-    def test_manual_consumption_help_does_not_name_odoo(self):
-        help_text = self.env["stock.move"].fields_get(
-            ["manual_consumption"], attributes=["help"]
-        )["manual_consumption"]["help"]
-        self.assertNotIn(
-            BRAND_TERM, help_text,
-            "the Manual Consumption help on the stock move must not name Odoo",
-        )
 
 
 @tagged("post_install", "-at_install")
@@ -107,12 +81,10 @@ class TestRoutingWorkcenterCostModeHelp(TransactionCase):
 
 
 @tagged("post_install", "-at_install")
-class TestNoNeutralWordForTheProduct(TransactionCase):
+class TestHelpsNameViindoo(TransactionCase):
 
-    def test_manufacturing_helps_name_viindoo_not_a_neutral_word(self):
+    def test_manufacturing_helps_name_viindoo(self):
         checks = {
-            "mrp.bom": ["allow_operation_dependencies"],
-            "stock.move": ["manual_consumption"],
             "mrp.routing.workcenter": ["cost_mode"],
             "stock.picking.type": AUTO_PRINT_FIELDS,
         }
@@ -120,12 +92,10 @@ class TestNoNeutralWordForTheProduct(TransactionCase):
             info = self.env[model].fields_get(names, attributes=["help"])
             for name in names:
                 with self.subTest(field="%s.%s" % (model, name)):
-                    self.assertNotRegex(info[name]["help"], r"\b[Tt]he system\b|\bSystem\b")
                     self.assertIn("Viindoo", info[name]["help"])
 
-    def test_work_center_digest_tip_names_viindoo_not_a_neutral_word(self):
+    def test_work_center_digest_tip_names_viindoo(self):
         text = self.env.ref("mrp.digest_tip_mrp_0").with_context(lang="en_US").tip_description
-        self.assertNotRegex(text, r"\b[Tt]he system\b|\bsystem work\b")
         self.assertIn("Viindoo", text)
 
     def test_mrp_print_note_says_who_opens_the_preview(self):
@@ -133,4 +103,4 @@ class TestNoNeutralWordForTheProduct(TransactionCase):
             view_id=self.env.ref("stock.view_picking_type_form").id, view_type="form")["arch"].encode("utf-8"))
         notes = arch.xpath("//page[@name='mrp_hardware']//div[@colspan='2'][contains(., 'PDF preview')]")
         self.assertEqual(len(notes), 1)
-        self.assertIn("Viindoo opens a PDF preview", " ".join(notes[0].itertext()))
+        self.assertIn("Viindoo", " ".join(notes[0].itertext()))

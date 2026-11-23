@@ -7,4 +7,4 @@ class MrpRoutingWorkcenter(models.Model):
     cost_mode = fields.Selection(
         help="Determines the way Viindoo calculates the cost of the operation:\n"
         "- Based on Actual time: the cost will be calculated based on tracked time and real employee costs.\n"
-        "- Based on Estimated time: the cost will be calculated based on estimated time and costs.")
+        "- Based on Theoretical time: the cost will be calculated based on estimated time and costs.")
