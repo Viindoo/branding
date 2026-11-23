@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="mass_mailing.s_call_to_action" t-inherit-mode="extension">
+        <xpath expr="//h2/font" position="replace" mode="inner">
+            <strong>Join the companies</strong> that grow their business with us.
+        </xpath>
+    </t>
+
+    <t t-inherit="mass_mailing.s_section_mobile" t-inherit-mode="extension">
+        <xpath expr="//img[hasclass('o_editable_media')]" position="attributes">
+            <attribute name="src">/viin_brand_mass_mailing/static/src/img/mobile-app.png</attribute>
+            <attribute name="data-original-src">/viin_brand_mass_mailing/static/src/img/mobile-app.png</attribute>
+            <attribute name="alt">Mobile app</attribute>
+        </xpath>
+        <!-- The store badges stay; their links are placeholders because the app is the customer's own. -->
+        <xpath expr="(//a[@target='_blank'])[1]" position="attributes">
+            <attribute name="href">#</attribute>
+        </xpath>
+        <xpath expr="(//a[@target='_blank'])[2]" position="attributes">
+            <attribute name="href">#</attribute>
+        </xpath>
+    </t>
+
+    <t t-inherit="mass_mailing.s_customer_quote" t-inherit-mode="extension">
+        <xpath expr="//img[hasclass('o_editable_media')]" position="attributes">
+            <attribute name="data-original-src">/viin_brand_mass_mailing/static/src/img/mobile-app.png</attribute>
+        </xpath>
+    </t>
+
+    <t t-inherit="mass_mailing.s_schedule" t-inherit-mode="extension">
+        <xpath expr="(//ul)[1]/li[1]" position="replace" mode="inner">Interactive demo</xpath>
+    </t>
+
+    <!-- Viindoo accounts are the fallback of a company that fills no link of its own. -->
+    <t t-inherit="mass_mailing.social_links" t-inherit-mode="extension">
+        <xpath expr="//t[@t-set='social_links']" position="attributes">
+            <attribute name="t-value">{
+        social_facebook: company_id.social_links.social_facebook || 'https://www.facebook.com/Viindoo',
+        social_instagram: company_id.social_links.social_instagram || 'https://www.instagram.com/OfficialViindoo/',
+        social_twitter: company_id.social_links.social_twitter || 'https://twitter.com/OfficialViindoo',
+        social_linkedin: company_id.social_links.social_linkedin || 'https://www.linkedin.com/company/viindoo',
+        social_tiktok: company_id.social_links.social_tiktok || 'https://www.tiktok.com/@viindoo.software',
+        social_youtube: company_id.social_links.social_youtube || 'https://www.youtube.com/channel/UCOqIasQbpYcLdV09BrjBwqw'
+    }</attribute>
+        </xpath>
+    </t>
+
+</templates>
