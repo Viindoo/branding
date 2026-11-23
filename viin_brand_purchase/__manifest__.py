@@ -2,11 +2,8 @@
     'name': "Purchase Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Purchase",
 
-    'summary': """
-Theme branding Viindoo for module Purchase""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module Purchase
-""",
+    'summary': "Theme branding Viindoo for module Purchase",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module Purchase",
 
     'description': """
 What it does
@@ -33,9 +30,9 @@ Module này sẽ thay đổi giao diện các module Purchase theo thương hi�
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_purchase?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_purchase?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -47,7 +44,7 @@ Module này sẽ thay đổi giao diện các module Purchase theo thương hi�
         'data/digest_data.xml',
         'views/res_partner_views.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',

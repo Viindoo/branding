@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:50+0000\n"
-"PO-Revision-Date: 2026-11-19 15:50+0000\n"
+"POT-Creation-Date: 2026-11-22 02:34+0000\n"
+"PO-Revision-Date: 2026-11-22 02:34+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,16 +15,53 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: purchase
-#: model:digest.tip,name:purchase.digest_tip_purchase_0
-#: model_terms:digest.tip,tip_description:purchase.digest_tip_purchase_0
-msgid "Tip: How to keep late receipts under control?"
+#. module: viin_brand_purchase
+#: model:ir.module.module,summary:base.module_viin_brand_purchase
+msgid "Theme branding Viindoo for module Purchase"
 msgstr ""
 
-#. module: purchase
-#: model:digest.tip,name:purchase.digest_tip_purchase_1
-#: model_terms:digest.tip,tip_description:purchase.digest_tip_purchase_1
-msgid "Tip: Never miss a purchase order"
+#. module: viin_brand_purchase
+#: model:ir.module.module,description:base.module_viin_brand_purchase
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module will change color navigate bar, button and logo,v.v in Purchase following Viindoo's brand\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+
+#. module: viin_brand_purchase
+#: model_terms:ir.ui.view,arch_db:viin_brand_purchase.portal_my_purchase_order
+msgid ""
+"Drag and drop the request for quotation PDF file into your list of "
+"quotations in Viindoo. Enjoy the automation!"
+msgstr ""
+
+#. module: viin_brand_purchase
+#: model_terms:ir.ui.view,arch_db:viin_brand_purchase.portal_my_purchase_order
+msgid "Not using Viindoo?"
+msgstr ""
+
+#. module: viin_brand_purchase
+#: model:ir.module.module,shortdesc:base.module_viin_brand_purchase
+msgid "Purchase Branding For Viindoo"
+msgstr ""
+
+#. module: viin_brand_purchase
+#: model_terms:ir.ui.view,arch_db:viin_brand_purchase.portal_my_purchase_order
+msgid ""
+"Use the above REST URL to get structured data of the purchase order in UBL "
+"format."
+msgstr ""
+
+#. module: viin_brand_purchase
+#: model_terms:ir.ui.view,arch_db:viin_brand_purchase.portal_my_purchase_order
+msgid "Want to import this document in Viindoo?"
 msgstr ""
 
 #. module: purchase
@@ -54,28 +91,4 @@ msgid ""
 "                    orders or receipts. This allows you to control bills\n"
 "                    you receive from your vendor according to the draft\n"
 "                    document in Viindoo."
-msgstr ""
-
-#. module: viin_brand_purchase
-#: model_terms:ir.ui.view,arch_db:viin_brand_purchase.portal_my_purchase_order
-msgid ""
-"Drag and drop the request for quotation PDF file into your list of "
-"quotations in Viindoo. Enjoy the automation!"
-msgstr ""
-
-#. module: viin_brand_purchase
-#: model_terms:ir.ui.view,arch_db:viin_brand_purchase.portal_my_purchase_order
-msgid "Not using Viindoo?"
-msgstr ""
-
-#. module: viin_brand_purchase
-#: model_terms:ir.ui.view,arch_db:viin_brand_purchase.portal_my_purchase_order
-msgid ""
-"Use the above REST URL to get structured data of the purchase order in UBL "
-"format."
-msgstr ""
-
-#. module: viin_brand_purchase
-#: model_terms:ir.ui.view,arch_db:viin_brand_purchase.portal_my_purchase_order
-msgid "Want to import this document in Viindoo?"
 msgstr ""
