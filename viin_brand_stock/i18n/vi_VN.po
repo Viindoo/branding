@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 16:01+0000\n"
-"PO-Revision-Date: 2026-11-19 16:01+0000\n"
+"POT-Creation-Date: 2026-11-22 15:01+0000\n"
+"PO-Revision-Date: 2026-11-22 15:01+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,42 +15,35 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: stock
-#: model:ir.model.fields,help:stock.field_stock_move_line__picking_type_use_create_lots
-#: model:ir.model.fields,help:stock.field_stock_picking_type__use_create_lots
-#: model:ir.model.fields,help:stock.field_stock_picking__use_create_lots
-msgid ""
-"If this is checked only, it will suppose you want to create new Lots/Serial "
-"Numbers, so you can provide them in a text field. "
-msgstr ""
-"Nếu chỉ chọn ô này, có nghĩa là bạn muốn tạo số lô/sê-ri mới, để bạn có thể "
-"điền chúng trong một trường văn bản. "
+#. module: viin_brand_stock
+#: model:ir.module.module,summary:base.module_viin_brand_stock
+msgid "Theme branding Viindoo for module Stock"
+msgstr "Giao diện brand Viindoo cho module Stock"
 
-#. module: stock
-#: model_terms:ir.actions.act_window,help:stock.action_location_form
+#. module: viin_brand_stock
+#: model:ir.module.module,description:base.module_viin_brand_stock
 msgid ""
-"Define your locations to reflect your warehouse structure and\n"
-"            organization. Viindoo is able to manage physical locations\n"
-"            (warehouses, shelves, bin, etc), partner locations (customers,\n"
-"            vendors) and virtual locations which are the counterpart of\n"
-"            the stock operations like the manufacturing orders\n"
-"            consumptions, inventories, etc."
+"\n"
+"What it does\n"
+"============\n"
+"This module will change color navigate bar, button and logo,v.v in Stock following Viindoo's brand\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Viindoo Cloud\n"
+"\n"
 msgstr ""
-"Xác định các địa điểm của bạn để phản ánh cấu trúc và tổ chức\n"
-"            kho. Viindoo có thể quản lý các địa điểm thực\n"
-"            (kho, kệ, ngăn,...), các địa điểm đối tác (khách hàng,\n"
-"            nhà cung cấp) và các địa điểm ảo là đối ứng của\n"
-"            các nghiệp vụ kho như tiêu hao của lệnh sản xuất,\n"
-"            kiểm kê,..."
-
-#. module: stock
-#: model_terms:ir.actions.act_window,help:stock.action_orderpoint
-msgid ""
-"Define a minimum stock rule so that Viindoo automatically creates requests "
-"for quotations or confirmed manufacturing orders to resupply your stock."
-msgstr ""
-"Xác định quy tắc tồn kho tối thiểu để Viindoo tự động tạo yêu cầu báo giá "
-"hoặc lệnh sản xuất đã xác nhận để tái cung ứng hàng tồn kho cho bạn."
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này thay đổi màu thanh điều hướng, nút bấm và logo,... trong Tồn kho theo thương hiệu của Viindoo\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Viindoo Cloud\n"
+"\n"
 
 #. module: viin_brand_stock
 #: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_print_delivery_slip
@@ -182,13 +175,13 @@ msgstr ""
 "kho khi phiếu kho được xác nhận."
 
 #. module: viin_brand_stock
-#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
+#: model:ir.model.fields,help:viin_brand_stock.field_stock_picking_type__auto_show_allocation_report
 msgid ""
-"If this checkbox is ticked, Viindoo will automatically show the reception "
+"If this checkbox is ticked, Viindoo will automatically show the allocation "
 "report (if there are moves to allocate to) when validating."
 msgstr ""
-"Nếu đánh dấu hộp kiểm này, Viindoo sẽ tự động hiển thị báo cáo nhập kho (nếu"
-" có các dịch chuyển cần phân bổ) khi xác nhận."
+"Nếu đánh dấu hộp kiểm này, Viindoo sẽ tự động hiển thị báo cáo phân bổ (nếu "
+"có các dịch chuyển cần phân bổ) khi xác nhận."
 
 #. module: viin_brand_stock
 #: model:ir.model,name:viin_brand_stock.model_stock_picking_type
@@ -196,9 +189,14 @@ msgid "Picking Type"
 msgstr "Loại nghiệp vụ"
 
 #. module: viin_brand_stock
-#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_show_reception_report
-msgid "Show Reception Report at Validation"
-msgstr "Hiển thị báo cáo nhập kho khi xác nhận"
+#: model:ir.model.fields,field_description:viin_brand_stock.field_stock_picking_type__auto_show_allocation_report
+msgid "Show Allocation"
+msgstr "Hiển thị phân bổ"
+
+#. module: viin_brand_stock
+#: model:ir.module.module,shortdesc:base.module_viin_brand_stock
+msgid "Stock Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Tồn kho"
 
 #. module: viin_brand_stock
 #: model_terms:ir.ui.view,arch_db:viin_brand_stock.view_picking_type_form
@@ -206,3 +204,44 @@ msgid ""
 "Viindoo opens a PDF preview by default when these documents are printed."
 msgstr ""
 "Viindoo sẽ mở bản xem trước PDF theo mặc định khi in các tài liệu này."
+
+#. module: stock
+#: model_terms:ir.actions.act_window,help:stock.action_location_form
+msgid ""
+"Define your locations to reflect your warehouse structure and\n"
+"            organization. Viindoo is able to manage physical locations\n"
+"            (warehouses, shelves, bin, etc), partner locations (customers,\n"
+"            vendors) and virtual locations which are the counterpart of\n"
+"            the stock operations like the manufacturing orders\n"
+"            consumptions, inventories, etc."
+msgstr ""
+"Xác định các địa điểm của bạn để phản ánh cấu trúc và tổ chức\n"
+"            kho. Viindoo có thể quản lý các địa điểm thực\n"
+"            (kho, kệ, ngăn,...), các địa điểm đối tác (khách hàng,\n"
+"            nhà cung cấp) và các địa điểm ảo là đối ứng của\n"
+"            các nghiệp vụ kho như tiêu hao của lệnh sản xuất,\n"
+"            kiểm kê,..."
+
+#. module: stock
+#: model_terms:ir.actions.act_window,help:stock.action_orderpoint
+msgid ""
+"Define a minimum stock rule so that Viindoo automatically creates requests "
+"for quotations or confirmed manufacturing orders to resupply your stock."
+msgstr ""
+"Xác định quy tắc tồn kho tối thiểu để Viindoo tự động tạo yêu cầu báo giá "
+"hoặc lệnh sản xuất đã xác nhận để tái cung ứng hàng tồn kho cho bạn."
+
+#. module: stock
+#: model_terms:ir.actions.act_window,help:stock.action_location_form
+msgid ""
+"Every stock operation in Viindoo moves the products from one\n"
+"            location to another one.  For instance, if you receive products\n"
+"            from a vendor, Viindoo will move products from the Vendor\n"
+"            location to the Stock location. Each report can be performed on\n"
+"            physical, partner or virtual locations."
+msgstr ""
+"Mọi nghiệp vụ kho trong Viindoo đều dịch chuyển hàng hóa từ địa điểm này\n"
+"            sang địa điểm khác. Ví dụ, nếu bạn nhận hàng từ một nhà cung cấp,\n"
+"            Viindoo sẽ dịch chuyển hàng hóa từ Địa điểm nhà cung cấp sang Địa điểm\n"
+"            tồn kho của bạn. Mỗi báo cáo có thể được lập cho từng địa điểm thực,\n"
+"            địa điểm đối tác hay địa điểm ảo."
