@@ -2,6 +2,11 @@
 <odoo>
 
     <template id="hr_expense_template_submitted_expenses" inherit_id="hr_expense.hr_expense_template_submitted_expenses">
+        <xpath expr="//a[@t-att-href='url']" position="attributes">
+            <attribute name="style"/>
+            <attribute name="t-attf-style">margin-right: 5px; padding: 10px 15px; background-color: {{company.email_secondary_color or '#7F4282'}}; color: {{company.email_primary_color or '#FFFFFF'}}; text-decoration: none; border-radius: 4px; font-weight: bold;</attribute>
+        </xpath>
+        <xpath expr="//p[t[@t-out='manager_name']]/following-sibling::p[1]" position="replace" mode="inner">A new expense is waiting for your approval in Viindoo.</xpath>
         <xpath expr="//a[@href='https://www.odoo.com?utm_source=db&amp;utm_medium=expense']" position="attributes">
             <attribute name="href">https://viindoo.com?utm_source=db&amp;utm_medium=expense</attribute>
             <attribute name="style">color: #7f4282;</attribute>

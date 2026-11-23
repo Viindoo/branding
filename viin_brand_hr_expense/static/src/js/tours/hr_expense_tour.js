@@ -1,5 +1,6 @@
 import { markup } from "@odoo/owl";
 import { registry } from "@web/core/registry";
+import "@hr_expense/js/tours/hr_expense";
 
 const tour = registry.category("web_tour.tours").get("hr_expense_tour");
 const coreSteps = tour.steps;

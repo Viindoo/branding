@@ -2,11 +2,8 @@
     'name': "HR Expense Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Hr Expense ",
 
-    'summary': """
-Theme branding Viindoo for module Hr Expense""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module Hr Expense
-""",
+    'summary': "Theme branding Viindoo for module Hr Expense",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module Hr Expense",
 
     'description': """
 What it does
@@ -33,9 +30,9 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_hr_expense?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_hr_expense?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -47,19 +44,17 @@ Module này sẽ thay đổi giao diện module Hr Expense theo thương hiệu 
         'data/digest_data.xml',
         'data/mail_templates.xml',
         'views/hr_expense_views.xml',
-        'views/res_config_settings_views.xml',
     ],
     'assets': {
         'web.assets_backend': [
             'viin_brand_hr_expense/static/src/scss/viin_brand_hr_expense.scss',
-            'viin_brand_hr_expense/static/src/components/qrcode_action/qrcode_action.xml',
             'viin_brand_hr_expense/static/src/js/tours/hr_expense_tour.js',
         ],
         'web.assets_unit_tests': [
             'viin_brand_hr_expense/static/tests/hr_expense_tour_debrand.test.js',
         ],
     },
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
