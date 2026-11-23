@@ -21,10 +21,10 @@ class TestMicrosoftCalendarDebrand(TransactionCase):
         })
 
     def test_reset_wizard_option_is_labelled_after_viindoo(self):
-        field = self.env["microsoft.calendar.account.reset"].fields_get(["delete_policy"])["delete_policy"]
-        labels = dict(field["selection"])
-        self.assertNotRegex(labels["delete_odoo"], BRAND_NAME)
-        self.assertIn("Viindoo", labels["delete_odoo"])
+        field = self.env["microsoft.calendar.account.reset"].fields_get(["delete_events"])["delete_events"]
+        self.assertEqual(field["type"], "boolean")
+        self.assertNotRegex(field["string"], BRAND_NAME)
+        self.assertIn("Viindoo", field["string"])
 
     def test_organizer_error_names_viindoo(self):
         other_user = self.env["res.users"].create({"name": "Organizer", "login": "ms_organizer"})
