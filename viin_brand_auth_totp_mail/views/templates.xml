@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="auth_totp_mail_form" inherit_id="auth_totp_mail.auth_totp_mail_form">
-        <xpath expr="//div[contains(@t-if, 'totp_mail')]/a" position="attributes">
-        	<attribute name="href">https://viindoo.com/documentation/19.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
-        </xpath>
-    </template>
-
     <template id="account_security_alert" inherit_id="auth_totp_mail.account_security_alert">
         <xpath expr="//div[@t-if='suggest_2fa']/a" position="attributes">
-            <attribute name="href">https://viindoo.com/documentation/19.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
+            <attribute name="href">https://viindoo.com/documentation/20.0/applications/getting-started/external-apps-integration/two-factor-authentication.html</attribute>
         </xpath>
     </template>
 </odoo>
