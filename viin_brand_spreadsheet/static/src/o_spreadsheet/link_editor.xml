@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="viin_brand_spreadsheet.LinkEditor" t-inherit="o-spreadsheet-LinkEditor" t-inherit-mode="extension">
-        <xpath expr="//input[@t-ref='urlInput']" position="attributes">
+        <xpath expr="//input[@t-ref='this.urlInput']" position="attributes">
             <attribute name="placeholder">e.g. 'https://www.example.com'</attribute>
         </xpath>
     </t>

@@ -1,0 +1,29 @@
+/* The editor reads its palette from these custom properties; the values below replace the ones of
+   the engine's stylesheet for the brand surfaces, in both colour schemes. */
+:root {
+  --os-gray-100: light-dark(#f8f9fa, #152225);
+  --os-gray-200: light-dark(#e7ebed, #1d2d31);
+  --os-gray-300: light-dark(#dee2e6, #25383c);
+  --os-gray-400: light-dark(#ced4da, #31474c);
+  --os-gray-500: light-dark(#adb5bd, #60767a);
+  --os-gray-600: light-dark(#6c757d, #8ea5a8);
+  --os-gray-700: light-dark(#495057, #acbec0);
+  --os-gray-800: light-dark(#343a40, #c9d6d8);
+  --os-gray-900: light-dark(#212529, #edf4f5);
+  --os-white-bg: light-dark(#ffffff, #111b1e);
+  --os-active-sheet-bg: light-dark(#ffffff, #25383c);
+
+  /* The content tokens of viin_brand, one arm per scheme: the brand purple in light and the content
+     cyan in dark (links, primary button). The pressed button shows its fill colour as the label on a
+     tint, so its arms are the tint of each scheme (pale in light, the dark component fill
+     $o-component-active-bg in dark), never the deep rung ($o-viin-action-deep), on which the cyan
+     label would not read. The dark label on the cyan fill is the dark ink, as on a primary button of
+     the backend. */
+  --os-link-color: light-dark(#7f4282, #00bbce);
+  --os-link-hover-color: light-dark(#592e5b, #66d6e2);
+  --os-button-active-bg: light-dark(#f2ecf2, #25383c);
+  --os-primary-button-bg: light-dark(#7f4282, #00bbce);
+  --os-primary-button-hover-bg: light-dark(#663568, #26c5d5);
+  --os-primary-button-active-bg: light-dark(#f2ecf2, #114147);
+  --os-primary-button-text-color: light-dark(#ffffff, #21272b);
+}

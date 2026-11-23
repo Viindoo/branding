@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 16:05+0000\n"
-"PO-Revision-Date: 2026-11-19 16:05+0000\n"
+"POT-Creation-Date: 2026-11-22 03:36+0000\n"
+"PO-Revision-Date: 2026-11-22 03:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,10 +16,55 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_spreadsheet
-#. odoo-javascript
-#: code:addons/viin_brand_spreadsheet/static/src/dialog/confirmation_dialog.js:0
-msgid "Odoo Spreadsheet"
+#: model:ir.module.module,description:base.module_viin_brand_spreadsheet
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"Gives the Community spreadsheet editor the Viindoo palette in light and dark mode: the primary\n"
+"button, the links and, in dark mode, the whole command chrome (menu bar, toolbar and sheet-tab bar)\n"
+"come from the Viindoo colours. The names of the product in the editor (chart names, function\n"
+"categories and help, dialog titles, link placeholder, error message) name Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
 msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Áp dụng bảng màu Viindoo cho trình soạn thảo bảng tính bản Community ở cả chế độ sáng và tối: nút\n"
+"chính, các liên kết và, ở chế độ tối, toàn bộ khung lệnh (thanh menu, thanh công cụ và thanh thẻ\n"
+"trang tính) đều lấy từ màu của Viindoo. Mọi chỗ trình soạn thảo gọi tên sản phẩm (tên biểu đồ, nhóm\n"
+"hàm và phần trợ giúp, tiêu đề hộp thoại, gợi ý trong ô liên kết, thông báo lỗi) đều gọi là Viindoo.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_spreadsheet
+#. odoo-javascript
+#: code:addons/viin_brand_spreadsheet/static/src/dialog/spreadsheet_dialog_title.js:0
+msgid "Odoo Spreadsheet"
+msgstr "Bảng tính Viindoo"
+
+#. module: viin_brand_spreadsheet
+#: model:ir.module.module,shortdesc:base.module_viin_brand_spreadsheet
+msgid "Spreadsheet Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Bảng tính"
+
+#. module: viin_brand_spreadsheet
+#: model:ir.module.module,summary:base.module_viin_brand_spreadsheet
+msgid ""
+"Viindoo palette and wording for the Community spreadsheet editor, in light "
+"and dark mode"
+msgstr ""
+"Bảng màu và cách gọi tên Viindoo cho trình soạn thảo bảng tính bản "
+"Community, ở chế độ sáng và tối"
 
 #. module: viin_brand_spreadsheet
 #. odoo-javascript

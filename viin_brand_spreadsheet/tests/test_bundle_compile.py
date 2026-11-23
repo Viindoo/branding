@@ -1,5 +1,13 @@
 # Part of Viindoo. See LICENSE file for full copyright and licensing details.
+import os
+import re
+
+from odoo.modules import get_module_path
 from odoo.tests.common import TransactionCase, tagged
+
+TOKEN_BUNDLES = ("web.assets_backend", "spreadsheet.public_spreadsheet")
+TOKEN_DECLARATION = re.compile(r"--os-primary-button-bg\s*:\s*([^;]+);")
+TOKENS_CSS = os.path.join("static", "src", "css", "spreadsheet_tokens.css")
 
 
 @tagged("post_install", "-at_install")
@@ -11,6 +19,14 @@ class BundleCompileTest(TransactionCase):
             (attachment.raw or b"").decode("utf-8", "replace") for attachment in attachments
         )
         return bundle, css
+
+    def _shipped_declaration(self):
+        """The value the module's own stylesheet gives the primary button token."""
+        path = os.path.join(get_module_path("viin_brand_spreadsheet"), TOKENS_CSS)
+        with open(path, "r", encoding="utf-8") as handle:
+            declarations = TOKEN_DECLARATION.findall(handle.read())
+        self.assertEqual(len(declarations), 1, "the palette block declares the token once")
+        return re.sub(r"\s+", "", declarations[0]).lower()
 
     def _compiled_js(self, bundle_name):
         bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=False, js=True)
@@ -26,31 +42,26 @@ class BundleCompileTest(TransactionCase):
         """
         return "in file '%s'" % asset_path
 
-    def test_dark_bundle_compiles_the_chrome_repaint(self):
-        """web.assets_web_dark carries the chrome repaint and the chatter island rules, with no Sass fault.
+    def test_the_palette_block_lands_after_the_engine_stylesheet_in_every_bundle_that_has_it(self):
+        """The block wins over the engine's own declaration only by coming after it."""
+        for bundle_name in TOKEN_BUNDLES:
+            with self.subTest(bundle=bundle_name):
+                bundle, css = self._compiled_css(bundle_name)
+                self.assertFalse(
+                    bundle.css_errors,
+                    "%s reported CSS compile errors: %s" % (bundle_name, "; ".join(bundle.css_errors)),
+                )
+                declarations = [
+                    re.sub(r"\s+", "", value).lower() for value in TOKEN_DECLARATION.findall(css)
+                ]
+                self.assertGreaterEqual(
+                    len(declarations), 2,
+                    "%s holds the primary button token only %d time(s): the engine's declaration "
+                    "and the brand block must both be there." % (bundle_name, len(declarations)),
+                )
+                self.assertEqual(declarations[-1], self._shipped_declaration())
 
-        A dangling ``after`` anchor raises ``ValueError`` from ``_get_asset_bundle()``; a missing
-        or malformed SCSS file lands in ``bundle.css_errors``.
-        """
-        bundle, css = self._compiled_css("web.assets_web_dark")
-        self.assertFalse(
-            bundle.css_errors,
-            "web.assets_web_dark reported SCSS compile errors: %s" % "; ".join(bundle.css_errors),
-        )
-        self.assertIn(
-            "o-spreadsheet-topbar-wrapper",
-            css,
-            "web.assets_web_dark compiled without the chrome repaint from "
-            "spreadsheet_chrome_dark.dark.scss.",
-        )
-        self.assertIn(
-            ".o-spreadsheet .o-mail-Chatter",
-            css,
-            "web.assets_web_dark compiled without the island rules of "
-            "spreadsheet_chatter_island.dark.scss.",
-        )
-
-    def test_tests_bundle_compiles_the_editor_action_tour(self):
+    def test_tests_bundle_compiles_the_editor_action(self):
         """web.assets_tests carries the CE spreadsheet-editor test action with no missing file.
 
         A missing file is swallowed into an embedded ``console.error(...)`` string carrying its own
@@ -70,7 +81,7 @@ class BundleCompileTest(TransactionCase):
             "console.error call - test_spreadsheet_editor_action.js does not exist on disk.",
         )
         self.assertIn(
-            "viin_brand_spreadsheet_chrome_dark_test_editor",
+            "viin_brand_spreadsheet_palette_test_editor",
             content,
             "web.assets_tests compiled without the spreadsheet-editor test action from "
             "test_spreadsheet_editor_action.js.",

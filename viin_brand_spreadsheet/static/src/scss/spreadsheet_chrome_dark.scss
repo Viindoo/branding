@@ -1,4 +1,0 @@
-// The engine's desktop topbar/bottombar backgrounds are runtime-injected and unreachable from this
-// variable (spreadsheet_chrome_dark.dark.scss repaints them); only the mobile bottom bar and ribbon
-// menu read it at compile time.
-$background-gray-color: $o-webclient-background-color;

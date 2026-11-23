@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 16:05+0000\n"
-"PO-Revision-Date: 2026-11-19 16:05+0000\n"
+"POT-Creation-Date: 2026-11-22 03:36+0000\n"
+"PO-Revision-Date: 2026-11-22 03:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,39 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_spreadsheet
+#: model:ir.module.module,description:base.module_viin_brand_spreadsheet
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"Gives the Community spreadsheet editor the Viindoo palette in light and dark mode: the primary\n"
+"button, the links and, in dark mode, the whole command chrome (menu bar, toolbar and sheet-tab bar)\n"
+"come from the Viindoo colours. The names of the product in the editor (chart names, function\n"
+"categories and help, dialog titles, link placeholder, error message) name Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+
+#. module: viin_brand_spreadsheet
 #. odoo-javascript
-#: code:addons/viin_brand_spreadsheet/static/src/dialog/confirmation_dialog.js:0
+#: code:addons/viin_brand_spreadsheet/static/src/dialog/spreadsheet_dialog_title.js:0
 msgid "Odoo Spreadsheet"
+msgstr ""
+
+#. module: viin_brand_spreadsheet
+#: model:ir.module.module,shortdesc:base.module_viin_brand_spreadsheet
+msgid "Spreadsheet Branding For Viindoo"
+msgstr ""
+
+#. module: viin_brand_spreadsheet
+#: model:ir.module.module,summary:base.module_viin_brand_spreadsheet
+msgid ""
+"Viindoo palette and wording for the Community spreadsheet editor, in light "
+"and dark mode"
 msgstr ""
 
 #. module: viin_brand_spreadsheet
