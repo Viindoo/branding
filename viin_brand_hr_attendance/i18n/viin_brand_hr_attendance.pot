@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:59+0000\n"
-"PO-Revision-Date: 2026-11-19 15:59+0000\n"
+"POT-Creation-Date: 2026-11-22 03:21+0000\n"
+"PO-Revision-Date: 2026-11-22 03:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,37 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: viin_brand_hr_attendance
+#: model:ir.module.module,summary:base.module_viin_brand_hr_attendance
+msgid ""
+"Viindoo brand on the attendance kiosk logo, the empty state, dialogs, errors"
+" and documentation links"
+msgstr ""
+
+#. module: viin_brand_hr_attendance
+#: model:ir.module.module,description:base.module_viin_brand_hr_attendance
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands the attendance kiosk and the attendance settings with Viindoo: the kiosk is\n"
+"powered by the Viindoo logo, the empty state shows a Viindoo kiosk, and dialogs, errors and\n"
+"documentation links name Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+
+#. module: viin_brand_hr_attendance
 #: model_terms:ir.ui.view,arch_db:viin_brand_hr_attendance.res_config_settings_view_form
 msgid "Allow Users to Check in/out from Viindoo."
+msgstr ""
+
+#. module: viin_brand_hr_attendance
+#: model:ir.module.module,shortdesc:base.module_viin_brand_hr_attendance
+msgid "Attendances Branding For Viindoo"
 msgstr ""
 
 #. module: viin_brand_hr_attendance
