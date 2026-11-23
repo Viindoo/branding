@@ -2,7 +2,7 @@ from odoo.tests.common import TransactionCase, tagged
 
 from .test_brand_cascade_compile import (
     BACKEND_BUNDLE,
-    CHROME_BASE,
+    BRAND_PURPLE,
     DARK_BUNDLE,
     DARK_LINK_REF,
     _computed_value,
@@ -29,24 +29,25 @@ PRESSED_TOGGLE = {
     "ancestors": frozenset({"o_web_client"}),
 }
 
-# The interactive teal per bundle and its pressed rung, Bootstrap's 30% link shade.
+# The link tone per bundle (the brand purple, its light tone in dark) and its pressed rung, the 30%
+# link shade core applies to a pressed text-action toggle.
 EXPECTED = {
     BACKEND_BUNDLE: {
-        "resting": CHROME_BASE,
-        "hovered": CHROME_BASE,
-        "pressed": "#005963",
+        "resting": BRAND_PURPLE,
+        "hovered": BRAND_PURPLE,
+        "pressed": "#592e5b",
     },
     DARK_BUNDLE: {
         "resting": DARK_LINK_REF,
         "hovered": DARK_LINK_REF,
-        "pressed": "#37949e",
+        "pressed": "#008390",
     },
 }
 
 
 @tagged("post_install", "-at_install")
 class TestTextActionTierCompile(TransactionCase):
-    """Core's action text takes the interactive teal, not the decorative brand teal."""
+    """Core's action text takes the link tone, never the decorative cyan."""
 
     def _compiled_css(self, bundle_name):
         bundle = self.env["ir.qweb"]._get_asset_bundle(bundle_name, css=True, js=False)
@@ -58,7 +59,7 @@ class TestTextActionTierCompile(TransactionCase):
         self.assertTrue(css.strip(), "%s compiled to empty CSS" % bundle_name)
         return css
 
-    def test_action_text_renders_the_interactive_teal_in_both_schemes(self):
+    def test_action_text_renders_the_link_tone_in_both_schemes(self):
         elements = {
             "resting": RESTING_TEXT,
             "hovered": HOVERED_LINK_BUTTON,

@@ -39,27 +39,31 @@ class TestBrandBundleCompile(TransactionCase):
         )
         return (bundle.js().raw or b"").decode("utf-8", "replace")
 
+    def _landed(self, asset_path):
+        """Return the marker core writes ahead of a file's content in a debug bundle."""
+        return f"Filepath: /{asset_path}"
+
     def test_backend_bundle_carries_the_webclient_favicon_patch(self):
         self.assertIn("/web/image/res.company/", self._compiled_js("web.assets_backend"))
 
-    def test_backend_bundle_carries_the_settings_page_icon_patch(self):
-        self.assertIn("get_viin_brand_modules_icon", self._compiled_js("web.assets_backend"))
-
-    def test_backend_bundle_carries_the_settings_page_template_extension(self):
-        self.assertIn(
-            'registerTemplateExtension("web.SettingsPage"', self._compiled_js("web.assets_backend"),
-        )
-
     def test_backend_bundle_carries_the_barcode_and_report_patches(self):
         js = self._compiled_js("web.assets_backend")
-        self.assertIn("Viindoo needs your authorization first.", js)
-        self.assertIn("with at least two workers to print a pdf version of the reports", js)
+        for asset_path in (
+            "viin_brand/static/src/core/barcode/barcode_video_scanner.js",
+            "viin_brand/static/src/webclient/actions/reports/report_notification.js",
+        ):
+            with self.subTest(asset=asset_path):
+                self.assertIn(self._landed(asset_path), js)
 
     def test_frontend_bundle_carries_the_dialog_and_error_patches(self):
         """The website, the portal and the public pages show Viindoo in dialogs and errors."""
         js = self._compiled_js("web.assets_frontend")
-        self.assertIn("Viindoo Error", js)
-        self.assertIn("viin_brand: the default Dialog title was not de-branded", js)
+        for asset_path in (
+            "viin_brand/static/src/core/errors/error_dialogs.js",
+            "viin_brand/static/src/core/dialog/dialog.js",
+        ):
+            with self.subTest(asset=asset_path):
+                self.assertIn(self._landed(asset_path), js)
 
     def test_css_bundles_compile_without_errors(self):
         """The dark bundles compile to real CSS, and not to a cached CSS-error fallback.

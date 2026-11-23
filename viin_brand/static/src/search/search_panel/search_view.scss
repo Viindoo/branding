@@ -1,0 +1,11 @@
+// On a phone the search sheet fills the screen and its header takes the place of the navbar, so it
+// is application chrome too. Core paints that header from the content purple of the
+// `$o-brand-odoo` family through a native lever, and its pressed state from a darkened
+// `$o-brand-primary`; both are re-pointed at the chrome ladder.
+.o_web_client .o_mobile_search {
+    --mobileSearch__header-bg: #{$o-viin-chrome-base};
+
+    .o_mobile_search_header .o_mobile_search_button:active {
+        background-color: $o-viin-chrome-deep;
+    }
+}

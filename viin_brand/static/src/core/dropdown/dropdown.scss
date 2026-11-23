@@ -2,9 +2,9 @@
 // ($dropdown-bg / $dropdown-border-color / $dropdown-color) that would not flip in dark, so each
 // Bootstrap runtime custom property (unprefixed: Odoo sets $variable-prefix: '') is re-pointed at
 // the scheme-aware props (--body-bg / --body-color / --border-color). The focused item gets a
-// brand-teal wash: core hardcodes the Sass $dropdown-link-hover-bg on `.dropdown-item.focus`, so it
+// brand wash: core hardcodes the Sass $dropdown-link-hover-bg on `.dropdown-item.focus`, so it
 // is re-declared here (this file loads after core in web.assets_backend, and equal-or-higher
-// specificity plus later order wins). The teal is the AA teal ($o-viin-chrome-base #007F8E) via
+// specificity plus later order wins). The tint is the brand purple ($o-brand-primary) via
 // color-mix over transparent so it composites on either scheme, and item text stays on --body-color
 // for AA. Colour only: Bootstrap already forwards `$dropdown-border-radius: var(--border-radius)`.
 
@@ -18,7 +18,7 @@
 
     // Focused / keyboard-highlighted item (core: background-color: $dropdown-link-hover-bg).
     .dropdown-item.focus {
-        background-color: color-mix(in srgb, #{$o-viin-chrome-base} 10%, transparent);
+        background-color: color-mix(in srgb, #{$o-brand-primary} 10%, transparent);
         color: var(--body-color);
     }
 }

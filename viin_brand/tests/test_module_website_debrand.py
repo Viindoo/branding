@@ -1,6 +1,7 @@
 import importlib
 from urllib.parse import urlparse
 
+from odoo import release
 from odoo.addons.viin_brand import _load_manifest_plus
 from odoo.tests.common import TransactionCase, tagged
 
@@ -96,10 +97,12 @@ class TestViinBrandModuleWebsiteDebrand(TransactionCase):
 
     def test_a_website_that_points_at_odoo_is_emptied_unless_the_module_has_a_viindoo_page(self):
         """An unlisted module whose manifest names odoo.com shows no "Learn more" to Odoo."""
-        content = {'depends': ['base'], 'author': 'Test', 'license': 'LGPL-3', 'version': '19.0.1.0'}
+        content = {
+            'depends': ['base'], 'author': 'Test', 'license': 'LGPL-3', 'version': '%s.1.0' % release.series,
+        }
         for module_name, website, expected in (
             ('unlisted_odoo', 'https://www.odoo.com/app/sales', ''),
-            ('unlisted_odoo_subdomain', 'https://apps.odoo.com/apps/modules/19.0/x', ''),
+            ('unlisted_odoo_subdomain', 'https://apps.odoo.com/apps/modules/%s/x' % release.series, ''),
             ('unlisted_third_party', 'https://example.com/odoo.com', 'https://example.com/odoo.com'),
             ('crm', 'https://www.odoo.com/app/crm', 'https://viindoo.com/intro/crm'),
         ):

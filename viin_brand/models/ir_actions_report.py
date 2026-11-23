@@ -22,9 +22,9 @@ class IrActionsReport(models.Model):
 
     def _render_qweb_pdf(self, report_ref, res_ids=None, data=None):
         try:
-            return super()._render_qweb_pdf(report_ref, res_ids=res_ids, data=data)
+            content, report_type = super()._render_qweb_pdf(report_ref, res_ids=res_ids, data=data)
         except RedirectWarning as warning:
             raise debrand_exception(warning)
-
-    def _run_wkhtmltopdf(self, *args, **kwargs):
-        return brand_pdf(super()._run_wkhtmltopdf(*args, **kwargs))
+        if report_type == 'pdf' and isinstance(content, bytes):
+            content = brand_pdf(content)
+        return content, report_type

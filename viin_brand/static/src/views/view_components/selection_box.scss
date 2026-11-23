@@ -1,20 +1,20 @@
 // Bulk-selection bar: when rows are checked, the "N selected" count and the bulk ActionMenus
-// (Export / Archive / Delete) sit on one brand-teal bar. The count and the ActionMenus are siblings
+// (Export / Archive / Delete) sit on one brand bar. The count and the ActionMenus are siblings
 // inside web's `.o_selection_container`, so the bar surface lands on that native container, scoped
 // by :has() to the tagged box; selection_box.xml only adds the `.o_viin_selection_bar` hook.
 //
-// The teal wash uses color-mix over transparent so it composites on either scheme; the count reads
-// $o-component-active-border (the AA teal #007F8E in light, #4FD4E2 in dark). ActionMenus keep their
-// own colours so Delete stays danger-red. Scoped to `.o_control_panel_actions` so the modal-footer
+// The purple wash uses color-mix over transparent so it composites on either scheme; the count reads
+// $o-component-active-border (the brand purple #7F4282 in light, #D1A7D3 in dark). ActionMenus keep
+// their own colours so Delete stays danger-red. Scoped to `.o_control_panel_actions` so the modal-footer
 // SelectionBox is left alone. No radius: core declares none on `.o_selection_container`, so the wash
 // is a square band like core's container.
 
 .o_control_panel_actions .o_selection_container:has(.o_viin_selection_bar) {
     align-items: center;
     padding: 0.25rem 0.5rem;
-    background-color: color-mix(in srgb, #{$o-viin-chrome-base} 10%, transparent);
+    background-color: color-mix(in srgb, #{$o-brand-primary} 10%, transparent);
 
-    // Neutralise core's solid "active" pill on the count - reads as teal text on the shared bar.
+    // Neutralise core's solid "active" pill on the count - reads as brand text on the shared bar.
     .o_selection_box .list-group-item.active {
         background-color: transparent;
         border-color: transparent;

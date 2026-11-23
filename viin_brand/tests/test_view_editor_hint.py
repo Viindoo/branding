@@ -4,6 +4,7 @@ import re
 from lxml import etree
 
 from odoo.tests.common import tagged
+from odoo.tools.translate import ParsedTranslation
 
 from .common import NoupdateTranslationCase
 
@@ -21,17 +22,24 @@ class TestViewEditorHint(NoupdateTranslationCase):
         self.assertEqual(len(hints), 1)
         return ' '.join(' '.join(hints[0].itertext()).split())
 
+    def _english_term(self):
+        """Return the source term of the hint of ``viin_brand.view_view_form``."""
+        hint_view = self.env.ref('viin_brand.view_view_form')
+        arch_db = hint_view.with_context(lang='en_US').arch_db
+        [english] = ParsedTranslation(hint_view._fields['arch_db'], arch_db).terms
+        return english
+
     def test_view_editor_hint_recommends_no_product_viindoo_lacks(self):
-        """The view form advises inherited views, not a customization product."""
+        """The view form shows the hint of the branding module, not core's."""
         text = self._hint('en_US')
-        self.assertIn('inherited views', text)
+        expected = re.sub(r'<br\s*/?>', ' ', self._english_term())
+        self.assertEqual(text, ' '.join(expected.split()))
         self.assertNotIn('Studio', text)
         self.assertNotIn('Odoo', text)
 
     def test_view_editor_hint_composes_in_other_languages(self):
         """The hint is located by its place, so a translated form composes with it in every language."""
-        hint_view = self.env.ref('viin_brand.view_view_form')
-        [english] = hint_view._fields['arch_db'].get_trans_terms(hint_view.with_context(lang='en_US').arch_db)
+        english = self._english_term()
         for lang, modules in (('vi_VN', ['base', 'viin_brand']), ('ar_001', ['base'])):
             with self.subTest(lang=lang):
                 self.env['res.lang']._activate_lang(lang)

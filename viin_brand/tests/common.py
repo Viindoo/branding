@@ -1,6 +1,9 @@
+import io
 import re
 from types import SimpleNamespace
 from unittest.mock import patch
+
+import polib
 
 from odoo.tests.common import TransactionCase
 from odoo.tools import file_open
@@ -11,7 +14,8 @@ from odoo.tools.translate import (
 )
 
 LANG = 'vi_VN'
-PRODUCT_NAME_IN_ENGLISH = re.compile(r'\bOdoo\b|(?i:odoo\.com)')
+ODOO_WORD = re.compile(r'\bOdoo\b')
+PRODUCT_NAME_IN_ENGLISH = re.compile(ODOO_WORD.pattern + r'|(?i:odoo\.com)')
 
 
 class NoupdateTranslationCase(TransactionCase):
@@ -21,13 +25,36 @@ class NoupdateTranslationCase(TransactionCase):
     branding module, as its install or update does, is what applies its wording.
     """
 
+    def load_stock_catalogs(self, stock_modules, overwrite=False):
+        """Translate with the stock catalogs of the modules.
+
+        A core catalog leaves an empty msgstr where the translation is the source text, and the core
+        loader stores no value for it: the record reads its English. Each such entry is stored
+        here as the source text, so the record keeps the stock wording when its English changes.
+        """
+        self.env['res.lang']._activate_lang(LANG)
+        self.env['ir.module.module']._load_module_terms(stock_modules, [LANG], overwrite=overwrite)
+        importer = TranslationImporter(self.env.cr, verbose=False)
+        for module in stock_modules:
+            for path in get_po_paths(module, LANG):
+                with file_open(path, 'rb', env=self.env) as po_file:
+                    catalog = polib.pofile(po_file.read().decode())
+                identities = polib.POFile()
+                identities.metadata = catalog.metadata
+                for entry in catalog.untranslated_entries():
+                    entry.msgstr = entry.msgid
+                    identities.append(entry)
+                identity_file = io.BytesIO(str(identities).encode())
+                identity_file.name = path
+                importer.load(identity_file, 'po', LANG)
+        importer.save(overwrite=overwrite)
+
     def load_stock_then_branding_catalog(self, stock_modules, branding_module):
         """Translate with the stock catalogs, then the branding one with core alone.
 
         The core loader keeps the translations the records already hold.
         """
-        self.env['res.lang']._activate_lang(LANG)
-        self.env['ir.module.module']._load_module_terms(stock_modules, [LANG])
+        self.load_stock_catalogs(stock_modules)
         importer = TranslationImporter(self.env.cr, verbose=False)
         for path in get_po_paths(branding_module, LANG):
             importer.load_file(path, LANG)
@@ -37,17 +64,19 @@ class NoupdateTranslationCase(TransactionCase):
         """Load the catalog of a module as its install or update does after its data."""
         self.env['ir.module.module']._load_module_terms([module], [LANG])
 
-    def catalog_translation(self, module, source, xmlid):
+    def catalog_translation(self, module, source, xmlid, lang=LANG, core=False):
         """Return the translation a module's catalog gives a source text of a record.
 
         :param xmlid: the external id of the record the catalog entry names
+        :param lang: the language of the catalog
+        :param core: the module is a core one, whose empty msgstr reads as the source text
         """
-        for path in get_po_paths(module, LANG):
+        for path in get_po_paths(module, lang):
             with file_open(path, 'rb', env=self.env) as po_file:
                 for row in translation_file_reader(po_file, 'po'):
                     row_xmlid = '%s.%s' % (row['module'], row.get('imd_name'))
-                    if row_xmlid == xmlid and row['src'] == source and row['value']:
-                        return row['value']
+                    if row_xmlid == xmlid and row['src'] == source and (row['value'] or core):
+                        return row['value'] or row['src']
         raise AssertionError('no %s entry of %s for %r' % (module, xmlid, source))
 
     def translated(self, record, field_name):

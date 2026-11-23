@@ -3,7 +3,7 @@
 // so the surface is driven by setting that lever at the scheme-aware --tertiary-bg (a subtly raised
 // panel tier): a light card in light and a dark card in dark. The card gets a scheme-aware hairline
 // and elevation (color-mix over --emphasis-color), and the auto-dismiss progress bar is tinted with
-// the AA teal ($o-viin-chrome-base). The per-type left bar (`.o_notification_bar`) keeps the
+// the chrome teal ($o-viin-chrome-base): a toast is application chrome. The per-type left bar (`.o_notification_bar`) keeps the
 // semantic colours (success/warning/danger/info) and is not touched. The radius is core's:
 // notification.xml already ships the Bootstrap `rounded` utility on `.o_notification`.
 
@@ -15,7 +15,7 @@
     color: var(--body-color);
 }
 
-// Auto-dismiss timer bar in brand teal (core sets only its size/position, not its colour).
+// Auto-dismiss timer bar in the brand colour (core sets only its size/position, not its colour).
 .o_notification_progress {
     background-color: $o-viin-chrome-base;
 }

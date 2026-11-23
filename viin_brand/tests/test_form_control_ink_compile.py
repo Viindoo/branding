@@ -32,6 +32,9 @@ from .test_brand_cascade_compile import (
 # (bootstrap_overridden.scss), so the compiled custom property carries no `bs-` prefix.
 BTN_CLOSE_COLOR_PROP = "btn-close-color"
 BTN_CLOSE_OPACITY_PROP = "btn-close-opacity"
+# The bare control, outside any container: a module may re-ink the control in a place of its own
+# (a preview, a side panel), which is not the control a user meets in a dialog.
+BTN_CLOSE = {"classes": frozenset({"btn-close"}), "ancestors": frozenset()}
 # .accordion-button declares this once, unconditionally, in its own base rule
 # (bootstrap/scss/_accordion.scss) - it is not redeclared per state, only CONSUMED conditionally
 # by the `:not(.collapsed)` rule, so a plain last-match read is unambiguous here too.
@@ -113,17 +116,22 @@ class FormControlInkCompileTest(TransactionCase):
             "%s compiled to empty CSS - the bundle did not build, so no ink token can be "
             "verified." % bundle_name,
         )
+        self.assertNotIn(
+            "css_error_message", css,
+            "%s did not compile: Odoo serves the previous stylesheet with an error block, which "
+            "verifies nothing about the current sources." % bundle_name,
+        )
         return css
 
     def test_btn_close_ink_clears_non_text_contrast_on_the_dark_panel(self):
         css = self._compiled_css(DARK_BUNDLE)
-        colour = _normalize_colour(_custom_prop_value(css, BTN_CLOSE_COLOR_PROP))
+        colour = _normalize_colour(_winning_declaration(css, BTN_CLOSE, ("--" + BTN_CLOSE_COLOR_PROP,)))
         self.assertIsNotNone(
             colour,
             "No --%s resolves to a colour in %s - .btn-close (_close.scss) is missing from this "
             "bundle." % (BTN_CLOSE_COLOR_PROP, DARK_BUNDLE),
         )
-        opacity_raw = _custom_prop_value(css, BTN_CLOSE_OPACITY_PROP)
+        opacity_raw = _winning_declaration(css, BTN_CLOSE, ("--" + BTN_CLOSE_OPACITY_PROP,))
         opacity = float(opacity_raw) if opacity_raw else 1.0
         rendered = _rendered_against(colour, opacity, DARK_BODY_BG)
         ratio = _contrast_ratio(rendered, DARK_BODY_BG)

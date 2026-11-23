@@ -1,11 +1,8 @@
-from unittest.mock import patch
-
 from markupsafe import Markup
 
 from odoo.tests.common import TransactionCase, tagged
 
-from odoo.addons.web.controllers.database import Database as CoreDatabase
-from ..controllers.database import Database as ViinBrandDatabase
+from ..controllers.database import _brand_template
 
 
 # Stand-in for the qweb-rendered database_manager.qweb.html output: the Odoo wordmark appears in
@@ -52,19 +49,17 @@ class TestViinBrandDbNameSafety(TransactionCase):
     a boundary-based regex for a database named exactly "Odoo". The override
     (``controllers/database.py``) replaces only fixed literal wordmark strings.
 
-    The CORE parent method
-    (``odoo.addons.web.controllers.database.Database._render_template``) is stubbed
-    to return a controlled HTML fixture and the real override is called directly:
-    no HTTP round-trip and no dependency on any real database name.
+    The CORE renderer (``odoo.addons.web.controllers.database._render_template``) is
+    replaced by a stub returning a controlled HTML fixture, and the real wrapper is
+    called directly: no HTTP round-trip and no dependency on any real database name.
     """
 
     def _render(self):
         # The fixture is a ``Markup``, as core's ``_render_template`` returns one. A plain
-        # ``str`` would bypass the ``str(res)`` coercion in the override, which is needed
+        # ``str`` would bypass the ``str(res)`` coercion in the wrapper, which is needed
         # because ``Markup.replace()`` auto-escapes (2.x escapes the search string so it never
         # matches; 3.x escapes the replacement so it renders as visible entities).
-        with patch.object(CoreDatabase, '_render_template', return_value=Markup(FIXTURE_HTML)):
-            return ViinBrandDatabase()._render_template()
+        return _brand_template(lambda **d: Markup(FIXTURE_HTML))()
 
     def test_wordmark_is_debranded_to_viindoo(self):
         """The Odoo wordmark (page chrome) must still be de-branded to Viindoo."""

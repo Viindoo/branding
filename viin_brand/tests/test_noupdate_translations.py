@@ -1,3 +1,4 @@
+import os
 from unittest.mock import patch
 
 from odoo.tests.common import TransactionCase, tagged
@@ -12,7 +13,8 @@ HELP_XMLID = 'viin_brand.noupdate_translation_help'
 BRANDING_MODULE = 'viin_brand_noupdate_translation_fixture'
 OTHER_MODULE = 'noupdate_translation_fixture'
 ALIAS_BRANDING_MODULE = 'viin_brand_alias_fixture'
-PO_DIRECTORY = 'viin_brand/tests/po/'
+# the catalogs sit beside this file: resolved from it, never from the working directory
+PO_DIRECTORY = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'po', '')
 STOCK_ENGLISH = {
     'name': 'Odoo tag',
     'help': '<p>One dedicated to advanced Odoo developers, one for new developers.</p><p>Start now.</p>',
@@ -169,6 +171,17 @@ class TestReapplyNoupdateTranslations(TransactionCase):
         self._reapply()
         self.assertEqual(self._value(self.tag, 'name'), 'Nhãn Viindoo khác')
 
+    def test_record_whose_other_catalog_leaves_the_msgstr_empty_reads_the_english(self):
+        """A catalog that leaves the msgstr of the record's English empty translates it to itself."""
+        self._write_branding_english()
+        self._name_tag_by_other_modules()
+        self.paths.pop(ALIAS_BRANDING_MODULE)
+        self.paths[OTHER_MODULE] = PO_DIRECTORY + 'alias_stock_identity.po'
+        self.paths[BRANDING_MODULE] = PO_DIRECTORY + 'branding_stale.po'
+        self.tag.with_context(lang=LANG).name = 'Nhãn Viindoo cũ'
+        self._reapply()
+        self.assertEqual(self._value(self.tag, 'name'), BRAND_ENGLISH['name'])
+
     def test_value_a_user_wrote_in_a_record_several_catalogs_name_is_kept(self):
         self._hold_stock_translation()
         self._name_tag_by_other_modules()
@@ -212,10 +225,9 @@ class TestBrandingCatalogLoad(NoupdateTranslationCase):
         english = action.with_context(lang='en_US').help
         self.assertIn(brand_term, english)
         action.with_context(lang='en_US').help = english.replace(brand_term, stock_term)
-        self.env['res.lang']._activate_lang(LANG)
-        self.env['ir.module.module']._load_module_terms(['base'], [LANG])
+        self.load_stock_catalogs(['base'])
         action.with_context(lang='en_US').help = english
-        stock_vi = self.catalog_translation('base', stock_term, xmlid)
+        stock_vi = self.catalog_translation('base', stock_term, xmlid, core=True)
         self.assertIn(stock_vi, self.translated(action, 'help'))
 
         self.load_catalog('viin_brand')
@@ -226,16 +238,16 @@ class TestBrandingCatalogLoad(NoupdateTranslationCase):
         self.assertNotIn(stock_vi, help_vi)
 
     def test_field_help_a_core_module_declares_too_takes_the_branding_catalog(self):
-        """The field row of a language added later holds the core catalog's translation first."""
+        """The core catalog translating the field row, overwrite included, leaves it the branding wording."""
         xmlid = 'viin_brand.field_ir_mail_server__from_filter'
         field = self.env.ref(xmlid)
         self.assertIn('base.field_ir_mail_server__from_filter', field._get_external_ids()[field.id])
+        english = field.with_context(lang='en_US').help
+        brand_vi = self.catalog_translation('viin_brand', english, xmlid)
         self.env['res.lang']._activate_lang(LANG)
         self.env['ir.module.module']._load_module_terms(['base'], [LANG], overwrite=True)
-        self.assertHoldsStockWording(self.translated(field, 'help'))
+        self.assertEqual(self.translated(field, 'help'), brand_vi)
 
         self.load_catalog('viin_brand')
 
-        help_vi = self.translated(field, 'help')
-        english = field.with_context(lang='en_US').help
-        self.assertEqual(help_vi, self.catalog_translation('viin_brand', english, xmlid))
+        self.assertEqual(self.translated(field, 'help'), brand_vi)

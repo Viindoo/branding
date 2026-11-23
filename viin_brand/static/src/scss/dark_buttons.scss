@@ -1,4 +1,4 @@
-// Dark arm of the neutral button map, `$o-btns-bs-override["secondary"]`.
+// Dark arm of the button map, `$o-btns-bs-override`: the primary button and the neutral ones.
 //
 // Core keys the neutral button off the gray ramp ("secondary": background $o-gray-300, border
 // $o-gray-300, color $o-gray-900, ...). dark_palette.scss gives the dark bundle its own ramp, so the
@@ -14,25 +14,48 @@
 // what the map carries. Two consumers read the "secondary" entry: the statusbar
 // (--o-statusbar-background-active / -border-active / -background-hover: the current-stage arrow
 // fill, outline and notch) and the control-panel `%-custom-button` button-variant. The active tokens
-// have a dark arm at the end of dark_palette.scss (current-step contrast: white on #21464B =
-// 10.28:1). The anchor is still far ahead of every consumer: the map is expanded into CSS in
+// have a dark arm at the end of dark_palette.scss (current-step contrast: white on #3B3D48 =
+// 10.79:1). The anchor is still far ahead of every consumer: the map is expanded into CSS in
 // bootstrap_review_backend.scss, inside web._assets_bootstrap_backend.
 //
 // The map is merged, not assigned: by this point core has run its own
 // `$o-btns-bs-override: map-merge((primary, secondary, light), $o-btns-bs-override)`, so the variable
-// holds brand_variables.scss' AA-teal "primary" entry plus core's "secondary" and "light". Merging
-// replaces the single "secondary" key; a plain assignment would hand `.btn-primary` back to the flat
-// 2.33:1 decorative teal.
+// holds brand_variables.scss' "primary" entry plus core's "secondary" and "light". Merging replaces
+// the keys listed here and keeps the rest.
 //
 // The manifest contributes the file to 'web.assets_web_dark' only, as
-// ('after', 'web/static/src/scss/primary_variables.scss', ...). The name is neither
+// ('after', 'viin_brand/static/src/scss/brand_text_colors.scss', ...): the file after core's
+// primary_variables.scss, where the active-state tokens it forwards exist, and after the light
+// "success" entry its text tier is derived from. The name is neither
 // *.variables.scss (would auto-glob into the light primary-variables bundle) nor *.dark.scss (would
 // auto-glob into the dark bundle tail, too late for a variable), as for dark_palette.scss.
 //
-// All nine state keys are supplied: each entry is passed straight to Bootstrap's button-variant
-// mixin, which allows no omissions.
+// All twelve state keys are supplied: each entry is passed straight to Bootstrap's button-variant
+// mixin, and a missing key leaves its custom property out.
 
 $o-btns-bs-override: map-merge($o-btns-bs-override, (
+    // In the dark scheme the content colour is the brand cyan and its label is
+    // $o-viin-action-label, both declared with their rungs in dark_palette.scss: the resting fill is
+    // the cyan, the hover rung brightens (a dark surface needs more luminance before a hue reads as
+    // itself), and the pressed state takes the deep rung.
+    "primary": (
+        background: $o-brand-primary,
+        border: $o-brand-primary,
+        color: $o-viin-action-label,
+
+        hover-background: $o-viin-dark-action-hover,
+        hover-border: $o-viin-dark-action-hover,
+        hover-color: $o-viin-action-label,
+
+        active-background: $o-viin-action-deep,
+        active-border: $o-viin-action-deep,
+        active-color: $o-viin-action-label,
+
+        disabled-background: $o-brand-primary,
+        disabled-border: $o-brand-primary,
+        disabled-color: $o-viin-action-label,
+    ),
+
     "secondary": (
         // Resting: the neutral control rung of the dark ladder, one step above the panel, the same
         // "subtle pill" relationship light mode builds with $gray-300 on white (1.30:1). Text is the
@@ -55,6 +78,10 @@ $o-btns-bs-override: map-merge($o-btns-bs-override, (
         active-background: $o-component-active-bg,
         active-border: $o-component-active-border,
         active-color: $o-component-active-color,
+
+        disabled-background: $o-viin-dark-control-bg,
+        disabled-border: $o-viin-dark-control-bg,
+        disabled-color: $body-color,
     ),
 
     // "light" is the ghost button. Core keys it off the page colour itself (background $o-white,
@@ -92,6 +119,10 @@ $o-btns-bs-override: map-merge($o-btns-bs-override, (
         active-background: $o-component-active-bg,
         active-border: $o-component-active-border,
         active-color: $o-component-active-color,
+
+        disabled-background: $o-view-background-color,
+        disabled-border: $o-view-background-color,
+        disabled-color: $body-color,
     ),
 ));
 
@@ -140,31 +171,33 @@ $o-btns-bs-outline-override: map-merge($o-btns-bs-outline-override, (
         active-background: $o-component-active-bg,
         active-border: $o-component-active-border,
         active-color: $o-component-active-color,
+
+        disabled-background: transparent,
+        disabled-border: $border-color,
+        disabled-color: $body-color,
     ),
 
     // "primary" is the primary outline CTA. Core ships no "primary" key in this map, so
     // `.btn-outline-primary` falls through to the `@each $-name, $-color in $theme-colors` fallback in
     // bootstrap_review_backend.scss, whose `button-outline-variant` sets `--btn-color: $color`
-    // verbatim. With $theme-colors["primary"] pinned to the AA teal #007F8E by brand_variables.scss,
-    // the label recompiles #007F8E into the dark bundle: 3.69:1 on the #111B1E panel, a WCAG AA
-    // failure on the "New" button of every form view and on the kanban "Load more..." control.
-    // #007F8E is an AA teal for light mode and cannot cross the scheme boundary unchanged.
+    // verbatim. Without this key the label would be whatever `$primary` is in the active scheme, an
+    // outline CTA that has to read as the panel's own text tier on hover, which the fallback does
+    // not give (the "New" button of every form view, the kanban "Load more..." control).
     //
     // It is a map key and not a $theme-colors change because re-pointing $theme-colors["primary"] in
     // dark would move `--primary`, the filled `.btn-primary`, `.bg-primary`, `.border-primary` and the
     // brand identity tier with it. Adding the key is core's own mechanism: the fallback skips any
     // name present in this map, so exactly one generator emits the class, and light mode, where this
-    // file is not loaded, keeps core's teal outline.
+    // file is not loaded, keeps core's purple outline.
     //
-    // Lighten, do not hue-shift: every value is $o-main-link-color, the dark teal dark_palette.scss
-    // declares as the light-on-dark arm of the interactive teal (the token $o-component-active-border
-    // uses), so the CTA stays teal and no new hex enters the module.
-    //   label   #4FD4E2 on the panel #111B1E = 9.85:1
-    //   border  the same teal = 9.85:1. Louder than light's 4.74:1 hairline by necessity (a dark canvas
-    //           needs more luminance before a teal reads as teal), and it outranks the 1.43:1 neutral
-    //           hairline of the "secondary" outline above, the right hierarchy in both schemes.
-    //   hover   the teal becomes the fill (as in button-outline-variant's `$active-background:
-    //           $color`) with the label dropping to the panel tone: #111B1E on #4FD4E2 = 9.85:1.
+    // Every value is $o-main-link-color, the content colour of the dark scheme (the brand cyan,
+    // the token $o-component-active-border uses), so the CTA stays the content colour and no new hex
+    // enters the module.
+    //   label   the cyan on the panel #111B1E = 7.50:1
+    //   border  the same cyan = 7.50:1. It outranks the 1.43:1 neutral hairline of the "secondary"
+    //           outline above, the right hierarchy in both schemes.
+    //   hover   the cyan becomes the fill (as in button-outline-variant's `$active-background:
+    //           $color`) with the label dropping to the panel tone: #111B1E on the cyan = 7.50:1.
     //           color-contrast() would pick pure black; the panel tone keeps the button reading as
     //           part of the dark surface.
     "primary": (
@@ -179,6 +212,10 @@ $o-btns-bs-outline-override: map-merge($o-btns-bs-outline-override, (
         active-background: $o-component-active-bg,
         active-border: $o-component-active-border,
         active-color: $o-component-active-color,
+
+        disabled-background: transparent,
+        disabled-border: $o-main-link-color,
+        disabled-color: $o-main-link-color,
     ),
 ));
 
@@ -191,7 +228,7 @@ $o-btns-bs-outline-override: map-merge($o-btns-bs-outline-override, (
 //     "danger"  #D23F3A = 3.74:1   (the cog-menu "Delete" item)
 //     "info"    #0180A5 = 3.85:1
 //     "warning" #9A6B01 = 3.75:1
-//     "success" #008818 = 3.71:1
+//     "success" #00884D = 3.86:1   ($o-success, set in brand_text_colors.scss)
 // Fixing only "danger" would leave three near-miss AA failures, so all four get the arm.
 //
 // The scope is wider than the `.text-*` utility: `o-text-color()` reads this map, and core calls it
@@ -207,7 +244,7 @@ $o-btns-bs-outline-override: map-merge($o-btns-bs-outline-override, (
 // 30% is the smallest step that clears AA on the panel with headroom while staying the same hue.
 // Measured on #111B1E after the tint:
 //     "danger"  #E07975 = 5.96:1     "info"    #4DA6C0 = 6.25:1
-//     "warning" #B8974D = 6.30:1     "success" #4DAC5D = 6.13:1
+//     "warning" #B8974D = 6.30:1     "success" #4DAC82 = 6.29:1
 // All four land within a third of a stop of the neutral muted tier (#8EA5A8, 6.75:1), so contextual
 // text reads as a peer of secondary text, the relationship light mode builds at about 4.7-5.5:1 on
 // white. Dark bundle only: light keeps core's values.
@@ -219,13 +256,18 @@ $o-viin-dark-semantic-text-tint: 30% !default;
     )) !global;
 }
 
+// Dark arm of the presence tokens (brand_variables.scss). The away amber is tuned for a white page;
+// on the dark panel it is 4.50:1 and dull, and the warning fill itself is 11.6:1, the idle colour
+// a user knows. Online reads the success text tier above.
+$o-viin-status-away: $o-warning;
+
 // Dark arm of the semantic outline buttons, `$o-btns-bs-outline-override`.
 //
 // Core builds `.btn-outline-{success,info,warning,danger}` with `button-outline-variant()`, which
 // paints the label and the border with the fill itself. The semantic fills are tuned for a light
 // page (success 3.86:1, info 3.89:1, danger 3.88:1 on #111B1E), so a resting outline takes the
 // dark text tier of its colour, the `$o-theme-text-colors` value tinted above (5.97:1 to 6.31:1 on
-// the panel). The `primary` outline above already uses the dark link teal. Hover and active keep
+// the panel). The `primary` outline above already uses the dark link purple. Hover and active keep
 // the fill and the label of the fill, the pair the filled button carries: white, and the dark label
 // on the warning fill.
 @each $-name, $-fill, $-label in (
@@ -247,6 +289,10 @@ $o-viin-dark-semantic-text-tint: 30% !default;
             active-background: $-fill,
             active-border: $-fill,
             active-color: $-label,
+
+            disabled-background: transparent,
+            disabled-border: map-get($o-theme-text-colors, $-name),
+            disabled-color: map-get($o-theme-text-colors, $-name),
         ),
     )) !global;
 }

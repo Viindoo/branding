@@ -1,11 +1,11 @@
 # Sass variable closure guard. The business rule:
 #
-#   "Every Sass variable this repo's own SCSS READS must be DEFINED somewhere that is actually
+#   "Every Sass variable this module's own SCSS READS must be DEFINED somewhere that is actually
 #    reachable in EACH asset bundle that consumes it."
 #
 # When that rule breaks the consequence is not cosmetic: Dart Sass aborts the whole bundle with
 # `Error: Undefined variable`, the bundle serves no CSS, and the UI it styles is dead. A name
-# defined in a file contributed only to one bundle (a POS-only variables file, for instance) is
+# defined in a file contributed only to one bundle (a variables file listed in one bundle only, for instance) is
 # reachable there and unreachable everywhere else: the defect is per-bundle reachability, not "is
 # this name defined anywhere in the tree".
 #
@@ -47,9 +47,11 @@ from odoo.tests.common import TransactionCase, tagged
 _HERE = os.path.dirname(os.path.abspath(__file__))
 MODULE_DIR = os.path.dirname(_HERE)
 REPO_ROOT = os.path.dirname(MODULE_DIR)
+# The closure judged here is this module's own: other modules of the addons directory answer for theirs.
+OWN_MODULES = (os.path.basename(MODULE_DIR),)
 BRAND_VARIABLES_SCSS = os.path.join(MODULE_DIR, "static", "src", "scss", "brand_variables.scss")
 
-# Namespaces this repo owns and therefore may assert closure over.
+# Namespaces this module owns and therefore may assert closure over.
 BRAND_NAMESPACE = ("brand-",)
 ODOO_NAMESPACE = ("o-",)
 
@@ -57,8 +59,7 @@ ODOO_NAMESPACE = ("o-",)
 CORE_PRIMARY_VARIABLES_BUNDLE = "web._assets_primary_variables"
 
 # Core bundle-inclusion facts, so every arm runs with no core checkout present. Each edge is
-# transcribed from odoo/addons/web/__manifest__.py and odoo/addons/point_of_sale/__manifest__.py on
-# 19.0 and is a lower bound on core's real include set.
+# transcribed from odoo/addons/web/__manifest__.py and is a lower bound on core's real include set.
 # test_documented_core_bundle_includes_still_match_core re-verifies every edge against the real
 # core manifests whenever a checkout is resolvable.
 CORE_BUNDLE_INCLUDES = {
@@ -80,7 +81,6 @@ CORE_BUNDLE_INCLUDES = {
     # The dark bundle is an independent recompile of the light backend bundle, so it sees the
     # same contributions plus the *.dark.scss overlay.
     "web.assets_web_dark": ("web.assets_web",),
-    "point_of_sale._assets_pos": ("point_of_sale.base_app", "point_of_sale.base_tests"),
 }
 
 _VAR_TOKEN = re.compile(r"\$([A-Za-z_][A-Za-z0-9_-]*)")
@@ -220,12 +220,17 @@ def _expand_scss(addons_root, token):
     return sorted(path for path in matches if path.endswith(".scss") and os.path.isfile(path))
 
 
-def _collect_bundles(addons_roots):
-    """Build {bundle: {'sources': [abs scss], 'includes': [bundle]}} from every manifest found."""
+def _collect_bundles(addons_roots, modules=None):
+    """Build {bundle: {'sources': [abs scss], 'includes': [bundle]}} from the manifests found.
+
+    :param modules: the module names whose manifests count; every manifest when None
+    """
     bundles = {}
     for addons_root in addons_roots:
         pattern = os.path.join(addons_root, "*", "__manifest__.py")
         for manifest_path in sorted(glob.glob(pattern)):
+            if modules is not None and os.path.basename(os.path.dirname(manifest_path)) not in modules:
+                continue
             try:
                 manifest = _load_manifest(manifest_path)
             except (SyntaxError, ValueError):
@@ -287,7 +292,7 @@ def _core_addons_roots():
     return tuple(roots)
 
 
-def _unreachable_variables(repo_root, prefixes, core_roots=(), require_bundle=None):
+def _unreachable_variables(repo_root, prefixes, core_roots=(), require_bundle=None, modules=None):
     """Per-bundle closure analysis. Returns {bundle: {name: [(relpath, line), ...]}}.
 
     A name is reported for a bundle when this repo's SCSS in that bundle READS it, the name is in
@@ -297,7 +302,7 @@ def _unreachable_variables(repo_root, prefixes, core_roots=(), require_bundle=No
     unresolved in the same bundle is suppressed - core is the control group for what this static
     model can explain, so the repo is never blamed for a gap the model cannot see.
     """
-    repo_bundles = _collect_bundles([repo_root])
+    repo_bundles = _collect_bundles([repo_root], modules)
     core_bundles = _collect_bundles(core_roots) if core_roots else {}
 
     merged = {}
@@ -367,11 +372,11 @@ class ScssVariableClosureTest(TransactionCase):
         """A `$brand-*` name this repo reads must be defined in every bundle that consumes it.
 
         The bundle, not the repo, is the unit of reachability: a name defined in a file that only
-        reaches point_of_sale._assets_pos leaves every other bundle broken. This arm needs no
+        reaches only one bundle leaves every other bundle broken. This arm needs no
         Odoo core checkout, because core neither defines nor reads `$brand-*`.
         """
         findings = _unreachable_variables(
-            REPO_ROOT, BRAND_NAMESPACE, core_roots=_core_addons_roots()
+            REPO_ROOT, BRAND_NAMESPACE, core_roots=_core_addons_roots(), modules=OWN_MODULES
         )
         self.assertFalse(
             findings,
@@ -403,6 +408,7 @@ class ScssVariableClosureTest(TransactionCase):
             ODOO_NAMESPACE,
             core_roots=core_roots,
             require_bundle=CORE_PRIMARY_VARIABLES_BUNDLE,
+            modules=OWN_MODULES,
         )
         self.assertFalse(
             findings,

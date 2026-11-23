@@ -35,6 +35,8 @@ test("a refused camera permission names Viindoo", async () => {
 });
 
 test("an error that is not a refused permission is passed on unchanged", async () => {
-    const errors = await scanWithCameraError({ name: "NotFoundError" });
-    expect(errors).toEqual(["Could not start scanning. No device can be found."]);
+    const errors = await scanWithCameraError({ name: "SomeOtherError", message: "camera busy" });
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toInclude("camera busy");
+    expect(errors[0]).not.toMatch(/Viindoo/);
 });

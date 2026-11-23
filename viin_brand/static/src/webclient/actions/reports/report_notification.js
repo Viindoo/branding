@@ -1,5 +1,5 @@
 import { _t } from "@web/core/l10n/translation";
-import { notificationService } from "@web/core/notifications/notification_service";
+import { NotificationPlugin } from "@web/core/notifications/notification_plugin";
 import { patch } from "@web/core/utils/patch";
 
 // Plain constant, not a literal _t(): looked up in core's catalog, not copied into ours.
@@ -18,11 +18,8 @@ function withViindooWorkersMessage(message) {
     return message;
 }
 
-patch(notificationService, {
-    start() {
-        const notifications = super.start(...arguments);
-        const add = notifications.add;
-        notifications.add = (message, options) => add(withViindooWorkersMessage(message), options);
-        return notifications;
+patch(NotificationPlugin.prototype, {
+    add(message, options) {
+        return super.add(withViindooWorkersMessage(message), options);
     },
 });

@@ -15,15 +15,8 @@ class ResUsers(models.Model):
         string="Color Scheme",
         default='light',
         help="Backend appearance: Light, Dark, or System (follow the device preference).",
+        user_writeable=True,
     )
-
-    @property
-    def SELF_READABLE_FIELDS(self):
-        return super().SELF_READABLE_FIELDS + ['viin_color_scheme']
-
-    @property
-    def SELF_WRITEABLE_FIELDS(self):
-        return super().SELF_WRITEABLE_FIELDS + ['viin_color_scheme']
 
     def write(self, vals):
         # Keeps the color_scheme cookie following the current user's own preference. 'auto' leaves

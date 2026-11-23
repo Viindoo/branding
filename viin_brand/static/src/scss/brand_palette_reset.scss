@@ -1,60 +1,17 @@
-// Content colour-palette scope fix.
+// Secondary button of the content colour palette.
 //
-// brand_variables.scss sets `$o-enterprise-color` to the brand teal. The chrome needs that: the
-// navbar family reads it, and portal's primary_variables.scss unconditionally does
-// `$o-brand-odoo: $o-enterprise-color`. But html_editor also seeds its content colour palette from
-// the same variable at compile time (`o-color-1` in base-1 of $o-color-palettes, `beta` in base-1
-// of $o-theme-color-palettes), so the user-facing `o-color-1` swatch would compile to teal instead
-// of core's #714B67 and break core's tests that assert that colour.
+// html_editor seeds its content palette (`o-color-1` in base-1 of $o-color-palettes, `beta` in
+// base-1 of $o-theme-color-palettes) from `$o-enterprise-color`, which brand_variables.scss sets to
+// the brand purple, so the content palette is the Viindoo purple without a reset here.
 //
-// This file resets only base-1 `o-color-1` (and the legacy theme `beta`) to core's aubergine and
-// leaves every chrome token and every other palette entry as is.
-//
-// The file is a plain append to web._assets_primary_variables, with no manifest anchor. An anchor on
-// a non-dependency file raises in ir_asset when html_editor is not installed, and viin_brand must
-// not depend on html_editor or website. html_editor injects its variables file at the top of the
-// bundle, so the tail append always runs after it in either module load order. website's own
-// primary_variables.scss is also a tail append; its base-1 merge only adds 'menu' and 'footer', so
-// either order is safe.
-//
-// Each block is guarded by `variable-exists`, so the file is a no-op without html_editor.
-// `!global` is required because the assignment sits inside a control directive and must write the
-// module-global map.
-//
-// #714B67 is core's own $o-enterprise-color default. It is a literal because brand_variables.scss
-// has already overridden that variable, so no live token still holds the aubergine to alias.
-
-@if variable-exists('o-color-palettes') {
-    // Content palette: base-1 o-color-1 -> core aubergine.
-    $o-color-palettes: map-merge(
-        $o-color-palettes,
-        (
-            'base-1': map-merge(
-                map-get($o-color-palettes, 'base-1'),
-                ('o-color-1': #714B67)
-            ),
-        )
-    ) !global;
-}
-
-@if variable-exists('o-theme-color-palettes') {
-    // Legacy theme palette: base-1 `beta` -> core aubergine. html_editor normally removes it, but
-    // the 13.0 colour-system compatibility path still reads it.
-    $o-theme-color-palettes: map-merge(
-        $o-theme-color-palettes,
-        (
-            'base-1': map-merge(
-                map-get($o-theme-color-palettes, 'base-1'),
-                ('beta': #714B67)
-            ),
-        )
-    ) !global;
-}
-
-// The CC1 secondary button takes the brand secondary. The website/frontend colour-combination CC1
-// secondary button would otherwise paint core's aubergine; the custom property
-// --o-cc1-btn-secondary has no reader on the painting path, so the native lever is the same
-// guarded base-1 map-merge as above.
+// The website/frontend colour-combination CC1 secondary button takes the brand secondary, the
+// secondary cyan; it would otherwise paint core's aubergine. The custom property
+// --o-cc1-btn-secondary has no reader on the painting path, so the native lever is a guarded base-1
+// map-merge. The file is a plain append to web._assets_primary_variables, with no manifest anchor:
+// an anchor on a non-dependency file raises in ir_asset when html_editor is not installed, and
+// viin_brand must not depend on html_editor or website. The block is guarded by `variable-exists`,
+// so the file is a no-op without html_editor. `!global` is required because the assignment sits
+// inside a control directive and must write the module-global map.
 //
 // html_editor's secondary_variables.scss composes the active palette with the palette map as the
 // second map-merge argument, so a base-1 'o-cc1-btn-secondary' entry wins over the
@@ -67,16 +24,15 @@
 // property (it prints it only as the fallback for an unset key); the colour reaches the pixel as
 // the compiled `.o_cc1 .btn-fill-secondary` background, which is what a test must assert.
 //
-// The backend is unaffected, so the colour law's "purple never paints a button" clause holds:
-// html_editor's bootstrap_overridden.scss feeds these keys into Bootstrap's button maps only
-// unless `$prevent-backend-colors-alteration` is true, and the backend bundle sets it true.
+// The backend is unaffected: html_editor's bootstrap_overridden.scss feeds these keys into
+// Bootstrap's button maps only unless `$prevent-backend-colors-alteration` is true, and the backend
+// bundle sets it true.
 //
 // website's base-1 merge never writes o-cc1-btn-secondary, so this value survives either append
 // order, and a website theme preset that sets the key lives in its own palette map and still wins.
 //
-// The value aliases $o-brand-secondary (declared once in brand_variables.scss), and dark_palette.scss
-// re-points that token for web.assets_web_dark without `!default`. This file is a bundle-tail
-// append, so each scheme reads its final value: no dark arm and no purple on a dark canvas.
+// The value aliases $o-brand-secondary (declared once in brand_variables.scss). The label on it is
+// the dark label color-contrast() picks for the cyan (#21272B, 6.48:1).
 @if variable-exists('o-color-palettes') {
     $o-color-palettes: map-merge(
         $o-color-palettes,

@@ -1,8 +1,9 @@
 // Numbered steps on core's arrow statusbar. Additive only: no clip-path, ::before notch, border,
 // padding or radius of the step, and nothing on `.o_statusbar_status`. Core's areItemsWrapping()
 // (statusbar_field.js) folds the whole bar into one "..." dropdown when the root measures taller
-// than its first child, so the container height must not change. The only box created is a
-// pseudo-element inside the existing button, smaller than the button's own line box.
+// than its first child plus its own padding and border, so the container height must not change.
+// The only box created is a pseudo-element inside the existing button, smaller than the button's
+// own line box.
 //
 // The colours are `currentColor`: the digit inherits the label's colour pair per step state
 // (current / clickable / inactive) and per scheme. The ring is the same colour at 40% over
@@ -10,7 +11,7 @@
 //
 // The file compiles into web.assets_web_dark unchanged: $o-gray-700 follows each scheme's ramp.
 
-.o_statusbar_status > .o_arrow_button.o_viin_numbered_step {
+.o_statusbar_status .o_arrow_button.o_viin_numbered_step {
     display: inline-flex;
     align-items: center;
     gap: 0.4em;
@@ -46,7 +47,7 @@
 // An inactive step reads core's translucent muted text, which washes out on the grey step; it takes
 // the same grey opaque. The current step keeps its own fill and outline. Same selector shape as
 // core's rule in statusbar_field.scss, which it follows in the bundle.
-.o_field_statusbar > .o_statusbar_status > .o_arrow_button.o_viin_numbered_step:disabled:not(.o_arrow_button_current) {
+.o_field_statusbar > .o_statusbar_status .o_arrow_button.o_viin_numbered_step:disabled:not(.o_arrow_button_current) {
     &,
     &:hover,
     &:focus {

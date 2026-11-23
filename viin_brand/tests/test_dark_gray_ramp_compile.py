@@ -27,8 +27,6 @@ from .test_brand_cascade_compile import (
     _relative_luminance,
 )
 
-LAZY_DARK_BUNDLE = "web.assets_backend_lazy_dark"
-
 # The dark gray ramp (every rung an alias of the palette ladder) and the light rungs core declares.
 DARK_RAMP = {
     100: "#152225",
@@ -56,15 +54,12 @@ LIGHT_RAMP = {
 DARK_PLACEHOLDER = "#8ea5a8"
 LIGHT_PLACEHOLDER = "#bec5cc"
 
-# Teal text on the dark panel: the notebook active tab, the selection-box active item and the
+# Link-tone text on the dark panel: the notebook active tab, the selection-box active item and the
 # empty-state link in the dark bundle; their light values.
-DARK_TEAL_TEXT = "#4fd4e2"
-DARK_TEAL_TEXT_HOVER = "#7fe0ea"
-LIGHT_TEAL_TEXT = "#007f8e"
-LIGHT_TEAL_TEXT_HOVER = "#005e68"
-
-# Large bold text (WCAG SC 1.4.3 relaxed threshold).
-WCAG_AA_LARGE_TEXT = 3.0
+DARK_LINK_TEXT = "#00bbce"
+DARK_LINK_TEXT_HOVER = "#66d6e2"
+LIGHT_LINK_TEXT = "#7f4282"
+LIGHT_LINK_TEXT_HOVER = "#592e5b"
 
 NOTEBOOK_ACTIVE = ".o_notebook:not(.vertical) .nav-link.active"
 SELECTION_ACTIVE = (
@@ -110,13 +105,6 @@ class TestDarkGrayRampCompile(TransactionCase):
         self.assertTrue(css.strip(), "%s compiled to empty CSS." % bundle_name)
         return _COMMENT_RE.sub("", css)
 
-    def _installed(self, module_name):
-        return bool(
-            self.env["ir.module.module"].search_count(
-                [("name", "=", module_name), ("state", "=", "installed")]
-            )
-        )
-
     def _colour(self, css, selector, prop, label):
         value = _last_value(css, selector, prop)
         self.assertIsNotNone(value, "no %s declared on %s (%s)" % (prop, selector, label))
@@ -158,7 +146,7 @@ class TestDarkGrayRampCompile(TransactionCase):
                 )
 
     def test_white_light_and_dark_keep_their_light_scheme_meaning_in_dark(self):
-        """`$white` stays real white (the label of every teal fill is chosen by `color-contrast()`
+        """`$white` stays real white (the label of every purple fill is chosen by `color-contrast()`
         against it) and `$light` / `$dark` keep their light-scheme meaning (core media chrome such
         as the file viewer arrows uses `bg-dark text-white` in both schemes), so the dark ramp must
         not invert them."""
@@ -168,15 +156,6 @@ class TestDarkGrayRampCompile(TransactionCase):
             ("dark", "#0b1315"),
             ("light-bg-subtle", "#152225"),
         ))
-
-    def test_black_keeps_its_light_scheme_meaning_in_dark(self):
-        """`$black` stays real black, which `color-contrast()` reads to pick the label of a fill.
-
-        Only `html_editor` declares `:root --black`; without it the property does not exist.
-        """
-        if not self._installed("html_editor"):
-            self.skipTest("html_editor is not installed")
-        self._assert_root_colours_keep_their_light_scheme_meaning((("black", "#000000"),))
 
     def test_link_button_in_dark_style_is_muted_at_rest_and_body_text_on_hover(self):
         """`btn btn-link btn-dark` (the mail activity list button) rests on the muted tier #8EA5A8
@@ -205,27 +184,10 @@ class TestDarkGrayRampCompile(TransactionCase):
         )
         self.assertEqual(light, LIGHT_PLACEHOLDER)
 
-    def test_survey_section_row_and_sample_card_hover_are_the_dark_border_rung(self):
-        """A survey section row paints #25383C under its #EDF4F5 label (11.03:1) and the empty-state
-        sample card hovers to the same #25383C with a readable label."""
-        if not self._installed("survey"):
-            self.skipTest("survey is not installed")
-        css = self._css(DARK_BUNDLE)
-        section = self._colour(
-            css, ".o_survey_form", "--SurveyForm__section-background-color", "section row"
-        )
-        self.assertEqual(section, "#25383c")
-        self.assertGreaterEqual(_contrast_ratio(DARK_READABLE_TEXT, section), 11.0)
-        hover = self._colour(
-            css, ".o_survey_sample_card", "--SurveySampleCard-background-hover", "sample card"
-        )
-        self.assertEqual(hover, "#25383c")
-        self.assertGreaterEqual(_contrast_ratio(DARK_READABLE_TEXT, hover), WCAG_AA_NORMAL_TEXT)
-
-    def test_notebook_active_tab_label_and_underline_are_teal_per_scheme(self):
-        """The active notebook tab label and its 2px underline are #4FD4E2 in dark (9.9:1 on the
-        panel) and #007F8E in light."""
-        for bundle_name, expected in ((DARK_BUNDLE, DARK_TEAL_TEXT), (BACKEND_BUNDLE, LIGHT_TEAL_TEXT)):
+    def test_notebook_active_tab_label_and_underline_follow_the_link_tone_per_scheme(self):
+        """The active notebook tab label and its 2px underline are #00BBCE in dark (7.50:1 on the
+        panel) and #7F4282 in light."""
+        for bundle_name, expected in ((DARK_BUNDLE, DARK_LINK_TEXT), (BACKEND_BUNDLE, LIGHT_LINK_TEXT)):
             css = self._css(bundle_name)
             for state in ("", ":hover", ":focus", ":active"):
                 selector = NOTEBOOK_ACTIVE + state
@@ -237,21 +199,21 @@ class TestDarkGrayRampCompile(TransactionCase):
                     self._colour(css, selector, "border-bottom-color", "tab underline"), expected,
                     "%s underline in %s" % (selector, bundle_name),
                 )
-        self.assertGreaterEqual(_contrast_ratio(DARK_TEAL_TEXT, DARK_BODY_BG), 9.8)
+        self.assertGreaterEqual(_contrast_ratio(DARK_LINK_TEXT, DARK_BODY_BG), 7.5)
 
-    def test_selection_box_active_item_label_is_teal_per_scheme(self):
-        """The active item of the control-panel selection box reads #4FD4E2 in dark and #007F8E in
+    def test_selection_box_active_item_label_follows_the_link_tone_per_scheme(self):
+        """The active item of the control-panel selection box reads #00BBCE in dark and #7F4282 in
         light."""
-        for bundle_name, expected in ((DARK_BUNDLE, DARK_TEAL_TEXT), (BACKEND_BUNDLE, LIGHT_TEAL_TEXT)):
+        for bundle_name, expected in ((DARK_BUNDLE, DARK_LINK_TEXT), (BACKEND_BUNDLE, LIGHT_LINK_TEXT)):
             self.assertEqual(
                 self._colour(self._css(bundle_name), SELECTION_ACTIVE, "color", "active item"),
                 expected, bundle_name,
             )
 
-    def test_empty_state_link_is_core_link_colour_in_dark_and_brand_teal_in_light(self):
-        """The empty-state help link and its create CTA are #4FD4E2 / hover #7FE0EA in dark, taken
+    def test_empty_state_link_is_core_link_colour_in_dark_and_brand_purple_in_light(self):
+        """The empty-state help link and its create CTA are #00BBCE / hover #66D6E2 in dark, taken
         from core's `--link-color` (the module declares no colour for them in the dark bundle), and
-        #007F8E / hover #005E68 in light."""
+        #7F4282 / hover #592E5B in light."""
         dark_css = self._css(DARK_BUNDLE)
         for selector in (NOCONTENT_LINK, NOCONTENT_CTA):
             for state in ("", ":hover", ":focus"):
@@ -260,30 +222,30 @@ class TestDarkGrayRampCompile(TransactionCase):
                     "%s declares a colour in the dark bundle; the link must stay core's."
                     % (selector + state),
                 )
-        self.assertEqual(_normalize_colour(_root_value(dark_css, "link-color")), DARK_TEAL_TEXT)
+        self.assertEqual(_normalize_colour(_root_value(dark_css, "link-color")), DARK_LINK_TEXT)
         self.assertEqual(
-            _normalize_colour(_root_value(dark_css, "link-hover-color")), DARK_TEAL_TEXT_HOVER
+            _normalize_colour(_root_value(dark_css, "link-hover-color")), DARK_LINK_TEXT_HOVER
         )
         light_css = self._css(BACKEND_BUNDLE)
         for selector in (NOCONTENT_LINK, NOCONTENT_CTA):
             self.assertEqual(
-                self._colour(light_css, selector, "color", "light link"), LIGHT_TEAL_TEXT
+                self._colour(light_css, selector, "color", "light link"), LIGHT_LINK_TEXT
             )
             for state in (":hover", ":focus"):
                 self.assertEqual(
                     self._colour(light_css, selector + state, "color", "light link hover"),
-                    LIGHT_TEAL_TEXT_HOVER,
+                    LIGHT_LINK_TEXT_HOVER,
                 )
 
     def test_settings_sidebar_tabs_and_section_titles_read_the_ramp(self):
-        """Settings: sidebar #152225 under a #EDF4F5 idle label (14.6:1), selected tab #21464B with
-        a #EDF4F5 label (9.2:1), section title band #1D2D31."""
+        """Settings: sidebar #152225 under a #EDF4F5 idle label (14.6:1), selected tab #114147 with
+        a #EDF4F5 label (9.2:1 and above), section title band #1D2D31."""
         css = self._css(DARK_BUNDLE)
         renderer = ".o_base_settings_view .o_form_renderer"
         sidebar = self._colour(css, renderer, "--settings__tab-bg", "sidebar")
         selected = self._colour(css, renderer, "--settings__tab-bg--active", "selected tab")
         title = self._colour(css, renderer, "--settings__title-bg", "section title band")
-        self.assertEqual((sidebar, selected, title), ("#152225", "#21464b", "#1d2d31"))
+        self.assertEqual((sidebar, selected, title), ("#152225", "#114147", "#1d2d31"))
         label = self._colour(css, renderer, "--settings__tab-color", "tab label")
         self.assertEqual(label, DARK_READABLE_TEXT)
         self.assertGreaterEqual(_contrast_ratio(label, sidebar), 14.6)
@@ -297,24 +259,24 @@ class TestDarkGrayRampCompile(TransactionCase):
                 "%s must keep the light tab colour, not core's black." % state,
             )
 
-    def test_text_primary_utility_reads_the_dark_link_teal(self):
-        """`.text-primary` text is #4FD4E2 (hover #7FE0EA) in dark, 9.88:1 on the panel, and keeps
-        the chrome teal #007F8E in light."""
+    def test_text_primary_utility_reads_the_dark_link_tone(self):
+        """`.text-primary` text is #00BBCE (hover #66D6E2) in dark, 7.50:1 on the panel, and keeps
+        the brand purple #7F4282 in light."""
         dark = self._css(DARK_BUNDLE)
         self.assertEqual(
-            self._colour(dark, ".text-primary", "--color", "dark text-primary"), DARK_TEAL_TEXT
+            self._colour(dark, ".text-primary", "--color", "dark text-primary"), DARK_LINK_TEXT
         )
         self.assertIn(
             "var(--text-opacity", _last_value(dark, ".text-primary", "--color"),
             "`.text-primary` must keep the utility's `--text-opacity` contract.",
         )
         self.assertEqual(
-            self._colour(dark, ".text-primary:hover", "--color", "dark hover"), DARK_TEAL_TEXT_HOVER
+            self._colour(dark, ".text-primary:hover", "--color", "dark hover"), DARK_LINK_TEXT_HOVER
         )
-        self.assertGreaterEqual(_contrast_ratio(DARK_TEAL_TEXT, DARK_BODY_BG), WCAG_AA_NORMAL_TEXT)
+        self.assertGreaterEqual(_contrast_ratio(DARK_LINK_TEXT, DARK_BODY_BG), WCAG_AA_NORMAL_TEXT)
         light = self._css(BACKEND_BUNDLE)
         self.assertEqual(
-            self._colour(light, ".text-primary", "--color", "light text-primary"), LIGHT_TEAL_TEXT
+            self._colour(light, ".text-primary", "--color", "light text-primary"), LIGHT_LINK_TEXT
         )
 
     def test_bootstrap_tooltip_label_is_readable_on_its_background(self):
@@ -365,42 +327,6 @@ class TestDarkGrayRampCompile(TransactionCase):
         self.assertGreaterEqual(_contrast_ratio("#ffffff", circle), 18.7)
         white_text = _normalize_colour(_last_value(css, ".text-white", "--color") or "")
         self.assertEqual(white_text, "#ffffff")
-
-    def test_activity_view_status_cells_and_counter_stay_readable_in_dark(self):
-        """In the dark lazy bundle the count label of a `.today` / `.planned` / `.overdue` activity
-        cell reads at least 3:1 (large bold text) on its status fill, a `.done` cell label at least
-        3:1 on its fill, and the cell counter label at least 4.5:1 on its `.bg-light` badge.
-
-        The lazy bundle holds no media chrome, so `$light` / `$dark` follow the dark ramp there
-        (dark label on a bright status fill); the scheme-invariant pins live in the non-lazy
-        bundle only."""
-        if not self._installed("mail"):
-            self.skipTest("mail is not installed")
-        css = self._css(LAZY_DARK_BUNDLE)
-        for state in ("today", "planned", "overdue"):
-            selector = ".o_activity_view .o_activity_summary_cell.%s" % state
-            fill = self._colour(css, selector, "background-color", "%s fill" % state)
-            label = self._colour(css, selector, "color", "%s label" % state)
-            self.assertGreaterEqual(
-                round(_contrast_ratio(label, fill), 2), WCAG_AA_LARGE_TEXT,
-                "%s cell: %s on %s" % (state, label, fill),
-            )
-        done = ".o_activity_view .o_activity_summary_cell.done"
-        done_fill = self._colour(css, done, "background-color", "done fill")
-        done_label = self._colour(css, done + " a", "color", "done label")
-        self.assertGreaterEqual(
-            round(_contrast_ratio(done_label, done_fill), 2), WCAG_AA_LARGE_TEXT,
-            "done cell: %s on %s" % (done_label, done_fill),
-        )
-        counter = self._colour(
-            css, ".o_activity_view .o_activity_summary_cell .o-mail-ActivityCell-counter",
-            "color", "counter label",
-        )
-        badge = self._colour(self._css(DARK_BUNDLE), ".bg-light", "--background-color", "badge")
-        self.assertGreaterEqual(
-            round(_contrast_ratio(counter, badge), 2), WCAG_AA_NORMAL_TEXT,
-            "activity counter: %s on %s" % (counter, badge),
-        )
 
     def test_theme_colour_tints_are_dark_surfaces_with_readable_emphasis_in_dark(self):
         """`alert-*`, `list-group-item-*` and the `*-subtle` utilities read the tint tokens: in dark

@@ -1,6 +1,6 @@
-// The text-link tier: a backend hyperlink takes the Viindoo secondary colour (purple in light, the
-// dark link teal in dark), and link-styled buttons, Bootstrap tabs and pagers share that tier. Core's
-// `text-action` takes the interactive teal, the tier of filled controls and chrome.
+// The text-link tier: a backend hyperlink takes the Viindoo link colour (the brand purple in light,
+// the light purple of dark_palette.scss in dark), and link-styled buttons, Bootstrap tabs and pagers
+// share that tier.
 //
 // Odoo compiles Bootstrap with `$variable-prefix: ''`, so the link tokens are unprefixed:
 // `--link-color`, `--link-color-rgb`, `--link-hover-color`. They are filled by the chain
@@ -16,43 +16,27 @@
 //
 // Anchor: contributed to `web.assets_backend` at
 // ('before', 'web/static/lib/bootstrap/scss/_variables.scss'), after the backend helpers
-// (primary variables, bootstrap_overridden.scss) and pre_variables.scss. There:
-//   * `$o-main-link-color`, `$o-brand-secondary` and `$o-viin-dark-bundle` are already final, so
-//     this is the first point where the two schemes can be told apart safely;
-//   * `$link-color` already exists, so re-assigning it is a plain overwrite, not a new global in a
-//     nested scope;
-//   * Bootstrap's own `!default` declarations have not run yet, so every assignment wins without
-//     `!important` and without touching a core file.
+// (primary variables, bootstrap_overridden.scss) and pre_variables.scss. There `$o-main-link-color`
+// and `$link-color` are final, and Bootstrap's own `!default` declarations have not run yet, so
+// every assignment wins without `!important` and without touching a core file.
 // Backend only: `web._assets_primary_variables` is also pulled into `web.assets_frontend`, where
-// the purple would repaint the login page and the public portal. The public frontend keeps the
-// `$primary` de-brand owned by frontend_primary.scss.
-//
-// Light only: `web.assets_web_dark` recompiles this whole bundle, so the two link declarations are
-// written as `if()` on `$o-viin-dark-bundle`, and in dark the links keep the teal dark_palette.scss
-// sets. Both branches of each `if()` reference variables defined in both bundles, so neither can
-// raise "Undefined variable".
+// the purple link would repaint the login page and the public portal. The public frontend keeps
+// the `$primary` de-brand owned by frontend_primary.scss.
 
-// Hover rung of the link tier, Bootstrap's own link-hover formula
-// (`shade-color($c, $link-shade-percentage)`). `!default` keeps the dark arm dark_palette.scss
-// declares, since a shade() in dark would darken the light-on-dark teal.
+// Hover rung of the link tier, Bootstrap's own shade of the link colour. `!default` keeps the
+// value dark_palette.scss declares, since a shade() in dark would darken a light-on-dark tone.
+//   light  shade-color(#7F4282, 30%) = #592E5B, 10.68:1 on white
 $o-viin-interactive-hover: shade-color($o-main-link-color, $link-shade-percentage) !default;
 
-// The hyperlink tier: brand secondary in light, unchanged teal in dark.
-// $o-brand-secondary #7F4282 measures 6.99:1 on the white view surface (form sheet, list cell,
-// kanban card), 6.63:1 on the #F8F9FA app canvas and 5.90:1 on the #E9ECEF app band. The hover
-// rung reuses Bootstrap's shade formula on the same token: shade-color(#7F4282, 30%) = #592E5B,
-// 10.68:1 on white. This feeds `:root --link-color` / `--link-color-rgb` / `--link-hover-color`,
-// hence the `a` reboot rule and every core rule that bakes `$link-color` at compile time, which is
-// the set of real hyperlinks: `.o_form_uri`, the many2one dropdown "Create"/"Search More" anchors,
-// the x2many "Add a line" anchor, `a[type=action]` and the calendar "+N more" link.
-$link-color: if($o-viin-dark-bundle, $link-color, $o-brand-secondary);
-$link-hover-color: if(
-    $o-viin-dark-bundle,
-    $o-viin-interactive-hover,
-    shade-color($o-brand-secondary, $link-shade-percentage)
-);
+// $o-main-link-color #7F4282 measures 6.99:1 on the white view surface (form sheet, list cell,
+// kanban card), 6.63:1 on the #F8F9FA app canvas and 5.90:1 on the #E9ECEF app band. This feeds
+// `:root --link-color` / `--link-color-rgb` / `--link-hover-color`, hence the `a` reboot rule and
+// every core rule that bakes `$link-color` at compile time, which is the set of real hyperlinks:
+// `.o_form_uri`, the many2one dropdown "Create"/"Search More" anchors, the x2many "Add a line"
+// anchor, `a[type=action]` and the calendar "+N more" link.
+$link-hover-color: $o-viin-interactive-hover;
 
-// The borrowers share the hyperlink tier: the brand purple in light, the dark link teal in dark.
+// The borrowers share the hyperlink tier.
 //
 // Tabs: Bootstrap `.nav-link`. The form notebook does not depend on this: notebook.scss paints its
 // own active tab with $o-component-active-border in both bundles.
@@ -70,9 +54,9 @@ $pagination-hover-color: $o-viin-interactive-hover;
 $pagination-focus-color: $o-viin-interactive-hover;
 
 // Core's `text-action` utility and the link-styled buttons carrying it (the chatter Followers
-// toggle, an activity's Edit link) read the "action" entry, by default the decorative brand teal.
-// It takes the interactive teal: the AA chrome teal in light, the dark link teal in dark.
+// toggle, an activity's Edit link) read the "action" entry, by default `$o-action`. It takes the
+// link tier: the brand purple in light, the light purple of the dark bundle in dark.
 $o-text-colors-custom: map-merge(
     $o-text-colors-custom,
-    ("action": if($o-viin-dark-bundle, $o-main-link-color, $o-viin-chrome-base))
+    ("action": $o-main-link-color)
 );

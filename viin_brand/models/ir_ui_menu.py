@@ -1,8 +1,14 @@
-from odoo import api, models
+from odoo import api, fields, models
+
+from .res_config_settings import get_settings_app
 
 
 class IrUiMenu(models.Model):
     _inherit = 'ir.ui.menu'
+
+    group_ids = fields.Many2many(
+        help="If you have groups, the visibility of this menu will be based on these groups. "
+             "If this field is empty, Viindoo will compute visibility based on the related object's read access.")
 
     @api.model
     def _get_hidden_menu_xmlids(self):
@@ -19,6 +25,24 @@ class IrUiMenu(models.Model):
         :return: a list of fully qualified XML ids
         """
         return []
+
+    def _load_menus_blacklist(self):
+        """Leave out the menus that open the settings on an app whose every setting is hidden."""
+        blacklist = super()._load_menus_blacklist()
+        settings = self.env['res.config.settings']
+        if not settings.has_access('read'):
+            return blacklist
+        # sudo: the menus point at their actions whatever the user may read of them
+        actions = self.env['ir.actions.act_window'].sudo().search([('res_model', '=', 'res.config.settings')])
+        apps = {action.id: get_settings_app(action.context) for action in actions}
+        if not any(apps.values()):
+            return blacklist
+        unusable = settings._get_unusable_apps()
+        dead = ['ir.actions.act_window,%d' % action_id for action_id, app in apps.items() if app in unusable]
+        if not dead:
+            return blacklist
+        # sudo: only the ids of the menus to leave out are read, whatever menus the user may read
+        return list(blacklist) + self.sudo().search([('action', 'in', dead)]).ids
 
     @api.model
     def _get_menus_by_xmlids(self, xmlids):

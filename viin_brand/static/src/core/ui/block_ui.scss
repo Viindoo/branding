@@ -1,8 +1,8 @@
 // Blocking overlay (BlockUI: the full-screen "Loading... / Still loading..." blocker).
 //
-// The scrim stays dark and blurred so the white loading text remains legible; a fully-teal scrim
-// would be garish and unreadable. It takes a brand undertone by mixing the deep AA teal
-// ($o-viin-chrome-deep #005E68, 7.5:1) into the neutral black scrim, so a long operation reads as
+// The scrim is application chrome. It stays dark and blurred so the white loading text remains
+// legible; a fully-teal scrim would be garish and unreadable. It takes a brand undertone by mixing
+// the deep teal ($o-viin-chrome-deep #005E68) into the neutral black scrim, so a long operation reads as
 // Viindoo while keeping contrast. Only the `.o_blockUI` selector is touched, with no dependency on
 // the inner message markup, and core's backdrop-filter blur is kept. Same selector as core; later
 // load order in web.assets_backend wins.

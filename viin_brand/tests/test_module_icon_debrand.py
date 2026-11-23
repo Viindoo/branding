@@ -1,5 +1,6 @@
 import os
 
+from odoo import addons
 from odoo.modules import module as odoo_module
 from odoo.modules.module import Manifest, get_module_path
 from odoo.tests.common import TransactionCase, tagged
@@ -80,3 +81,25 @@ class TestModuleIconDebrand(TransactionCase):
             self._module_icon(probe),
             "/viin_brand/static/img/apps/base.png",
         )
+
+    def test_icon_of_a_module_without_a_bridge_logs_no_warning_whatever_wraps_the_manifest_lookup(self):
+        """The bridge ``viin_brand_<module>`` is probed for every module, and most modules have none.
+
+        A wrapper of ``Manifest.for_addon`` that drops ``display_warning``, as the asset bundle tests of
+        core install, must not turn that probe into a "manifest not found" warning.
+        """
+        for_addon = Manifest.for_addon
+
+        def for_addon_without_display_warning(module, **kwargs):
+            return for_addon(module)
+
+        self.patch(Manifest, "for_addon", for_addon_without_display_warning)
+        self.assertFalse(
+            any(os.path.isdir(os.path.join(path, "viin_brand_utm")) for path in addons.__path__),
+            "the probe module must have no bridge",
+        )
+
+        with self.assertNoLogs("odoo.modules.module", "WARNING"):
+            icon = self._module_icon("utm")
+
+        self.assertEqual(icon, "/viin_brand/static/img/apps/utm.png")

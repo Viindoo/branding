@@ -5,4 +5,4 @@
 // Anchored before pre_variables.scss, which builds the `$colors` map (`--purple`) from `$purple`.
 // web.assets_web_dark recompiles this file after dark_palette.scss has set the dark purple, which
 // `!default` leaves in place.
-$purple: $o-brand-secondary !default;
+$purple: $o-brand-primary !default;

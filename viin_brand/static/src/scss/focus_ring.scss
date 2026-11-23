@@ -3,13 +3,13 @@
 // The always-installed base owns a shared focus-ring token applied to core interactive elements on
 // :focus-visible, so an unthemed install is keyboard-accessible too.
 //
-// One Sass variable carries both arms: `$o-viin-focus` is #005E68 here (7.5:1 on white), and the
+// One Sass variable carries both arms: `$o-viin-focus` is #00707C here (5.82:1 on white), and the
 // dark bundle recompiles with dark_palette.scss setting `$o-viin-focus: #7FE0EA` first (no
 // `!default`), so each bundle emits its own value with no runtime attribute flip.
 //
 // :root is used deliberately (the SCSS guideline exception for a token shared across bundles); the
 // ring reaches the pixel as the --o-viin-focus custom property.
-$o-viin-focus: #005E68 !default;
+$o-viin-focus: #00707C !default;
 
 :root {
     --o-viin-focus: #{$o-viin-focus};
@@ -20,7 +20,7 @@ $o-viin-focus: #005E68 !default;
 //
 // Buttons, links, checkboxes, tabs and rows get a double ring: a 2px outline offset 1px out, plus a
 // 1px inner box-shadow halo in the surface colour (--body-bg). The ring colour can match the
-// element's own fill (a teal button), so the halo separates the ring from the fill and keeps >= 3:1
+// element's own fill (a purple button), so the halo separates the ring from the fill and keeps >= 3:1
 // against both the element and its surround in either scheme. :focus-visible (not :focus) keeps
 // pointer clicks from painting the ring.
 //

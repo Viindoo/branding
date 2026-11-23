@@ -41,9 +41,9 @@
     }
 }
 
-// `.text-primary` paints the chrome teal #007F8E, which is the fill colour under white labels and
-// only 3.69:1 as text on the dark panel. The utility reads its own `--color` custom property, so the
-// text takes the dark link teal through it, with the dark link hover for the interactive states,
+// `.text-primary` paints the brand purple #7F4282, which is the fill colour under white labels and
+// only 2.50:1 as text on the dark panel. The utility reads its own `--color` custom property, so the
+// text takes the dark link purple through it, with the dark link hover for the interactive states,
 // and keeps the utility's `--text-opacity` contract.
 .text-primary {
     --color: RGBA(#{to-rgb($o-main-link-color)}, var(--text-opacity, 1));
@@ -86,22 +86,10 @@ button.text-primary.active {
 }
 
 // The label carries its own body colour so it never depends on the colour of the `.o_wrap_label`
-// cell it sits in. Specificity (0,3,0) scoped under .o_form_view; the mobile
-// `.o_xxs_form_view ... .o_form_label` $o-brand-secondary rule (0,5,0) still outranks it, so the
-// mobile label keeps the dark muted tint dark_palette.scss gives $o-brand-secondary.
+// cell it sits in. Specificity (0,2,0) scoped under .o_form_view; core's faded variants
+// (`.o_form_label_empty`, `_false`, `_readonly`) are (0,3,0) and keep their muted colour.
 .o_form_view .o_form_label {
     color: var(--body-color);
-
-    // Core fades empty/readonly/false labels with `.o_form_view .o_form_label.o_form_label_{empty,
-    // false,readonly} { opacity: 0.66 }` (form_controller.scss). On the #EDF4F5 base that
-    // composites to #A2AAAC (7.41:1 over #111B1E) but reads a full step dimmer than a filled label;
-    // the faded-label tier of dark_palette.scss (0.85) composites to #CCD3D5 (11.54:1) and closes
-    // the gap. Same (0,3,0) specificity as core's fade rule; dark-tail source order wins.
-    &.o_form_label_empty,
-    &.o_form_label_false,
-    &.o_form_label_readonly {
-        opacity: $o-viin-dark-faded-label-opacity;
-    }
 }
 
 // The grayscale `.bg-N` / `.text-N` utilities follow the ramp. `.bg-light`, `.bg-white`,

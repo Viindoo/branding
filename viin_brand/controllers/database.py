@@ -1,6 +1,6 @@
 from markupsafe import Markup
 
-from odoo.addons.web.controllers.database import Database as DB
+from odoo.addons.web.controllers import database as web_database
 
 # Replaces only the fixed wordmark literals of the database manager chrome: the <title>, the
 # insecure-manager warning banner, the Create Database privacy notice and the Restore Database
@@ -38,10 +38,14 @@ _ASSET_STRINGS = (
 )
 
 
-class Database(DB):
+def _brand_template(render_template):
+    """Wrap the database manager renderer of ``web`` so that the page names Viindoo.
 
-    def _render_template(self, **d):
-        res = super()._render_template(**d)
+    :param render_template: ``web.controllers.database._render_template``
+    :return: the renderer to put in its place
+    """
+    def _render_branded_template(**d):
+        res = render_template(**d)
         if res:
             # Markup.replace escapes its arguments (markupsafe 2.x) or the replacement
             # (markupsafe 3.x), which breaks the ``<title>`` entry; replace on a plain str.
@@ -51,3 +55,10 @@ class Database(DB):
             # Only allowlisted literals were substituted, so the body is as trusted as core's.
             res = Markup(res)
         return res
+
+    return _render_branded_template
+
+
+def patch_database_manager():
+    """Brand the page of every database manager route; core's controller calls the renderer by its module name."""
+    web_database._render_template = _brand_template(web_database._render_template)

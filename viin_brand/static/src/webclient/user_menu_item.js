@@ -1,12 +1,10 @@
-/** @odoo-module **/
-
 import "@web/webclient/user_menu/user_menu_items";
 import { registry } from "@web/core/registry";
 import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
 import { session } from "@web/session";
 
-function documentationItem(env) {
+function documentationItem() {
     // The series comes from the running server, like core's DocumentationLink, so the link never
     // targets a stale series. Unlike core, a non-final build keeps its numeric series: the
     // viindoo.com documentation tree has no "master".
@@ -27,7 +25,7 @@ function documentationItem(env) {
     };
 }
 
-function supportItem(env) {
+function supportItem() {
     const url = "https://viindoo.com/ticket";
     return {
         type: "item",
@@ -41,7 +39,7 @@ function supportItem(env) {
     };
 }
 
-function viindooAccountItem(env) {
+function viindooAccountItem() {
     const viindooURL = "https://viindoo.com/my";
     return {
         type: "item",
@@ -57,7 +55,6 @@ function viindooAccountItem(env) {
 
 const user_menuitems = registry.category("user_menuitems");
 user_menuitems.remove("support");
-user_menuitems.remove("odoo_account");
 
 user_menuitems
     .add("viindoo_documentation", documentationItem)

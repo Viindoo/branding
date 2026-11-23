@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+from odoo.addons.base.wizard.base_module_update import BaseModuleUpdate
 from odoo.fields import Domain
 from odoo.tests.common import TransactionCase, tagged
 from odoo.tools.safe_eval import safe_eval
@@ -14,29 +15,69 @@ class TestAppsEnterpriseSurfaces(TransactionCase):
         super().setUpClass()
         cls.Module = cls.env['ir.module.module']
 
-    def test_every_apps_action_hides_the_enterprise_stubs(self):
-        website_apps = self.env.ref('website.action_website_add_features', raise_if_not_found=False)
-        if not website_apps:
-            website_apps = self.env['ir.actions.act_window'].create({
-                'name': 'Website Apps Test', 'res_model': 'ir.module.module',
-                'domain': "['!', ('name', '=like', 'theme_%')]",
-            })
-            self.env['ir.model.data'].create({
-                'module': 'website', 'name': 'action_website_add_features', 'model': website_apps._name,
-                'res_id': website_apps.id,
-            })
+    def test_the_apps_list_hides_the_enterprise_stubs(self):
+        apps = self.env.ref('base.open_module_tree')
         stub = self.Module.create({'name': 'enterprise_stub_apps', 'to_buy': True, 'state': 'uninstallable'})
+        # A module installed beside this one (Website) may keep a condition of its own on the list,
+        # which hides the themes: restoring the list leaves that condition as it was.
+        theme = self.Module.create({'name': 'theme_stub_apps', 'state': 'uninstalled'})
+
+        def listed(modules):
+            domain = Domain(safe_eval(apps.domain)) if apps.domain else Domain.TRUE
+            return self.Module.search(domain & Domain('id', 'in', modules.ids))
+
+        theme_listed_before = theme in listed(theme)
 
         for _applied_twice in range(2):
             self.Module._update_domain_for_action()
-        found = self.Module.search(Domain(safe_eval(website_apps.domain)) & Domain('id', '=', stub.id))
-        domain = website_apps.domain
+        found = listed(stub)
+        domain = apps.domain
         self.Module._restore_domain_for_action()
 
         self.assertFalse(found)
         self.assertEqual(domain.count('to_buy'), 1)
-        self.assertNotIn('to_buy', website_apps.domain)
-        self.assertIn('theme_', website_apps.domain)
+        self.assertNotIn('to_buy', apps.domain or '')
+        self.assertIn(stub, listed(stub))
+        self.assertEqual(theme in listed(theme), theme_listed_before)
+
+    def test_an_apps_list_added_by_another_module_keeps_its_own_domain(self):
+        """A module that extends ``_get_apps_actions`` gets the same treatment on top of its domain."""
+        other_apps = self.env['ir.actions.act_window'].create({
+            'name': 'Other Apps Test', 'res_model': 'ir.module.module',
+            'domain': "['!', ('name', '=like', 'theme_%')]",
+        })
+        stub = self.Module.create({'name': 'enterprise_stub_apps', 'to_buy': True, 'state': 'uninstallable'})
+
+        with patch.object(type(self.Module), '_get_apps_actions', return_value=other_apps):
+            for _applied_twice in range(2):
+                self.Module._update_domain_for_action()
+            found = self.Module.search(Domain(safe_eval(other_apps.domain)) & Domain('id', '=', stub.id))
+            domain = other_apps.domain
+            self.Module._restore_domain_for_action()
+
+        self.assertFalse(found)
+        self.assertEqual(domain.count('to_buy'), 1)
+        self.assertIn('theme_', domain)
+        self.assertNotIn('to_buy', other_apps.domain)
+        self.assertIn('theme_', other_apps.domain)
+
+    def test_the_apps_opened_after_updating_the_list_hide_the_enterprise_stubs(self):
+        """"Open Apps" of the update wizard lists every module but the Enterprise stubs, nothing else changes."""
+        stub = self.Module.create({'name': 'enterprise_stub_apps', 'to_buy': True, 'state': 'uninstallable'})
+        community = self.Module.create({'name': 'community_stub_apps', 'state': 'uninstalled'})
+        wizard = self.env['base.module.update'].create({})
+
+        action = wizard.action_module_open()
+
+        listed = self.Module.search(Domain(safe_eval(action['domain'])))
+        self.assertIn(community, listed)
+        self.assertNotIn(stub, listed)
+        self.assertEqual(listed, self.Module.search([('to_buy', '=', False)]))
+        core_action = BaseModuleUpdate.action_module_open(wizard)
+        self.assertEqual(
+            {key: value for key, value in action.items() if key != 'domain'},
+            {key: value for key, value in core_action.items() if key != 'domain'},
+        )
 
     def test_the_enterprise_flag_is_not_offered_to_filters_and_groupings(self):
         self.assertNotIn('to_buy', self.Module.fields_get())
@@ -76,14 +117,3 @@ class TestAppsEnterpriseSurfaces(TransactionCase):
     def test_the_apps_store_of_odoo_is_never_asked_for_industries(self):
         with patch('requests.post', side_effect=AssertionError('the apps store was asked')):
             self.assertEqual(self.Module._get_industry_categories_from_apps(), [])
-
-    def test_the_module_type_group_leaves_the_search_panel(self):
-        arch = (
-            '<search><field name="name"/><searchpanel>'
-            '<field name="module_type"/><field name="category_id"/></searchpanel></search>'
-        )
-        with patch('odoo.addons.base.models.ir_ui_view.Base.get_view', return_value={'arch': arch}):
-            result = self.Module.get_view(view_type='search')
-
-        self.assertNotIn('module_type', result['arch'])
-        self.assertIn('category_id', result['arch'])

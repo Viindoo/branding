@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#. module: noupdate_translation_fixture
+#: model:res.partner.category,name:noupdate_translation_fixture.alias_tag
+msgid "Viindoo tag"
+msgstr ""

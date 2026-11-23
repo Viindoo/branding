@@ -1,5 +1,5 @@
-# Compiled-cascade guard for the CHROME tier of the brand: navbar entry states, search facets,
-# statusbar, settings tab, stat values and the progress-bar trough. Sibling of
+# Compiled-cascade guard for the cascade tier of the brand: navbar entry states (the chrome), search
+# facets, statusbar, settings tab, stat values and the progress-bar trough (the content). Sibling of
 # test_brand_color_compile.py, which guards the brand-identity tier (navbar surface, --primary,
 # .btn-primary, --link-color).
 #
@@ -11,16 +11,18 @@
 # paints an element.
 #
 # Colour ladder under test (declared once in static/src/scss/brand_variables.scss):
-#   $o-brand-primary / $o-brand-odoo  #00BBCE  decorative identity teal, 2.33:1 - never under white
-#                                              text, never on interactive chrome
-#   $o-viin-chrome-base               #007F8E  4.74:1 - base chrome, carries white text
-#   $o-viin-chrome-deep               #005E68  7.50:1 - hover / focus / pressed / open rung
-#   $o-brand-secondary                #7F4282  6.99:1 on the form sheet - stat values
+#   $o-viin-chrome-base               #007F8E  4.74:1 - the chrome teal: the frame of the application
+#   $o-viin-chrome-deep               #005E68  7.5:1 - the frame's hover / focus / pressed / open rung
+#   $o-brand-primary / $o-brand-odoo  #7F4282  6.99:1 - the brand purple: buttons, links, content
+#   $o-viin-action-deep               #592E5B  10.68:1 - the content's pressed / hover rung
+#   $o-brand-secondary                #00BBCE  2.33:1 on white - the secondary cyan, decoration only
+#                                              in light, never a text colour nor a fill under text
+#   $o-viin-accent-text               #7F4282 light / #00BBCE dark - the structural accent
 #
-# Two deliberate exceptions: the favourite search facet keeps core's yellow, and the stat value is
-# purple, not teal.
+# One deliberate exception: the favourite search facet keeps core's yellow.
 import os
 import re
+from types import SimpleNamespace
 
 from odoo.tests.common import TransactionCase, tagged
 
@@ -32,11 +34,7 @@ except ImportError:
     VIINDOO_THEME_COLOR = None
 
 # Owned by the sibling test files and reused rather than re-declared.
-from .test_brand_color_compile import (
-    ODOO_COMMUNITY_PURPLE,
-    ODOO_ENTERPRISE_AUBERGINE,
-    VIINDOO_NAVBAR_BACKGROUND_COLOR,
-)
+from .test_brand_color_compile import VIINDOO_AA_INTERACTIVE_COLOR, VIINDOO_NAVBAR_BACKGROUND_COLOR
 from .test_brand_ssot import BRAND_VARIABLES_SCSS, _resolve_scss_hex
 
 BACKEND_BUNDLE = "web.assets_backend"
@@ -62,15 +60,21 @@ def dark_palette_var(var_name):
 
 # Fixed design constants asserted as literals; deriving them by re-computing a Sass darken()/mix()
 # here would compare production logic against itself.
-CHROME_BASE = VIINDOO_NAVBAR_BACKGROUND_COLOR            # #007f8e
-CHROME_DEEP = "#005e68"                                  # pressed / open / hover rung
+CHROME_BASE = VIINDOO_NAVBAR_BACKGROUND_COLOR            # #007f8e, the frame
+CHROME_DEEP = "#005e68"                                  # the frame's pressed / open / hover rung
+BRAND_PURPLE = VIINDOO_AA_INTERACTIVE_COLOR              # #7f4282, the content
+ACTION_DEEP = "#592e5b"                                  # the content's pressed / hover rung
+DARK_CHECKED_FILL = "#00bbce"                            # checked checkbox fill in the dark bundle: the cyan
+BRAND_CYAN = "#00bbce"                                   # the content colour of the dark scheme
+DARK_ACTION_LABEL = "#21272b"                            # the label of a filled cyan control
+DARK_ACTION_HOVER = "#26c5d5"                            # the cyan 15% toward white
+DARK_ACTION_PRESSED = "#009faf"                          # the cyan 15% toward black
+# The secondary cyan: decoration in light, so never a chrome state, a fill under text or a text colour.
+DECORATIVE_CYAN = "#00bbce"
 WHITE = "#ffffff"
 BLACK = "#000000"
 # Core's progress-bar trough is $o-view-background-color, i.e. plain white.
 CORE_PROGRESS_TROUGH = WHITE
-# Core's $o-enterprise-color default: the content swatch brand_palette_reset.scss keeps aubergine
-# while the chrome uses of the same variable are teal.
-CORE_CONTENT_O_COLOR_1 = ODOO_ENTERPRISE_AUBERGINE
 
 # WCAG 2.1 SC 1.4.3 minimum contrast for normal-size text.
 WCAG_AA_NORMAL_TEXT = 4.5
@@ -83,17 +87,13 @@ DARK_BUNDLE = "web.assets_web_dark"
 DARK_BODY_BG = "#111b1e"   # dark body / form-sheet / panel tier
 DARK_APP_BG = "#0b1315"    # dark webclient background band behind panels
 DARK_RAISED = "#152225"    # dark raised tier (list/kanban/settings headers)
-# Dark arm of the interactive link (#007F8E in light). Quoted for the failure message only; the
-# assertion is the measured WCAG contrast against the dark surface.
-DARK_LINK_REF = "#4fd4e2"
+# Dark arm of the interactive link (#7F4282 in light). The dark link is the brand cyan, the
+# measured WCAG contrast against the dark surface is asserted next to it.
+DARK_LINK_REF = "#00bbce"
 
-# The brand purple is a light-mode accent: the dark bundle carries no purple, every purple surface
-# falls back to its default look. brand_variables.scss compiles our purple rules under
-# `@if not $o-viin-dark-bundle` and also re-points $o-brand-secondary in dark, because core reads
-# that token directly in `.o_xxs_form_view .o_form_label` (2.50:1 on the dark panel) and in the
-# search-panel section header border, where no guard of ours reaches.
-DARK_BUNDLE_FORBIDDEN_PURPLE = "#b589b8"   # a dark-tuned brand purple - must NOT appear in dark
-DARK_MUTED_TIER = "#8ea5a8"       # $body-secondary-color: 6.75:1 on #111B1E, and NOT purple
+# The brand purple #7F4282 is 2.50:1 on the dark panel, so no dark text rule may paint it: the dark
+# arm of the structural accent is the cyan and so is the dark link.
+DARK_MUTED_TIER = "#8ea5a8"       # $body-secondary-color: 6.75:1 on #111B1E
 
 # Secondary solid surfaces core paints from the gray ramp (`$o-gray-100/200`, the `.bg-N`
 # utilities) or from a Bootstrap table variant, as the dark hex each must resolve to.
@@ -127,7 +127,7 @@ CORE_LIGHT_BTN_SECONDARY_BG = "#dee2e6"
 # The statusbar current step: core's $o-component-active-bg is `mix($o-action, $o-gray-100, 20%)`, a
 # light cyan tint that no $body-*-bg override reaches, so it recompiled unchanged into the dark
 # bundle.
-CORE_LIGHT_STATUSBAR_ACTIVE_BG = "#c6edf1"
+CORE_LIGHT_STATUSBAR_ACTIVE_BG = "#e0d4e2"
 # The stat button: `$o-btns-bs-outline-override["secondary"]` keys off the same gray ramp and is
 # expanded through the `button-variant` mixin, so `border` is a literal border colour and
 # `hover-background` a literal fill. Every smart button compiles as `btn btn-outline-secondary`.
@@ -204,41 +204,25 @@ LIGHT_BODY_TEXT = "#212529"
 # painted from as `!default` light literals that no $body-*-bg override reaches, so the panel
 # recompiled white in the dark bundle. These are the light values the dark bundle must not resolve.
 CORE_BURGER_PANEL_BG = WHITE                # $o-burger-base-bg
-CORE_BURGER_ENTRY_TEXT = "#343a40"          # $o-burger-base-color, painted at .8 alpha
+CORE_BURGER_ENTRY_TEXT = "#212529"          # the body text, the colour of a menu row
 CORE_BURGER_TOPBAR_BG = "#f8f9fa"           # $o-burger-topbar-bg
 CORE_BURGER_TOPBAR_TEXT = BLACK             # $o-burger-topbar-color
-# Core paints the entry text through `rgba($o-burger-base-color, .8)`, so the composite the user
-# reads is measured, not the raw text colour.
-CORE_BURGER_ENTRY_TEXT_ALPHA = 0.8
+# Core paints the entry text opaque; the composite the user reads is still measured, not the raw
+# text colour.
+CORE_BURGER_ENTRY_TEXT_ALPHA = 1.0
 # The dark tiers dark_palette.scss maps those tokens onto: the panel is the form-sheet tier, the
 # topbar the raised tier.
 DARK_BURGER_PANEL = DARK_BODY_BG            # #111b1e
 DARK_BURGER_TOPBAR = DARK_RAISED            # #152225
 
-# The search facet label (search_bar.xml, "web.SearchBar.Facets"): a groupBy facet has two shapes
-# (`text-bg-action`, plus `btn` when the search model can order by count) and a rule matching only
-# one is a latent bug, so both are asserted. The static label classes are carried too: a model
-# listing only the classes under test hides competitors keyed on the others and can only
-# cause a false PASS.
+# The search facet label (search_bar.xml, "web.SearchBar.NormalFacetIcon"). The static label classes
+# are carried with the classes under test: a model listing only the latter hides competitors keyed
+# on the others and can only cause a false PASS.
 _FACET_LABEL_BASE = frozenset({
-    "o_searchview_facet_label", "position-relative", "rounded-start-2", "px-1", "rounded-end-0",
-    "p-0",
+    "o_searchview_facet_label", "d-flex", "align-items-center", "position-relative", "rounded-2",
+    "p-1", "small",
 })
-FACET_LABEL_FIELD = _FACET_LABEL_BASE | {"btn", "btn-primary"}
-FACET_LABEL_GROUPBY = _FACET_LABEL_BASE | {"text-bg-action"}
-FACET_LABEL_GROUPBY_ORDERABLE = _FACET_LABEL_BASE | {"text-bg-action", "btn"}
-FACET_LABEL_FAVORITE = _FACET_LABEL_BASE | {"btn", "btn-favourite"}
-FACET_VALUES = frozenset({
-    "o_facet_values", "position-relative", "d-flex", "flex-wrap", "align-items-center", "ps-2",
-    "rounded-end-2", "text-wrap", "overflow-hidden",
-})
-# The ":hover overlay" div core renders before the facet label. Bootstrap ships sibling-gated button
-# rules whose subject carries no state pseudo-class; without a real sibling to test against they
-# would count as competitors for the resting facet paint.
-FACET_LABEL_PREV_SIBLING = frozenset({
-    "position-absolute", "start-0", "top-0", "bottom-0", "end-0", "bg-view", "border",
-    "rounded-2", "shadow", "opacity-0", "opacity-100-hover",
-})
+FACET_LABEL_FAVORITE = _FACET_LABEL_BASE | {"o_facet_favorite"}
 
 # Ancestor pools of the surfaces under test.
 # .o_main_navbar > .o_menu_sections > (.o_nav_entry | .dropdown-toggle); the overflow menu renders
@@ -310,13 +294,6 @@ STAT_BUTTON = {
 # .o_progressbar > .o_progress.
 PROGRESSBAR_ANCESTORS = frozenset({
     "o_web_client", "o_form_view", "o_list_view", "o_field_widget", "o_progressbar",
-})
-# Core nests the mobile form-label colour as
-# `.o_form_view.o_xxs_form_view .o_group .o_inner_group .o_form_label { color: $o-brand-secondary }`,
-# the same Sass variable as the desktop stat value, so both re-tint together. The pool must hold
-# every class the compiled selector demands (o_group AND o_inner_group).
-XXS_FORM_LABEL_ANCESTORS = frozenset({
-    "o_web_client", "o_form_view", "o_xxs_form_view", "o_group", "o_inner_group",
 })
 # The desktop label and its faded variant compile to
 # `.o_form_view .o_form_label.o_form_label_{empty,false,readonly}`, which demands only .o_form_view.
@@ -415,13 +392,14 @@ CORE_LIGHT_TEXT_BLACK = BLACK
 # "Reschedule" toggler, 3.73:1 at rest).
 CORE_LIGHT_BTN_LINK_MUTED = "#6c757d"   # $o-gray-600
 # Accent foregrounds with no dark arm. (a) `.btn-outline-primary`: core ships no "primary" key in
-# $o-btns-bs-outline-override, so the label compiles the light-mode teal #007F8E verbatim = 3.69:1
+# $o-btns-bs-outline-override, so the label compiles the light-mode brand purple #7F4282 verbatim = 2.50:1
 # on the dark panel (the form "New" button, the kanban "Load more..." control). (b)
 # $o-theme-text-colors, core's WCAG-tuning seam for the contextual text utilities: four values tuned
-# for a white page, 3.71-3.85:1 on the dark panel (`.text-danger` is 3.76:1).
+# for a white page, 3.71-3.86:1 on the dark panel (`.text-danger` is 3.76:1). The "success" entry is
+# the success fill $o-success (brand_text_colors.scss); the others are core's own.
 CORE_LIGHT_THEME_TEXT_COLORS = {
     "danger": "#d23f3a",
-    "success": "#008818",
+    "success": "#00884d",
     "info": "#0180a5",
     "warning": "#9a6b01",
 }
@@ -485,20 +463,6 @@ AUTOCOMPLETE_ACTIVE_ROW_ANCESTORS = frozenset({
 })
 
 
-def _colour_spellings(hex_colour):
-    """Every lower-cased form the SCSS compiler can emit a given ``#rrggbb`` colour as.
-
-    The hex literal, and the bare ``r,g,b`` triplet Odoo's `to-rgb()` produces for the o-print-color
-    mixin (how the group-by facet paints), with and without spaces.
-    """
-    red, green, blue = (int(hex_colour.lstrip("#")[start:start + 2], 16) for start in (0, 2, 4))
-    return (
-        hex_colour.lower(),
-        "%d,%d,%d" % (red, green, blue),
-        "%d, %d, %d" % (red, green, blue),
-    )
-
-
 def _relative_luminance(hex_colour):
     """Relative luminance per the WCAG 2.1 definition.
 
@@ -533,9 +497,6 @@ def _composite_over(fg_hex, bg_hex, alpha):
     return "#%02x%02x%02x" % tuple(out)
 
 
-# One non-nested `selectors { body }` rule. `[^{}]` keeps each match to one rule, so rules inside
-# @media / @supports wrappers are still captured individually.
-_RULE_RE = re.compile(r"([^{}]+)\{([^{}]*)\}")
 # The asset pipeline prepends a `/* <source-file-path> */` banner to each source-file fragment; it
 # would glue onto the following selector group, so it is stripped before parsing selectors.
 _COMMENT_RE = re.compile(r"/\*.*?\*/", re.DOTALL)
@@ -752,10 +713,52 @@ def _specificity(selector):
     return (ids, classes, types)
 
 
+def _split_selector_list(selector_group):
+    """Split a selector list at its top-level commas, keeping `:not(a, b)` and `:is(a, b)` whole."""
+    selectors, depth, start = [], 0, 0
+    for index, char in enumerate(selector_group):
+        if char in "([":
+            depth += 1
+        elif char in ")]":
+            depth -= 1
+        elif char == "," and depth == 0:
+            selectors.append(selector_group[start:index])
+            start = index + 1
+    selectors.append(selector_group[start:])
+    return selectors
+
+
 def _iter_rules(css):
-    """Yield ``(order, selector, body)`` for every selector of every compiled rule, in order."""
-    for order, (selector_group, body) in enumerate(_RULE_RE.findall(css)):
-        for selector in _COMMENT_RE.sub("", selector_group).split(","):
+    """Yield ``(order, selector, body)`` for every selector of every compiled rule, in order.
+
+    A rule nested in another style rule (native CSS nesting, which a library shipped as plain CSS
+    such as the spreadsheet one keeps) applies only under its parent, a scope this flat reading does
+    not model: it is skipped, never read as a rule of its own, and the parent keeps its own
+    declarations. Rules inside an at-rule wrapper (@media, @supports, @keyframes) are rules of
+    their own.
+    """
+    stack, rules, start = [], [], 0
+    for match in re.finditer(r"[{}]", css):
+        text, start = css[start:match.start()], match.end()
+        if match.group() == "{":
+            parent = stack[-1] if stack else None
+            nested = bool(parent and (parent.nested or not parent.prelude.startswith("@")))
+            if nested and not parent.nested:
+                declarations, _separator, text = text.rpartition(";")
+                if declarations.strip():
+                    parent.chunks.append(declarations + ";")
+            if parent:
+                parent.has_block = True
+            stack.append(SimpleNamespace(
+                prelude=_COMMENT_RE.sub("", text).strip(), chunks=[], has_block=False, nested=nested,
+            ))
+        elif stack:
+            block = stack.pop()
+            block.chunks.append(text)
+            if not block.nested and (not block.has_block or not block.prelude.startswith("@")):
+                rules.append((block.prelude, "".join(block.chunks)))
+    for order, (selector_group, body) in enumerate(rules):
+        for selector in _split_selector_list(selector_group):
             selector = selector.strip()
             if selector:
                 yield order, selector, body
@@ -1134,6 +1137,11 @@ class BrandCascadeCompileTest(TransactionCase):
             "%s compiled to empty CSS - the bundle did not build, so its surfaces cannot be "
             "verified." % bundle_name,
         )
+        self.assertNotIn(
+            "css_error_message", css,
+            "%s did not compile: Odoo serves the previous stylesheet with an error block, which "
+            "verifies nothing about the current sources." % bundle_name,
+        )
         return css
 
     def _root_custom_prop_values(self, css, prop):
@@ -1151,29 +1159,9 @@ class BrandCascadeCompileTest(TransactionCase):
                 values.append(match.group(1).strip().lower())
         return values
 
-    def _assert_flat_teal_available(self):
-        self.assertIsNotNone(
-            VIINDOO_THEME_COLOR,
-            "VIINDOO_THEME_COLOR must be defined in "
-            "viin_brand/controllers/webmanifest.py (the single Python brand-hex SSOT).",
-        )
-        return VIINDOO_THEME_COLOR.lower()
-
-    def _brand_secondary_ssot(self):
-        """Return the light $o-brand-secondary hex, read from the token SSOT.
-
-        Every "purple" assertion anchors on this reader instead of re-literalising the colour. The
-        "purple, not teal" claim is asserted separately against the teal ladder, so pointing the
-        token at a teal still fails loudly.
-        """
-        with open(BRAND_VARIABLES_SCSS, encoding="utf-8") as scss_file:
-            value = _resolve_scss_hex(scss_file.read(), "$o-brand-secondary")
-        self.assertIsNotNone(
-            value,
-            "$o-brand-secondary must be declared in %s - it is the SSOT for every META/STRUCTURE "
-            "purple surface in this cluster." % os.path.basename(BRAND_VARIABLES_SCSS),
-        )
-        return value.lower()
+    def _decorative_cyan(self):
+        """Return the decorative cyan, which no chrome state or fill under text may be."""
+        return DECORATIVE_CYAN
 
     def _dark_palette_var(self, var_name):
         """Alias of the module-level :func:`dark_palette_var`."""
@@ -1223,11 +1211,11 @@ class BrandCascadeCompileTest(TransactionCase):
         """Hovered, focused, pressed and open navbar menu entries render the deep chrome rung.
 
         Core paints all four states from `$o-navbar-entry-bg--hover` / `--active`, defaulting to
-        `rgba($o-black, .08)`, a barely perceptible ~#007583 over the teal navbar. The surface must
-        be darker than resting, not the decorative teal, and WCAG AA against the white entry text,
+        `rgba($o-black, .08)`, a barely perceptible ~#007482 over the teal navbar. The surface must
+        be darker than resting, not the decorative cyan, and WCAG AA against the white entry text,
         read off the value the cascade computes rather than a pinned hex.
         """
-        flat_brand_teal = self._assert_flat_teal_available()
+        decorative_cyan = self._decorative_cyan()
         css = self._css()
 
         # Every navbar chrome state, as a real element inside .o_menu_sections.
@@ -1273,16 +1261,22 @@ class BrandCascadeCompileTest(TransactionCase):
             }
             colour = self._resolve_colour(css, [element], BACKGROUND_PROPS, label)
             self.assertNotEqual(
-                colour, flat_brand_teal,
-                "The %s compiled to the flat DECORATIVE brand teal %s (2.33:1 with the white "
+                colour, decorative_cyan,
+                "The %s compiled to the decorative cyan %s (2.33:1 with the white "
                 "entry text). Chrome states must use the deep rung %s (7.5:1)."
-                % (label, flat_brand_teal, CHROME_DEEP),
+                % (label, decorative_cyan, CHROME_DEEP),
             )
             self.assertNotEqual(
                 colour, CHROME_BASE,
                 "The %s compiled to the chrome BASE %s, which is the navbar's own resting "
                 "surface - a hovered entry would be indistinguishable from the bar behind it. "
                 "It must darken to the deep rung %s." % (label, CHROME_BASE, CHROME_DEEP),
+            )
+            self.assertEqual(
+                colour, CHROME_DEEP,
+                "The %s compiled to %s instead of the deep chrome rung %s: the frame states read "
+                "$o-viin-chrome-deep, and the content's deep purple %s is not the frame's."
+                % (label, colour, CHROME_DEEP, ACTION_DEEP),
             )
             self.assertGreaterEqual(
                 _contrast_ratio(colour, WHITE), WCAG_AA_NORMAL_TEXT,
@@ -1291,402 +1285,173 @@ class BrandCascadeCompileTest(TransactionCase):
                 % (label, colour, WCAG_AA_NORMAL_TEXT, _contrast_ratio(colour, WHITE)),
             )
 
-    def test_search_facet_field_and_filter_render_chrome_base_on_white(self):
-        """Field and filter search facets render the chrome base under white text.
+    def test_search_facet_field_and_filter_render_the_brand_purple_on_a_tint(self):
+        """Field and filter search facets render the brand purple label on its own tint.
 
-        Core renders both as `btn btn-primary`. The module pins the Bootstrap button custom
-        properties (--btn-bg / --btn-border-color / --btn-color and their hover and active rungs)
-        on the label element itself, so the sibling .o_facet_remove close button keeps its red.
-
-        The resting and hovered backgrounds are the value the cascade computes through the pinned
-        tokens. The pressed rung is asserted on `--btn-active-bg`: core reaches that state through
-        `.btn:first-child:active` / `.btn.active` / `.btn.show`, which turn on structural position and
-        runtime classes a static stylesheet cannot pin to this element. The resolver models each
-        element's previous sibling so Bootstrap's `.btn-check:checked + .btn` (0,3,0, no state
-        pseudo-class) cannot hand the resting query a pressed value.
-
-        Hover and pressed are asserted on readability (WCAG AA against the white facet text), not on
-        a pinned hex. The pressed rung is the one that fails on a revert: it falls back to the
-        near-white #E6F2F4 (~1.1:1) of the primary button map.
+        Core renders both as `bg-primary-subtle text-primary`, both derived from `$primary`, which
+        is the brand purple. The label is read in each scheme (the light purple of the dark link in
+        dark) and measured against the `--primary-bg-subtle` tint, WCAG AA 4.5:1.
         """
-        flat_brand_teal = self._assert_flat_teal_available()
-        css = self._css()
-        element = {
-            "classes": FACET_LABEL_FIELD, "ancestors": SEARCH_FACET_ANCESTORS,
-            "prev_sibling": FACET_LABEL_PREV_SIBLING,
-        }
-        hovered = dict(element, states=frozenset({"hover"}))
-
-        resting_bg = self._resolve_colour(
-            css, [element], BACKGROUND_PROPS, "resting field/filter search facet"
-        )
-        self.assertEqual(
-            resting_bg, CHROME_BASE,
-            "A field/filter search facet compiled to %s instead of the chrome base %s. The "
-            "--btn-* pinning on .o_searchview_facet_label was dropped, so core's "
-            ".btn-primary tokens (keyed off the decorative $o-brand-primary) are painting it."
-            % (resting_bg, CHROME_BASE),
-        )
-        self.assertNotEqual(
-            resting_bg, flat_brand_teal,
-            "A field/filter search facet compiled to the flat DECORATIVE brand teal %s, which is "
-            "only 2.33:1 against its white label text." % flat_brand_teal,
-        )
-
-        resting_fg = self._resolve_colour(
-            css, [element], ("color",), "resting field/filter search facet text"
-        )
-        self.assertEqual(
-            resting_fg, WHITE,
-            "A field/filter search facet's text compiled to %s instead of white. The "
-            "--btn-color pinning was dropped; the chrome base is a dark surface and needs white "
-            "text." % resting_fg,
-        )
-        self.assertGreaterEqual(
-            _contrast_ratio(resting_bg, resting_fg), WCAG_AA_NORMAL_TEXT,
-            "A field/filter search facet renders %s text on %s - %.2f:1, below the WCAG AA "
-            "normal-text threshold of %.1f:1."
-            % (resting_fg, resting_bg, _contrast_ratio(resting_bg, resting_fg),
-               WCAG_AA_NORMAL_TEXT),
-        )
-
-        hovered_bg = self._resolve_colour(
-            css, [hovered], BACKGROUND_PROPS, "hovered field/filter search facet"
-        )
-        self.assertGreaterEqual(
-            _contrast_ratio(hovered_bg, resting_fg), WCAG_AA_NORMAL_TEXT,
-            "A hovered field/filter search facet renders %s text on %s - %.2f:1, below the WCAG "
-            "AA normal-text threshold of %.1f:1. The --btn-hover-bg pinning is missing."
-            % (resting_fg, hovered_bg, _contrast_ratio(hovered_bg, resting_fg),
-               WCAG_AA_NORMAL_TEXT),
-        )
-
-        pressed_token = self._resolve_colour(
-            css, [element], ("--btn-active-bg",), "pressed field/filter search facet token"
-        )
-        self.assertGreaterEqual(
-            _contrast_ratio(pressed_token, resting_fg), WCAG_AA_NORMAL_TEXT,
-            "The pressed-state token --btn-active-bg on a field/filter search facet resolves to "
-            "%s, which is %.2f:1 against the facet's white text %s - below the WCAG AA "
-            "normal-text threshold of %.1f:1."
-            % (pressed_token, _contrast_ratio(pressed_token, resting_fg), resting_fg,
-               WCAG_AA_NORMAL_TEXT),
-        )
-
-        border = self._resolve_colour(
-            css, [element], ("--btn-border-color",), "field/filter search facet border token"
-        )
-        self.assertEqual(
-            border, CHROME_BASE,
-            "A field/filter search facet's border token compiled to %s; it must match the chrome "
-            "base fill %s so the pill reads as one branded unit." % (border, CHROME_BASE),
-        )
-
-    def test_search_facet_groupby_is_the_structure_purple_not_the_filter_teal(self):
-        """A groupBy search facet renders the structure purple, distinct from a filter facet.
-
-        Teal is an action and purple is meta-structure: a field or filter facet narrows the record
-        set and stays teal, a groupBy facet only re-organises it. The discriminator is the facet type
-        itself (`'text-bg-action': facet.type == 'groupBy'`), not `.o_facet_with_domain`, which keys
-        on facet.domain and would leak onto a domain-less non-groupBy facet.
-
-        Both core shapes are asserted: a groupBy always gets `text-bg-action` and, when the search
-        model can order by count, a bare `btn` too, so a rule keyed on `:not(.btn)` would stop
-        matching on such views. Core generates `.text-bg-action` through o-print-color with
-        `background-color: var(--background-color) !important` and `color: var(--color) !important`,
-        which beat any specificity, so the override must feed the two custom properties those read.
-
-        The arms assert opposite things. Light: the facet is the brand purple under a white label
-        (6.99:1) and differs from a filter facet. Dark: the facet is neither purple nor the
-        dark-tuned purple and is core's own `.text-bg-action` paint, since the rule must not be
-        emitted into that bundle at all (`@if not $o-viin-dark-bundle`).
-        """
-        flat_brand_teal = self._assert_flat_teal_available()
-        expected_light_purple = self._brand_secondary_ssot()
-
-        shapes = (
-            ("groupBy facet (plain)", FACET_LABEL_GROUPBY),
-            ("groupBy facet (orderable, core also adds `btn`)", FACET_LABEL_GROUPBY_ORDERABLE),
-        )
-        arms = (
-            ("light", BACKEND_BUNDLE),
-            ("dark", DARK_BUNDLE),
-        )
-        for arm, bundle_name in arms:
-            css = self._compiled_css(bundle_name)
-            # The FILTER facet is resolved through the same machinery in the same bundle, so the
-            # "these two are different" claim is measured, not assumed.
-            filter_element = {
-                "classes": FACET_LABEL_FIELD, "ancestors": SEARCH_FACET_ANCESTORS,
-                "prev_sibling": FACET_LABEL_PREV_SIBLING,
-            }
-            filter_background = self._resolve_colour(
-                css, [filter_element], BACKGROUND_PROPS, "filter facet (%s arm)" % arm
-            )
-            self.assertEqual(
-                filter_background, CHROME_BASE,
-                "The FILTER facet compiled to %s instead of the chrome base %s in the %s bundle. "
-                "Narrowing is an ACT and must stay teal - the group-by re-point leaked onto it."
-                % (filter_background, CHROME_BASE, arm),
-            )
-
-            for label, classes in shapes:
-                label = "%s [%s arm]" % (label, arm)
-                element = {
-                    "classes": classes, "ancestors": SEARCH_FACET_ANCESTORS,
-                    "prev_sibling": FACET_LABEL_PREV_SIBLING,
-                }
-                background = self._resolve_colour(css, [element], BACKGROUND_PROPS, label)
-                if arm == "light":
-                    self.assertNotEqual(
-                        background, flat_brand_teal,
-                        "A %s compiled to the flat DECORATIVE brand teal %s (2.33:1) - core's "
-                        "untouched .text-bg-action paint, so the override is not reaching this "
-                        "shape." % (label, flat_brand_teal),
-                    )
-                    self.assertNotEqual(
-                        background, filter_background,
-                        "A %s compiled to %s - the SAME colour as a filter facet. Group-by is "
-                        "STRUCTURE and filter is ACT; collapsing them onto one hue is the defect "
-                        "this guard exists for. Either the rule does not key on .text-bg-action "
-                        "(so it misses this shape) or it declares plain background-color and loses "
-                        "to core's `background-color: var(--background-color) !important`."
-                        % (label, background),
-                    )
-                    # Anchor the light arm on the token SSOT, so the resolver is proven to be
-                    # reading $o-brand-secondary and not some unrelated purple.
-                    self.assertEqual(
-                        background, expected_light_purple,
-                        "A %s compiled to %s instead of the brand secondary %s "
-                        "($o-brand-secondary)." % (label, background, expected_light_purple),
-                    )
-                else:
-                    # Dark arm: the facet has no accent of ours. Both purples are refused by name and
-                    # the positive half asserts core's default paint. Group-by and filter facets are
-                    # both teal here, in different shades, so the "differs from filter" check is
-                    # light-only.
-                    self.assertNotEqual(
-                        background, expected_light_purple,
-                        "A %s compiled the brand purple %s in the DARK bundle. The purple accent is "
-                        "LIGHT-ONLY: the rule must be inside "
-                        "`@if not $o-viin-dark-bundle` so it never reaches web.assets_web_dark."
-                        % (label, expected_light_purple),
-                    )
-                    self.assertNotEqual(
-                        background, DARK_BUNDLE_FORBIDDEN_PURPLE,
-                        "A %s compiled the dark-tuned purple %s. $o-brand-secondary has no dark "
-                        "arm: the facet carries no purple in the dark bundle."
-                        % (label, DARK_BUNDLE_FORBIDDEN_PURPLE),
-                    )
-                    self.assertEqual(
-                        background, flat_brand_teal,
-                        "A %s compiled %s in the dark bundle, but the DEFAULT is "
-                        "core's own `.text-bg-action` paint - $o-action, i.e. the flat brand teal "
-                        "%s, whose color-contrast() foreground is self-contrasting. Getting "
-                        "something else here means a dark accent of ours is still being emitted."
-                        % (label, background, flat_brand_teal),
-                    )
-
-                foreground = self._resolve_colour(css, [element], ("color",), label + " text")
-                ratio = _contrast_ratio(background, foreground)
-                self.assertGreaterEqual(
-                    ratio, WCAG_AA_NORMAL_TEXT,
-                    "A %s renders %s text on %s - %.2f:1, below the WCAG AA normal-text threshold "
-                    "of %.1f:1. Light: the label is $o-white on the purple (6.99:1). Dark: the pair "
-                    "is core's own, so a failure here means something re-tinted the facet without "
-                    "re-tinting its label."
-                    % (label, foreground, background, ratio, WCAG_AA_NORMAL_TEXT),
-                )
-
-            # The values half of the pill follows its label. Light: the purple, so the facet reads
-            # as one unit (core draws no border there; the teal frame is this module's). Dark: the
-            # label is core's teal, so the frame must revert with it, or a purple frame around a
-            # teal label reads as two components - the signature of guarding the label rule only.
-            frame_element = {
-                "classes": FACET_VALUES,
-                "ancestors": SEARCH_FACET_ANCESTORS,
-                "prev_sibling": FACET_LABEL_GROUPBY,
-            }
-            frame = self._resolve_colour(
-                css, [frame_element], ("border-color", "border"),
-                "group-by facet frame (%s arm)" % arm,
-            )
-            if arm == "light":
-                self.assertNotEqual(
-                    frame, CHROME_BASE,
-                    "The group-by facet's .o_facet_values frame compiled the teal chrome base %s in "
-                    "the %s bundle while its label is purple - a purple label inside a teal frame "
-                    "reads as two components, not one pill. The `.text-bg-action + .o_facet_values` "
-                    "rule must stay AFTER the generic `:not(.btn-favourite)` frame rule (equal "
-                    "specificity, source order decides)." % (CHROME_BASE, arm),
-                )
-                self.assertEqual(
-                    frame, expected_light_purple,
-                    "The group-by facet frame compiled %s instead of the brand secondary %s."
-                    % (frame, expected_light_purple),
-                )
-            else:
-                self.assertNotIn(
-                    frame, (expected_light_purple, DARK_BUNDLE_FORBIDDEN_PURPLE),
-                    "The group-by facet frame compiled the purple %s in the DARK bundle. Its label "
-                    "is core-default there, so the frame rule must carry the SAME "
-                    "`@if not $o-viin-dark-bundle` guard as the label rule." % frame,
-                )
-                self.assertEqual(
-                    frame, CHROME_BASE,
-                    "The group-by facet frame compiled %s in the dark bundle; with the purple gone "
-                    "the generic `:not(.btn-favourite)` chrome-base frame %s is what should stand."
-                    % (frame, CHROME_BASE),
-                )
-
-    def test_search_facet_favourite_keeps_native_yellow_and_no_teal_frame(self):
-        """A saved-favourite search facet keeps core's yellow and receives no chrome frame.
-
-        Core renders a favourite facet as `btn btn-favourite`, generated by
-        button-variant($o-main-favorite-color), gold #f3cc00, which keeps the "saved filter"
-        affordance. Every teal-ifying facet rule therefore carries a `:not(.btn-favourite)` guard,
-        including the .o_facet_values frame: a teal frame hugging a yellow label contradicts the
-        design as loudly as repainting the label. A test asserting the favourite facet is teal would
-        be wrong.
-        """
-        css = self._css()
-        chrome_ladder = (CHROME_BASE, CHROME_DEEP)
-        label_element = {
-            "classes": FACET_LABEL_FAVORITE, "ancestors": SEARCH_FACET_ANCESTORS,
-            "prev_sibling": FACET_LABEL_PREV_SIBLING,
-        }
-
-        # The label itself - resting, hovered, and the token Bootstrap reads when pressed.
-        checks = (
-            ("resting", [dict(label_element)], BACKGROUND_PROPS),
-            ("hovered", [dict(label_element, states=frozenset({"hover"}))], BACKGROUND_PROPS),
-            ("pressed (token)", [dict(label_element)], ("--btn-active-bg",)),
-        )
-        for state_label, chain, props in checks:
-            colour = self._resolve_colour(
-                css, chain, props, "%s favourite search facet" % state_label
-            )
-            self.assertNotIn(
-                colour, chrome_ladder,
-                "The %s favourite search facet compiled to the chrome colour %s. The product "
-                "decision is that a saved filter keeps its native v19 yellow affordance in BOTH "
-                "resting and interactive states - a `:not(.btn-favourite)` guard was dropped from "
-                "the facet rules in brand_cascade.scss." % (state_label, colour),
-            )
-
-        # Non-vacuity: the favourite facet must still be painted by SOMETHING (core's gold button
-        # variant), otherwise the assertions above would pass on an unstyled element.
-        resting = self._resolve_colour(
-            css, [label_element], BACKGROUND_PROPS, "resting favourite search facet"
-        )
-        self.assertNotEqual(
-            resting, WHITE,
-            "The favourite search facet compiled to plain white - core's .btn-favourite variant "
-            "is not reaching it, so this guard would be vacuous. Re-ground it against the lever "
-            "core uses for saved-filter facets.",
-        )
-
-        # The sibling frame: .o_facet_values is the immediate next sibling of the label in
-        # web.SearchBar.Facets, so a `+` rule is what draws it. Core draws no border at all.
-        frame_element = {
-            "classes": FACET_VALUES,
+        facet_label = {
+            "classes": _FACET_LABEL_BASE | {"bg-primary-subtle", "text-primary", "d-flex"},
             "ancestors": SEARCH_FACET_ANCESTORS,
-            "prev_sibling": FACET_LABEL_FAVORITE,
+            "prev_sibling": frozenset(),
         }
-        frame = _computed_value(css, [frame_element], ("border", "border-color"))
-        frame_colour = _normalize_colour(frame) if frame else None
-        self.assertNotIn(
-            frame_colour, chrome_ladder,
-            "The values half of a saved-favourite facet compiled a chrome border (%s). Core draws "
-            "no border there, and the favourite facet stays 100%% native - the "
-            "`:not(.btn-favourite)` guard on the .o_facet_values rule was dropped." % frame_colour,
-        )
+        for arm, bundle_name, expected in (
+            ("light", BACKEND_BUNDLE, BRAND_PURPLE),
+            ("dark", DARK_BUNDLE, DARK_LINK_REF),
+        ):
+            with self.subTest(arm=arm):
+                css = self._compiled_css(bundle_name)
+                label = self._resolve_colour(
+                    css, [facet_label], ("color",), "field/filter facet label (%s)" % arm
+                )
+                tint = _normalize_colour(self._root_custom_prop_values(css, "primary-bg-subtle")[-1])
+                self.assertEqual(
+                    label, expected,
+                    "A field/filter facet label compiled to %s in the %s bundle instead of %s."
+                    % (label, arm, expected),
+                )
+                if arm == "light":
+                    # the cyan is decoration in light, and the content colour in dark
+                    self.assertNotEqual(label, DECORATIVE_CYAN)
+                self.assertGreaterEqual(
+                    _contrast_ratio(label, tint), WCAG_AA_NORMAL_TEXT,
+                    "The facet label %s on its tint %s is %.2f:1 in the %s bundle."
+                    % (label, tint, _contrast_ratio(label, tint), arm),
+                )
 
-    def test_statusbar_current_arrow_outline_is_chrome_base_over_a_light_fill(self):
-        """The current statusbar arrow is outlined in the chrome base over a light fill.
+    def test_checked_checkbox_fill_is_the_brand_purple_in_light_and_the_cyan_in_dark(self):
+        """A checked checkbox is filled with the brand purple in light and the brand cyan in dark.
 
-        Core routes both the arrow outline and its notch through --o-statusbar-border-active,
-        seeded from `$o-component-active-border` of the "secondary" entry of $o-btns-bs-override;
-        brand_variables.scss sets that variable to the chrome base. The fill is deliberately not
-        teal: $o-action is untouched, so $o-component-active-bg stays a light tint carrying dark
-        text, and the asserted invariant is that the fill stays readable under dark text.
+        The brand purple is 2.00:1 against the dark selected-row band, so the dark bundle fills the
+        checked box, and its border, with the brand cyan #00BBCE (7.50:1 on the panel); light
+        keeps the brand purple. The expected values are the decided colours, not read back from the SCSS.
         """
-        flat_brand_teal = self._assert_flat_teal_available()
+        checked_box = {
+            "classes": frozenset({"form-check-input"}),
+            "ancestors": frozenset(),
+            "states": frozenset({"checked"}),
+        }
+        for arm, bundle_name, expected in (
+            ("light", BACKEND_BUNDLE, BRAND_PURPLE),
+            ("dark", DARK_BUNDLE, DARK_CHECKED_FILL),
+        ):
+            css = self._compiled_css(bundle_name)
+            for prop_names in (BACKGROUND_PROPS, ("border-color",)):
+                with self.subTest(arm=arm, prop=prop_names[-1]):
+                    fill = self._resolve_colour(
+                        css, [checked_box], prop_names, "checked checkbox (%s)" % arm
+                    )
+                    self.assertEqual(
+                        fill, expected,
+                        "A checked checkbox compiled %s to %s in the %s bundle instead of %s."
+                        % (prop_names[-1], fill, arm, expected),
+                    )
+
+    def test_search_facet_groupby_label_takes_the_structural_accent(self):
+        """A groupBy search facet label takes the structural accent, on a tint of that accent.
+
+        Grouping re-organises the records, a field or filter facet narrows them: the group-by label
+        reads `$o-viin-accent-text` (purple in light, cyan in dark), read from the token SSOT of
+        each scheme, and is measured against its own tint (WCAG AA 4.5:1). The tint is rebuilt from
+        the accent because core's tint of the dark action colour would leave the cyan at 4.47:1.
+        """
+        with open(BRAND_VARIABLES_SCSS, encoding="utf-8") as scss_file:
+            light_accent = _resolve_scss_hex(scss_file.read(), "$o-viin-accent-text").lower()
+        groupby_label = {
+            "classes": _FACET_LABEL_BASE | {"o_facet_groupby", "d-flex"},
+            "ancestors": SEARCH_FACET_ANCESTORS,
+            "prev_sibling": frozenset(),
+        }
+        for arm, bundle_name, accent in (
+            ("light", BACKEND_BUNDLE, light_accent),
+            ("dark", DARK_BUNDLE, dark_palette_var("$o-viin-accent-text")),
+        ):
+            with self.subTest(arm=arm):
+                css = self._compiled_css(bundle_name)
+                label = self._resolve_colour(
+                    css, [groupby_label], ("color",), "groupBy facet label (%s)" % arm
+                )
+                tint = self._resolve_colour(
+                    css, [groupby_label], BACKGROUND_PROPS, "groupBy facet tint (%s)" % arm
+                )
+                self.assertEqual(
+                    label, accent,
+                    "A groupBy facet label compiled to %s in the %s bundle instead of the accent %s."
+                    % (label, arm, accent),
+                )
+                self.assertGreaterEqual(
+                    _contrast_ratio(label, tint), WCAG_AA_NORMAL_TEXT,
+                    "The groupBy label %s on its tint %s is %.2f:1 in the %s bundle."
+                    % (label, tint, _contrast_ratio(label, tint), arm),
+                )
+
+    def test_search_facet_favourite_keeps_its_native_gold(self):
+        """A saved-favourite search facet keeps core's gold and receives no brand colour.
+
+        Core renders a favourite facet label with `o_facet_favorite`, tinted and inked from
+        `$o-main-favorite-color`, which keeps the "saved filter" affordance. A test asserting the
+        favourite facet is purple would be wrong.
+        """
+        for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
+            with self.subTest(arm=arm):
+                css = self._compiled_css(bundle_name)
+                label = {
+                    "classes": FACET_LABEL_FAVORITE, "ancestors": SEARCH_FACET_ANCESTORS,
+                    "prev_sibling": frozenset(),
+                }
+                for prop in (BACKGROUND_PROPS, ("color",)):
+                    colour = self._resolve_colour(
+                        css, [label], prop, "%s of the favourite search facet" % prop[0]
+                    )
+                    self.assertNotIn(
+                        colour, (BRAND_PURPLE, ACTION_DEEP, DECORATIVE_CYAN, DARK_LINK_REF),
+                        "The favourite search facet compiled the brand colour %s in the %s bundle: "
+                        "a saved filter keeps its native gold affordance." % (colour, arm),
+                    )
+
+    def test_statusbar_current_step_is_a_light_brand_tint_under_readable_text(self):
+        """The current statusbar step is a light tint of the brand colour under readable text.
+
+        Core 20.0 paints the current step `disabled` from `--btn-disabled-bg`, set on every step to
+        `$o-component-active-bg`, a tint of the action colour (the brand purple) over the raised
+        surface, and reads its label from `--btn-disabled-color`. The fill is deliberately not the
+        chrome colour: it stays a light tint carrying dark text.
+        """
         css = self._css()
         status_element = {
             "classes": frozenset({"o_statusbar_status"}), "ancestors": STATUSBAR_ANCESTORS,
             "prev_sibling": frozenset(),
         }
-
-        outline = self._resolve_colour(
-            css, [status_element], ("--o-statusbar-border-active",), "statusbar current arrow"
-        )
-        self.assertEqual(
-            outline, CHROME_BASE,
-            "The statusbar current-arrow outline/notch token compiled to %s instead of the chrome "
-            "base %s. $o-component-active-border was dropped from brand_variables.scss, so it fell "
-            "back to core's $o-action." % (outline, CHROME_BASE),
-        )
-        self.assertNotEqual(
-            outline, flat_brand_teal,
-            "The statusbar current-arrow outline compiled to the flat DECORATIVE brand teal %s - "
-            "a 2.33:1 outline that barely separates the current step from its neighbours."
-            % flat_brand_teal,
-        )
-
-        # The notch: core paints .o_arrow_button_current::before from the same token, so one token
-        # covers both surfaces; asserting it guards against core splitting the notch onto its own
-        # lever.
-        notch_element = {
-            # `btn btn-secondary o_arrow_button` plus the state class. The two Bootstrap classes
-            # are load-bearing: without them the model excludes every `.btn` rule instead of ruling
-            # it out on the merits.
-            "classes": frozenset({
-                "btn", "btn-secondary", "o_arrow_button", "o_arrow_button_current",
-            }),
-            "states": frozenset({"disabled"}),
-            "pseudo_element": "before",
-            "ancestors": STATUSBAR_ANCESTORS,
-            # a row of sibling arrow buttons
-            "prev_sibling": frozenset({"btn", "btn-secondary", "o_arrow_button"}),
-        }
-        notch = self._resolve_colour(
-            css, [notch_element, status_element], BACKGROUND_PROPS, "statusbar current-arrow notch"
-        )
-        self.assertEqual(
-            notch, CHROME_BASE,
-            "The statusbar current-arrow NOTCH compiled to %s instead of the chrome base %s. Core "
-            "does not paint .o_arrow_button_current::before from --o-statusbar-border-active, so "
-            "the single token does not cover both the outline and the notch."
-            % (notch, CHROME_BASE),
-        )
-
         fill = self._resolve_colour(
-            css, [status_element], ("--o-statusbar-background-active",),
-            "statusbar current-arrow fill",
+            css, [STATUSBAR_CURRENT_STEP, status_element], ("--btn-disabled-bg",),
+            "statusbar current step fill",
+        )
+        label = self._resolve_colour(
+            css, [STATUSBAR_CURRENT_STEP, status_element], ("color",),
+            "statusbar current step label",
         )
         self.assertNotIn(
-            fill, (CHROME_BASE, CHROME_DEEP),
-            "The statusbar current-arrow FILL compiled to the chrome colour %s. $o-action must "
-            "stay untouched so the arrow keeps its light fill with dark text - only the "
-            "outline tier darkens." % fill,
+            fill, (BRAND_PURPLE, ACTION_DEEP, DECORATIVE_CYAN),
+            "The statusbar current-step fill compiled to the brand colour %s: it must stay a light "
+            "tint." % fill,
         )
+        self.assertEqual(fill, CORE_LIGHT_STATUSBAR_ACTIVE_BG)
         self.assertGreaterEqual(
-            _contrast_ratio(fill, BLACK), WCAG_AA_NORMAL_TEXT,
-            "The statusbar current-arrow fill %s only reaches %.2f:1 against the dark step label, "
-            "below the WCAG AA normal-text threshold of %.1f:1 - it is not the light tint the "
-            "light-fill/dark-outline split depends on."
-            % (fill, _contrast_ratio(fill, BLACK), WCAG_AA_NORMAL_TEXT),
+            _contrast_ratio(label, fill), WCAG_AA_NORMAL_TEXT,
+            "The current-step label %s on the fill %s is %.2f:1, below the WCAG AA normal-text "
+            "threshold of %.1f:1." % (label, fill, _contrast_ratio(label, fill), WCAG_AA_NORMAL_TEXT),
         )
 
-    def test_selected_settings_tab_indicator_is_chrome_base(self):
-        """The selected Settings tab shows a chrome-base inset indicator.
+    def test_selected_settings_tab_indicator_is_brand_purple(self):
+        """The selected Settings tab shows a brand-purple inset indicator.
 
         settings_form_view.scss draws it as `box-shadow: inset 2px 0 0 $o-component-active-border`,
         the same lever as the statusbar arrow. It is a separate test so the two surfaces can fail
         independently if core re-routes one of them onto a different variable.
         """
-        flat_brand_teal = self._assert_flat_teal_available()
+        decorative_cyan = self._decorative_cyan()
         css = self._css()
         element = {
             "classes": frozenset({"tab", "selected"}),
@@ -1697,37 +1462,37 @@ class BrandCascadeCompileTest(TransactionCase):
             css, [element], ("box-shadow",), "selected settings tab indicator"
         )
         self.assertEqual(
-            indicator, CHROME_BASE,
-            "The selected Settings tab indicator compiled to %s instead of the chrome base %s - "
+            indicator, BRAND_PURPLE,
+            "The selected Settings tab indicator compiled to %s instead of the brand purple %s - "
             "$o-component-active-border was dropped from brand_variables.scss."
-            % (indicator, CHROME_BASE),
+            % (indicator, BRAND_PURPLE),
         )
         self.assertNotEqual(
-            indicator, flat_brand_teal,
-            "The selected Settings tab indicator compiled to the flat DECORATIVE brand teal %s, "
-            "which barely reads as a selection marker at 2.33:1." % flat_brand_teal,
+            indicator, decorative_cyan,
+            "The selected Settings tab indicator compiled to the decorative cyan %s, "
+            "which barely reads as a selection marker at 2.33:1." % decorative_cyan,
         )
 
-    def test_stat_value_renders_brand_secondary_purple_with_a_teal_icon(self):
-        """A stat-button value renders the brand secondary purple, paired with a teal icon.
+    def test_stat_value_renders_the_structural_accent_in_both_schemes(self):
+        """A stat-button value renders the structural accent: purple in light, cyan in dark.
 
-        Core reads the colour from `var(--o-stat-text-color, $o-brand-primary)`, whose fallback is
-        the 2.33:1 decorative teal, so the module pins the custom property on .o-form-buttonbox. The
-        expected purple is read from the $o-brand-secondary token rather than re-literalised, and
-        the "purple, not teal" claim is asserted independently against both teals, so pointing the
-        token at a teal still fails. A test asserting the value is teal would be wrong.
+        Core reads the colour from `var(--o-stat-text-color, $o-brand-primary)`, so the module pins
+        the custom property on .o-form-buttonbox to `$o-viin-accent-text`. The expected values are
+        read from the token SSOT of each scheme rather than re-literalised; the label
+        (`.o_stat_text`) reads the same property and follows the value. Each surface is measured
+        on the surface it renders on: white in light, #111B1E in dark (WCAG AA 4.5:1).
         """
-        flat_brand_teal = self._assert_flat_teal_available()
         with open(BRAND_VARIABLES_SCSS, encoding="utf-8") as scss_file:
-            expected_purple = _resolve_scss_hex(scss_file.read(), "$o-brand-secondary")
+            expected_light = _resolve_scss_hex(scss_file.read(), "$o-viin-accent-text")
         self.assertIsNotNone(
-            expected_purple,
-            "$o-brand-secondary must be declared in %s - it is the SSOT for the stat-value colour."
+            expected_light,
+            "$o-viin-accent-text must be declared in %s - it is the SSOT for the stat-value colour."
             % os.path.basename(BRAND_VARIABLES_SCSS),
         )
-        expected_purple = expected_purple.lower()
-
-        css = self._css()
+        expected = {
+            ("light", BACKEND_BUNDLE, WHITE): expected_light.lower(),
+            ("dark", DARK_BUNDLE, DARK_BODY_BG): dark_palette_var("$o-viin-accent-text"),
+        }
         # .o_bottom_sheet is core's sanctioned exception (it pins --o-stat-text-color to
         # currentColor on mobile); the desktop form sheet is the surface under test, so that
         # context is excluded from the resolution.
@@ -1743,67 +1508,43 @@ class BrandCascadeCompileTest(TransactionCase):
             "classes": frozenset({"o_stat_value"}), "ancestors": STAT_BUTTON_ANCESTORS,
             "prev_sibling": frozenset({"o_stat_text"}),   # the text renders before the value
         }
-
-        value_colour = self._resolve_colour(
-            css, [stat_value, buttonbox], ("color",), "stat-button value"
-        )
-        self.assertEqual(
-            value_colour, expected_purple,
-            "A stat-button value compiled to %s instead of the brand secondary purple %s "
-            "($o-brand-secondary). The --o-stat-text-color pin on .o-form-buttonbox was dropped, "
-            "so core's decorative-teal var() fallback is painting it."
-            % (value_colour, expected_purple),
-        )
-        self.assertNotEqual(
-            value_colour, flat_brand_teal,
-            "A stat-button value compiled to the flat DECORATIVE brand teal %s - core's untouched "
-            "var(--o-stat-text-color, $o-brand-primary) fallback, only 2.33:1 on the form sheet."
-            % flat_brand_teal,
-        )
-        self.assertNotEqual(
-            value_colour, CHROME_BASE,
-            "A stat-button value compiled to the chrome base %s. This surface is purple, not "
-            "teal - see this test's docstring before changing it."
-            % CHROME_BASE,
-        )
-        self.assertGreaterEqual(
-            _contrast_ratio(value_colour, WHITE), WCAG_AA_NORMAL_TEXT,
-            "A stat-button value renders %s on the white form sheet - %.2f:1, below the WCAG AA "
-            "normal-text threshold of %.1f:1."
-            % (value_colour, _contrast_ratio(value_colour, WHITE), WCAG_AA_NORMAL_TEXT),
-        )
-
-        # The pairing: a teal ICON above a purple VALUE. Core reads the icon from
-        # var(--o-stat-button-color, $primary) and $primary is the chrome base, so the pairing
-        # holds; assert it so a change to $primary cannot collapse both onto one colour.
-        icon = {
-            "classes": frozenset({"o_button_icon"}), "ancestors": STAT_BUTTON_ANCESTORS,
-            "prev_sibling": frozenset(),                  # the icon is the first child
+        stat_label = {
+            "classes": frozenset({"o_stat_text"}), "ancestors": STAT_BUTTON_ANCESTORS,
+            "prev_sibling": frozenset(),
         }
-        icon_colour = self._resolve_colour(css, [icon, buttonbox], ("color",), "stat-button icon")
-        self.assertEqual(
-            icon_colour, CHROME_BASE,
-            "The stat-button ICON compiled to %s instead of the chrome base %s, breaking the "
-            "teal-icon / purple-value pairing." % (icon_colour, CHROME_BASE),
-        )
-        self.assertNotEqual(
-            icon_colour, value_colour,
-            "The stat-button icon and value both compiled to %s. The icon is teal and the value "
-            "purple; collapsing them onto one colour loses that pairing." % icon_colour,
-        )
+        for (arm, bundle_name, surface), accent in expected.items():
+            css = self._compiled_css(bundle_name)
+            for label, element in (("value", stat_value), ("label", stat_label)):
+                with self.subTest(arm=arm, element=label):
+                    colour = self._resolve_colour(
+                        css, [element, buttonbox], ("color",), "stat-button %s (%s)" % (label, arm)
+                    )
+                    self.assertEqual(
+                        colour, accent,
+                        "A stat-button %s compiled to %s in the %s bundle instead of the accent %s "
+                        "($o-viin-accent-text). The --o-stat-text-color pin on .o-form-buttonbox was "
+                        "dropped." % (label, colour, arm, accent),
+                    )
+                    self.assertGreaterEqual(
+                        _contrast_ratio(colour, surface), WCAG_AA_NORMAL_TEXT,
+                        "A stat-button %s renders %s on %s (%s) - %.2f:1, below the WCAG AA "
+                        "normal-text threshold of %.1f:1."
+                        % (label, colour, surface, arm, _contrast_ratio(colour, surface),
+                           WCAG_AA_NORMAL_TEXT),
+                    )
 
     def test_progressbar_trough_carries_the_brand_wash_not_core_white(self):
         """The progress-bar trough carries a near-white brand wash, not core's plain white.
 
-        Core leaves the track at $o-view-background-color, plain white, which makes an empty bar
+        Core leaves the track at the view surface, plain white, which makes an empty bar
         indistinguishable from the sheet. The track is decoration (the value renders in the sibling
         .o_progressbar_value), so the wash is asserted for presence and hue, not contrast: a
-        near-white tint leaning to the brand's cyan side (red channel lowest, every channel >= 0xE0),
-        which survives a tweak of the mix percentage without re-implementing the Sass mix().
+        near-white tint leaning to the brand's purple side (green channel lowest, every channel
+        >= 0xE0), which survives a tweak of the mix percentage without re-implementing the Sass mix().
         """
         css = self._css()
         element = {
-            "classes": frozenset({"o_progress", "align-middle", "overflow-hidden"}),
+            "classes": frozenset({"progress"}),
             "ancestors": PROGRESSBAR_ANCESTORS,
             "prev_sibling": frozenset({"o_progressbar_title"}),
         }
@@ -1818,9 +1559,9 @@ class BrandCascadeCompileTest(TransactionCase):
 
         red, green, blue = (int(trough[offset:offset + 2], 16) for offset in (1, 3, 5))
         self.assertTrue(
-            red < green and red < blue and min(red, green, blue) >= 0xE0,
-            "The progress-bar trough %s is not a near-white wash of the brand teal (expected a "
-            "tint whose red channel is the lowest and whose channels all stay above 0xE0, so the "
+            green < red and green < blue and min(red, green, blue) >= 0xE0,
+            "The progress-bar trough %s is not a near-white wash of the brand purple (expected a "
+            "tint whose green channel is the lowest and whose channels all stay above 0xE0, so the "
             "track reads as a faint brand-tinted surface behind the filled portion)." % trough,
         )
 
@@ -1857,205 +1598,28 @@ class BrandCascadeCompileTest(TransactionCase):
                 "payload is being served, so the backend is rendering stale styles." % marker,
             )
 
-    def test_content_palette_o_color_1_stays_core_aubergine_while_chrome_stays_teal(self):
-        """The editor/website content swatch o-color-1 renders core aubergine, not the brand teal.
+    def test_the_brand_secondary_is_the_decorative_cyan_in_both_schemes(self):
+        """$o-brand-secondary is the decorative cyan, the same in both schemes.
 
-        brand_variables.scss sets `$o-enterprise-color: #00BBCE` for the chrome, but core seeds the
-        content palette from the same variable at compile time, so without a fix `o-color-1` bleeds
-        to teal and breaks the core Hoot tests asserting rgb(113, 75, 103) = #714B67 (html_editor
-        color_selector, website builder image_shape). brand_palette_reset.scss map-merges base-1
-        o-color-1 back to aubergine after html_editor builds it, touching no chrome token.
-
-        The observable is `.bg-o-color-1`, which html_editor generates from the active palette's
-        o-color-1 entry. The fix is also proven scoped in the same bundle: a chrome facet still
-        renders the chrome teal and the decorative brand teal still exists elsewhere.
-        """
-        # html_editor builds the content palette; without it there is nothing to bleed into and
-        # brand_palette_reset.scss is a no-op, so the guard would fail vacuously. Skip instead.
-        if not self.env["ir.module.module"].search_count(
-            [("name", "=", "html_editor"), ("state", "=", "installed")]
-        ):
-            self.skipTest(
-                "html_editor is not installed - no content colour palette is built, so the brand "
-                "teal cannot bleed into o-color-1 and there is nothing to guard."
-            )
-        flat_brand_teal = self._assert_flat_teal_available()
-        css = self._css()
-
-        # .bg-o-color-1 is a plain, unscoped utility painted !important through o-print-color /
-        # bg-variant, which the resolver's cascade and RGBA() normalisation handle.
-        swatch = {
-            "classes": frozenset({"bg-o-color-1"}),
-            "ancestors": frozenset(),
-            "prev_sibling": frozenset(),
-        }
-        swatch_colour = self._resolve_colour(
-            css, [swatch], BACKGROUND_PROPS, "o-color-1 content swatch (.bg-o-color-1)"
-        )
-        self.assertEqual(
-            swatch_colour, CORE_CONTENT_O_COLOR_1,
-            "The CONTENT swatch .bg-o-color-1 compiled to %s instead of core aubergine %s. The "
-            "brand teal $o-enterprise-color bled into the content palette (html_editor seeds base-1 "
-            "o-color-1 from it) - brand_palette_reset.scss was dropped or its manifest append was "
-            "removed, so the swatch is not reset to core."
-            % (swatch_colour, CORE_CONTENT_O_COLOR_1),
-        )
-        self.assertNotEqual(
-            swatch_colour, flat_brand_teal,
-            "The CONTENT swatch .bg-o-color-1 compiled to the flat brand teal %s. o-color-1 is a "
-            "user-facing content colour, NOT chrome; it must stay core aubergine %s (this is what "
-            "the core color_selector / image_shape Hoot tests assert)."
-            % (flat_brand_teal, CORE_CONTENT_O_COLOR_1),
-        )
-        self.assertNotEqual(
-            swatch_colour, ODOO_COMMUNITY_PURPLE,
-            "The CONTENT swatch .bg-o-color-1 compiled to Odoo community purple %s - the palette "
-            "reset must land on aubergine %s, not the community-edition brand colour."
-            % (ODOO_COMMUNITY_PURPLE, CORE_CONTENT_O_COLOR_1),
-        )
-
-        # Scoped-fix proof 1: a real chrome surface in the same bundle stays the chrome teal; a
-        # disturbed chrome lever would move the field/filter facet base off CHROME_BASE.
-        facet = {
-            "classes": FACET_LABEL_FIELD, "ancestors": SEARCH_FACET_ANCESTORS,
-            "prev_sibling": FACET_LABEL_PREV_SIBLING,
-        }
-        facet_bg = self._resolve_colour(
-            css, [facet], BACKGROUND_PROPS, "field/filter search facet (chrome, scope check)"
-        )
-        self.assertEqual(
-            facet_bg, CHROME_BASE,
-            "Resetting the content palette disturbed chrome: the field/filter facet compiled to %s "
-            "instead of the chrome base %s. The reset must touch ONLY base-1 o-color-1 / theme "
-            "beta." % (facet_bg, CHROME_BASE),
-        )
-
-        # Scoped-fix proof 2: the decorative brand teal still exists in the bundle - the reset
-        # touches a content swatch, not the brand.
-        self.assertIn(
-            flat_brand_teal, css.lower(),
-            "The flat brand-identity teal %s vanished from the compiled bundle. The content-palette "
-            "reset must not nuke the brand decorative teal - only base-1 o-color-1 returns to core."
-            % flat_brand_teal,
-        )
-
-    def test_brand_secondary_text_clears_wcag_aa_on_light_and_dark_surfaces(self):
-        """The $o-brand-secondary readable-text surfaces clear WCAG AA in both schemes.
-
-        Three surfaces read the same $o-brand-secondary variable as readable text: the desktop
-        stat-button value and label (through .o-form-buttonbox's --o-stat-text-color, ours) and the
-        mobile form label (`.o_xxs_form_view .o_form_label`, core's). On the light sheet #7F4282 is
-        6.99:1; on the dark panel #111B1E it is 2.50:1, so the dark bundle must not use it. Core
-        leaves `.o_stat_text` uncoloured at an inherited 3.12:1, so painting the label purple meets
-        the brand request and repairs an AA failure.
-
-        The answer in dark is no purple, not a darker purple: the dark arm refuses both purples and
-        pins each surface to its default. The defaults differ because the surfaces are reached
-        differently. The stat value is ours: `--o-stat-text-color` becomes $body-color, since core's
-        own fallback `$o-brand-primary` is the decorative teal, still the wrong accent. The mobile
-        label is core's rule, so it is neutralised at the token: dark_palette.scss re-points
-        $o-brand-secondary to the dark muted tier, which also covers core's search-panel divider.
-
-        Each surface is resolved on the surface it renders on, over {light: assets_backend / white,
-        dark: assets_web_dark / #111B1E}.
+        In the light scheme the cyan is decoration only (2.33:1 on white): no text rule may paint it
+        (the stat value, the group name and the group-by facet read $o-viin-accent-text). In the
+        dark scheme it is a readable text colour (7.50:1 on the dark panel), which is why the dark
+        bundle keeps it.
         """
         with open(BRAND_VARIABLES_SCSS, encoding="utf-8") as scss_file:
-            expected_light_secondary = _resolve_scss_hex(scss_file.read(), "$o-brand-secondary")
-        self.assertIsNotNone(
-            expected_light_secondary,
-            "$o-brand-secondary must be declared in %s - it is the SSOT for the stat-value / mobile "
-            "form-label colour." % os.path.basename(BRAND_VARIABLES_SCSS),
-        )
-        expected_light_secondary = expected_light_secondary.lower()
-
-        # The surfaces, as the element chains the resolver walks.
-        buttonbox = {
-            "classes": frozenset({
-                "o-form-buttonbox", "d-print-none", "position-relative", "d-flex", "w-md-auto",
-                "o_not_full",
-            }),
-            "ancestors": BUTTONBOX_ANCESTORS, "prev_sibling": frozenset(),
-        }
-        stat_value_chain = [
-            {"classes": frozenset({"o_stat_value"}), "ancestors": STAT_BUTTON_ANCESTORS,
-             "prev_sibling": frozenset({"o_stat_text"})},
-            buttonbox,
-        ]
-        # The stat LABEL is the first child of .o_stat_info (the value models it as its previous
-        # sibling), so it has no preceding sibling. Core gives `.o_stat_text` no colour, so it
-        # inherits the btn-outline-secondary grey, 3.12:1 on white: the AA assertion below guards it.
-        stat_label_chain = [
-            {"classes": frozenset({"o_stat_text"}), "ancestors": STAT_BUTTON_ANCESTORS,
-             "prev_sibling": frozenset()},
-            buttonbox,
-        ]
-        mobile_label_chain = [
-            {"classes": frozenset({"o_form_label"}), "ancestors": XXS_FORM_LABEL_ANCESTORS,
-             "prev_sibling": frozenset()},
-        ]
-        # Each surface names its dark default: the stat value is ours to state (the bright
-        # body-text tier), the mobile label is core's rule, neutralised at the token (the muted tier).
-        tokens = (
-            ("desktop stat-button value", stat_value_chain, DARK_READABLE_TEXT),
-            ("desktop stat-button label", stat_label_chain, DARK_READABLE_TEXT),
-            ("mobile (o_xxs_form_view) form label", mobile_label_chain, DARK_MUTED_TIER),
-        )
-        arms = (
-            ("light", BACKEND_BUNDLE, WHITE),
-            ("dark", DARK_BUNDLE, DARK_BODY_BG),
-        )
-        for arm, bundle_name, surface in arms:
-            css = self._compiled_css(bundle_name)
-            for label, chain, dark_default in tokens:
-                colour = self._resolve_colour(
-                    css, chain, ("color",), "%s (%s arm)" % (label, arm)
-                )
-                if arm == "light":
-                    # Anchor: on the light sheet the surface is the brand SECONDARY purple (SSOT) -
-                    # proves the resolver is reading the right token, not an unrelated label rule.
-                    self.assertEqual(
-                        colour, expected_light_secondary,
-                        "The %s compiled to %s on the light sheet instead of the brand secondary "
-                        "%s ($o-brand-secondary). The element model or the token wiring changed."
-                        % (label, colour, expected_light_secondary),
-                    )
-                else:
-                    self.assertNotEqual(
-                        colour, expected_light_secondary,
-                        "The %s compiled the light brand purple %s in the DARK bundle - 2.50:1 on "
-                        "%s. The purple accent is light-only."
-                        % (label, expected_light_secondary, DARK_BODY_BG),
-                    )
-                    self.assertNotEqual(
-                        colour, DARK_BUNDLE_FORBIDDEN_PURPLE,
-                        "The %s compiled the dark-tuned purple %s. A darker purple is not the answer "
-                        "to the dark panel - the answer is NO purple."
-                        % (label, DARK_BUNDLE_FORBIDDEN_PURPLE),
-                    )
-                    self.assertEqual(
-                        colour, dark_default,
-                        "The %s compiled %s in the dark bundle instead of the default "
-                        "for it, %s. For the stat value that default is stated by our own "
-                        "`--o-stat-text-color` dark arm (core's fallback is the decorative teal, "
-                        "still an accent); for the mobile label it comes from re-pointing "
-                        "$o-brand-secondary itself, because that rule is core's."
-                        % (label, colour, dark_default),
-                    )
-                ratio = _contrast_ratio(colour, surface)
-                self.assertGreaterEqual(
-                    ratio, WCAG_AA_NORMAL_TEXT,
-                    "The %s renders %s on the %s surface %s - %.2f:1, below the WCAG AA normal-text "
-                    "threshold of %.1f:1. In the dark bundle this is the signature of the light "
-                    "$o-brand-secondary recompiling un-neutralised (2.50:1 on %s)."
-                    % (label, colour, arm, surface, ratio, WCAG_AA_NORMAL_TEXT, DARK_BODY_BG),
-                )
+            cyan = _resolve_scss_hex(scss_file.read(), "$o-brand-secondary")
+        self.assertIsNotNone(cyan, "$o-brand-secondary must be declared in brand_variables.scss")
+        self.assertEqual(cyan.lower(), "#00bbce")
+        self.assertLess(_contrast_ratio(cyan, WHITE), WCAG_AA_NORMAL_TEXT)
+        self.assertGreaterEqual(_contrast_ratio(cyan, DARK_BODY_BG), WCAG_AA_NORMAL_TEXT)
+        self.assertEqual(dark_palette_var("$o-viin-accent-text"), cyan.lower())
 
     def test_interactive_link_token_clears_wcag_aa_on_light_and_dark_surfaces(self):
         """The --link-color content-link token clears WCAG AA against the panel in both schemes.
 
         Content links read the :root --link-color custom property (emitted from $o-main-link-color /
-        $link-color). On white the AA teal #007F8E is 4.74:1; on the dark panel #111B1E it is only
-        3.69:1, so the dark arm retints the link to a lighter teal (#4FD4E2).
+        $link-color). On white the brand purple #7F4282 is 4.74:1; on the dark panel #111B1E it is only
+        2.50:1, so the dark arm retints the link to the brand cyan (#00BBCE).
         """
         for arm, bundle_name, surface in (
             ("light", BACKEND_BUNDLE, WHITE),
@@ -2077,7 +1641,7 @@ class BrandCascadeCompileTest(TransactionCase):
                 ratio, WCAG_AA_NORMAL_TEXT,
                 "The content-link colour --link-color=%s renders on the %s panel %s at %.2f:1, "
                 "below the WCAG AA normal-text threshold of %.1f:1. In dark mode the link needs its "
-                "dark arm (product value %s) instead of the light AA teal."
+                "dark arm (product value %s) instead of the light brand purple."
                 % (link_colour, arm, surface, ratio, WCAG_AA_NORMAL_TEXT, DARK_LINK_REF),
             )
 
@@ -2128,6 +1692,208 @@ class BrandCascadeCompileTest(TransactionCase):
             % (colour, CHROME_BASE),
         )
 
+    def test_the_frame_surfaces_render_the_chrome_teal_in_both_schemes(self):
+        """The navbar, the loading indicator and the toast timer bar are the chrome teal in both bundles.
+
+        They are the frame of the application, not the content of an action, so they read the chrome
+        ladder and never the brand purple, and the frame is scheme-invariant. White text on the
+        chrome base clears AA.
+        """
+        surfaces = (
+            ("navbar", {
+                "classes": frozenset({"o_main_navbar"}), "ancestors": frozenset({"o_web_client"}),
+                "prev_sibling": frozenset(),
+            }),
+            # The element as core renders it: the pill carries the `bg-view` utility, which is
+            # `!important`, so a rule that does not outrank it paints nothing.
+            ("loading indicator", {
+                "classes": frozenset({"o_loading_indicator", "bg-view"}), "ancestors": frozenset(),
+            }),
+            ("notification timer bar", {
+                "classes": frozenset({"o_notification_progress"}), "ancestors": frozenset(),
+            }),
+        )
+        for bundle_name in (BACKEND_BUNDLE, DARK_BUNDLE):
+            css = self._compiled_css(bundle_name)
+            for label, element in surfaces:
+                with self.subTest(bundle=bundle_name, surface=label):
+                    fill = self._resolve_colour(css, [element], BACKGROUND_PROPS, label)
+                    self.assertEqual(
+                        fill, CHROME_BASE,
+                        "The %s compiled to %s in %s instead of the chrome teal %s. The frame reads "
+                        "$o-viin-chrome-base; the brand purple belongs to the content of a view."
+                        % (label, fill, bundle_name, CHROME_BASE),
+                    )
+                    self.assertGreaterEqual(
+                        _contrast_ratio(WHITE, fill), WCAG_AA_NORMAL_TEXT,
+                        "White text on the %s fill %s is below WCAG AA." % (label, fill),
+                    )
+
+    def test_the_dark_primary_button_is_the_brand_cyan_with_derived_rungs_and_a_readable_label(self):
+        """In dark the content colour is the brand cyan, and a filled control carries its rungs.
+
+        The identity purple is 2.50:1 on the dark panel, so the dark scheme re-points the one content
+        token (`$o-brand-primary`) at the cyan. The resting fill is the cyan, the hover rung 15% toward
+        white, the pressed rung 15% toward black, and the label of every state is the dark ink
+        (white on the cyan is 2.33:1). Light keeps the purple and its white label.
+        """
+        primary_button = {
+            "classes": frozenset({"btn", "btn-primary"}),
+            "ancestors": frozenset({"o_web_client", "o_action_manager", "o_view_controller"}),
+            "prev_sibling": frozenset(),
+        }
+        expected = {
+            "--btn-bg": BRAND_CYAN, "--btn-border-color": BRAND_CYAN,
+            "--btn-hover-bg": DARK_ACTION_HOVER, "--btn-active-bg": DARK_ACTION_PRESSED,
+            "--btn-color": DARK_ACTION_LABEL, "--btn-hover-color": DARK_ACTION_LABEL,
+            "--btn-active-color": DARK_ACTION_LABEL,
+        }
+        css = self._compiled_css(DARK_BUNDLE)
+        for prop, value in expected.items():
+            with self.subTest(prop=prop):
+                self.assertEqual(
+                    self._resolve_colour(css, [primary_button], (prop,), ".btn-primary " + prop),
+                    value,
+                )
+        for fill, label in (
+            ("--btn-bg", "--btn-color"), ("--btn-hover-bg", "--btn-hover-color"),
+            ("--btn-active-bg", "--btn-active-color"),
+        ):
+            with self.subTest(pair=fill):
+                self.assertGreaterEqual(
+                    _contrast_ratio(
+                        self._resolve_colour(css, [primary_button], (label,), label),
+                        self._resolve_colour(css, [primary_button], (fill,), fill),
+                    ),
+                    WCAG_AA_NORMAL_TEXT,
+                )
+
+    def test_the_checked_box_and_radio_tick_is_the_label_of_the_fill_in_both_schemes(self):
+        """The tick of a checked checkbox and the dot of a checked radio read on the fill.
+
+        Light keeps core's pale tick on the brand purple. Dark fills the box with the cyan, whose label
+        is the dark ink (a white tick on the cyan is 2.33:1), so the tick takes the ink too.
+        """
+        for arm, bundle_name, tick in (
+            ("light", BACKEND_BUNDLE, "f8f9fa"), ("dark", DARK_BUNDLE, DARK_ACTION_LABEL.lstrip("#")),
+        ):
+            css = self._compiled_css(bundle_name)
+            for kind, shape in (("checkbox", "stroke"), ("radio", "fill")):
+                with self.subTest(arm=arm, kind=kind):
+                    match = re.search(
+                        r'\.form-check-input:checked\[type="%s"\]\s*\{[^}]*%s=.%%23([0-9a-fA-F]{6})'
+                        % (kind, shape), css,
+                    )
+                    self.assertTrue(match, "no checked %s tick compiled in %s" % (kind, bundle_name))
+                    self.assertEqual(match.group(1).lower(), tick)
+
+    def test_a_plain_popover_and_the_graph_tooltip_read_their_text_on_their_own_surface(self):
+        """The box of a `.popover` and its text agree in both schemes, so the tooltip of the graph views
+        reads in dark.
+
+        Bootstrap emits `--popover-bg` from `$popover-bg`, which core sets to `$white` (a real white in
+        the dark bundle), while `--popover-body-color` and the header colour follow the scheme. A
+        popover that is not a core `.o_popover` (the graph tooltip is
+        `<div class="o_graph_custom_tooltip popover show ...">`) kept the white box under the
+        near-white text of the dark scheme: 1.1:1. Light keeps the white box under the dark text.
+        """
+        graph_tooltip = {
+            "classes": frozenset({"o_graph_custom_tooltip", "popover", "show"}),
+            "ancestors": frozenset(), "prev_sibling": frozenset(),
+        }
+        for arm, bundle_name, surface in (
+            ("light", BACKEND_BUNDLE, "#ffffff"), ("dark", DARK_BUNDLE, DARK_BODY_BG),
+        ):
+            css = self._compiled_css(bundle_name)
+            with self.subTest(arm=arm):
+                fill = self._resolve_colour(css, [graph_tooltip], ("--popover-bg",), "popover box")
+                text = _normalize_colour(self._root_custom_prop_values(css, "body-color")[-1])
+                self.assertEqual(fill, surface, "the popover box is %s in the %s bundle" % (fill, arm))
+                self.assertGreaterEqual(
+                    _contrast_ratio(text, fill), WCAG_AA_NORMAL_TEXT,
+                    "the popover text %s on its box %s is %.2f:1 in the %s bundle"
+                    % (text, fill, _contrast_ratio(text, fill), arm),
+                )
+
+    def test_the_navbar_systray_badge_is_the_identity_purple_with_a_white_count_in_both_schemes(self):
+        """A systray counter reads `$o-navbar-badge-bg` / `-color`, which are scheme-invariant.
+
+        Core's `.o_main_navbar .o_menu_systray .badge` takes `$o-success` and an inherited colour by
+        default. The counters sit on the invariant teal chrome, so they are the identity purple under
+        a white count in light AND dark, where the content colour is the cyan. Every `.badge` an app
+        puts in the systray follows, whichever class it carries.
+        """
+        badge = {
+            "classes": frozenset({"badge"}),
+            "ancestors": frozenset({"o_web_client", "o_main_navbar", "o_menu_systray"}),
+            "prev_sibling": frozenset(),
+        }
+        for bundle_name in (BACKEND_BUNDLE, DARK_BUNDLE):
+            css = self._compiled_css(bundle_name)
+            with self.subTest(bundle=bundle_name):
+                fill = self._resolve_colour(css, [badge], BACKGROUND_PROPS, "systray badge fill")
+                label = self._resolve_colour(css, [badge], ("color",), "systray badge count")
+                self.assertEqual(fill, BRAND_PURPLE)
+                self.assertEqual(label, WHITE)
+                self.assertGreaterEqual(_contrast_ratio(label, fill), WCAG_AA_NORMAL_TEXT)
+
+    def test_the_loading_indicator_text_and_spinner_are_white_on_the_chrome_teal(self):
+        """The "Loading..." label and the spinner are white, so they read on the chrome teal pill.
+
+        Core paints the label from the inherited body colour and the spinner with `text-primary`
+        (`!important`), which is the brand purple: purple on the teal pill would be unreadable.
+        """
+        pill = {"classes": frozenset({"o_loading_indicator", "bg-view"}), "ancestors": frozenset()}
+        spinner = {
+            "classes": frozenset({"spinner-border", "text-primary"}),
+            "ancestors": frozenset({"o_loading_indicator"}),
+        }
+        for bundle_name in (BACKEND_BUNDLE, DARK_BUNDLE):
+            css = self._compiled_css(bundle_name)
+            for label, element in (("label", pill), ("spinner", spinner)):
+                with self.subTest(bundle=bundle_name, part=label):
+                    colour = self._resolve_colour(css, [element], ("color",), "loading indicator " + label)
+                    self.assertEqual(
+                        colour, WHITE,
+                        "The loading indicator %s compiled to %s in %s: it must be white on the chrome "
+                        "teal pill." % (label, colour, bundle_name),
+                    )
+
+    def test_the_block_ui_scrim_and_the_mobile_search_header_use_the_chrome_ladder(self):
+        """The block-UI scrim takes the deep chrome rung and the phone search header the chrome base.
+
+        Both are frame: the scrim covers the whole application, and on a phone the search sheet
+        header takes the place of the navbar. Core paints that header from the content purple
+        (`$o-brand-odoo`), and its pressed state from a darkened `$o-brand-primary`, so both are
+        re-pointed at the chrome ladder.
+        """
+        for bundle_name in (BACKEND_BUNDLE, DARK_BUNDLE):
+            css = self._compiled_css(bundle_name)
+            scrims = [
+                body for _order, selector, body in _iter_rules(css)
+                if selector.startswith(".o_blockUI") and "color-mix" in body
+            ]
+            with self.subTest(bundle=bundle_name, surface="block-UI scrim"):
+                self.assertTrue(scrims, "no compiled block-UI scrim tint in %s" % bundle_name)
+                self.assertIn(CHROME_DEEP, scrims[-1].lower())
+                self.assertNotIn(ACTION_DEEP, scrims[-1].lower())
+
+            header_bg, pressed = [], []
+            pressed_selector = (
+                ".o_web_client .o_mobile_search .o_mobile_search_header .o_mobile_search_button:active"
+            )
+            for _order, selector, body in _iter_rules(css):
+                if selector == ".o_web_client .o_mobile_search":
+                    header_bg += re.findall(r"--mobileSearch__header-bg\s*:\s*([^;]+)", body)
+                elif selector == pressed_selector:
+                    pressed += [value for value, _imp in _declarations(body, ("background-color",))]
+            with self.subTest(bundle=bundle_name, surface="mobile search header"):
+                self.assertEqual([_normalize_colour(value) for value in header_bg], [CHROME_BASE])
+                self.assertEqual(
+                    [_normalize_colour(value) for value in pressed[-1:]], [CHROME_DEEP],
+                    "the pressed state of the phone search header buttons must be the chrome deep rung",
+                )
+
     def test_secondary_surfaces_flip_dark_in_the_dark_bundle(self):
         """Kanban canvas, settings sidebar and header, facet band and selected row are dark in dark.
 
@@ -2144,7 +1910,7 @@ class BrandCascadeCompileTest(TransactionCase):
         stayed the light tint (#ccebfa) fails both. The light arm asserts the same surfaces stay
         light in web.assets_backend.
         """
-        flat_brand_teal = self._assert_flat_teal_available()   # the selected-row checkbox fill #00BBCE
+        checkbox_fill = BRAND_PURPLE   # the checked box is filled with $primary, the brand purple
         light_gray_100 = "#f8f9fa"
         light_gray_200 = "#e9ecef"
 
@@ -2235,12 +2001,12 @@ class BrandCascadeCompileTest(TransactionCase):
         dark_row = self._resolve_colour(
             dark_css, [table_info_row], ("--bs-table-bg",), "dark selected .table-info row"
         )
+        # The checked box is told from an unchecked one by its white tick: the tick on the fill is
+        # the contrast that carries the state.
         self.assertGreaterEqual(
-            _contrast_ratio(flat_brand_teal, dark_row), WCAG_NON_TEXT_MIN,
-            "The selected-row checkbox fill %s on the darkened band %s is %.2f:1, below the WCAG "
-            "non-text threshold %.1f:1."
-            % (flat_brand_teal, dark_row, _contrast_ratio(flat_brand_teal, dark_row),
-               WCAG_NON_TEXT_MIN),
+            _contrast_ratio(WHITE, checkbox_fill), WCAG_AA_NORMAL_TEXT,
+            "The checked-box tick on the fill %s is %.2f:1." % (
+                checkbox_fill, _contrast_ratio(WHITE, checkbox_fill)),
         )
         self.assertGreaterEqual(
             _contrast_ratio(DARK_READABLE_TEXT, dark_row), WCAG_AA_NORMAL_TEXT,
@@ -2263,10 +2029,10 @@ class BrandCascadeCompileTest(TransactionCase):
         itself in dark_secondary_surfaces.dark.scss and this guard resolves the cell's real layers.
 
         One rule addressed by type covers every `td` of the selected row (data cells, record
-        selector, trailing cell). WCAG is asserted on the light row text (AA) and the teal selection
+        selector, trailing cell). WCAG is asserted on the light row text (AA) and the purple selection
         checkbox (non-text) on the darkened band.
         """
-        flat_brand_teal = self._assert_flat_teal_available()   # selected-row checkbox fill #00BBCE
+        checkbox_fill = BRAND_PURPLE   # the checked box is filled with $primary, the brand purple
 
         dark_css = self._compiled_css(DARK_BUNDLE)
         light_css = self._css()
@@ -2307,11 +2073,11 @@ class BrandCascadeCompileTest(TransactionCase):
             "The selected-row cell text %s on the dark band %s is %.2f:1, below WCAG AA %.1f:1."
             % (text, band, _contrast_ratio(text, band), WCAG_AA_NORMAL_TEXT),
         )
+        # The checked box is told from an unchecked one by its white tick.
         self.assertGreaterEqual(
-            _contrast_ratio(flat_brand_teal, band), WCAG_NON_TEXT_MIN,
-            "The selection checkbox fill %s on the dark band %s is %.2f:1, below the WCAG "
-            "non-text threshold %.1f:1." % (flat_brand_teal, band,
-                                            _contrast_ratio(flat_brand_teal, band), WCAG_NON_TEXT_MIN),
+            _contrast_ratio(WHITE, checkbox_fill), WCAG_AA_NORMAL_TEXT,
+            "The checked-box tick on the fill %s is %.2f:1." % (
+                checkbox_fill, _contrast_ratio(WHITE, checkbox_fill)),
         )
 
         # Non-leak: this dark-only rule must never be compiled into the LIGHT web.assets_backend.
@@ -2321,63 +2087,27 @@ class BrandCascadeCompileTest(TransactionCase):
             "dark_secondary_surfaces.dark.scss must stay dark-bundle only.",
         )
 
-    def test_dark_faded_form_label_is_lifted_above_core_dim_default(self):
-        """A faded (empty/readonly) form label is lifted above core's 0.66 opacity in dark.
+    def test_dark_faded_form_label_is_readable_and_not_dimmed_further(self):
+        """A faded (empty/readonly) form label is readable in dark and takes no extra fade.
 
-        The faded label's base colour is #EDF4F5 because the module gives the general
-        `.o_form_label` its own `color: var(--body-color)` in dark_secondary_surfaces.dark.scss; a
-        bare label inherits #212529 from its `.text-900` cell. Core fades the empty/readonly/false
-        variant with `opacity: 0.66`, which composites #EDF4F5 over the #111B1E sheet to #A2AAAC =
-        7.41:1: above AA and AAA but perceptually dim next to a filled label (15.72:1). At 0.85 the
-        composite is #CCD3D5 = 11.54:1.
-
-        Asserted: (a) the dark bundle lifts the opacity strictly above core's 0.66 (the grounded
-        literal CORE_FADED_LABEL_OPACITY, never the production value); (b) the composited label
-        still clears WCAG AA on the dark sheet; (c) light mode keeps core's 0.66, the lift being
-        dark-only.
+        Core fades the empty/readonly/false variant with the muted text colour (`$text-muted`),
+        which the dark palette resolves to the dark muted tier #8EA5A8 (6.75:1 on the dark sheet).
+        No `opacity` may dim it further.
         """
         faded_label = {
             "classes": frozenset({"o_form_label", "o_form_label_readonly"}),
             "ancestors": FORM_LABEL_ANCESTORS, "prev_sibling": frozenset(),
         }
         dark_css = self._compiled_css(DARK_BUNDLE)
-        raw_opacity = _winning_declaration(dark_css, faded_label, ("opacity",))
-        self.assertIsNotNone(
-            raw_opacity,
-            "No compiled `opacity` declaration applies to a faded (readonly) form label in the dark "
-            "bundle - core's faded-label rule or the element model changed; re-ground.",
-        )
-        opacity = float(raw_opacity.strip())
-        # (a) load-bearing: lifted above core's dim default.
-        self.assertGreater(
-            opacity, CORE_FADED_LABEL_OPACITY,
-            "The faded form-label opacity in web.assets_web_dark is %.2f - core's dim %.2f default, "
-            "not lifted. dark_secondary_surfaces.dark.scss must raise it so empty/readonly labels do "
-            "not read a full step dimmer than filled labels on the dark sheet."
-            % (opacity, CORE_FADED_LABEL_OPACITY),
-        )
-        # (b) floor: the composited faded label still clears AA on the dark sheet.
-        composite = _composite_over(DARK_READABLE_TEXT, DARK_BODY_BG, opacity)
-        ratio = _contrast_ratio(composite, DARK_BODY_BG)
+        colour = self._resolve_colour(dark_css, [faded_label], ("color",), "faded form label")
         self.assertGreaterEqual(
-            ratio, WCAG_AA_NORMAL_TEXT,
-            "The faded form label composites to %s at opacity %.2f over the dark sheet %s - %.2f:1, "
-            "below WCAG AA %.1f:1."
-            % (composite, opacity, DARK_BODY_BG, ratio, WCAG_AA_NORMAL_TEXT),
+            _contrast_ratio(colour, DARK_BODY_BG), WCAG_AA_NORMAL_TEXT,
+            "The faded form label renders %s on the dark sheet %s - %.2f:1, below WCAG AA %.1f:1."
+            % (colour, DARK_BODY_BG, _contrast_ratio(colour, DARK_BODY_BG), WCAG_AA_NORMAL_TEXT),
         )
-        # (c) non-regression: light mode keeps core's 0.66 (the lift is dark-only).
-        light_css = self._css()
-        light_opacity = _winning_declaration(light_css, faded_label, ("opacity",))
-        self.assertIsNotNone(
-            light_opacity,
-            "No `opacity` declaration applies to a faded form label in web.assets_backend - core's "
-            "0.66 default is missing; re-ground.",
-        )
-        self.assertEqual(
-            float(light_opacity.strip()), CORE_FADED_LABEL_OPACITY,
-            "The faded form-label opacity in the LIGHT bundle is %s, not core's %.2f - the dark-only "
-            "legibility lift leaked into web.assets_backend."
-            % (light_opacity, CORE_FADED_LABEL_OPACITY),
+        self.assertIsNone(
+            _winning_declaration(dark_css, faded_label, ("opacity",)),
+            "An `opacity` rule dims the faded form label on top of its muted colour.",
         )
 
     def _resolve_colour_value(self, css, chain, raw):
@@ -2609,8 +2339,8 @@ class BrandCascadeCompileTest(TransactionCase):
 
         Core declares every colour of this component as an `!default` light literal in
         burger_menu.variables.scss and consumes them directly: panel `$o-burger-base-bg: $o-white`,
-        topbar `$o-burger-topbar-bg: $o-gray-100`, entry text `$o-burger-base-color: $o-gray-800` at
-        .8 alpha and topbar text `$o-burger-topbar-color: $o-black`. None is reachable from the
+        topbar `$o-burger-topbar-bg: $o-gray-100` and topbar text `$o-burger-topbar-color: $o-black`;
+        the entry text is the body text. None of the three is reachable from the
         $body-*-bg neutrals, so the panel recompiles white in web.assets_web_dark while everything
         drawn on it recompiles for a dark backdrop: the `web.SectionMenu` section titles
         (`fw-bolder text-900 pt-3 pb-2`) compute the dark #EDF4F5 on white = 1.11:1.
@@ -2622,12 +2352,10 @@ class BrandCascadeCompileTest(TransactionCase):
         readability is measured against the resolved panel, never a hardcoded backdrop. The
         $o-burger-* block at the end of dark_palette.scss makes all pass.
 
-        The entry-row composite is green in both the fully light and fully dark state (core's light
-        island is internally consistent at 6.23:1); it guards the dangerous partial change of
-        darkening the panel while leaving `$o-burger-base-color` at $o-gray-800, which composites
-        rgba(52,58,64,.8) to #3E454C on #111B1E = 1.80:1.
+        The entry-row colour is the body text, which the dark palette re-points: it guards the
+        dangerous partial change of darkening the panel while leaving the rows near-black.
 
-        The light arm asserts all four tokens keep core's values in web.assets_backend, since
+        The light arm asserts the three tokens keep core's values in web.assets_backend, since
         dark_palette.scss contributes to web.assets_web_dark alone.
 
         Model scope: the panels are portalled to `body`, so the ancestor pool is the panel root
@@ -2701,8 +2429,8 @@ class BrandCascadeCompileTest(TransactionCase):
         self.assertGreaterEqual(
             entry_ratio, WCAG_AA_NORMAL_TEXT,
             "A burger sidebar menu row composites to %s on the darkened panel %s = %.2f:1, below "
-            "WCAG AA %.1f:1. The panel was darkened but $o-burger-base-color still carries core's "
-            "%s, so the rows are dark-on-dark - darken the text token too, do not leave the fix half "
+            "WCAG AA %.1f:1. The panel was darkened but the rows still carry core's "
+            "%s, so they are dark-on-dark - darken the text too, do not leave the fix half "
             "done." % (dark_entry_composite, dark_panel, entry_ratio, WCAG_AA_NORMAL_TEXT,
                        CORE_BURGER_ENTRY_TEXT),
         )
@@ -2851,18 +2579,15 @@ class BrandCascadeCompileTest(TransactionCase):
         Asserted is the behaviour, not a hex: the fill is darker than its own label and the pair
         clears AA, which core's light pill fails on both halves.
 
-        The non-regression half is the real risk. The module merges one key into
+        The non-regression half is the real risk. The module merges keys into
         $o-btns-bs-override, a map read by more than `.btn-secondary`: a plain assignment instead of
-        map-merge would wipe the AA-teal "primary" entry and hand `.btn-primary` back to the flat
-        2.33:1 decorative teal, asserted in both bundles.
+        map-merge would wipe the "primary" entry, asserted in both bundles.
 
-        The active-step keys (`--o-statusbar-background-active` / `--o-statusbar-border-active`) are
-        not asserted identical across bundles: forwarding light's #C6EDF1 into dark would put a
-        glaring cyan slab under a 1.25:1 white label, and a parity check cannot see that because it
-        compares the bundles to each other, never to a surface. That requirement is measured in
-        test_dark_statusbar_current_step_is_a_dark_surface_with_a_readable_label. The hover key is
-        this map's own state and stays here. The stat-button border/hover and the mobile stat-strip
-        divider read the separate $o-btns-bs-OUTLINE-override map, with its own guards below.
+        The current step is measured in
+        test_dark_statusbar_current_step_is_a_dark_surface_with_a_readable_label. The hover of a
+        step is this map's own state and stays here. The stat-button border/hover and the mobile
+        stat-strip divider read the separate $o-btns-bs-OUTLINE-override map, with its own guards
+        below.
         """
         dark_css = self._compiled_css(DARK_BUNDLE)
         light_css = self._compiled_css(BACKEND_BUNDLE)
@@ -2908,52 +2633,40 @@ class BrandCascadeCompileTest(TransactionCase):
             "threshold of %.1f:1." % (dark_label, dark_fill, ratio, WCAG_AA_NORMAL_TEXT),
         )
 
-        # Non-regression: the AA-teal primary button survives the map-merge.
+        # Non-regression: the primary button survives the map-merge: the brand purple in light, the
+        # brand cyan in dark.
         primary_button = {
             "classes": frozenset({"btn", "btn-primary"}),
             "ancestors": frozenset({"o_web_client", "o_action_manager", "o_view_controller"}),
             "prev_sibling": frozenset(),
         }
-        for arm, css in (("light", light_css), ("dark", dark_css)):
+        for arm, css, expected in (
+            ("light", light_css, BRAND_PURPLE), ("dark", dark_css, BRAND_CYAN),
+        ):
             primary_fill = self._resolve_colour(
                 css, [primary_button], BACKGROUND_PROPS, ".btn-primary fill (%s arm)" % arm
             )
             self.assertEqual(
-                primary_fill, CHROME_BASE,
-                "`.btn-primary` compiled to %s instead of the AA chrome base %s in the %s bundle. "
+                primary_fill, expected,
+                "`.btn-primary` compiled to %s instead of %s in the %s bundle. "
                 "dark_buttons.scss must map-merge INTO $o-btns-bs-override; a plain assignment "
-                "wipes the cluster's 'primary' entry and core's flat decorative teal takes over."
-                % (primary_fill, CHROME_BASE, arm),
+                "wipes the cluster's 'primary' entry."
+                % (primary_fill, expected, arm),
             )
 
-        status_root = {
-            "classes": frozenset({"o_statusbar_status"}), "ancestors": STATUSBAR_ANCESTORS,
-            "prev_sibling": frozenset(),
-        }
-
-        # The statusbar also reads `hover-background` from the same entry, so the neutral pill's
-        # hover fill is the hovered step too: dark in the dark bundle, core's light grey in the
-        # light one; a near-white hover under the dark step label (#EDF4F5) would be ~1.25:1.
-        light_hover = _computed_value(light_css, [status_root], ("--o-statusbar-background-hover",))
-        dark_hover = _computed_value(dark_css, [status_root], ("--o-statusbar-background-hover",))
-        light_hover_colour = _normalize_colour(light_hover or "")
-        dark_hover_colour = _normalize_colour(dark_hover or "")
-        self.assertIsNotNone(
-            light_hover_colour,
-            "--o-statusbar-background-hover carries no resolvable colour in the light bundle (%r) - "
-            "core moved the statusbar hover to a different lever." % light_hover,
+        # A clickable statusbar step is a `.btn-secondary` whose hover fill core pins to `$gray-200`
+        # (`--btn-hover-bg`): the gray ramp makes it a dark surface in the dark bundle, where a
+        # near-white hover under the dark step label (#EDF4F5) would be ~1.25:1.
+        light_hover_colour = self._resolve_colour(
+            light_css, [STATUSBAR_STEP], ("--btn-hover-bg",), "light statusbar step hover fill"
         )
-        self.assertIsNotNone(
-            dark_hover_colour,
-            "--o-statusbar-background-hover carries no resolvable colour in the dark bundle (%r)."
-            % dark_hover,
+        dark_hover_colour = self._resolve_colour(
+            dark_css, [STATUSBAR_STEP], ("--btn-hover-bg",), "dark statusbar step hover fill"
         )
         self.assertLess(
             _relative_luminance(dark_hover_colour), _relative_luminance(light_hover_colour),
-            "The dark statusbar HOVER fill (%s) is not darker than the light one (%s). It is seeded "
-            "from the neutral button map's `hover-background`, so the dark arm must darken it - "
-            "core's light grey is a near-white flash on a dark statusbar (~1.25:1 under the dark "
-            "step label)." % (dark_hover_colour, light_hover_colour),
+            "The dark statusbar HOVER fill (%s) is not darker than the light one (%s)."
+            % (dark_hover_colour, light_hover_colour),
         )
         self.assertGreaterEqual(
             _contrast_ratio(DARK_READABLE_TEXT, dark_hover_colour), WCAG_AA_NORMAL_TEXT,
@@ -2963,11 +2676,12 @@ class BrandCascadeCompileTest(TransactionCase):
                _contrast_ratio(DARK_READABLE_TEXT, dark_hover_colour), WCAG_AA_NORMAL_TEXT),
         )
 
-    def test_list_group_header_name_renders_the_structure_purple_in_both_schemes(self):
-        """A grouped-list group name renders the structure purple, readably, in both schemes.
+    def test_list_group_header_name_renders_the_structural_accent_in_both_schemes(self):
+        """A grouped-list group name renders the structural accent, readably, in both schemes.
 
         A group header is not an action but the structure the records were re-organised into, so it
-        is the list-view counterpart of the purple group-by facet.
+        is the list-view counterpart of the group-by facet: purple in light, cyan in dark (read from
+        `$o-viin-accent-text` of each scheme).
 
         Importance is the trap, twice over. Core stamps the name cell with `.text-black` when open or
         `.text-body` when folded, and both are `!important` (o-print-color emits
@@ -2978,17 +2692,17 @@ class BrandCascadeCompileTest(TransactionCase):
         underlying token would be far too broad: `--color` is shared by every o-print-color utility
         and `--body-color-rgb` by the whole body text tier.
         """
-        expected_light_purple = self._brand_secondary_ssot()
-        flat_brand_teal = self._assert_flat_teal_available()
+        with open(BRAND_VARIABLES_SCSS, encoding="utf-8") as scss_file:
+            light_accent = _resolve_scss_hex(scss_file.read(), "$o-viin-accent-text").lower()
         shapes = (
             ("open group (core adds .text-black)", LIST_GROUP_NAME_OPEN),
             ("folded group (core adds .text-body)", LIST_GROUP_NAME_FOLDED),
         )
         arms = (
-            ("light", BACKEND_BUNDLE, LIST_SURFACE_LIGHT),
-            ("dark", DARK_BUNDLE, LIST_SURFACE_DARK),
+            ("light", BACKEND_BUNDLE, LIST_SURFACE_LIGHT, light_accent),
+            ("dark", DARK_BUNDLE, LIST_SURFACE_DARK, dark_palette_var("$o-viin-accent-text")),
         )
-        for arm, bundle_name, surface in arms:
+        for arm, bundle_name, surface, accent in arms:
             css = self._compiled_css(bundle_name)
             for shape, classes in shapes:
                 label = "%s [%s arm]" % (shape, arm)
@@ -3001,39 +2715,13 @@ class BrandCascadeCompileTest(TransactionCase):
                     colour, BLACK,
                     "The %s group name compiled to plain black - core's `.text-black` utility is "
                     "still winning, so the declaration is missing its `!important` (or is on the row "
-                    "instead of the .o_group_name cell). In the DARK bundle that is 1.16:1 on the "
-                    "#111B1E list surface, i.e. invisible. (`.text-black` is a compile-time grayscale "
-                    "literal with its own class-wide dark re-point at (0,1,0); this cell's own rule "
-                    "still has to win on its own terms, which is what this assertion checks.)" % label,
+                    "instead of the .o_group_name cell)." % label,
                 )
-                self.assertNotIn(
-                    colour, (CHROME_BASE, CHROME_DEEP, flat_brand_teal),
-                    "The %s group name compiled the teal %s. Grouping is STRUCTURE, not an ACT - "
-                    "see the colour law in brand_variables.scss." % (label, colour),
+                self.assertEqual(
+                    colour, accent,
+                    "The %s group name compiled to %s instead of the accent %s "
+                    "($o-viin-accent-text)." % (label, colour, accent),
                 )
-                if arm == "light":
-                    self.assertEqual(
-                        colour, expected_light_purple,
-                        "The %s group name compiled to %s instead of the brand secondary %s "
-                        "($o-brand-secondary)." % (label, colour, expected_light_purple),
-                    )
-                else:
-                    # No purple in dark. Unlike the group-by facet, this rule is not dropped in
-                    # dark: that would hand the cell back to core's black-on-dark `.text-black`. The
-                    # dark arm re-aims it at the bright body tier, asserted positively so deleting
-                    # the @else arm is caught by more than the black refusal above.
-                    self.assertNotIn(
-                        colour, (expected_light_purple, DARK_BUNDLE_FORBIDDEN_PURPLE),
-                        "The %s group name compiled the purple %s in the DARK bundle. The purple "
-                        "accent is light-only." % (label, colour),
-                    )
-                    self.assertEqual(
-                        colour, DARK_READABLE_TEXT,
-                        "The %s group name compiled %s in the dark bundle instead of the bright "
-                        "body-text tier %s. That is the default look, and it is the "
-                        "only value that also beats core's black-on-dark `.text-black`."
-                        % (label, colour, DARK_READABLE_TEXT),
-                    )
                 ratio = _contrast_ratio(colour, surface)
                 self.assertGreaterEqual(
                     ratio, WCAG_AA_NORMAL_TEXT,
@@ -3042,67 +2730,14 @@ class BrandCascadeCompileTest(TransactionCase):
                     % (label, colour, arm, surface, ratio, WCAG_AA_NORMAL_TEXT),
                 )
 
-    def test_no_brand_purple_survives_anywhere_in_the_dark_bundle(self):
-        """web.assets_web_dark contains no occurrence of either brand purple.
-
-        The per-surface tests prove the named surfaces are purple-free in dark; this one is the rule
-        itself, which catches the next purple rule added without the `@if not $o-viin-dark-bundle`
-        wrapper and the core consumers nobody in this repo owns (the mobile form label, the
-        search-panel section divider, the POS backend kanban) if the token re-point were removed.
-
-        The purple is a brand hex, so it either appears in the compiled text or it does not. Both
-        spellings the compiler emits are searched (the `#rrggbb` literal and the `r,g,b` triplet
-        Odoo's `to-rgb()` produces for o-print-color) and both purples: the light #7F4282 (an
-        unguarded rule) and the dark-tuned #B589B8 (a dark arm of the purple).
-
-        Non-vacuous by construction: the same scan on the light bundle must find the purple, so a
-        typo in the needle, a bundle that failed to build or a purple that disappeared from light too
-        cannot make the dark half pass for the wrong reason.
-        """
-        light_purple = self._brand_secondary_ssot()
-        needles = {
-            "the LIGHT brand purple %s (an unguarded rule reached the dark bundle)" % light_purple:
-                _colour_spellings(light_purple),
-            "the dark-tuned purple %s (a dark arm of the purple exists)" % DARK_BUNDLE_FORBIDDEN_PURPLE:
-                _colour_spellings(DARK_BUNDLE_FORBIDDEN_PURPLE),
-        }
-
-        # Control: the light bundle MUST still contain the light purple, or this scan proves nothing.
-        light_css = self._compiled_css(BACKEND_BUNDLE).lower()
-        self.assertTrue(
-            any(spelling in light_css for spelling in _colour_spellings(light_purple)),
-            "The brand purple %s does not appear in the compiled LIGHT bundle at all. Either the "
-            "purple accent was removed from light too - light keeps it on the "
-            "group-by facet, the list group header, the home-menu section label and the stat value - "
-            "or this scan's needles are wrong, in which case the dark half below is vacuous."
-            % light_purple,
-        )
-
-        dark_css = self._compiled_css(DARK_BUNDLE).lower()
-        for description, spellings in needles.items():
-            for spelling in spellings:
-                index = dark_css.find(spelling)
-                if index == -1:
-                    continue
-                # Report the offending rule, not just "found it", so the offending rule is locatable.
-                start = dark_css.rfind("}", 0, index) + 1
-                self.fail(
-                    "web.assets_web_dark contains %s, spelled %r. The purple accent is LIGHT-MODE "
-                    "ONLY : every rule painting it must sit inside "
-                    "`@if not $o-viin-dark-bundle`, and $o-brand-secondary itself is re-pointed to "
-                    "the neutral muted tier in dark_palette.scss for the core rules we cannot guard. "
-                    "Offending rule: %s"
-                    % (description, spelling, dark_css[start:index + 40].strip()),
-                )
-
     def test_dark_statusbar_current_step_is_a_dark_surface_with_a_readable_label(self):
         """The current statusbar step carries a readable label on a scheme-appropriate fill.
 
         Ruled out: a bright near-white/cyan slab with a white label on a dark sale order (a white
-        label on the light #C6EDF1 slab is 1.25:1), painfully bright against the #0B1315 canvas.
+        label on a light slab is ~1.3:1), painfully bright against the #0B1315 canvas.
 
         The two halves have different causes, so the guard measures the pair. The fill is core's
-        $o-component-active-bg = `mix($o-action, $o-gray-100, 20%)`, a light cyan tint no $body-*-bg
+        $o-component-active-bg = `mix($o-action, $o-gray-100, 20%)`, a light purple tint no $body-*-bg
         override touches, so it recompiles verbatim into the dark bundle. The label is not the button
         map's `color` key: core renders the current step `disabled`, and Bootstrap's `button-variant`
         defaults --btn-disabled-color to `color-contrast($background)`, white once dark_buttons.scss
@@ -3111,7 +2746,7 @@ class BrandCascadeCompileTest(TransactionCase):
         The dark arm is held to three measured properties rather than a hex: AA against its own
         label, lighter than the panel it sits on (a raised surface, not a hole) and within a modest
         contrast band of that panel (a surface tier, not a white slab). Light is pinned equal to
-        core's #C6EDF1, so the dark half is a real delta.
+        core's tint, so the dark half is a real delta.
         """
         light_css = self._compiled_css(BACKEND_BUNDLE)
         dark_css = self._compiled_css(DARK_BUNDLE)
@@ -3122,7 +2757,7 @@ class BrandCascadeCompileTest(TransactionCase):
 
         # Light arm: pinned to core, so the dark assertions below are a delta.
         light_fill = self._resolve_colour(
-            light_css, [status_root], ("--o-statusbar-background-active",),
+            light_css, [STATUSBAR_CURRENT_STEP, status_root], ("--btn-disabled-bg",),
             "light statusbar current-step fill",
         )
         self.assertEqual(
@@ -3137,7 +2772,7 @@ class BrandCascadeCompileTest(TransactionCase):
             ("dark", dark_css, DARK_BODY_BG),
         ):
             fill = self._resolve_colour(
-                css, [status_root], ("--o-statusbar-background-active",),
+                css, [STATUSBAR_CURRENT_STEP, status_root], ("--btn-disabled-bg",),
                 "%s statusbar current-step fill" % arm,
             )
             label = self._resolve_colour(
@@ -3156,7 +2791,7 @@ class BrandCascadeCompileTest(TransactionCase):
 
         # Dark arm: a raised dark SURFACE, not the light slab forwarded from core.
         dark_fill = self._resolve_colour(
-            dark_css, [status_root], ("--o-statusbar-background-active",),
+            dark_css, [STATUSBAR_CURRENT_STEP, status_root], ("--btn-disabled-bg",),
             "dark statusbar current-step fill",
         )
         self.assertNotEqual(
@@ -3374,9 +3009,10 @@ class BrandCascadeCompileTest(TransactionCase):
                 "prev_sibling": frozenset(),
             }
             pairs = (
-                ("current", STATUSBAR_CURRENT_STEP, ("--o-statusbar-background-active",),
-                 [status_root]),
-                ("clickable", STATUSBAR_STEP, ("--btn-bg",), [STATUSBAR_STEP]),
+                ("current", STATUSBAR_CURRENT_STEP, ("--btn-disabled-bg",),
+                 [STATUSBAR_CURRENT_STEP, status_root]),
+                # a clickable step is transparent: it sits on the surface of the statusbar
+                ("clickable", STATUSBAR_STEP, BACKGROUND_PROPS, [status_root]),
             )
             for state, element, fill_props, fill_chain in pairs:
                 label = self._resolve_colour(
@@ -3400,7 +3036,7 @@ class BrandCascadeCompileTest(TransactionCase):
             # account.move / purchase.order render every step `disabled` and core swaps the label
             # onto $text-muted, an alpha colour, so it is composited against the step fill before
             # measuring. Inactive components are exempt from WCAG SC 1.4.3, so the threshold is the
-            # 3:1 non-text floor, which light mode already delivers (3.69:1). It is what makes
+            # 3:1 non-text floor, which light mode already delivers (2.50:1). It is what makes
             # core's dark value fail: $o-main-color-muted is built from the gray ramp, so left there
             # it composites over the dark step #25383C below the floor and the upcoming stages
             # vanish.
@@ -3411,8 +3047,9 @@ class BrandCascadeCompileTest(TransactionCase):
                 "`&:disabled &:not(.o_arrow_button_current) { color: $text-muted }` moved, so this "
                 "guard needs re-grounding rather than deleting." % bundle_name,
             )
+            # an inactive step is transparent: it sits on the surface of the statusbar
             disabled_fill = self._resolve_colour(
-                css, [STATUSBAR_STEP_DISABLED], BACKGROUND_PROPS,
+                css, [status_root], BACKGROUND_PROPS,
                 "%s readonly statusbar step fill" % bundle_name,
             )
             muted = _normalize_colour(raw_muted)
@@ -3508,7 +3145,9 @@ class BrandCascadeCompileTest(TransactionCase):
                 not _is_non_inflating_extent(value) if prop in extent_props
                 else not _is_zero_box_geometry(value)
             )
-            if inflates:
+            # Core's own padding and border of the container are measured by areItemsWrapping()
+            # (its vertical offset), so they are the values its statusbar designs for.
+            if inflates and "var(--o-statusbar-" not in value:
                 offenders.append("%s: %s" % (prop, value))
         self.assertFalse(
             offenders,
@@ -3526,7 +3165,7 @@ class BrandCascadeCompileTest(TransactionCase):
         """Return the index (0=r, 1=g, 2=b) of the colour's strongest channel.
 
         A hue fingerprint that survives any lightening or darkening, so "danger is still red-ish,
-        primary still teal-ish" can be asserted without pinning a hex ("lighten, do not hue-shift").
+        primary still purple-ish" can be asserted without pinning a hex ("lighten, do not hue-shift").
         """
         channels = self._channels(hex_colour)
         return channels.index(max(channels))
@@ -3972,8 +3611,8 @@ class BrandCascadeCompileTest(TransactionCase):
         Two accent foregrounds tuned for a white page recompile into dark. (a) `.btn-outline-primary`:
         core ships no "primary" key in $o-btns-bs-outline-override, so the class falls through to
         `button-outline-variant($theme-colors["primary"])`, which sets `--btn-color: $color`
-        verbatim. With $theme-colors["primary"] pinned to the AA teal #007F8E (4.74:1 on white) the
-        label is 3.69:1 on the #111B1E panel: the "New" button of every form view and the kanban
+        verbatim. With $theme-colors["primary"] pinned to the brand purple #7F4282 (4.74:1 on white) the
+        label is 2.50:1 on the #111B1E panel: the "New" button of every form view and the kanban
         "Load more..." control. (b) $o-theme-text-colors, core's WCAG-tuning seam for
         `.text-{success,info,warning,danger}`: four values chosen to pass AA on white, 3.71-3.85:1
         on the dark panel (`.text-danger`, the cog-menu "Delete", is 3.76:1). The same map feeds the
@@ -3993,11 +3632,11 @@ class BrandCascadeCompileTest(TransactionCase):
             dark, [button], ("color",), ".btn-outline-primary label [dark]",
         )
         self.assertNotEqual(
-            label, CHROME_BASE,
-            "The `.btn-outline-primary` label still compiles the LIGHT-mode AA teal %s in the DARK "
-            "bundle - 3.69:1 on the #111B1E panel. #007F8E is 4.74:1 on WHITE; it is a light-mode "
+            label, BRAND_PURPLE,
+            "The `.btn-outline-primary` label still compiles the LIGHT-mode brand purple %s in the DARK "
+            "bundle - 2.50:1 on the #111B1E panel. #007F8E is 4.74:1 on WHITE; it is a light-mode "
             "token and cannot cross the scheme boundary unchanged. That button is \"New\" on every "
-            "form view." % CHROME_BASE,
+            "form view." % BRAND_PURPLE,
         )
         ratio = _contrast_ratio(label, DARK_BODY_BG)
         self.assertGreaterEqual(
@@ -4007,11 +3646,11 @@ class BrandCascadeCompileTest(TransactionCase):
             % (label, ratio, DARK_BODY_BG, WCAG_AA_NORMAL_TEXT),
         )
         self.assertEqual(
-            self._dominant_channel(label), self._dominant_channel(CHROME_BASE),
+            self._dominant_channel(label), self._dominant_channel(BRAND_PURPLE),
             "The `.btn-outline-primary` label compiles %s, whose dominant RGB channel differs from "
-            "the chrome teal %s. The dark arm must LIGHTEN the teal, not hue-shift it - a primary "
+            "the brand purple %s. The dark arm must LIGHTEN the purple, not hue-shift it - a primary "
             "CTA that stops reading as the brand colour is a different bug."
-            % (label, CHROME_BASE),
+            % (label, BRAND_PURPLE),
         )
         # The ring is read from `--btn-border-color`, not `border-color`: Bootstrap paints it with the
         # shorthand `border: var(--btn-border-width) solid var(--btn-border-color)`, which no
@@ -4038,10 +3677,10 @@ class BrandCascadeCompileTest(TransactionCase):
             light, [button], ("color",), ".btn-outline-primary label [light]",
         )
         self.assertEqual(
-            light_label, CHROME_BASE,
-            "The `.btn-outline-primary` label compiles %s in the LIGHT bundle instead of the AA teal "
+            light_label, BRAND_PURPLE,
+            "The `.btn-outline-primary` label compiles %s in the LIGHT bundle instead of the brand purple "
             "%s. The dark arm leaked out of web.assets_web_dark, or the outline-map key was "
-            "added somewhere both bundles read." % (light_label, CHROME_BASE),
+            "added somewhere both bundles read." % (light_label, BRAND_PURPLE),
         )
 
         for name, core_light in sorted(CORE_LIGHT_THEME_TEXT_COLORS.items()):

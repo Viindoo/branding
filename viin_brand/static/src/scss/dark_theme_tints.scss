@@ -27,3 +27,124 @@ $success-border-subtle: $success-border-subtle-dark;
 $info-border-subtle: $info-border-subtle-dark;
 $warning-border-subtle: $warning-border-subtle-dark;
 $danger-border-subtle: $danger-border-subtle-dark;
+
+// Dark arm of Bootstrap's hue ramps, `$blue-100` ... `$cyan-900`.
+//
+// Bootstrap builds each ramp from its hue for a white page: rung 100 is the palest tint, rung 900 the
+// deepest shade, so a fill takes a low rung and its text a high one. Core's own `*.dark.scss` files
+// are written against the flipped ramp (rung 100 deep, rung 900 pale), which core's dark edition
+// ships and this bundle must therefore own. The only consumer in core is the dashboard tiles of the
+// Sales app, reused by the website shop dashboard: its light stylesheet takes a pale fill and a deep
+// number, its dark stylesheet reads the same rungs, and with the light ramp a dark scheme painted
+// pale fills under the near-white label of the scheme. Each rung takes the value of the rung that
+// mirrors it (`$X-100` the 80% shade, `$X-900` the 80% tint, `$X-500` the hue itself), so a fill is a
+// deep shade of its hue and its number a pale tint. Light is untouched.
+@function viin-dark-hue-rung($hue, $rung) {
+    @if $rung < 500 {
+        @return shade-color($hue, (500 - $rung) * 0.2%);
+    }
+    @if $rung > 500 {
+        @return tint-color($hue, ($rung - 500) * 0.2%);
+    }
+    @return $hue;
+}
+
+$blue-100: viin-dark-hue-rung($blue, 100);
+$blue-200: viin-dark-hue-rung($blue, 200);
+$blue-300: viin-dark-hue-rung($blue, 300);
+$blue-400: viin-dark-hue-rung($blue, 400);
+$blue-500: viin-dark-hue-rung($blue, 500);
+$blue-600: viin-dark-hue-rung($blue, 600);
+$blue-700: viin-dark-hue-rung($blue, 700);
+$blue-800: viin-dark-hue-rung($blue, 800);
+$blue-900: viin-dark-hue-rung($blue, 900);
+
+$indigo-100: viin-dark-hue-rung($indigo, 100);
+$indigo-200: viin-dark-hue-rung($indigo, 200);
+$indigo-300: viin-dark-hue-rung($indigo, 300);
+$indigo-400: viin-dark-hue-rung($indigo, 400);
+$indigo-500: viin-dark-hue-rung($indigo, 500);
+$indigo-600: viin-dark-hue-rung($indigo, 600);
+$indigo-700: viin-dark-hue-rung($indigo, 700);
+$indigo-800: viin-dark-hue-rung($indigo, 800);
+$indigo-900: viin-dark-hue-rung($indigo, 900);
+
+$purple-100: viin-dark-hue-rung($purple, 100);
+$purple-200: viin-dark-hue-rung($purple, 200);
+$purple-300: viin-dark-hue-rung($purple, 300);
+$purple-400: viin-dark-hue-rung($purple, 400);
+$purple-500: viin-dark-hue-rung($purple, 500);
+$purple-600: viin-dark-hue-rung($purple, 600);
+$purple-700: viin-dark-hue-rung($purple, 700);
+$purple-800: viin-dark-hue-rung($purple, 800);
+$purple-900: viin-dark-hue-rung($purple, 900);
+
+$pink-100: viin-dark-hue-rung($pink, 100);
+$pink-200: viin-dark-hue-rung($pink, 200);
+$pink-300: viin-dark-hue-rung($pink, 300);
+$pink-400: viin-dark-hue-rung($pink, 400);
+$pink-500: viin-dark-hue-rung($pink, 500);
+$pink-600: viin-dark-hue-rung($pink, 600);
+$pink-700: viin-dark-hue-rung($pink, 700);
+$pink-800: viin-dark-hue-rung($pink, 800);
+$pink-900: viin-dark-hue-rung($pink, 900);
+
+$red-100: viin-dark-hue-rung($red, 100);
+$red-200: viin-dark-hue-rung($red, 200);
+$red-300: viin-dark-hue-rung($red, 300);
+$red-400: viin-dark-hue-rung($red, 400);
+$red-500: viin-dark-hue-rung($red, 500);
+$red-600: viin-dark-hue-rung($red, 600);
+$red-700: viin-dark-hue-rung($red, 700);
+$red-800: viin-dark-hue-rung($red, 800);
+$red-900: viin-dark-hue-rung($red, 900);
+
+$orange-100: viin-dark-hue-rung($orange, 100);
+$orange-200: viin-dark-hue-rung($orange, 200);
+$orange-300: viin-dark-hue-rung($orange, 300);
+$orange-400: viin-dark-hue-rung($orange, 400);
+$orange-500: viin-dark-hue-rung($orange, 500);
+$orange-600: viin-dark-hue-rung($orange, 600);
+$orange-700: viin-dark-hue-rung($orange, 700);
+$orange-800: viin-dark-hue-rung($orange, 800);
+$orange-900: viin-dark-hue-rung($orange, 900);
+
+$yellow-100: viin-dark-hue-rung($yellow, 100);
+$yellow-200: viin-dark-hue-rung($yellow, 200);
+$yellow-300: viin-dark-hue-rung($yellow, 300);
+$yellow-400: viin-dark-hue-rung($yellow, 400);
+$yellow-500: viin-dark-hue-rung($yellow, 500);
+$yellow-600: viin-dark-hue-rung($yellow, 600);
+$yellow-700: viin-dark-hue-rung($yellow, 700);
+$yellow-800: viin-dark-hue-rung($yellow, 800);
+$yellow-900: viin-dark-hue-rung($yellow, 900);
+
+$green-100: viin-dark-hue-rung($green, 100);
+$green-200: viin-dark-hue-rung($green, 200);
+$green-300: viin-dark-hue-rung($green, 300);
+$green-400: viin-dark-hue-rung($green, 400);
+$green-500: viin-dark-hue-rung($green, 500);
+$green-600: viin-dark-hue-rung($green, 600);
+$green-700: viin-dark-hue-rung($green, 700);
+$green-800: viin-dark-hue-rung($green, 800);
+$green-900: viin-dark-hue-rung($green, 900);
+
+$teal-100: viin-dark-hue-rung($teal, 100);
+$teal-200: viin-dark-hue-rung($teal, 200);
+$teal-300: viin-dark-hue-rung($teal, 300);
+$teal-400: viin-dark-hue-rung($teal, 400);
+$teal-500: viin-dark-hue-rung($teal, 500);
+$teal-600: viin-dark-hue-rung($teal, 600);
+$teal-700: viin-dark-hue-rung($teal, 700);
+$teal-800: viin-dark-hue-rung($teal, 800);
+$teal-900: viin-dark-hue-rung($teal, 900);
+
+$cyan-100: viin-dark-hue-rung($cyan, 100);
+$cyan-200: viin-dark-hue-rung($cyan, 200);
+$cyan-300: viin-dark-hue-rung($cyan, 300);
+$cyan-400: viin-dark-hue-rung($cyan, 400);
+$cyan-500: viin-dark-hue-rung($cyan, 500);
+$cyan-600: viin-dark-hue-rung($cyan, 600);
+$cyan-700: viin-dark-hue-rung($cyan, 700);
+$cyan-800: viin-dark-hue-rung($cyan, 800);
+$cyan-900: viin-dark-hue-rung($cyan, 900);

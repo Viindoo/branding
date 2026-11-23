@@ -1,23 +1,28 @@
+import ast
+
 from lxml import etree
 
 from odoo import api, fields, models
+
+
+def get_settings_context(context):
+    """Return the context of a settings action as a dict, ``None`` when it is not a literal dict."""
+    try:
+        values = ast.literal_eval(context or '{}')
+    except (ValueError, SyntaxError):
+        return None
+    return values if isinstance(values, dict) else None
+
+
+def get_settings_app(context):
+    """Return the settings app the context of an action opens on, ``None`` when it names none."""
+    return (get_settings_context(context) or {}).get('module')
 
 
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     favicon = fields.Binary(related='company_id.favicon', readonly=False)
-
-    @api.model
-    def get_viin_brand_modules_icon(self, modules):
-        # imported here: the models load before `get_module_icon` is replaced by the Viindoo resolver
-        from odoo.modules.module import get_module_icon
-        from .. import check_viin_brand_module_icon
-        result = []
-        if check_viin_brand_module_icon('base'):
-            for module in modules:
-                result.append(get_module_icon(module))
-        return result
 
     @api.model
     def _get_hidden_setting_xpaths(self):
@@ -39,8 +44,32 @@ class ResConfigSettings(models.TransientModel):
             return res
         doc = etree.fromstring(res['arch'])
         self._hide_unusable_settings(doc)
+        self._brand_app_logos(doc)
         res['arch'] = etree.tostring(doc, encoding='unicode')
         return res
+
+    @api.model
+    def _get_unusable_apps(self):
+        """Return the names of the settings apps whose every setting is hidden.
+
+        Such an app has no tab on the settings page, so an action or a menu that opens the page on it
+        has nothing to show.
+        """
+        doc = etree.fromstring(self.get_view(view_type='form')['arch'])
+        return {app.get('name') for app in doc.xpath('//app[@invisible="1"]')}
+
+    @api.model
+    def _brand_app_logos(self, doc):
+        """Give every app of the settings side panel its Viindoo icon.
+
+        The settings compiler builds the icon of an app from its ``logo`` attribute.
+        """
+        # imported here: the models load before `get_module_icon` is replaced by the Viindoo resolver
+        from odoo.modules.module import get_module_icon
+        for app in doc.xpath('//app[@name]'):
+            logo = get_module_icon(app.get('name'))
+            if logo:
+                app.set('logo', logo)
 
     @api.model
     def _hide_unusable_settings(self, doc):

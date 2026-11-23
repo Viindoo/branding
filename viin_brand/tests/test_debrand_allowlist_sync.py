@@ -4,7 +4,7 @@ import re
 from odoo.tests.common import BaseCase, tagged
 from odoo.tools.misc import file_open
 
-from odoo.addons.web.controllers.database import Database as CoreDatabase
+from odoo.addons.web.controllers import database as core_database
 from ..controllers.database import _ASSET_STRINGS, _WORDMARK_STRINGS
 
 # Case-sensitive: the wordmark is the capitalised brand token. Lowercase "odoo" is structural
@@ -47,7 +47,7 @@ class TestViinBrandDebrandAllowlistSync(BaseCase):
         Read out of core's own source, so a template core adds widens this test's
         scope automatically.
         """
-        source = inspect.getsource(CoreDatabase._render_template)
+        source = inspect.getsource(core_database)
         return re.findall(r"""file_open\(\s*["']([^"']+\.qweb\.html)["']""", source)
 
     @classmethod
@@ -71,7 +71,7 @@ class TestViinBrandDebrandAllowlistSync(BaseCase):
         self.assertTrue(
             paths,
             "could not discover any *.qweb.html template in the source of "
-            "odoo.addons.web.controllers.database.Database._render_template - "
+            "odoo.addons.web.controllers.database - "
             "core changed how it loads the database-manager templates, so the "
             "de-brand allowlist cannot be verified against them. "
             + _FIX_HINT,

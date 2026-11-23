@@ -1,14 +1,20 @@
-import base64
 import json
 
 from odoo import http
 from odoo.http import request
 from odoo.tools import file_open
+from odoo.tools.binary import BinaryBytes
 
 from odoo.addons.web.controllers.webmanifest import WebManifest
 
-# The Viindoo brand colour; it equals the SCSS `$o-brand-primary` in static/src/scss/brand_variables.scss.
-VIINDOO_THEME_COLOR = '#00BBCE'
+# The Viindoo chrome colour, the browser theme colour of the web manifest and of the theme-color meta
+# (views/webclient_templates.xml); it equals the SCSS `$o-viin-chrome-base` in
+# static/src/scss/brand_variables.scss.
+VIINDOO_THEME_COLOR = '#007F8E'
+
+# The Viindoo brand colour that paints content (default colours of the emails and of the livechat
+# channels); it equals the SCSS `$o-brand-primary` in static/src/scss/brand_variables.scss.
+VIINDOO_BRAND_COLOR = '#7F4282'
 
 # Default of the ``web.web_app_name`` ir.config_parameter; only this stock value is de-branded.
 CORE_DEFAULT_APP_NAME = 'Odoo'
@@ -71,6 +77,5 @@ class BrandWebManifest(WebManifest):
 
     @http.route()
     def offline(self):
-        return request.render('viin_brand.webclient_offline', {
-            'viindoo_icon': base64.b64encode(file_open(self._viindoo_icon_path(), 'rb').read())
-        })
+        with file_open(self._viindoo_icon_path(), 'rb') as icon:
+            return request.render('viin_brand.webclient_offline', {'viindoo_icon': BinaryBytes(icon.read())})

@@ -1,17 +1,15 @@
-// Frontend $primary de-brand: the public/login primary is the AA teal.
+// Frontend $primary de-brand: the public/login primary is the brand purple.
 //
-// Compiled web.assets_frontend emits `:root { --primary: #714B67 }` (the enterprise aubergine)
-// where web.assets_backend emits the AA teal. Bootstrap's _root.scss emits `--primary` from
-// $theme-colors['primary'], not from the $primary variable. On the backend, html_editor sets
-// $prevent-backend-colors-alteration and map-removes 'primary', so pre_variables.scss rebuilds it
-// from $primary (teal). On the frontend that flag is absent, so html_editor keeps
-// $theme-colors['primary'] = o-color('o-cc1-btn-primary') (the base-1 aubergine that
-// brand_palette_reset deliberately keeps for content swatches) and the login CTA and links leak
-// aubergine. `$primary: #007F8E !default` alone (brand_variables.scss) fixes the variable, not the
+// Bootstrap's _root.scss emits `--primary` from $theme-colors['primary'], not from the $primary
+// variable. On the backend, html_editor sets $prevent-backend-colors-alteration and map-removes
+// 'primary', so pre_variables.scss rebuilds it from $primary (purple). On the frontend that flag is
+// absent, so html_editor keeps $theme-colors['primary'] = o-color('o-cc1-btn-primary'), the colour
+// of the palette in use, and the login CTA and links would not follow $primary.
+// `$primary: $o-brand-primary !default` alone (brand_variables.scss) fixes the variable, not the
 // emitted `--primary`.
 //
 // After pre_variables.scss has finalised $theme-colors and before Bootstrap builds its maps and
-// emits :root, only the 'primary' theme colour is re-pointed to $primary (the base AA teal, set
+// emits :root, only the 'primary' theme colour is re-pointed to $primary (the brand purple, set
 // `!default` so a downstream website theme can still win by assigning $primary earlier). Content
 // o-colors (o-color-1..5 and the .text-o-color-* / .bg-o-color-* swatches) are a separate map and
 // stay untouched. The file rides web.assets_frontend only, contributed via
@@ -20,11 +18,11 @@
 //
 // A website with colours of its own keeps them. On a website whose owner picked or customized a
 // palette, html_editor has already made $theme-colors['primary'] the palette's own primary, and
-// forcing the teal would repaint the customer's `.btn-primary`, links and `.bg-primary` blocks with
+// forcing the purple would repaint the customer's `.btn-primary`, links and `.bg-primary` blocks with
 // the Viindoo chrome colour. A customized website therefore keeps its palette's primary and, as
 // html_editor intends (bootstrap_overridden.scss `$primary: map-get($theme-colors, 'primary')
 // !default`, defeated here by brand_variables' earlier `!default`), Bootstrap's $primary follows it
-// (links, focus, active states). The stock palette keeps the AA teal.
+// (links, focus, active states). The stock palette keeps the brand purple.
 //
 // Customized means the website's own colour/theme palette carries any value (website's
 // $o-has-customized-colors / $o-has-customized-13-0-color-system), or a palette other than the
