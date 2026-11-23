@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 // Type-to-search on the flat home menu, driven end-to-end on the boot-landing client-action render
 // (a fresh /odoo load), which the Hoot unit tests (viin_home_typeahead.test.js) cannot reach because
 // they mount the component directly. A user must be able to type the instant the screen is up, and

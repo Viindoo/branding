@@ -1,7 +1,4 @@
-/** @odoo-module **/
-
 import { animationFrame, describe, expect, test } from "@odoo/hoot";
-import { Deferred } from "@odoo/hoot-mock";
 import { queryAll } from "@odoo/hoot-dom";
 import {
     contains,
@@ -16,6 +13,7 @@ import {
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 import { defineMailModels } from "@mail/../tests/mail_test_helpers";
+import { OverlayPlugin } from "@web/core/overlay/overlay_plugin";
 import { redirect } from "@web/core/utils/urls";
 import { config as transitionConfig } from "@web/core/transition";
 
@@ -94,13 +92,14 @@ async function tapAllApps() {
 
 describe("mobile apps menu", () => {
     test.tags("mobile");
-    test("the apps toggle is named for assistive technology and keeps its bars icon", async () => {
+    test("the apps toggle is named for assistive technology and shows the apps icon", async () => {
         await mountOnScreen();
 
         expect(".o_main_navbar .o_menu_toggle").toHaveCount(1);
         expect(".o_main_navbar .o_menu_toggle").toHaveAttribute("title", "Apps");
         expect(".o_main_navbar .o_menu_toggle").toHaveAttribute("aria-label", "Apps");
-        expect(".o_main_navbar .o_menu_toggle i.fa-bars").toHaveCount(1);
+        expect(".o_main_navbar .o_menu_toggle i.oi.fs-2[data-icon='apps']").toHaveCount(1);
+        expect(".o_main_navbar .o_menu_toggle i.oi[data-icon='menu']").toHaveCount(0);
     });
 
     test.tags("mobile");
@@ -196,15 +195,15 @@ describe("mobile apps menu", () => {
     test.tags("mobile");
     test("All Apps tapped while the boot app menu is still loading opens no overlay and the toggle keeps working", async () => {
         patchWithCleanup(transitionConfig, { disabled: true });
-        const landingReady = new Deferred();
+        const landingReady = Promise.withResolvers();
         onRpc("mail.activity", "search_count", async () => {
-            await landingReady;
+            await landingReady.promise;
             return 0;
         });
         onRpc("res.users", "read", () => [{ viin_home_app_order: false }]);
         redirect("/odoo");
         await mountWebClient();
-        patchWithCleanup(getService("overlay"), {
+        patchWithCleanup(getService(OverlayPlugin), {
             add(component, ...args) {
                 if (component.name === "ViinHomeMenu") {
                     expect.step("app menu panel requested");

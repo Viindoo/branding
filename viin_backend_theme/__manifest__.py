@@ -6,28 +6,28 @@
 Viindoo Backend Shell (viin_backend_theme)
 ===========================================
 The backend SHELL layer on top of the Viindoo branding base (``viin_brand`` and
-``viin_brand_mail``), which already own the de-brand and the AA teal chrome cascade. Every
-capability here is an INVENTION Odoo 19 CE does not ship - none of it repaints an existing core
+``viin_brand_mail``), which already own the de-brand and the purple chrome cascade. Every
+capability here is an INVENTION Odoo 20 CE does not ship - none of it repaints an existing core
 surface:
 
 * the flat "Applications" home menu, and the apps-menu icon repurposed into its launcher
   (navigation);
 * a density toggle and an appearance systray for the light/dark scheme switch, backed by a
-  dedicated personalisation service (personalisation);
+  dedicated personalisation plugin (personalisation);
 * Montserrat / Roboto typography, with the rich-text editor reverted to core's portable font
   stack so an outgoing mail body is never inlined with a face the recipient does not have
   (typography);
 * a "Skip to main content" bypass-blocks link (accessibility);
 * a pure-CSS loading skeleton (perceived-performance affordance).
 
-It re-declares NO brand hex and owns NO color cascade: the AA teal chrome and the dark-mode
+It re-declares NO brand hex and owns NO color cascade: the purple chrome and the dark-mode
 recompile live in ``viin_brand``, read from its brand-primary SSOT.
 """,
     'author': "Viindoo",
     'website': "https://viindoo.com",
     'category': 'Hidden',
     'version': '0.1.2',
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'license': 'OPL-1',
     'old_technical_name': 'to_backend_theme',
@@ -63,10 +63,8 @@ recompile live in ``viin_brand``, read from its brand-primary SSOT.
             'viin_backend_theme/static/src/webclient/apps_menu_home.xml',
             'viin_backend_theme/static/src/webclient/webclient_patch.js',
             'viin_backend_theme/static/src/webclient/webclient.xml',
-            # Both ride web.assets_backend so they apply to the real webclient and to HttpCase
-            # suites: the clickbot walks apps through the home menu, and core's Discuss tour opens
-            # Discuss first under the flat landing.
-            'viin_backend_theme/static/src/webclient/clickbot_home_menu.js',
+            # Rides web.assets_backend so it applies to the real webclient and to HttpCase suites:
+            # core's Discuss tour opens Discuss first under the flat landing.
             'viin_backend_theme/static/src/webclient/discuss_onboarding_patch.js',
             'viin_backend_theme/static/src/home_menu/home_menu.js',
             'viin_backend_theme/static/src/home_menu/home_menu.xml',
@@ -74,7 +72,7 @@ recompile live in ``viin_brand``, read from its brand-primary SSOT.
             # The scheme toggle persists (cookie and res.users.viin_color_scheme) then reloads,
             # because dark is a server-selected bundle that cannot be swapped without a reload.
             # Density is applied instantly.
-            'viin_backend_theme/static/src/webclient/viin_theme_service.js',
+            'viin_backend_theme/static/src/webclient/viin_theme_plugin.js',
             'viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.scss',
             'viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.js',
             'viin_backend_theme/static/src/webclient/appearance_systray/appearance_systray.xml',

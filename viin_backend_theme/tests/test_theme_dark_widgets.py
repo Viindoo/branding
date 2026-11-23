@@ -4,21 +4,13 @@ import re
 from odoo.tests.common import BaseCase, TransactionCase, tagged
 
 from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
-    CHROME_BASE,
-    CHROME_DEEP,
     DARK_BUNDLE,
-    DARK_MUTED_TIER,
-    DARK_BUNDLE_FORBIDDEN_PURPLE,
     WCAG_AA_NORMAL_TEXT,
     _VAR_RE,
     _contrast_ratio,
     _iter_rules,
     _normalize_colour,
     _winning_declaration,
-)
-from odoo.addons.viin_brand.tests.test_brand_ssot import (
-    BRAND_VARIABLES_SCSS,
-    _resolve_scss_hex,
 )
 
 MODULE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,9 +27,9 @@ HOME_SECTION_LABEL_CLASSES = frozenset({"o_viin_home_section_label"})
 HOME_SECTION_LABEL_ANCESTORS = HOME_MENU_ROOT_ANCESTORS | HOME_MENU_ROOT_CLASSES | {
     "o_viin_home_content", "o_viin_home_body", "d-flex", "flex-column", "flex-grow-1",
 }
-# The muted-grey token the label takes in the dark bundle; named so failure messages can say what
-# the default is.
-DEFAULT_LABEL_TOKEN = "--secondary-color"
+# The structural accent of the brand palette: purple in the light scheme, cyan in the dark one.
+LIGHT_SECTION_LABEL = "#7f4282"
+DARK_SECTION_LABEL = "#00bbce"
 
 
 def _read(path):
@@ -129,27 +121,13 @@ class TestThemeDarkWidgetContrast(TransactionCase):
             "web.assets_backend carries the Odoo CSS-error banner - the bundle did not compile clean.",
         )
 
-    def test_home_menu_section_label_is_the_structure_purple_on_its_own_band(self):
-        """The home-menu section label is the structure purple in light, and readable in both schemes.
+    def test_home_menu_section_label_is_the_structural_accent_and_readable_on_its_band(self):
+        """The home-menu section label is the brand accent of each scheme, readable on its band.
 
-        The brand colour law reads teal = act, purple = meta-structure. "Applications" organises the
-        app grid, so in LIGHT mode it is the purple ``$o-brand-secondary`` accent, never a teal. In
-        DARK mode it is not purple: it is ``var(--secondary-color)``, which flips dark-correct on its
-        own through the ``$body-secondary-color`` of dark_palette.scss. The choice is made at compile
-        time by the ``$o-viin-dark-bundle`` flag, so each bundle carries exactly one ``color``
-        declaration and there is no dark companion file.
-
-        The contrast is measured against the band the compiled bundle declares for the menu root in
+        The structural accent is purple in the light scheme and cyan in the dark one. The
+        contrast is measured against the band the compiled bundle declares for the menu root in
         that bundle, not a hardcoded page colour.
         """
-        expected_purple = _resolve_scss_hex(_read(BRAND_VARIABLES_SCSS), "$o-brand-secondary")
-        self.assertIsNotNone(
-            expected_purple,
-            "$o-brand-secondary must be declared in viin_brand's brand_variables.scss - it "
-            "is the SSOT for every META/STRUCTURE purple surface in this cluster.",
-        )
-        expected_purple = expected_purple.lower()
-
         label = {
             "classes": HOME_SECTION_LABEL_CLASSES,
             "ancestors": HOME_SECTION_LABEL_ANCESTORS,
@@ -160,6 +138,7 @@ class TestThemeDarkWidgetContrast(TransactionCase):
             "ancestors": HOME_MENU_ROOT_ANCESTORS,
             "prev_sibling": frozenset(),
         }
+        expected = {"light": LIGHT_SECTION_LABEL, "dark": DARK_SECTION_LABEL}
         for arm, bundle_name in (("light", BACKEND_BUNDLE), ("dark", DARK_BUNDLE)):
             css = self._compiled_css(bundle_name)
 
@@ -170,46 +149,11 @@ class TestThemeDarkWidgetContrast(TransactionCase):
                 "SCSS is not reaching that bundle." % bundle_name,
             )
             colour = _resolve_to_hex(css, raw_label)
-            self.assertIsNotNone(
-                colour,
-                "The %s home-menu section label `color` %r carries no resolvable colour."
-                % (arm, raw_label),
+            self.assertEqual(
+                colour, expected[arm],
+                "The %s home-menu section label compiled %s instead of the brand accent %s."
+                % (arm, colour, expected[arm]),
             )
-            self.assertNotIn(
-                colour, (CHROME_BASE, CHROME_DEEP),
-                "The %s home-menu section label compiled the teal %s. A section label is "
-                "STRUCTURE, not an ACT - see the colour law in viin_brand's "
-                "brand_variables.scss." % (arm, colour),
-            )
-            if arm == "light":
-                self.assertEqual(
-                    colour, expected_purple,
-                    "The home-menu section label compiled %s instead of the brand secondary %s "
-                    "($o-brand-secondary). A revert to the muted `var(%s)` grey looks like this."
-                    % (colour, expected_purple, DEFAULT_LABEL_TOKEN),
-                )
-            else:
-                self.assertNotEqual(
-                    colour, expected_purple,
-                    "The home-menu section label compiled the light brand purple %s in the DARK "
-                    "bundle, which is unreadable on the dark band. The purple accent is light-only; "
-                    "wrap the declaration in `@if not $o-viin-dark-bundle`."
-                    % expected_purple,
-                )
-                self.assertNotEqual(
-                    colour, DARK_BUNDLE_FORBIDDEN_PURPLE,
-                    "The home-menu section label compiled the dark-tuned purple %s. A darker purple is "
-                    "not the answer to the dark canvas - the answer is no purple."
-                    % DARK_BUNDLE_FORBIDDEN_PURPLE,
-                )
-                self.assertEqual(
-                    colour, DARK_MUTED_TIER,
-                    "The home-menu section label compiled %s in the dark bundle instead of the "
-                    "muted tier %s that `var(%s)` resolves to there. That token IS the default "
-                    "look the label falls back to in dark; anything else means a dark "
-                    "accent of ours is still being emitted."
-                    % (colour, DARK_MUTED_TIER, DEFAULT_LABEL_TOKEN),
-                )
 
             raw_band = _winning_declaration(css, menu_root, ("background-color", "background"))
             self.assertIsNotNone(
@@ -226,9 +170,7 @@ class TestThemeDarkWidgetContrast(TransactionCase):
             self.assertGreaterEqual(
                 ratio, WCAG_AA_NORMAL_TEXT,
                 "The home-menu section label renders %s on the %s band %s - %.2f:1, below the WCAG "
-                "AA normal-text threshold of %.1f:1. In the dark bundle this is the signature of a "
-                "$o-brand-secondary that lost its dark arm."
-                % (colour, arm, band, ratio, WCAG_AA_NORMAL_TEXT),
+                "AA normal-text threshold of %.1f:1." % (colour, arm, band, ratio, WCAG_AA_NORMAL_TEXT),
             )
 
 

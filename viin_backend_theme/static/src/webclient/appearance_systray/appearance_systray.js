@@ -1,34 +1,30 @@
-/** @odoo-module **/
-
 // ViinAppearanceSystray: navbar systray dropdown for the appearance controls. Offers the color-scheme
 // choice (Light / Dark / System) and the density choice (Comfortable / Compact), delegating every
-// change to the viin_theme service, the single applier and persister. Keyboard and aria accessible
+// change to the ViinThemePlugin, the single applier and persister. Keyboard and aria accessible
 // through the core Dropdown/DropdownItem (role=menuitemradio + aria-checked).
 
-import { Component, useState } from "@odoo/owl";
+import { Component, usePlugin, useProps } from "@odoo/owl";
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import { ViinThemePlugin } from "../viin_theme_plugin";
 
 export class ViinAppearanceSystray extends Component {
     static template = "viin_backend_theme.ViinAppearanceSystray";
     static components = { Dropdown, DropdownItem };
-    static props = {};
+    props = useProps({});
+    viinTheme = usePlugin(ViinThemePlugin);
 
     setup() {
-        this.viinTheme = useService("viin_theme");
-        // Wrap the service's reactive state so the selected-option indicator re-renders on change.
-        this.state = useState(this.viinTheme.state);
         this.schemes = [
-            { value: "light", label: _t("Light"), icon: "fa-sun-o" },
-            { value: "dark", label: _t("Dark"), icon: "fa-moon-o" },
-            { value: "auto", label: _t("System"), icon: "fa-desktop" },
+            { value: "light", label: _t("Light"), icon: "light_mode" },
+            { value: "dark", label: _t("Dark"), icon: "dark_mode" },
+            { value: "auto", label: _t("System"), icon: "desktop_windows" },
         ];
         this.densities = [
-            { value: "comfortable", label: _t("Comfortable"), icon: "fa-bars" },
-            { value: "compact", label: _t("Compact"), icon: "fa-th-list" },
+            { value: "comfortable", label: _t("Comfortable"), icon: "menu" },
+            { value: "compact", label: _t("Compact"), icon: "view_list" },
         ];
     }
 

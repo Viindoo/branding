@@ -3,14 +3,17 @@
     <!-- Boot reflection (FOUC free): stamp the theme-owned density attribute onto the html root so the
          backend renders the correct row density on the very first server render, before any JS runs.
          data-viin-density comes from the viin_density cookie, defaulting to comfortable. The
-         color_scheme (data-bs-theme) reflection is owned by viin_brand. -->
+         color_scheme (data-bs-theme) reflection is owned by viin_brand, which sets the html_data
+         argument of the layout call; the density rides the html element itself so neither module
+         overrides the other. Only the web client page carries it. -->
+    <template id="layout" inherit_id="web.layout" name="web.layout.inherit.viin.backend.theme">
+        <xpath expr="//html" position="attributes">
+            <attribute name="t-att-data-viin-density">(request.httprequest.cookies.get('viin_density') or 'comfortable') if 'o_web_client' in (body_classname or '') else None</attribute>
+        </xpath>
+    </template>
+
     <template id="webclient_bootstrap" inherit_id="web.webclient_bootstrap"
               name="web.webclient.bootstrap.inherit.viin.backend.theme">
-        <xpath expr="//t[@t-set='body_classname']" position="after">
-            <t t-set="html_data" t-value="dict(html_data or {}, **{
-                'data-viin-density': request.httprequest.cookies.get('viin_density', 'comfortable'),
-            })"/>
-        </xpath>
         <!-- Allow pinch to zoom (WCAG SC 1.4.4): core web.webclient_bootstrap sets user-scalable=no on
              the viewport meta. -->
         <xpath expr="//meta[@name='viewport']" position="attributes">

@@ -7,74 +7,77 @@
     <!-- `o_viin_home_overlay` is set only on the navbar arm (props.close is set), where the overlay
          service renders this markup above a still-mounted controller; it only adds the fixed
          positioning and the inline top measured from the navbar's bottom edge (home_menu.scss). -->
-    <div class="o_viin_home_menu" t-att-class="{ o_viin_home_overlay: isOverlay }"
-         t-att-style="overlayStyle">
+    <div class="o_viin_home_menu" t-att-class="{ o_viin_home_overlay: this.isOverlay }"
+         t-att-style="this.overlayStyle">
       <div class="o_viin_home_content d-flex flex-column">
 
         <header class="o_viin_home_header d-flex flex-column">
           <h1 class="o_viin_home_greeting">
-            <t t-esc="greeting"/><t t-if="userName">, <t t-esc="userName"/></t>
+            <t t-out="this.greeting"/><t t-if="this.userName">, <t t-out="this.userName"/></t>
           </h1>
           <div class="o_viin_home_subtitle">
-            <t t-esc="dateLabel"/><t t-if="activityCount"> &#183; <t t-esc="activityCount"/> <t t-esc="activityLabel"/></t>
+            <t t-out="this.dateLabel"/><t t-if="this.activityCount"> &#183; <t t-out="this.activityCount"/> <t t-out="this.activityLabel"/></t>
           </div>
           <div class="o_viin_home_search d-flex align-items-center">
-            <i class="fa fa-search o_viin_home_search_icon" aria-hidden="true"/>
-            <input type="text" class="o_viin_home_search_input" t-ref="search"
+            <i class="oi o_viin_home_search_icon" data-icon="search" aria-hidden="true"/>
+            <input type="text" class="o_viin_home_search_input" t-ref="this.searchRef"
                    placeholder="Search apps and menus..." aria-label="Search applications"
                    autocomplete="off" spellcheck="false" data-allow-hotkeys="true"
-                   t-on-input="onSearchInput" t-on-keydown="onSearchKeydown"/>
+                   t-on-input="this.onSearchInput" t-on-keydown="this.onSearchKeydown"/>
           </div>
         </header>
 
         <div class="o_viin_home_body flex-grow-1">
-          <t t-if="filteredApps.length">
+          <t t-if="this.filteredApps.length">
             <div class="o_viin_home_section_label">Applications</div>
             <!-- The grid and its tiles carry no `role="list"` / `role="listitem"`: an explicit ARIA
                  role replaces the element's own, so `listitem` would hide that each tile is a link,
                  and `list` without `listitem` children is malformed. Wrapping every tile in a
                  listitem div is not an option: the tiles are direct grid children keyed by the
                  drag-reorder hook. -->
-            <div class="o_viin_home_grid" t-ref="grid"
-                 t-att-data-viin-saved-order="state.savedOrder">
-              <t t-foreach="filteredApps" t-as="app" t-key="app.id">
+            <div class="o_viin_home_grid" t-ref="this.gridRef"
+                 t-att-data-viin-saved-order="this.state.savedOrder">
+              <t t-foreach="this.filteredApps" t-as="app" t-key="app.id">
                 <!-- A tile is an anchor, as core renders its own apps-menu entries: core tours resolve
                      `a[data-menu-xmlid="<app xmlid>"]`, which a <button> never matches. The href
                      comes from core's NavBar helper (getMenuHref), the single definition of a
                      backend app URL. Core's draggable hook cancels the click that follows a drop,
                      so a dropped tile never navigates. -->
                 <a class="o_app o_viin_home_app d-flex flex-column align-items-center"
-                   t-att-href="getMenuHref(app)"
-                   t-att-class="{ o_viin_home_app_focus: app_index === state.focusIndex }"
+                   t-att-href="this.getMenuHref(app)"
+                   t-att-class="{ o_viin_home_app_focus: app_index === this.state.focusIndex }"
                    t-att-data-index="app_index"
                    t-att-data-menu-xmlid="app.xmlid"
                    t-att-title="app.name"
                    t-on-click="(ev) => this.onTileClick(ev, app)">
-                  <img class="o_viin_home_app_icon" loading="lazy"
-                       t-att-src="getIconUrl(app)" t-att-alt="app.name"/>
-                  <span class="o_viin_home_app_name" t-esc="app.name"/>
+                  <t t-set="glyph" t-value="this.getBuiltIcon(app)"/>
+                  <i t-if="glyph" class="oi oi-3x rounded o_viin_home_app_icon o_viin_home_app_glyph"
+                     t-att-data-icon="glyph.icon" t-att-style="'color:' + glyph.color + '; background:' + glyph.background" aria-hidden="true"/>
+                  <img t-else="" class="o_viin_home_app_icon" loading="lazy"
+                       t-att-src="this.getIconUrl(app)" t-att-alt="app.name"/>
+                  <span class="o_viin_home_app_name" t-out="app.name"/>
                 </a>
               </t>
             </div>
           </t>
-          <t t-if="menuMatches.length">
+          <t t-if="this.menuMatches.length">
             <!-- Menu items found by the same search box, shown under the tiles as a plain list of
                  links; Enter in the box opens the first one when no app matches. -->
             <div class="o_viin_home_section_label">Menu items</div>
             <ul class="o_viin_home_menu_items list-unstyled">
-              <li t-foreach="menuMatches" t-as="item" t-key="item.menu.id">
+              <li t-foreach="this.menuMatches" t-as="item" t-key="item.menu.id">
                 <a class="o_viin_home_menu_item d-flex flex-column"
-                   t-att-href="getMenuHref(item.menu)"
+                   t-att-href="this.getMenuHref(item.menu)"
                    t-att-data-menu-id="item.menu.id"
                    t-on-click="(ev) => this.onMenuItemClick(ev, item.menu)">
-                  <span class="o_viin_home_menu_item_name" t-esc="item.name"/>
-                  <small class="o_viin_home_menu_item_path text-muted" t-esc="item.path"/>
+                  <span class="o_viin_home_menu_item_name" t-out="item.name"/>
+                  <small class="o_viin_home_menu_item_path text-muted" t-out="item.path"/>
                 </a>
               </li>
             </ul>
           </t>
-          <div t-if="!filteredApps.length and !menuMatches.length" class="o_viin_home_empty d-flex flex-column align-items-center justify-content-center text-muted">
-            <i class="fa fa-search fa-2x mb-2" aria-hidden="true"/>
+          <div t-if="!this.filteredApps.length and !this.menuMatches.length" class="o_viin_home_empty d-flex flex-column align-items-center justify-content-center text-muted">
+            <i class="oi oi-2x mb-2" data-icon="search" aria-hidden="true"/>
             <p>Nothing matches your search.</p>
           </div>
         </div>

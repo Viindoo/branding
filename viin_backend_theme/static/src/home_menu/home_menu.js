@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 // ViinHomeMenu: the flat "Applications" grid (client action tag "viin_home_menu"). One dense grid
 // with no category sections. Search-first: filters with the core fuzzyLookup; the arrow keys move a
 // highlight across the responsive grid and Enter launches the highlighted app. Icons load lazily.
@@ -32,11 +30,14 @@
 
 import {
     Component,
-    useState,
-    useRef,
-    useExternalListener,
     onMounted,
     onWillStart,
+    proxy,
+    signal,
+    t,
+    useListener,
+    usePlugin,
+    useProps,
 } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { hasTouch } from "@web/core/browser/feature_detection";
@@ -48,9 +49,13 @@ import { fuzzyLookup } from "@web/core/utils/search";
 import { _t } from "@web/core/l10n/translation";
 import { user } from "@web/core/user";
 import { routerBus } from "@web/core/browser/router";
+import { DebugModePlugin } from "@web/core/debug_mode_plugin";
+import { ORM } from "@web/core/orm_plugin";
+import { UIPlugin } from "@web/core/ui/ui_plugin";
+import { render } from "@web/owl2/utils";
 import { NavBar } from "@web/webclient/navbar/navbar";
-import { standardActionServiceProps } from "@web/webclient/actions/action_service";
-import { getAppIconUrl } from "../webclient/app_icons";
+import { standardActionServiceProps } from "@web/webclient/actions/action_plugin";
+import { getAppIconUrl, getBuiltIcon } from "../webclient/app_icons";
 
 // Navbar chrome the overlay must not treat as "outside": clicking the apps button toggles the
 // overlay, and a pointerdown-close would shut it a beat before the click re-opened it. On a small
@@ -68,18 +73,19 @@ export class ViinHomeMenu extends Component {
     static template = "viin_backend_theme.ViinHomeMenu";
     // Rendered either as the boot-landing client action (action-service props below) or as the
     // overlay the navbar apps button opens (`close` set, no action), so `action` is optional.
-    static props = {
+    props = useProps({
         ...standardActionServiceProps,
-        action: { type: Object, optional: true },
-        close: { type: Function, optional: true },
-    };
+        action: t.object().optional(),
+        close: t.function().optional(),
+    });
+    gridRef = signal.ref();
+    searchRef = signal.ref();
+    debugMode = usePlugin(DebugModePlugin);
+    orm = usePlugin(ORM);
+    ui = usePlugin(UIPlugin);
 
     setup() {
         this.menuService = useService("menu");
-        this.orm = useService("orm");
-        this.ui = useService("ui");
-        this.gridRef = useRef("grid");
-        this.searchRef = useRef("search");
         // Pre-focus the search box on mount in either render shape (see the file header); skipped on
         // a touch device, where an unrequested virtual keyboard is worse than no focus.
         onMounted(() => {
@@ -92,17 +98,17 @@ export class ViinHomeMenu extends Component {
         // character", so this listens directly and mirrors hotkey_service.js: the IME-composition
         // check, the targetIsEditable rule (an already-focused editable keeps its native typing) and
         // the `ui.activeElement` check (a Dialog or higher layer owns the keystroke).
-        useExternalListener(window, "keydown", this.onWindowKeydown);
+        useListener(window, "keydown", (ev) => this.onWindowKeydown(ev));
         if (this.isOverlay) {
             // Dismissal as core's apps dropdown does it (`closeOnClickAway`, no backdrop): a pointer
             // interaction outside both the overlay and the navbar apps button closes it, so the
             // page underneath stays usable and a tour's next click does not hit a stranded panel.
-            useExternalListener(document, "pointerdown", this.onOutsidePointerDown, {
+            useListener(document, "pointerdown", (ev) => this.onOutsidePointerDown(ev), {
                 capture: true,
             });
             // Whatever sits above the navbar can change height with the window (a banner wrapping),
             // so the measured top edge is measured again.
-            useExternalListener(window, "resize", () => this.render());
+            useListener(window, "resize", () => render(this));
             // Escape dismisses and returns focus to the opening button: a non-modal overlay must
             // not trap the user (WCAG 2.1.2). The client-action arm has no trigger to return to.
             useHotkey("escape", () => this.props.close({ restoreFocus: true }), {
@@ -113,7 +119,7 @@ export class ViinHomeMenu extends Component {
             // change means the user left it: put it away.
             useBus(routerBus, "ROUTE_CHANGE", () => this.props.close());
         }
-        this.state = useState({
+        this.state = proxy({
             query: "",
             // index of the highlighted tile within `filteredApps` (arrow-nav), -1 = none
             focusIndex: -1,
@@ -196,10 +202,10 @@ export class ViinHomeMenu extends Component {
     }
 
     /** The tile's `href`, from core's `NavBar.prototype.getMenuItemHref`, the single definition of an
-     *  app's backend URL (`/odoo/<actionPath|action-<id>>`). It reads nothing off `this`, so calling
-     *  it through the prototype is safe. */
+     *  app's backend URL (`/odoo/<actionPath|action-<id>>`, plus the debug mode). It reads only
+     *  `this.debugMode`, which this component holds as well. */
     getMenuHref(app) {
-        return NavBar.prototype.getMenuItemHref(app);
+        return NavBar.prototype.getMenuItemHref.call(this, app);
     }
 
     /** Parse the stored csv of app root-menu xmlids into a clean list (blank entries dropped). */
@@ -352,6 +358,11 @@ export class ViinHomeMenu extends Component {
         return getAppIconUrl(app);
     }
 
+    /** The glyph of an app declared with a built icon, which has no image to show. */
+    getBuiltIcon(app) {
+        return getBuiltIcon(app);
+    }
+
     /** A tile is a real `<a href>`, so a modified click (middle, ctrl/cmd, shift, alt) is the
      *  browser's to handle. A plain primary click routes through the menu service instead of
      *  reloading the page, as core's DropdownItem does for its own app links. */
@@ -386,7 +397,7 @@ export class ViinHomeMenu extends Component {
     /** Focus the search input; a no-op when it is not rendered (defensive against a mount-timing
      *  or unmount race). */
     _focusSearchInput() {
-        this.searchRef.el?.focus({ preventScroll: true });
+        this.searchRef()?.focus({ preventScroll: true });
     }
 
     /** Move focus into the search box, unless mid-IME composition, a higher UI layer is open, an
@@ -397,7 +408,7 @@ export class ViinHomeMenu extends Component {
         if (ev.isComposing || ev.keyCode === 229) {
             return;
         }
-        if (this.ui.activeElement !== document) {
+        if (this.ui.activeElement() !== document) {
             return;
         }
         if (ev.ctrlKey || ev.altKey || ev.metaKey) {
@@ -424,7 +435,7 @@ export class ViinHomeMenu extends Component {
 
     /** Number of columns actually rendered (responsive) - read from the grid's computed template. */
     _columnCount() {
-        const grid = this.gridRef.el;
+        const grid = this.gridRef();
         if (!grid) {
             return 1;
         }
@@ -440,7 +451,7 @@ export class ViinHomeMenu extends Component {
         const clamped = Math.max(0, Math.min(count - 1, index));
         this.state.focusIndex = clamped;
         // keep the highlighted tile in view without stealing focus from the search box
-        this.gridRef.el
+        this.gridRef()
             ?.querySelector(`[data-index="${clamped}"]`)
             ?.scrollIntoView({ block: "nearest" });
     }

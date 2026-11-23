@@ -7,15 +7,15 @@
        function must not appear on one screen. data-hotkey="h" preserves the core Home-Menu accesskey.
 
        The button carries core's `o_nav_entry` class, so core's navbar cascade paints its icon (white
-       via `$o-navbar-entry-color`) and keeps it on the navbar row; the stylesheet declares no
-       colour. `text-reset` or `btn` would resolve the colour to the body colour (black on the navbar).
-       `dropdown-toggle` is deliberately absent: it would satisfy clickbot_home_menu.js's
-       `isThemedShell()` and send core's clickbot down its dropdown path. -->
+       via `$o-navbar-entry-color`) and keeps it on the navbar row, centred by the entry's flex
+       alignment; the stylesheet declares no colour. The glyph is core's `apps` icon, sized by core's
+       `fs-2` utility (the 1.5x-base step of the 20.0 font scale; `fs-4` is 1.05rem there, no bigger
+       than the former glyph). `text-reset` or `btn` would resolve the colour to the body colour (black on the navbar). -->
   <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension">
     <xpath expr="//div[hasclass('o_navbar_apps_menu')]/Dropdown" position="replace">
       <button type="button" class="o_nav_entry o_viin_apps_home border-0"
               data-hotkey="h" title="Apps" aria-label="Apps" t-on-click="() => this.openHomeMenu()">
-        <i class="oi oi-apps"/>
+        <i class="oi fs-2" data-icon="apps"/>
       </button>
     </xpath>
     <!-- The small-screen toggle anchor is the only label an assistive-technology user gets, so it
@@ -23,6 +23,16 @@
     <xpath expr="//a[hasclass('o_menu_toggle')]" position="attributes">
       <attribute name="title">Apps</attribute>
       <attribute name="aria-label">Apps</attribute>
+    </xpath>
+  </t>
+
+  <!-- The small-screen toggle shows the same apps glyph at the same size as the desktop button:
+       core's bars icon (`menu`, 1em of the .oi font) is replaced by the `apps` glyph at the `fs-2`
+       step of core's font scale, the 1.5x-base step. -->
+  <t t-inherit="web.NavBar.AppsMenu.Sidebar" t-inherit-mode="extension">
+    <xpath expr="//i[@data-icon='menu']" position="attributes">
+      <attribute name="data-icon">apps</attribute>
+      <attribute name="class">oi fs-2</attribute>
     </xpath>
   </t>
 

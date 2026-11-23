@@ -4,6 +4,10 @@ import re
 from odoo.tests.common import TransactionCase, tagged
 
 from odoo.addons.viin_brand.tests.test_brand_cascade_compile import (
+    ACTION_DEEP,
+    BRAND_PURPLE,
+    CHROME_BASE,
+    CHROME_DEEP,
     DARK_BUNDLE,
     WCAG_AA_NORMAL_TEXT,
     _composite_over,
@@ -122,6 +126,31 @@ class TestHomeMenuBackground(TransactionCase):
                 "hex or an image URL here means it does not." % (arm, image),
             )
 
+    def test_the_backdrop_is_tinted_with_the_chrome_ladder_not_the_brand_purple(self):
+        """The backdrop is application chrome: its tints are the chrome teal, never the brand purple.
+
+        Light mixes the chrome base, dark the deep chrome rung; the secondary cyan is the other
+        facet in both. The purple of the content (buttons, links, the section label) never tints
+        the page behind them.
+        """
+        for arm, bundle_name, chrome_rung in (
+            ("light", BACKEND_BUNDLE, CHROME_BASE), ("dark", DARK_BUNDLE, CHROME_DEEP),
+        ):
+            css = self._compiled_css(bundle_name)
+            image = _winning_declaration(css, self._menu_root(), ("background-image",))
+            hexes = [hex_colour.lower() for hex_colour, _percent in _COLOR_MIX_LAYER_RE.findall(image)]
+            self.assertIn(
+                chrome_rung, hexes,
+                "[%s] the home-menu backdrop layers %r do not mix the chrome rung %s."
+                % (arm, hexes, chrome_rung),
+            )
+            for content_purple in (BRAND_PURPLE, ACTION_DEEP):
+                self.assertNotIn(
+                    content_purple, hexes,
+                    "[%s] the home-menu backdrop is tinted with the content purple %s (layers %r): "
+                    "the frame reads the chrome ladder." % (arm, content_purple, hexes),
+                )
+
     def test_the_backdrop_keeps_the_header_text_wcag_aa(self):
         """The purple "APPLICATIONS" label clears WCAG AA over the composited backdrop.
 
@@ -212,7 +241,7 @@ class TestHomeMenuBackground(TransactionCase):
             self.assertNotIn(
                 "url(", image.lower(),
                 "[%s] the home-menu backdrop references an image asset (%r). It is drawn from brand "
-                "tokens on purpose: core 19.0 ships no such image and a third-party overlay "
+                "tokens on purpose: core ships no such image and a third-party overlay "
                 "cannot enter this OPL-1 module." % (arm, image),
             )
 

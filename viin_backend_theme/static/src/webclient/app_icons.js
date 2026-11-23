@@ -1,13 +1,12 @@
-/** @odoo-module **/
-
 // Shared app-icon resolver for the home menu.
 //
-// Odoo apps declare `web_icon="<module>,static/description/icon.png"`; the menu service exposes that
-// string on `app.webIcon` and its rendered data-URI on `app.webIconData`. The comma-prefix is the
-// app's technical name, which matches the file names in `viin_brand/static/img/apps/<name>.png`. The
-// Viindoo icon is preferred for a consistent branded look; the app's own `webIconData` (core's
-// default_icon_app.png placeholder included) is the fallback, and font-glyph apps (a non-module
-// first token such as "fa fa-...") fall through to it as well.
+// Odoo apps declare either an image icon, `web_icon="<module>,static/description/icon.png"`, or a
+// built icon, `web_icon="<icon name>,<color>,<background color>"`; the menu service exposes that
+// string on `app.webIcon` and the image's data-URI on `app.webIconData`. The comma-prefix of an image
+// icon is the app's technical name, which matches the file names in
+// `viin_brand/static/img/apps/<name>.png`. The Viindoo icon is preferred for a consistent branded
+// look; the app's own `webIconData` (core's default_icon_app.png placeholder included) is the
+// fallback. A built icon has no image: the home menu draws its glyph as core's own menus do.
 
 // Names of the icons in viin_brand/static/img/apps/; a miss means "use the native icon", never a
 // broken image.
@@ -68,11 +67,29 @@ export const VIIN_APP_ICONS = new Set([
 ]);
 
 /**
- * Return the technical (module) name an app's web_icon points at, or "".
+ * Return the parts of a built icon (`<icon name>,<color>,<background color>`), or null for an
+ * image icon or an app without icon.
+ * @param {object} app a menu-service app entry ({ webIcon, webIconData, ... })
+ * @returns {{icon: string, color: string, background: string} | null}
+ */
+export function getBuiltIcon(app) {
+    const parts = ((app && app.webIcon) || "").split(",");
+    if (parts.length !== 3) {
+        return null;
+    }
+    const [icon, color, background] = parts.map((part) => part.trim());
+    return { icon, color, background };
+}
+
+/**
+ * Return the technical (module) name an app's image icon points at, or "".
  * @param {object} app a menu-service app entry ({ webIcon, webIconData, ... })
  * @returns {string}
  */
 export function appIconModule(app) {
+    if (getBuiltIcon(app)) {
+        return "";
+    }
     return ((app && app.webIcon) || "").split(",")[0].trim();
 }
 

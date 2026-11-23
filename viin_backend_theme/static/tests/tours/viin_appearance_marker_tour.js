@@ -1,11 +1,9 @@
-/** @odoo-module **/
-
 // Guards: with the Appearance systray open, the row for the currently selected option renders
 // exactly one visible selected-marker, in both colour schemes. Driven by tests/test_tours.py.
 //
 // Core paints its own ::before checkmark on any `.dropdown-item.active` unless the item carries the
 // opt-out class `dropdown-item_active_noarrow` (web/static/src/webclient/webclient.scss); this
-// component also renders its own `fa fa-check`, so without the opt-out both paint. The assertion
+// component also renders its own check icon, so without the opt-out both paint. The assertion
 // reads the rendered result (the computed `::before` content and the visible check icons), not a
 // class string.
 
@@ -28,7 +26,7 @@ function assertEveryActiveOptionShowsExactlyOneMarker() {
                     `paint on top of the component's own check), found ${beforeContent}`
             );
         }
-        const visibleChecks = [...row.querySelectorAll(".fa-check")].filter((icon) => {
+        const visibleChecks = [...row.querySelectorAll(".oi[data-icon='check']")].filter((icon) => {
             const style = window.getComputedStyle(icon);
             return style.display !== "none" && style.visibility !== "hidden";
         });

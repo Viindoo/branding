@@ -1,7 +1,7 @@
 // The toggle sits in the navbar and inherits its color. The current choice is highlighted with the
-// interactive teal Sass token `$o-main-link-color` (not the runtime `--link-color`, which is the
-// purple hyperlink tier in light mode): the scheme toggle and density options are controls, not
-// hyperlinks. No custom properties; no var() inside a Sass color function.
+// interactive Sass token `$o-main-link-color` (not the runtime `--link-color`, which is the
+// hyperlink tier): the scheme toggle and density options are controls, not hyperlinks. No custom
+// properties; no var() inside a Sass color function.
 
 // Navbar toggle button (rendered inside .o_viin_appearance in the systray row).
 .o_viin_appearance_toggle {
@@ -40,7 +40,7 @@
         font-weight: 600;
     }
 
-    .fa-check {
+    .oi[data-icon="check"] {
         color: $o-main-link-color;
     }
 }

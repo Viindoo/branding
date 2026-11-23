@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 // Bypass blocks (WCAG 2.4.1) on the home-menu landing. Driven by tests/test_tours.py.
 //
 // ViinHomeMenu pre-focuses its search input on mount, so the "Skip to main content" link

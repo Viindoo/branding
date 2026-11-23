@@ -1,7 +1,4 @@
-/** @odoo-module **/
-
 import { animationFrame, describe, expect, test } from "@odoo/hoot";
-import { Deferred } from "@odoo/hoot-mock";
 import {
     contains,
     defineActions,
@@ -64,14 +61,14 @@ describe("apps button while an app reloads", () => {
         let listGate = null;
         let menuGate = null;
         onRpc("reload.menu.gadget", "web_search_read", async () => {
-            await listGate;
+            await listGate?.promise;
         });
         onRpc("mail.activity", "search_count", async () => {
-            await menuGate;
+            await menuGate?.promise;
             return 0;
         });
         onRpc("res.users", "read", async () => {
-            await menuGate;
+            await menuGate?.promise;
             return [{ viin_home_app_order: false }];
         });
         redirect("/odoo/action-9501");
@@ -82,8 +79,8 @@ describe("apps button while an app reloads", () => {
         });
 
         // The app starts reloading, and the user opens the app menu before it has finished.
-        listGate = new Deferred();
-        menuGate = new Deferred();
+        listGate = Promise.withResolvers();
+        menuGate = Promise.withResolvers();
         await contains(".o_menu_brand").click();
         await contains(".o_navbar_apps_menu .o_viin_apps_home").click();
         // The reload finishes while the app menu is still loading its own data.

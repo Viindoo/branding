@@ -151,8 +151,8 @@ class TestCoreChromeIsUntouched(TransactionCase):
 
         Core builds the arrow with ``clip-path: polygon(...)`` on
         ``.o_field_statusbar > .o_statusbar_status > .o_arrow_button:not(.d-none)``, so the polygon
-        must still be compiled and nothing may unset it. The brand-teal current arrow belongs to
-        viin_brand, which paints it through core's own ``--o-statusbar-border-active`` token.
+        must still be compiled and nothing may unset it. The colour of the current arrow belongs to
+        viin_brand.
 
         The raw compiled rules are scanned instead of resolving the cascade: a ``clip-path: none``
         reaching an arrow button by any selector shape is a regression, and a raw scan cannot miss
@@ -191,7 +191,7 @@ class TestCoreChromeIsUntouched(TransactionCase):
         navbar declares ``--NavBar-entry-color``, so the Sass fallback wins, and viin_brand pins
         ``$o-navbar-entry-color: #FFFFFF``. The button carries core's ``o_nav_entry`` class to stay
         on that rule; a ``text-reset`` (``color: inherit !important``) would resolve up to the body
-        colour and render black on the teal navbar.
+        colour and render black on the navbar.
 
         The expected value is read from the token SSOT and both bundles are checked, because the
         navbar chrome is scheme-invariant. The element is read from the template, see
@@ -225,7 +225,7 @@ class TestCoreChromeIsUntouched(TransactionCase):
                 raw,
                 "No compiled `color` applies to the navbar apps button (.o_viin_apps_home) in %s. "
                 "It carries none of core's navbar-entry classes, so nothing paints it and it falls "
-                "back to the inherited body colour - BLACK on the teal navbar." % bundle_name,
+                "back to the inherited body colour - BLACK on the navbar." % bundle_name,
             )
             colour = _normalize_colour(raw)
             self.assertIsNotNone(
@@ -245,7 +245,7 @@ class TestCoreChromeIsUntouched(TransactionCase):
             ratio = _contrast_ratio(colour, CHROME_BASE)
             self.assertGreaterEqual(
                 ratio, WCAG_NON_TEXT_MIN,
-                "The navbar apps icon renders %s on the teal navbar %s in %s - %.2f:1, below the "
+                "The navbar apps icon renders %s on the navbar %s in %s - %.2f:1, below the "
                 "WCAG non-text threshold of %.1f:1."
                 % (colour, CHROME_BASE, bundle_name, ratio, WCAG_NON_TEXT_MIN),
             )
@@ -360,7 +360,7 @@ class TestThemeAuthorsNoCoreChromeOverride(BaseCase):
             "apps_menu_home.scss declares a `color` (%d occurrence(s)). This file must stay "
             "colour-free: the apps icon is painted by core's `.o_main_navbar .o_nav_entry` rule "
             "(navbar.variables.scss %%-main-navbar-entry-base), and a colour authored here "
-            "overrides that with the body colour - black on the teal navbar." % len(declarations),
+            "overrides that with the body colour - black on the navbar." % len(declarations),
         )
 
         markup = _strip_comments(_read(APPS_MENU_XML), "apps_menu_home.xml")

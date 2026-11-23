@@ -3,27 +3,28 @@ import {
     defineModels,
     fields,
     getService,
-    makeMockEnv,
+    makeTestApp,
     onRpc,
     patchWithCleanup,
 } from "@web/../tests/web_test_helpers";
 import { mailModels } from "@mail/../tests/mail_test_helpers";
 import { cookie } from "@web/core/browser/cookie";
-import { browser } from "@web/core/browser/browser";
+import { location } from "@web/core/browser/browser";
+import { ViinThemePlugin } from "@viin_backend_theme/webclient/viin_theme_plugin";
 
-// Behaviour guards for the `viin_theme` service (observable state, not internals). Dark mode is a
+// Behaviour guards for the `ViinThemePlugin` (observable state, not internals). Dark mode is a
 // recompiled server bundle (web.assets_web_dark) that cannot swap without a reload, so
 // setScheme(choice) must
 //   (a) persist the choice to res.users.viin_color_scheme (ORM write),
 //   (b) persist the effective (light|dark) scheme to the `color_scheme` cookie the server reads, and
-//   (c) reload via browser.location.reload() so the server serves the dark bundle and boot-stamps
+//   (c) reload via location.reload() so the server serves the dark bundle and boot-stamps
 //       the paint, without any instant [data-bs-theme] flip.
 // Density is attribute-scoped SCSS, not a server bundle: setDensity must stamp data-viin-density and
 // persist its cookie without reloading.
 
-describe("viin_theme service (persist + reload)", () => {
+describe("ViinThemePlugin (persist + reload)", () => {
     // The theme depends on viin_brand_mail, so its production JS boots the mail/discuss service
-    // graph in makeMockEnv. Spread the full mail mock model set so those boot RPCs resolve, and
+    // graph in makeTestApp. Spread the full mail mock model set so those boot RPCs resolve, and
     // override res.users with the per-user field so the boot read and the persist write resolve.
     class ResUsers extends mailModels.ResUsers {
         viin_color_scheme = fields.Selection({
@@ -39,12 +40,12 @@ describe("viin_theme service (persist + reload)", () => {
 
     const root = document.documentElement;
 
-    /** Start the mock env (which eagerly starts the service) and let its async boot reconcile settle,
+    /** Start the test app (which eagerly starts the plugin) and let its async boot reconcile settle,
      *  so the subsequent explicit setScheme/setDensity call is the last writer (no boot race). */
-    async function startService() {
-        await makeMockEnv();
+    async function startPlugin() {
+        await makeTestApp();
         await animationFrame();
-        return getService("viin_theme");
+        return getService(ViinThemePlugin);
     }
 
     test("setScheme('dark') persists the pref + effective cookie and reloads, with no instant paint flip", async () => {
@@ -53,17 +54,17 @@ describe("viin_theme service (persist + reload)", () => {
             writtenVals = args[1];
             return true;
         });
-        patchWithCleanup(browser.location, { reload: () => expect.step("reload") });
+        patchWithCleanup(location, { reload: () => expect.step("reload") });
 
-        const service = await startService();
+        const plugin = await startPlugin();
         const paintBefore = root.dataset.bsTheme; // boot-stamped effective (default light)
 
-        service.setScheme("dark");
+        plugin.setScheme("dark");
         await animationFrame(); // flush the fire-and-forget ORM write
 
         expect.verifySteps(["reload"], {
             message:
-                "setScheme('dark') must call browser.location.reload() so the server serves the " +
+                "setScheme('dark') must call location.reload() so the server serves the " +
                 "recompiled web.assets_web_dark bundle (a server-selected bundle cannot swap without a reload).",
         });
         expect(cookie.get("color_scheme")).toBe("dark", {
@@ -90,10 +91,10 @@ describe("viin_theme service (persist + reload)", () => {
             writtenVals = args[1];
             return true;
         });
-        patchWithCleanup(browser.location, { reload: () => expect.step("reload") });
+        patchWithCleanup(location, { reload: () => expect.step("reload") });
 
-        const service = await startService();
-        service.setScheme("auto");
+        const plugin = await startPlugin();
+        plugin.setScheme("auto");
         await animationFrame();
 
         expect.verifySteps(["reload"], {
@@ -117,10 +118,10 @@ describe("viin_theme service (persist + reload)", () => {
     test("setDensity('compact') applies instantly and does NOT reload", async () => {
         // Density is attribute-scoped SCSS (no server bundle), so the scheme reload must not bleed
         // onto it: it stays an instant, reload-free flip.
-        patchWithCleanup(browser.location, { reload: () => expect.step("reload") });
+        patchWithCleanup(location, { reload: () => expect.step("reload") });
 
-        const service = await startService();
-        service.setDensity("compact");
+        const plugin = await startPlugin();
+        plugin.setDensity("compact");
         await animationFrame();
 
         expect(root.dataset.viinDensity).toBe("compact", {

@@ -5,7 +5,7 @@
        (skip_link.scss); activating it moves keyboard focus into the action region via
        WebClient.skipToMainContent (webclient_patch.js). -->
   <t t-inherit="web.WebClient" t-inherit-mode="extension">
-    <xpath expr="//t[@t-if='!state.fullscreen']" position="before">
+    <xpath expr="//t[@t-if='!this.state.fullscreen']" position="before">
       <a href="#" class="o_viin_skip_link" t-on-click.prevent="() => this.skipToMainContent()">Skip to main content</a>
     </xpath>
   </t>

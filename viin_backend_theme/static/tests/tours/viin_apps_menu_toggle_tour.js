@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 // The apps icon toggles without leaving the page: from a real view, click the apps icon -> the
 // flat home menu is shown and the view underneath is still mounted -> click the apps icon again ->
 // that same view is on screen again. Only observable DOM state is asserted.

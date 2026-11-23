@@ -1,8 +1,6 @@
-/** @odoo-module **/
-
 // Route the Discuss onboarding tour through the theme's flat home-menu landing. The theme lands
 // `/odoo` on the home menu (webclient_patch.js), while core's `discuss_channel_tour` has a CE step
-// that assumes Discuss is already open (`.o-mail-DiscussSearch-inputContainer`). One navigation step
+// that assumes Discuss is already open (`.o-mail-MessagingMenu-tab`). One navigation step
 // is prepended that opens Discuss from its home-menu tile (`.o_app[data-menu-xmlid=...]`, home_menu.xml)
 // before that step; no assertion is weakened.
 //

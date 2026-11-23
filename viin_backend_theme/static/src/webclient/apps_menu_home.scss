@@ -2,11 +2,9 @@
 // `$o-navbar-entry-color` pinned by viin_brand) and supplies display:flex, alignment and the navbar
 // row height. This file declares no colour: any `color` here turns the icon black (`text-reset`
 // inherits the body colour).
-// It only restores the two metrics core gives its own apps trigger (`.o_navbar_apps_menu
-// .dropdown-toggle`), which this button does not match because it is not a `.dropdown-toggle`: the
-// wider entry gutter and the brand-sized glyph.
+// It only restores the wider entry gutter core gives its own apps trigger (`.o_navbar_apps_menu
+// .dropdown-toggle`), which this button does not match because it is not a `.dropdown-toggle`. The
+// size of the glyph is carried by the `fs-2` class of the icon (apps_menu_home.xml), not by a rule.
 .o_navbar_apps_menu .o_viin_apps_home {
     --NavBar-entry-padding-left: #{$o-horizontal-padding};
-
-    font-size: $o-navbar-brand-font-size;
 }
