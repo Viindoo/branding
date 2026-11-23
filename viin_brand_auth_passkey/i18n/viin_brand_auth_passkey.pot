@@ -4,16 +4,36 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:48+0000\n"
-"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"POT-Creation-Date: 2026-11-22 02:23+0000\n"
+"PO-Revision-Date: 2026-11-22 02:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_auth_passkey
+#: model:ir.module.module,summary:base.module_viin_brand_auth_passkey
+msgid "Theme branding Viindoo for module Passkeys"
+msgstr ""
+
+#. module: viin_brand_auth_passkey
+#: model:ir.module.module,description:base.module_viin_brand_auth_passkey
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands the name of the site in the passkey prompt of the browser as Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
 
 #. module: viin_brand_auth_passkey
 #: model:ir.model.fields,field_description:viin_brand_auth_passkey.field_auth_passkey_key__display_name
@@ -28,4 +48,9 @@ msgstr ""
 #. module: viin_brand_auth_passkey
 #: model:ir.model,name:viin_brand_auth_passkey.model_auth_passkey_key
 msgid "Passkey"
+msgstr ""
+
+#. module: viin_brand_auth_passkey
+#: model:ir.module.module,shortdesc:base.module_viin_brand_auth_passkey
+msgid "Passkeys Branding For Viindoo"
 msgstr ""
