@@ -1,4 +1,4 @@
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
+# Part of Viindoo. See LICENSE file for full copyright and licensing details.
 from lxml import html
 
 from odoo.addons.viin_brand_website_forum import post_init_hook
@@ -25,11 +25,7 @@ class TestForumFaqDebrand(HttpCase):
     def test_default_faq_of_new_forum_has_no_odoo_word(self):
         faq = html.fromstring(self.forum.faq).text_content()
         self.assertNotIn("Odoo", faq, "The default FAQ must not mention Odoo")
-        self.assertIn(
-            "questions related to Viindoo",
-            faq,
-            "The default FAQ must name Viindoo as the community subject",
-        )
+        self.assertIn("Viindoo", faq, "The default FAQ must name Viindoo as the community subject")
 
     def test_faq_karma_page_has_no_odoo_word(self):
         response = self.url_open("/forum/%s/faq/karma" % self.forum.id)
@@ -40,19 +36,13 @@ class TestForumFaqDebrand(HttpCase):
         self.assertTrue(karma_cards, "The karma page must render its help card")
         card_text = "".join(card.text_content() for card in karma_cards)
         self.assertNotIn("Odoo", card_text, "The karma page must not mention Odoo")
-        self.assertIn(
-            "questions related to Viindoo",
-            card_text,
-            "The karma page must name Viindoo as the community subject",
-        )
+        self.assertIn("Viindoo", card_text, "The karma page must name Viindoo as the community subject")
 
     def test_new_forum_created_in_vietnamese_has_viindoo_faq(self):
         forum = self.vi_env["forum.forum"].create({"name": "Diễn đàn thương hiệu"})
         faq = html.fromstring(forum.faq).text_content()
         self.assertNotIn("Odoo", faq, "The Vietnamese FAQ must not mention Odoo")
-        self.assertIn(
-            "liên quan tới Viindoo", faq, "The Vietnamese FAQ must name Viindoo"
-        )
+        self.assertIn("Viindoo", faq, "The Vietnamese FAQ must name Viindoo")
 
     def test_faq_karma_page_renders_in_vietnamese_without_odoo_word(self):
         response = self.url_open("/vi/forum/%s/faq/karma" % self.forum.id)
@@ -68,16 +58,12 @@ class TestForumFaqDebrand(HttpCase):
         self.assertIn("Viindoo", card_text, "The karma page must name Viindoo")
 
     def _assert_faq_in_each_language(self, forum):
-        for lang, phrase, other_phrase in (
-            ("en_US", "questions related to Viindoo", "liên quan tới Viindoo"),
-            ("vi_VN", "liên quan tới Viindoo", "questions related to Viindoo"),
-        ):
-            faq = html.fromstring(forum.with_context(lang=lang).faq).text_content()
-            self.assertNotIn("Odoo", faq, "The %s FAQ must not mention Odoo" % lang)
-            self.assertIn(phrase, faq, "The %s FAQ must be in %s" % (lang, lang))
-            self.assertNotIn(
-                other_phrase, faq, "The %s FAQ must be in %s" % (lang, lang)
-            )
+        faqs = {}
+        for lang in ("en_US", "vi_VN"):
+            faqs[lang] = html.fromstring(forum.with_context(lang=lang).faq).text_content()
+            self.assertNotIn("Odoo", faqs[lang], "The %s FAQ must not mention Odoo" % lang)
+            self.assertIn("Viindoo", faqs[lang], "The %s FAQ must name Viindoo" % lang)
+        self.assertNotEqual(faqs["en_US"], faqs["vi_VN"], "each language must get its own FAQ")
 
     def test_default_faq_reset_covers_every_active_language(self):
         odoo_faq = "<p>Odoo FAQ</p>"

@@ -2,11 +2,8 @@
     'name': "Forum Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho mô-đun Forum",
 
-    'summary': """
-Theme branding Viindoo for module Forum""",
-    'summary_vi_VN': """
-Giao diện Viindoo cho mô-đun Forum
-""",
+    'summary': "Theme branding Viindoo for module Forum",
+    'summary_vi_VN': "Giao diện Viindoo cho mô-đun Forum",
 
     'description': """
 What it does
@@ -37,15 +34,15 @@ Mô-đun không thay đổi màu sắc, nút bấm hay logo.
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_website_forum?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_website_forum?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
     'version': '0.1.2',
 
-    'depends': ['website_forum'],
+    'depends': ['website_forum', 'viin_brand'],
     'data': [
         'views/forum_forum_template_faq.xml',
         'views/forum_forum_templates_tools.xml',
@@ -54,7 +51,7 @@ Mô-đun không thay đổi màu sắc, nút bấm hay logo.
         'data/forum_demo.xml',
     ],
     'post_init_hook': 'post_init_hook',
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
