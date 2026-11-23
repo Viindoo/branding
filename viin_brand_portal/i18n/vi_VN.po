@@ -4,16 +4,47 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-30 03:10+0000\n"
-"PO-Revision-Date: 2026-10-30 03:10+0000\n"
+"POT-Creation-Date: 2026-11-22 03:14+0000\n"
+"PO-Revision-Date: 2026-11-22 03:14+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_portal
+#: model:ir.module.module,summary:base.module_viin_brand_portal
+msgid "Theme branding Viindoo for module Portal"
+msgstr "Giao diện brand Viindoo cho module Portal"
+
+#. module: viin_brand_portal
+#: model:ir.module.module,description:base.module_viin_brand_portal
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module will change color navigate bar, button and logo,v.v in Portal following Viindoo's brand\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"=========\n"
+"Phân hệ này thay đổi màu thanh điều hướng, nút, logo,... trong Cổng thông tin theo thương hiệu Viindoo\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+
+#. module: viin_brand_portal
+#: model:ir.module.module,shortdesc:base.module_viin_brand_portal
+msgid "Portal Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Cổng thông tin"
 
 #. module: viin_brand_portal
 #: model_terms:ir.ui.view,arch_db:viin_brand_portal.portal_record_sidebar

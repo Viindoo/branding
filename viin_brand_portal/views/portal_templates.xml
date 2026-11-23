@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="portal_record_sidebar" name="My Portal Record Sidebar" inherit_id="portal.portal_record_sidebar">
-    	<xpath expr="//a" position="attributes">
-    		<attribute name="href">http://www.viindoo.com?utm_source=db&amp;utm_medium=portal</attribute>
-    		<attribute name="title">Viindoo</attribute>
-    	</xpath>
-    	<xpath expr="//img" position="attributes">
-    		<attribute name="src">/viin_brand/static/img/viindoo_logo_tiny.png</attribute>
-    		<attribute name="alt">Viindoo Logo</attribute>
-    		<attribute name="style">vertical-align: text-bottom;</attribute>
-    	</xpath>
+        <xpath expr="//a" position="attributes">
+            <attribute name="href">http://www.viindoo.com?utm_source=db&amp;utm_medium=portal</attribute>
+            <attribute name="title">Viindoo</attribute>
+        </xpath>
+        <xpath expr="//img" position="attributes">
+            <attribute name="src">/viin_brand/static/img/viindoo_logo_tiny.png</attribute>
+            <attribute name="alt">Viindoo Logo</attribute>
+            <attribute name="style">vertical-align: text-bottom;</attribute>
+        </xpath>
+    </template>
+
+    <!-- Rendered straight by ir.qweb, so the colour is read from the company when the link is built. -->
+    <template id="portal_share_template" inherit_id="portal.portal_share_template">
+        <xpath expr="//a[@t-attf-href]" position="attributes">
+            <attribute name="style"/>
+            <attribute name="t-attf-style">background-color: #{company.email_secondary_color or '#7F4282'}; padding: 10px; text-decoration: none; color: #{company.email_primary_color or '#FFFFFF'}; border-radius: 5px; font-size: 12px;</attribute>
+        </xpath>
     </template>
 </odoo>
