@@ -1,0 +1,10 @@
+// Core thins the fill of a notice row (`bg-info`, `bg-warning`) to a 20% wash with `--bg-opacity`,
+// but the `bg-*` utility keeps the label colour it picked for a solid fill (white on the Viindoo
+// info blue), which leaves the name and the text of the row unreadable on the wash. The labels take
+// the text colour of the scheme.
+.o-mail-NotificationItem {
+    &.bg-info,
+    &.bg-warning {
+        color: var(--body-color);
+    }
+}

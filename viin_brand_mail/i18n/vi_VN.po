@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 16:01+0000\n"
-"PO-Revision-Date: 2026-11-19 16:01+0000\n"
+"POT-Creation-Date: 2026-11-22 14:59+0000\n"
+"PO-Revision-Date: 2026-11-22 14:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,10 +15,24 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: mail
-#: model:res.groups,name:mail.group_mail_notification_type_inbox
-msgid "Receive notifications in Viindoo"
-msgstr "Nhận thông báo trong Viindoo"
+#. module: viin_brand_mail
+#: model:ir.module.module,description:base.module_viin_brand_mail
+msgid ""
+"\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
 
 #. module: viin_brand_mail
 #. odoo-python
@@ -43,6 +57,11 @@ msgstr ""
 "                phút. Nếu có một số địa chỉ mà bạn cần nhận cập nhật rất thường xuyên\n"
 "                bạn có thể thêm chúng dưới đây và Viindoo sẽ cho phép chúng đi qua.\n"
 "            </p>"
+
+#. module: viin_brand_mail
+#: model:ir.module.module,summary:base.module_viin_brand_mail
+msgid "Debranding Mail Discuss for Viindoo"
+msgstr "Làm lại mẫu mail của Thảo luận theo Thương hiệu Viindoo"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_config_settings__alias_domain_id
@@ -77,8 +96,13 @@ msgid "By Emails"
 msgstr "Bằng email"
 
 #. module: viin_brand_mail
+#: model:ir.model,name:viin_brand_mail.model_mail_call_artifact
+msgid "Call Artifact"
+msgstr "Tạo tác cuộc gọi"
+
+#. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_res_company
-msgid "Companies"
+msgid "Company"
 msgstr "Công ty"
 
 #. module: viin_brand_mail
@@ -92,12 +116,19 @@ msgid "Delete Emails"
 msgstr "Xóa email"
 
 #. module: viin_brand_mail
+#: model:ir.module.module,shortdesc:base.module_viin_brand_mail
+msgid "Discuss Debranding for Viindoo"
+msgstr "Thương hiệu Viindoo cho Thảo luận"
+
+#. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_call_artifact__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_gateway_allowed__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_mail__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__display_name
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_render_mixin__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_template__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_thread__display_name
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_company__display_name
@@ -108,8 +139,8 @@ msgstr "Tên hiển thị"
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_alias
-msgid "Email Aliases"
-msgstr "Bí danh Email"
+msgid "Email Alias"
+msgstr "Bí danh email"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_company__email_secondary_color
@@ -123,7 +154,7 @@ msgstr "Miền email"
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_template
-msgid "Email Templates"
+msgid "Email Template"
 msgstr "Mẫu email"
 
 #. module: viin_brand_mail
@@ -142,12 +173,25 @@ msgid "Email domain e.g. 'example.com' in 'viindoo@example.com'"
 msgstr "Miền email ví dụ: 'example.com' trong 'viindoo@example.com'"
 
 #. module: viin_brand_mail
+#: model:ir.model.fields,help:viin_brand_mail.field_res_users__notification_type
+msgid ""
+"How notifications for document messages and system updates are delivered:\n"
+"- By email: Notifications are sent to your email address.\n"
+"- In Viindoo: Notifications appear in your Viindoo inbox."
+msgstr ""
+"Cách gửi thông báo về tin nhắn của tài liệu và các cập nhật hệ thống:\n"
+"- Bằng email: Thông báo được gửi tới địa chỉ email của bạn.\n"
+"- Trong Viindoo: Thông báo xuất hiện trong hộp thư đến Viindoo của bạn."
+
+#. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_call_artifact__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_compose_message__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_gateway_allowed__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_mail__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_push_device__id
+#: model:ir.model.fields,field_description:viin_brand_mail.field_mail_render_mixin__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_template__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_thread__id
 #: model:ir.model.fields,field_description:viin_brand_mail.field_res_company__id
@@ -171,12 +215,6 @@ msgid "In Viindoo"
 msgstr "Trong Viindoo"
 
 #. module: viin_brand_mail
-#. odoo-javascript
-#: code:addons/viin_brand_mail/static/src/core/web/messaging_menu_patch.js:0
-msgid "Install Viindoo"
-msgstr "Cài đặt Viindoo"
-
-#. module: viin_brand_mail
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_push_device__keys
 msgid ""
 "It's refer to browser keys used by the notification: \n"
@@ -193,6 +231,11 @@ msgstr ""
 #: model:ir.model,name:viin_brand_mail.model_mail_gateway_allowed
 msgid "Mail Gateway Allowed"
 msgstr "Cổng email được cho phép"
+
+#. module: viin_brand_mail
+#: model:ir.model,name:viin_brand_mail.model_mail_render_mixin
+msgid "Mail Render Mixin"
+msgstr "Mixin kết xuất email"
 
 #. module: viin_brand_mail
 #: model:ir.model.fields,field_description:viin_brand_mail.field_mail_alias_domain__name
@@ -212,19 +255,8 @@ msgstr "Chỉ người dùng nội bộ mới có thể nhận được thông b
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_mail
-msgid "Outgoing Mails"
+msgid "Outgoing Mail"
 msgstr "Thư gửi đi"
-
-#. module: viin_brand_mail
-#: model:ir.model.fields,help:viin_brand_mail.field_res_users__notification_type
-msgid ""
-"Policy on how to handle Chatter notifications:\n"
-"- By Emails: notifications are sent to your email address\n"
-"- In Viindoo: notifications appear in your Viindoo Inbox"
-msgstr ""
-"Chính sách xử lý thông báo của cửa sổ trò chuyện:\n"
-"- Bằng email: thông báo được gửi tới địa chỉ email của bạn\n"
-"- Trong Viindoo: thông báo xuất hiện trong hộp thư đến Viindoo"
 
 #. module: viin_brand_mail
 #: model:ir.model,name:viin_brand_mail.model_mail_push_device
@@ -253,23 +285,13 @@ msgstr ""
 "email <vieclam@vidu.viindoo.com>"
 
 #. module: viin_brand_mail
+#: model:ir.model.fields,help:viin_brand_mail.field_mail_compose_message__auto_delete
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_mail__auto_delete
 #: model:ir.model.fields,help:viin_brand_mail.field_mail_template__auto_delete
 msgid ""
 "This option permanently removes any track of email after it's been sent, "
 "including from the Technical menu in the Settings, in order to preserve "
 "storage space of your Viindoo database."
-msgstr ""
-"Lựa chọn này sẽ xóa vĩnh viễn mọi dấu vết của email sau khi nó được gửi, bao"
-" gồm cả từ menu Kỹ thuật trong Thiết lập, để bảo quản không gian lưu trữ của"
-" cơ sở dữ liệu Viindoo của bạn."
-
-#. module: viin_brand_mail
-#: model:ir.model.fields,help:viin_brand_mail.field_mail_compose_message__auto_delete
-msgid ""
-"This option permanently removes any track of email after it's been "
-"sent,including from the Technical menu in the Settings, in order to preserve"
-" storage space of your Viindoo database."
 msgstr ""
 "Lựa chọn này sẽ xóa vĩnh viễn mọi dấu vết của email sau khi nó được gửi, bao"
 " gồm cả từ menu Kỹ thuật trong Thiết lập, để bảo quản không gian lưu trữ của"
@@ -299,4 +321,9 @@ msgstr "Hệ thống Viindoo"
 #. module: viin_brand_mail
 #: model_terms:ir.ui.view,arch_db:viin_brand_mail.email_compose_message_wizard_form
 msgid "e.g: \"info@mycompany.viindoo.com\""
-msgstr ""
+msgstr "vd: \"info@mycompany.viindoo.com\""
+
+#. module: mail
+#: model:res.groups,name:mail.group_mail_notification_type_inbox
+msgid "Receive notifications in Viindoo"
+msgstr "Nhận thông báo trong Viindoo"

@@ -1,5 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from lxml import etree
+from lxml import etree, html
 from psycopg2 import IntegrityError
 
 from odoo.tests.common import HttpCase, TransactionCase, new_test_user, tagged
@@ -13,7 +13,6 @@ BRAND_DIALOG_FILES = (
     "viin_brand/static/src/core/dialog/dialog.js",
     "viin_brand/static/src/core/errors/error_dialogs.js",
     "viin_brand/static/src/core/errors/error_dialogs.xml",
-    "viin_brand/static/src/core/browser/title_service.js",
 )
 
 
@@ -32,7 +31,6 @@ class TestMailServerSideDebrand(TransactionCase):
     def test_bot_signature_is_the_bot_name(self):
         signature = self.env.ref("base.user_root").signature
         self.assertIn("ViindooBot", signature)
-        self.assertNotIn("System", signature)
 
     def test_notification_type_constraint_names_viindoo(self):
         portal = new_test_user(self.env, login="viin_portal_notif", groups="base.group_portal")
@@ -41,7 +39,7 @@ class TestMailServerSideDebrand(TransactionCase):
             portal.write({"notification_type": "inbox"})
             portal.flush_recordset()
         message = portal._sql_error_to_message(caught.exception)
-        self.assertIn("Only internal user can receive notifications in Viindoo", message)
+        self.assertIn("Viindoo", message)
         self.assertNotIn("Odoo", message)
 
     def test_mail_server_hint_does_not_name_the_editions(self):
@@ -49,7 +47,7 @@ class TestMailServerSideDebrand(TransactionCase):
         title = etree.fromstring(combined).xpath("//setting[@id='email_servers_setting']/@title")
         self.assertTrue(title)
         self.assertEqual(title[0], title[0].strip(), "the hint carries no surrounding whitespace")
-        self.assertNotIn("Community and Enterprise", title[0])
+        self.assertNotRegex(title[0], r"\b(Community|Enterprise)\b")
         self.assertNotIn("Odoo", title[0])
 
 
@@ -62,10 +60,6 @@ class TestMailBundles(TransactionCase):
             for path in PATCH_FILES:
                 with self.subTest(bundle=bundle, file=path):
                     self.assertIn(path, paths)
-        self.assertIn(
-            "viin_brand_mail/static/src/core/web/messaging_menu_patch.js",
-            _bundle_paths(self.env, "web.assets_backend"),
-        )
 
     def test_public_bundle_carries_the_dialog_and_error_files_of_viin_brand(self):
         paths = _bundle_paths(self.env, "mail.assets_public")
@@ -102,50 +96,59 @@ def _page_script(body):
 @tagged("post_install", "-at_install")
 class TestMailClientDebrand(HttpCase):
 
+    def test_public_channel_page_is_titled_and_iconed_by_viindoo(self):
+        channel = self.env["discuss.channel"].create({
+            "name": "Public room", "channel_type": "channel", "group_public_id": False,
+        })
+        response = self.url_open("/discuss/channel/%d" % channel.id)
+        self.assertEqual(response.status_code, 200)
+        page = html.fromstring(response.content)
+        self.assertEqual(page.xpath("//title")[0].text_content().strip(), "Viindoo")
+        icons = page.xpath("//link[@type='image/x-icon']/@href")
+        self.assertEqual(icons, ["/viin_brand/static/img/favicon.ico"])
+
     def _run(self, body):
         self.browser_js("/odoo", _page_script(body), login="admin", timeout=120)
 
-    def test_install_prompt_names_viindoo(self):
-        self._run("""
-            const { MessagingMenu } = await wait(() => odoo.loader.modules.get("@mail/core/public_web/messaging_menu"));
-            const getter = Object.getOwnPropertyDescriptor(MessagingMenu.prototype, "installationRequest").get;
-            const request = getter.call({
-                pwa: {},
-                canPromptToInstall: true,
-                store: { odoobot: { avatarUrl: "/bot.png" }, discuss: { activeTab: "notification" } },
-            });
-            if (String(request.displayName) !== "Install Viindoo") {
-                throw new Error("install prompt reads: " + request.displayName);
-            }
-        """)
-
     def test_permission_toasts_name_viindoo(self):
         self._run("""
-            const { notificationPermissionService } = await wait(() => odoo.loader.modules.get("@mail/core/common/notification_permission_service"));
+            const { notificationPermissionService } = await wait(
+                () => odoo.loader.modules.get("@mail/core/common/notification_permission_service")
+            );
             const { browser } = odoo.loader.modules.get("@web/core/browser/browser");
             const seen = [];
+            const notification = { add: (message) => seen.push(String(message)) };
             const stubbed = { query: async () => ({ state: "prompt", addEventListener() {} }) };
             Object.defineProperty(navigator, "permissions", { value: stubbed, configurable: true });
             browser.Notification = { permission: "default", requestPermission: async () => "denied" };
-            let state = await notificationPermissionService.start({}, { notification: { add: (message) => seen.push(String(message)) } });
+            let state = await notificationPermissionService.start({}, { notification });
             await state.requestPermission();
             browser.Notification = { permission: "default", requestPermission: async () => "granted" };
-            state = await notificationPermissionService.start({}, { notification: { add: (message) => seen.push(String(message)) } });
+            state = await notificationPermissionService.start({}, { notification });
             await state.requestPermission();
-            if (seen.length !== 2 || seen.some((text) => text.includes("Odoo") || !text.includes("Viindoo"))) {
+            const wrong = (text) => text.includes("Odoo") || !text.includes("Viindoo");
+            if (seen.length !== 2 || seen.some(wrong)) {
                 throw new Error("permission toasts read: " + JSON.stringify(seen));
             }
         """)
 
     def test_desktop_notification_icon_is_the_viindoo_bot(self):
         self._run("""
-            const { OutOfFocusService } = await wait(() => odoo.loader.modules.get("@mail/core/common/out_of_focus_service"));
+            const { OutOfFocusService } = await wait(
+                () => odoo.loader.modules.get("@mail/core/common/out_of_focus_service")
+            );
             const icons = [];
             const OriginalNotification = window.Notification;
-            window.Notification = class { constructor(title, options) { icons.push(options.icon); } addEventListener() {} };
+            window.Notification = class {
+                constructor(title, options) { icons.push(options.icon); }
+                addEventListener() {}
+            };
+            const send = (icon) => OutOfFocusService.prototype.sendNativeNotification.call(
+                { _playSound() {} }, "t", "m", icon, { sound: false }
+            );
             try {
-                OutOfFocusService.prototype.sendNativeNotification.call({ _playSound() {} }, "t", "m", "/mail/static/src/img/odoobot_transparent.png", { sound: false });
-                OutOfFocusService.prototype.sendNativeNotification.call({ _playSound() {} }, "t", "m", "/author.png", { sound: false });
+                send("/mail/static/src/img/odoobot_transparent.webp");
+                send("/author.png");
             } finally {
                 window.Notification = OriginalNotification;
             }

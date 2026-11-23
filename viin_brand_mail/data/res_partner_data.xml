@@ -1,9 +1,14 @@
 <odoo>
     <data noupdate="1">
-        <record id="base.partner_root" model="res.partner">
+        <!-- The rename of the bot is branding, not a change a user made: no tracking line on its chatter. -->
+        <record id="base.partner_root" model="res.partner" context="{'mail_notrack': True}">
             <field name="name">ViindooBot</field>
-            <field name="image_1920" type="base64" file="viin_brand/static/img/viindoobot.png"/>
+            <field name="image_1920" type="bytes" file="viin_brand/static/img/viindoobot.png"/>
         </record>
+        <!-- Stored fields computed from the name (the company name entity) are recomputed at the next flush, in the
+             environment that flushes. Flushing here keeps them inside the untracked context of the rename. -->
+        <function model="res.partner" name="flush_model" eval="[[]]" context="{'mail_notrack': True}"/>
+        <function model="res.partner" name="_clear_installation_history_naming_odoo" eval="['base.partner_root']"/>
         <record id="base.user_root" model="res.users">
             <field name="signature" type="html"><div>ViindooBot</div></field>
         </record>

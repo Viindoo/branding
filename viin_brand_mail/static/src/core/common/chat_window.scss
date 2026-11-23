@@ -1,4 +1,5 @@
-// Chat-window chrome: a header in the AA teal $o-navbar-background carrying white glyphs.
+// Chat-window chrome: a header in the chrome teal $o-viin-chrome-base carrying white glyphs. A chat
+// window floats over the application, so it is frame, while the conversation inside it is content.
 // This file loads right after core's chat_window.scss in every bundle that ships it, so
 // equal-specificity overrides win on source order; !important only beats a core/Bootstrap one.
 .o-mail-ChatWindow-header {
@@ -6,7 +7,7 @@
     // chrome.
     --mail-ChatWindow-moreActionsHoverColor: white;
 
-    background-color: $o-navbar-background !important;
+    background-color: $o-viin-chrome-base !important;
     color: white;
 }
 
@@ -26,13 +27,14 @@
 }
 
 // The parent-channel breadcrumb separator carries Bootstrap's `.text-muted` (`!important`), which
-// stays dark on the teal chrome (~2.3:1); every muted glyph in the header inherits the white.
+// stays dark on the teal chrome; every muted glyph in the header inherits the white.
 .o-mail-ChatWindow-header .text-muted {
     color: inherit !important;
 }
 
-// Core dims idle header actions to 50% opacity, which gives white 2.30:1 on the teal chrome; the
-// selector mirrors core's so equal specificity resolves by load order.
+// Core dims idle header actions to 50% opacity, which leaves the white glyphs under the contrast
+// floor on the teal chrome; the selector mirrors core's so equal specificity resolves by load
+// order.
 .o-mail-ChatWindow-header .o-mail-ActionList-group {
     button:not(:hover):not(:focus-visible):not(:active):not(.btn-success) {
         --o-mail-ActionList-Button-opacity: 1;
@@ -43,7 +45,7 @@
     // Only the colour is set: the `border` shorthand would reset the style Bootstrap's .border
     // supplies. !important beats .border-dark's own `border-color: ... !important`.
     &.border {
-        border-color: $o-navbar-background !important;
+        border-color: $o-viin-chrome-base !important;
     }
 
     font-size: 1rem;
@@ -59,9 +61,9 @@
         background-color: rgba(0, 0, 0, 0.25) !important;
     }
 
-    // Core fades the caret to 25% opacity while the menu is closed, barely legible on the teal
-    // chrome.
-    &:not(.o-active):not(.o-hover) .fa-caret-down {
+    // Core fades the caret to 50% opacity while the menu is closed, barely legible on the
+    // teal chrome.
+    &:not(.o-active):not(.o-hover) [data-icon="arrow_drop_down"] {
         opacity: 1;
     }
 }

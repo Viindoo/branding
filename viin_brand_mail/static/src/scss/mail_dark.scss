@@ -1,62 +1,59 @@
-// Mail dark rules for what the dark palette levers do not reach: a light literal in core (the
-// rotting kanban card), muted tiers thinned again by important Bootstrap opacity utilities, the
-// orange bubble, the mention list rows, the mobile messaging-menu tab and the followers button.
+// Mail dark rules for what the dark palette levers do not reach: muted tiers thinned again by
+// important Bootstrap opacity utilities, the message bubbles, the mention list rows, the
+// messaging-menu tab and the followers button.
 // The file is appended to web.assets_web_dark, so it loads after core's mail dark tail and a
 // same-specificity rule wins on source order; !important only where the competing one has it.
 
-// Core's rotting_mixin.scss paints the card from the literal `rgba(255, 201, 201, .3)`, which no
-// Sass variable reaches; over the dark card it composites to a muddy near-neutral that loses the
-// danger read. A danger tint mixed over the dark body surface stays red-dominant. The selected
-// state (`&.o_record_selected`, higher specificity) keeps winning for a selected card.
-.o_kanban_renderer .o_kanban_record.oe_kanban_card_rotting {
-    background-color: mix($danger, $body-bg, 25%);
-}
+// A read conversation is dimmed three times: the row as a whole
+// (`--mail-NotificationItem-notInterestOpacity`), the preview
+// (`--mail-NotificationItem-textMutedOpacity`) and the timestamp (a fixed `.5` on
+// `.o-muted`), which leaves the preview and the timestamp under AA on the dark list. The
+// de-emphasis stays with the muted colour of the scheme, so the opacities go to 100%. Core's dark
+// file declares the properties on the same selector, and this file is appended after it.
+.o-mail-NotificationItem {
+    --mail-NotificationItem-notInterestOpacity: 1;
+    --mail-NotificationItem-textMutedOpacity: 1;
 
-// A read conversation is rendered with muted=1 (messaging_menu.xml `!thread.isUnread ? 1 : 0`),
-// which stamps `text-muted` on the row; the muted colour is the dark scheme's own tier
-// ($o-main-color-muted -> $body-secondary-color). Core thins the preview again with
-// `.o-mail-NotificationItem-text { opacity: .75 }`, and the timestamp and the parent-channel label
-// of a sub-channel carry the template's `opacity-75`, which is important. The de-emphasis stays
-// with the muted colour, so both opacities go to 100%. Scoped to `.text-muted` so unread rows keep
-// core's values.
-.o-mail-NotificationItem.text-muted {
-    .o-mail-NotificationItem-text {
+    .o-mail-NotificationItem-text.o-muted,
+    .o-mail-NotificationItem-date.o-muted {
+        color: $body-secondary-color;
         opacity: 1;
     }
-
-    .opacity-75 {
-        opacity: 100% !important;
-    }
 }
 
-// Core's dark file paints each bubble from the gray ramp (`mix($gray-100, darken($_color, ..), ..)`).
-// The blue and green results read well, but the orange one lands on a tone where the muted tier
-// of the message (placeholder, `Subject:` line, edited marker) falls under AA. The orange
-// bubble is painted from a dark tint of its own category colour instead, which keeps the
-// distinction from blue and green while the muted tier clears AA. Core's declarations are
-// important, hence the flag.
+// Core's dark file paints each bubble from the gray ramp (`mix($gray-100, darken($_color, ..), ..)`)
+// and hands it to the message through the custom properties `--o-bubble-bg`,
+// `--o-bubble-bg-muted` and `--o-bubble-border-color`. On those tones the body text of the green
+// bubble falls just under AA, and the muted tier of the message (placeholder, `Subject:` line,
+// edited marker) falls under AA on the blue and orange bubbles. Every bubble is painted from a dark
+// tint of its own category colour instead, which keeps the three distinct while the text clears
+// AA. The bubble and its tail read the same properties, so they are re-pointed together.
+$o-viin-dark-bubble-blue-bg: mix($o-view-background-color, $info, 80%);
+$o-viin-dark-bubble-blue-border: mix($o-view-background-color, $info, 65%);
+$o-viin-dark-bubble-green-bg: mix($o-view-background-color, $success, 80%);
+$o-viin-dark-bubble-green-border: mix($o-view-background-color, $success, 65%);
 $o-viin-dark-bubble-orange-bg: mix($o-view-background-color, $warning, 85%);
 $o-viin-dark-bubble-orange-border: mix($o-view-background-color, $warning, 70%);
 
-.o-mail-Message-bubble.o-orange {
-    --o-message-bubble-bg: #{$o-viin-dark-bubble-orange-bg};
-    --o-message-bubble-border-color: #{$o-viin-dark-bubble-orange-border};
-    background-color: $o-viin-dark-bubble-orange-bg !important;
-    border-color: $o-viin-dark-bubble-orange-border !important;
-
-    &.o-muted {
-        background-color: $o-view-background-color !important;
-    }
+.o-mail-Message-bubble.o-blue,
+.o-mail-Message-bubbleTail.o-blue {
+    --o-bubble-bg: #{$o-viin-dark-bubble-blue-bg};
+    --o-bubble-bg-muted: #{$o-view-background-color};
+    --o-bubble-border-color: #{$o-viin-dark-bubble-blue-border};
 }
 
-.o-mail-Message-bubbleTail.o-orange {
-    .o-mail-Message-bubbleTailBg {
-        color: $o-viin-dark-bubble-orange-bg !important;
-    }
+.o-mail-Message-bubble.o-green,
+.o-mail-Message-bubbleTail.o-green {
+    --o-bubble-bg: #{$o-viin-dark-bubble-green-bg};
+    --o-bubble-bg-muted: #{$o-view-background-color};
+    --o-bubble-border-color: #{$o-viin-dark-bubble-green-border};
+}
 
-    .o-mail-Message-bubbleTailBorder {
-        color: $o-viin-dark-bubble-orange-border !important;
-    }
+.o-mail-Message-bubble.o-orange,
+.o-mail-Message-bubbleTail.o-orange {
+    --o-bubble-bg: #{$o-viin-dark-bubble-orange-bg};
+    --o-bubble-bg-muted: #{$o-view-background-color};
+    --o-bubble-border-color: #{$o-viin-dark-bubble-orange-border};
 }
 
 // message.xml carries an opacity utility on the empty-message placeholder and the `(edited)`

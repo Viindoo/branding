@@ -3,12 +3,8 @@
     'name_vi_VN': "Thảo luận với Nhận diện Thương hiệu Viindoo",
     'sequence': 145,
 
-    'summary': """
-Debranding Mail Discuss for Viindoo
-    """,
-    'summary_vi_VN': """
-Làm lại mẫu mail của Thảo luận theo Thương hiệu Viindoo
-    """,
+    'summary': "Debranding Mail Discuss for Viindoo",
+    'summary_vi_VN': "Làm lại mẫu mail của Thảo luận theo Thương hiệu Viindoo",
 
     'description': """
 
@@ -29,9 +25,9 @@ Editions Supported
     """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_mail?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_mail?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1.11',
@@ -40,7 +36,6 @@ Editions Supported
 
     'data': [
         'data/res_partner_data.xml',
-        'data/discuss_channel_data.xml',
         'data/mail_templates_email_layouts.xml',
         'data/mail_groups.xml',
         'views/res_config_settings_views.xml',
@@ -61,12 +56,9 @@ Editions Supported
             # Light-scheme contrast repair of the message metadata; the file guards itself to the light scheme.
             ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
             ('after', 'mail/static/src/discuss/core/common/message_seen_indicator.scss', 'viin_brand_mail/static/src/core/common/message_seen_indicator.scss'),
-            ('after', 'mail/static/src/core/public_web/discuss_sidebar.scss', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
-            ('after', 'mail/static/src/core/public_web/messaging_menu.scss', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
-            ('after', 'mail/static/src/discuss/core/public_web/discuss_sidebar_categories.scss', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
-            # The web client of the Discuss app: install prompt, permission toasts and the icon of a
-            # desktop notification.
-            ('after', 'mail/static/src/core/web/messaging_menu_patch.js', 'viin_brand_mail/static/src/core/web/messaging_menu_patch.js'),
+            ('after', 'mail/static/src/core/public_web/notification_item.scss', 'viin_brand_mail/static/src/core/web/notification_item.scss'),
+            # The web client of the Discuss app: permission toasts and the icon of a desktop
+            # notification.
             ('after', 'mail/static/src/core/common/notification_permission_service.js', 'viin_brand_mail/static/src/core/common/notification_permission_service.js'),
             ('after', 'mail/static/src/core/common/out_of_focus_service.js', 'viin_brand_mail/static/src/core/common/out_of_focus_service.js'),
             # The two mail copies of web.StatusBarField are primary copies, which do not inherit
@@ -78,8 +70,10 @@ Editions Supported
         # mail `*.dark.scss` tail, so a same-specificity rule wins on source order.
         'web.assets_web_dark': [
             'viin_brand_mail/static/src/scss/mail_dark.scss',
-            'viin_brand_mail/static/src/scss/discuss_navbar.dark.scss',
             'viin_brand_mail/static/src/scss/action_panel.dark.scss',
+        ],
+        'web.assets_unit_tests': [
+            'viin_brand_mail/static/tests/statusbar_steps_duration.test.js',
         ],
         'mail.assets_public': [
             ('after', 'mail/static/src/core/common/chat_window.scss', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
@@ -88,14 +82,13 @@ Editions Supported
             ('after', 'mail/static/src/core/common/message.scss', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
             ('after', 'mail/static/src/core/common/notification_permission_service.js', 'viin_brand_mail/static/src/core/common/notification_permission_service.js'),
             ('after', 'mail/static/src/core/common/out_of_focus_service.js', 'viin_brand_mail/static/src/core/common/out_of_focus_service.js'),
-            # The public pages of mail build on web._assets_core, so the dialogs, the error dialogs
-            # and the page title of viin_brand are listed here.
+            # The public pages of mail build on web._assets_core, so the dialogs and the error
+            # dialogs of viin_brand are listed here.
             'viin_brand/static/src/core/dialog/dialog.js',
             'viin_brand/static/src/core/errors/error_dialogs.js',
             'viin_brand/static/src/core/errors/error_dialogs.xml',
-            'viin_brand/static/src/core/browser/title_service.js',
         ],
-        # The brand SCSS reaches the two test-only bundles through web's include of
+        # The brand SCSS reaches the unit-test bundles through web's include of
         # web.assets_backend; removing it lets the core mail and discuss tests measure core's own
         # styles. A renamed path raises on update and must stay loud.
         'web.assets_unit_tests_setup': [
@@ -106,31 +99,12 @@ Editions Supported
             ('remove', 'viin_brand_mail/static/src/core/common/message.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/message_seen_indicator.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
-            ('remove', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu_patch.js'),
-            ('remove', 'viin_brand_mail/static/src/core/common/notification_permission_service.js'),
-            ('remove', 'viin_brand_mail/static/src/core/common/out_of_focus_service.js'),
-        ],
-        # The legacy QUnit page includes web.assets_backend as well and needs the same removals.
-        'web.tests_assets': [
-            ('remove', 'viin_brand_mail/static/src/core/common/chat_window.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/common/composer.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/common/core.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/common/im_status.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/common/message.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/common/message_contrast.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/common/message_seen_indicator.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/web/discuss_sidebar.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu.scss'),
-            ('remove', 'viin_brand_mail/static/src/discuss/core/web/discuss_sidebar_categories.scss'),
-            ('remove', 'viin_brand_mail/static/src/core/web/messaging_menu_patch.js'),
+            ('remove', 'viin_brand_mail/static/src/core/web/notification_item.scss'),
             ('remove', 'viin_brand_mail/static/src/core/common/notification_permission_service.js'),
             ('remove', 'viin_brand_mail/static/src/core/common/out_of_focus_service.js'),
         ],
     },
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'post_load': 'post_load',
     'post_init_hook': 'post_init_hook',

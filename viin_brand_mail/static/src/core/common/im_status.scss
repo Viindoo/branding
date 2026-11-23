@@ -1,43 +1,31 @@
-// "online"/"bot" glyphs use the AA teal $o-navbar-background: mail.ImStatus draws them on a white
-// puck, where the flat brand teal #00BBCE is only 2.33:1.
-
-// The idle/away amber is darkened from core's #ffc107 until it clears 3:1 on the white puck, the
-// dropdown menu and its hovered row. The dot, its ThreadIcon twin and the picker swatch share it,
-// so the picker keeps matching the dot it produces. It stays amber so idle remains distinct from
-// the teal online state.
-$o-viin-mail-status-away-color: #b27400;
-
-.o-mail-ImStatus {
-    .text-success {
-        color: $o-navbar-background !important;
-    }
-
-    // Core's `.o-yellow` is a bare (0,1,0) rule, so no `!important` is needed.
-    .o-yellow {
-        color: $o-viin-mail-status-away-color;
-    }
-
-    .text-700 {
-        color: $gray-500 !important;
-    }
+// Away is the amber of `$o-viin-status-away`, as core's `.o-yellow` is 1.63:1 on white; the dot and the
+// picker swatch read the same token. The other states keep the colour classes of core, which viin_brand
+// sets; core stamps the class on the glyph itself, hence the compound selector.
+.o-mail-ImStatus.o-yellow,
+.o-mail-ImStatusDropdown .o-yellow {
+    color: $o-viin-status-away;
 }
 
-.o-mail-ThreadIcon {
-    .text-success {
-        color: $o-navbar-background !important;
-    }
+// On the teal frame (navbar avatar, chat window header) the state hues fall under 2:1, so each state
+// takes a light tint, the same in both schemes. Core's utilities are `!important`: specificity wins.
+.o_main_navbar,
+.o-mail-ChatWindow-header {
+    .o-mail-ImStatus {
+        &.text-success {
+            color: $o-viin-status-online-on-chrome !important;
+        }
 
-    // ThreadIcon renders the idle glyph through a nested <ImStatus>, so both selectors match the
-    // same <i> at equal specificity; `!important` makes this one win.
-    .o-yellow {
-        color: $o-viin-mail-status-away-color !important;
-    }
-}
+        &.o-yellow {
+            color: $o-warning;
+        }
 
-// The "Away" swatch of the status picker; `menuClass` puts `o-mail-ImStatusDropdown` on the menu.
-// The dropdown toggle is an <ImStatus> and is covered by the first rule.
-.o-mail-ImStatusDropdown {
-    .o-yellow {
-        color: $o-viin-mail-status-away-color;
+        &.text-danger {
+            color: $o-viin-status-busy-on-chrome !important;
+        }
+
+        &.text-700 {
+            color: $o-viin-status-offline-on-chrome !important;
+            opacity: 1 !important;
+        }
     }
 }

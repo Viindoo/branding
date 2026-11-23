@@ -8,9 +8,9 @@ class Users(models.Model):
     # which core leaves untranslated in some languages.
     notification_type = fields.Selection(
         selection_add=[('email', 'By Emails'), ('inbox', 'In Viindoo')],
-        help="Policy on how to handle Chatter notifications:\n"
-             "- By Emails: notifications are sent to your email address\n"
-             "- In Viindoo: notifications appear in your Viindoo Inbox")
+        help="How notifications for document messages and system updates are delivered:\n"
+             "- By email: Notifications are sent to your email address.\n"
+             "- In Viindoo: Notifications appear in your Viindoo inbox.")
 
     @api.model
     def _sql_error_to_message(self, exc):
