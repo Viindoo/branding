@@ -1,0 +1,4 @@
+// Test-only (web.assets_unit_tests_setup). The seed colour of the content palette, as core ships
+// it. Core's editor tests compare the computed colour of `o-color-1` with core's own literal, and
+// the palette is seeded from this variable by the file this one is placed before.
+$o-enterprise-color: #714B67;

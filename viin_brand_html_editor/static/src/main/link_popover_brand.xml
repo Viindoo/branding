@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-inherit="html_editor.linkPopover" t-inherit-mode="extension" owl="1">
+    <t t-inherit="html_editor.linkPopover" t-inherit-mode="extension">
         <xpath expr="//input[@name='o_linkpopover_url']" position="attributes">
             <attribute name="placeholder">e.g. https://www.example.com</attribute>
         </xpath>
