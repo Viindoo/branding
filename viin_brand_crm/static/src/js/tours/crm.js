@@ -1,8 +1,10 @@
 import "@crm/js/tours/crm";
 import { registry } from "@web/core/registry";
 
-// The Lead Generation button is removed from the leads, so the tour cannot wait for it.
-const LEAD_GENERATION_TRIGGER = ".o_button_generate_leads";
+// The steps that the lead mining service adds to the tour open the Generate menu and its Lead
+// Sourcing entry, which the menu does not show.
+const GENERATE_MENU_TRIGGER = ".o_control_panel_main_buttons .o-dropdown";
+const GENERATE_ENTRY_TRIGGER = ".o_lead_mining_element";
 
 // A tour step is plain data: its text is rewritten in whatever language it is shown.
 function nameViindoo(step) {
@@ -14,27 +16,31 @@ function nameViindoo(step) {
 }
 
 /**
- * Return the steps of the tour without the Lead Generation step and the steps of the dialog that
- * step opens, with Viindoo named in place of Odoo.
+ * Return the steps of the tour without the lead generation steps (the Generate menu, its entry and
+ * the dialog that entry opens), with Viindoo named in place of Odoo.
  */
 function brandSteps(steps) {
     const result = [];
-    let inLeadGenerationDialog = false;
+    let inLeadGeneration = false;
     for (const step of steps) {
-        if (step.trigger.includes(LEAD_GENERATION_TRIGGER)) {
-            inLeadGenerationDialog = true;
+        const trigger = typeof step.trigger === "string" ? step.trigger : "";
+        if (trigger === GENERATE_MENU_TRIGGER) {
+            inLeadGeneration = true;
             continue;
         }
-        if (inLeadGenerationDialog && step.trigger.startsWith(".modal")) {
+        if (
+            inLeadGeneration &&
+            (trigger.startsWith(GENERATE_ENTRY_TRIGGER) || trigger.startsWith(".modal"))
+        ) {
             continue;
         }
-        inLeadGenerationDialog = false;
+        inLeadGeneration = false;
         result.push(nameViindoo(step));
     }
     return result;
 }
 
-// The Lead Generation steps come from a module that patches this tour and may load before or after
+// The lead generation steps come from a module that patches this tour and may load before or after
 // this one: the steps are filtered each time the tour is read, whatever patches it holds.
 const tours = registry.category("web_tour.tours");
 const crmTour = new Proxy(tours.get("crm_tour"), {

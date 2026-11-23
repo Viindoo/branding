@@ -3,7 +3,7 @@
     <t t-name="viin_brand_crm.PlsTooltip" t-inherit="crm.PlsTooltip" t-inherit-mode="extension">
         <xpath expr="//div[hasclass('o_crm_pls_tooltip_footer')]/span[@t-else]" position="replace" mode="inner">Computed by Viindoo from your data.</xpath>
         <xpath expr="//div[hasclass('o_crm_pls_tooltip_footer')]/a" position="attributes">
-            <attribute name="href">https://viindoo.com/documentation/19.0/applications/sales/crm/organize-the-pipeline/lead-scoring-and-automatic-lead-assignment.html</attribute>
+            <attribute name="href">https://viindoo.com/documentation/20.0/applications/sales/crm/organize-the-pipeline/lead-scoring-and-automatic-lead-assignment.html</attribute>
         </xpath>
     </t>
 </templates>

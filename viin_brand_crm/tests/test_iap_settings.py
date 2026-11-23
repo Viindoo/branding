@@ -14,3 +14,6 @@ class TestIapSettings(TransactionCase):
             nodes = doc.xpath('//field[@name="%s"]/ancestor::setting[1]' % field_name)
             self.assertEqual(len(nodes), 1, field_name)
             self.assertEqual(nodes[0].get('invisible'), '1', field_name)
+
+    def test_lead_enrichment_is_never_automatic(self):
+        self.assertEqual(self.env['ir.config_parameter'].get_str('crm.iap.lead.enrich.setting'), 'manual')

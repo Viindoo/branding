@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lead enrichment is a paid service of Odoo S.A.: a lead is never enriched on its own. -->
+    <function model="ir.config_parameter" name="set_str" eval="['crm.iap.lead.enrich.setting', 'manual']"/>
+</odoo>
