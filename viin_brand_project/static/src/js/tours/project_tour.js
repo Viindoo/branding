@@ -1,3 +1,4 @@
+import "@project/js/tours/project";
 import { markup } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 
