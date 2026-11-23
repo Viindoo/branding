@@ -4,16 +4,48 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 16:01+0000\n"
-"PO-Revision-Date: 2026-11-19 16:01+0000\n"
+"POT-Creation-Date: 2026-11-22 03:07+0000\n"
+"PO-Revision-Date: 2026-11-22 03:07+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_snailmail
+#: model:ir.module.module,summary:base.module_viin_brand_snailmail
+msgid "Hides Snail Mail, a paid service operated by Odoo S.A."
+msgstr "Ẩn Snail Mail, dịch vụ trả phí do Odoo S.A. vận hành"
+
+#. module: viin_brand_snailmail
+#: model:ir.module.module,description:base.module_viin_brand_snailmail
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module hides Snail Mail, which sends letters through a paid service operated by Odoo S.A.: the\n"
+"Snailmail Letters menu is hidden and the queue of letters is not processed. The module stays installed.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này ẩn Snail Mail, dịch vụ gửi thư giấy qua một dịch vụ trả phí do Odoo S.A. vận hành: menu\n"
+"Thư bưu điện (Snailmail Letters) bị ẩn và hàng đợi thư không được xử lý. Phân hệ vẫn ở trạng thái đã cài đặt.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
 
 #. module: viin_brand_snailmail
 #: model:ir.model.fields,field_description:viin_brand_snailmail.field_ir_ui_menu__display_name
@@ -29,3 +61,8 @@ msgstr ""
 #: model:ir.model,name:viin_brand_snailmail.model_ir_ui_menu
 msgid "Menu"
 msgstr ""
+
+#. module: viin_brand_snailmail
+#: model:ir.module.module,shortdesc:base.module_viin_brand_snailmail
+msgid "Snail Mail Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Snail Mail"
