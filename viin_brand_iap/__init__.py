@@ -1,8 +1,9 @@
 import functools
+import inspect
 
 from . import models
 from .models.ir_ui_menu import HIDDEN_MENU_XMLIDS
-from .tools import is_paid_service, refuse_paid_service
+from .tools import is_paid_service, refuse_paid_service_request
 
 guarded_iap_jsonrpc = None
 
@@ -12,12 +13,16 @@ def _refuse_paid_services(iap_jsonrpc):
 
     :param iap_jsonrpc: the function to wrap
     :return: the wrapped function; a call to any other host is passed to ``iap_jsonrpc`` unchanged
-    :raises AccessError: from the wrapped function, when the host of ``url`` is a paid service
+    :raises requests.RequestException: from the wrapped function, when the host of ``url`` is a
+        paid service; a ``UserError`` when the caller asked for one with ``raise_user_error``
     """
+    signature = inspect.signature(iap_jsonrpc)
+
     @functools.wraps(iap_jsonrpc)
     def refusing_iap_jsonrpc(url, *args, **kwargs):
         if is_paid_service(url):
-            refuse_paid_service()
+            arguments = signature.bind(url, *args, **kwargs).arguments
+            refuse_paid_service_request(arguments.get('raise_user_error', False))
         return iap_jsonrpc(url, *args, **kwargs)
 
     return refusing_iap_jsonrpc

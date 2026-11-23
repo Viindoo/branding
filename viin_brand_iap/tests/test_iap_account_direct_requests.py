@@ -50,8 +50,16 @@ class TestIapAccountDirectRequests(TransactionCase):
             self.env['iap.account'].action_view_my_services()
         post.assert_not_called()
 
+    def test_opening_an_account_asks_nobody_for_its_balance_and_blames_nobody(self):
+        with self._outside_test_mode() as post, \
+             patch.object(type(self.env['res.users']), '_bus_send') as bus_send:
+            self.account.web_read({'name': {}})
+        post.assert_not_called()
+        bus_send.assert_not_called()
+
     def test_an_endpoint_moved_by_the_customer_is_not_refused(self):
-        self.env['ir.config_parameter'].sudo().set_param('iap.endpoint', 'https://iap.customer.example')
+        # sudo: arrange - the endpoint is a system parameter
+        self.env['ir.config_parameter'].sudo().set_str('iap.endpoint', 'https://iap.customer.example')
         with self._outside_test_mode() as post:
             url = self.env['iap.account'].get_credits_url('reveal', account_token='token')
         self.assertEqual(url, 'https://customer.example/credits')

@@ -4,16 +4,56 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 16:01+0000\n"
-"PO-Revision-Date: 2026-11-19 16:01+0000\n"
+"POT-Creation-Date: 2026-11-22 03:08+0000\n"
+"PO-Revision-Date: 2026-11-22 03:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_iap
+#: model:ir.module.module,summary:base.module_viin_brand_iap
+msgid ""
+"Removes the credit-based services of Odoo S.A.: calls are refused, the IAP "
+"settings block, menu and buy-credit buttons are hidden; the free background "
+"services of Odoo keep working"
+msgstr ""
+"Gỡ các dịch vụ tính phí bằng credit của Odoo S.A.: lời gọi bị từ chối, khối "
+"IAP trong Cài đặt, menu IAP và nút mua credit bị ẩn; các dịch vụ nền miễn "
+"phí của Odoo vẫn hoạt động"
+
+#. module: viin_brand_iap
+#: model:ir.module.module,description:base.module_viin_brand_iap
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module removes the credit-based services of Odoo S.A. from Viindoo: calls to those services are\n"
+"refused with a clear message, the IAP block of the settings, the IAP menu and every button to buy\n"
+"credits are hidden. The free background services of Odoo keep working.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này gỡ các dịch vụ tính theo tín dụng của Odoo S.A. khỏi Viindoo: các lệnh gọi tới những dịch vụ đó\n"
+"bị từ chối kèm thông báo rõ ràng, khối IAP trong phần thiết lập, menu IAP và mọi nút mua\n"
+"tín dụng đều bị ẩn. Các dịch vụ nền miễn phí của Odoo vẫn hoạt động.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
 
 #. module: viin_brand_iap
 #: model:ir.model,name:viin_brand_iap.model_res_config_settings
@@ -40,9 +80,19 @@ msgid "ID"
 msgstr ""
 
 #. module: viin_brand_iap
+#: model_terms:ir.ui.view,arch_db:viin_brand_iap.res_config_settings_view_form
+msgid "In-App Purchase"
+msgstr "Mua hàng trong ứng dụng"
+
+#. module: viin_brand_iap
 #: model:ir.model,name:viin_brand_iap.model_ir_ui_menu
 msgid "Menu"
 msgstr ""
+
+#. module: viin_brand_iap
+#: model:ir.module.module,shortdesc:base.module_viin_brand_iap
+msgid "Odoo IAP Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Odoo IAP"
 
 #. module: viin_brand_iap
 #. odoo-python
