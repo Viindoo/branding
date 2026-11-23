@@ -2,11 +2,8 @@
     'name': "Slides Forum Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho mô-đun Slides Forum",
 
-    'summary': """
-Viindoo FAQ for the forums of eLearning courses""",
-    'summary_vi_VN': """
-Áp dụng FAQ Viindoo cho các diễn đàn khóa học của mô-đun Slides Forum
-""",
+    'summary': "Viindoo FAQ for the forums of eLearning courses",
+    'summary_vi_VN': "Áp dụng FAQ Viindoo cho các diễn đàn khóa học của mô-đun Slides Forum",
 
     'description': """
 What it does
@@ -37,9 +34,9 @@ diễn đàn khóa học này hiển thị FAQ của Viindoo, không phải FAQ 
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_website_slides_forum?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_website_slides_forum?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -47,7 +44,7 @@ diễn đàn khóa học này hiển thị FAQ của Viindoo, không phải FAQ 
 
     'depends': ['website_slides_forum', 'viin_brand_website_forum'],
     'post_init_hook': 'post_init_hook',
-    'installable': False,
+    'installable': True,
     'auto_install': ['website_slides_forum'],
     'price': 0.0,
     'currency': 'EUR',
