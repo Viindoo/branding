@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:48+0000\n"
-"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"POT-Creation-Date: 2026-11-22 02:32+0000\n"
+"PO-Revision-Date: 2026-11-22 02:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,13 +15,24 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: mrp
-#: model_terms:digest.tip,tip_description:mrp.digest_tip_mrp_0
+#. module: viin_brand_mrp
+#: model:ir.module.module,summary:base.module_viin_brand_mrp
+msgid "Theme branding Viindoo for module Manufacturing"
+msgstr ""
+
+#. module: viin_brand_mrp
+#: model:ir.module.module,description:base.module_viin_brand_mrp
 msgid ""
-"With the Viindoo work center control panel, your worker can start work "
-"orders in the shop and follow instructions of the worksheet. Quality tests "
-"are perfectly integrated into the process. Workers can trigger feedback "
-"loops, maintenance alerts, scrap products, etc."
+"\n"
+"What it does\n"
+"============\n"
+"This module will change color navigate bar, button and logo,v.v in Manufacturing following Viindoo's brand\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Viindoo Cloud\n"
+"\n"
 msgstr ""
 
 #. module: viin_brand_mrp
@@ -50,24 +61,8 @@ msgid "Auto Print Produced Product Labels"
 msgstr ""
 
 #. module: viin_brand_mrp
-#: model:ir.model,name:viin_brand_mrp.model_mrp_bom
-msgid "Bill of Material"
-msgstr ""
-
-#. module: viin_brand_mrp
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_routing_workcenter__cost_mode
 msgid "Cost based on"
-msgstr ""
-
-#. module: viin_brand_mrp
-#. module: mrp
-#: model:ir.model.fields,help:viin_brand_mrp.field_mrp_bom__allow_operation_dependencies
-#: model:ir.model.fields,help:mrp.field_mrp_routing_workcenter__allow_operation_dependencies
-msgid ""
-"Create operation level dependencies that will influence both planning and "
-"the status of work orders upon MO confirmation. If this feature is ticked, "
-"and nothing is specified, Viindoo will assume that all operations can be "
-"started simultaneously."
 msgstr ""
 
 #. module: viin_brand_mrp
@@ -75,21 +70,17 @@ msgstr ""
 msgid ""
 "Determines the way Viindoo calculates the cost of the operation:\n"
 "- Based on Actual time: the cost will be calculated based on tracked time and real employee costs.\n"
-"- Based on Estimated time: the cost will be calculated based on estimated time and costs."
+"- Based on Theoretical time: the cost will be calculated based on estimated time and costs."
 msgstr ""
 
 #. module: viin_brand_mrp
-#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__display_name
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_routing_workcenter__display_name
-#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__display_name
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: viin_brand_mrp
-#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__id
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_routing_workcenter__id
-#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__id
 #: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_picking_type__id
 msgid "ID"
 msgstr ""
@@ -130,23 +121,13 @@ msgid ""
 msgstr ""
 
 #. module: viin_brand_mrp
-#: model:ir.model.fields,field_description:viin_brand_mrp.field_stock_move__manual_consumption
-msgid "Manual Consumption"
-msgstr ""
-
-#. module: viin_brand_mrp
-#: model:ir.model.fields,field_description:viin_brand_mrp.field_mrp_bom__allow_operation_dependencies
-msgid "Operation Dependencies"
+#: model:ir.module.module,shortdesc:base.module_viin_brand_mrp
+msgid "Manufacturing Branding For Viindoo"
 msgstr ""
 
 #. module: viin_brand_mrp
 #: model:ir.model,name:viin_brand_mrp.model_stock_picking_type
 msgid "Picking Type"
-msgstr ""
-
-#. module: viin_brand_mrp
-#: model:ir.model,name:viin_brand_mrp.model_stock_move
-msgid "Stock Move"
 msgstr ""
 
 #. module: viin_brand_mrp
@@ -156,13 +137,21 @@ msgid ""
 msgstr ""
 
 #. module: viin_brand_mrp
-#: model:ir.model.fields,help:viin_brand_mrp.field_stock_move__manual_consumption
-msgid ""
-"When activated, then the registration of consumption for that component is recorded manually exclusively.\n"
-"If not activated, and any of the components consumption is edited manually on the manufacturing order, Viindoo assumes manual consumption also."
-msgstr ""
-
-#. module: viin_brand_mrp
 #: model:ir.model,name:viin_brand_mrp.model_mrp_routing_workcenter
 msgid "Work Center Usage"
+msgstr ""
+
+#. module: mrp
+#: model:digest.tip,name:mrp.digest_tip_mrp_0
+#: model_terms:digest.tip,tip_description:mrp.digest_tip_mrp_0
+msgid "Tip: Use tablets in the shop to control manufacturing"
+msgstr ""
+
+#. module: mrp
+#: model_terms:digest.tip,tip_description:mrp.digest_tip_mrp_0
+msgid ""
+"With the Viindoo work center control panel, your worker can start work "
+"orders in the shop and follow instructions of the worksheet. Quality tests "
+"are perfectly integrated into the process. Workers can trigger feedback "
+"loops, maintenance alerts, scrap products, etc."
 msgstr ""
