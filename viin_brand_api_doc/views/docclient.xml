@@ -2,8 +2,8 @@
 <odoo>
 
     <template id="docclient" inherit_id="api_doc.docclient">
-        <xpath expr="//t[@t-set='title']" position="replace">
-            <t t-set="title">Viindoo Runtime Doc</t>
+        <xpath expr="//t[@t-call='web.layout']" position="attributes">
+            <attribute name="title.translate">Viindoo Runtime Doc</attribute>
         </xpath>
     </template>
 
