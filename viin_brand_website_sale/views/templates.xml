@@ -5,19 +5,13 @@
             <xpath
                 expr="//t[@t-call='web.brand_promotion_message']"
                 position="replace">
-                <t t-call="web.brand_promotion_message">
-                    <t t-set="_message">
-                        <!-- Label must not assert a "#1"/superiority ranking (VN advertising law). -->
-                        <a target="_blank"
-                            href="https://viindoo.com/intro/ecommerce?utm_source=db&amp;utm_medium=website">Open Source eCommerce Software</a>
-                    </t>
-                    <t t-set="_utm_medium" t-valuef="website" />
+                <t t-set="_message">
+                    <!-- Label must not assert a "#1"/superiority ranking (VN advertising law). -->
+                    <a target="_blank"
+                        href="https://viindoo.com/intro/ecommerce?utm_source=db&amp;utm_medium=website">Open Source eCommerce Software</a>
                 </t>
+                <t t-call="web.brand_promotion_message" _message="_message" _utm_medium.f="website"/>
             </xpath>
         </template>
     </data>
-
-    <record id="website_sale.s_mega_menu_odoo_menu" model="ir.ui.view">
-        <field name="name">eCommerce: Viindoo Menu</field>
-    </record>
 </odoo>
