@@ -2,12 +2,8 @@
     'name': "VietNam Localization Debranding for Viindoo",
     'name_vi_VN': "Bản địa hóa(Việt Nam) Thương hiệu Viindoo",
 
-    'summary': """
-Debranding VietNam Localization for Viindoo
-    """,
-    'summary_vi_VN': """
-Bản địa hóa Việt Nam theo Thương hiệu Viindoo
-    """,
+    'summary': "Debranding VietNam Localization for Viindoo",
+    'summary_vi_VN': "Bản địa hóa Việt Nam theo Thương hiệu Viindoo",
 
     'description': """
 
@@ -28,9 +24,9 @@ Editions Supported
     """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_l10n_vn?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_l10n_vn?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1.1',
@@ -41,7 +37,7 @@ Editions Supported
         'views/res_bank_views.xml'
     ],
     'auto_install': True,
-    'installable': False,
+    'installable': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

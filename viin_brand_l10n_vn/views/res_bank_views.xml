@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="l10n_vn.view_partner_bank_form_inherit_account" />
         <field name="arch" type="xml">
             <xpath expr="//p/widget" position="attributes">
-                <attribute name="path">https://viindoo.com/documentation/19.0/applications/finance/accounting-and-invoicing/account-receivables/customer-payments/how-to-make-a-payment-with-emv-qr-code.html</attribute>
+                <attribute name="path">https://viindoo.com/documentation/20.0/applications/finance/accounting-and-invoicing/account-receivables/customer-payments/how-to-make-a-payment-with-emv-qr-code.html</attribute>
             </xpath>
         </field>
     </record>
