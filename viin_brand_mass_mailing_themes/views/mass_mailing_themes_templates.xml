@@ -13,23 +13,14 @@
 		<xpath expr="//div[hasclass('col-md-4')]/a/img" position="attributes">
 			<attribute name="src">/viin_brand_mass_mailing_themes/static/src/img/theme_default/s_default_img_header_logo.png</attribute>
 		</xpath>
-		<xpath expr="//a[@href='https://www.facebook.com/Odoo']" position="attributes">
-			<attribute name="href">https://www.facebook.com/viindoo</attribute>
+		<xpath expr="//span[hasclass('display-1-fs')]/font[contains(., 'Odoo Experience')]" position="replace" mode="inner">
+			Viindoo Event.
 		</xpath>
-		<xpath expr="//a[@href='https://www.linkedin.com/company/odoo']" position="attributes">
-			<attribute name="href">https://www.linkedin.com/company/viindoo/</attribute>
+		<xpath expr="//section[hasclass('s_company_team_shapes')]//p/font[contains(., 'framework')]" position="replace" mode="inner">
+			Go beyond the basics and unlock the full power of Viindoo.
 		</xpath>
-		<xpath expr="//a[@href='https://twitter.com/Odoo']" position="attributes">
-			<attribute name="href">https://twitter.com/ViindooSolution</attribute>
-		</xpath>
-		<xpath expr="//a[@href='https://www.instagram.com/explore/tags/odoo/']" position="attributes">
-			<attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
-		</xpath>
-        <xpath expr="//a[@href='https://www.tiktok.com/@odoo']" position="attributes">
-            <attribute name="href">https://www.tiktok.com/@viindoo.software/</attribute>
-        </xpath>
-		<xpath expr="//font[./span]/span[1]" position="replace" mode="inner">
-			<span style="font-weight: bolder;">Viindoo</span>
+		<xpath expr="//section[hasclass('s_company_team_shapes')]//p/font[contains(., 'smarter and faster')]" position="replace" mode="inner">
+			From idea to implementation, build smarter and faster in Viindoo.
 		</xpath>
 		<xpath expr="//div[contains(@data-name, 'Media item')]//div/p" position="replace" mode="inner">
 			<p>Learn through workshops, product demos, and inspiring talks from Viindoo Experts and Partners.</p>
@@ -48,132 +39,25 @@
 		</xpath>
 	</template>
 
-    <template id="theme_blogging_template" inherit_id="mass_mailing_themes.theme_blogging_template">
-        <xpath expr="//a[./span[hasclass('fa-facebook')]]" position="attributes">
-            <attribute name="href">https://www.facebook.com/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-linkedin')]]" position="attributes">
-            <attribute name="href">https://www.linkedin.com/company/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-twitter')]]" position="attributes">
-            <attribute name="href">https://twitter.com/ViindooSolution</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-instagram')]]" position="attributes">
-            <attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-tiktok')]]" position="attributes">
-            <attribute name="href">https://www.tiktok.com/@viindoo.software/</attribute>
-        </xpath>
-    </template>
-
-    <template id="theme_coupon_template" inherit_id="mass_mailing_themes.theme_coupon_template">
-        <xpath expr="//a[./span[hasclass('fa-facebook')]]" position="attributes">
-            <attribute name="href">https://www.facebook.com/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-linkedin')]]" position="attributes">
-            <attribute name="href">https://www.linkedin.com/company/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-twitter')]]" position="attributes">
-            <attribute name="href">https://twitter.com/ViindooSolution</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-instagram')]]" position="attributes">
-            <attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-tiktok')]]" position="attributes">
-            <attribute name="href">https://www.tiktok.com/@viindoo.software/</attribute>
-        </xpath>
-    </template>
-
-    <template id="theme_magazine_template" inherit_id="mass_mailing_themes.theme_magazine_template">
-        <xpath expr="//a[./span[hasclass('fa-facebook')]]" position="attributes">
-            <attribute name="href">https://www.facebook.com/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-linkedin')]]" position="attributes">
-            <attribute name="href">https://www.linkedin.com/company/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-twitter')]]" position="attributes">
-            <attribute name="href">https://twitter.com/ViindooSolution</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-instagram')]]" position="attributes">
-            <attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-tiktok')]]" position="attributes">
-            <attribute name="href">https://www.tiktok.com/@viindoo.software/</attribute>
-        </xpath>
-    </template>
-
-    <template id="theme_bignews_template" inherit_id="mass_mailing_themes.theme_bignews_template">
-        <xpath expr="//a[./span[hasclass('fa-facebook')]]" position="attributes">
-            <attribute name="href">https://www.facebook.com/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-linkedin')]]" position="attributes">
-            <attribute name="href">https://www.linkedin.com/company/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-twitter')]]" position="attributes">
-            <attribute name="href">https://twitter.com/ViindooSolution</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-instagram')]]" position="attributes">
-            <attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-tiktok')]]" position="attributes">
-            <attribute name="href">https://www.tiktok.com/@viindoo.software/</attribute>
-        </xpath>
-    </template>
-
-    <template id="theme_promotion_template" inherit_id="mass_mailing_themes.theme_promotion_template">
-        <xpath expr="//a[./span[hasclass('fa-facebook')]]" position="attributes">
-            <attribute name="href">https://www.facebook.com/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-linkedin')]]" position="attributes">
-            <attribute name="href">https://www.linkedin.com/company/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-twitter')]]" position="attributes">
-            <attribute name="href">https://twitter.com/ViindooSolution</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-instagram')]]" position="attributes">
-            <attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-tiktok')]]" position="attributes">
-            <attribute name="href">https://www.tiktok.com/@viindoo.software/</attribute>
-        </xpath>
-    </template>
-
-    <template id="theme_coffeebreak_template" inherit_id="mass_mailing_themes.theme_coffeebreak_template">
-        <xpath expr="//a[./span[hasclass('fa-facebook')]]" position="attributes">
-            <attribute name="href">https://www.facebook.com/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-twitter')]]" position="attributes">
-            <attribute name="href">https://twitter.com/ViindooSolution</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-instagram')]]" position="attributes">
-            <attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
-        </xpath>
-        <xpath expr="//div[hasclass('o_mail_footer_social')]/a[./span[hasclass('fa-facebook')]]" position="attributes">
-            <attribute name="href">https://www.facebook.com/viindoo</attribute>
-        </xpath>
-        <xpath expr="//div[hasclass('o_mail_footer_social')]/a[./span[hasclass('fa-twitter')]]" position="attributes">
-            <attribute name="href">https://twitter.com/ViindooSolution</attribute>
-        </xpath>
-        <xpath expr="//div[hasclass('o_mail_footer_social')]/a[./span[hasclass('fa-instagram')]]" position="attributes">
-            <attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
-        </xpath>
-    </template>
-
     <template id="theme_newsletter_template" inherit_id="mass_mailing_themes.theme_newsletter_template">
         <xpath expr="//h2" position="replace" mode="inner">
             The story of Viindoo
         </xpath>
         <xpath expr="//a[./img[contains(@src, 'social-facebook')]]" position="attributes">
-            <attribute name="href">https://www.facebook.com/viindoo</attribute>
+            <attribute name="href">https://www.facebook.com/Viindoo</attribute>
+            <attribute name="t-att-href">res_company.social_facebook or 'https://www.facebook.com/Viindoo'</attribute>
         </xpath>
         <xpath expr="//a[./img[contains(@src, 'social-twitter')]]" position="attributes">
-            <attribute name="href">https://twitter.com/ViindooSolution</attribute>
+            <attribute name="href">https://twitter.com/OfficialViindoo</attribute>
+            <attribute name="t-att-href">res_company.social_twitter or 'https://twitter.com/OfficialViindoo'</attribute>
         </xpath>
         <xpath expr="//a[./img[contains(@src, 'social-linkedin')]]" position="attributes">
             <attribute name="href">https://www.linkedin.com/company/viindoo</attribute>
+            <attribute name="t-att-href">res_company.social_linkedin or 'https://www.linkedin.com/company/viindoo'</attribute>
         </xpath>
         <xpath expr="//p[hasclass('text-muted')]/a" position="attributes">
-            <attribute name="href">https://x.com/jane_viindoo</attribute>
+            <attribute name="href">https://twitter.com/OfficialViindoo</attribute>
+            <attribute name="t-att-href">res_company.social_twitter or 'https://twitter.com/OfficialViindoo'</attribute>
         </xpath>
         <xpath expr="//p[hasclass('text-muted')]/a" position="replace" mode="inner">
             @jane_viindoo
@@ -185,13 +69,16 @@
             <p>In May 2019, we renamed the company and product to Viindoo.</p>
         </xpath>
         <xpath expr="//section[hasclass('s_footer_social')]//a[./img[contains(@src, 'social-facebook')]]" position="attributes">
-            <attribute name="href">https://www.facebook.com/viindoo</attribute>
+            <attribute name="href">https://www.facebook.com/Viindoo</attribute>
+            <attribute name="t-att-href">res_company.social_facebook or 'https://www.facebook.com/Viindoo'</attribute>
         </xpath>
         <xpath expr="//section[hasclass('s_footer_social')]//a[./img[contains(@src, 'social-twitter')]]" position="attributes">
-            <attribute name="href">https://twitter.com/ViindooSolution</attribute>
+            <attribute name="href">https://twitter.com/OfficialViindoo</attribute>
+            <attribute name="t-att-href">res_company.social_twitter or 'https://twitter.com/OfficialViindoo'</attribute>
         </xpath>
         <xpath expr="//section[hasclass('s_footer_social')]//a[./img[contains(@src, 'social-linkedin')]]" position="attributes">
             <attribute name="href">https://www.linkedin.com/company/viindoo</attribute>
+            <attribute name="t-att-href">res_company.social_linkedin or 'https://www.linkedin.com/company/viindoo'</attribute>
         </xpath>
     </template>
 
@@ -227,21 +114,6 @@
         <!-- Because the xpath is already 2 times above, there is only this 1 element left that has href like this on the DOM -->
         <xpath expr="//p[./a[@href='https://odoo.com/r/meeting']][1]/a" position="attributes">
             <attribute name="href">https://viindoo.com/appointment/a-solution-consultation-1</attribute>
-        </xpath>
-    </template>
-
-    <template id="theme_training_template" inherit_id="mass_mailing_themes.theme_training_template">
-        <xpath expr="//a[./span[hasclass('fa-facebook')]]" position="attributes">
-            <attribute name="href">https://www.facebook.com/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-linkedin')]]" position="attributes">
-            <attribute name="href">https://www.linkedin.com/company/viindoo</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-twitter')]]" position="attributes">
-            <attribute name="href">https://twitter.com/ViindooSolution</attribute>
-        </xpath>
-        <xpath expr="//a[./span[hasclass('fa-instagram')]]" position="attributes">
-            <attribute name="href">https://www.instagram.com/officialviindoo/</attribute>
         </xpath>
     </template>
 

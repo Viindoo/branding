@@ -2,10 +2,8 @@
     'name': "Viin Brand Mass Mailing Themes",
     'name_vi_VN': "Giao diện Viindoo cho Mass Mailing Themes",
 
-    'summary': """
-Theme branding Viindoo for module Mass Mailing Themes""",
-    'summary_vi_VN': """
-Giao diện brand Viindoo cho module Mass Mailing Themes""",
+    'summary': "Theme branding Viindoo for module Mass Mailing Themes",
+    'summary_vi_VN': "Giao diện brand Viindoo cho module Mass Mailing Themes",
 
     'description': """
 What it does
@@ -28,9 +26,9 @@ Module này sẽ thay đổi giao diện module Mass Mailing Themes theo thươn
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_mass_mailing_themes?force_show=1",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_mass_mailing_themes?force_show=1",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
     'version': '0.1.1',
@@ -40,7 +38,7 @@ Module này sẽ thay đổi giao diện module Mass Mailing Themes theo thươn
     'data': [
         'views/mass_mailing_themes_templates.xml',
     ],
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
