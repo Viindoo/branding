@@ -2,12 +2,8 @@
     'name': "Time Off Branding For Viindoo",
     'name_vi_VN': "Giao diện Viindoo cho module Nghỉ phép",
 
-    'summary': """
-This module brands Time Off with Viindoo: the error of the batch time off generation names Viindoo.""",
-    'summary_vi_VN': """
-Mô-đun này thay đổi giao diện Nghỉ phép theo thương hiệu Viindoo: thông báo lỗi khi tạo nghỉ phép
-hàng loạt nhắc tới Viindoo.
-""",
+    'summary': "This module brands Time Off with Viindoo: the error of the batch time off generation names Viindoo.",
+    'summary_vi_VN': "Mô-đun này thay đổi giao diện Nghỉ phép theo thương hiệu Viindoo: thông báo lỗi khi tạo nghỉ phép hàng loạt nhắc tới Viindoo.",
 
     'description': """
 What it does
@@ -35,11 +31,9 @@ hàng loạt nhắc tới Viindoo.
 """,
 
     'author': "Viindoo",
-    'website': "https://viindoo.com/apps/modules/19.0/viin_brand_hr_holidays",
-    'live_test_url': "https://v19demo-int.viindoo.com",
-    'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
-    # 'demo_video_url': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
-    # 'demo_video_url_vi_VN': "https://www.youtube.com/watch?v=xa8pxRnZpWs",
+    'website': "https://viindoo.com/apps/modules/20.0/viin_brand_hr_holidays",
+    'live_test_url': "https://v20demo-int.viindoo.com",
+    'live_test_url_vi_VN': "https://v20demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
 
     'category': 'Hidden',
@@ -47,10 +41,8 @@ hàng loạt nhắc tới Viindoo.
 
     'depends': ['hr_holidays', 'viin_brand'],
 
-    # 'data': [],
-    # 'demo': [],
-    'installable': False,
-    # 'auto_install': True,  # TODO: Uncomment when upgrading module to production-ready status
+    'installable': True,
+    'auto_install': True,
     'price': 0.0,
     'currency': 'EUR',
     'license': 'OPL-1',

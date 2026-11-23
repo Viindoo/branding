@@ -4,16 +4,50 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:59+0000\n"
-"PO-Revision-Date: 2026-11-19 15:59+0000\n"
+"POT-Creation-Date: 2026-11-22 03:21+0000\n"
+"PO-Revision-Date: 2026-11-22 03:21+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_hr_holidays
+#: model:ir.module.module,summary:base.module_viin_brand_hr_holidays
+msgid ""
+"This module brands Time Off with Viindoo: the error of the batch time off "
+"generation names Viindoo."
+msgstr ""
+"Mô-đun này thay đổi giao diện Nghỉ phép theo thương hiệu Viindoo: thông báo "
+"lỗi khi tạo nghỉ phép hàng loạt nhắc tới Viindoo."
+
+#. module: viin_brand_hr_holidays
+#: model:ir.module.module,description:base.module_viin_brand_hr_holidays
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands Time Off with Viindoo: the error of the batch time off generation names Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này đưa thương hiệu Viindoo vào Nghỉ phép: thông báo lỗi khi tạo nghỉ phép hàng loạt nhắc tới Viindoo.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"=====================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
 
 #. module: viin_brand_hr_holidays
 #: model:ir.model.fields,field_description:viin_brand_hr_holidays.field_hr_leave_generate_multi_wizard__display_name
@@ -29,3 +63,8 @@ msgstr "Tạo đơn nghỉ phép cho nhiều nhân viên"
 #: model:ir.model.fields,field_description:viin_brand_hr_holidays.field_hr_leave_generate_multi_wizard__id
 msgid "ID"
 msgstr ""
+
+#. module: viin_brand_hr_holidays
+#: model:ir.module.module,shortdesc:base.module_viin_brand_hr_holidays
+msgid "Time Off Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Nghỉ phép"
