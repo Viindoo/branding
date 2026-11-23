@@ -4,16 +4,51 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 19.0\n"
+"Project-Id-Version: Odoo Server 20.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 15:48+0000\n"
-"PO-Revision-Date: 2026-11-19 15:48+0000\n"
+"POT-Creation-Date: 2026-11-22 02:49+0000\n"
+"PO-Revision-Date: 2026-11-22 02:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: viin_brand_marketing_card
+#: model:ir.module.module,summary:base.module_viin_brand_marketing_card
+msgid "Theme branding Viindoo for module Marketing Cards"
+msgstr "Giao diện brand Viindoo cho module Thẻ tiếp thị"
+
+#. module: viin_brand_marketing_card
+#: model:ir.module.module,description:base.module_viin_brand_marketing_card
+msgid ""
+"\n"
+"What it does\n"
+"============\n"
+"This module brands the shared card page, the placeholders of the campaign form and the demo campaign as Viindoo.\n"
+"\n"
+"Editions Supported\n"
+"==================\n"
+"1. Community Edition\n"
+"2. Enterprise Edition\n"
+"\n"
+msgstr ""
+"\n"
+"Chức năng\n"
+"============\n"
+"Phân hệ này đổi trang thiệp được chia sẻ, các gợi ý nhập của biểu mẫu chiến dịch và chiến dịch demo thành thương hiệu Viindoo.\n"
+"\n"
+"Phiên bản được hỗ trợ\n"
+"==================\n"
+"1. Phiên bản Community\n"
+"2. Phiên bản Enterprise\n"
+"\n"
+
+#. module: viin_brand_marketing_card
+#: model:ir.module.module,shortdesc:base.module_viin_brand_marketing_card
+msgid "Marketing Cards Branding For Viindoo"
+msgstr "Thương hiệu Viindoo cho Thiệp marketing"
 
 #. module: viin_brand_marketing_card
 #: model_terms:ir.ui.view,arch_db:viin_brand_marketing_card.card_campaign_preview
