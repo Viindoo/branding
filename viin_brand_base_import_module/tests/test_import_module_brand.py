@@ -7,6 +7,8 @@ from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase, tagged
 from odoo.tools import file_open_temporary_directory
 
+from odoo.addons.base_import_module.models.ir_module import IrModuleModule as CoreIrModuleModule
+
 BRAND_PATTERN = re.compile(r'\bOdoo\b|odoo\.com|Enterprise', re.IGNORECASE)
 
 
@@ -31,9 +33,11 @@ class TestImportModuleBrand(TransactionCase):
         buffer = io.BytesIO()
         with zipfile.ZipFile(buffer, 'w') as archive:
             archive.writestr('sample_data/__manifest__.py', "{'name': 'Sample', 'depends': ['base']}")
-        description, unavailable = self.env['ir.module.module']._get_missing_dependencies(buffer.getvalue())
+        modules = self.env['ir.module.module']
+        description, unavailable = modules._get_missing_dependencies(buffer.getvalue())
         self.assertFalse(unavailable)
-        self.assertIn('Load demo data', description)
+        core_description, _core_unavailable = CoreIrModuleModule._get_missing_dependencies(modules, buffer.getvalue())
+        self.assertEqual(description, core_description)
 
     def test_studio_customization_error_names_no_other_product(self):
         with file_open_temporary_directory(self.env) as root:
