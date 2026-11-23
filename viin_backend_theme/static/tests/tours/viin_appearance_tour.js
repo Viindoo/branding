@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 // Tours for the appearance (dark scheme + density) and the home-menu behaviours, driven by
 // tests/test_tours.py. They assert observable UI state only (an attribute on <html>, a rendered
 // tile, the client action that loaded); each trigger is an implicit oracle, so a regression stalls

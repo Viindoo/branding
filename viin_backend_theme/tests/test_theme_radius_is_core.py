@@ -9,7 +9,6 @@ from odoo.tests.common import TransactionCase, tagged
 CLUSTER_MODULES = (
     "viin_backend_theme",
     "viin_brand_mail",
-    "viin_brand_html_editor",
     "viin_brand",
 )
 
@@ -26,6 +25,11 @@ ALLOWED_RADIUS_DECLARATIONS = {
     # button, card or input, and its selector reaches only `.o_arrow_button.o_viin_numbered_step::after`.
     ("viin_brand", "static/src/views/fields/statusbar/statusbar_steps.scss"):
         {"border-radius:50%"},
+    # The email layout and the invitation button restate the radius of core's own email button
+    # (3px and 4px): an email client has no stylesheet, so the `style` attribute is replaced as a
+    # whole to carry the company colour and the radius stays what core ships.
+    ("viin_brand_mail", "data/mail_templates_email_layouts.xml"):
+        {"border-radius:3px", "border-radius:4px"},
 }
 
 # A radius declaration in authored source: a CSS/custom property `(-*)border-radius:` or a Sass

@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 // The home-menu app tiles can be press-dragged to reorder, and the new order persists per user
 // across a full reload (read back from res.users.viin_home_app_order). Driven by tests/test_tours.py,
 // whose runner also asserts the server-side stored order.

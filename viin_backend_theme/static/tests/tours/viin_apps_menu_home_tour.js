@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 // The navbar apps icon is the sole app switcher: no desktop rail, no mobile bottom-nav, and
 // clicking the apps icon opens the one flat home menu. Driven by tests/test_tours.py.
 //

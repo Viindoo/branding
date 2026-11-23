@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { animationFrame, beforeEach, describe, expect, press, queryOne, test } from "@odoo/hoot";
 import { registry } from "@web/core/registry";
 import {

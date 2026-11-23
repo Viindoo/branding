@@ -9,23 +9,24 @@
 // The layers use color-mix() against transparent, so they composite over --secondary-bg in either
 // scheme.
 .o_viin_home_menu {
-    // Light tints the decorative brand teal (it never carries text here); dark uses the deep teal at
-    // lower percentages, because a dark canvas has little luminance to spare and higher tints push
-    // the muted section label below WCAG AA.
+    // The backdrop is application chrome. Light tints the decorative frame colours (they never carry
+    // text here): the chrome base for the first facet and the wash, the secondary cyan for the second.
+    // Dark uses the deep chrome rung and the deep cyan at lower percentages, because a dark canvas has
+    // little luminance to spare and higher tints push the muted section label below WCAG AA.
     $-bg-facet-a: if(
         $o-viin-dark-bundle,
         color-mix(in srgb, #{$o-viin-chrome-deep} 12%, transparent),
-        color-mix(in srgb, #{$o-brand-primary} 7%, transparent)
+        color-mix(in srgb, #{$o-viin-chrome-base} 7%, transparent)
     );
     $-bg-facet-b: if(
         $o-viin-dark-bundle,
-        color-mix(in srgb, #{$o-viin-chrome-deep} 8%, transparent),
-        color-mix(in srgb, #{$o-brand-primary} 5%, transparent)
+        color-mix(in srgb, #{shade-color($o-brand-secondary, 50%)} 8%, transparent),
+        color-mix(in srgb, #{$o-brand-secondary} 5%, transparent)
     );
     $-bg-wash: if(
         $o-viin-dark-bundle,
         color-mix(in srgb, #{$o-viin-chrome-deep} 10%, transparent),
-        color-mix(in srgb, #{$o-brand-primary} 8%, transparent)
+        color-mix(in srgb, #{$o-viin-chrome-base} 8%, transparent)
     );
 
     height: 100%;
@@ -110,16 +111,10 @@
         }
     }
 
-    // Light bundle: the brand secondary purple (5.90:1 on the --secondary-bg band). Dark bundle: the
-    // muted --secondary-color tier, since the purple would fall to 2.24:1 on the dark band.
-    // $o-viin-dark-bundle (viin_brand) is a compile-time flag, so each bundle carries one declaration.
+    // The structural accent of the brand: purple in the light bundle, cyan in the dark one.
     .o_viin_home_section_label {
         margin-block-end: $o-spacer;
-        @if $o-viin-dark-bundle {
-            color: var(--secondary-color);
-        } @else {
-            color: $o-brand-secondary;
-        }
+        color: $o-viin-accent-text;
         font-size: 0.8rem;
         font-weight: 600;
         letter-spacing: 0.06em;
@@ -158,6 +153,13 @@
             width: 56px;
             height: 56px;
             object-fit: contain;
+        }
+
+        // A built icon is a glyph on its own background, centred in the same box as an image icon.
+        .o_viin_home_app_glyph {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .o_viin_home_app_name {

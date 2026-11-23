@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { animationFrame, describe, expect, getFixture, mockDate, queryOne, test } from "@odoo/hoot";
 import { registry } from "@web/core/registry";
 import {

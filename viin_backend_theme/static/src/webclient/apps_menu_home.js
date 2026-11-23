@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 // The navbar apps icon opens the flat home menu without leaving the page: it is the sole
 // application switcher on every form factor.
 //
@@ -26,12 +24,13 @@
 // web.NavBar.AppsMenu is rendered through `<t t-call>` inside web.NavBar, so patching
 // NavBar.prototype is enough.
 
-import { onWillUnmount } from "@odoo/owl";
+import { onWillUnmount, usePlugin } from "@odoo/owl";
 import { NavBar } from "@web/webclient/navbar/navbar";
 import { patch } from "@web/core/utils/patch";
-import { useBus, useService } from "@web/core/utils/hooks";
+import { useBus } from "@web/core/utils/hooks";
 import { routerBus } from "@web/core/browser/router";
-import { ControllerNotFoundError } from "@web/webclient/actions/action_service";
+import { OverlayPlugin } from "@web/core/overlay/overlay_plugin";
+import { ControllerNotFoundError } from "@web/webclient/actions/action_plugin";
 import { ViinHomeMenu } from "../home_menu/home_menu";
 
 // Home-menu client action tag; it backs the boot landing (webclient_patch.js).
@@ -45,7 +44,7 @@ const APPS_BUTTON_SELECTOR = ".o_navbar_apps_menu .o_viin_apps_home, .o_menu_tog
 patch(NavBar.prototype, {
     setup() {
         super.setup();
-        this.viinOverlayService = useService("overlay");
+        this.viinOverlay = usePlugin(OverlayPlugin);
         // The overlay service's own `remove()` closure while the home menu is open; null otherwise.
         // It IS the open/closed state - there is no second flag to drift out of sync with it.
         this.viinHomeOverlay = null;
@@ -73,7 +72,7 @@ patch(NavBar.prototype, {
         if (this.isHomeMenuDisplayed()) {
             return this.closeHomeMenu();
         }
-        this.viinHomeOverlay = this.viinOverlayService.add(
+        this.viinHomeOverlay = this.viinOverlay.add(
             ViinHomeMenu,
             {
                 close: (options) => this.closeViinHomeOverlay(options),

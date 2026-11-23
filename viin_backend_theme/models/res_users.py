@@ -10,12 +10,5 @@ class ResUsers(models.Model):
         string="Home App Order",
         help="Comma-separated application root-menu xmlids giving this user's preferred home-menu "
              "tile order. Empty falls back to the default application sequence.",
+        user_writeable=True,
     )
-
-    @property
-    def SELF_READABLE_FIELDS(self):
-        return super().SELF_READABLE_FIELDS + ['viin_home_app_order']
-
-    @property
-    def SELF_WRITEABLE_FIELDS(self):
-        return super().SELF_WRITEABLE_FIELDS + ['viin_home_app_order']

@@ -1,6 +1,7 @@
 from requests import Response
 
 from odoo.tests import HttpCase, tagged
+from odoo.tools import mute_logger
 from odoo.addons.base.tests.common import HttpCaseWithUserDemo
 
 
@@ -161,7 +162,7 @@ class TestViinHomeReorder(_WebTourCapabilityGuard, HttpCase):
 
 @tagged("post_install", "-at_install")
 class TestViinClickbotHomeMenu(_WebTourCapabilityGuard, HttpCaseWithUserDemo):
-    """Core's clickbot walks apps via the theme home menu, not the dropdown."""
+    """Core's clickbot walks every app with the theme installed."""
 
     @classmethod
     def _request_handler(cls, s, r, /, **kw):
@@ -175,13 +176,12 @@ class TestViinClickbotHomeMenu(_WebTourCapabilityGuard, HttpCaseWithUserDemo):
         return super()._request_handler(s, r, **kw)
 
     def test_clickbot_walks_all_apps_via_theme_home_menu(self):
-        """The core clickbot (light mode) opens EVERY app through the flat home menu and finishes
-        with the success signal.
+        """The core clickbot (light mode) opens EVERY app as a demo user and finishes with the success
+        signal.
 
-        The theme replaces the navbar dropdown with a home-menu button, so the clickbot clicks
-        ``.o_navbar_apps_menu button``, enumerates and clicks the
-        ``.o_viin_home_menu .o_app[data-menu-xmlid]`` tiles, settles on pending RPCs and the OWL
-        scheduler, and asserts no ``.o_error_dialog`` per app.
+        The clickbot opens an app through the menu service, so the theme's replacement of the navbar
+        dropdown by the home menu must leave its walk, its settling on pending RPCs and its check for
+        error dialogs intact.
         """
         self.user_demo.tour_enabled = False
         # With website installed and the demo user not a designer, landing on the website dashboard
@@ -196,7 +196,7 @@ class TestViinClickbotHomeMenu(_WebTourCapabilityGuard, HttpCaseWithUserDemo):
         self.browser_js(
             "/odoo",
             "odoo.loader.modules.get('@web/webclient/clickbot/clickbot_loader')"
-            ".startClickEverywhere(undefined, true);",
+            ".startClickEverywhere({ light: true });",
             "odoo.isReady === true",
             login="demo",
             timeout=240,
@@ -211,8 +211,66 @@ class TestViinDiscussOnboarding(_WebTourCapabilityGuard, HttpCase):
     def test_discuss_onboarding_reaches_discuss_from_themed_landing(self):
         """Core's ``discuss_channel_tour`` runs to completion under the themed ``/odoo`` landing.
 
-        ``/odoo`` lands on the flat home menu, not Discuss, so the tour's first step
-        (``.o-mail-DiscussSearch-inputContainer``) needs a prepended step that clicks the home-menu
+        ``/odoo`` lands on the flat home menu, not Discuss, so the tour's first community step
+        (``.o-mail-MessagingMenu-tab``) needs a prepended step that clicks the home-menu
         Discuss tile (``.o_viin_home_menu .o_app[data-menu-xmlid='mail.menu_root_discuss']``).
         """
         self.start_tour("/odoo", "discuss_channel_tour", login="admin")
+
+
+@tagged("post_install", "-at_install")
+class TestViinFailedActionLanding(_WebTourCapabilityGuard, HttpCase):
+    """The action of the URL fails to load: the landing is the home menu alone."""
+
+    def _create_failing_action(self):
+        self.env["ir.actions.act_window"].create({
+            "name": "Failing list",
+            "res_model": "res.partner",
+            "view_mode": "list",
+            "path": "viin-failing-list",
+            # the server refuses the domain when the list loads its records
+            "domain": "[('x_no_such_field', '=', 1)]",
+        })
+
+    def test_the_landing_of_a_failed_action_has_no_dialog_and_no_breadcrumb_of_the_action(self):
+        """The failed load sends the web client to its default app, which is the home menu.
+
+        The stock default app opens alone: the breadcrumbs of the failed action are cleared and the
+        error dialog is closed. The home menu does the same.
+        """
+        self._create_failing_action()
+        with mute_logger("odoo.http"):
+            self.start_tour("/odoo/viin-failing-list", "viin_failed_action_landing_tour", login="admin")
+
+    def test_an_error_after_the_landing_of_a_missing_action_opens_its_dialog(self):
+        """No error of a load comes with the landing of a missing action: the first input of the user
+        ends the wait, so that a later error of the same model is not taken.
+        """
+        self.env["ir.actions.act_window"].create({
+            "name": "Partner list",
+            "res_model": "res.partner",
+            "view_mode": "list",
+            "path": "viin-partner-list",
+        })
+        with mute_logger("odoo.http"):
+            self.start_tour("/odoo/viin-partner-list", "viin_missing_action_landing_tour", login="admin")
+
+    def test_an_error_that_is_not_the_failed_load_opens_its_dialog_over_the_landing(self):
+        """The boot landing takes no error: a refused request opens the error dialog over it."""
+        with mute_logger("odoo.http"):
+            self.start_tour("/odoo", "viin_landing_error_dialog_tour", login="admin")
+
+    def test_the_landing_of_a_failed_action_has_no_dialog_whenever_its_error_reaches_the_page(self):
+        """The error of the failed load reaches the page before the landing is done, or long after it.
+
+        Nothing orders the error against the landing, so the landing is bound to the error, not to
+        the moment it arrives: the delay holds the error back for the given milliseconds.
+        """
+        self._create_failing_action()
+        for delay in (0, 1500):
+            with self.subTest(delay=delay), mute_logger("odoo.http"):
+                self.start_tour(
+                    f"/odoo/viin-failing-list?viin_error_delay={delay}",
+                    "viin_failed_action_landing_tour",
+                    login="admin",
+                )
