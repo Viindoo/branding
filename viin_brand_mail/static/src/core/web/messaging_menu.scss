@@ -1,22 +1,3 @@
 .o-mail-MessagingMenu {
     min-height: inherit;
 }
-
-// The systray unread counters paint with the semantic success fill, which is too close to the
-// white label, so both contextual tokens are re-pointed on the badges only. The shade is declared
-// in core/common/core.scss, which loads earlier in the bundle.
-.o-mail-MessagingMenu-counter,
-.o-mail-ActivityMenu-counter {
-    --o-navbar-badge-bg: #{$o-viin-unread-badge-green};
-    --o-navbar-badge-color: white;
-}
-
-// The counters sit on the teal navbar with almost no separation, so each carries a white ring.
-// Core's `.o_main_navbar .o_menu_systray .badge` resets the border, so the rule repeats its
-// ancestors to win on specificity.
-.o_main_navbar .o_menu_systray {
-    .o-mail-MessagingMenu-counter,
-    .o-mail-ActivityMenu-counter {
-        border: 1px solid $white;
-    }
-}

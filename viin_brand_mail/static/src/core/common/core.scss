@@ -11,19 +11,10 @@ a.o_channel_redirect {
     }
 }
 
-// Unread counters are green in both schemes. Core paints them from `--o-discuss-badge-bg`
-// (`$o-success`) with `!important` and a forced white label; light keeps core's value, dark takes a
-// shade of $o-success darkened for the white label, shared with the systray counters.
-$o-viin-unread-badge-green: mix(black, $o-success, 28%) !default;
-
-@if $o-viin-dark-bundle {
-    .o-discuss-badge {
-        --o-discuss-badge-bg: #{$o-viin-unread-badge-green};
-    }
-}
-
-// The counter of the chat-window header sits on the teal chrome, which the fill barely separates
-// from; the white ring keeps it distinct in both schemes.
-.o-mail-ChatWindow-header .o-mail-ChatWindow-counter {
-    border: 1px solid $white;
+// Core sets `--o-discuss-badge-bg` from `$o-success` on the badge and on `.o-innerBadge`, with no Sass
+// variable to re-point, so it is set here on the same selectors to the identity purple, which is the
+// same in both schemes. Core's muted variants keep theirs.
+.o-discuss-badge,
+.o-discuss-badge .o-innerBadge {
+    --o-discuss-badge-bg: #{$o-viin-brand-purple};
 }
