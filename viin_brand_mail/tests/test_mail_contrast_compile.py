@@ -57,11 +57,6 @@ CHROME_DEEP_TEAL = "#005e68"
 # A dark-tuned brand secondary purple (2.90:1 under core's forced white label). The purple accent
 # is light-mode only: nothing in web.assets_web_dark may resolve to it.
 DARK_BUNDLE_FORBIDDEN_PURPLE = "#b589b8"
-# The dark muted tier (`$body-secondary-color` in dark_palette.scss) that `$o-brand-secondary`
-# collapses onto in the dark bundle: only 2.59:1 under core's forced-white badge label, so the
-# Discuss badge needs its own dark arm.
-DARK_MUTED_TIER = "#8ea5a8"
-
 # `$o-brand-secondary`. The chatter active toggle keeps this fill and only its foreground needs an
 # own value, so it is asserted positively: a "fix" that repaints it teal is caught.
 BRAND_SECONDARY_PURPLE = "#7f4282"
@@ -69,12 +64,8 @@ BRAND_SECONDARY_PURPLE = "#7f4282"
 # The chat-window header fill the header must not use: `mix(black, $o-brand-secondary, 15%)`.
 FORBIDDEN_HEADER_PURPLE = "#6c386f"
 
-# `$o-success`, core's default `$o-navbar-badge-bg`: white counter text on it is 2.75:1.
-CORE_SUCCESS_GREEN = "#00b365"
-# The unread counter greens: `$o-success` as viin_brand sets it (light) and the shade
-# of it that carries the white label in dark (`$o-viin-unread-badge-green`).
-UNREAD_BADGE_GREEN = "#00884d"
-UNREAD_BADGE_DARK_GREEN = "#006237"
+# The unread counters are the Viindoo identity purple in both schemes (`$o-viin-brand-purple`).
+UNREAD_BADGE_PURPLE = "#7f4282"
 
 # `$o-viin-mail-status-away-color` (static/src/core/common/im_status.scss), asserted as a literal
 # rather than re-derived from `darken(#ffa500, 15%)`. Three rules read that one variable so the
@@ -1843,19 +1834,15 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                     % (host, dot_colors[-1], ratio, WCAG_AA_NON_TEXT),
                 )
 
-    def test_systray_unread_counters_are_readable_on_the_navbar(self):
-        """The messaging/activity systray counters must carry an AA-readable count.
+    def test_systray_unread_counters_are_the_identity_purple_with_a_white_count(self):
+        """The messaging/activity systray counters are purple under a white count, in both schemes.
 
         Core paints the badges with `var(--o-navbar-badge-bg, ...)` and
-        `var(--o-navbar-badge-color, ...)`; `$o-navbar-badge-bg` resolves to $o-success #00B365,
-        whose 11px count is 2.75:1. Only the rule is asserted for the replacement shade (a green
-        other than $o-success, AA against its own foreground): the production value is derived with
-        no named token, so pinning it would turn a legitimate re-tune into a false alarm.
-
-        The fill and the count colour are resolved on a modelled badge through core's own
-        `.o_main_navbar .o_menu_systray .badge` consumer, so a core rename of either token makes the
-        branded value unreachable and the guard red."""
-        css = self._compiled_css(BACKEND_BUNDLE)
+        `var(--o-navbar-badge-color, ...)`; viin_brand points `$o-navbar-badge-bg` at the identity
+        purple and `$o-navbar-badge-color` at white. The fill and the count colour are resolved on
+        a modelled badge through core's own `.o_main_navbar .o_menu_systray .badge` consumer, so a
+        core rename of either token, or a module re-pointing the custom property back on the
+        counter, makes the guard red. The counters carry no declaration of their own."""
         # `badge` is what core's navbar consumer keys on: a rename would leave the models below
         # stale.
         self._assert_core_source_contains(
@@ -1870,62 +1857,36 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             "The activity systray counter does not render as a `.badge`, so core's "
             ".o_menu_systray .badge rule does not paint it and neither token applies.",
         )
-        for counter in (".o-mail-MessagingMenu-counter", ".o-mail-ActivityMenu-counter"):
-            with self.subTest(counter=counter):
-                bodies = _bodies_matching(css, lambda selector: selector == counter, ANY_ANCESTORS)
-                self.assertTrue(
-                    bodies,
-                    "No compiled rule targets %s in %s - the systray counter a11y override did "
-                    "not reach the bundle." % (counter, BACKEND_BUNDLE),
-                )
-
-                badge_bgs = _declared_values(bodies, _custom_property_re("o-navbar-badge-bg"))
-                badge_colors = _declared_values(bodies, _custom_property_re("o-navbar-badge-color"))
-                self.assertTrue(
-                    badge_bgs,
-                    "%s declares no --o-navbar-badge-bg, so core's $o-navbar-badge-bg ($o-success "
-                    "%s) stands and the count renders at 2.75:1." % (counter, CORE_SUCCESS_GREEN),
-                )
-                self.assertTrue(
-                    badge_colors,
-                    "%s declares no --o-navbar-badge-color, so the count inherits the navbar's "
-                    "near-white entry colour with no contrast guarantee." % counter,
-                )
-
-                # Both must also be the tokens the navbar reads: the counters carry no colour of
-                # their own, core's `.o_main_navbar .o_menu_systray .badge` paints them. Resolving
-                # through that consumer fails on a core rename, where reading our own declarations
-                # back would stay green with the badge visibly back on $o-success.
-                element = {
-                    "classes": SYSTRAY_COUNTER_CLASSES[counter], "ancestors": SYSTRAY_ANCESTORS,
-                }
-                background_value, background_rgb = self._resolve_colour(
-                    css, [element], BACKGROUND_PROPS, "%s badge fill" % counter
-                )
-                foreground_value, foreground_rgb = self._resolve_colour(
-                    css, [element], ("color",), "%s count text" % counter
-                )
-                self.assertNotEqual(
-                    background_rgb, _to_rgb(CORE_SUCCESS_GREEN),
-                    "%s renders the unmodified $o-success %s (resolved: %s), which only reaches "
-                    "2.75:1 under white 11px text."
-                    % (counter, CORE_SUCCESS_GREEN, background_value),
-                )
-                # The badge stays a success badge: darkening must not drift into another hue
-                # (green channel dominant).
-                self.assertGreater(
-                    background_rgb[1], max(background_rgb[0], background_rgb[2]),
-                    "%s resolves its badge fill to %s, which is not a green - the counter is "
-                    "a success badge and must keep its semantic hue while darkening."
-                    % (counter, background_value),
-                )
-                ratio = _contrast_ratio(foreground_rgb, background_rgb)
-                self.assertGreaterEqual(
-                    ratio, WCAG_AA_NORMAL_TEXT,
-                    "%s renders its count %s on %s - only %.2f:1, and this 11px systray text needs "
-                    ">= %.1f:1."
-                    % (counter, foreground_value, background_value, ratio, WCAG_AA_NORMAL_TEXT),
-                )
+        for bundle_name in (BACKEND_BUNDLE, DARK_BUNDLE):
+            css = self._compiled_css(bundle_name)
+            for counter in (".o-mail-MessagingMenu-counter", ".o-mail-ActivityMenu-counter"):
+                with self.subTest(bundle=bundle_name, counter=counter):
+                    element = {
+                        "classes": SYSTRAY_COUNTER_CLASSES[counter], "ancestors": SYSTRAY_ANCESTORS,
+                    }
+                    background_value, background_rgb = self._resolve_colour(
+                        css, [element], BACKGROUND_PROPS, "%s badge fill" % counter
+                    )
+                    foreground_value, foreground_rgb = self._resolve_colour(
+                        css, [element], ("color",), "%s count text" % counter
+                    )
+                    self.assertEqual(
+                        background_rgb, _to_rgb(UNREAD_BADGE_PURPLE),
+                        "%s must resolve its fill to the identity purple %s in %s; it resolved to %s."
+                        % (counter, UNREAD_BADGE_PURPLE, bundle_name, background_value),
+                    )
+                    self.assertEqual(
+                        foreground_rgb, WHITE_RGB,
+                        "%s must resolve its count to white in %s; it resolved to %s."
+                        % (counter, bundle_name, foreground_value),
+                    )
+                    ratio = _contrast_ratio(foreground_rgb, background_rgb)
+                    self.assertGreaterEqual(
+                        ratio, WCAG_AA_NORMAL_TEXT,
+                        "%s renders its count %s on %s - only %.2f:1, and this 11px systray text "
+                        "needs >= %.1f:1."
+                        % (counter, foreground_value, background_value, ratio, WCAG_AA_NORMAL_TEXT),
+                    )
 
     def test_chat_window_header_dropdown_toggle_stays_white_while_hovered_or_open(self):
         """Hovering or opening the chat-window title dropdown must keep its label white.
@@ -1970,14 +1931,14 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
             % (glyph_value, header_value, ratio, WCAG_AA_NORMAL_TEXT),
         )
 
-    def test_discuss_unread_badge_renders_green_through_cores_own_consumer(self):
-        """A Discuss unread counter is green in both schemes, never the brand purple.
+    def test_discuss_unread_badge_renders_purple_through_cores_own_consumer(self):
+        """A Discuss unread counter is the identity purple under a white count, in both schemes.
 
         Core paints every `.o-discuss-badge` with
         `background-color: var(--o-discuss-badge-bg) !important` from $o-success and
-        keeps its own foreground (`color: white !important`). Light keeps that token,
-        the green viin_brand gives $o-success; dark re-points the custom property to the
-        shade the systray counters use.
+        keeps its own foreground (`color: white !important`); this module re-points the custom
+        property on the same selectors to `$o-viin-brand-purple`, which no scheme re-tunes (the
+        light accent `$o-brand-secondary` collapses to the muted tier in dark, so it is not used).
 
         Modelled on the sidebar counter on purpose: two other `.o-discuss-badge` sites
         are deliberately overridden by core at higher specificity and must keep
@@ -1998,31 +1959,20 @@ class MailContrastCompileTest(ContrastCompileHelpers, TransactionCase):
                 css, [badge], BACKGROUND_PROPS,
                 "Discuss sidebar unread badge fill (%s arm)" % arm,
             )
-            self.assertNotEqual(
-                fill_rgb, _to_rgb(BRAND_SECONDARY_PURPLE),
-                "The Discuss unread badge compiled the brand purple %s in the %s "
-                "bundle; unread counters are green in both schemes."
-                % (BRAND_SECONDARY_PURPLE, arm),
-            )
-            expected = (
-                UNREAD_BADGE_GREEN if arm == "light" else UNREAD_BADGE_DARK_GREEN
-            )
             self.assertEqual(
-                fill_rgb, _to_rgb(expected),
+                fill_rgb, _to_rgb(UNREAD_BADGE_PURPLE),
                 "The Discuss unread badge must resolve to %s in the %s bundle; it "
-                "resolved to %s." % (expected, arm, fill_value),
+                "resolved to %s." % (UNREAD_BADGE_PURPLE, arm, fill_value),
             )
-            if arm == "dark":
-                self.assertNotEqual(
-                    fill_rgb, _to_rgb(DARK_MUTED_TIER),
-                    "The Discuss unread badge compiled the neutral muted tier %s in "
-                    "the dark bundle: white on it is 2.59:1, and a grey unread counter "
-                    "reads as 'already read'." % DARK_MUTED_TIER,
-                )
 
             count_value, count_rgb = self._resolve_colour(
                 css, [badge], ("color",),
                 "Discuss sidebar unread badge count (%s arm)" % arm,
+            )
+            self.assertEqual(
+                count_rgb, WHITE_RGB,
+                "The Discuss unread count must be white in the %s arm; it resolved to %s."
+                % (arm, count_value),
             )
             ratio = _contrast_ratio(count_rgb, fill_rgb)
             self.assertGreaterEqual(

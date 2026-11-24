@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-# Compiled-CSS guards for the Discuss sidebar type scale and the white ring that separates a
-# semantic fill from the teal chrome. Rules are read from the compiled bundles the way a browser
+# Compiled-CSS guards for the Discuss sidebar type scale, the white ring of the call buttons and the
+# absence of a ring on the unread counters. Rules are read from the compiled bundles the way a browser
 # resolves them: the last matching declaration wins.
 import re
 
@@ -12,9 +12,7 @@ from .test_mail_contrast_compile import (
     DARK_BUNDLE,
     ContrastCompileHelpers,
     _bodies_matching,
-    _custom_property_re,
     _declared_values,
-    _normalize_value,
 )
 
 ROOT_FONT_SIZE_PX = 16.0
@@ -37,11 +35,15 @@ _FONT_SIZE_RE = re.compile(r"(?<![\w-])font-size\s*:\s*([^;]+)", re.IGNORECASE)
 _BORDER_RE = re.compile(r"(?<![\w-])border\s*:\s*([^;]+)", re.IGNORECASE)
 
 # selector of the element carrying the ring, as compiled
-TEAL_FILL_SELECTORS = (
+RINGED_SELECTORS = (".o-mail-ChatWindow-header .o-tag-JOIN_LEAVE_CALL > i",)
+# unread counters: the purple fill separates them from the chrome, they carry no ring
+UNRINGED_COUNTER_SELECTORS = (
     ".o_main_navbar .o_menu_systray .o-mail-MessagingMenu-counter",
     ".o_main_navbar .o_menu_systray .o-mail-ActivityMenu-counter",
     ".o-mail-ChatWindow-header .o-mail-ChatWindow-counter",
-    ".o-mail-ChatWindow-header .o-tag-JOIN_LEAVE_CALL > i",
+    ".o-mail-MessagingMenu-counter",
+    ".o-mail-ActivityMenu-counter",
+    ".o-mail-ChatWindow-counter",
 )
 
 
@@ -87,10 +89,10 @@ class TestDiscussChromeCompile(ContrastCompileHelpers, TransactionCase):
                 ]
                 self.assertEqual(scaled, [])
 
-    def test_a_semantic_fill_on_the_teal_chrome_carries_a_white_ring_in_both_schemes(self):
+    def test_the_call_buttons_on_the_teal_chrome_carry_a_white_ring_in_both_schemes(self):
         for bundle in (BACKEND_BUNDLE, DARK_BUNDLE):
             css = self._compiled_css(bundle)
-            for selector in TEAL_FILL_SELECTORS:
+            for selector in RINGED_SELECTORS:
                 with self.subTest(bundle=bundle, selector=selector):
                     border = self._last_declared(css, selector, _BORDER_RE)
                     self.assertIn(
@@ -99,10 +101,17 @@ class TestDiscussChromeCompile(ContrastCompileHelpers, TransactionCase):
                         "%s must carry a 1px white ring on all four sides" % selector,
                     )
 
-    def test_systray_counter_fill_follows_the_success_fill(self):
+    def test_the_unread_counters_carry_no_ring_in_both_schemes(self):
         for bundle in (BACKEND_BUNDLE, DARK_BUNDLE):
             css = self._compiled_css(bundle)
-            for selector in (".o-mail-MessagingMenu-counter", ".o-mail-ActivityMenu-counter"):
+            for selector in UNRINGED_COUNTER_SELECTORS:
                 with self.subTest(bundle=bundle, selector=selector):
-                    fill = self._last_declared(css, selector, _custom_property_re("o-navbar-badge-bg"))
-                    self.assertEqual(_normalize_value(fill), "#006237")
+                    bodies = _bodies_matching(css, lambda token: token == selector, ANY_ANCESTORS)
+                    borders = [
+                        value for value in _declared_values(bodies, _BORDER_RE)
+                        if value.strip() not in ("0", "none")
+                    ]
+                    self.assertEqual(
+                        borders, [],
+                        "%s must not draw a ring: the purple fill already separates it" % selector,
+                    )
