@@ -8,8 +8,11 @@
 // core's later default assignment of the same variable.
 
 $o-brand-primary: #00BBCE !default;    // Viindoo brand primary (teal) = VIINDOO_THEME_COLOR
-// Light-mode value; dark_palette.scss re-points it for web.assets_web_dark (see the colour law).
-$o-brand-secondary: #7F4282 !default;  // Viindoo brand secondary (purple)
+// The identity purple: scheme-invariant, so a surface that sits on the scheme-invariant chrome (the
+// unread counters of the navbar and of Discuss) reads it directly. $o-brand-secondary is this purple
+// in light only; dark_palette.scss re-points it for web.assets_web_dark (see the colour law).
+$o-viin-brand-purple: #7F4282 !default;  // Viindoo identity purple
+$o-brand-secondary: $o-viin-brand-purple !default;  // Viindoo brand secondary (purple), light mode
 
 // Core derives the backend brand surfaces from the $o-brand-odoo family at compile time (navbar
 // background, loading indicator, html_editor table menu, web_tour pointer, website), and portal's
@@ -35,6 +38,14 @@ $color-contrast-dark: #21272B !default;
 // text clears WCAG AA normal text (4.74:1; the flat brand teal gives 2.33:1), and it is the single
 // AA teal reused below.
 $o-navbar-background: #007F8E !default;
+
+// The unread counters of the navbar systray (messaging, activities, and every other `.badge` an app
+// puts in `.o_menu_systray`) read `$o-navbar-badge-bg` and `$o-navbar-badge-color` through
+// `.o_main_navbar .o_menu_systray .badge` (core web navbar.scss). Core defaults are $o-success and
+// `inherit`. They sit on the scheme-invariant chrome, so they are the identity purple with a white
+// label in both schemes (6.99:1).
+$o-navbar-badge-bg: $o-viin-brand-purple !default;
+$o-navbar-badge-color: #FFFFFF !default;
 
 // Core maps the primary-interactive tier off two `!default` variables in files that compile after
 // this one: `$primary` (bootstrap_overridden.scss) feeds root --primary and $primary-derived

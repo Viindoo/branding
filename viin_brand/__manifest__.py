@@ -94,7 +94,7 @@ Mô đun này thay thương hiệu Odoo của các mô đun base, web và base_s
     'live_test_url_vi_VN': "https://v19demo-vn.viindoo.com",
     'support': "apps.support@viindoo.com",
     'category': 'Hidden',
-    'version': '0.3.2',
+    'version': '0.3.3',
     # 'web' is needed at load time: controllers/database.py and controllers/webmanifest.py subclass
     # the core controllers. 'base_setup' is the parent of views/res_config_settings_views.xml.
     'depends': ['base', 'web', 'base_setup'],

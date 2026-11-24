@@ -65,6 +65,7 @@ def dark_palette_var(var_name):
 CHROME_BASE = VIINDOO_NAVBAR_BACKGROUND_COLOR            # #007f8e
 CHROME_DEEP = "#005e68"                                  # pressed / open / hover rung
 WHITE = "#ffffff"
+BRAND_PURPLE = "#7f4282"                                 # identity purple, both schemes
 BLACK = "#000000"
 # Core's progress-bar trough is $o-view-background-color, i.e. plain white.
 CORE_PROGRESS_TROUGH = WHITE
@@ -94,6 +95,10 @@ DARK_LINK_REF = "#4fd4e2"
 # search-panel section header border, where no guard of ours reaches.
 DARK_BUNDLE_FORBIDDEN_PURPLE = "#b589b8"   # a dark-tuned brand purple - must NOT appear in dark
 DARK_MUTED_TIER = "#8ea5a8"       # $body-secondary-color: 6.75:1 on #111B1E, and NOT purple
+
+# Selectors of the unread counters, the only rules where the identity purple may reach the dark
+# bundle (core's navbar badge consumer and Discuss's `--o-discuss-badge-bg` carrier).
+UNREAD_COUNTER_SELECTOR_MARKERS = (".o_menu_systray .badge", ".o-discuss-badge")
 
 # Secondary solid surfaces core paints from the gray ramp (`$o-gray-100/200`, the `.bg-N`
 # utilities) or from a Bootstrap table variant, as the dark hex each must resolve to.
@@ -1218,6 +1223,28 @@ class BrandCascadeCompileTest(TransactionCase):
             % (surface, "/".join(prop_names), value),
         )
         return colour
+
+    def test_the_navbar_systray_badge_is_the_identity_purple_with_a_white_count_in_both_schemes(self):
+        """A systray counter reads `$o-navbar-badge-bg` / `-color`, which are scheme-invariant.
+
+        Core's `.o_main_navbar .o_menu_systray .badge` takes `$o-success` and an inherited colour by
+        default. The counters sit on the invariant teal chrome, so they are the identity purple under
+        a white count in light AND dark, where `$o-brand-secondary` collapses to the muted tier.
+        Every `.badge` an app puts in the systray follows, whichever class it carries.
+        """
+        badge = {
+            "classes": frozenset({"badge"}),
+            "ancestors": frozenset({"o_web_client", "o_main_navbar", "o_menu_systray"}),
+            "prev_sibling": frozenset(),
+        }
+        for bundle_name in (BACKEND_BUNDLE, DARK_BUNDLE):
+            css = self._compiled_css(bundle_name)
+            with self.subTest(bundle=bundle_name):
+                fill = self._resolve_colour(css, [badge], BACKGROUND_PROPS, "systray badge fill")
+                label = self._resolve_colour(css, [badge], ("color",), "systray badge count")
+                self.assertEqual(fill, BRAND_PURPLE)
+                self.assertEqual(label, WHITE)
+                self.assertGreaterEqual(_contrast_ratio(label, fill), WCAG_AA_NORMAL_TEXT)
 
     def test_navbar_menu_entry_interactive_states_use_deep_chrome_rung(self):
         """Hovered, focused, pressed and open navbar menu entries render the deep chrome rung.
@@ -3058,6 +3085,10 @@ class BrandCascadeCompileTest(TransactionCase):
         Non-vacuous by construction: the same scan on the light bundle must find the purple, so a
         typo in the needle, a bundle that failed to build or a purple that disappeared from light too
         cannot make the dark half pass for the wrong reason.
+
+        The one allowed occurrence of the light purple is a rule of the unread counters
+        (`UNREAD_COUNTER_SELECTOR_MARKERS`): they sit on the scheme-invariant chrome and are the
+        identity purple in both schemes.
         """
         light_purple = self._brand_secondary_ssot()
         needles = {
@@ -3082,10 +3113,15 @@ class BrandCascadeCompileTest(TransactionCase):
         for description, spellings in needles.items():
             for spelling in spellings:
                 index = dark_css.find(spelling)
+                while index != -1:
+                    start = dark_css.rfind("}", 0, index) + 1
+                    selector = dark_css[start:dark_css.find("{", start)]
+                    if not any(marker in selector for marker in UNREAD_COUNTER_SELECTOR_MARKERS):
+                        break
+                    index = dark_css.find(spelling, index + 1)
                 if index == -1:
                     continue
                 # Report the offending rule, not just "found it", so the offending rule is locatable.
-                start = dark_css.rfind("}", 0, index) + 1
                 self.fail(
                     "web.assets_web_dark contains %s, spelled %r. The purple accent is LIGHT-MODE "
                     "ONLY : every rule painting it must sit inside "
