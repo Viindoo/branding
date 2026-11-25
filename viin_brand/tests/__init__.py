@@ -40,6 +40,7 @@ from . import test_statusbar_steps_compile
 from . import test_surface_text_contrast_compile
 from . import test_template_inherit_id_targets_view
 from . import test_text_action_tier_compile
+from . import test_title_patch_without_core_title_service
 from . import test_uninstall_hook
 from . import test_view_editor_hint
 from . import test_webmanifest

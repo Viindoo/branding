@@ -1,7 +1,15 @@
 /** @odoo-module **/
 
+import { registry } from "@web/core/registry";
 import { patch } from "@web/core/utils/patch";
-import { titleService } from "@web/core/browser/title_service";
+
+// The title service is looked up in the services registry, not imported from its core module: a
+// bundle that drops core's `web/static/src/core/browser/title_service.js` (the livechat embed in
+// `web.assets_frontend`) would otherwise fail the module loader on the missing dependency. This
+// file is listed after core's, so the service is already registered where core keeps it.
+const titleService = registry.category("services").contains("title")
+    ? registry.category("services").get("title")
+    : null;
 
 // De-brand core's empty-state title fallback (`Object.values(titleParts).join(" - ") || "Odoo"`)
 // instead of keeping a permanent title part: a permanent part would be joined into every composed
@@ -44,19 +52,21 @@ function debrandEmptyFallback(titleApi) {
     }
 }
 
-patch(titleService, {
-    start() {
-        const titleApi = super.start(...arguments);
-        const setParts = titleApi.setParts;
-        const setCounters = titleApi.setCounters;
-        titleApi.setParts = (parts) => {
-            setParts(parts);
-            debrandEmptyFallback(titleApi);
-        };
-        titleApi.setCounters = (counters) => {
-            setCounters(counters);
-            debrandEmptyFallback(titleApi);
-        };
-        return titleApi;
-    },
-});
+if (titleService) {
+    patch(titleService, {
+        start() {
+            const titleApi = super.start(...arguments);
+            const setParts = titleApi.setParts;
+            const setCounters = titleApi.setCounters;
+            titleApi.setParts = (parts) => {
+                setParts(parts);
+                debrandEmptyFallback(titleApi);
+            };
+            titleApi.setCounters = (counters) => {
+                setCounters(counters);
+                debrandEmptyFallback(titleApi);
+            };
+            return titleApi;
+        },
+    });
+}
