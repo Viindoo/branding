@@ -13,6 +13,9 @@ VIINDOO_THEME_COLOR = '#00BBCE'
 # Default of the ``web.web_app_name`` ir.config_parameter; only this stock value is de-branded.
 CORE_DEFAULT_APP_NAME = 'Odoo'
 
+# The offline page template, data of this module.
+OFFLINE_TEMPLATE_XMLID = 'viin_brand.webclient_offline'
+
 MANIFEST_CONTENT_TYPE = 'application/manifest+json'
 
 
@@ -71,6 +74,14 @@ class BrandWebManifest(WebManifest):
 
     @http.route()
     def offline(self):
-        return request.render('viin_brand.webclient_offline', {
+        """Serve the Viindoo offline page, or core's where this module is not installed.
+
+        The module is loaded server wide, so this route is mounted for every database, while its
+        template is data that exists only where the module is installed; elsewhere core's page is
+        served instead of a 404.
+        """
+        if not request.env['ir.model.data']._xmlid_to_res_id(OFFLINE_TEMPLATE_XMLID):
+            return super().offline()
+        return request.render(OFFLINE_TEMPLATE_XMLID, {
             'viindoo_icon': base64.b64encode(file_open(self._viindoo_icon_path(), 'rb').read())
         })
