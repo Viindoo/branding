@@ -1,4 +1,4 @@
-from odoo.tests.common import tagged
+from odoo.tests.common import HttpCase, tagged
 from odoo.tools import file_path
 
 from odoo.addons.web.tests.test_webmanifest import WebManifestRoutesTest
@@ -248,3 +248,25 @@ class BrandWebManifestRoutesTest(WebManifestRoutesTest):
             '<link rel="apple-touch-icon" href="/viin_brand/static/img/viindoo-icon-ios.png"/>', document.text,
             "Icon for iOS is present in the head of the document.",
         )
+
+
+@tagged("-at_install", "post_install")
+class BrandOfflinePageTest(HttpCase):
+    """The module is loaded server wide, so /odoo/offline is mounted for every database, also
+    where the module is not installed and its template does not exist."""
+
+    def test_offline_page_branded_where_installed(self):
+        response = self.url_open("/odoo/offline")
+        self.assertEqual(response.status_code, 200)
+        # The brand colour is in the style of the Viindoo page only, core's page does not carry it.
+        self.assertIsNotNone(VIINDOO_THEME_COLOR)
+        self.assertIn(VIINDOO_THEME_COLOR.lower(), response.text.lower())
+
+    def test_offline_page_served_where_module_is_not_installed(self):
+        """Removing the module's template inside the test transaction (rolled back with it) is
+        the state of a database without the module, while the server still routes the request
+        through the module's controller."""
+        self.env.ref("viin_brand.webclient_offline").unlink()
+        with self.assertNoLogs("odoo.http", level="WARNING"):
+            response = self.url_open("/odoo/offline")
+        self.assertEqual(response.status_code, 200)
