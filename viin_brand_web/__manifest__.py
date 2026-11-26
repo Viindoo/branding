@@ -35,7 +35,7 @@ Editions Supported
     # Check https://github.com/Viindoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Hidden',
-    'version': '0.1',
+    'version': '0.1.1',
 
     # any module necessary for this one to work correctly
     'depends': ['web'],
@@ -45,11 +45,18 @@ Editions Supported
         'web.assets_backend': [
             'viin_brand_web/static/src/scss/mobile_apps_funnel.scss',
             'viin_brand_web/static/src/core/dialog/dialog.js',
+            'viin_brand_web/static/src/core/errors/error_dialogs.xml',
             'viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml',
             'viin_brand_web/static/src/core/webclient/settings_form_view/widgets/mobile_apps_funnel.xml',
         ],
+        'web.assets_frontend': [
+            'viin_brand_web/static/src/public/error_notifications.js',
+        ],
         'web.assets_unit_tests': [
+            'web/static/src/public/error_notifications.js',
+            'viin_brand_web/static/src/public/error_notifications.js',
             'viin_brand_web/static/tests/dialog_title.test.js',
+            'viin_brand_web/static/tests/public_error_notifications.test.js',
         ],
     },
     'images': [

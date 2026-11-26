@@ -38,3 +38,47 @@ msgstr "Hệ thống Viindoo"
 #: code:addons/viin_brand_web/static/src/core/webclient/settings_form_view/widgets/res_config_edition.xml:0
 msgid "Viindoo."
 msgstr ""
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/dialog/dialog.js:0
+msgid "Viindoo Client Error"
+msgstr "Lỗi phía máy khách Viindoo"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/dialog/dialog.js:0
+msgid "Viindoo Error"
+msgstr "Lỗi Viindoo"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/dialog/dialog.js:0
+msgid "Viindoo Network Error"
+msgstr "Lỗi mạng Viindoo"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/dialog/dialog.js:0
+msgid "Viindoo Server Error"
+msgstr "Lỗi máy chủ Viindoo"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/dialog/dialog.js:0
+msgid "Viindoo Warning"
+msgstr "Cảnh báo Viindoo"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.xml:0
+#: code:addons/viin_brand_web/static/src/public/error_notifications.js:0
+msgid "Viindoo Session Expired"
+msgstr "Phiên làm việc Viindoo đã hết hạn"
+
+#. module: viin_brand_web
+#. odoo-javascript
+#: code:addons/viin_brand_web/static/src/core/errors/error_dialogs.xml:0
+#: code:addons/viin_brand_web/static/src/public/error_notifications.js:0
+msgid "Your Viindoo session expired. The current page is about to be refreshed."
+msgstr "Phiên làm việc Viindoo của bạn đã hết hạn. Trang hiện tại sẽ được tải lại."
