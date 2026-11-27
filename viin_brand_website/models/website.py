@@ -40,7 +40,7 @@ class Website(models.Model):
                 "%s not found on the addons path; falling back to core's default favicon",
                 BRAND_FAVICON_PATH,
             )
-            return super()._default_favicon()
+            return self._default_favicon()
 
     # Redeclared, not just overridden. Core binds the default to the FUNCTION OBJECT
     # (`default=_default_favicon` at class-definition time), so overriding the method
