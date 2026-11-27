@@ -110,6 +110,13 @@ async function waitForCondition(stopCondition) {
 }
 
 async function ensureHomeMenuOpen() {
+    // The web client is ready before it shows its first screen, the boot landing included: core's
+    // clickbot starts a second later, this walk waits for that screen. Else the apps button opens
+    // the overlay above a landing still to come, the tile clicked is the landing's, under the
+    // overlay, and the overlay stays up.
+    await waitForCondition(() =>
+        Boolean(odoo.__WOWL_DEBUG__.root.env.services.action.currentController)
+    );
     if (document.querySelector(HOME_TILE)) {
         return; // themed /odoo already landed on the home menu, or it is still open
     }
