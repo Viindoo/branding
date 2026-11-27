@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+    <t t-inherit="web.SessionExpiredDialog" t-inherit-mode="extension">
+        <xpath expr="//Dialog" position="attributes">
+            <attribute name="title.translate">Viindoo Session Expired</attribute>
+        </xpath>
+        <xpath expr="//p[hasclass('text-prewrap')]" position="replace" mode="inner">Your Viindoo session expired. The current page is about to be refreshed.</xpath>
+    </t>
+</template>
